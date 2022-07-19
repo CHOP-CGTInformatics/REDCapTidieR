@@ -14,11 +14,11 @@ extract_repeat_table_long(
 \arguments{
 \item{form_name}{The \code{form_name} described in the named column from the REDCap metadata.}
 
+\item{db_data_long}{The REDCap database output defined by \code{REDCapR::reedcap_read_oneshot()$data}}
+
+\item{db_metadata_long}{The REDCap metadata output defined by \code{REDCapR::redcap_metadata_read()$data}}
+
 \item{linked_arms}{Output of \code{link_arms}, linking forms to REDCap events/arms}
-
-\item{db_data}{The REDCap database output defined by \code{REDCapR::reedcap_read_oneshot()$data}}
-
-\item{db_metadata}{The REDCap metadata output defined by \code{REDCapR::redcap_metadata_read()$data}}
 }
 \description{
 Extract Repeat Tables from Longitudinal REDCap Databases

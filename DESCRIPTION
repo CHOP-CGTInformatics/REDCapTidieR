@@ -15,7 +15,7 @@ Imports:
     checkmate,
     dplyr,
     purrr,
-    REDCapR,
+    REDCapR (>= 1.0.9000),
     stringr,
     tibble,
     tidyr
@@ -25,3 +25,5 @@ BugReports: https://github.com/CHOP-CGTDataOps/REDCapTidieR/issues
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
+Remotes:  
+    OuhscBbmc/REDCapR
