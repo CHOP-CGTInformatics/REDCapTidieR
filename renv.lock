@@ -1,0 +1,25 @@
+{
+  "R": {
+    "Version": "4.2.0",
+    "Repositories": [
+      {
+        "Name": "CRAN",
+        "URL": "https://cran.rstudio.com"
+      },
+      {
+        "Name": "CHOPRAN",
+        "URL": "https://github.research.chop.edu/pages/CQI/chopran"
+      }
+    ]
+  },
+  "Packages": {
+    "renv": {
+      "Package": "renv",
+      "Version": "0.15.5",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "6a38294e7d12f5d8e656b08c5bd8ae34",
+      "Requirements": []
+    }
+  }
+}
