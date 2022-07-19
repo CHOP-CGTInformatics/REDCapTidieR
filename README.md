@@ -14,8 +14,12 @@ REDCap databases and turning them into tidy `tibble`s.
 
 ## Installation
 
-You can install the development version of REDCapTidieR like so:
+You can install the development version of `REDCapTidieR` like so:
 
 ``` r
-# FILL THIS IN! HOW CAN PEOPLE INSTALL YOUR DEV PACKAGE?
+devtools::install_github("CHOP-CGTDataOps/REDCapTidieR")
 ```
+
+## Examples
+
+> Coming Soon!

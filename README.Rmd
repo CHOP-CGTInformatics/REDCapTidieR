@@ -23,9 +23,12 @@ The goal of `REDCapTidieR` is to provide a simple API for extracting REDCap data
 
 ## Installation
 
-You can install the development version of REDCapTidieR like so:
+You can install the development version of `REDCapTidieR` like so:
 
 ``` r
-# FILL THIS IN! HOW CAN PEOPLE INSTALL YOUR DEV PACKAGE?
+devtools::install_github("CHOP-CGTDataOps/REDCapTidieR")
 ```
 
+## Examples
+
+> Coming Soon!

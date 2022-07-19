@@ -6,6 +6,7 @@
 #'   \item{Longitudinal Events}
 #'   \item{Longitudinal Arms}
 #' }
+#' Output a \code{tibble} with list elements containing tidy dataframes. Ideal for combination of tables with join operations primary and composite keys.
 #'
 #' @import REDCapR
 #'
