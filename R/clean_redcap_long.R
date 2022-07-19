@@ -54,8 +54,8 @@ clean_redcap_long <- function(
 #' Extract Non-Repeat Tables from Longitudinal REDCap Databases
 #'
 #' @param form_name The \code{form_name} described in the named column from the REDCap metadata.
-#' @param db_data The REDCap database output defined by \code{REDCapR::reedcap_read_oneshot()$data}
-#' @param db_metadata The REDCap metadata output defined by \code{REDCapR::redcap_metadata_read()$data}
+#' @param db_data_long The REDCap database output defined by \code{REDCapR::reedcap_read_oneshot()$data}
+#' @param db_metadata_long The REDCap metadata output defined by \code{REDCapR::redcap_metadata_read()$data}
 #' @param linked_arms Output of \code{link_arms}, linking forms to REDCap events/arms
 #'
 #' @import dplyr REDCapR stringr
@@ -109,8 +109,8 @@ extract_nonrepeat_table_long <- function(
 #' Extract Repeat Tables from Longitudinal REDCap Databases
 #'
 #' @param form_name The \code{form_name} described in the named column from the REDCap metadata.
-#' @param db_data The REDCap database output defined by \code{REDCapR::reedcap_read_oneshot()$data}
-#' @param db_metadata The REDCap metadata output defined by \code{REDCapR::redcap_metadata_read()$data}
+#' @param db_data_long The REDCap database output defined by \code{REDCapR::reedcap_read_oneshot()$data}
+#' @param db_metadata_long The REDCap metadata output defined by \code{REDCapR::redcap_metadata_read()$data}
 #' @param linked_arms Output of \code{link_arms}, linking forms to REDCap events/arms
 #'
 #' @import dplyr REDCapR stringr
