@@ -98,7 +98,7 @@ extract_nonrepeat_table_long <- function(
     relocate(c(redcap_event, redcap_arm), .after = record_id)
 
   # Check arms
-  if(any(names(linked_arms) %>% str_detect("arm_2"))){
+  if(!any(names(linked_arms) %>% str_detect("arm_2"))){
     out <- out %>%
       select(-redcap_arm)
   }
@@ -153,7 +153,7 @@ extract_repeat_table_long <- function(
     relocate(c(redcap_repeat_instance, redcap_event, redcap_arm), .after = record_id)
 
   # Check arms
-  if(any(names(linked_arms) %>% str_detect("arm_2"))){
+  if(!any(names(linked_arms) %>% str_detect("arm_2"))){
     out <- out %>%
       select(-redcap_arm)
   }
