@@ -1,48 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>/404.html</loc>
+    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/404.html</loc>
   </url>
   <url>
-    <loc>/LICENSE-text.html</loc>
+    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/LICENSE-text.html</loc>
   </url>
   <url>
-    <loc>/LICENSE.html</loc>
+    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/LICENSE.html</loc>
   </url>
   <url>
-    <loc>/authors.html</loc>
+    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/authors.html</loc>
   </url>
   <url>
-    <loc>/index.html</loc>
+    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/index.html</loc>
   </url>
   <url>
-    <loc>/reference/add_partial_keys.html</loc>
+    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/add_partial_keys.html</loc>
   </url>
   <url>
-    <loc>/reference/clean_redcap.html</loc>
+    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/clean_redcap.html</loc>
   </url>
   <url>
-    <loc>/reference/clean_redcap_long.html</loc>
+    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/clean_redcap_long.html</loc>
   </url>
   <url>
-    <loc>/reference/extract_nonrepeat_table.html</loc>
+    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/extract_nonrepeat_table.html</loc>
   </url>
   <url>
-    <loc>/reference/extract_nonrepeat_table_long.html</loc>
+    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/extract_nonrepeat_table_long.html</loc>
   </url>
   <url>
-    <loc>/reference/extract_repeat_table.html</loc>
+    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/extract_repeat_table.html</loc>
   </url>
   <url>
-    <loc>/reference/extract_repeat_table_long.html</loc>
+    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/extract_repeat_table_long.html</loc>
   </url>
   <url>
-    <loc>/reference/index.html</loc>
+    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/index.html</loc>
   </url>
   <url>
-    <loc>/reference/link_arms.html</loc>
+    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/link_arms.html</loc>
   </url>
   <url>
-    <loc>/reference/read_redcap_tidy.html</loc>
+    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/read_redcap_tidy.html</loc>
   </url>
 </urlset>
