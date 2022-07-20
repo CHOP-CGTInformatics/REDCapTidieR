@@ -23,9 +23,9 @@ clean_redcap_long <- function(
     unique()
 
   repeated_forms_tibble <- tibble(
-    redcap_form_names = repeated_forms,
+    redcap_form_name = repeated_forms,
     redcap_data = map(
-      redcap_form_names,
+      redcap_form_name,
       ~ extract_repeat_table_long(.x, db_data_long, db_metadata_long, linked_arms)
     ),
     structure = "repeating"
@@ -38,9 +38,9 @@ clean_redcap_long <- function(
     setdiff(repeated_forms)
 
   nonrepeated_forms_tibble <- tibble(
-    redcap_form_names = nonrepeated_forms,
+    redcap_form_name = nonrepeated_forms,
     redcap_data = map(
-      redcap_form_names,
+      redcap_form_name,
       ~ extract_nonrepeat_table_long(.x, db_data_long, db_metadata_long, linked_arms)
     ),
     structure = "nonrepeating"
@@ -98,7 +98,7 @@ extract_nonrepeat_table_long <- function(
     relocate(c(redcap_event, redcap_arm), .after = record_id)
 
   # Check arms
-  if(any(names(linked_arms) %>% str_detect("arm_2"))){
+  if(!any(names(linked_arms) %>% str_detect("arm_2"))){
     out <- out %>%
       select(-redcap_arm)
   }
@@ -153,7 +153,7 @@ extract_repeat_table_long <- function(
     relocate(c(redcap_repeat_instance, redcap_event, redcap_arm), .after = record_id)
 
   # Check arms
-  if(any(names(linked_arms) %>% str_detect("arm_2"))){
+  if(!any(names(linked_arms) %>% str_detect("arm_2"))){
     out <- out %>%
       select(-redcap_arm)
   }

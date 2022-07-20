@@ -20,8 +20,8 @@ clean_redcap <- function(
     unique()
 
   repeated_forms_tibble <- tibble(
-    names = repeated_forms,
-    data = map(
+    redcap_form_name = repeated_forms,
+    redcap_data = map(
       repeated_forms,
       ~ extract_repeat_table(.x, db_data, db_metadata)
     ),
@@ -34,8 +34,8 @@ clean_redcap <- function(
     setdiff(repeated_forms)
 
   nonrepeated_forms_tibble <- tibble(
-    names = nonrepeated_forms,
-    data = map(
+    redcap_form_name = nonrepeated_forms,
+    redcap_data = map(
       nonrepeated_forms,
       ~ extract_nonrepeat_table(.x, db_data, db_metadata)
     ),

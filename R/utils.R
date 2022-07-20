@@ -54,5 +54,6 @@ link_arms <- function(
   db_event_instruments %>%
     select(-arm_num) %>%
     pivot_wider(names_from = c("unique_event_name"),
-                values_from = c("form"))
+                values_from = c("form"),
+                values_fn = list)
 }
