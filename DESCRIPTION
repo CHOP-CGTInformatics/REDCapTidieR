@@ -15,6 +15,7 @@ Imports:
     dplyr,
     purrr,
     REDCapR (>= 1.0.9000),
+    rlang,
     stringr,
     tibble,
     tidyr
