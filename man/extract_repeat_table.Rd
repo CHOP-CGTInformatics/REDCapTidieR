@@ -16,3 +16,4 @@ extract_repeat_table(form_name, db_data, db_metadata)
 \description{
 Extract Repeat Tables from non-Longitudinal REDCap Databases
 }
+\keyword{internal}

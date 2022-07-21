@@ -12,3 +12,4 @@ add_partial_keys(db_data)
 \description{
 Make helper vars \code{redcap_event} and \code{redcap_arm} available as offshoots from \code{redcap_event_name}.
 }
+\keyword{internal}

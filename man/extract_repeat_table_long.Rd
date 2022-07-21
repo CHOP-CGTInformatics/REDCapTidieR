@@ -23,3 +23,4 @@ extract_repeat_table_long(
 \description{
 Extract Repeat Tables from Longitudinal REDCap Databases
 }
+\keyword{internal}

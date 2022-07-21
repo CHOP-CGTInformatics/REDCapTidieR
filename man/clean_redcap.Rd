@@ -14,3 +14,4 @@ clean_redcap(db_data, db_metadata)
 \description{
 Extract non-Longitudinal REDCap Databases into Tidy Tibbles
 }
+\keyword{internal}

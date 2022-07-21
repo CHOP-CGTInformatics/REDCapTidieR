@@ -18,3 +18,4 @@ link_arms(db_data_long, db_metadata_long, redcap_uri, token)
 \description{
 Returns a tibble of \code{redcap_event_name}s with list elements containing a vector of associated forms.
 }
+\keyword{internal}

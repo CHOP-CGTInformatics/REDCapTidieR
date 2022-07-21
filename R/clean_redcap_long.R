@@ -5,6 +5,7 @@
 #' @param linked_arms Output of \code{link_arms}, linking forms to REDCap events/arms
 #'
 #' @import dplyr purrr REDCapR checkmate
+#' @keywords internal
 
 clean_redcap_long <- function(
     db_data_long,
@@ -59,6 +60,7 @@ clean_redcap_long <- function(
 #' @param linked_arms Output of \code{link_arms}, linking forms to REDCap events/arms
 #'
 #' @import dplyr REDCapR stringr
+#' @keywords internal
 
 extract_nonrepeat_table_long <- function(
     form_name,
@@ -114,6 +116,7 @@ extract_nonrepeat_table_long <- function(
 #' @param linked_arms Output of \code{link_arms}, linking forms to REDCap events/arms
 #'
 #' @import dplyr REDCapR stringr
+#' @keywords internal
 
 extract_repeat_table_long <- function(
     form_name,

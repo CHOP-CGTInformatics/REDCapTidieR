@@ -4,6 +4,7 @@
 #' @param db_metadata The REDCap metadata output defined by \code{REDCapR::redcap_metadata_read()$data}
 #'
 #' @import dplyr purrr REDCapR checkmate
+#' @keywords internal
 
 clean_redcap <- function(
     db_data,
@@ -54,6 +55,7 @@ clean_redcap <- function(
 #' @param db_metadata The REDCap metadata output defined by \code{REDCapR::redcap_metadata_read()$data}
 #'
 #' @import dplyr REDCapR
+#' @keywords internal
 
 extract_nonrepeat_table <- function(
     form_name,
@@ -83,6 +85,7 @@ extract_nonrepeat_table <- function(
 #' @param db_metadata The non-longitudinal REDCap metadata output defined by \code{REDCapR::redcap_metadata_read()$data}
 #'
 #' @import dplyr REDCapR
+#' @keywords internal
 
 extract_repeat_table <- function(
     form_name,

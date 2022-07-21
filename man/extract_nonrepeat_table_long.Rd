@@ -23,3 +23,4 @@ extract_nonrepeat_table_long(
 \description{
 Extract Non-Repeat Tables from Longitudinal REDCap Databases
 }
+\keyword{internal}

@@ -2,11 +2,10 @@ Package: REDCapTidieR
 Type: Package
 Title: Extract REDCap Databases into Tidy Tibbles
 Version: 0.0.0.9000
-Author: c(
+Authors@R: c(
     person("Richard", "Hanna", , "hannar1@chop.edu", role = c("aut", "cre")),
     person("Stephan", "Kadauke", , "kadaukes@chop.edu", role = "aut")
   )
-Maintainer: The package maintainer <hannar1@chop.edu>
 Description: This package is designed to help convert REDCap exports into tidy tables for easy handling of REDCap repeat instruments and event arms.
 License: MIT + file LICENSE
 Encoding: UTF-8

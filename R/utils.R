@@ -5,6 +5,8 @@
 #' @param db_data A REDCap database export
 #'
 #' @import dplyr
+#' @keywords internal
+
 add_partial_keys <- function(
     db_data
 ){
@@ -29,6 +31,7 @@ add_partial_keys <- function(
 #' @param token The REDCap API token
 #'
 #' @import dplyr tibble REDCapR tidyr
+#' @keywords internal
 
 link_arms <- function(
     db_data_long,

@@ -1,4 +1,10 @@
 url: https://chop-cgtdataops.github.io/REDCapTidieR/
 template:
   bootstrap: 5
-
+  bootswatch: flatly
+reference:
+- title: "Building Tidy Datasets"
+  desc: >
+    Main functions for extracting REDCap data into tidy tibbles.
+  contents:
+  - read_redcap_tidy
