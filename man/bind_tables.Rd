@@ -21,5 +21,5 @@ bind_tables(
 \item{structure}{Specify REDCap structure to load into environment, either \code{repeating} or \code{nonrepeating}. Defaults to all structures.}
 }
 \description{
-In Development
+Supply a \code{read_redcap_tidy()} output to load REDCap data tables to specified environment locations.
 }
