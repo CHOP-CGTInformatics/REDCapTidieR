@@ -2,7 +2,7 @@ pandoc: 2.14.2
 pkgdown: 2.0.6
 pkgdown_sha: ~
 articles: {}
-last_built: 2022-07-20T19:40Z
+last_built: 2022-07-21T15:31Z
 urls:
   reference: https://chop-cgtdataops.github.io/REDCapTidieR/reference
   article: https://chop-cgtdataops.github.io/REDCapTidieR/articles
