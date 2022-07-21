@@ -8,3 +8,4 @@ reference:
     Main functions for extracting REDCap data into tidy tibbles.
   contents:
   - read_redcap_tidy
+  - bind_tables
