@@ -1,6 +1,6 @@
 #' Bind REDCap Tidy Tibbles to Specified Environments
 #'
-#' In Development
+#' Supply a \code{read_redcap_tidy()} output to load REDCap data tables to specified environment locations.
 #'
 #' @param .data A tidy table provided by \code{read_redcap_tidy()}
 #' @param environment The environment to assign the tidy data (default \code{global_env()}). For new environment, it is recommended to use \code{rlang::new_environment()}.
