@@ -15,6 +15,10 @@ knitr::opts_chunk$set(
 
 # REDCapTidieR
 
+<p align="center">
+  <img src="man/figures/REDCapTidieR.png" alt="drawing" width="150" align ="right"/>
+</p>
+
 <!-- badges: start -->
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![R-CMD-check](https://github.com/CHOP-CGTDataOps/REDCapTidieR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/CHOP-CGTDataOps/REDCapTidieR/actions/workflows/R-CMD-check.yaml)
@@ -32,7 +36,7 @@ The goal of `REDCapTidieR` is to provide users with a simple API for extracting 
 - Longitudinal Events
 - Longitudinal Arms
 
-Much of the inspiration for this package is derived from the wonderful work done in the [`REDCapR`](https://ouhscbbmc.github.io/REDCapR/) package.
+`REDCapTidieR` is meant to be used in conjunction with the [`REDCapR`](https://ouhscbbmc.github.io/REDCapR/) package. It is built to be reliant on data extraction from underlying functions including `redcap_read_oneshot()`, `redcap_metadata_read()`, and `redcap_event_instruments()`. You may have even noticed the name for this package is just a "tidy"-fied addition to `REDCapR`! Therefore, we owe much credit and acknowledgement to the developers of `REDCapR`.
 
 ## Installation
 
@@ -44,7 +48,7 @@ devtools::install_github("CHOP-CGTDataOps/REDCapTidieR")
 
 ## Examples
 
-> 🚧 Under Development 🚧
+### Exporting REDCap Databases to Tidy `tibbles`
 
 Using the main function is simple and only requires a REDCap URI and an API token with read/write privileges:
 
@@ -85,3 +89,26 @@ redcap_export$redcap_data %>% pluck(1)
 8         3                      2      event_2          1        G        H
 9         4                      1      event_3          2       R1       R2
 ```
+
+### Loading Tidy `tibbles` to Specified Environments
+
+As an additional feature to `REDCapTidieR`, the `bind_tables()` function serves to allow users to assign the tidy data tables under `$redcap_data` to loaded data elements in a specified environment.
+
+By default, when using `bind_tables()` all elements will load as individual dataframes into the global environment. Users have the option to specify a different environment object to assign dataframes to, as well as specify specific `redcap_form_name`s and `structure`s if the they do not wish to load all data elements.
+
+**Load all elements to global environment:**
+```r
+read_redcap_tidy(redcap_uri, token) %>% 
+  bind_tables()
+```
+
+**Load selected elements to specified environment:**
+```r
+sample_environment = rlang::new_environment()
+
+read_redcap_tidy(redcap_uri, token) %>% 
+  bind_tables(environment = sample_environment, 
+              redcap_form_name = c("nonrepeated", "repeated"))
+```
+
+
