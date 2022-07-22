@@ -1,22 +1,24 @@
-# Load initial variables
-token <- Sys.getenv("REDCAPTIDIER_LONGITUDINAL_API")
-redcap_uri <- Sys.getenv("REDCAP_URI")
+# Load Sample Longitudinal Database
+redcaptidier_longitudintal_db <- readRDS(system.file("testdata/redcaptidier_longitudinal_db.RDS", package = "REDCapTidieR"))
 
 test_that("bind_tables works with no specifications", {
+    redcaptidier_longitudintal_db %>%
+      bind_tables()
 
-  read_redcap_tidy(redcap_uri, token) %>%
-    bind_tables()
-
-  expect_true(exists("nonrepeated", envir = global_env()))
-  expect_true(exists("nonrepeated2", envir = global_env()))
-  expect_true(exists("repeated", envir = global_env()))
+    expect_true(exists("nonrepeated", envir = global_env()))
+    expect_true(exists("nonrepeated2", envir = global_env()))
+    expect_true(exists("repeated", envir = global_env()))
+    expect_s3_class(nonrepeated, "data.frame")
+    expect_s3_class(nonrepeated2, "data.frame")
+    expect_s3_class(repeated, "data.frame")
+    rm(list = c("nonrepeated", "repeated", "nonrepeated2"), envir = global_env())
 })
 
 test_that("bind_tables works with environment specification", {
 
   sample_env <- new_environment()
 
-  read_redcap_tidy(redcap_uri, token) %>%
+  redcaptidier_longitudintal_db %>%
     bind_tables(environment = sample_env)
 
   expect_true(exists("nonrepeated", envir = sample_env))
@@ -26,24 +28,22 @@ test_that("bind_tables works with environment specification", {
 
 test_that("bind_tables works with forms specification", {
 
-  sample_env <- new_environment()
+  redcaptidier_longitudintal_db %>%
+    bind_tables(redcap_form_name = c("nonrepeated", "repeated"))
 
-  read_redcap_tidy(redcap_uri, token) %>%
-    bind_tables(environment = sample_env, redcap_form_name = "nonrepeated")
-
-  expect_true(exists("nonrepeated", envir = sample_env))
-  expect_false(exists("nonrepeated2", envir = sample_env))
-  expect_false(exists("repeated", envir = sample_env))
+  expect_true(exists("nonrepeated", envir = global_env()))
+  expect_false(exists("nonrepeated2", envir = global_env()))
+  expect_true(exists("repeated", envir = global_env()))
+  rm(list = c("nonrepeated", "repeated"), envir = global_env())
 })
 
 test_that("bind_tables works with structure specification", {
 
-  sample_env <- new_environment()
+  redcaptidier_longitudintal_db %>%
+    bind_tables(structure = "nonrepeating")
 
-  read_redcap_tidy(redcap_uri, token) %>%
-    bind_tables(environment = sample_env, structure = "nonrepeating")
-
-  expect_true(exists("nonrepeated", envir = sample_env))
-  expect_true(exists("nonrepeated2", envir = sample_env))
-  expect_false(exists("repeated", envir = sample_env))
+  expect_true(exists("nonrepeated", envir = global_env()))
+  expect_true(exists("nonrepeated2", envir = global_env()))
+  expect_false(exists("repeated", envir = global_env()))
+  rm(list = c("nonrepeated", "nonrepeated2"), envir = global_env())
 })
