@@ -60,6 +60,7 @@
   <main id="main" class="col-md-9"><div class="section level1">
 <div class="page-header"><h1 id="redcaptidier">REDCapTidieR<a class="anchor" aria-label="anchor" href="#redcaptidier"></a>
 </h1></div>
+<p align="center"><img src="reference/figures/REDCapTidieR.png" alt="drawing" width="150" align="right"></p>
 <!-- badges: start -->
 <p><a href="https://www.project-redcap.org/" class="external-link">REDCap</a> is a powerful database solution used by many research institutions:</p>
 <blockquote><p>“REDCap is a secure web application for building and managing online surveys and databases. While REDCap can be used to collect virtually any type of data in any environment (including compliance with 21 CFR Part 11, FISMA, HIPAA, and GDPR), it is specifically geared to support online and offline data capture for research studies and operations.”</p></blockquote>
@@ -70,7 +71,7 @@
 <li>Longitudinal Events</li>
 <li>Longitudinal Arms</li>
 </ul>
-<p>Much of the inspiration for this package is derived from the wonderful work done in the <a href="https://ouhscbbmc.github.io/REDCapR/" class="external-link"><code>REDCapR</code></a> package.</p>
+<p><code>REDCapTidieR</code> is meant to be used in conjunction with the <a href="https://ouhscbbmc.github.io/REDCapR/" class="external-link"><code>REDCapR</code></a> package. It is built to be reliant on data extraction from underlying functions including <code>redcap_read_oneshot()</code>, <code>redcap_metadata_read()</code>, and <code>redcap_event_instruments()</code>. You may have even noticed the name for this package is just a “tidy”-fied addition to <code>REDCapR</code>! Therefore, we owe much credit and acknowledgement to the developers of <code>REDCapR</code>.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
@@ -81,7 +82,10 @@
 <div class="section level2">
 <h2 id="examples">Examples<a class="anchor" aria-label="anchor" href="#examples"></a>
 </h2>
-<blockquote><p>🚧 Under Development 🚧</p></blockquote>
+<div class="section level3">
+<h3 id="exporting-redcap-databases-to-tidy-tibbles">Exporting REDCap Databases to Tidy <code>tibbles</code>
+<a class="anchor" aria-label="anchor" href="#exporting-redcap-databases-to-tidy-tibbles"></a>
+</h3>
 <p>Using the main function is simple and only requires a REDCap URI and an API token with read/write privileges:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">redcap_export</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_redcap_tidy.html">read_redcap_tidy</a></span><span class="op">(</span><span class="va">redcap_uri</span>, <span class="va">token</span><span class="op">)</span></span></code></pre></div>
@@ -107,6 +111,24 @@
 <span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="ex">7</span>         3                      1      event_2          1        E        F</span>
 <span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="ex">8</span>         3                      2      event_2          1        G        H</span>
 <span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="ex">9</span>         4                      1      event_3          2       R1       R2</span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="loading-tidy-tibbles-to-specified-environments">Loading Tidy <code>tibbles</code> to Specified Environments<a class="anchor" aria-label="anchor" href="#loading-tidy-tibbles-to-specified-environments"></a>
+</h3>
+<p>As an additional feature to <code>REDCapTidieR</code>, the <code>bind_tables()</code> function serves to allow users to assign the tidy data tables under <code>$redcap_data</code> to loaded data elements in a specified environment.</p>
+<p>By default, when using <code>bind_tables()</code> all elements will load as individual dataframes into the global environment. Users have the option to specify a different environment object to assign dataframes to, as well as specify specific <code>redcap_form_name</code>s and <code>structure</code>s if the they do not wish to load all data elements.</p>
+<p><strong>Load all elements to global environment:</strong></p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/read_redcap_tidy.html">read_redcap_tidy</a></span><span class="op">(</span><span class="va">redcap_uri</span>, <span class="va">token</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">bind_tables</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p><strong>Load selected elements to specified environment:</strong></p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">sample_environment</span> <span class="op">=</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/env.html" class="external-link">new_environment</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="reference/read_redcap_tidy.html">read_redcap_tidy</a></span><span class="op">(</span><span class="va">redcap_uri</span>, <span class="va">token</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">bind_tables</span><span class="op">(</span>environment <span class="op">=</span> <span class="va">sample_environment</span>, </span>
+<span>              redcap_form_name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"nonrepeated"</span>, <span class="st">"repeated"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+</div>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
