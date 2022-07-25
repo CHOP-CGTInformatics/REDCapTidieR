@@ -73,6 +73,9 @@ extract_nonrepeat_table <- function(
     my_fields <- c(my_record_id, my_fields)
   }
 
+  # Below necessary to remove descriptive text fields
+  my_fields <- intersect(my_fields, names(db_data))
+
   db_data %>%
     filter(is.na(redcap_repeat_instance)) %>%
     select(all_of(my_fields))
@@ -102,6 +105,9 @@ extract_repeat_table <- function(
   if (my_fields[1] != my_record_id) {
     my_fields <- c(my_record_id, my_fields)
   }
+
+  # Below necessary to remove descriptive text fields
+  my_fields <- intersect(my_fields, names(db_data))
 
   db_data %>%
     filter(!is.na(redcap_repeat_instance)) %>%

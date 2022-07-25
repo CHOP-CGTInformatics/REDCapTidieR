@@ -49,7 +49,8 @@ link_arms <- function(
 
   for (i in 1:length(db_data_long %>% pull(redcap_arm) %>% unique())) {
     db_event_instruments_data <- redcap_event_instruments(redcap_uri = redcap_uri,
-                                                          token = token, arms = i)$data
+                                                          token = token, arms = i,
+                                                          verbose = FALSE)$data
 
     db_event_instruments <- rbind(db_event_instruments, db_event_instruments_data)
   }

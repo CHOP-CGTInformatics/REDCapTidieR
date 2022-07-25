@@ -46,4 +46,5 @@ bind_tables <- function(.data,
                        value = .y)
   )
 
+  return(invisible(NULL))
 }

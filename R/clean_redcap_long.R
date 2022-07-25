@@ -79,6 +79,9 @@ extract_nonrepeat_table_long <- function(
     my_fields <- c(my_record_id, my_fields)
   }
 
+  # Below necessary to remove descriptive text fields
+  my_fields <- intersect(my_fields, names(db_data_long))
+
   # Setup data for loop redcap_arm linking
   db_data_long <- db_data_long %>%
     add_partial_keys() %>%
@@ -97,7 +100,7 @@ extract_nonrepeat_table_long <- function(
   # Final aesthetic cleanup
   out <- db_data_long %>%
     select(all_of(my_fields), redcap_event, redcap_arm) %>%
-    relocate(c(redcap_event, redcap_arm), .after = record_id)
+    relocate(c(redcap_event, redcap_arm), .after = !!my_record_id)
 
   # Check arms
   if(!any(names(linked_arms) %>% str_detect("arm_2"))){
@@ -135,6 +138,9 @@ extract_repeat_table_long <- function(
     my_fields <- c(my_record_id, my_fields)
   }
 
+  # Below necessary to remove descriptive text fields
+  my_fields <- intersect(my_fields, names(db_data_long))
+
   # Setup data for loop redcap_arm linking
   db_data_long <- db_data_long %>%
     add_partial_keys() %>%
@@ -153,7 +159,7 @@ extract_repeat_table_long <- function(
   # Final aesthetic cleanup
   out <- db_data_long %>%
     select(all_of(my_fields), redcap_repeat_instance, redcap_event, redcap_arm) %>%
-    relocate(c(redcap_repeat_instance, redcap_event, redcap_arm), .after = record_id)
+    relocate(c(redcap_repeat_instance, redcap_event, redcap_arm), .after = !!my_record_id)
 
   # Check arms
   if(!any(names(linked_arms) %>% str_detect("arm_2"))){
