@@ -11,7 +11,7 @@ read_redcap_tidy(redcap_uri, token, suppress_messages = TRUE)
 
 \item{token}{The user-specific string that serves as the password for a project. Required.}
 
-\item{suppress_messages}{}
+\item{suppress_messages}{Optionally show or suppress messages. Default \code{TRUE}.}
 }
 \description{
 Automatically detect REDCap database structure for the following elements:

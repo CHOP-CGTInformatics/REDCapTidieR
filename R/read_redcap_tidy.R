@@ -12,7 +12,7 @@
 #'
 #' @param redcap_uri The URI (uniform resource identifier) of the REDCap project. Required.
 #' @param token The user-specific string that serves as the password for a project. Required.
-#' @param suppress_messages
+#' @param suppress_messages Optionally show or suppress messages. Default \code{TRUE}.
 #'
 #' @export
 

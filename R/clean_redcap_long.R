@@ -158,6 +158,7 @@ extract_repeat_table_long <- function(
 
   # Final aesthetic cleanup
   out <- db_data_long %>%
+    filter(redcap_repeat_instrument == my_form) %>%
     select(all_of(my_fields), redcap_repeat_instance, redcap_event, redcap_arm) %>%
     relocate(c(redcap_repeat_instance, redcap_event, redcap_arm), .after = !!my_record_id)
 
