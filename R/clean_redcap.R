@@ -73,9 +73,13 @@ extract_nonrepeat_table <- function(
     my_fields <- c(my_record_id, my_fields)
   }
 
+  # Below necessary to remove descriptive text fields
+  my_fields <- intersect(my_fields, names(db_data))
+
   db_data %>%
     filter(is.na(redcap_repeat_instance)) %>%
-    select(all_of(my_fields))
+    select(all_of(my_fields)) %>%
+    tibble()
 }
 
 #' Extract Repeat Tables from non-Longitudinal REDCap Databases
@@ -103,8 +107,12 @@ extract_repeat_table <- function(
     my_fields <- c(my_record_id, my_fields)
   }
 
+  # Below necessary to remove descriptive text fields
+  my_fields <- intersect(my_fields, names(db_data))
+
   db_data %>%
     filter(!is.na(redcap_repeat_instance)) %>%
     select(all_of(my_fields), redcap_repeat_instance) %>%
-    relocate(redcap_repeat_instance, .after = all_of(my_record_id))
+    relocate(redcap_repeat_instance, .after = all_of(my_record_id)) %>%
+    tibble()
 }

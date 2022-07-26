@@ -43,17 +43,19 @@ link_arms <- function(
   # First, add helper variables
   db_data_long <- add_partial_keys(db_data_long)
 
-  # Next loop through all possible arms by identifying unique ones in db_data_long
+  # Next map through all possible arms by identifying unique ones in db_data_long
   # after it has helper variables added from `add_partial_keys()`
-  db_event_instruments <- tibble()
+  db_event_instruments <- tibble() # Define empty tibble
+  arms <- db_data_long %>% pull(redcap_arm) %>% unique() # Define arms
 
-  for (i in 1:length(db_data_long %>% pull(redcap_arm) %>% unique())) {
-    db_event_instruments_data <- redcap_event_instruments(redcap_uri = redcap_uri,
-                                                          token = token, arms = i)$data
+  db_event_instruments <- map(arms, ~redcap_event_instruments(
+    redcap_uri = redcap_uri,
+    token = token, arms = .x,
+    verbose = FALSE
+  )$data) %>%
+    bind_rows()
 
-    db_event_instruments <- rbind(db_event_instruments, db_event_instruments_data)
-  }
-
+  # Categorize all events/arms and assign all forms that appear in them to a vector. Vectors help with variable length assignments.
   db_event_instruments %>%
     select(-arm_num) %>%
     pivot_wider(names_from = c("unique_event_name"),

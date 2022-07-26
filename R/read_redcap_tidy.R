@@ -12,18 +12,22 @@
 #'
 #' @param redcap_uri The URI (uniform resource identifier) of the REDCap project. Required.
 #' @param token The user-specific string that serves as the password for a project. Required.
+#' @param suppress_messages Optionally show or suppress messages. Default \code{TRUE}.
 #'
 #' @export
 
 read_redcap_tidy <- function(redcap_uri,
-                             token){
+                             token,
+                             suppress_messages = TRUE){
 
   # Load Datasets ----
   db_data <- redcap_read_oneshot(redcap_uri = redcap_uri,
-                                 token = token)$data
+                                 token = token,
+                                 verbose = FALSE)$data
 
   db_metadata <- redcap_metadata_read(redcap_uri = redcap_uri,
-                                      token = token)$data
+                                      token = token,
+                                      verbose = FALSE)$data
 
   # Check if database supplied is longitudinal to determine appropriate function to use
   is_longitudinal <- if("redcap_event_name" %in% names(db_data)){TRUE}else{FALSE}
@@ -42,5 +46,4 @@ read_redcap_tidy <- function(redcap_uri,
                         db_metadata = db_metadata)
   }
 
-  out
 }
