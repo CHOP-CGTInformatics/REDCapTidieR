@@ -3,7 +3,7 @@ pkgdown: 2.0.6
 pkgdown_sha: ~
 articles:
   using-redcaptidier: using-redcaptidier.html
-last_built: 2022-07-26T19:12Z
+last_built: 2022-07-26T19:45Z
 urls:
   reference: https://chop-cgtdataops.github.io/REDCapTidieR/reference
   article: https://chop-cgtdataops.github.io/REDCapTidieR/articles
