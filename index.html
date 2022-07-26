@@ -38,6 +38,12 @@
 <li class="nav-item">
   <a class="nav-link" href="reference/index.html">Reference</a>
 </li>
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="articles/using-redcaptidier.html">UNKNOWN TITLE</a>
+  </div>
+</li>
       </ul>
 <form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="search.json" id="search-input" placeholder="Search for" autocomplete="off">
@@ -60,18 +66,13 @@
   <main id="main" class="col-md-9"><div class="section level1">
 <div class="page-header"><h1 id="redcaptidier">REDCapTidieR<a class="anchor" aria-label="anchor" href="#redcaptidier"></a>
 </h1></div>
-<p align="center"><img src="reference/figures/REDCapTidieR.png" alt="drawing" width="150" align="right"></p>
+<p align="center"></p>
+<p><img src="reference/figures/REDCapTidieR.png" alt="drawing" width="150" align="right"></p>
 <!-- badges: start -->
-<p><a href="https://www.project-redcap.org/" class="external-link">REDCap</a> is a powerful database solution used by many research institutions:</p>
+<!-- badges: end --><p><a href="https://www.project-redcap.org/" class="external-link">REDCap</a> is a powerful database solution used by many research institutions:</p>
 <blockquote><p>“REDCap is a secure web application for building and managing online surveys and databases. While REDCap can be used to collect virtually any type of data in any environment (including compliance with 21 CFR Part 11, FISMA, HIPAA, and GDPR), it is specifically geared to support online and offline data capture for research studies and operations.”</p></blockquote>
-<p>The goal of <code>REDCapTidieR</code> is to provide users with a simple API for extracting REDCap databases and turning them into tidy <code>tibble</code>s. This makes for easily joinable tables with only the data necessary for specific REDCap forms, instead of the singular complex table typically received from a single export.</p>
-<p><code>REDCapTidieR</code> will be of great use to any databases using:</p>
-<ul>
-<li>Repeating Instruments</li>
-<li>Longitudinal Events</li>
-<li>Longitudinal Arms</li>
-</ul>
-<p><code>REDCapTidieR</code> is meant to be used in conjunction with the <a href="https://ouhscbbmc.github.io/REDCapR/" class="external-link"><code>REDCapR</code></a> package. It is built to be reliant on data extraction from underlying functions including <code>redcap_read_oneshot()</code>, <code>redcap_metadata_read()</code>, and <code>redcap_event_instruments()</code>. You may have even noticed the name for this package is just a “tidy”-fied addition to <code>REDCapR</code>! Therefore, we owe much credit and acknowledgement to the developers of <code>REDCapR</code>.</p>
+<p>The <a href="https://ouhscbbmc.github.io/REDCapR/" class="external-link"><code>REDCapR</code></a> package streamlines calls to the REDCap API. Its main use is to download records from a REDCap project and present it to the analyst as a data frame. This works well for simple projects, however becomes ugly when complex databases that include longitudinal structure and/or repeated instruments are involved.</p>
+<p>The aim of <code>REDCapTidieR</code> is to make the life of analysts who deal with these complex databases easier. It does so by building upon <code>REDCapR</code> to make its output tidier. Instead of one large data frame, the analyst gets to work with a set of tidy tibbles, one for each instrument.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
@@ -80,55 +81,108 @@
 <code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"CHOP-CGTDataOps/REDCapTidieR"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="examples">Examples<a class="anchor" aria-label="anchor" href="#examples"></a>
+<h2 id="getting-started">Getting started<a class="anchor" aria-label="anchor" href="#getting-started"></a>
+</h2>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/CHOP-CGTDataOps/REDCapTidieR" class="external-link">REDCapTidieR</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://magrittr.tidyverse.org" class="external-link">magrittr</a></span><span class="op">)</span></span></code></pre></div>
+<p>The two main functions of <code>REDCapTidieR</code> are <code><a href="reference/read_redcap_tidy.html">read_redcap_tidy()</a></code> and <code><a href="reference/bind_tables.html">bind_tables()</a></code>. Here is how they can be used together to import all data from a REDCap project and present them as tidy tibbles in the global environment:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/read_redcap_tidy.html">read_redcap_tidy</a></span><span class="op">(</span><span class="va">redcap_uri</span>, <span class="va">token</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="reference/bind_tables.html">bind_tables</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a>
 </h2>
 <div class="section level3">
-<h3 id="exporting-redcap-databases-to-tidy-tibbles">Exporting REDCap Databases to Tidy <code>tibbles</code>
-<a class="anchor" aria-label="anchor" href="#exporting-redcap-databases-to-tidy-tibbles"></a>
+<h3 id="structure-of-the-tibble-returned-by-read_redcap_tidy">Structure of the tibble returned by `read_redcap_tidy`<a class="anchor" aria-label="anchor" href="#structure-of-the-tibble-returned-by-read_redcap_tidy"></a>
 </h3>
-<p>Using the main function is simple and only requires a REDCap URI and an API token with read/write privileges:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">redcap_export</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_redcap_tidy.html">read_redcap_tidy</a></span><span class="op">(</span><span class="va">redcap_uri</span>, <span class="va">token</span><span class="op">)</span></span></code></pre></div>
-<p>Where a sample output containing repeating instruments may look like:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">redcap_export</span></span></code></pre></div>
-<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># A tibble: 3 × 3</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="ex">redcap_form_name</span> redcap_data  structure   </span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="op">&lt;</span>chr<span class="op">&gt;</span>            <span class="op">&lt;</span>list<span class="op">&gt;</span>       <span class="op">&lt;</span>chr<span class="op">&gt;</span>       </span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="ex">1</span> repeated         <span class="op">&lt;</span>df [9 × 6]<span class="op">&gt;</span> repeating   </span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="ex">2</span> nonrepeated      <span class="op">&lt;</span>df [8 × 5]<span class="op">&gt;</span> nonrepeating</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="ex">3</span> nonrepeated2     <span class="op">&lt;</span>df [3 × 5]<span class="op">&gt;</span> nonrepeating</span></code></pre></div>
-<p>Where the contents of <code>redcap_data</code> contain only the data associated with the form:</p>
+<p>The <code>read_redcap_tidy</code> function returns a tibble in which each row represents a REDCap instrument. The first column contains the instrument name. The second column is a <strong>list column</strong> containing a tibble for each instrument.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">redcap_export</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_redcap_tidy.html">read_redcap_tidy</a></span><span class="op">(</span><span class="va">redcap_uri</span>, <span class="va">token</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">redcap_export</span></span>
+<span><span class="co">#&gt; # A tibble: 3 × 3</span></span>
+<span><span class="co">#&gt;   redcap_form_name redcap_data      structure   </span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;            &lt;list&gt;           &lt;chr&gt;       </span></span>
+<span><span class="co">#&gt; 1 repeated         &lt;tibble [9 × 6]&gt; repeating   </span></span>
+<span><span class="co">#&gt; 2 nonrepeated      &lt;tibble [8 × 5]&gt; nonrepeating</span></span>
+<span><span class="co">#&gt; 3 nonrepeated2     &lt;tibble [3 × 5]&gt; nonrepeating</span></span></code></pre></div>
+<p>REDCap databases support two main mechanisms to allow collecting the same data multiple times: repeated instruments and longitudinal projects.</p>
+<p>The granularity of each table (i.e. what a single row represents) depends on the structure of the database (classic, longitudinal with one arm, longitudinal with multiple arms) as well as whether the instruments are repeatable or not. Based on this, <code>REDCapTidieR</code> tibbles contain the following columns to uniquely identify a specific row:</p>
+<table style="width:100%;" class="table">
+<colgroup>
+<col style="width: 17%">
+<col style="width: 25%">
+<col style="width: 28%">
+<col style="width: 28%">
+</colgroup>
+<thead><tr class="header">
+<th></th>
+<th><strong>Classic</strong></th>
+<th><strong>Longitudinal, one arm</strong></th>
+<th><strong>Longitudinal, multi-arm</strong></th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><strong>Nonrepeated</strong></td>
+<td><code>record_id</code></td>
+<td>
+<code>record_id</code> +<br><code>redcap_event</code>
+</td>
+<td>
+<code>record_id</code> +<br><code>redcap_event</code> +<br><code>redcap_arm</code>
+</td>
+</tr>
+<tr class="even">
+<td><strong>Repeated</strong></td>
+<td>
+<code>record_id</code> +<br><code>redcap_repeat_instance</code>
+</td>
+<td>
+<code>record_id</code> +<br><code>redcap_repeat_instance</code> +<br><code>redcap_event</code>
+</td>
+<td>
+<code>record_id</code> +<br><code>redcap_repeat_instance</code> +<br><code>redcap_event</code> +<br><code>redcap_arm</code>
+</td>
+</tr>
+</tbody>
+</table>
+<p>For example, the <code>repeated</code> instrument in the example database we just loaded is a repeated instrument from a multi-arm longitudinal project:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">redcap_export</span><span class="op">$</span><span class="va">redcap_data</span> <span class="op">%&gt;%</span> <span class="fu">pluck</span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>  <span class="ex">record_id</span> redcap_repeat_instance redcap_event redcap_arm repeat_1 repeat_2</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="ex">1</span>         1                      1      event_1          1        1        2</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="ex">2</span>         1                      2      event_1          1        3        4</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="ex">3</span>         1                      3      event_1          1        5        6</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="ex">4</span>         1                      1      event_2          1        A        B</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="ex">5</span>         1                      2      event_2          1        C        D</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="ex">6</span>         3                      1      event_1          1        C        D</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="ex">7</span>         3                      1      event_2          1        E        F</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="ex">8</span>         3                      2      event_2          1        G        H</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="ex">9</span>         4                      1      event_3          2       R1       R2</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">redcap_export</span><span class="op">$</span><span class="va">redcap_data</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
+<span><span class="co">#&gt; # A tibble: 9 × 6</span></span>
+<span><span class="co">#&gt;   record_id redcap_repeat_instance redcap_event redcap_arm repeat_1 repeat_2</span></span>
+<span><span class="co">#&gt;       &lt;dbl&gt;                  &lt;dbl&gt; &lt;chr&gt;             &lt;int&gt; &lt;chr&gt;    &lt;chr&gt;   </span></span>
+<span><span class="co">#&gt; 1         1                      1 event_1               1 1        2       </span></span>
+<span><span class="co">#&gt; 2         1                      2 event_1               1 3        4       </span></span>
+<span><span class="co">#&gt; 3         1                      3 event_1               1 5        6       </span></span>
+<span><span class="co">#&gt; 4         1                      1 event_2               1 A        B       </span></span>
+<span><span class="co">#&gt; 5         1                      2 event_2               1 C        D       </span></span>
+<span><span class="co">#&gt; 6         3                      1 event_1               1 C        D       </span></span>
+<span><span class="co">#&gt; 7         3                      1 event_2               1 E        F       </span></span>
+<span><span class="co">#&gt; 8         3                      2 event_2               1 G        H       </span></span>
+<span><span class="co">#&gt; 9         4                      1 event_3               2 R1       R2</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="loading-tidy-tibbles-to-specified-environments">Loading Tidy <code>tibbles</code> to Specified Environments<a class="anchor" aria-label="anchor" href="#loading-tidy-tibbles-to-specified-environments"></a>
+<h3 id="binding-redcaptidier-tibbles-into-an-environment">Binding REDCapTidieR tibbles into an environment<a class="anchor" aria-label="anchor" href="#binding-redcaptidier-tibbles-into-an-environment"></a>
 </h3>
-<p>As an additional feature to <code>REDCapTidieR</code>, the <code><a href="reference/bind_tables.html">bind_tables()</a></code> function serves to allow users to assign the tidy data tables under <code>$redcap_data</code> to loaded data elements in a specified environment.</p>
-<p>By default, when using <code><a href="reference/bind_tables.html">bind_tables()</a></code> all elements will load as individual dataframes into the global environment. Users have the option to specify a different environment object to assign dataframes to, as well as specify specific <code>redcap_form_name</code>s and <code>structure</code>s if the they do not wish to load all data elements.</p>
-<p><strong>Load all elements to global environment:</strong></p>
+<p>The <code><a href="reference/bind_tables.html">bind_tables()</a></code> function takes the output of <code>read_redcap_tidy</code>​, extracts the individual tibbles and binds them to an environment. By default, this is the global environment:</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/ls.html" class="external-link">ls</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/read_redcap_tidy.html">read_redcap_tidy</a></span><span class="op">(</span><span class="va">redcap_uri</span>, <span class="va">token</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu"><a href="reference/bind_tables.html">bind_tables</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><strong>Load selected elements to specified environment:</strong></p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">sample_environment</span> <span class="op">=</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/env.html" class="external-link">new_environment</a></span><span class="op">(</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">redcap_export</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="reference/bind_tables.html">bind_tables</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="reference/read_redcap_tidy.html">read_redcap_tidy</a></span><span class="op">(</span><span class="va">redcap_uri</span>, <span class="va">token</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu"><a href="reference/bind_tables.html">bind_tables</a></span><span class="op">(</span>environment <span class="op">=</span> <span class="va">sample_environment</span>, </span>
-<span>              redcap_form_name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"nonrepeated"</span>, <span class="st">"repeated"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/ls.html" class="external-link">ls</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "redcap_export" "redcap_uri"    "token"</span></span></code></pre></div>
+<p>Note that there are now three additional tibbles in the global environment.</p>
 </div>
+</div>
+<div class="section level2">
+<h2 id="getting-help">Getting help<a class="anchor" aria-label="anchor" href="#getting-help"></a>
+</h2>
+<p>If you encounter a bug, please file a minimal reproducible example on <a href="https://github.com/CHOP-CGTDataOps/REDCapTidieR/issues" class="external-link">github</a>. For questions and other discussion, please feel free to reach out to the authors by email.</p>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
