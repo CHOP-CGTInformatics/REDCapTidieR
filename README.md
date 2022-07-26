@@ -49,11 +49,13 @@ devtools::install_github("CHOP-CGTDataOps/REDCapTidieR")
 
 ``` r
 library(REDCapTidieR)
+library(magrittr)
 ```
 
 The two main functions of `REDCapTidieR` are `read_redcap_tidy()` and
 `bind_tables()`. Here is how they can be used together to import all
-data from a REDCap project and provide tidy tibbles in the environment:
+data from a REDCap project and present them as tidy tibbles in the
+global environment:
 
 ``` r
 read_redcap_tidy(redcap_uri, token) %>% 
@@ -62,11 +64,7 @@ read_redcap_tidy(redcap_uri, token) %>%
 
 ## Details
 
-### Structure of the tibble returned by `read_redcap_tidy`
-
-REDCap databases support two main mechanisms to allow collecting the
-same data multiple times: repeated instruments and longitudinal
-projects.
+### Structure of the tibble returned by \`read_redcap_tidy\`
 
 The `read_redcap_tidy` function returns a tibble in which each row
 represents a REDCap instrument. The first column contains the instrument
@@ -78,18 +76,22 @@ redcap_export <- read_redcap_tidy(redcap_uri, token)
 
 redcap_export
 #> # A tibble: 3 × 3
-#>   redcap_form_name redcap_data  structure   
-#>   <chr>            <list>       <chr>       
-#> 1 repeated         <df [9 × 6]> repeating   
-#> 2 nonrepeated      <df [8 × 5]> nonrepeating
-#> 3 nonrepeated2     <df [3 × 5]> nonrepeating
+#>   redcap_form_name redcap_data      structure   
+#>   <chr>            <list>           <chr>       
+#> 1 repeated         <tibble [9 × 6]> repeating   
+#> 2 nonrepeated      <tibble [8 × 5]> nonrepeating
+#> 3 nonrepeated2     <tibble [3 × 5]> nonrepeating
 ```
+
+REDCap databases support two main mechanisms to allow collecting the
+same data multiple times: repeated instruments and longitudinal
+projects.
 
 The granularity of each table (i.e. what a single row represents)
 depends on the structure of the database (classic, longitudinal with one
 arm, longitudinal with multiple arms) as well as whether the instruments
-are repeatable or not. Based on this idea, `REDCapTidieR` tibbles
-contain the following columns to uniquely identify a specific row:
+are repeatable or not. Based on this, `REDCapTidieR` tibbles contain the
+following columns to uniquely identify a specific row:
 
 <table style="width:100%;">
 <colgroup>
@@ -136,19 +138,40 @@ loaded is a repeated instrument from a multi-arm longitudinal project:
 
 ``` r
 redcap_export$redcap_data[[1]]
+#> # A tibble: 9 × 6
 #>   record_id redcap_repeat_instance redcap_event redcap_arm repeat_1 repeat_2
-#> 1         1                      1      event_1          1        1        2
-#> 2         1                      2      event_1          1        3        4
-#> 3         1                      3      event_1          1        5        6
-#> 4         1                      1      event_2          1        A        B
-#> 5         1                      2      event_2          1        C        D
-#> 6         3                      1      event_1          1        C        D
-#> 7         3                      1      event_2          1        E        F
-#> 8         3                      2      event_2          1        G        H
-#> 9         4                      1      event_3          2       R1       R2
+#>       <dbl>                  <dbl> <chr>             <int> <chr>    <chr>   
+#> 1         1                      1 event_1               1 1        2       
+#> 2         1                      2 event_1               1 3        4       
+#> 3         1                      3 event_1               1 5        6       
+#> 4         1                      1 event_2               1 A        B       
+#> 5         1                      2 event_2               1 C        D       
+#> 6         3                      1 event_1               1 C        D       
+#> 7         3                      1 event_2               1 E        F       
+#> 8         3                      2 event_2               1 G        H       
+#> 9         4                      1 event_3               2 R1       R2
 ```
 
+### Binding REDCapTidieR tibbles into an environment
 
+The `bind_tables()` function takes the output of `read_redcap_tidy`​,
+extracts the individual tibbles and binds them to an environment. By
+default, this is the global environment:
+
+``` r
+ls()
+```
+
+``` r
+redcap_export %>%
+  bind_tables()
+
+ls()
+#> [1] "redcap_export" "redcap_uri"    "token"
+```
+
+Note that there are now three additional tibbles in the global
+environment.
 
 ## Getting help
 

@@ -47,6 +47,7 @@ devtools::install_github("CHOP-CGTDataOps/REDCapTidieR")
 
 ```{r}
 library(REDCapTidieR)
+library(magrittr)
 ```
 
 The two main functions of `REDCapTidieR` are `read_redcap_tidy()` and `bind_tables()`. Here is how they can be used together to import all data from a REDCap project and present them as tidy tibbles in the global environment:
@@ -98,17 +99,20 @@ redcap_export$redcap_data[[1]]
 
 ### Binding REDCapTidieR tibbles into an environment
 
-The `bind_tables()` function takes the output of `read_redcap_tidy`​ and bind it to an environment. By default, this is the global environment:
+The `bind_tables()` function takes the output of `read_redcap_tidy`​, extracts the individual tibbles and binds them to an environment. By default, this is the global environment:
 
 ```{r, eval = FALSE}
-# Remove eval = FALSE once bind_tables is implemented
+ls()
+```
+
+```{r}
 redcap_export %>%
   bind_tables()
 
-
+ls()
 ```
 
-(by default, the global environment). This way you can issue the following commands to populate your environment with data from your REDCap database:
+Note that there are now three additional tibbles in the global environment.
 
 ## Getting help
 
