@@ -115,18 +115,18 @@
 <div class="section level3">
 <h3 id="loading-tidy-tibbles-to-specified-environments">Loading Tidy <code>tibbles</code> to Specified Environments<a class="anchor" aria-label="anchor" href="#loading-tidy-tibbles-to-specified-environments"></a>
 </h3>
-<p>As an additional feature to <code>REDCapTidieR</code>, the <code>bind_tables()</code> function serves to allow users to assign the tidy data tables under <code>$redcap_data</code> to loaded data elements in a specified environment.</p>
-<p>By default, when using <code>bind_tables()</code> all elements will load as individual dataframes into the global environment. Users have the option to specify a different environment object to assign dataframes to, as well as specify specific <code>redcap_form_name</code>s and <code>structure</code>s if the they do not wish to load all data elements.</p>
+<p>As an additional feature to <code>REDCapTidieR</code>, the <code><a href="reference/bind_tables.html">bind_tables()</a></code> function serves to allow users to assign the tidy data tables under <code>$redcap_data</code> to loaded data elements in a specified environment.</p>
+<p>By default, when using <code><a href="reference/bind_tables.html">bind_tables()</a></code> all elements will load as individual dataframes into the global environment. Users have the option to specify a different environment object to assign dataframes to, as well as specify specific <code>redcap_form_name</code>s and <code>structure</code>s if the they do not wish to load all data elements.</p>
 <p><strong>Load all elements to global environment:</strong></p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/read_redcap_tidy.html">read_redcap_tidy</a></span><span class="op">(</span><span class="va">redcap_uri</span>, <span class="va">token</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu">bind_tables</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="reference/bind_tables.html">bind_tables</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><strong>Load selected elements to specified environment:</strong></p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sample_environment</span> <span class="op">=</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/env.html" class="external-link">new_environment</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="reference/read_redcap_tidy.html">read_redcap_tidy</a></span><span class="op">(</span><span class="va">redcap_uri</span>, <span class="va">token</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu">bind_tables</span><span class="op">(</span>environment <span class="op">=</span> <span class="va">sample_environment</span>, </span>
+<span>  <span class="fu"><a href="reference/bind_tables.html">bind_tables</a></span><span class="op">(</span>environment <span class="op">=</span> <span class="va">sample_environment</span>, </span>
 <span>              redcap_form_name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"nonrepeated"</span>, <span class="st">"repeated"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
