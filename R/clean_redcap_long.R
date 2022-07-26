@@ -108,7 +108,8 @@ extract_nonrepeat_table_long <- function(
       select(-redcap_arm)
   }
 
-  out
+  out %>%
+    tibble()
 }
 
 #' Extract Repeat Tables from Longitudinal REDCap Databases
@@ -168,5 +169,6 @@ extract_repeat_table_long <- function(
       select(-redcap_arm)
   }
 
-  out
+  out %>%
+    tibble()
 }

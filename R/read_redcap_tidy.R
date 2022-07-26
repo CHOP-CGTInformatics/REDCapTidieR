@@ -46,5 +46,4 @@ read_redcap_tidy <- function(redcap_uri,
                         db_metadata = db_metadata)
   }
 
-  out
 }
