@@ -59,7 +59,7 @@ read_redcap_tidy(redcap_uri, token) %>%
 
 ## Details
 
-### Structure of the tibble returned by \`read_redcap_tidy\`
+### Structure of the tibble returned by `read_redcap_tidy`
 
 The `read_redcap_tidy` function returns a tibble in which each row represents a REDCap instrument. The first column contains the instrument name. The second column is a **list column** containing a tibble for each instrument.
 
@@ -97,9 +97,9 @@ For example, the `repeated` instrument in the example database we just loaded is
 redcap_export$redcap_data[[1]]
 ```
 
-### Binding REDCapTidieR tibbles into an environment
+### Binding `REDCapTidieR` tibbles into an environment
 
-The `bind_tables()` function takes the output of `read_redcap_tidy`​, extracts the individual tibbles and binds them to an environment. By default, this is the global environment:
+The `bind_tables()` function takes the output of `read_redcap_tidy`, extracts the individual tibbles and binds them to an environment. By default, this is the global environment:
 
 ```{r, eval = FALSE}
 ls()
