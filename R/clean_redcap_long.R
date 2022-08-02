@@ -79,8 +79,9 @@ extract_nonrepeat_table_long <- function(
     my_fields <- c(my_record_id, my_fields)
   }
 
-  # Below necessary to remove descriptive text fields
-  my_fields <- intersect(my_fields, names(db_data_long))
+  my_fields <- db_data_long %>%
+    select(starts_with(my_fields), paste0(my_form, "_complete")) %>%
+    names()
 
   # Setup data for loop redcap_arm linking
   db_data_long <- db_data_long %>%
@@ -99,8 +100,10 @@ extract_nonrepeat_table_long <- function(
 
   # Final aesthetic cleanup
   out <- db_data_long %>%
-    select(all_of(my_fields), redcap_event, redcap_arm) %>%
-    relocate(c(redcap_event, redcap_arm), .after = !!my_record_id)
+    select(all_of(contains(my_fields)), redcap_event, redcap_arm) %>%
+    relocate(c(redcap_event, redcap_arm), .after = !!my_record_id) %>%
+    rename("form_status_complete" = paste0(my_form, "_complete")) %>%
+    relocate(form_status_complete, .after = everything())
 
   # Check arms
   if(!any(names(linked_arms) %>% str_detect("arm_2"))){
@@ -139,8 +142,9 @@ extract_repeat_table_long <- function(
     my_fields <- c(my_record_id, my_fields)
   }
 
-  # Below necessary to remove descriptive text fields
-  my_fields <- intersect(my_fields, names(db_data_long))
+  my_fields <- db_data_long %>%
+    select(starts_with(my_fields), paste0(my_form, "_complete")) %>%
+    names()
 
   # Setup data for loop redcap_arm linking
   db_data_long <- db_data_long %>%
@@ -160,8 +164,10 @@ extract_repeat_table_long <- function(
   # Final aesthetic cleanup
   out <- db_data_long %>%
     filter(redcap_repeat_instrument == my_form) %>%
-    select(all_of(my_fields), redcap_repeat_instance, redcap_event, redcap_arm) %>%
-    relocate(c(redcap_repeat_instance, redcap_event, redcap_arm), .after = !!my_record_id)
+    select(all_of(contains(my_fields)), redcap_repeat_instance, redcap_event, redcap_arm) %>%
+    relocate(c(redcap_repeat_instance, redcap_event, redcap_arm), .after = !!my_record_id) %>%
+    rename("form_status_complete" = paste0(my_form, "_complete")) %>%
+    relocate(form_status_complete, .after = everything())
 
   # Check arms
   if(!any(names(linked_arms) %>% str_detect("arm_2"))){
