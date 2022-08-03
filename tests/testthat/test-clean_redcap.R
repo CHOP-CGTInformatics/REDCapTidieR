@@ -1,10 +1,10 @@
 # Load Sample Databases ----
-db_data <- readRDS(system.file("testdata/db_data_classic.RDS", package = "REDCapTidieR"))
-db_metadata <- readRDS(system.file("testdata/db_metadata_classic.RDS", package = "REDCapTidieR"))
+db_data_classic <- readRDS(system.file("testdata/db_data_classic.RDS", package = "REDCapTidieR"))
+db_metadata_classic <- readRDS(system.file("testdata/db_metadata_classic.RDS", package = "REDCapTidieR"))
 
 test_that("clean_redcap works", {
-  out <- clean_redcap(db_data = db_data,
-                      db_metadata = db_metadata)
+  out <- clean_redcap(db_data = db_data_classic,
+                      db_metadata = db_metadata_classic)
 
   # Check general structure
   expect_true(is_tibble(out))
@@ -15,8 +15,8 @@ test_that("clean_redcap works", {
 test_that("extract_nonrepeat_table tibble contains expected columns and data types for all REDCap field types", {
 
   out <- extract_nonrepeat_table(form_name = "data_field_types",
-                                 db_data = db_data,
-                                 db_metadata = db_metadata)
+                                 db_data = db_data_classic,
+                                 db_metadata = db_metadata_classic)
 
   # Check general structure
   expect_true(is_tibble(out))
@@ -50,8 +50,8 @@ test_that("extract_nonrepeat_table tibble contains expected columns and data typ
 
 test_that("extract_repeat_table returns tables", {
   out <- extract_repeat_table(form_name = "repeated",
-                              db_data = db_data,
-                              db_metadata = db_metadata)
+                              db_data = db_data_classic,
+                              db_metadata = db_metadata_classic)
 
   # Check general structure
   expect_true(is_tibble(out))
