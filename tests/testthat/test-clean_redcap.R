@@ -46,6 +46,12 @@ test_that("extract_nonrepeat_table tibble contains expected columns and data typ
   expect_false(
     any(c("redcap_repeat_instrument","redcap_repeat_instance", "redcap_event", "redcap_arm") %in% names(out))
   )
+
+  # Check partial keys are filled out
+  expect_false(
+    any(is.na(out$record_id))
+  )
+
 })
 
 test_that("extract_repeat_table returns tables", {
@@ -65,4 +71,10 @@ test_that("extract_repeat_table returns tables", {
   expect_false(
     any(c("redcap_repeat_instrument","redcap_event", "redcap_arm") %in% names(out))
   )
+
+  # Check partial keys are filled out
+  expect_false(
+    any(is.na(c(out$record_id, out$redcap_repeat_instance)))
+  )
+
 })

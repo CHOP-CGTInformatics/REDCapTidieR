@@ -53,7 +53,7 @@ test_that("extract_nonrepeat_table_long tibble contains expected columns for lon
 
   # Check partial keys are filled out
   expect_false(
-    any(is.na(c(out$redcap_event, out$redcap_arm)))
+    any(is.na(c(out$record_id, out$redcap_event, out$redcap_arm)))
   )
 
   # Check columns expected to be missing aren't included
@@ -84,7 +84,7 @@ test_that("extract_nonrepeat_table_long tibble contains expected columns for lon
 
   # Check partial keys are filled out
   expect_false(
-    any(is.na(out$redcap_event))
+    any(is.na(c(out$record_id, out$redcap_event)))
   )
 
   # Check columns expected to be missing aren't included
@@ -115,7 +115,7 @@ test_that("extract_repeat_table_long returns tables for REDCap dbs with arms", {
 
   # Check partial keys are filled out
   expect_false(
-    any(is.na(c(out$redcap_event, out$redcap_arm)))
+    any(is.na(c(out$record_id, out$redcap_event, out$redcap_arm)))
   )
 
   # Check columns expected to be missing aren't included
@@ -147,7 +147,7 @@ test_that("extract_repeat_table_long no arms returns tables  for REDCap dbs with
 
   # Check partial keys are filled out
   expect_false(
-    any(is.na(out$redcap_event))
+    any(is.na(c(out$record_id, out$redcap_event)))
   )
 
   # Check columns expected to be missing aren't included
