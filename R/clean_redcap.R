@@ -74,11 +74,16 @@ extract_nonrepeat_table <- function(
   }
 
   # Below necessary to remove descriptive text fields
-  my_fields <- intersect(my_fields, names(db_data))
+  # and to add column to indicate that form is completed
+  my_fields <- db_data %>%
+    select(starts_with(my_fields), paste0(my_form, "_complete")) %>%
+    names()
 
   db_data %>%
     filter(is.na(redcap_repeat_instance)) %>%
     select(all_of(my_fields)) %>%
+    rename("form_status_complete" = paste0(my_form, "_complete")) %>%
+    relocate(form_status_complete, .after = everything()) %>%
     tibble()
 }
 
@@ -108,11 +113,16 @@ extract_repeat_table <- function(
   }
 
   # Below necessary to remove descriptive text fields
-  my_fields <- intersect(my_fields, names(db_data))
+  # and to add column to indicate that form is completed
+  my_fields <- db_data %>%
+    select(starts_with(my_fields), paste0(my_form, "_complete")) %>%
+    names()
 
   db_data %>%
     filter(!is.na(redcap_repeat_instance)) %>%
     select(all_of(my_fields), redcap_repeat_instance) %>%
     relocate(redcap_repeat_instance, .after = all_of(my_record_id)) %>%
+    rename("form_status_complete" = paste0(my_form, "_complete")) %>%
+    relocate(form_status_complete, .after = everything()) %>%
     tibble()
 }
