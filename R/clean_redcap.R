@@ -73,6 +73,8 @@ extract_nonrepeat_table <- function(
     my_fields <- c(my_record_id, my_fields)
   }
 
+  # Below necessary to remove descriptive text fields
+  # and to add column to indicate that form is completed
   my_fields <- db_data %>%
     select(starts_with(my_fields), paste0(my_form, "_complete")) %>%
     names()
@@ -110,6 +112,8 @@ extract_repeat_table <- function(
     my_fields <- c(my_record_id, my_fields)
   }
 
+  # Below necessary to remove descriptive text fields
+  # and to add column to indicate that form is completed
   my_fields <- db_data %>%
     select(starts_with(my_fields), paste0(my_form, "_complete")) %>%
     names()

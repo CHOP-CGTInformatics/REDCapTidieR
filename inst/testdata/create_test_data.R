@@ -15,8 +15,8 @@ db_metadata <- redcap_metadata_read(redcap_uri = redcap_uri,
                                     token = classic_token,
                                     verbose = FALSE)$data
 
-saveRDS(db_data, "inst/testdata/db_data.RDS")
-saveRDS(db_metadata, "inst/testdata/db_metadata.RDS")
+saveRDS(db_data, "inst/testdata/db_data_classic.RDS")
+saveRDS(db_metadata, "inst/testdata/db_metadata_classic.RDS")
 
 # Longitudinal DB ----
 db_data_long <- redcap_read_oneshot(redcap_uri = redcap_uri,

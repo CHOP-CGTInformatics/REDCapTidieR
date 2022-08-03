@@ -79,6 +79,8 @@ extract_nonrepeat_table_long <- function(
     my_fields <- c(my_record_id, my_fields)
   }
 
+  # Below necessary to remove descriptive text fields
+  # and to add column to indicate that form is completed
   my_fields <- db_data_long %>%
     select(starts_with(my_fields), paste0(my_form, "_complete")) %>%
     names()
@@ -105,7 +107,7 @@ extract_nonrepeat_table_long <- function(
     rename("form_status_complete" = paste0(my_form, "_complete")) %>%
     relocate(form_status_complete, .after = everything())
 
-  # Check arms
+  # Remove arms column if necessary
   if(!any(names(linked_arms) %>% str_detect("arm_2"))){
     out <- out %>%
       select(-redcap_arm)
@@ -142,6 +144,8 @@ extract_repeat_table_long <- function(
     my_fields <- c(my_record_id, my_fields)
   }
 
+  # Below necessary to remove descriptive text fields
+  # and to add column to indicate that form is completed
   my_fields <- db_data_long %>%
     select(starts_with(my_fields), paste0(my_form, "_complete")) %>%
     names()
@@ -169,7 +173,7 @@ extract_repeat_table_long <- function(
     rename("form_status_complete" = paste0(my_form, "_complete")) %>%
     relocate(form_status_complete, .after = everything())
 
-  # Check arms
+  # Remove arms column if necessary
   if(!any(names(linked_arms) %>% str_detect("arm_2"))){
     out <- out %>%
       select(-redcap_arm)

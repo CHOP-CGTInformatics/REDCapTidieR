@@ -1,7 +1,6 @@
 # Load Sample Databases ----
-`%notin%` <- Negate(`%in%`)
-db_data <- readRDS(system.file("testdata/db_data.RDS", package = "REDCapTidieR"))
-db_metadata <- readRDS(system.file("testdata/db_metadata.RDS", package = "REDCapTidieR"))
+db_data <- readRDS(system.file("testdata/db_data_classic.RDS", package = "REDCapTidieR"))
+db_metadata <- readRDS(system.file("testdata/db_metadata_classic.RDS", package = "REDCapTidieR"))
 
 test_that("clean_redcap works", {
   out <- clean_redcap(db_data = db_data,
@@ -13,54 +12,57 @@ test_that("clean_redcap works", {
   expect_true(!is.null(out$redcap_data))
 })
 
-test_that("extract_nonrepeat_table returns correct data types and tables", {
-  nonrepeated <- extract_nonrepeat_table(form_name = "nonrepeated",
-                                         db_data = db_data,
-                                         db_metadata = db_metadata)
+test_that("extract_nonrepeat_table tibble contains expected columns and data types for all REDCap field types", {
 
-  data_field_types <- extract_nonrepeat_table(form_name = "data_field_types",
-                                              db_data = db_data,
-                                              db_metadata = db_metadata)
+  out <- extract_nonrepeat_table(form_name = "data_field_types",
+                                 db_data = db_data,
+                                 db_metadata = db_metadata)
 
   # Check general structure
-  expect_true(is_tibble(nonrepeated))
-  expect_true(is_tibble(data_field_types))
+  expect_true(is_tibble(out))
 
   # Check checkbox elements are present
-  expect_true("checkbox_multiple___1" %in% names(data_field_types))
+  expect_true("checkbox_multiple___1" %in% names(out))
 
   # Check all data types are expected
-  expect_character(data_field_types$text)
-  expect_character(data_field_types$note)
-  expect_double(data_field_types$calculated)
-  expect_double(data_field_types$dropdown_single)
-  expect_double(data_field_types$radio_single)
-  expect_double(data_field_types$checkbox_multiple___1)
-  expect_double(data_field_types$yesno)
-  expect_double(data_field_types$truefalse)
-  expect_character(data_field_types$signature)
-  expect_character(data_field_types$fileupload)
-  expect_double(data_field_types$slider)
+  expect_character(out$text)
+  expect_character(out$note)
+  expect_double(out$calculated)
+  expect_double(out$dropdown_single)
+  expect_double(out$radio_single)
+  expect_double(out$checkbox_multiple___1)
+  expect_double(out$yesno)
+  expect_double(out$truefalse)
+  expect_character(out$signature)
+  expect_character(out$fileupload)
+  expect_double(out$slider)
 
   # Check last columns are form_status_complete
   expect_true(
-    names(data_field_types[,ncol(data_field_types)]) == "form_status_complete"
+    names(out[,ncol(out)]) == "form_status_complete"
   )
-  expect_true(
-    names(nonrepeated[,ncol(nonrepeated)]) == "form_status_complete"
+
+  # Check columns expected to be missing aren't included
+  expect_false(
+    any(c("redcap_repeat_instrument","redcap_repeat_instance", "redcap_event", "redcap_arm") %in% names(out))
   )
 })
 
-test_that("extract_nonrepeat_table returns tables", {
-  repeated <- extract_repeat_table(form_name = "repeated",
-                                   db_data = db_data,
-                                   db_metadata = db_metadata)
+test_that("extract_repeat_table returns tables", {
+  out <- extract_repeat_table(form_name = "repeated",
+                              db_data = db_data,
+                              db_metadata = db_metadata)
 
   # Check general structure
-  expect_true(is_tibble(repeated))
+  expect_true(is_tibble(out))
 
   # Check last columns are form_status_complete
   expect_true(
-    names(repeated[,ncol(repeated)]) == "form_status_complete"
+    names(out[,ncol(out)]) == "form_status_complete"
+  )
+
+  # Check columns expected to be missing aren't included
+  expect_false(
+    any(c("redcap_repeat_instrument","redcap_event", "redcap_arm") %in% names(out))
   )
 })
