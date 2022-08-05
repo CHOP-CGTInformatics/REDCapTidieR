@@ -1,10 +1,10 @@
 ---
-title: "Getting Started"
+title: "REDCapTidieR"
 output: rmarkdown::html_vignette
 description: >
   Start here for an introduction on how to use REDCapTidieR in your workflows.
 vignette: >
-  %\VignetteIndexEntry{getting_started}
+  %\VignetteIndexEntry{REDCapTidieR}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
