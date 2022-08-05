@@ -26,7 +26,10 @@ Output a tibble with list elements containing tidy dataframes. Ideal for combina
     </button>
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
-      <ul class="navbar-nav me-auto"><li class="active nav-item">
+      <ul class="navbar-nav me-auto"><li class="nav-item">
+  <a class="nav-link" href="../articles/REDCapTidieR.html">Get started</a>
+</li>
+<li class="active nav-item">
   <a class="nav-link" href="../reference/index.html">Reference</a>
 </li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
@@ -59,7 +62,7 @@ Output a tibble with list elements containing tidy dataframes. Ideal for combina
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">read_redcap_tidy</span><span class="op">(</span><span class="va">redcap_uri</span>, <span class="va">token</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">read_redcap_tidy</span><span class="op">(</span><span class="va">redcap_uri</span>, <span class="va">token</span>, suppress_messages <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -70,6 +73,10 @@ Output a tibble with list elements containing tidy dataframes. Ideal for combina
 
 <dt>token</dt>
 <dd><p>The user-specific string that serves as the password for a project. Required.</p></dd>
+
+
+<dt>suppress_messages</dt>
+<dd><p>Optionally show or suppress messages. Default <code>TRUE</code>.</p></dd>
 
 </dl></div>
 

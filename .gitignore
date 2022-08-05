@@ -5,3 +5,4 @@
 .Renviron
 docs
 .DS_Store
+inst/doc

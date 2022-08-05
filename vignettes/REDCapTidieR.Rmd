@@ -1,0 +1,129 @@
+---
+title: "REDCapTidieR"
+output: rmarkdown::html_vignette
+description: >
+  Start here for an introduction on how to use REDCapTidieR in your workflows.
+vignette: >
+  %\VignetteIndexEntry{REDCapTidieR}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+
+library(dplyr)
+library(readr)
+library(REDCapTidieR)
+```
+
+## Installation
+
+You can install the development version of `REDCapTidieR` like so:
+
+```{r, eval = FALSE}
+devtools::install_github("CHOP-CGTDataOps/REDCapTidieR")
+```
+
+## Introduction to REDCap
+
+[REDCap](https://www.project-redcap.org/) is a powerful database solution used by many research institutions:
+
+> "REDCap is a secure web application for building and managing online surveys and databases. While REDCap can be used to collect virtually any type of data in any environment (including compliance with 21 CFR Part 11, FISMA, HIPAA, and GDPR), it is specifically geared to support online and offline data capture for research studies and operations."
+
+The [`REDCapR`](https://ouhscbbmc.github.io/REDCapR/) package streamlines calls to the REDCap API. Its main use is to download records from a REDCap project and present it to the analyst as a data frame. This works well for simple projects, however becomes ugly when complex databases that include longitudinal structure and/or repeated instruments are involved.
+
+## Getting Started with REDCapTidieR
+
+To demonstrate the use of `REDCapTidieR`, we are going to review a sample REDCap database and the standard output from a `REDCapR` call.
+
+### Data: Superheroes
+
+We're going to use the [Super Heroes Dataset](https://www.kaggle.com/claudiodavi/superhero-set/home) from Kaggle, based on data scraped from [SuperHeroDb](https://www.superherodb.com/). This dataset contains two tables with hero demographic data (name, eye color, height and weight, etc.) and powers data (agility, flight, magic, etc.).
+
+For this example, the data has been pre-processed to suit a standard REDCap database containing both nonrepeating (hero demographic data) and repeating (hero powers) forms. The Record Status Dashboard from REDCap is modeled below, where **Heroes Information** is a single, nonrepeating instrument and **Super Hero Powers** is a variable, repeating instrument. Any one record for a hero can have any number of powers assigned to them. 
+
+![Superheroes Record Status Dashboard from REDCap](record_status_dash.png)
+
+Let's take a quick look at the standard data output of `REDCapR::redcap_read_oneshot()` with this database:
+
+```{r, include = FALSE}
+token <- Sys.getenv("SUPERHEROES_REDCAP_API")
+redcap_uri <- Sys.getenv("REDCAP_URI")
+```
+
+```{r}
+library(REDCapTidieR)
+```
+
+```{r}
+superheroes_df <- REDCapR::redcap_read_oneshot(redcap_uri, token, verbose = FALSE)$data
+superheroes_df %>% 
+  tibble() %>% 
+  head(10)
+```
+
+The default export behavior a single, large dataframe. This results in a lot of empty data elements since observations are based on a composite key of `record_id`, `redcap_repeat_event`, and `redcap_repeat_instrument`. This can be burdensome to work with and puts analysts in the difficult spot of reworking the data into a usable format.
+
+### Tidying REDCap Exports
+
+Now, let's use the `read_redcap_tidy` function with the same arguments and observe the output:
+
+```{r, message = FALSE}
+superheroes_tidy <- read_redcap_tidy(redcap_uri, token)
+
+superheroes_tidy
+```
+
+This returns a tibble in which each row represents a REDCap instrument. The first column contains the instrument name. The second column is a **list column** containing a tibble for each instrument. The third column indicates the repeat/nonrepeat structure of the instrument.
+
+Let's look at the nonrepeating list column first:
+
+```{r}
+superheroes_tidy$redcap_data[[2]] %>% 
+  head(5)
+```
+
+For each row, there is a single `record_id` followed by all variables associated with the `heroes_information` REDCap instrument. 
+
+Now let's look at the repeating list column:
+
+```{r}
+superheroes_tidy$redcap_data[[1]] %>% 
+  head(5)
+```
+
+Here we see that `record_id` values get repeated, but form a composite key with `redcap_repeat_instance`. We do _not_ see a `redcap_repeat_event` naming column because that is taken care of by the `redcap_form_name` column in the original `superheroes_tidy` dataframe.
+
+`read_redcap_tidy` has provided us with a set of tidy, joinable dataframes that have no artificially created empty data. Although this database only has two instruments, REDCap databases can have many. This structure allows joining of only the data desired for use:
+
+```{r}
+left_join(x = superheroes_tidy$redcap_data[[2]], 
+          y = superheroes_tidy$redcap_data[[1]], 
+          by = "record_id") %>% 
+  head(5)
+```
+
+### Binding `REDCapTidieR` tibbles into an environment
+
+The `bind_tables()` function takes the output of `read_redcap_tidy`, extracts the individual tibbles and binds them to an environment. By default, this is the global environment:
+
+```{r, eval = FALSE}
+ls()
+```
+
+```{r}
+superheroes_tidy %>%
+  bind_tables()
+
+ls()
+```
+
+Note that there are now three additional tibbles in the global environment. Depending on the use case, analysts may find this helpful to work with over referencing the default `tibble` output.
+
+## Getting help
+
+If you encounter a bug, please file a minimal reproducible example on [github](https://github.com/CHOP-CGTDataOps/REDCapTidieR/issues). For questions and other discussion, please feel free to reach out to the authors by email.
