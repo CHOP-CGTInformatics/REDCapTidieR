@@ -19,6 +19,11 @@ jobs:
       group: pkgdown-${{ github.event_name != 'pull_request' || github.run_id }}
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      REDCAP_URI: ${{ secrets.REDCAP_URI }}
+      SUPERHEROES_REDCAP_API: ${{ secrets.SUPERHEROES_REDCAP_API }}
+      REDCAPTIDIER_CLASSIC_API: ${{ secrets.REDCAPTIDIER_CLASSIC_API }}
+      REDCAPTIDIER_LONGITUDINAL_API: ${{ secrets.REDCAPTIDIER_LONGITUDINAL_API }}
+      REDCAPTIDIER_LONGITUDINAL_NOARMS_API: ${{ secrets.REDCAPTIDIER_LONGITUDINAL_NOARMS_API }}
     steps:
       - uses: actions/checkout@v2
 

@@ -1,0 +1,73 @@
+---
+title: "Working with Longitudinal REDCap Databases"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{longitudinal_redcap}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Background
+
+REDCap databases support two main mechanisms to allow collecting the same data multiple times: repeated instruments and longitudinal projects.
+
+The granularity of each table (i.e. what a single row represents) depends on the structure of the database (classic, longitudinal with one arm, longitudinal with multiple arms) as well as whether the instruments are repeatable or not. Based on this, `REDCapTidieR` tibbles contain the following columns to uniquely identify a specific row:
+
++-----------------+--------------------------+-----------------------------+-----------------------------+
+|                 | **Classic**              | **Longitudinal, one arm**   | **Longitudinal, multi-arm** |
++=================+==========================+=============================+=============================+
+| **Nonrepeated** | `record_id`              | `record_id` +\              | `record_id` +\              |
+|                 |                          | `redcap_event`              | `redcap_event` +\           |
+|                 |                          |                             | `redcap_arm`                |
++-----------------+--------------------------+-----------------------------+-----------------------------+
+| **Repeated**    | `record_id` +\           | `record_id` +\              | `record_id` +\              |
+|                 | `redcap_repeat_instance` | `redcap_repeat_instance` +\ | `redcap_repeat_instance` +\ |
+|                 |                          | `redcap_event`              | `redcap_event` +\           |
+|                 |                          |                             | `redcap_arm`                |
++-----------------+--------------------------+-----------------------------+-----------------------------+
+
+The `read_redcap_tidy` function returns a tibble in which each row represents a REDCap instrument. The first column contains the instrument name. The second column is a **list column** containing a tibble for each instrument. The third column indicates the repeat/nonrepeat structure of the instrument.
+
+```{r, include = FALSE}
+token <- Sys.getenv("REDCAPTIDIER_LONGITUDINAL_API")
+redcap_uri <- Sys.getenv("REDCAP_URI")
+```
+
+Let's use a sample longitudinal REDCap database containing repeat instruments, longitudinal events, and multiple event arms:
+
+```{r setup}
+library(REDCapTidieR)
+```
+
+```{r, message = FALSE}
+redcap_export <- read_redcap_tidy(redcap_uri, token)
+
+redcap_export
+```
+
+Here we have a database with two nonrepeating instruments and one repeating instrument. Let's look at a sample nonrepeated data output first:
+
+```{r}
+redcap_export$redcap_data[[2]]
+```
+
+While in classic databases we would expect only unique `record_id`s per row, in a longitudinal database `record_id`s can appear multiple times based on both the event (`redcap_event`) and arm (`redcap_arm`) where forms and their respective variables appear. This is illustrated in the earlier table depicting what columns are necessary to uniquely identify rows.
+
+Now let's look at the repeated instrument data output:
+
+```{r}
+redcap_export$redcap_data[[1]]
+```
+
+The only really noticeable difference here is the inclusion of `redcap_repeat_instance`. This adds a further level of complexity, allowing a single instrument to have repeating values of variable length for a given record.
+
+### Single-Arm Longitudinal REDCap Databases
+
+By default, lonigtudinal REDCap databases are automatically assigned arms. We have found that if the database does not make use of more than the single default arm the assignment of arms is redundant. Therefore, `redcap_arm` will only appear in data ouputs if more than one arm are detected in a database.
