@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-### Background
+## Background
 
 REDCap databases support two main mechanisms to allow collecting the same data multiple times: repeated instruments and longitudinal projects.
 
@@ -33,10 +33,6 @@ The granularity of each table (i.e. what a single row represents) depends on the
 |                 |                          |                             | `redcap_arm`                |
 +-----------------+--------------------------+-----------------------------+-----------------------------+
 
-```{r setup}
-library(REDCapTidieR)
-```
-
 The `read_redcap_tidy` function returns a tibble in which each row represents a REDCap instrument. The first column contains the instrument name. The second column is a **list column** containing a tibble for each instrument. The third column indicates the repeat/nonrepeat structure of the instrument.
 
 ```{r, include = FALSE}
@@ -45,6 +41,10 @@ redcap_uri <- Sys.getenv("REDCAP_URI")
 ```
 
 Let's use a sample longitudinal REDCap database containing repeat instruments, longitudinal events, and multiple event arms:
+
+```{r setup}
+library(REDCapTidieR)
+```
 
 ```{r, message = FALSE}
 redcap_export <- read_redcap_tidy(redcap_uri, token)
@@ -58,17 +58,16 @@ Here we have a database with two nonrepeating instruments and one repeating inst
 redcap_export$redcap_data[[2]]
 ```
 
-While in classic databases we would expect only unique `record_id`s per row, in a longitudinal database `record_id`s can appear multiple times based on both the event and arm a form belong to:
+While in classic databases we would expect only unique `record_id`s per row, in a longitudinal database `record_id`s can appear multiple times based on both the event (`redcap_event`) and arm (`redcap_arm`) where forms and their respective variables appear. This is illustrated in the earlier table depicting what columns are necessary to uniquely identify rows.
 
-- Records 1 through 3 only appear in arm 1
-  - Only record 4 appears in arm 2
-- Arm 1 has Events 1 and 2
-- Arm 2 has Events 1 and 3
-
-Now let's look at the repeated instrument
+Now let's look at the repeated instrument data output:
 
 ```{r}
 redcap_export$redcap_data[[1]]
 ```
 
-In a complex database like this, `record_id`:`redcap_arm` are required to identify individual record elements 
+The only really noticeable difference here is the inclusion of `redcap_repeat_instance`. This adds a further level of complexity, allowing a single instrument to have repeating values of variable length for a given record.
+
+### Single-Arm Longitudinal REDCap Databases
+
+By default, lonigtudinal REDCap databases are automatically assigned arms. We have found that if the database does not make use of more than the single default arm the assignment of arms is redundant. Therefore, `redcap_arm` will only appear in data ouputs if more than one arm are detected in a database.

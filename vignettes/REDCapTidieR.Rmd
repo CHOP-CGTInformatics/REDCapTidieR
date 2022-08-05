@@ -40,13 +40,11 @@ The [`REDCapR`](https://ouhscbbmc.github.io/REDCapR/) package streamlines calls 
 
 To demonstrate the use of `REDCapTidieR`, we are going to review a sample REDCap database and the standard output from a `REDCapR` call.
 
-### Data: Superheroes
-
 We're going to use the [Super Heroes Dataset](https://www.kaggle.com/claudiodavi/superhero-set/home) from Kaggle, based on data scraped from [SuperHeroDb](https://www.superherodb.com/). This dataset contains two tables with hero demographic data (name, eye color, height and weight, etc.) and powers data (agility, flight, magic, etc.).
 
 For this example, the data has been pre-processed to suit a standard REDCap database containing both nonrepeating (hero demographic data) and repeating (hero powers) forms. The Record Status Dashboard from REDCap is modeled below, where **Heroes Information** is a single, nonrepeating instrument and **Super Hero Powers** is a variable, repeating instrument. Any one record for a hero can have any number of powers assigned to them. 
 
-![Superheroes Record Status Dashboard from REDCap](record_status_dash.png)
+![](record_status_dash.png)
 
 Let's take a quick look at the standard data output of `REDCapR::redcap_read_oneshot()` with this database:
 

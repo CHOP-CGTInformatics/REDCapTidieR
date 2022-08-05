@@ -1,7 +1,4 @@
 url: https://chop-cgtdataops.github.io/REDCapTidieR/
-template:
-  bootstrap: 5
-  bootswatch: flatly
 navbar:
   structure:
     left:  [intro, reference, articles]
