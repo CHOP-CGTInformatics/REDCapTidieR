@@ -62,3 +62,26 @@ link_arms <- function(
                 values_from = c("form"),
                 values_fn = list)
 }
+
+#' Checkbox String Appender Function
+#'
+#' Takes a \code{db_metadata$select_choices_or_calculations} field pre-filtered for checkbox \code{field_type} and returns a vector of key names for appending to checkbox variables
+#'
+#' @param field_name The \code{db_metadata$field_name} to append onto the string
+#' @param string A \code{db_metadata$select_choices_or_calculations} field pre-filtered for checkbox \code{field_type}
+#'
+#' @import dplyr
+#' @keywords internal
+
+checkbox_appender <- function(field_name, string){
+  out <- string %>%
+    gsub(pattern = "\\|", replacement = "") %>%
+    gsub(pattern = " [a-zA-Z0-9_.-]* ", replacement = "") %>% # Remove any value surrounded by whitespace (var names are connected to a comma)
+    gsub(pattern = ", [a-zA-Z0-9_.-]*$", replacement = "") %>% # Remove the value at end of string not taken care of above
+    strsplit(", ")
+
+  # append each element of the split vector with the field_name prefix and then recombine
+  prefix <- paste0(field_name, "___")
+  out <- paste(prefix, out[[1]], sep = "")
+  out
+}

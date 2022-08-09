@@ -73,7 +73,7 @@ extract_nonrepeat_table_long <- function(
 
   my_fields <- db_metadata_long %>%
     filter(form_name == my_form) %>%
-    pull(field_name)
+    pull(field_name_updated)
 
   if (my_fields[1] != my_record_id) {
     my_fields <- c(my_record_id, my_fields)
@@ -82,7 +82,7 @@ extract_nonrepeat_table_long <- function(
   # Below necessary to remove descriptive text fields
   # and to add column to indicate that form is completed
   my_fields <- db_data_long %>%
-    select(starts_with(my_fields), paste0(my_form, "_complete")) %>%
+    select(my_fields, paste0(my_form, "_complete")) %>%
     names()
 
   # Setup data for loop redcap_arm linking
@@ -102,7 +102,7 @@ extract_nonrepeat_table_long <- function(
 
   # Final aesthetic cleanup
   out <- db_data_long %>%
-    select(all_of(starts_with(my_fields)), redcap_event, redcap_arm) %>%
+    select(all_of(my_fields), redcap_event, redcap_arm) %>%
     relocate(c(redcap_event, redcap_arm), .after = !!my_record_id) %>%
     rename("form_status_complete" = paste0(my_form, "_complete")) %>%
     relocate(form_status_complete, .after = everything())
@@ -138,7 +138,7 @@ extract_repeat_table_long <- function(
 
   my_fields <- db_metadata_long %>%
     filter(form_name == my_form) %>%
-    pull(field_name)
+    pull(field_name_updated)
 
   if (my_fields[1] != my_record_id) {
     my_fields <- c(my_record_id, my_fields)
@@ -147,7 +147,7 @@ extract_repeat_table_long <- function(
   # Below necessary to remove descriptive text fields
   # and to add column to indicate that form is completed
   my_fields <- db_data_long %>%
-    select(starts_with(my_fields), paste0(my_form, "_complete")) %>%
+    select(my_fields, paste0(my_form, "_complete")) %>%
     names()
 
   # Setup data for loop redcap_arm linking
@@ -168,7 +168,7 @@ extract_repeat_table_long <- function(
   # Final aesthetic cleanup
   out <- db_data_long %>%
     filter(redcap_repeat_instrument == my_form) %>%
-    select(all_of(starts_with(my_fields)), redcap_repeat_instance, redcap_event, redcap_arm) %>%
+    select(all_of(my_fields), redcap_repeat_instance, redcap_event, redcap_arm) %>%
     relocate(c(redcap_repeat_instance, redcap_event, redcap_arm), .after = !!my_record_id) %>%
     rename("form_status_complete" = paste0(my_form, "_complete")) %>%
     relocate(form_status_complete, .after = everything())

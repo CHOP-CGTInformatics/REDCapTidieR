@@ -67,7 +67,7 @@ extract_nonrepeat_table <- function(
 
   my_fields <- db_metadata %>%
     filter(form_name == my_form) %>%
-    pull(field_name)
+    pull(field_name_updated)
 
   if (my_fields[1] != my_record_id) {
     my_fields <- c(my_record_id, my_fields)
@@ -106,7 +106,7 @@ extract_repeat_table <- function(
 
   my_fields <- db_metadata %>%
     filter(form_name == my_form) %>%
-    pull(field_name)
+    pull(field_name_updated)
 
   if (my_fields[1] != my_record_id) {
     my_fields <- c(my_record_id, my_fields)
