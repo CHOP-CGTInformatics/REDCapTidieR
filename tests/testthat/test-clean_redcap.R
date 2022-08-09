@@ -22,7 +22,24 @@ test_that("extract_nonrepeat_table tibble contains expected columns and data typ
   expect_true(is_tibble(out))
 
   # Check checkbox elements are present
-  expect_true("checkbox_multiple___1" %in% names(out))
+  checkbox_cols <- c(
+    "checkbox_multiple___1",
+    "checkbox_multiple___2",
+    "checkbox_multiple___3",
+    "checkbox_multiple___4",
+    "checkbox_multiple___5",
+    "checkbox_multiple___6",
+    "checkbox_multiple___7",
+    "checkbox_multiple___8",
+    "checkbox_multiple___9",
+    "checkbox_multiple___10",
+    "checkbox_multiple_2___aa",
+    "checkbox_multiple_2___b1b",
+    "checkbox_multiple_2___ccc2",
+    "checkbox_multiple_2___3dddd",
+    "checkbox_multiple_2___4eeee5"
+  )
+  expect_true(all(checkbox_cols %in% names(out)))
 
   # Check all data types are expected
   expect_character(out$text)

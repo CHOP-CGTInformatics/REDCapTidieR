@@ -30,7 +30,7 @@ read_redcap_tidy <- function(redcap_uri,
                                       verbose = FALSE)$data
 
   # Apply checkbox appending functions to metadata
-  db_metadata <- update_field_names(db_metadata)
+  db_metadata <- update_field_names(db_metadata, raw_or_label = "raw")
 
   # Check if database supplied is longitudinal to determine appropriate function to use
   is_longitudinal <- if("redcap_event_name" %in% names(db_data)){TRUE}else{FALSE}

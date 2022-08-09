@@ -4,10 +4,12 @@
 \alias{update_field_names}
 \title{Metadata field_name Updater Helper Function}
 \usage{
-update_field_names(db_metadata)
+update_field_names(db_metadata, raw_or_label = "raw")
 }
 \arguments{
 \item{db_metadata}{A REDCap metadata object}
+
+\item{raw_or_label}{A string (either 'raw' or 'label') that specifies whether to export the raw coded values or the labels for the options of multiple choice fields. Default is 'raw'.}
 }
 \description{
 Takes a \code{db_metadata} object and appends a \code{field_name_updated} field to the end for checkbox variable handling.
