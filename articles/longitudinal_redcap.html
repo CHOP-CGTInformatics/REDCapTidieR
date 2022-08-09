@@ -140,11 +140,11 @@
 <span></span>
 <span><span class="va">redcap_export</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 3</span></span></span>
-<span><span class="co">#&gt;   redcap_form_name redcap_data       structure   </span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> repeated         <span style="color: #949494;">&lt;tibble [9 × 10]&gt;</span> repeating   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> nonrepeated      <span style="color: #949494;">&lt;tibble [8 × 6]&gt;</span>  nonrepeating</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> nonrepeated2     <span style="color: #949494;">&lt;tibble [3 × 6]&gt;</span>  nonrepeating</span></span></code></pre></div>
+<span><span class="co">#&gt;   redcap_form_name redcap_data      structure   </span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> repeated         <span style="color: #949494;">&lt;tibble [9 × 7]&gt;</span> repeating   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> nonrepeated      <span style="color: #949494;">&lt;tibble [8 × 6]&gt;</span> nonrepeating</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> nonrepeated2     <span style="color: #949494;">&lt;tibble [3 × 6]&gt;</span> nonrepeating</span></span></code></pre></div>
 <p>Here we have a database with two nonrepeating instruments and one repeating instrument. Let’s look at a sample nonrepeated data output first:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">redcap_export</span><span class="op">$</span><span class="va">redcap_data</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span></span>
@@ -163,22 +163,20 @@
 <p>Now let’s look at the repeated instrument data output:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">redcap_export</span><span class="op">$</span><span class="va">redcap_data</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 9 × 10</span></span></span>
-<span><span class="co">#&gt;   record_id redcap_rep…¹ redca…² redca…³ nonre…⁴ repea…⁵ nonre…⁶ repea…⁷ nonre…⁸</span></span>
-<span><span class="co">#&gt;       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>         1            1 event_1       1 <span style="color: #BB0000;">NA</span>      1       <span style="color: #BB0000;">NA</span>      2            <span style="color: #BB0000;">NA</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>         1            2 event_1       1 <span style="color: #BB0000;">NA</span>      3       <span style="color: #BB0000;">NA</span>      4            <span style="color: #BB0000;">NA</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>         1            3 event_1       1 <span style="color: #BB0000;">NA</span>      5       <span style="color: #BB0000;">NA</span>      6            <span style="color: #BB0000;">NA</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>         1            1 event_2       1 <span style="color: #BB0000;">NA</span>      A       <span style="color: #BB0000;">NA</span>      B            <span style="color: #BB0000;">NA</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>         1            2 event_2       1 <span style="color: #BB0000;">NA</span>      C       <span style="color: #BB0000;">NA</span>      D            <span style="color: #BB0000;">NA</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>         3            1 event_1       1 <span style="color: #BB0000;">NA</span>      C       <span style="color: #BB0000;">NA</span>      D            <span style="color: #BB0000;">NA</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span>         3            1 event_2       1 <span style="color: #BB0000;">NA</span>      E       <span style="color: #BB0000;">NA</span>      F            <span style="color: #BB0000;">NA</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">8</span>         3            2 event_2       1 <span style="color: #BB0000;">NA</span>      G       <span style="color: #BB0000;">NA</span>      H            <span style="color: #BB0000;">NA</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">9</span>         4            1 event_3       2 <span style="color: #BB0000;">NA</span>      R1      <span style="color: #BB0000;">NA</span>      R2           <span style="color: #BB0000;">NA</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># … with 1 more variable: form_status_complete &lt;dbl&gt;, and abbreviated variable</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   names ¹​redcap_repeat_instance, ²​redcap_event, ³​redcap_arm, ⁴​nonrepeat_1,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   ⁵​repeat_1, ⁶​nonrepeat_2, ⁷​repeat_2, ⁸​nonrepeated_complete</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ Use `colnames()` to see all variable names</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 9 × 7</span></span></span>
+<span><span class="co">#&gt;   record_id redcap_repeat_instance redcap_event redcap…¹ repea…² repea…³ form_…⁴</span></span>
+<span><span class="co">#&gt;       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>         1                      1 event_1             1 1       2             0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>         1                      2 event_1             1 3       4             0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>         1                      3 event_1             1 5       6             0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>         1                      1 event_2             1 A       B             0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>         1                      2 event_2             1 C       D             0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>         3                      1 event_1             1 C       D             0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span>         3                      1 event_2             1 E       F             0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">8</span>         3                      2 event_2             1 G       H             0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">9</span>         4                      1 event_3             2 R1      R2            0</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># … with abbreviated variable names ¹​redcap_arm, ²​repeat_1, ³​repeat_2,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   ⁴​form_status_complete</span></span></span></code></pre></div>
 <p>The only really noticeable difference here is the inclusion of <code>redcap_repeat_instance</code>. This adds a further level of complexity, allowing a single instrument to have repeating values of variable length for a given record.</p>
 <div class="section level3">
 <h3 id="single-arm-longitudinal-redcap-databases">Single-Arm Longitudinal REDCap Databases<a class="anchor" aria-label="anchor" href="#single-arm-longitudinal-redcap-databases"></a>

@@ -31,6 +31,9 @@
     <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/bind_tables.html</loc>
   </url>
   <url>
+    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/checkbox_appender.html</loc>
+  </url>
+  <url>
     <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/clean_redcap.html</loc>
   </url>
   <url>
@@ -55,6 +58,12 @@
     <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/link_arms.html</loc>
   </url>
   <url>
+    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/parse_labels.html</loc>
+  </url>
+  <url>
     <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/read_redcap_tidy.html</loc>
+  </url>
+  <url>
+    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/update_field_names.html</loc>
   </url>
 </urlset>
