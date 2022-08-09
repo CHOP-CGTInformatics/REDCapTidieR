@@ -63,9 +63,9 @@ link_arms <- function(
                 values_fn = list)
 }
 
-#' Checkbox String Appender Function
+#' Checkbox String Appender Helper Function
 #'
-#' Takes a \code{db_metadata$select_choices_or_calculations} field pre-filtered for checkbox \code{field_type} and returns a vector of key names for appending to checkbox variables
+#' Takes a \code{db_metadata$select_choices_or_calculations} field pre-filtered for checkbox \code{field_type} and returns a vector of key names for appending to checkbox variables.
 #'
 #' @param field_name The \code{db_metadata$field_name} to append onto the string
 #' @param string A \code{db_metadata$select_choices_or_calculations} field pre-filtered for checkbox \code{field_type}
@@ -74,14 +74,49 @@ link_arms <- function(
 #' @keywords internal
 
 checkbox_appender <- function(field_name, string){
+  prefix <- paste0(field_name, "___")
+
   out <- string %>%
-    gsub(pattern = "\\|", replacement = "") %>%
+    gsub(pattern = "\\|", replacement = "") %>% # Remove "|"
     gsub(pattern = " [a-zA-Z0-9_.-]* ", replacement = "") %>% # Remove any value surrounded by whitespace (var names are connected to a comma)
     gsub(pattern = ", [a-zA-Z0-9_.-]*$", replacement = "") %>% # Remove the value at end of string not taken care of above
     strsplit(", ")
 
   # append each element of the split vector with the field_name prefix and then recombine
-  prefix <- paste0(field_name, "___")
   out <- paste(prefix, out[[1]], sep = "")
   out
 }
+
+#' Metadata field_name Updater Helper Function
+#'
+#' Takes a \code{db_metadata} object and appends a \code{field_name_updated} field to the end for checkbox variable handling.
+#'
+#' @param db_metadata A REDCap metadata object
+#'
+#' @import dplyr
+#' @keywords internal
+
+update_field_names <- function(db_metadata){
+  out <- db_metadata %>%
+    mutate(
+      field_name_updated = list(c())
+    )
+
+  # Apply checkbox appender function to rows of field_type == "checkbox"
+  # Assign all field names, including expanded checkbox variables, to a list col
+  for (i in 1:nrow(out)) {
+    if (out$field_type[i] == "checkbox") {
+      out$field_name_updated[i] <- list(
+        checkbox_appender(field_name = out$field_name[i],
+                          string = out$select_choices_or_calculations[i])
+      )
+    } else {
+      out$field_name_updated[i] <- list(out$field_name[i])
+    }
+  }
+
+  # Unnest and expand checkbox list elements
+  out %>%
+    unnest(cols = field_name_updated)
+}
+

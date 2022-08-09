@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{checkbox_appender}
 \alias{checkbox_appender}
-\title{Checkbox String Appender Function}
+\title{Checkbox String Appender Helper Function}
 \usage{
 checkbox_appender(field_name, string)
 }
@@ -12,6 +12,6 @@ checkbox_appender(field_name, string)
 \item{string}{A \code{db_metadata$select_choices_or_calculations} field pre-filtered for checkbox \code{field_type}}
 }
 \description{
-Takes a \code{db_metadata$select_choices_or_calculations} field pre-filtered for checkbox \code{field_type} and returns a vector of key names for appending to checkbox variables
+Takes a \code{db_metadata$select_choices_or_calculations} field pre-filtered for checkbox \code{field_type} and returns a vector of key names for appending to checkbox variables.
 }
 \keyword{internal}

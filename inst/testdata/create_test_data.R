@@ -15,6 +15,9 @@ db_metadata <- redcap_metadata_read(redcap_uri = redcap_uri,
                                     token = classic_token,
                                     verbose = FALSE)$data
 
+# Apply checkbox appending functions to metadata
+db_metadata <- update_field_names(db_metadata)
+
 saveRDS(db_data, "inst/testdata/db_data_classic.RDS")
 saveRDS(db_metadata, "inst/testdata/db_metadata_classic.RDS")
 
@@ -26,6 +29,9 @@ db_data_long <- redcap_read_oneshot(redcap_uri = redcap_uri,
 db_metadata_long <- redcap_metadata_read(redcap_uri = redcap_uri,
                                          token = longitudinal_token,
                                          verbose = FALSE)$data
+
+# Apply checkbox appending functions to metadata
+db_metadata_long <- update_field_names(db_metadata_long)
 
 saveRDS(db_data_long, "inst/testdata/db_data_long.RDS")
 saveRDS(db_metadata_long, "inst/testdata/db_metadata_long.RDS")
@@ -48,6 +54,9 @@ db_data_long_noarms <- redcap_read_oneshot(redcap_uri = redcap_uri,
 db_metadata_long_noarms <- redcap_metadata_read(redcap_uri = redcap_uri,
                                                 token = longitudinal_noarms_token,
                                                 verbose = FALSE)$data
+
+# Apply checkbox appending functions to metadata
+db_metadata_long_noarms <- update_field_names(db_metadata_long_noarms)
 
 saveRDS(db_data_long_noarms, "inst/testdata/db_data_long_noarms.RDS")
 saveRDS(db_metadata_long_noarms, "inst/testdata/db_metadata_long_noarms.RDS")

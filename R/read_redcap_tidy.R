@@ -27,28 +27,10 @@ read_redcap_tidy <- function(redcap_uri,
 
   db_metadata <- redcap_metadata_read(redcap_uri = redcap_uri,
                                       token = token,
-                                      verbose = FALSE)$data %>%
-    mutate(
-      field_name_updated = list(c())
-    )
+                                      verbose = FALSE)$data
 
-  # Apply checkbox appender function to rows of field_type == "checkbox"
-  # Assign all field names, including expanded checkbox variables, to a list col
-  for (i in 1:nrow(db_metadata)) {
-    if (db_metadata$field_type[i] == "checkbox") {
-      db_metadata$field_name_updated[i] <- list(
-        checkbox_appender(field_name = db_metadata$field_name[i],
-                          string = db_metadata$select_choices_or_calculations[i])
-      )
-    } else {
-      db_metadata$field_name_updated[i] <- list(db_metadata$field_name[i])
-    }
-  }
-
-  # Unnest and expand checkbox list elements
-  db_metadata <- db_metadata %>%
-    unnest(cols = field_name_updated)
-
+  # Apply checkbox appending functions to metadata
+  db_metadata <- update_field_names(db_metadata)
 
   # Check if database supplied is longitudinal to determine appropriate function to use
   is_longitudinal <- if("redcap_event_name" %in% names(db_data)){TRUE}else{FALSE}
