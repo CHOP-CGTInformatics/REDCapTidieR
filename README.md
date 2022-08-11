@@ -80,8 +80,8 @@ superheroes_data
 #> # A tibble: 2 × 3
 #>   redcap_form_name   redcap_data          structure   
 #>   <chr>              <list>               <chr>       
-#> 1 super_hero_powers  <tibble [5,966 × 3]> repeating   
-#> 2 heroes_information <tibble [734 × 11]>  nonrepeating
+#> 1 super_hero_powers  <tibble [5,966 × 4]> repeating   
+#> 2 heroes_information <tibble [734 × 12]>  nonrepeating
 ```
 
 In the above example, you can see that there is data from two
@@ -96,7 +96,7 @@ Let’s take a look at `heroes_information`:
 heroes_information <- superheroes_data$redcap_data[[2]]
 
 heroes_information
-#> # A tibble: 734 × 11
+#> # A tibble: 734 × 12
 #>    record_id name     gender eye_c…¹ race  hair_…² height weight publi…³ skin_…⁴
 #>        <dbl> <chr>    <chr>  <chr>   <chr> <chr>    <dbl>  <dbl> <chr>   <chr>  
 #>  1         0 A-Bomb   Male   yellow  Human No Hair    203    441 Marvel… -      
@@ -109,19 +109,20 @@ heroes_information
 #>  8         7 Adam St… Male   blue    Human Blond      185     88 DC Com… -      
 #>  9         8 Agent 13 Female blue    -     Blond      173     61 Marvel… -      
 #> 10         9 Agent B… Male   brown   Human Brown      178     81 Marvel… -      
-#> # … with 724 more rows, 1 more variable: alignment <chr>, and abbreviated
-#> #   variable names ¹​eye_color, ²​hair_color, ³​publisher, ⁴​skin_color
+#> # … with 724 more rows, 2 more variables: alignment <chr>,
+#> #   form_status_complete <dbl>, and abbreviated variable names ¹​eye_color,
+#> #   ²​hair_color, ³​publisher, ⁴​skin_color
 #> # ℹ Use `print(n = ...)` to see more rows, and `colnames()` to see all variable names
 ```
 
-### Binding REDCapTidieR tibbles into an environment
+### Binding `REDCapTidieR` tibbles into an environment
 
 Above, we manually extracted the `heroes_information` tibble from the
-output of `read_redcap_tidy()`​. This approach can become tedious when
+output of `read_redcap_tidy()`. This approach can become tedious when
 the REDCap project has lots of instruments, and there are many tibbles
 to extract.
 
-The `bind_tables()` function takes the output of `read_redcap_tidy()`​,
+The `bind_tables()` function takes the output of `read_redcap_tidy()`,
 extracts the individual tibbles, and binds them to an
 [environment](http://adv-r.had.co.nz/Environments.html). By default,
 this is the global environment:
@@ -137,8 +138,8 @@ superheroes_data %>%
 
 ``` r
 ls.str(envir = globalenv())
-#> heroes_information : tibble [734 × 11] (S3: tbl_df/tbl/data.frame)
-#> super_hero_powers : tibble [5,966 × 3] (S3: tbl_df/tbl/data.frame)
+#> heroes_information : tibble [734 × 12] (S3: tbl_df/tbl/data.frame)
+#> super_hero_powers : tibble [5,966 × 4] (S3: tbl_df/tbl/data.frame)
 ```
 
 Note that there are now two additional tibbles in the environment.
