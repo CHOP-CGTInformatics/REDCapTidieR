@@ -31,9 +31,9 @@ knitr::opts_chunk$set(
 
 > "REDCap is a secure web application for building and managing online surveys and databases. While REDCap can be used to collect virtually any type of data in any environment (including compliance with 21 CFR Part 11, FISMA, HIPAA, and GDPR), it is specifically geared to support online and offline data capture for research studies and operations."
 
-The [`REDCapR`](https://ouhscbbmc.github.io/REDCapR/) package streamlines calls to the REDCap API. Its main use is to download records from a REDCap project and present it to the analyst as a data frame. This works well for simple projects, however becomes ugly when complex databases that include longitudinal structure and/or repeated instruments are involved.
+The [`REDCapR`](https://ouhscbbmc.github.io/REDCapR/) package streamlines calls to the REDCap API. A common use for `REDCapR` is to download records from a REDCap project and present it to the analyst as a data frame. This works well for simple projects, however becomes ugly when complex databases that include a longitudinal structure and/or repeated instruments are involved.
 
-The aim of `REDCapTidieR` is to make the life of analysts who deal with these complex databases easier. It does so by building upon `REDCapR` to make its output tidier. Instead of one large data frame, the analyst gets to work with a set of tidy tibbles, one for each instrument.
+The aim of `REDCapTidieR` is to make the life of analysts who deal with these complex databases easier. It does so by building upon `REDCapR` to make its output tidier. Instead of one large data frame, the analyst gets to work with a set of tidy tibbles, one for each REDCap instrument.
 
 ## Installation
 
@@ -50,7 +50,7 @@ library(REDCapTidieR)
 library(magrittr)
 ```
 
-The two main functions of `REDCapTidieR` are `read_redcap_tidy()` and `bind_tables()`. Here is how they can be used together to import all data from a REDCap project and present them as tidy tibbles in the global environment:
+The two main functions of `REDCapTidieR` are `read_redcap_tidy()` and `bind_tables()`. Here is how they can be used together to import all data from a REDCap project and add a set of tidy tibbles in the global environment:
 
 ```{r, eval = FALSE}
 read_redcap_tidy(redcap_uri, token) %>% 
@@ -61,58 +61,53 @@ read_redcap_tidy(redcap_uri, token) %>%
 
 ### Structure of the tibble returned by `read_redcap_tidy`
 
-The `read_redcap_tidy` function returns a tibble in which each row represents a REDCap instrument. The first column contains the instrument name. The second column is a **list column** containing a tibble for each instrument.
+The `read_redcap_tidy` function returns a tibble in which each row represents a REDCap instrument. The first column (`redcap_form_name`) contains the instrument name. The second column (`redcap_data`) is a [**list column**](https://www.rstudio.com/resources/webinars/how-to-work-with-list-columns/) containing a tibble for each instrument.
 
 ```{r, include = FALSE}
-token <- Sys.getenv("REDCAPTIDIER_LONGITUDINAL_API")
+token <- Sys.getenv("REDCAPTIDIER_SUPERHEROES_API")
 redcap_uri <- Sys.getenv("REDCAP_URI")
 ```
 
 ```{r, message = FALSE}
-redcap_export <- read_redcap_tidy(redcap_uri, token)
+superheroes_data <- read_redcap_tidy(redcap_uri, token)
 
-redcap_export
+superheroes_data
 ```
 
-REDCap databases support two main mechanisms to allow collecting the same data multiple times: repeated instruments and longitudinal projects.
+In the above example, you can see that there is data from two instruments, `super_hero_powers` and `heroes_information`. From the `structure` column, you can see that the `super_hero_powers` instrument is *repeating* and the `heroes_information` instrument is *nonrepeating*.
 
-The granularity of each table (i.e. what a single row represents) depends on the structure of the database (classic, longitudinal with one arm, longitudinal with multiple arms) as well as whether the instruments are repeatable or not. Based on this, `REDCapTidieR` tibbles contain the following columns to uniquely identify a specific row:
-
-+-----------------+--------------------------+-----------------------------+-----------------------------+
-|                 | **Classic**              | **Longitudinal, one arm**   | **Longitudinal, multi-arm** |
-+=================+==========================+=============================+=============================+
-| **Nonrepeated** | `record_id`              | `record_id` +\              | `record_id` +\              |
-|                 |                          | `redcap_event`              | `redcap_event` +\           |
-|                 |                          |                             | `redcap_arm`                |
-+-----------------+--------------------------+-----------------------------+-----------------------------+
-| **Repeated**    | `record_id` +\           | `record_id` +\              | `record_id` +\              |
-|                 | `redcap_repeat_instance` | `redcap_repeat_instance` +\ | `redcap_repeat_instance` +\ |
-|                 |                          | `redcap_event`              | `redcap_event` +\           |
-|                 |                          |                             | `redcap_arm`                |
-+-----------------+--------------------------+-----------------------------+-----------------------------+
-
-For example, the `repeated` instrument in the example database we just loaded is a repeated instrument from a multi-arm longitudinal project:
+Let's take a look at `heroes_information`:
 
 ```{r}
-redcap_export$redcap_data[[1]]
+heroes_information <- superheroes_data$redcap_data[[2]]
+
+heroes_information
 ```
 
 ### Binding `REDCapTidieR` tibbles into an environment
 
-The `bind_tables()` function takes the output of `read_redcap_tidy`, extracts the individual tibbles and binds them to an environment. By default, this is the global environment:
+Above, we manually extracted the `heroes_information` tibble from the output of `read_redcap_tidy()`. This approach can become tedious when the REDCap project has lots of instruments, and there are many tibbles to extract.
 
-```{r, eval = FALSE}
-ls()
+The `bind_tables()` function takes the output of `read_redcap_tidy()`, extracts the individual tibbles, and binds them to an [environment](http://adv-r.had.co.nz/Environments.html). By default, this is the global environment:
+
+```{r, include = FALSE, warning = FALSE}
+rm(redcap_uri, token, heroes_information)
 ```
 
 ```{r}
-redcap_export %>%
-  bind_tables()
-
-ls()
+ls.str(envir = globalenv())
 ```
 
-Note that there are now three additional tibbles in the global environment.
+```{r}
+superheroes_data %>%
+  bind_tables()
+```
+
+```{r}
+ls.str(envir = globalenv())
+```
+
+Note that there are now two additional tibbles in the environment.
 
 ## Getting help
 
