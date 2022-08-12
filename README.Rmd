@@ -64,7 +64,7 @@ read_redcap_tidy(redcap_uri, token) %>%
 The `read_redcap_tidy` function returns a tibble in which each row represents a REDCap instrument. The first column (`redcap_form_name`) contains the instrument name. The second column (`redcap_data`) is a [**list column**](https://www.rstudio.com/resources/webinars/how-to-work-with-list-columns/) containing a tibble for each instrument.
 
 ```{r, include = FALSE}
-token <- Sys.getenv("REDCAPTIDIER_SUPERHEROES_API")
+token <- Sys.getenv("SUPERHEROES_REDCAP_API")
 redcap_uri <- Sys.getenv("REDCAP_URI")
 ```
 
