@@ -58,7 +58,7 @@ redcap_uri <- Sys.getenv("REDCAP_URI")
 ```{r, message = FALSE}
 superheroes <- REDCapR::redcap_read_oneshot(redcap_uri, token)$data
 
-superheroes
+superheroes %>% head(15)
 ```
 
 The `redcap_read_oneshot` function returns a list that contains a data frame named `data` in which all the data from the project can be found. While it may seem a good idea to have everything in one giant data frame, there are significant downsides, including:
