@@ -46,9 +46,10 @@ link_arms <- function(
   # Next map through all possible arms by identifying unique ones in db_data_long
   # after it has helper variables added from `add_partial_keys()`
   db_event_instruments <- tibble() # Define empty tibble
-  arms <- db_data_long %>% pull(redcap_arm) %>% unique() # Define arms
 
-  db_event_instruments <- map(arms, ~redcap_event_instruments(
+  arms <- redcap_arm_export(redcap_uri, token, verbose = FALSE)$data
+
+  db_event_instruments <- map(arms$arm_number, ~redcap_event_instruments(
     redcap_uri = redcap_uri,
     token = token, arms = .x,
     verbose = FALSE
