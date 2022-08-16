@@ -105,12 +105,9 @@ checkbox_appender <- function(field_name, string, raw_or_label){
   prefix <- paste0(field_name, "___")
 
   out <- parse_labels(string, raw_or_label)
+  out$raw <- tolower(out$raw)
   # append each element of the split vector with the field_name prefix and then recombine
-  if(raw_or_label == 'raw'){
-    out <- paste0(prefix, out[[1]])
-  } else {
-    out <- paste0(prefix, out[[2]])
-  }
+  out <- paste0(prefix, out[[1]])
 
   out
 }
@@ -150,3 +147,48 @@ update_field_names <- function(db_metadata, raw_or_label = 'raw'){
     unnest(cols = field_name_updated)
 }
 
+#' Update Multiple Choice Fields with Label Data
+#'
+#' @param db_data A REDCap database object
+#' @param db_metadata A REDCap metadata object
+#'
+#' @import dplyr
+#' @keywords internal
+
+multi_choice_to_labels <- function(db_data, db_metadata){
+
+  for (i in 1:nrow(db_metadata)) {
+
+    # Extract metadata field name and database corresponding column name
+    field_name <- db_metadata$field_name_updated[i]
+
+    # yesno datatype handling
+    if (db_metadata$field_type[i] == "yesno") {
+      db_data <- db_data %>%
+        mutate(
+          across(.cols = field_name, .fns = ~case_when(. == 1 ~ "yes", . == 0 ~ "no", TRUE ~ NA_character_)),
+          across(.cols = field_name, .fns = ~as.factor(.))
+        )
+    }
+
+    # truefalse datatype handling
+    if (db_metadata$field_type[i] == "truefalse") {
+      db_data <- db_data %>%
+        mutate(
+          across(.cols = field_name, .fns = ~case_when(. == 1 ~ TRUE, . == 0 ~ FALSE, TRUE ~ NA)),
+          across(.cols = field_name, .fns = ~as.factor(.))
+        )
+    }
+
+    # checkbox datatype handling
+    if (db_metadata$field_type[i] == "checkbox") {
+      db_data <- db_data %>%
+        mutate(
+          across(.cols = field_name, .fns = ~case_when(. == 1 ~ TRUE, . == 0 ~ FALSE, TRUE ~ NA)),
+          across(.cols = field_name, .fns = ~as.factor(.))
+        )
+    }
+  }
+
+  db_data
+}
