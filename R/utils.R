@@ -69,12 +69,11 @@ link_arms <- function(
 #' Takes a string separated by \code{,}s and/or \code{|}s (i.e. comma/tab separated values) containing key value pairs (\code{raw} and \code{label}) and returns a tidy tibble.
 #'
 #' @param string A \code{db_metadata$select_choices_or_calculations} field pre-filtered for checkbox \code{field_type}
-#' @param raw_or_label A string (either 'raw' or 'label') that specifies whether to export the raw coded values or the labels for the options of multiple choice fields.
 #'
 #' @import dplyr
 #' @keywords internal
 
-parse_labels <- function(string, raw_or_label){
+parse_labels <- function(string){
   out <- string %>%
     strsplit(" \\| |, ") %>% # split either by ' | ' or ', '
     unlist() %>%
@@ -96,15 +95,14 @@ parse_labels <- function(string, raw_or_label){
 #'
 #' @param field_name The \code{db_metadata$field_name} to append onto the string
 #' @param string A \code{db_metadata$select_choices_or_calculations} field pre-filtered for checkbox \code{field_type}
-#' @param raw_or_label A string (either 'raw' or 'label') that specifies whether to export the raw coded values or the labels for the options of multiple choice fields.
 #'
 #' @import dplyr
 #' @keywords internal
 
-checkbox_appender <- function(field_name, string, raw_or_label){
+checkbox_appender <- function(field_name, string){
   prefix <- paste0(field_name, "___")
 
-  out <- parse_labels(string, raw_or_label)
+  out <- parse_labels(string)
   out$raw <- tolower(out$raw)
   # append each element of the split vector with the field_name prefix and then recombine
   out <- paste0(prefix, out[[1]])
@@ -134,8 +132,7 @@ update_field_names <- function(db_metadata, raw_or_label = 'raw'){
     if (out$field_type[i] == "checkbox") {
       out$field_name_updated[i] <- list(
         checkbox_appender(field_name = out$field_name[i],
-                          string = out$select_choices_or_calculations[i],
-                          raw_or_label)
+                          string = out$select_choices_or_calculations[i])
       )
     } else {
       out$field_name_updated[i] <- list(out$field_name[i])
@@ -162,7 +159,7 @@ multi_choice_to_labels <- function(db_data, db_metadata){
     # Extract metadata field name and database corresponding column name
     field_name <- db_metadata$field_name_updated[i]
 
-    # yesno datatype handling
+    # yesno datatype handling ----
     if (db_metadata$field_type[i] == "yesno") {
       db_data <- db_data %>%
         mutate(
@@ -171,7 +168,7 @@ multi_choice_to_labels <- function(db_data, db_metadata){
         )
     }
 
-    # truefalse datatype handling
+    # truefalse datatype handling ----
     if (db_metadata$field_type[i] == "truefalse") {
       db_data <- db_data %>%
         mutate(
@@ -180,12 +177,31 @@ multi_choice_to_labels <- function(db_data, db_metadata){
         )
     }
 
-    # checkbox datatype handling
+    # checkbox datatype handling ----
     if (db_metadata$field_type[i] == "checkbox") {
       db_data <- db_data %>%
         mutate(
           across(.cols = field_name, .fns = ~case_when(. == 1 ~ TRUE, . == 0 ~ FALSE, TRUE ~ NA)),
           across(.cols = field_name, .fns = ~as.factor(.))
+        )
+    }
+
+    # dropdown and radio datatype handling ----
+    if (db_metadata$field_type[i] == "dropdown" | db_metadata$field_type[i] == "radio") {
+
+      # Retrieve parse_labels key for given field_name
+      parse_labels_output <- parse_labels(db_metadata$select_choices_or_calculations[i])
+
+      # Replace values from db_data$(field_name) with label values from  parse_labels key
+      db_data <- db_data %>%
+        left_join(parse_labels_output %>% rename(!!field_name := raw), # Could not get working in by argument, instead inject field name for rename in parse_labels_output
+                  by = field_name) %>%
+        mutate(!!field_name := label) %>% # Again, use rlang var injection
+        select(-label)
+
+      db_data <- db_data %>%
+        mutate(
+          across(.cols = field_name, .fns = ~factor(., ordered = T, levels = parse_labels_output$label))
         )
     }
   }

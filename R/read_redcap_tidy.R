@@ -31,13 +31,15 @@ read_redcap_tidy <- function(redcap_uri,
                                       token = token,
                                       verbose = FALSE)$data
 
-  # Apply general changes ----
+  # Apply database output changes ----
   # Apply checkbox appending functions to metadata
   db_metadata <- update_field_names(db_metadata, raw_or_label = raw_or_label)
 
   if (raw_or_label == "label"){
     db_data <- multi_choice_to_labels(db_data, db_metadata)
   }
+
+  # Longitudinal Arms Check and Cleaning Application ----
   # Check if database supplied is longitudinal to determine appropriate function to use
   is_longitudinal <- if("redcap_event_name" %in% names(db_data)){TRUE}else{FALSE}
 
