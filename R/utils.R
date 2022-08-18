@@ -163,7 +163,8 @@ multi_choice_to_labels <- function(db_data, db_metadata){
     if (db_metadata$field_type[i] == "yesno") {
       db_data <- db_data %>%
         mutate(
-          across(.cols = field_name, .fns = ~case_when(. == 1 ~ "yes", . == 0 ~ "no", TRUE ~ NA_character_))
+          across(.cols = field_name, .fns = ~case_when(. == 1 ~ "yes", . == 0 ~ "no", TRUE ~ NA_character_)),
+          across(.cols = field_name, .fns = ~factor(.,levels = c("yes", "no")))
         )
     }
 

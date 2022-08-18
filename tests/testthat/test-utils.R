@@ -11,7 +11,8 @@ test_that("multi_choice_to_labels works", {
   expect_true(nrow(out) > 0)
 
   # Test multichoice options return expected values and datatypes
-  expect_character(out$yesno)
+  expect_factor(out$yesno)
+  expect_equal(levels(out$yesno), c("yes", "no"))
   expect_logical(out$truefalse)
 
   checkbox_col_types <- map(out %>% select(contains("checkbox")), class)
@@ -22,5 +23,7 @@ test_that("multi_choice_to_labels works", {
   expect_true(all(checkbox_col_types[,1] == "logical"))
 
   expect_factor(out$dropdown_single)
-  expect_factor(out$radio)
+  expect_equal(levels(out$dropdown_single), c("one", "two", "three"))
+  expect_factor(out$radio_single)
+  expect_equal(levels(out$radio_single), c("A", "B", "C"))
 })
