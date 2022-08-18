@@ -154,37 +154,21 @@ update_field_names <- function(db_metadata, raw_or_label = 'raw'){
 
 multi_choice_to_labels <- function(db_data, db_metadata){
 
+  # Handle columns where we change 0/1 to FALSE/TRUE (logical)
+  logical_cols <- db_metadata %>%
+    filter(field_type %in% c("yesno", "truefalse", "checkbox")) %>%
+    pull(field_name_updated)
+
+  db_data <- db_data %>%
+    mutate(across(.cols = logical_cols, as.logical))
+
   for (i in 1:nrow(db_metadata)) {
 
     # Extract metadata field name and database corresponding column name
     field_name <- db_metadata$field_name_updated[i]
 
-    # yesno datatype handling ----
-    if (db_metadata$field_type[i] == "yesno") {
-      db_data <- db_data %>%
-        mutate(
-          across(.cols = field_name, .fns = ~case_when(. == 1 ~ TRUE, . == 0 ~ FALSE, TRUE ~ NA))
-        )
-    }
-
-    # truefalse datatype handling ----
-    if (db_metadata$field_type[i] == "truefalse") {
-      db_data <- db_data %>%
-        mutate(
-          across(.cols = field_name, .fns = ~case_when(. == 1 ~ TRUE, . == 0 ~ FALSE, TRUE ~ NA))
-        )
-    }
-
-    # checkbox datatype handling ----
-    if (db_metadata$field_type[i] == "checkbox") {
-      db_data <- db_data %>%
-        mutate(
-          across(.cols = field_name, .fns = ~case_when(. == 1 ~ TRUE, . == 0 ~ FALSE, TRUE ~ NA))
-        )
-    }
-
     # dropdown and radio datatype handling ----
-    if (db_metadata$field_type[i] == "dropdown" | db_metadata$field_type[i] == "radio") {
+    if (db_metadata$field_type[i] %in% c("dropdown", "radio")) {
 
       # Retrieve parse_labels key for given field_name
       parse_labels_output <- parse_labels(db_metadata$select_choices_or_calculations[i])
@@ -198,7 +182,7 @@ multi_choice_to_labels <- function(db_data, db_metadata){
 
       db_data <- db_data %>%
         mutate(
-          across(.cols = field_name, .fns = ~factor(., ordered = T, levels = parse_labels_output$label))
+          across(.cols = field_name, .fns = ~factor(., levels = parse_labels_output$label))
         )
     }
   }
