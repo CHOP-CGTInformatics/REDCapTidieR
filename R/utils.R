@@ -70,13 +70,30 @@ link_arms <- function(
 #'
 #' @param string A \code{db_metadata$select_choices_or_calculations} field pre-filtered for checkbox \code{field_type}
 #'
-#' @import dplyr
+#' @import dplyr stringi
 #' @keywords internal
 
 parse_labels <- function(string){
   out <- string %>%
-    strsplit(" \\| |, ") %>% # split either by ' | ' or ', '
+    strsplit(" \\| ") # Split by "|"
+
+  # Check there is a comma in all | delimited strsplit elements
+  if (!all(grepl(",", out[[1]]))) {
+    stop(paste0("The raw/label structure of the string is not analyzable: ", string))
+  }
+
+  # split on the _first_ comma in each element
+  out <- out %>%
     unlist() %>%
+    stri_split_fixed(pattern = ", ", n = 2) %>% # Split by first ","
+    unlist()
+
+  # Check if vector is even for matrix creation. If not, then fail.
+  if (length(out) %% 2 != 0) {
+    stop(paste0("Matrix structure failure. The raw/label structure of the string is not analyzable: ", string))
+  }
+
+  out <- out %>%
     matrix(
       ncol = 2,
       byrow = TRUE,

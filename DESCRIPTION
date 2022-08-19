@@ -16,6 +16,7 @@ Imports:
     purrr,
     REDCapR (>= 1.1.0),
     rlang,
+    stringi,
     stringr,
     tibble,
     tidyr

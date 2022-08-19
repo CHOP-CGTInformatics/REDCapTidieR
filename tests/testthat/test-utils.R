@@ -13,16 +13,30 @@ test_that("multi_choice_to_labels works", {
   # Test multichoice options return expected values and datatypes
   expect_logical(out$yesno)
   expect_logical(out$truefalse)
-
-  checkbox_col_types <- map(out %>% select(contains("checkbox")), class)
-  checkbox_col_types <- data.frame(
-    matrix(unlist(checkbox_col_types),
-           nrow = length(checkbox_col_types))
-  )
-  expect_true(all(checkbox_col_types[,1] == "logical"))
+  expect_logical(out$checkbox_multiple___1)
+  expect_logical(out$checkbox_multiple_2___4eeee5)
 
   expect_factor(out$dropdown_single)
   expect_equal(levels(out$dropdown_single), c("one", "two", "three"))
   expect_factor(out$radio_single)
   expect_equal(levels(out$radio_single), c("A", "B", "C"))
+})
+
+test_that("parse_labels works", {
+
+  valid_string <- "choice_1, one | choice_2, two | choice_3, three"
+  valid_output <- tribble(
+    ~raw,       ~label,
+    "choice_1", "one",
+    "choice_2", "two",
+    "choice_3", "three"
+  )
+
+  invalid_string_1 <- "raw, label | that has | pipes but no other | commas"
+
+   invalid_string_2 <- "raw, label | structure, | with odd matrix dimensions"
+
+  expect_equal(parse_labels(valid_string), valid_output)
+  expect_error(parse_labels(invalid_string_1))
+  expect_error(parse_labels(invalid_string_2))
 })
