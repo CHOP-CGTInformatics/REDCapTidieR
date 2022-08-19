@@ -29,7 +29,8 @@ read_redcap_tidy <- function(redcap_uri,
 
   db_metadata <- redcap_metadata_read(redcap_uri = redcap_uri,
                                       token = token,
-                                      verbose = FALSE)$data
+                                      verbose = FALSE)$data %>%
+    filter(field_type != "descriptive")
 
   # Apply database output changes ----
   # Apply checkbox appending functions to metadata
