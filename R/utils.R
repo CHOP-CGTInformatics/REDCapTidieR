@@ -79,7 +79,7 @@ parse_labels <- function(string){
 
   # Check there is a comma in all | delimited strsplit elements
   if (!all(grepl(",", out[[1]]))) {
-    stop(paste0("The raw/label structure of the string is not analyzable: ", string))
+    stop(paste0("Cannot parse the select_choices_or_calculations field from REDCap metadata. This may happen if there is a pipe character `|` inside the label: ", string))
   }
 
   # split on the _first_ comma in each element
@@ -90,7 +90,7 @@ parse_labels <- function(string){
 
   # Check if vector is even for matrix creation. If not, then fail.
   if (length(out) %% 2 != 0) {
-    stop(paste0("Matrix structure failure. The raw/label structure of the string is not analyzable: ", string))
+    stop(paste0("Cannot parse the select_choices_or_calculations field from REDCap metadata. This may happen if there is a pipe character `|` inside the label: ", string))
   }
 
   out <- out %>%
