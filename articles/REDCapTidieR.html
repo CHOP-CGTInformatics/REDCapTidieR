@@ -134,8 +134,7 @@
 <span><span class="co">#&gt; <span style="color: #949494;"># … with 6,690 more rows, 6 more variables: publisher &lt;chr&gt;, skin_color &lt;chr&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   alignment &lt;chr&gt;, heroes_information_complete &lt;dbl&gt;, power &lt;chr&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   super_hero_powers_complete &lt;dbl&gt;, and abbreviated variable names</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   ¹​redcap_repeat_instrument, ²​redcap_repeat_instance, ³​eye_color, ⁴​hair_color</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ Use `print(n = ...)` to see more rows, and `colnames()` to see all variable names</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #949494;">#   ¹​redcap_repeat_instrument, ²​redcap_repeat_instance, ³​eye_color, ⁴​hair_color</span></span></span></code></pre></div>
 <p><code>redcap_read_oneshot()</code> returns a list with an element named <code>data</code> in which all the data from the project is provided as a single large data frame. While it may seem a good idea to have everything in one data frame, there are significant downsides, including:</p>
 <ul>
 <li><p>It’s unwieldy! Although there are only 734 superheroes in the data set, there are 6,700 rows. Every transformation first requires whittling down a huge data set. This increases cognitive load.</p></li>
@@ -203,8 +202,7 @@
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>         9 Agent B… Male   brown   Human Brown      178     81 Marvel… -      </span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># … with 724 more rows, 2 more variables: alignment &lt;chr&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   form_status_complete &lt;dbl&gt;, and abbreviated variable names ¹​eye_color,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   ²​hair_color, ³​publisher, ⁴​skin_color</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ Use `print(n = ...)` to see more rows, and `colnames()` to see all variable names</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #949494;">#   ²​hair_color, ³​publisher, ⁴​skin_color</span></span></span></code></pre></div>
 <p>Now look at the <code>super_hero_powers</code>, which contains data from a <strong>repeating</strong> instrument, and note the following:</p>
 <ul>
 <li><p>Again, this is not a sparse table, making it easy to understand its data content, and the name is descriptive.</p></li>
@@ -225,8 +223,7 @@
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>         1                      1 Agility                                0</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>         1                      2 Accelerated Healing                    0</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>         1                      3 Cold Resistance                        0</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># … with 5,956 more rows</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ Use `print(n = ...)` to see more rows</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #949494;"># … with 5,956 more rows</span></span></span></code></pre></div>
 <p>In summary, here are the rules by which <code>REDCapTidieR</code> contructs tibbles:</p>
 <ul>
 <li><p>There is one tibble per REDCap instrument. The tibble’s name is derived from the name given to the instrument in REDCap.</p></li>
