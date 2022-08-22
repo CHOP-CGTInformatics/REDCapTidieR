@@ -79,7 +79,10 @@ parse_labels <- function(string){
 
   # Check there is a comma in all | delimited strsplit elements
   if (!all(grepl(",", out[[1]]))) {
-    stop(paste0("Cannot parse the select_choices_or_calculations field from REDCap metadata. This may happen if there is a pipe character `|` inside the label: ", string))
+    # If this is a misattributed data field or blank, throw warning in multi_choice_to_labels
+    if (length(out[[1]]) > 1 & !is.na(out[[1]])){
+      stop(paste0("Cannot parse the select_choices_or_calculations field from REDCap metadata. This may happen if there is a pipe character `|` inside the label: ", string))
+    }
   }
 
   # split on the _first_ comma in each element
@@ -90,7 +93,10 @@ parse_labels <- function(string){
 
   # Check if vector is even for matrix creation. If not, then fail.
   if (length(out) %% 2 != 0) {
-    stop(paste0("Cannot parse the select_choices_or_calculations field from REDCap metadata. This may happen if there is a pipe character `|` inside the label: ", string))
+    # If this is a misattributed data field or blank, throw warning in multi_choice_to_labels
+    if (length(out[[1]]) > 1 & !is.na(out[[1]])){
+      stop(paste0("Cannot parse the select_choices_or_calculations field from REDCap metadata. This may happen if there is a pipe character `|` inside the label: ", string))
+    }
   }
 
   out <- out %>%
@@ -186,6 +192,11 @@ multi_choice_to_labels <- function(db_data, db_metadata){
 
     # dropdown and radio datatype handling ----
     if (db_metadata$field_type[i] %in% c("dropdown", "radio")) {
+
+      # Check for empty selection strings indicating missing data or incorrect data field attribute types in REDCap
+      if(is.na(db_metadata$select_choices_or_calculations[i])) {
+        warning(paste0("The field ", {field_name}, " in " , db_metadata$form_name[i], " is a ", db_metadata$field_type[i], " field type, however it does not have any categories."))
+      }
 
       # Retrieve parse_labels key for given field_name
       parse_labels_output <- parse_labels(db_metadata$select_choices_or_calculations[i])

@@ -3,8 +3,12 @@ db_data_classic <- readRDS(system.file("testdata/db_data_classic.RDS", package =
 db_metadata_classic <- readRDS(system.file("testdata/db_metadata_classic.RDS", package = "REDCapTidieR"))
 
 test_that("multi_choice_to_labels works", {
+  # Expect warning on error variable where a radio button is created for a descriptive text field
+  expect_warning(multi_choice_to_labels(db_data = db_data_classic,
+                                        db_metadata = db_metadata_classic))
+
   out <- multi_choice_to_labels(db_data = db_data_classic,
-                                db_metadata = db_metadata_classic)
+                                db_metadata = db_metadata_classic) %>% suppressWarnings()
 
   # Test general structure
   expect_true(is.data.frame(out))
@@ -34,9 +38,12 @@ test_that("parse_labels works", {
 
   invalid_string_1 <- "raw, label | that has | pipes but no other | commas"
 
-   invalid_string_2 <- "raw, label | structure, | with odd matrix dimensions"
+  invalid_string_2 <- "raw, label | structure, | with odd matrix dimensions"
+
+  warning_string_1 <- NA_character_
 
   expect_equal(parse_labels(valid_string), valid_output)
   expect_error(parse_labels(invalid_string_1))
   expect_error(parse_labels(invalid_string_2))
+  expect_warning(parse_labels(warning_string_1), regexp = NA)
 })
