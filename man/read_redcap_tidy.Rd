@@ -4,12 +4,19 @@
 \alias{read_redcap_tidy}
 \title{Extract REDCap Databases to Tidy Tibbles}
 \usage{
-read_redcap_tidy(redcap_uri, token, suppress_messages = TRUE)
+read_redcap_tidy(
+  redcap_uri,
+  token,
+  raw_or_label = "label",
+  suppress_messages = TRUE
+)
 }
 \arguments{
 \item{redcap_uri}{The URI (uniform resource identifier) of the REDCap project. Required.}
 
 \item{token}{The user-specific string that serves as the password for a project. Required.}
+
+\item{raw_or_label}{A string (either 'raw' or 'label') that specifies whether to export the raw coded values or the labels for the options of multiple choice fields. Default is 'label'.}
 
 \item{suppress_messages}{Optionally show or suppress messages. Default \code{TRUE}.}
 }

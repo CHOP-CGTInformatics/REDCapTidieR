@@ -4,12 +4,10 @@
 \alias{parse_labels}
 \title{Parse Labels Function}
 \usage{
-parse_labels(string, raw_or_label)
+parse_labels(string)
 }
 \arguments{
 \item{string}{A \code{db_metadata$select_choices_or_calculations} field pre-filtered for checkbox \code{field_type}}
-
-\item{raw_or_label}{A string (either 'raw' or 'label') that specifies whether to export the raw coded values or the labels for the options of multiple choice fields.}
 }
 \description{
 Takes a string separated by \code{,}s and/or \code{|}s (i.e. comma/tab separated values) containing key value pairs (\code{raw} and \code{label}) and returns a tidy tibble.

@@ -69,15 +69,37 @@ link_arms <- function(
 #' Takes a string separated by \code{,}s and/or \code{|}s (i.e. comma/tab separated values) containing key value pairs (\code{raw} and \code{label}) and returns a tidy tibble.
 #'
 #' @param string A \code{db_metadata$select_choices_or_calculations} field pre-filtered for checkbox \code{field_type}
-#' @param raw_or_label A string (either 'raw' or 'label') that specifies whether to export the raw coded values or the labels for the options of multiple choice fields.
 #'
-#' @import dplyr
+#' @import dplyr stringi
 #' @keywords internal
 
-parse_labels <- function(string, raw_or_label){
+parse_labels <- function(string){
   out <- string %>%
-    strsplit(" \\| |, ") %>% # split either by ' | ' or ', '
+    strsplit(" \\| ") # Split by "|"
+
+  # Check there is a comma in all | delimited strsplit elements
+  if (!all(grepl(",", out[[1]]))) {
+    # If this is a misattributed data field or blank, throw warning in multi_choice_to_labels
+    if (length(out[[1]]) > 1 & !is.na(out[[1]])){
+      stop(paste0("Cannot parse the select_choices_or_calculations field from REDCap metadata. This may happen if there is a pipe character `|` inside the label: ", string))
+    }
+  }
+
+  # split on the _first_ comma in each element
+  out <- out %>%
     unlist() %>%
+    stri_split_fixed(pattern = ", ", n = 2) %>% # Split by first ","
+    unlist()
+
+  # Check if vector is even for matrix creation. If not, then fail.
+  if (length(out) %% 2 != 0) {
+    # If this is a misattributed data field or blank, throw warning in multi_choice_to_labels
+    if (length(out[[1]]) > 1 & !is.na(out[[1]])){
+      stop(paste0("Cannot parse the select_choices_or_calculations field from REDCap metadata. This may happen if there is a pipe character `|` inside the label: ", string))
+    }
+  }
+
+  out <- out %>%
     matrix(
       ncol = 2,
       byrow = TRUE,
@@ -96,21 +118,17 @@ parse_labels <- function(string, raw_or_label){
 #'
 #' @param field_name The \code{db_metadata$field_name} to append onto the string
 #' @param string A \code{db_metadata$select_choices_or_calculations} field pre-filtered for checkbox \code{field_type}
-#' @param raw_or_label A string (either 'raw' or 'label') that specifies whether to export the raw coded values or the labels for the options of multiple choice fields.
 #'
 #' @import dplyr
 #' @keywords internal
 
-checkbox_appender <- function(field_name, string, raw_or_label){
+checkbox_appender <- function(field_name, string){
   prefix <- paste0(field_name, "___")
 
-  out <- parse_labels(string, raw_or_label)
+  out <- parse_labels(string)
+  out$raw <- tolower(out$raw)
   # append each element of the split vector with the field_name prefix and then recombine
-  if(raw_or_label == 'raw'){
-    out <- paste0(prefix, out[[1]])
-  } else {
-    out <- paste0(prefix, out[[2]])
-  }
+  out <- paste0(prefix, out[[1]])
 
   out
 }
@@ -137,8 +155,7 @@ update_field_names <- function(db_metadata, raw_or_label = 'raw'){
     if (out$field_type[i] == "checkbox") {
       out$field_name_updated[i] <- list(
         checkbox_appender(field_name = out$field_name[i],
-                          string = out$select_choices_or_calculations[i],
-                          raw_or_label)
+                          string = out$select_choices_or_calculations[i])
       )
     } else {
       out$field_name_updated[i] <- list(out$field_name[i])
@@ -150,3 +167,56 @@ update_field_names <- function(db_metadata, raw_or_label = 'raw'){
     unnest(cols = field_name_updated)
 }
 
+#' Update Multiple Choice Fields with Label Data
+#'
+#' @param db_data A REDCap database object
+#' @param db_metadata A REDCap metadata object
+#'
+#' @import dplyr
+#' @keywords internal
+
+multi_choice_to_labels <- function(db_data, db_metadata){
+
+  # Handle columns where we change 0/1 to FALSE/TRUE (logical)
+  logical_cols <- db_metadata %>%
+    filter(field_type %in% c("yesno", "truefalse", "checkbox")) %>%
+    pull(field_name_updated)
+
+  db_data <- db_data %>%
+    mutate(across(.cols = logical_cols, as.logical))
+
+  for (i in 1:nrow(db_metadata)) {
+
+    # Extract metadata field name and database corresponding column name
+    field_name <- db_metadata$field_name_updated[i]
+
+    # dropdown and radio datatype handling ----
+    if (db_metadata$field_type[i] %in% c("dropdown", "radio")) {
+
+      # Check for empty selection strings indicating missing data or incorrect data field attribute types in REDCap
+      if(is.na(db_metadata$select_choices_or_calculations[i])) {
+        warning(paste0("The field ", {field_name}, " in " , db_metadata$form_name[i], " is a ", db_metadata$field_type[i], " field type, however it does not have any categories."))
+      }
+
+      # Retrieve parse_labels key for given field_name
+      parse_labels_output <- parse_labels(db_metadata$select_choices_or_calculations[i])
+
+      # Replace values from db_data$(field_name) with label values from  parse_labels key
+      db_data <- db_data %>%
+        mutate(
+          !!field_name := as.character(!!field_name)
+        ) %>%
+        left_join(parse_labels_output %>% rename(!!field_name := raw), # Could not get working in by argument, instead inject field name for rename in parse_labels_output
+                  by = field_name) %>%
+        mutate(!!field_name := label) %>% # Again, use rlang var injection
+        select(-label)
+
+      db_data <- db_data %>%
+        mutate(
+          across(.cols = field_name, .fns = ~factor(., levels = parse_labels_output$label))
+        )
+    }
+  }
+
+  db_data
+}
