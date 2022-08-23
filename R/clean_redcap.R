@@ -4,6 +4,7 @@
 #' @param db_metadata The REDCap metadata output defined by \code{REDCapR::redcap_metadata_read()$data}
 #'
 #' @import dplyr purrr REDCapR checkmate
+#' @importFrom rlang .data
 #' @keywords internal
 
 clean_redcap <- function(
@@ -16,8 +17,8 @@ clean_redcap <- function(
   assert_data_frame(db_metadata)
 
   repeated_forms <- db_data %>%
-    filter(!is.na(redcap_repeat_instrument)) %>%
-    pull(redcap_repeat_instrument) %>%
+    filter(!is.na(.data$redcap_repeat_instrument)) %>%
+    pull(.data$redcap_repeat_instrument) %>%
     unique()
 
   repeated_forms_tibble <- tibble(
@@ -30,7 +31,7 @@ clean_redcap <- function(
   )
 
   nonrepeated_forms <- db_metadata %>%
-    pull(form_name) %>%
+    pull(.data$form_name) %>%
     unique() %>%
     setdiff(repeated_forms)
 
@@ -55,6 +56,7 @@ clean_redcap <- function(
 #' @param db_metadata The REDCap metadata output defined by \code{REDCapR::redcap_metadata_read()$data}
 #'
 #' @import dplyr REDCapR
+#' @importFrom rlang .data
 #' @keywords internal
 
 extract_nonrepeat_table <- function(
@@ -66,8 +68,8 @@ extract_nonrepeat_table <- function(
   my_form <- form_name
 
   my_fields <- db_metadata %>%
-    filter(form_name == my_form) %>%
-    pull(field_name_updated)
+    filter(.data$form_name == my_form) %>%
+    pull(.data$field_name_updated)
 
   if (my_fields[1] != my_record_id) {
     my_fields <- c(my_record_id, my_fields)
@@ -80,10 +82,10 @@ extract_nonrepeat_table <- function(
     names()
 
   db_data %>%
-    filter(is.na(redcap_repeat_instance)) %>%
+    filter(is.na(.data$redcap_repeat_instance)) %>%
     select(all_of(my_fields)) %>%
     rename("form_status_complete" = paste0(my_form, "_complete")) %>%
-    relocate(form_status_complete, .after = everything()) %>%
+    relocate(.data$form_status_complete, .after = everything()) %>%
     tibble()
 }
 
@@ -94,6 +96,7 @@ extract_nonrepeat_table <- function(
 #' @param db_metadata The non-longitudinal REDCap metadata output defined by \code{REDCapR::redcap_metadata_read()$data}
 #'
 #' @import dplyr REDCapR
+#' @importFrom rlang .data
 #' @keywords internal
 
 extract_repeat_table <- function(
@@ -105,8 +108,8 @@ extract_repeat_table <- function(
   my_form <- form_name
 
   my_fields <- db_metadata %>%
-    filter(form_name == my_form) %>%
-    pull(field_name_updated)
+    filter(.data$form_name == my_form) %>%
+    pull(.data$field_name_updated)
 
   if (my_fields[1] != my_record_id) {
     my_fields <- c(my_record_id, my_fields)
@@ -119,10 +122,10 @@ extract_repeat_table <- function(
     names()
 
   db_data %>%
-    filter(!is.na(redcap_repeat_instance)) %>%
-    select(all_of(my_fields), redcap_repeat_instance) %>%
-    relocate(redcap_repeat_instance, .after = all_of(my_record_id)) %>%
+    filter(!is.na(.data$redcap_repeat_instance)) %>%
+    select(all_of(my_fields), .data$redcap_repeat_instance) %>%
+    relocate(.data$redcap_repeat_instance, .after = all_of(my_record_id)) %>%
     rename("form_status_complete" = paste0(my_form, "_complete")) %>%
-    relocate(form_status_complete, .after = everything()) %>%
+    relocate(.data$form_status_complete, .after = everything()) %>%
     tibble()
 }

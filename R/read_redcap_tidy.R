@@ -9,6 +9,7 @@
 #' Output a \code{tibble} with list elements containing tidy dataframes. Ideal for combination of tables with join operations primary and composite keys.
 #'
 #' @import REDCapR
+#' @importFrom rlang .data
 #'
 #' @param redcap_uri The URI (uniform resource identifier) of the REDCap project. Required.
 #' @param token The user-specific string that serves as the password for a project. Required.

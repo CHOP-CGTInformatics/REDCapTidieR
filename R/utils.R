@@ -14,8 +14,8 @@ add_partial_keys <- function(
 
   db_data <- db_data %>%
     mutate(
-      redcap_event = sub(pattern, "\\1", redcap_event_name),
-      redcap_arm   = as.integer(sub(pattern, "\\2", redcap_event_name))
+      redcap_event = sub(pattern, "\\1", .data$redcap_event_name),
+      redcap_arm   = as.integer(sub(pattern, "\\2", .data$redcap_event_name))
     )
 
   db_data
@@ -31,6 +31,7 @@ add_partial_keys <- function(
 #' @param token The REDCap API token
 #'
 #' @import dplyr tibble REDCapR tidyr
+#' @importFrom rlang .data
 #' @keywords internal
 
 link_arms <- function(
@@ -58,7 +59,7 @@ link_arms <- function(
 
   # Categorize all events/arms and assign all forms that appear in them to a vector. Vectors help with variable length assignments.
   db_event_instruments %>%
-    select(-arm_num) %>%
+    select(-.data$arm_num) %>%
     pivot_wider(names_from = c("unique_event_name"),
                 values_from = c("form"),
                 values_fn = list)
@@ -72,6 +73,7 @@ link_arms <- function(
 #' @param raw_or_label A string (either 'raw' or 'label') that specifies whether to export the raw coded values or the labels for the options of multiple choice fields.
 #'
 #' @import dplyr
+#' @importFrom rlang .data
 #' @keywords internal
 
 parse_labels <- function(string, raw_or_label){
@@ -99,6 +101,7 @@ parse_labels <- function(string, raw_or_label){
 #' @param raw_or_label A string (either 'raw' or 'label') that specifies whether to export the raw coded values or the labels for the options of multiple choice fields.
 #'
 #' @import dplyr
+#' @importFrom rlang .data
 #' @keywords internal
 
 checkbox_appender <- function(field_name, string, raw_or_label){
@@ -123,6 +126,7 @@ checkbox_appender <- function(field_name, string, raw_or_label){
 #' @param raw_or_label A string (either 'raw' or 'label') that specifies whether to export the raw coded values or the labels for the options of multiple choice fields. Default is 'raw'.
 #'
 #' @import dplyr
+#' @importFrom rlang .data
 #' @keywords internal
 
 update_field_names <- function(db_metadata, raw_or_label = 'raw'){
@@ -147,6 +151,6 @@ update_field_names <- function(db_metadata, raw_or_label = 'raw'){
 
   # Unnest and expand checkbox list elements
   out %>%
-    unnest(cols = field_name_updated)
+    unnest(cols = .data$field_name_updated)
 }
 
