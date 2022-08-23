@@ -5,6 +5,7 @@
 #' @param db_data A REDCap database export
 #'
 #' @import dplyr
+#' @importFrom rlang .data
 #' @keywords internal
 
 add_partial_keys <- function(
@@ -14,8 +15,8 @@ add_partial_keys <- function(
 
   db_data <- db_data %>%
     mutate(
-      redcap_event = sub(pattern, "\\1", redcap_event_name),
-      redcap_arm   = as.integer(sub(pattern, "\\2", redcap_event_name))
+      redcap_event = sub(pattern, "\\1", .data$redcap_event_name),
+      redcap_arm   = as.integer(sub(pattern, "\\2", .data$redcap_event_name))
     )
 
   db_data
@@ -31,6 +32,7 @@ add_partial_keys <- function(
 #' @param token The REDCap API token
 #'
 #' @import dplyr tibble REDCapR tidyr
+#' @importFrom rlang .data
 #' @keywords internal
 
 link_arms <- function(
@@ -58,7 +60,7 @@ link_arms <- function(
 
   # Categorize all events/arms and assign all forms that appear in them to a vector. Vectors help with variable length assignments.
   db_event_instruments %>%
-    select(-arm_num) %>%
+    select(-.data$arm_num) %>%
     pivot_wider(names_from = c("unique_event_name"),
                 values_from = c("form"),
                 values_fn = list)
@@ -71,6 +73,7 @@ link_arms <- function(
 #' @param string A \code{db_metadata$select_choices_or_calculations} field pre-filtered for checkbox \code{field_type}
 #'
 #' @import dplyr stringi
+#' @importFrom rlang .data
 #' @keywords internal
 
 parse_labels <- function(string){
@@ -120,6 +123,7 @@ parse_labels <- function(string){
 #' @param string A \code{db_metadata$select_choices_or_calculations} field pre-filtered for checkbox \code{field_type}
 #'
 #' @import dplyr
+#' @importFrom rlang .data
 #' @keywords internal
 
 checkbox_appender <- function(field_name, string){
@@ -141,6 +145,7 @@ checkbox_appender <- function(field_name, string){
 #' @param raw_or_label A string (either 'raw' or 'label') that specifies whether to export the raw coded values or the labels for the options of multiple choice fields. Default is 'raw'.
 #'
 #' @import dplyr
+#' @importFrom rlang .data
 #' @keywords internal
 
 update_field_names <- function(db_metadata, raw_or_label = 'raw'){
@@ -164,7 +169,7 @@ update_field_names <- function(db_metadata, raw_or_label = 'raw'){
 
   # Unnest and expand checkbox list elements
   out %>%
-    unnest(cols = field_name_updated)
+    unnest(cols = .data$field_name_updated)
 }
 
 #' Update Multiple Choice Fields with Label Data
@@ -173,14 +178,15 @@ update_field_names <- function(db_metadata, raw_or_label = 'raw'){
 #' @param db_metadata A REDCap metadata object
 #'
 #' @import dplyr
+#' @importFrom rlang .data :=
 #' @keywords internal
 
 multi_choice_to_labels <- function(db_data, db_metadata){
 
   # Handle columns where we change 0/1 to FALSE/TRUE (logical)
   logical_cols <- db_metadata %>%
-    filter(field_type %in% c("yesno", "truefalse", "checkbox")) %>%
-    pull(field_name_updated)
+    filter(.data$field_type %in% c("yesno", "truefalse", "checkbox")) %>%
+    pull(.data$field_name_updated)
 
   db_data <- db_data %>%
     mutate(across(.cols = logical_cols, as.logical))
@@ -206,10 +212,10 @@ multi_choice_to_labels <- function(db_data, db_metadata){
         mutate(
           !!field_name := as.character(!!field_name)
         ) %>%
-        left_join(parse_labels_output %>% rename(!!field_name := raw), # Could not get working in by argument, instead inject field name for rename in parse_labels_output
+        left_join(parse_labels_output %>% rename(!!field_name := .data$raw), # Could not get working in by argument, instead inject field name for rename in parse_labels_output
                   by = field_name) %>%
-        mutate(!!field_name := label) %>% # Again, use rlang var injection
-        select(-label)
+        mutate(!!field_name := .data$label) %>% # Again, use rlang var injection
+        select(-.data$label)
 
       db_data <- db_data %>%
         mutate(

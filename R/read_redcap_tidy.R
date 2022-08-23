@@ -9,6 +9,7 @@
 #' Output a \code{tibble} with list elements containing tidy dataframes. Ideal for combination of tables with join operations primary and composite keys.
 #'
 #' @import REDCapR
+#' @importFrom rlang .data
 #'
 #' @param redcap_uri The URI (uniform resource identifier) of the REDCap project. Required.
 #' @param token The user-specific string that serves as the password for a project. Required.
@@ -30,7 +31,7 @@ read_redcap_tidy <- function(redcap_uri,
   db_metadata <- redcap_metadata_read(redcap_uri = redcap_uri,
                                       token = token,
                                       verbose = FALSE)$data %>%
-    filter(field_type != "descriptive")
+    filter(.data$field_type != "descriptive")
 
   # Apply database output changes ----
   # Apply checkbox appending functions to metadata
