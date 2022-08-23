@@ -189,7 +189,7 @@ multi_choice_to_labels <- function(db_data, db_metadata){
     pull(.data$field_name_updated)
 
   db_data <- db_data %>%
-    mutate(across(.cols = logical_cols, as.logical))
+    mutate(across(.cols = all_of(logical_cols), as.logical))
 
   for (i in 1:nrow(db_metadata)) {
 
@@ -219,7 +219,7 @@ multi_choice_to_labels <- function(db_data, db_metadata){
 
       db_data <- db_data %>%
         mutate(
-          across(.cols = field_name, .fns = ~factor(., levels = parse_labels_output$label))
+          across(.cols = all_of(field_name), .fns = ~factor(., levels = parse_labels_output$label))
         )
     }
   }

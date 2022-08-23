@@ -78,13 +78,13 @@ extract_nonrepeat_table_long <- function(
     pull(.data$field_name_updated)
 
   if (my_fields[1] != my_record_id) {
-    my_fields <- c(my_record_id, my_fields)
+    my_fields <- c(my_record_id, all_of(my_fields))
   }
 
   # Below necessary to remove descriptive text fields
   # and to add column to indicate that form is completed
   my_fields <- db_data_long %>%
-    select(my_fields, paste0(my_form, "_complete")) %>%
+    select(all_of(my_fields), paste0(my_form, "_complete")) %>%
     names()
 
   # Setup data for loop redcap_arm linking
@@ -144,13 +144,13 @@ extract_repeat_table_long <- function(
     pull(.data$field_name_updated)
 
   if (my_fields[1] != my_record_id) {
-    my_fields <- c(my_record_id, my_fields)
+    my_fields <- c(my_record_id, all_of(my_fields))
   }
 
   # Below necessary to remove descriptive text fields
   # and to add column to indicate that form is completed
   my_fields <- db_data_long %>%
-    select(my_fields, paste0(my_form, "_complete")) %>%
+    select(all_of(my_fields), paste0(my_form, "_complete")) %>%
     names()
 
   # Setup data for loop redcap_arm linking

@@ -72,7 +72,7 @@ extract_nonrepeat_table <- function(
     pull(.data$field_name_updated)
 
   if (my_fields[1] != my_record_id) {
-    my_fields <- c(my_record_id, my_fields)
+    my_fields <- c(my_record_id, all_of(my_fields))
   }
 
   # Below necessary to remove descriptive text fields
@@ -112,7 +112,7 @@ extract_repeat_table <- function(
     pull(.data$field_name_updated)
 
   if (my_fields[1] != my_record_id) {
-    my_fields <- c(my_record_id, my_fields)
+    my_fields <- c(my_record_id, all_of(my_fields))
   }
 
   # Below necessary to remove descriptive text fields
