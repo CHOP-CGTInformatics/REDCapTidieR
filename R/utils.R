@@ -183,6 +183,31 @@ update_field_names <- function(db_metadata, raw_or_label = 'raw'){
 
 multi_choice_to_labels <- function(db_data, db_metadata){
 
+  # form_status_complete Column Handling ----
+  # Must be done before the creation of form_status_complete
+  # select columns that don't appear in field_name_updated and end with "_complete"
+  form_status_cols <- db_data %>%
+    select(!any_of(db_metadata$field_name_updated) & ends_with("_complete")) %>%
+    names()
+
+  db_data <- db_data %>%
+    mutate(
+      # Change double output of raw data to character
+      across(.cols = all_of(form_status_cols),
+             .fns = ~as.character(.)),
+      # Map constant values to raw values
+      across(.cols = all_of(form_status_cols),
+             .fns = ~case_when(. == "0" ~ "Incomplete",
+                              . == "1" ~ "Unverified",
+                              . == "2" ~ "Complete")),
+      # Convert to factor
+      # Map constant values to raw values
+      across(.cols = all_of(form_status_cols),
+             .fns = ~factor(., levels = c("Incomplete", "Unverified", "Complete")))
+    )
+
+
+  # Logical Column Handling ----
   # Handle columns where we change 0/1 to FALSE/TRUE (logical)
   logical_cols <- db_metadata %>%
     filter(.data$field_type %in% c("yesno", "truefalse", "checkbox")) %>%
