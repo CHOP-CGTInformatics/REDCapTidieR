@@ -15,6 +15,7 @@ test_that("read_redcap_tidy works for a classic database with a nonrepeating ins
   # Pull a nonrepeating table from a classic database
   out <-
     read_redcap_tidy(redcap_uri, classic_token) %>%
+    suppressWarnings() %>% # necessary for CRAN submission
     filter(redcap_form_name == "nonrepeated") %>%
     select(redcap_data) %>%
     pluck(1, 1)
@@ -39,6 +40,7 @@ test_that("read_redcap_tidy works for a classic database with a repeating instru
   # Pull a repeating table from a classic database
   out <-
     read_redcap_tidy(redcap_uri, classic_token) %>%
+    suppressWarnings() %>% # necessary for CRAN submission
     filter(redcap_form_name == "repeated") %>%
     select(redcap_data) %>%
     pluck(1, 1)

@@ -5,6 +5,7 @@
 #' @param linked_arms Output of \code{link_arms}, linking forms to REDCap events/arms
 #'
 #' @import dplyr purrr REDCapR checkmate
+#' @importFrom rlang .data
 #' @keywords internal
 
 clean_redcap_long <- function(
@@ -19,14 +20,14 @@ clean_redcap_long <- function(
 
   ## Repeating Forms Logic ----
   repeated_forms <- db_data_long %>%
-    filter(!is.na(redcap_repeat_instrument)) %>%
-    pull(redcap_repeat_instrument) %>%
+    filter(!is.na(.data$redcap_repeat_instrument)) %>%
+    pull(.data$redcap_repeat_instrument) %>%
     unique()
 
   repeated_forms_tibble <- tibble(
     redcap_form_name = repeated_forms,
     redcap_data = map(
-      redcap_form_name,
+      .data$redcap_form_name,
       ~ extract_repeat_table_long(.x, db_data_long, db_metadata_long, linked_arms)
     ),
     structure = "repeating"
@@ -34,14 +35,14 @@ clean_redcap_long <- function(
 
   ## Nonrepeating Forms Logic ----
   nonrepeated_forms <- db_metadata_long %>%
-    pull(form_name) %>%
+    pull(.data$form_name) %>%
     unique() %>%
     setdiff(repeated_forms)
 
   nonrepeated_forms_tibble <- tibble(
     redcap_form_name = nonrepeated_forms,
     redcap_data = map(
-      redcap_form_name,
+      .data$redcap_form_name,
       ~ extract_nonrepeat_table_long(.x, db_data_long, db_metadata_long, linked_arms)
     ),
     structure = "nonrepeating"
@@ -60,6 +61,7 @@ clean_redcap_long <- function(
 #' @param linked_arms Output of \code{link_arms}, linking forms to REDCap events/arms
 #'
 #' @import dplyr REDCapR stringr
+#' @importFrom rlang .data
 #' @keywords internal
 
 extract_nonrepeat_table_long <- function(
@@ -72,45 +74,45 @@ extract_nonrepeat_table_long <- function(
   my_form <- form_name
 
   my_fields <- db_metadata_long %>%
-    filter(form_name == my_form) %>%
-    pull(field_name_updated)
+    filter(.data$form_name == my_form) %>%
+    pull(.data$field_name_updated)
 
   if (my_fields[1] != my_record_id) {
-    my_fields <- c(my_record_id, my_fields)
+    my_fields <- c(my_record_id, all_of(my_fields))
   }
 
   # Below necessary to remove descriptive text fields
   # and to add column to indicate that form is completed
   my_fields <- db_data_long %>%
-    select(my_fields, paste0(my_form, "_complete")) %>%
+    select(all_of(my_fields), paste0(my_form, "_complete")) %>%
     names()
 
   # Setup data for loop redcap_arm linking
   db_data_long <- db_data_long %>%
     add_partial_keys() %>%
-    filter(is.na(redcap_repeat_instance))
+    filter(is.na(.data$redcap_repeat_instance))
 
   # Use link_arms() output to check if my_form appears in each event_name
   # If it does not, filter out all rows containing that event_name
   for (i in 1:length(names(linked_arms))) {
     if (my_form %in% unlist(linked_arms[[i]]) == FALSE) {
       db_data_long <- db_data_long %>%
-        filter(redcap_event_name != names(linked_arms[i]))
+        filter(.data$redcap_event_name != names(linked_arms[i]))
     }
     db_data_long
   }
 
   # Final aesthetic cleanup
   out <- db_data_long %>%
-    select(all_of(my_fields), redcap_event, redcap_arm) %>%
-    relocate(c(redcap_event, redcap_arm), .after = !!my_record_id) %>%
+    select(all_of(my_fields), .data$redcap_event, .data$redcap_arm) %>%
+    relocate(c(.data$redcap_event, .data$redcap_arm), .after = !!my_record_id) %>%
     rename("form_status_complete" = paste0(my_form, "_complete")) %>%
-    relocate(form_status_complete, .after = everything())
+    relocate(.data$form_status_complete, .after = everything())
 
   # Remove arms column if necessary
   if(!any(names(linked_arms) %>% str_detect("arm_2"))){
     out <- out %>%
-      select(-redcap_arm)
+      select(-.data$redcap_arm)
   }
 
   out %>%
@@ -125,6 +127,7 @@ extract_nonrepeat_table_long <- function(
 #' @param linked_arms Output of \code{link_arms}, linking forms to REDCap events/arms
 #'
 #' @import dplyr REDCapR stringr
+#' @importFrom rlang .data
 #' @keywords internal
 
 extract_repeat_table_long <- function(
@@ -137,46 +140,46 @@ extract_repeat_table_long <- function(
   my_form <- form_name
 
   my_fields <- db_metadata_long %>%
-    filter(form_name == my_form) %>%
-    pull(field_name_updated)
+    filter(.data$form_name == my_form) %>%
+    pull(.data$field_name_updated)
 
   if (my_fields[1] != my_record_id) {
-    my_fields <- c(my_record_id, my_fields)
+    my_fields <- c(my_record_id, all_of(my_fields))
   }
 
   # Below necessary to remove descriptive text fields
   # and to add column to indicate that form is completed
   my_fields <- db_data_long %>%
-    select(my_fields, paste0(my_form, "_complete")) %>%
+    select(all_of(my_fields), paste0(my_form, "_complete")) %>%
     names()
 
   # Setup data for loop redcap_arm linking
   db_data_long <- db_data_long %>%
     add_partial_keys() %>%
-    filter(!is.na(redcap_repeat_instance))
+    filter(!is.na(.data$redcap_repeat_instance))
 
   # Use link_arms() output to check if my_form appears in each event_name
   # If it does not, filter out all rows containing that event_name
   for (i in 1:length(names(linked_arms))) {
     if (my_form %in% unlist(linked_arms[[i]]) == FALSE) {
       db_data_long <- db_data_long %>%
-        filter(redcap_event_name != names(linked_arms[i]))
+        filter(.data$redcap_event_name != names(linked_arms[i]))
     }
     db_data_long
   }
 
   # Final aesthetic cleanup
   out <- db_data_long %>%
-    filter(redcap_repeat_instrument == my_form) %>%
-    select(all_of(my_fields), redcap_repeat_instance, redcap_event, redcap_arm) %>%
-    relocate(c(redcap_repeat_instance, redcap_event, redcap_arm), .after = !!my_record_id) %>%
+    filter(.data$redcap_repeat_instrument == my_form) %>%
+    select(all_of(my_fields), .data$redcap_repeat_instance, .data$redcap_event, .data$redcap_arm) %>%
+    relocate(c(.data$redcap_repeat_instance, .data$redcap_event, .data$redcap_arm), .after = !!my_record_id) %>%
     rename("form_status_complete" = paste0(my_form, "_complete")) %>%
-    relocate(form_status_complete, .after = everything())
+    relocate(.data$form_status_complete, .after = everything())
 
   # Remove arms column if necessary
   if(!any(names(linked_arms) %>% str_detect("arm_2"))){
     out <- out %>%
-      select(-redcap_arm)
+      select(-.data$redcap_arm)
   }
 
   out %>%
