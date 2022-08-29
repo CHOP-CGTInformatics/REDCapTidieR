@@ -41,6 +41,14 @@ read_redcap_tidy <- function(redcap_uri,
     db_data <- multi_choice_to_labels(db_data, db_metadata)
   }
 
+  # Check for potential API rights issues ----
+  # If any missing field names detected in metadata output, run the following
+  # resulting in metadata with missing data removed and warn user of action
+  if(any(!db_metadata$field_name_updated %in% names(db_data))) {
+    db_metadata <- check_user_rights(db_data,
+                                     db_metadata)
+  }
+
   # Longitudinal Arms Check and Cleaning Application ----
   # Check if database supplied is longitudinal to determine appropriate function to use
   is_longitudinal <- if("redcap_event_name" %in% names(db_data)){TRUE}else{FALSE}

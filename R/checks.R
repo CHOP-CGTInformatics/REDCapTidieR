@@ -1,0 +1,37 @@
+#' Check for API User Rights Errors
+#'
+#' Check for potential user access rights errors and supply user with an appropriate warning message. this can occur when metadata forms/field names do not appear in a database export.
+#'
+#' @importFrom rlang .data
+#'
+#' @param db_data The REDCap database output defined by \code{REDCapR::reedcap_read_oneshot()$data}
+#' @param db_metadata The REDCap metadata output defined by \code{REDCapR::redcap_metadata_read()$data}
+#'
+#' @export
+#' @keywords internal
+
+check_user_rights <- function(
+    db_data,
+    db_metadata
+) {
+  # Similar to link_arms, use pivot wider to create list elements with top
+  # level form_name and vector of associated field_names
+  missing_db_metadata <- db_metadata %>%
+    filter(!.data$field_name_updated %in% names(db_data)) %>%
+    select(.data$field_name_updated, .data$form_name) %>%
+    pivot_wider(names_from = .data$form_name,
+                values_from = .data$field_name_updated,
+                values_fn = list)
+
+  # Default behavior: Remove missing field names to prevent crash
+  db_metadata <- db_metadata %>%
+    filter(.data$field_name_updated %in% names(db_data))
+
+  # Supply user with warning message(s) displaying missing form name and
+  # associated fields
+  for (i in 1:ncol(missing_db_metadata)) {
+    warning(paste0("Form name {", names(missing_db_metadata)[i], "} detected in metadata but not found in the database export. Check your user API privileges. The following variables have been removed from the output: ", paste(unlist(missing_db_metadata[i][[1]]),  collapse = ", ")), call. = FALSE)
+  }
+
+  db_metadata
+}

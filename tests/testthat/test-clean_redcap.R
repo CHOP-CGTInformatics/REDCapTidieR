@@ -3,6 +3,10 @@ db_data_classic <- readRDS(system.file("testdata/db_data_classic.RDS", package =
 db_metadata_classic <- readRDS(system.file("testdata/db_metadata_classic.RDS", package = "REDCapTidieR"))
 
 test_that("clean_redcap works", {
+  db_metadata_classic <- check_user_rights(db_data = db_data_classic,
+                                           db_metadata = db_metadata_classic) %>%
+    suppressWarnings()
+
   out <- clean_redcap(db_data = db_data_classic,
                       db_metadata = db_metadata_classic)
 
