@@ -45,8 +45,10 @@ read_redcap_tidy <- function(redcap_uri,
   # If any missing field names detected in metadata output, run the following
   # resulting in metadata with missing data removed and warn user of action
   if(any(!db_metadata$field_name_updated %in% names(db_data))) {
-    db_metadata <- check_user_rights(db_data,
-                                     db_metadata)
+    check_user_rights(db_data, db_metadata)
+    # Default behavior: Remove missing field names to prevent crash
+    db_metadata <- db_metadata %>%
+      filter(.data$field_name_updated %in% names(db_data))
   }
 
   # Longitudinal Arms Check and Cleaning Application ----

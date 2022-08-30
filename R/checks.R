@@ -23,15 +23,9 @@ check_user_rights <- function(
                 values_from = .data$field_name_updated,
                 values_fn = list)
 
-  # Default behavior: Remove missing field names to prevent crash
-  db_metadata <- db_metadata %>%
-    filter(.data$field_name_updated %in% names(db_data))
-
   # Supply user with warning message(s) displaying missing form name and
   # associated fields
   for (i in 1:ncol(missing_db_metadata)) {
     warning(paste0("Form name {", names(missing_db_metadata)[i], "} detected in metadata but not found in the database export. Check your user API privileges. The following variables have been removed from the output: ", paste(unlist(missing_db_metadata[i][[1]]),  collapse = ", ")), call. = FALSE)
   }
-
-  db_metadata
 }
