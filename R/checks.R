@@ -1,6 +1,6 @@
-#' Check for API User Rights Errors
+#' Check for API User Privilege Issues
 #'
-#' Check for potential user access rights issues and provide an appropriate warning message. This can occur when metadata forms/field names do not appear in a database export.
+#' Check for potential user access privilege issues and provide an appropriate warning message. This can occur when metadata forms/field names do not appear in a database export.
 #'
 #' @importFrom rlang .data
 #'
