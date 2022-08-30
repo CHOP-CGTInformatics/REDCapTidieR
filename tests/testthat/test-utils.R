@@ -24,6 +24,9 @@ test_that("multi_choice_to_labels works", {
   expect_equal(levels(out$dropdown_single), c("one", "two", "three"))
   expect_factor(out$radio_single)
   expect_equal(levels(out$radio_single), c("A", "B", "C"))
+
+  expect_factor(out$data_field_types_complete)
+  expect_equal(levels(out$data_field_types_complete), c("Incomplete", "Unverified", "Complete"))
 })
 
 test_that("parse_labels works", {
