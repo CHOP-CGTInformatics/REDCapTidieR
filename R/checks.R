@@ -1,6 +1,6 @@
 #' Check for API User Privilege Issues
 #'
-#' Check for potential user access privilege issues and provide an appropriate warning message. 
+#' Check for potential user access privilege issues and provide an appropriate warning message.
 #' This can occur when metadata forms/field names do not appear in a database export.
 #'
 #' @importFrom rlang .data
@@ -28,10 +28,8 @@ check_user_rights <- function(
   # associated fields
   for (i in 1:ncol(missing_db_metadata)) {
     warning(paste0(
-      "Form name {", names(missing_db_metadata)[i], "} detected in metadata ",
-      "but not found in the database export. This can happen when the user privileges are not set to allow
-      "exporting that form via the API. The following variables are affected: ", 
-      paste(unlist(missing_db_metadata[i][[1]]), collapse = ", ")), 
-    call. = FALSE)
+      "Form name {", names(missing_db_metadata)[i], "} detected in metadata, but not found in the database export. This can happen when the user privileges are not set to allow exporting that form via the API. The following variables are affected: ",
+      paste(unlist(missing_db_metadata[i][[1]]), collapse = ", ")),
+      call. = FALSE)
   }
 }
