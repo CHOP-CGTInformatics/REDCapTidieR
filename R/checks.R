@@ -26,7 +26,7 @@ check_user_rights <- function(
 
   # Supply user with warning message(s) displaying missing form name and
   # associated fields
-  for (i in 1:ncol(missing_db_metadata)) {
+  for (i in seq_len(ncol(missing_db_metadata))) {
     warning(paste0(
       "Form name {", names(missing_db_metadata)[i], "} detected in metadata, but not found in the database export. This can happen when the user privileges are not set to allow exporting that form via the API. The following variables are affected: ",
       paste(unlist(missing_db_metadata[i][[1]]), collapse = ", ")),

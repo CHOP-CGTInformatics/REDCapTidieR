@@ -94,7 +94,7 @@ extract_nonrepeat_table_long <- function(
 
   # Use link_arms() output to check if my_form appears in each event_name
   # If it does not, filter out all rows containing that event_name
-  for (i in 1:length(names(linked_arms))) {
+  for (i in seq_along(names(linked_arms))) {
     if (my_form %in% unlist(linked_arms[[i]]) == FALSE) {
       db_data_long <- db_data_long %>%
         filter(.data$redcap_event_name != names(linked_arms[i]))
@@ -160,7 +160,7 @@ extract_repeat_table_long <- function(
 
   # Use link_arms() output to check if my_form appears in each event_name
   # If it does not, filter out all rows containing that event_name
-  for (i in 1:length(names(linked_arms))) {
+  for (i in seq_along(names(linked_arms))) {
     if (my_form %in% unlist(linked_arms[[i]]) == FALSE) {
       db_data_long <- db_data_long %>%
         filter(.data$redcap_event_name != names(linked_arms[i]))

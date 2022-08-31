@@ -70,7 +70,12 @@ Output a tibble with list elements containing tidy dataframes. Ideal for combina
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">read_redcap_tidy</span><span class="op">(</span><span class="va">redcap_uri</span>, <span class="va">token</span>, suppress_messages <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">read_redcap_tidy</span><span class="op">(</span></span>
+<span>  <span class="va">redcap_uri</span>,</span>
+<span>  <span class="va">token</span>,</span>
+<span>  raw_or_label <span class="op">=</span> <span class="st">"label"</span>,</span>
+<span>  suppress_messages <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -81,6 +86,10 @@ Output a tibble with list elements containing tidy dataframes. Ideal for combina
 
 <dt>token</dt>
 <dd><p>The user-specific string that serves as the password for a project. Required.</p></dd>
+
+
+<dt>raw_or_label</dt>
+<dd><p>A string (either 'raw' or 'label') that specifies whether to export the raw coded values or the labels for the options of multiple choice fields. Default is 'label'.</p></dd>
 
 
 <dt>suppress_messages</dt>

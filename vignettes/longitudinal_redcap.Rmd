@@ -70,4 +70,4 @@ The only really noticeable difference here is the inclusion of `redcap_repeat_in
 
 ### Single-Arm Longitudinal REDCap Databases
 
-By default, lonigtudinal REDCap databases are automatically assigned arms. We have found that if the database does not make use of more than the single default arm the assignment of arms is redundant. Therefore, `redcap_arm` will only appear in data ouputs if more than one arm are detected in a database.
+By default, longitudinal REDCap databases are automatically assigned arms. We have found that if the database does not make use of more than the single default arm the assignment of arms is redundant. Therefore, `redcap_arm` will only appear in data ouputs if more than one arm are detected in a database.

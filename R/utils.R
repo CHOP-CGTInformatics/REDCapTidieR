@@ -156,7 +156,7 @@ update_field_names <- function(db_metadata, raw_or_label = 'raw'){
 
   # Apply checkbox appender function to rows of field_type == "checkbox"
   # Assign all field names, including expanded checkbox variables, to a list col
-  for (i in 1:nrow(out)) {
+  for (i in seq_len(nrow(out))) {
     if (out$field_type[i] == "checkbox") {
       out$field_name_updated[i] <- list(
         checkbox_appender(field_name = out$field_name[i],
@@ -216,7 +216,7 @@ multi_choice_to_labels <- function(db_data, db_metadata){
   db_data <- db_data %>%
     mutate(across(.cols = all_of(logical_cols), as.logical))
 
-  for (i in 1:nrow(db_metadata)) {
+  for (i in seq_len(nrow(db_metadata))) {
 
     # Extract metadata field name and database corresponding column name
     field_name <- db_metadata$field_name_updated[i]
