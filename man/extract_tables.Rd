@@ -11,6 +11,9 @@ extract_tables(.data, tbls)
 
 \item{tbls}{REDCap table name specifications, one or more.}
 }
+\value{
+A named list of \code{tibble}s specified by the user.
+}
 \description{
 Supply a \code{read_redcap_tidy()} output and specify tables of interest to extract. Users may supply \code{tidyselect} statements for easier selection.
 }

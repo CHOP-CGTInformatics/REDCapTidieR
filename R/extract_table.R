@@ -1,6 +1,8 @@
-#' Extract a Single Specific REDCapTidieR Table
+#' Extract a Single REDCapTidieR Table
 #'
 #' Supply a \code{read_redcap_tidy()} output and specify a table of interest to extract.
+#'
+#' @returns A single \code{tibble} specified by the user.
 #'
 #' @param .data A tidy table provided by \code{read_redcap_tidy()}
 #' @param tbl REDCap table name specification, one max.
@@ -28,6 +30,8 @@ extract_table <- function(.data,
 #' Extract Multiple Specified REDCapTidieR Tables
 #'
 #' Supply a \code{read_redcap_tidy()} output and specify tables of interest to extract. Users may supply \code{tidyselect} statements for easier selection.
+#'
+#' @returns A named list of \code{tibble}s specified by the user.
 #'
 #' @param .data A tidy table provided by \code{read_redcap_tidy()}
 #' @param tbls REDCap table name specifications, one or more.

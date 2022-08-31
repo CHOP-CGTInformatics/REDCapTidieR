@@ -2,7 +2,7 @@
 % Please edit documentation in R/extract_table.R
 \name{extract_table}
 \alias{extract_table}
-\title{Extract a Single Specific REDCapTidieR Table}
+\title{Extract a Single REDCapTidieR Table}
 \usage{
 extract_table(.data, tbl)
 }
@@ -10,6 +10,9 @@ extract_table(.data, tbl)
 \item{.data}{A tidy table provided by \code{read_redcap_tidy()}}
 
 \item{tbl}{REDCap table name specification, one max.}
+}
+\value{
+A single \code{tibble} specified by the user.
 }
 \description{
 Supply a \code{read_redcap_tidy()} output and specify a table of interest to extract.
