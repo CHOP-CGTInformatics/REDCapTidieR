@@ -8,7 +8,9 @@
 #' }
 #' Output a \code{tibble} with list elements containing tidy dataframes. Ideal for combination of tables with join operations primary and composite keys.
 #'
-#' @import REDCapR
+#' @importFrom REDCapR redcap_read_oneshot  redcap_metadata_read
+#' @importFrom dplyr filter bind_rows %>%
+#' @importFrom tibble tribble
 #' @importFrom rlang .data
 #'
 #' @param redcap_uri The URI (uniform resource identifier) of the REDCap project. Required.

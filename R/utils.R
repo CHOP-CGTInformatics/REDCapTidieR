@@ -4,7 +4,7 @@
 #'
 #' @param db_data A REDCap database export
 #'
-#' @import dplyr
+#' @importFrom dplyr mutate
 #' @importFrom rlang .data
 #' @keywords internal
 
@@ -31,7 +31,11 @@ add_partial_keys <- function(
 #' @param redcap_uri The REDCap URI
 #' @param token The REDCap API token
 #'
-#' @import dplyr tibble REDCapR tidyr
+#' @importFrom dplyr select
+#' @importFrom tidyr pivot_wider
+#' @importFrom REDCapR redcap_event_instruments redcap_arm_export
+#' @importFrom tibble tibble
+#' @importFrom purrr map
 #' @importFrom rlang .data
 #' @keywords internal
 
@@ -72,7 +76,8 @@ link_arms <- function(
 #'
 #' @param string A \code{db_metadata$select_choices_or_calculations} field pre-filtered for checkbox \code{field_type}
 #'
-#' @import dplyr stringi
+#' @importFrom stringi stri_split_fixed
+#' @importFrom tibble as_tibble is_tibble
 #' @importFrom rlang .data
 #' @keywords internal
 
@@ -110,7 +115,7 @@ parse_labels <- function(string){
         c(),               # row names
         c("raw", "label")) # column names
     ) %>%
-    dplyr::as_tibble()
+    as_tibble()
 
   out
 }
@@ -122,7 +127,6 @@ parse_labels <- function(string){
 #' @param field_name The \code{db_metadata$field_name} to append onto the string
 #' @param string A \code{db_metadata$select_choices_or_calculations} field pre-filtered for checkbox \code{field_type}
 #'
-#' @import dplyr
 #' @importFrom rlang .data
 #' @keywords internal
 
@@ -144,7 +148,7 @@ checkbox_appender <- function(field_name, string){
 #' @param db_metadata A REDCap metadata object
 #' @param raw_or_label A string (either 'raw' or 'label') that specifies whether to export the raw coded values or the labels for the options of multiple choice fields. Default is 'raw'.
 #'
-#' @import dplyr
+#' @importFrom tidyr unnest
 #' @importFrom rlang .data
 #' @keywords internal
 
@@ -156,7 +160,7 @@ update_field_names <- function(db_metadata, raw_or_label = 'raw'){
 
   # Apply checkbox appender function to rows of field_type == "checkbox"
   # Assign all field names, including expanded checkbox variables, to a list col
-  for (i in 1:nrow(out)) {
+  for (i in seq_len(nrow(out))) {
     if (out$field_type[i] == "checkbox") {
       out$field_name_updated[i] <- list(
         checkbox_appender(field_name = out$field_name[i],
@@ -177,8 +181,9 @@ update_field_names <- function(db_metadata, raw_or_label = 'raw'){
 #' @param db_data A REDCap database object
 #' @param db_metadata A REDCap metadata object
 #'
-#' @import dplyr
+#' @importFrom dplyr select mutate across case_when filter pull left_join
 #' @importFrom rlang .data :=
+#' @importFrom tidyselect any_of ends_with all_of
 #' @keywords internal
 
 multi_choice_to_labels <- function(db_data, db_metadata){
@@ -216,7 +221,7 @@ multi_choice_to_labels <- function(db_data, db_metadata){
   db_data <- db_data %>%
     mutate(across(.cols = all_of(logical_cols), as.logical))
 
-  for (i in 1:nrow(db_metadata)) {
+  for (i in seq_len(nrow(db_metadata))) {
 
     # Extract metadata field name and database corresponding column name
     field_name <- db_metadata$field_name_updated[i]
