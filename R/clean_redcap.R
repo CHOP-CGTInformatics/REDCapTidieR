@@ -3,7 +3,10 @@
 #' @param db_data The REDCap database output defined by \code{REDCapR::reedcap_read_oneshot()$data}
 #' @param db_metadata The REDCap metadata output defined by \code{REDCapR::redcap_metadata_read()$data}
 #'
-#' @import dplyr purrr REDCapR checkmate
+#' @importFrom checkmate assert_data_frame expect_logical expect_factor expect_character expect_double
+#' @importFrom dplyr filter pull
+#' @importFrom purrr map
+#' @importFrom tibble tibble
 #' @importFrom rlang .data
 #' @keywords internal
 
@@ -55,7 +58,9 @@ clean_redcap <- function(
 #' @param db_data The REDCap database output defined by \code{REDCapR::reedcap_read_oneshot()$data}
 #' @param db_metadata The REDCap metadata output defined by \code{REDCapR::redcap_metadata_read()$data}
 #'
-#' @import dplyr REDCapR
+#' @importFrom dplyr filter pull select relocate rename
+#' @importFrom tidyselect all_of everything starts_with
+#' @importFrom tibble tibble
 #' @importFrom rlang .data
 #' @keywords internal
 
@@ -95,7 +100,9 @@ extract_nonrepeat_table <- function(
 #' @param db_data The non-longitudinal REDCap database output defined by \code{REDCapR::redcap_read_oneshot()$data}
 #' @param db_metadata The non-longitudinal REDCap metadata output defined by \code{REDCapR::redcap_metadata_read()$data}
 #'
-#' @import dplyr REDCapR
+#' @importFrom dplyr filter pull select relocate rename
+#' @importFrom tidyselect all_of everything starts_with
+#' @importFrom tibble tibble
 #' @importFrom rlang .data
 #' @keywords internal
 

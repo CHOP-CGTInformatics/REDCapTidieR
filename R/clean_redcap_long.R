@@ -4,7 +4,10 @@
 #' @param db_metadata_long The longitudinal REDCap metadata output defined by \code{REDCapR::redcap_metadata_read()$data}
 #' @param linked_arms Output of \code{link_arms}, linking forms to REDCap events/arms
 #'
-#' @import dplyr purrr REDCapR checkmate
+#' @importFrom checkmate assert_data_frame
+#' @importFrom dplyr filter pull
+#' @importFrom purrr map
+#' @importFrom tibble tibble
 #' @importFrom rlang .data
 #' @keywords internal
 
@@ -60,7 +63,10 @@ clean_redcap_long <- function(
 #' @param db_metadata_long The REDCap metadata output defined by \code{REDCapR::redcap_metadata_read()$data}
 #' @param linked_arms Output of \code{link_arms}, linking forms to REDCap events/arms
 #'
-#' @import dplyr REDCapR stringr
+#' @importFrom dplyr filter pull select relocate rename
+#' @importFrom tidyselect all_of everything
+#' @importFrom tibble tibble
+#' @importFrom stringr str_detect
 #' @importFrom rlang .data
 #' @keywords internal
 
@@ -94,7 +100,7 @@ extract_nonrepeat_table_long <- function(
 
   # Use link_arms() output to check if my_form appears in each event_name
   # If it does not, filter out all rows containing that event_name
-  for (i in 1:length(names(linked_arms))) {
+  for (i in seq_along(names(linked_arms))) {
     if (my_form %in% unlist(linked_arms[[i]]) == FALSE) {
       db_data_long <- db_data_long %>%
         filter(.data$redcap_event_name != names(linked_arms[i]))
@@ -126,7 +132,10 @@ extract_nonrepeat_table_long <- function(
 #' @param db_metadata_long The REDCap metadata output defined by \code{REDCapR::redcap_metadata_read()$data}
 #' @param linked_arms Output of \code{link_arms}, linking forms to REDCap events/arms
 #'
-#' @import dplyr REDCapR stringr
+#' @importFrom dplyr filter pull select relocate rename
+#' @importFrom tidyselect all_of everything
+#' @importFrom tibble tibble
+#' @importFrom stringr str_detect
 #' @importFrom rlang .data
 #' @keywords internal
 
@@ -160,7 +169,7 @@ extract_repeat_table_long <- function(
 
   # Use link_arms() output to check if my_form appears in each event_name
   # If it does not, filter out all rows containing that event_name
-  for (i in 1:length(names(linked_arms))) {
+  for (i in seq_along(names(linked_arms))) {
     if (my_form %in% unlist(linked_arms[[i]]) == FALSE) {
       db_data_long <- db_data_long %>%
         filter(.data$redcap_event_name != names(linked_arms[i]))

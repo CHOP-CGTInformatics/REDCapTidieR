@@ -25,10 +25,19 @@
     <loc>https://chop-cgtdataops.github.io/REDCapTidieR/index.html</loc>
   </url>
   <url>
+    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/pull_request_template.html</loc>
+  </url>
+  <url>
     <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/add_partial_keys.html</loc>
   </url>
   <url>
     <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/bind_tables.html</loc>
+  </url>
+  <url>
+    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/check_user_rights.html</loc>
+  </url>
+  <url>
+    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/checkbox_appender.html</loc>
   </url>
   <url>
     <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/clean_redcap.html</loc>
@@ -55,6 +64,15 @@
     <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/link_arms.html</loc>
   </url>
   <url>
+    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/multi_choice_to_labels.html</loc>
+  </url>
+  <url>
+    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/parse_labels.html</loc>
+  </url>
+  <url>
     <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/read_redcap_tidy.html</loc>
+  </url>
+  <url>
+    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/update_field_names.html</loc>
   </url>
 </urlset>

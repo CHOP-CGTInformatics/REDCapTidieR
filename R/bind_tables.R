@@ -7,8 +7,9 @@
 #' @param redcap_form_name Specify REDCap form names to load into environment. Default behavior is all forms.
 #' @param structure Specify REDCap structure to load into environment, either \code{repeating} or \code{nonrepeating}. Defaults to all structures.
 #'
+#' @importFrom dplyr filter pull
 #' @importFrom rlang env_poke current_env new_environment global_env
-#' @importFrom purrr map2
+#' @importFrom purrr map2 pluck
 #'
 #' @export
 
