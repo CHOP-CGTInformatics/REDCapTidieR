@@ -1,7 +1,7 @@
 # Load Sample REDCapTidier Database Longitudinal Output
 redcaptidier_longitudintal_db <- readRDS(system.file("testdata/redcaptidier_longitudinal_db.RDS", package = "REDCapTidieR"))
 
-test_that("extract_tables works", {
+test_that("extract_tables works with a vector and tidyselect selectors", {
   # Test tidyselectors work
   expected_everything_out <- list(
     repeated = redcaptidier_longitudintal_db$redcap_data[[1]],
@@ -44,7 +44,7 @@ test_that("extract_tables works", {
                  extract_tables(tbls = c("repeated", "fake_instrument_name")))
 })
 
-test_that("extract_tables works", {
+test_that("extract_table works", {
   expect_error(extract_table(redcaptidier_longitudintal_db, c("repeated", "nonrepeated")))
   expect_error(extract_table(redcaptidier_longitudintal_db, "fake_instrument_name"))
 
