@@ -2,12 +2,12 @@
 % Please edit documentation in R/extract_table.R
 \name{extract_table}
 \alias{extract_table}
-\title{Extract a Single REDCapTidieR Table}
+\title{Extract a Single Table from a REDCapTidieR Supertibble}
 \usage{
 extract_table(.data, tbl)
 }
 \arguments{
-\item{.data}{A tidy table provided by \code{read_redcap_tidy()}}
+\item{.data}{A REDCapTidieR supertibble provided by \code{read_redcap_tidy()}}
 
 \item{tbl}{REDCap table name specification, one max.}
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/extract_table.R
 \name{extract_tables}
 \alias{extract_tables}
-\title{Extract Multiple Specified REDCapTidieR Tables}
+\title{Extract Tables from a REDCapTidieR Supertibble}
 \usage{
 extract_tables(.data, tbls)
 }
@@ -15,5 +15,6 @@ extract_tables(.data, tbls)
 A named list of \code{tibble}s specified by the user.
 }
 \description{
-Supply a \code{read_redcap_tidy()} output and specify tables of interest to extract. Users may supply \code{tidyselect} statements for easier selection.
+Supply a \code{read_redcap_tidy()} output and specify tables of interest to extract.
+Users may supply \code{tidyselect} statements such as `starts_with()` or `ends_with()` for easier selection.
 }
