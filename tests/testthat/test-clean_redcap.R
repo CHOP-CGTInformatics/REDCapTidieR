@@ -1,17 +1,36 @@
 # Load Sample Databases ----
 db_data_classic <- readRDS(system.file("testdata/db_data_classic.RDS", package = "REDCapTidieR"))
 db_metadata_classic <- readRDS(system.file("testdata/db_metadata_classic.RDS", package = "REDCapTidieR"))
+db_data_classic_norepeat <- readRDS(system.file("testdata/db_data_classic_norepeat.RDS", package = "REDCapTidieR"))
+db_metadata_classic_norepeat <- readRDS(system.file("testdata/db_metadata_classic_norepeat.RDS", package = "REDCapTidieR"))
 
 test_that("clean_redcap works", {
   db_metadata_classic <- db_metadata_classic %>%
     filter(.data$field_name_updated %in% names(db_data_classic))
 
   out <- clean_redcap(db_data = db_data_classic,
-                      db_metadata = db_metadata_classic)
+                      db_metadata = db_metadata_classic,
+                      has_repeating = TRUE)
 
   # Check general structure
   expect_true(is_tibble(out))
   expect_true(all(c("repeating", "nonrepeating") %in% out$structure))
+  expect_true(!is.null(out$redcap_data))
+
+})
+
+test_that("clean_redcap works with databases containing no repeating instruments", {
+  db_metadata_classic_norepeat <- db_metadata_classic_norepeat %>%
+    filter(.data$field_name_updated %in% names(db_data_classic_norepeat))
+
+  out <- clean_redcap(db_data = db_data_classic_norepeat,
+                      db_metadata = db_metadata_classic_norepeat,
+                      has_repeating = FALSE)
+
+  # Check general structure
+  expect_true(is_tibble(out))
+  expect_true(!"repeating" %in% out$structure)
+  expect_true("nonrepeating" %in% out$structure)
   expect_true(!is.null(out$redcap_data))
 })
 
@@ -19,7 +38,8 @@ test_that("extract_nonrepeat_table tibble contains expected columns and data typ
 
   out <- extract_nonrepeat_table(form_name = "data_field_types",
                                  db_data = db_data_classic,
-                                 db_metadata = db_metadata_classic)
+                                 db_metadata = db_metadata_classic,
+                                 has_repeating = TRUE)
 
   # Check general structure
   expect_true(is_tibble(out))

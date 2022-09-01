@@ -4,7 +4,7 @@
 \alias{clean_redcap_long}
 \title{Extract Longitudinal REDCap Databases into Tidy Tibbles}
 \usage{
-clean_redcap_long(db_data_long, db_metadata_long, linked_arms)
+clean_redcap_long(db_data_long, db_metadata_long, linked_arms, has_repeating)
 }
 \arguments{
 \item{db_data_long}{The longitudinal REDCap database output defined by \code{REDCapR::redcap_read_oneshot()$data}}
@@ -12,6 +12,8 @@ clean_redcap_long(db_data_long, db_metadata_long, linked_arms)
 \item{db_metadata_long}{The longitudinal REDCap metadata output defined by \code{REDCapR::redcap_metadata_read()$data}}
 
 \item{linked_arms}{Output of \code{link_arms}, linking forms to REDCap events/arms}
+
+\item{has_repeating}{T/F, does the supplied REDCap database contain repeating instruments as determined by its contents.}
 }
 \description{
 Extract Longitudinal REDCap Databases into Tidy Tibbles

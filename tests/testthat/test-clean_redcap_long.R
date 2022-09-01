@@ -3,6 +3,9 @@
 db_data_long <- readRDS(system.file("testdata/db_data_long.RDS", package = "REDCapTidieR"))
 db_metadata_long <- readRDS(system.file("testdata/db_metadata_long.RDS", package = "REDCapTidieR"))
 linked_arms_long <- readRDS(system.file("testdata/linked_arms_long.RDS", package = "REDCapTidieR"))
+db_data_long_norepeat <- readRDS(system.file("testdata/db_data_long_norepeat.RDS", package = "REDCapTidieR"))
+db_metadata_long_norepeat <- readRDS(system.file("testdata/db_metadata_long_norepeat.RDS", package = "REDCapTidieR"))
+linked_arms_long_norepeat <- readRDS(system.file("testdata/linked_arms_long_norepeat.RDS", package = "REDCapTidieR"))
 # No arms datasets
 db_data_long_noarms <- readRDS(system.file("testdata/db_data_long_noarms.RDS", package = "REDCapTidieR"))
 db_metadata_long_noarms <- readRDS(system.file("testdata/db_metadata_long_noarms.RDS", package = "REDCapTidieR"))
@@ -13,18 +16,35 @@ test_that("clean_redcap_long with arms works", {
   ## Check longitudinal structure with arms ----
   out <- clean_redcap_long(db_data = db_data_long,
                            db_metadata = db_metadata_long,
-                           linked_arms = linked_arms_long)
+                           linked_arms = linked_arms_long,
+                           has_repeating = TRUE)
 
   expect_true(is_tibble(out))
   expect_true(all(c("repeating", "nonrepeating") %in% out$structure))
   expect_true(!is.null(out$redcap_data))
 })
 
+test_that("clean_redcap_long works with databases containing no repeating instruments and arms", {
+  ## Check longitudinal structure with arms ----
+  out <- clean_redcap_long(db_data = db_data_long_norepeat,
+                           db_metadata = db_metadata_long_norepeat,
+                           linked_arms = linked_arms_long_norepeat,
+                           has_repeating = FALSE)
+
+  # Check general structure
+  expect_true(is_tibble(out))
+  expect_true(!"repeating" %in% out$structure)
+  expect_true("nonrepeating" %in% out$structure)
+  expect_true(!is.null(out$redcap_data))
+})
+
+
 test_that("clean_redcap_long without arms works", {
   ## Check longitudinal structure without arms ----
   out <- clean_redcap_long(db_data = db_data_long_noarms,
                            db_metadata = db_metadata_long_noarms,
-                           linked_arms = linked_arms_long_noarms)
+                           linked_arms = linked_arms_long_noarms,
+                           has_repeating = TRUE)
 
   expect_true(is_tibble(out))
   expect_true(all(c("repeating", "nonrepeating") %in% out$structure))
@@ -36,7 +56,8 @@ test_that("extract_nonrepeat_table_long tibble contains expected columns for lon
   out <- extract_nonrepeat_table_long(form_name = "nonrepeated",
                                       db_data = db_data_long,
                                       db_metadata = db_metadata_long,
-                                      linked_arms = linked_arms_long)
+                                      linked_arms = linked_arms_long,
+                                      has_repeating = TRUE)
 
   # Check general structure
   expect_true(is_tibble(out))
@@ -67,7 +88,8 @@ test_that("extract_nonrepeat_table_long tibble contains expected columns for lon
   out <- extract_nonrepeat_table_long(form_name = "nonrepeated",
                                       db_data = db_data_long_noarms,
                                       db_metadata = db_metadata_long_noarms,
-                                      linked_arms = linked_arms_long_noarms)
+                                      linked_arms = linked_arms_long_noarms,
+                                      has_repeating = TRUE)
 
   # Check general structure
   expect_true(is_tibble(out))

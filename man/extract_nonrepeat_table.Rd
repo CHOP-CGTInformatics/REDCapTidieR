@@ -4,7 +4,7 @@
 \alias{extract_nonrepeat_table}
 \title{Extract Non-Repeat Tables from non-Longitudinal REDCap Databases}
 \usage{
-extract_nonrepeat_table(form_name, db_data, db_metadata)
+extract_nonrepeat_table(form_name, db_data, db_metadata, has_repeating)
 }
 \arguments{
 \item{form_name}{The \code{form_name} described in the named column from the REDCap metadata.}
@@ -12,6 +12,8 @@ extract_nonrepeat_table(form_name, db_data, db_metadata)
 \item{db_data}{The REDCap database output defined by \code{REDCapR::reedcap_read_oneshot()$data}}
 
 \item{db_metadata}{The REDCap metadata output defined by \code{REDCapR::redcap_metadata_read()$data}}
+
+\item{has_repeating}{T/F, does the supplied REDCap database contain repeating instruments as determined by its contents.}
 }
 \description{
 Extract Non-Repeat Tables from non-Longitudinal REDCap Databases

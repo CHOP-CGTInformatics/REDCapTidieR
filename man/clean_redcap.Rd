@@ -4,12 +4,14 @@
 \alias{clean_redcap}
 \title{Extract non-Longitudinal REDCap Databases into Tidy Tibbles}
 \usage{
-clean_redcap(db_data, db_metadata)
+clean_redcap(db_data, db_metadata, has_repeating)
 }
 \arguments{
 \item{db_data}{The REDCap database output defined by \code{REDCapR::reedcap_read_oneshot()$data}}
 
 \item{db_metadata}{The REDCap metadata output defined by \code{REDCapR::redcap_metadata_read()$data}}
+
+\item{has_repeating}{T/F, does the supplied REDCap database contain repeating instruments as determined by its contents.}
 }
 \description{
 Extract non-Longitudinal REDCap Databases into Tidy Tibbles

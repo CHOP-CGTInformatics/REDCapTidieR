@@ -2,6 +2,7 @@
 #'
 #' @param db_data The REDCap database output defined by \code{REDCapR::reedcap_read_oneshot()$data}
 #' @param db_metadata The REDCap metadata output defined by \code{REDCapR::redcap_metadata_read()$data}
+#' @param has_repeating T/F, does the supplied REDCap database contain repeating instruments as determined by its contents.
 #'
 #' @importFrom checkmate assert_data_frame expect_logical expect_factor expect_character expect_double
 #' @importFrom dplyr filter pull
@@ -12,44 +13,58 @@
 
 clean_redcap <- function(
     db_data,
-    db_metadata
+    db_metadata,
+    has_repeating
 ){
 
   # Apply checkmate checks ---
   assert_data_frame(db_data)
   assert_data_frame(db_metadata)
 
-  repeated_forms <- db_data %>%
-    filter(!is.na(.data$redcap_repeat_instrument)) %>%
-    pull(.data$redcap_repeat_instrument) %>%
-    unique()
+  ## Repeating Forms Logic ----
+  if(has_repeating){
+    repeated_forms <- db_data %>%
+      filter(!is.na(.data$redcap_repeat_instrument)) %>%
+      pull(.data$redcap_repeat_instrument) %>%
+      unique()
 
-  repeated_forms_tibble <- tibble(
-    redcap_form_name = repeated_forms,
-    redcap_data = map(
-      repeated_forms,
-      ~ extract_repeat_table(.x, db_data, db_metadata)
-    ),
-    structure = "repeating"
-  )
+    repeated_forms_tibble <- tibble(
+      redcap_form_name = repeated_forms,
+      redcap_data = map(
+        repeated_forms,
+        ~ extract_repeat_table(.x, db_data, db_metadata)
+      ),
+      structure = "repeating"
+    )
+  }
 
+  ## Nonrepeating Forms Logic ----
   nonrepeated_forms <- db_metadata %>%
     pull(.data$form_name) %>%
-    unique() %>%
-    setdiff(repeated_forms)
+    unique()
+
+  if (has_repeating) {
+    nonrepeated_forms <- setdiff(nonrepeated_forms,
+                                 repeated_forms)
+  }
 
   nonrepeated_forms_tibble <- tibble(
     redcap_form_name = nonrepeated_forms,
     redcap_data = map(
       nonrepeated_forms,
-      ~ extract_nonrepeat_table(.x, db_data, db_metadata)
+      ~ extract_nonrepeat_table(.x,
+                                db_data,
+                                db_metadata,
+                                has_repeating)
     ),
     structure = "nonrepeating"
   )
 
-  clean_redcap_output <- rbind(repeated_forms_tibble, nonrepeated_forms_tibble)
-
-  clean_redcap_output
+  if(has_repeating){
+    clean_redcap_output <- rbind(repeated_forms_tibble, nonrepeated_forms_tibble)
+  } else {
+    clean_redcap_output <- nonrepeated_forms_tibble
+  }
 }
 
 #' Extract Non-Repeat Tables from non-Longitudinal REDCap Databases
@@ -57,6 +72,7 @@ clean_redcap <- function(
 #' @param form_name The \code{form_name} described in the named column from the REDCap metadata.
 #' @param db_data The REDCap database output defined by \code{REDCapR::reedcap_read_oneshot()$data}
 #' @param db_metadata The REDCap metadata output defined by \code{REDCapR::redcap_metadata_read()$data}
+#' @param has_repeating T/F, does the supplied REDCap database contain repeating instruments as determined by its contents.
 #'
 #' @importFrom dplyr filter pull select relocate rename
 #' @importFrom tidyselect all_of everything starts_with
@@ -67,7 +83,8 @@ clean_redcap <- function(
 extract_nonrepeat_table <- function(
     form_name,
     db_data,
-    db_metadata
+    db_metadata,
+    has_repeating
 ){
   my_record_id <- names(db_data)[1]
   my_form <- form_name
@@ -86,8 +103,12 @@ extract_nonrepeat_table <- function(
     select(starts_with(my_fields), paste0(my_form, "_complete")) %>%
     names()
 
+  if(has_repeating){
+    db_data <- db_data %>%
+      filter(is.na(.data$redcap_repeat_instance))
+  }
+
   db_data %>%
-    filter(is.na(.data$redcap_repeat_instance)) %>%
     select(all_of(my_fields)) %>%
     rename("form_status_complete" = paste0(my_form, "_complete")) %>%
     relocate(.data$form_status_complete, .after = everything()) %>%

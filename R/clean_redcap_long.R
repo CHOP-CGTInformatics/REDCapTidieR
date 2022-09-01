@@ -3,6 +3,7 @@
 #' @param db_data_long The longitudinal REDCap database output defined by \code{REDCapR::redcap_read_oneshot()$data}
 #' @param db_metadata_long The longitudinal REDCap metadata output defined by \code{REDCapR::redcap_metadata_read()$data}
 #' @param linked_arms Output of \code{link_arms}, linking forms to REDCap events/arms
+#' @param has_repeating T/F, does the supplied REDCap database contain repeating instruments as determined by its contents.
 #'
 #' @importFrom checkmate assert_data_frame
 #' @importFrom dplyr filter pull
@@ -14,7 +15,8 @@
 clean_redcap_long <- function(
     db_data_long,
     db_metadata_long,
-    linked_arms
+    linked_arms,
+    has_repeating
 ){
 
   # Apply checkmate checks
@@ -22,38 +24,50 @@ clean_redcap_long <- function(
   assert_data_frame(db_metadata_long)
 
   ## Repeating Forms Logic ----
-  repeated_forms <- db_data_long %>%
-    filter(!is.na(.data$redcap_repeat_instrument)) %>%
-    pull(.data$redcap_repeat_instrument) %>%
-    unique()
+  if(has_repeating){
+    repeated_forms <- db_data_long %>%
+      filter(!is.na(.data$redcap_repeat_instrument)) %>%
+      pull(.data$redcap_repeat_instrument) %>%
+      unique()
 
-  repeated_forms_tibble <- tibble(
-    redcap_form_name = repeated_forms,
-    redcap_data = map(
-      .data$redcap_form_name,
-      ~ extract_repeat_table_long(.x, db_data_long, db_metadata_long, linked_arms)
-    ),
-    structure = "repeating"
-  )
+    repeated_forms_tibble <- tibble(
+      redcap_form_name = repeated_forms,
+      redcap_data = map(
+        .data$redcap_form_name,
+        ~ extract_repeat_table_long(.x, db_data_long, db_metadata_long, linked_arms)
+      ),
+      structure = "repeating"
+    )
+  }
 
   ## Nonrepeating Forms Logic ----
   nonrepeated_forms <- db_metadata_long %>%
     pull(.data$form_name) %>%
-    unique() %>%
-    setdiff(repeated_forms)
+    unique()
+
+  if (has_repeating) {
+    nonrepeated_forms <- setdiff(nonrepeated_forms,
+                                 repeated_forms)
+  }
 
   nonrepeated_forms_tibble <- tibble(
     redcap_form_name = nonrepeated_forms,
     redcap_data = map(
       .data$redcap_form_name,
-      ~ extract_nonrepeat_table_long(.x, db_data_long, db_metadata_long, linked_arms)
+      ~ extract_nonrepeat_table_long(.x,
+                                     db_data_long,
+                                     db_metadata_long,
+                                     linked_arms,
+                                     has_repeating)
     ),
     structure = "nonrepeating"
   )
 
-  clean_redcap_output <- rbind(repeated_forms_tibble, nonrepeated_forms_tibble)
-
-  clean_redcap_output
+  if(has_repeating){
+    clean_redcap_output <- rbind(repeated_forms_tibble, nonrepeated_forms_tibble)
+  } else {
+    clean_redcap_output <- nonrepeated_forms_tibble
+  }
 }
 
 #' Extract Non-Repeat Tables from Longitudinal REDCap Databases
@@ -62,6 +76,7 @@ clean_redcap_long <- function(
 #' @param db_data_long The REDCap database output defined by \code{REDCapR::reedcap_read_oneshot()$data}
 #' @param db_metadata_long The REDCap metadata output defined by \code{REDCapR::redcap_metadata_read()$data}
 #' @param linked_arms Output of \code{link_arms}, linking forms to REDCap events/arms
+#' @param has_repeating T/F, does the supplied REDCap database contain repeating instruments as determined by its contents.
 #'
 #' @importFrom dplyr filter pull select relocate rename
 #' @importFrom tidyselect all_of everything
@@ -74,7 +89,8 @@ extract_nonrepeat_table_long <- function(
     form_name,
     db_data_long,
     db_metadata_long,
-    linked_arms
+    linked_arms,
+    has_repeating
 ){
   my_record_id <- names(db_data_long)[1]
   my_form <- form_name
@@ -95,8 +111,12 @@ extract_nonrepeat_table_long <- function(
 
   # Setup data for loop redcap_arm linking
   db_data_long <- db_data_long %>%
-    add_partial_keys() %>%
-    filter(is.na(.data$redcap_repeat_instance))
+    add_partial_keys()
+
+  if(has_repeating){
+   db_data_long <- db_data_long %>%
+     filter(is.na(.data$redcap_repeat_instance))
+  }
 
   # Use link_arms() output to check if my_form appears in each event_name
   # If it does not, filter out all rows containing that event_name
