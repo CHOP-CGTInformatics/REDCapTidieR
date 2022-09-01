@@ -10,3 +10,5 @@ reference:
   contents:
   - read_redcap_tidy
   - bind_tables
+  - extract_table
+  - extract_tables
