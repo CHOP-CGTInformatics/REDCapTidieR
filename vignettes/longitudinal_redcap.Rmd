@@ -2,7 +2,7 @@
 title: "Working with Longitudinal REDCap Databases"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{longitudinal_redcap}
+  %\VignetteIndexEntry{Working with Longitudinal REDCap Databases}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

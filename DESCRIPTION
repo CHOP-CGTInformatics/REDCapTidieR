@@ -19,7 +19,8 @@ Imports:
     stringi,
     stringr,
     tibble,
-    tidyr
+    tidyr,
+    tidyselect
 RoxygenNote: 7.2.1
 URL: https://github.com/CHOP-CGTDataOps/REDCapTidieR,
     https://chop-cgtdataops.github.io/REDCapTidieR/

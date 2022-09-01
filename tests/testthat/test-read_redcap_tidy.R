@@ -1,3 +1,5 @@
+skip_on_cran()
+
 # Load initial variables
 `%notin%` <- Negate(`%in%`)
 classic_token <- Sys.getenv("REDCAPTIDIER_CLASSIC_API")
