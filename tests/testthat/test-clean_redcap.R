@@ -9,8 +9,7 @@ test_that("clean_redcap works", {
     filter(.data$field_name_updated %in% names(db_data_classic))
 
   out <- clean_redcap(db_data = db_data_classic,
-                      db_metadata = db_metadata_classic,
-                      has_repeating = TRUE)
+                      db_metadata = db_metadata_classic)
 
   # Check general structure
   expect_true(is_tibble(out))
@@ -24,8 +23,7 @@ test_that("clean_redcap works with databases containing no repeating instruments
     filter(.data$field_name_updated %in% names(db_data_classic_norepeat))
 
   out <- clean_redcap(db_data = db_data_classic_norepeat,
-                      db_metadata = db_metadata_classic_norepeat,
-                      has_repeating = FALSE)
+                      db_metadata = db_metadata_classic_norepeat)
 
   # Check general structure
   expect_true(is_tibble(out))

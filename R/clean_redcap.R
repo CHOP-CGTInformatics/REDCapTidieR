@@ -2,7 +2,6 @@
 #'
 #' @param db_data The REDCap database output defined by \code{REDCapR::reedcap_read_oneshot()$data}
 #' @param db_metadata The REDCap metadata output defined by \code{REDCapR::redcap_metadata_read()$data}
-#' @param has_repeating T/F, does the supplied REDCap database contain repeating instruments as determined by its contents.
 #'
 #' @importFrom checkmate assert_data_frame expect_logical expect_factor expect_character expect_double
 #' @importFrom dplyr filter pull
@@ -13,13 +12,17 @@
 
 clean_redcap <- function(
     db_data,
-    db_metadata,
-    has_repeating
+    db_metadata
 ){
 
   # Apply checkmate checks ---
   assert_data_frame(db_data)
   assert_data_frame(db_metadata)
+
+  # Repeating Instrument Check ----
+  # Check if database supplied contains any repeating instruments to map onto `redcap_repeat_*` variables
+
+  has_repeating <- if("redcap_repeat_instance" %in% names(db_data)){TRUE}else{FALSE}
 
   ## Repeating Forms Logic ----
   if(has_repeating){

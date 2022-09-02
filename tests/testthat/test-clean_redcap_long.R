@@ -16,8 +16,7 @@ test_that("clean_redcap_long with arms works", {
   ## Check longitudinal structure with arms ----
   out <- clean_redcap_long(db_data = db_data_long,
                            db_metadata = db_metadata_long,
-                           linked_arms = linked_arms_long,
-                           has_repeating = TRUE)
+                           linked_arms = linked_arms_long)
 
   expect_true(is_tibble(out))
   expect_true(all(c("repeating", "nonrepeating") %in% out$structure))
@@ -28,8 +27,7 @@ test_that("clean_redcap_long works with databases containing no repeating instru
   ## Check longitudinal structure with arms ----
   out <- clean_redcap_long(db_data = db_data_long_norepeat,
                            db_metadata = db_metadata_long_norepeat,
-                           linked_arms = linked_arms_long_norepeat,
-                           has_repeating = FALSE)
+                           linked_arms = linked_arms_long_norepeat)
 
   # Check general structure
   expect_true(is_tibble(out))
@@ -43,8 +41,7 @@ test_that("clean_redcap_long without arms works", {
   ## Check longitudinal structure without arms ----
   out <- clean_redcap_long(db_data = db_data_long_noarms,
                            db_metadata = db_metadata_long_noarms,
-                           linked_arms = linked_arms_long_noarms,
-                           has_repeating = TRUE)
+                           linked_arms = linked_arms_long_noarms)
 
   expect_true(is_tibble(out))
   expect_true(all(c("repeating", "nonrepeating") %in% out$structure))

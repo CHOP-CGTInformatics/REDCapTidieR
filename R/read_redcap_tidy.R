@@ -53,11 +53,6 @@ read_redcap_tidy <- function(redcap_uri,
       filter(.data$field_name_updated %in% names(db_data))
   }
 
-  # Repeating Instrument Check ----
-  # Check if database supplied contains any repeating instruments to map onto `redcap_repeat_*` variables
-
-  has_repeating <- if("redcap_repeat_instance" %in% names(db_data)){TRUE}else{FALSE}
-
   # Longitudinal Arms Check and Cleaning Application ----
   # Check if database supplied is longitudinal to determine appropriate function to use
   is_longitudinal <- if("redcap_event_name" %in% names(db_data)){TRUE}else{FALSE}
@@ -70,12 +65,10 @@ read_redcap_tidy <- function(redcap_uri,
 
     out <- clean_redcap_long(db_data_long = db_data,
                              db_metadata_long = db_metadata,
-                             linked_arms = linked_arms,
-                             has_repeating = has_repeating)
+                             linked_arms = linked_arms)
   } else {
     out <- clean_redcap(db_data = db_data,
-                        db_metadata = db_metadata,
-                        has_repeating = has_repeating)
+                        db_metadata = db_metadata)
   }
 
 }
