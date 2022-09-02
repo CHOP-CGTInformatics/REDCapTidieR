@@ -17,12 +17,11 @@ test_that("check_user_rights works", {
 })
 
 test_that("check_repeat_and_nonrepeat works", {
-  test_data <- tibble(
-    record_id = c(1, 2, 3),
-    redcap_event_name = c("event_1", "event_2", "event_2"),
-    redcap_repeat_instrument = c(NA, "combination", "combination"),
-    redcap_repeat_instance = c(NA, 1, 2),
-    combination_variable = c("A", "B", "C")
+  test_data2 <- tribble(
+    ~record_id,  ~redcap_event_name, ~redcap_repeat_instrument, ~redcap_repeat_instance, ~combination_variable,
+    1,            "event_1",         NA,                        NA,                      "A",
+    2,            "event_2",         "combination",             1,                       "B",
+    3,            "event_3",         "combination",             2,                       "C"
   )
 
   expect_error(check_repeat_and_nonrepeat(db_data = test_data))
