@@ -88,7 +88,7 @@ parse_labels <- function(string){
   # Check there is a comma in all | delimited strsplit elements
   if (!all(grepl(",", out[[1]]))) {
     # If this is a misattributed data field or blank, throw warning in multi_choice_to_labels
-    if (length(out[[1]]) > 1 & !is.na(out[[1]])){
+    if (length(out[[1]]) > 1 & !all(is.na(out[[1]]))){
       stop(paste0("Cannot parse the select_choices_or_calculations field from REDCap metadata. This may happen if there is a pipe character `|` inside the label: ", string))
     }
   }
@@ -102,7 +102,7 @@ parse_labels <- function(string){
   # Check if vector is even for matrix creation. If not, then fail.
   if (length(out) %% 2 != 0) {
     # If this is a misattributed data field or blank, throw warning in multi_choice_to_labels
-    if (length(out[[1]]) > 1 & !is.na(out[[1]])){
+    if (length(out[[1]]) > 1 && !all(is.na(out[[1]]))){
       stop(paste0("Cannot parse the select_choices_or_calculations field from REDCap metadata. This may happen if there is a pipe character `|` inside the label: ", string))
     }
   }
