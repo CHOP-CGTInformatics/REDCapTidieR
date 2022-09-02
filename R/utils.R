@@ -128,6 +128,7 @@ parse_labels <- function(string){
 #' @param string A \code{db_metadata$select_choices_or_calculations} field pre-filtered for checkbox \code{field_type}
 #'
 #' @importFrom rlang .data
+#' @importFrom stringr str_replace_all
 #' @keywords internal
 
 checkbox_appender <- function(field_name, string){
@@ -135,6 +136,7 @@ checkbox_appender <- function(field_name, string){
 
   out <- parse_labels(string)
   out$raw <- tolower(out$raw)
+  out$raw <- str_replace_all(out$raw, "-", "_")
   # append each element of the split vector with the field_name prefix and then recombine
   out <- paste0(prefix, out[[1]])
 
