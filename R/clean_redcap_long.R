@@ -21,6 +21,8 @@ clean_redcap_long <- function(
   assert_data_frame(db_data_long)
   assert_data_frame(db_metadata_long)
 
+  check_repeat_and_nonrepeat(db_data_long)
+
   ## Repeating Forms Logic ----
   repeated_forms <- db_data_long %>%
     filter(!is.na(.data$redcap_repeat_instrument)) %>%
