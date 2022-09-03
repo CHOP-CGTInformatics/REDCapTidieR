@@ -8,8 +8,7 @@ extract_nonrepeat_table_long(
   form_name,
   db_data_long,
   db_metadata_long,
-  linked_arms,
-  has_repeating
+  linked_arms
 )
 }
 \arguments{
@@ -20,8 +19,6 @@ extract_nonrepeat_table_long(
 \item{db_metadata_long}{The REDCap metadata output defined by \code{REDCapR::redcap_metadata_read()$data}}
 
 \item{linked_arms}{Output of \code{link_arms}, linking forms to REDCap events/arms}
-
-\item{has_repeating}{T/F, does the supplied REDCap database contain repeating instruments as determined by its contents.}
 }
 \description{
 Extract Non-Repeat Tables from Longitudinal REDCap Databases

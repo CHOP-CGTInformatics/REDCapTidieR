@@ -36,8 +36,7 @@ test_that("extract_nonrepeat_table tibble contains expected columns and data typ
 
   out <- extract_nonrepeat_table(form_name = "data_field_types",
                                  db_data = db_data_classic,
-                                 db_metadata = db_metadata_classic,
-                                 has_repeating = TRUE)
+                                 db_metadata = db_metadata_classic)
 
   # Check general structure
   expect_true(is_tibble(out))
