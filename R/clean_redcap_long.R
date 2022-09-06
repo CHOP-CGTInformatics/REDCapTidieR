@@ -23,39 +23,55 @@ clean_redcap_long <- function(
 
   check_repeat_and_nonrepeat(db_data_long)
 
-  ## Repeating Forms Logic ----
-  repeated_forms <- db_data_long %>%
-    filter(!is.na(.data$redcap_repeat_instrument)) %>%
-    pull(.data$redcap_repeat_instrument) %>%
-    unique()
+  # Repeating Instrument Check ----
+  # Check if database supplied contains any repeating instruments to map onto `redcap_repeat_*` variables
 
-  repeated_forms_tibble <- tibble(
-    redcap_form_name = repeated_forms,
-    redcap_data = map(
-      .data$redcap_form_name,
-      ~ extract_repeat_table_long(.x, db_data_long, db_metadata_long, linked_arms)
-    ),
-    structure = "repeating"
-  )
+  has_repeating <- if("redcap_repeat_instance" %in% names(db_data_long)){TRUE}else{FALSE}
+
+  ## Repeating Forms Logic ----
+  if(has_repeating){
+    repeated_forms <- db_data_long %>%
+      filter(!is.na(.data$redcap_repeat_instrument)) %>%
+      pull(.data$redcap_repeat_instrument) %>%
+      unique()
+
+    repeated_forms_tibble <- tibble(
+      redcap_form_name = repeated_forms,
+      redcap_data = map(
+        .data$redcap_form_name,
+        ~ extract_repeat_table_long(.x, db_data_long, db_metadata_long, linked_arms)
+      ),
+      structure = "repeating"
+    )
+  }
 
   ## Nonrepeating Forms Logic ----
   nonrepeated_forms <- db_metadata_long %>%
     pull(.data$form_name) %>%
-    unique() %>%
-    setdiff(repeated_forms)
+    unique()
+
+  if (has_repeating) {
+    nonrepeated_forms <- setdiff(nonrepeated_forms,
+                                 repeated_forms)
+  }
 
   nonrepeated_forms_tibble <- tibble(
     redcap_form_name = nonrepeated_forms,
     redcap_data = map(
       .data$redcap_form_name,
-      ~ extract_nonrepeat_table_long(.x, db_data_long, db_metadata_long, linked_arms)
+      ~ extract_nonrepeat_table_long(.x,
+                                     db_data_long,
+                                     db_metadata_long,
+                                     linked_arms)
     ),
     structure = "nonrepeating"
   )
 
-  clean_redcap_output <- rbind(repeated_forms_tibble, nonrepeated_forms_tibble)
-
-  clean_redcap_output
+  if(has_repeating){
+    clean_redcap_output <- rbind(repeated_forms_tibble, nonrepeated_forms_tibble)
+  } else {
+    clean_redcap_output <- nonrepeated_forms_tibble
+  }
 }
 
 #' Extract Non-Repeat Tables from Longitudinal REDCap Databases
@@ -78,6 +94,10 @@ extract_nonrepeat_table_long <- function(
     db_metadata_long,
     linked_arms
 ){
+  # Repeating Instrument Check ----
+  # Check if database supplied contains any repeating instruments to map onto `redcap_repeat_*` variables
+  has_repeating <- if("redcap_repeat_instance" %in% names(db_data_long)){TRUE}else{FALSE}
+
   my_record_id <- names(db_data_long)[1]
   my_form <- form_name
 
@@ -97,8 +117,12 @@ extract_nonrepeat_table_long <- function(
 
   # Setup data for loop redcap_arm linking
   db_data_long <- db_data_long %>%
-    add_partial_keys() %>%
-    filter(is.na(.data$redcap_repeat_instance))
+    add_partial_keys()
+
+  if(has_repeating){
+   db_data_long <- db_data_long %>%
+     filter(is.na(.data$redcap_repeat_instance))
+  }
 
   # Use link_arms() output to check if my_form appears in each event_name
   # If it does not, filter out all rows containing that event_name

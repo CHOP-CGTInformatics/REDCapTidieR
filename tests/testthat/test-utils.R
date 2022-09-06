@@ -2,7 +2,32 @@
 db_data_classic <- readRDS(system.file("testdata/db_data_classic.RDS", package = "REDCapTidieR"))
 db_metadata_classic <- readRDS(system.file("testdata/db_metadata_classic.RDS", package = "REDCapTidieR"))
 
+test_that("update_data_field_names works", {
+  test_data <- tribble(
+    ~`checkbox____99`,   ~`checkbox____98`,
+    0,                    1,
+    1,                    0,
+    1,                    0
+  )
+
+  test_meta <- tribble(
+    ~field_name_updated,
+    "checkbox___-99",
+    "checkbox___-98",
+    "test_column"
+  )
+
+  out <- update_data_col_names(db_data = test_data,
+                               db_metadata = test_meta)
+
+  expect_true(all(c("checkbox___-99", "checkbox___-98") %in% names(out)))
+})
+
 test_that("multi_choice_to_labels works", {
+
+  db_data_classic <- update_data_col_names(db_data_classic,
+                                           db_metadata_classic)
+
   # Expect warning on error variable where a radio button is created for a descriptive text field
   expect_warning(multi_choice_to_labels(db_data = db_data_classic,
                                         db_metadata = db_metadata_classic))

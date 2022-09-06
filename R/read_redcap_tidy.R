@@ -37,7 +37,11 @@ read_redcap_tidy <- function(redcap_uri,
 
   # Apply database output changes ----
   # Apply checkbox appending functions to metadata
-  db_metadata <- update_field_names(db_metadata, raw_or_label = raw_or_label)
+  db_metadata <- update_field_names(db_metadata)
+  # Note: Order of functions calls between `update_*` matters
+  if("checkbox" %in% db_metadata$field_type) {
+    db_data <- update_data_col_names(db_data, db_metadata)
+  }
 
   if (raw_or_label == "label"){
     db_data <- multi_choice_to_labels(db_data, db_metadata)

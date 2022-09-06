@@ -3,6 +3,9 @@
 db_data_long <- readRDS(system.file("testdata/db_data_long.RDS", package = "REDCapTidieR"))
 db_metadata_long <- readRDS(system.file("testdata/db_metadata_long.RDS", package = "REDCapTidieR"))
 linked_arms_long <- readRDS(system.file("testdata/linked_arms_long.RDS", package = "REDCapTidieR"))
+db_data_long_norepeat <- readRDS(system.file("testdata/db_data_long_norepeat.RDS", package = "REDCapTidieR"))
+db_metadata_long_norepeat <- readRDS(system.file("testdata/db_metadata_long_norepeat.RDS", package = "REDCapTidieR"))
+linked_arms_long_norepeat <- readRDS(system.file("testdata/linked_arms_long_norepeat.RDS", package = "REDCapTidieR"))
 # No arms datasets
 db_data_long_noarms <- readRDS(system.file("testdata/db_data_long_noarms.RDS", package = "REDCapTidieR"))
 db_metadata_long_noarms <- readRDS(system.file("testdata/db_metadata_long_noarms.RDS", package = "REDCapTidieR"))
@@ -11,8 +14,8 @@ linked_arms_long_noarms <- readRDS(system.file("testdata/linked_arms_long_noarms
 # Run Tests ----
 test_that("clean_redcap_long with arms works", {
   ## Check longitudinal structure with arms ----
-  out <- clean_redcap_long(db_data = db_data_long,
-                           db_metadata = db_metadata_long,
+  out <- clean_redcap_long(db_data_long = db_data_long,
+                           db_metadata_long = db_metadata_long,
                            linked_arms = linked_arms_long)
 
   expect_true(is_tibble(out))
@@ -20,10 +23,24 @@ test_that("clean_redcap_long with arms works", {
   expect_true(!is.null(out$redcap_data))
 })
 
+test_that("clean_redcap_long works with databases containing no repeating instruments and arms", {
+  ## Check longitudinal structure with arms ----
+  out <- clean_redcap_long(db_data_long = db_data_long_norepeat,
+                           db_metadata_long = db_metadata_long_norepeat,
+                           linked_arms = linked_arms_long_norepeat)
+
+  # Check general structure
+  expect_true(is_tibble(out))
+  expect_true(!"repeating" %in% out$structure)
+  expect_true("nonrepeating" %in% out$structure)
+  expect_true(!is.null(out$redcap_data))
+})
+
+
 test_that("clean_redcap_long without arms works", {
   ## Check longitudinal structure without arms ----
-  out <- clean_redcap_long(db_data = db_data_long_noarms,
-                           db_metadata = db_metadata_long_noarms,
+  out <- clean_redcap_long(db_data_long = db_data_long_noarms,
+                           db_metadata_long = db_metadata_long_noarms,
                            linked_arms = linked_arms_long_noarms)
 
   expect_true(is_tibble(out))
@@ -34,8 +51,8 @@ test_that("clean_redcap_long without arms works", {
 test_that("extract_nonrepeat_table_long tibble contains expected columns for longitudinal REDCap databases with arms", {
   ## Check longitudinal structure with arms ----
   out <- extract_nonrepeat_table_long(form_name = "nonrepeated",
-                                      db_data = db_data_long,
-                                      db_metadata = db_metadata_long,
+                                      db_data_long = db_data_long,
+                                      db_metadata_long = db_metadata_long,
                                       linked_arms = linked_arms_long)
 
   # Check general structure
@@ -65,8 +82,8 @@ test_that("extract_nonrepeat_table_long tibble contains expected columns for lon
 test_that("extract_nonrepeat_table_long tibble contains expected columns for longitudinal REDCap databases without arms", {
   ## Check longitudinal structure without arms ----
   out <- extract_nonrepeat_table_long(form_name = "nonrepeated",
-                                      db_data = db_data_long_noarms,
-                                      db_metadata = db_metadata_long_noarms,
+                                      db_data_long = db_data_long_noarms,
+                                      db_metadata_long = db_metadata_long_noarms,
                                       linked_arms = linked_arms_long_noarms)
 
   # Check general structure
