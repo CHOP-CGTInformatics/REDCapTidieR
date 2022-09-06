@@ -15,3 +15,14 @@ test_that("check_user_rights works", {
 
   expect_warning(check_user_rights(db_data = test_data, db_metadata = test_metadata))
 })
+
+test_that("check_repeat_and_nonrepeat works", {
+  test_data2 <- tribble(
+    ~record_id,  ~redcap_event_name, ~redcap_repeat_instrument, ~redcap_repeat_instance, ~combination_variable,
+    1,            "event_1",         NA,                        NA,                      "A",
+    2,            "event_2",         "combination",             1,                       "B",
+    3,            "event_3",         "combination",             2,                       "C"
+  )
+
+  expect_error(check_repeat_and_nonrepeat(db_data = test_data))
+})
