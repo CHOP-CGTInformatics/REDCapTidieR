@@ -17,16 +17,18 @@ clean_redcap_long <- function(
     linked_arms
 ){
 
-  # Apply checkmate checks
-  assert_data_frame(db_data_long)
-  assert_data_frame(db_metadata_long)
-
-  check_repeat_and_nonrepeat(db_data_long)
-
   # Repeating Instrument Check ----
   # Check if database supplied contains any repeating instruments to map onto `redcap_repeat_*` variables
 
   has_repeating <- if("redcap_repeat_instance" %in% names(db_data_long)){TRUE}else{FALSE}
+
+  # Apply checkmate checks
+  assert_data_frame(db_data_long)
+  assert_data_frame(db_metadata_long)
+
+if(has_repeating){
+  check_repeat_and_nonrepeat(db_data_long)
+}
 
   ## Repeating Forms Logic ----
   if(has_repeating){
@@ -94,6 +96,7 @@ extract_nonrepeat_table_long <- function(
     db_metadata_long,
     linked_arms
 ){
+
   # Repeating Instrument Check ----
   # Check if database supplied contains any repeating instruments to map onto `redcap_repeat_*` variables
   has_repeating <- if("redcap_repeat_instance" %in% names(db_data_long)){TRUE}else{FALSE}
@@ -120,8 +123,8 @@ extract_nonrepeat_table_long <- function(
     add_partial_keys()
 
   if(has_repeating){
-   db_data_long <- db_data_long %>%
-     filter(is.na(.data$redcap_repeat_instance))
+    db_data_long <- db_data_long %>%
+      filter(is.na(.data$redcap_repeat_instance))
   }
 
   # Use link_arms() output to check if my_form appears in each event_name

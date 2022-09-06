@@ -75,7 +75,7 @@ check_repeat_and_nonrepeat <- function(db_data){
     # If variable is determined to be both repeating and nonrepeating, error out
     if(isTRUE(nonrepeating) && isTRUE(repeating)){
       stop(
-        paste0("Variable detected belonging to an instrument that is both repeating and nonrepeating: ",
+        paste0("Instrument detected belonging to an instrument that is both repeating and nonrepeating: ",
                db_data %>%
                  select(.data$redcap_repeat_instrument, names(db_data)[i]) %>%
                  drop_na(everything()) %>%
