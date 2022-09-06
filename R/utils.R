@@ -146,13 +146,14 @@ checkbox_appender <- function(field_name, string){
 #' Takes a \code{db_metadata} object and appends a \code{field_name_updated} field to the end for checkbox variable handling.
 #'
 #' @param db_metadata A REDCap metadata object
-#' @param raw_or_label A string (either 'raw' or 'label') that specifies whether to export the raw coded values or the labels for the options of multiple choice fields. Default is 'raw'.
+#'
+#' @return Returns an updated REDCap metadata object with updated field names
 #'
 #' @importFrom tidyr unnest
 #' @importFrom rlang .data
 #' @keywords internal
 
-update_field_names <- function(db_metadata, raw_or_label = 'raw'){
+update_field_names <- function(db_metadata){
   out <- db_metadata %>%
     mutate(
       field_name_updated = list(c())
@@ -166,6 +167,7 @@ update_field_names <- function(db_metadata, raw_or_label = 'raw'){
         checkbox_appender(field_name = out$field_name[i],
                           string = out$select_choices_or_calculations[i])
       )
+
     } else {
       out$field_name_updated[i] <- list(out$field_name[i])
     }
@@ -174,6 +176,39 @@ update_field_names <- function(db_metadata, raw_or_label = 'raw'){
   # Unnest and expand checkbox list elements
   out %>%
     unnest(cols = .data$field_name_updated)
+}
+
+#' Database Colname Helper Function for Checkboxes with Minus Signs
+#'
+#' Takes a \code{db_metadata} object and appends a \code{field_name_updated} field to the end for checkbox variable handling.
+#'
+#' @param db_data A REDCap database object
+#' @param db_metadata A REDCap metadata object
+#'
+#' @return Returns an updated REDCap database object with updated checkbox column names
+#'
+#' @importFrom rlang .data
+#' @importFrom stringr str_replace_all
+#' @importFrom dplyr %>% select filter
+#' @keywords internal
+
+update_data_col_names <- function(db_data, db_metadata){
+  # Resolve checkbox conversion ----
+  # Note: REDCap auto-exports and enforces changes from "-" to "_". This is not
+  # useful when analysts want to reference negative values or other naming
+  # conventions for checkboxes.
+  db_metadata$checkbox_conversion <- db_metadata$field_name_updated
+  db_metadata$checkbox_conversion <- str_replace_all(db_metadata$checkbox_conversion, "-", "_")
+
+  changed_names <- db_metadata %>%
+    select(.data$field_name_updated, .data$checkbox_conversion) %>%
+    filter(.data$field_name_updated != .data$checkbox_conversion)
+
+  for (i in 1:nrow(changed_names)) {
+    names(db_data)[names(db_data) %in% changed_names$checkbox_conversion[i]] <- changed_names$field_name_updated[i]
+  }
+
+  db_data
 }
 
 #' Update Multiple Choice Fields with Label Data
@@ -203,8 +238,8 @@ multi_choice_to_labels <- function(db_data, db_metadata){
       # Map constant values to raw values
       across(.cols = all_of(form_status_cols),
              .fns = ~case_when(. == "0" ~ "Incomplete",
-                              . == "1" ~ "Unverified",
-                              . == "2" ~ "Complete")),
+                               . == "1" ~ "Unverified",
+                               . == "2" ~ "Complete")),
       # Convert to factor
       # Map constant values to raw values
       across(.cols = all_of(form_status_cols),
