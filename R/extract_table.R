@@ -39,14 +39,14 @@ extract_table <- function(.data,
 #'
 #' @importFrom rlang .data enquo
 #' @importFrom dplyr select
-#' @importFrom tidyselect eval_select
+#' @importFrom tidyselect eval_select everything
 #' @importFrom tidyr pivot_wider
 #' @importFrom purrr map pluck
 #'
 #' @export
 
 extract_tables <- function(.data,
-                           tbls){
+                           tbls = everything()){
 
   # Extract specified table ----
   # Pass tbls as an expression for enquosure

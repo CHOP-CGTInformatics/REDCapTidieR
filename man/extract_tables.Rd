@@ -4,7 +4,7 @@
 \alias{extract_tables}
 \title{Extract Tables from a REDCapTidieR Supertibble}
 \usage{
-extract_tables(.data, tbls)
+extract_tables(.data, tbls = everything())
 }
 \arguments{
 \item{.data}{A tidy table provided by \code{read_redcap_tidy()}}
