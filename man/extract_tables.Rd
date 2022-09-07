@@ -9,7 +9,7 @@ extract_tables(.data, tbls = everything())
 \arguments{
 \item{.data}{A REDCapTidieR output provided by \code{read_redcap_tidy()}}
 
-\item{tbl}{REDCap \code{form_name} specification, one or more. Default is
+\item{tbls}{REDCap \code{form_name} specification, one or more. Default is
 \code{everything()}.}
 }
 \value{

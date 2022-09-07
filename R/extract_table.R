@@ -56,7 +56,7 @@ extract_table <- function(.data,
 #' @returns A named list of \code{tibble}s specified by the user via \code{form_name}.
 #'
 #' @param .data A REDCapTidieR output provided by \code{read_redcap_tidy()}
-#' @param tbl REDCap \code{form_name} specification, one or more. Default is
+#' @param tbls REDCap \code{form_name} specification, one or more. Default is
 #' \code{everything()}.
 #'
 #' @importFrom rlang .data enquo
