@@ -53,7 +53,7 @@ if(has_repeating){
       redcap_form_name = repeated_forms,
       redcap_data = map(
         .data$redcap_form_name,
-        ~ extract_repeat_table_long(.x, db_data_long, db_metadata_long, linked_arms)
+        ~ distill_repeat_table_long(.x, db_data_long, db_metadata_long, linked_arms)
       ),
       structure = "repeating"
     )
@@ -73,7 +73,7 @@ if(has_repeating){
     redcap_form_name = nonrepeated_forms,
     redcap_data = map(
       .data$redcap_form_name,
-      ~ extract_nonrepeat_table_long(.x,
+      ~ distill_nonrepeat_table_long(.x,
                                      db_data_long,
                                      db_metadata_long,
                                      linked_arms)
@@ -110,7 +110,7 @@ if(has_repeating){
 #' @importFrom rlang .data
 #' @keywords internal
 
-extract_nonrepeat_table_long <- function(
+distill_nonrepeat_table_long <- function(
     form_name,
     db_data_long,
     db_metadata_long,
@@ -196,7 +196,7 @@ extract_nonrepeat_table_long <- function(
 #' @importFrom rlang .data
 #' @keywords internal
 
-extract_repeat_table_long <- function(
+distill_repeat_table_long <- function(
     form_name,
     db_data_long,
     db_metadata_long,

@@ -48,7 +48,7 @@ clean_redcap <- function(
       redcap_form_name = repeated_forms,
       redcap_data = map(
         repeated_forms,
-        ~ extract_repeat_table(.x, db_data, db_metadata)
+        ~ distill_repeat_table(.x, db_data, db_metadata)
       ),
       structure = "repeating"
     )
@@ -68,7 +68,7 @@ clean_redcap <- function(
     redcap_form_name = nonrepeated_forms,
     redcap_data = map(
       nonrepeated_forms,
-      ~ extract_nonrepeat_table(.x,
+      ~ distill_nonrepeat_table(.x,
                                 db_data,
                                 db_metadata)
     ),
@@ -101,7 +101,7 @@ clean_redcap <- function(
 #' @importFrom rlang .data
 #' @keywords internal
 
-extract_nonrepeat_table <- function(
+distill_nonrepeat_table <- function(
     form_name,
     db_data,
     db_metadata
@@ -159,7 +159,7 @@ extract_nonrepeat_table <- function(
 #' @importFrom rlang .data
 #' @keywords internal
 
-extract_repeat_table <- function(
+distill_repeat_table <- function(
     form_name,
     db_data,
     db_metadata

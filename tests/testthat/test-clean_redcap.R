@@ -32,9 +32,9 @@ test_that("clean_redcap works with databases containing no repeating instruments
   expect_true(!is.null(out$redcap_data))
 })
 
-test_that("extract_nonrepeat_table tibble contains expected columns and data types for all REDCap field types", {
+test_that("distill_nonrepeat_table tibble contains expected columns and data types for all REDCap field types", {
 
-  out <- extract_nonrepeat_table(form_name = "data_field_types",
+  out <- distill_nonrepeat_table(form_name = "data_field_types",
                                  db_data = db_data_classic,
                                  db_metadata = db_metadata_classic)
 
@@ -91,8 +91,8 @@ test_that("extract_nonrepeat_table tibble contains expected columns and data typ
 
 })
 
-test_that("extract_repeat_table returns tables", {
-  out <- extract_repeat_table(form_name = "repeated",
+test_that("distill_repeat_table returns tables", {
+  out <- distill_repeat_table(form_name = "repeated",
                               db_data = db_data_classic,
                               db_metadata = db_metadata_classic)
 

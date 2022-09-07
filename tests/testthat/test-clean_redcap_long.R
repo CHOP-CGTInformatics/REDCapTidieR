@@ -48,9 +48,9 @@ test_that("clean_redcap_long without arms works", {
   expect_true(!is.null(out$redcap_data))
 })
 
-test_that("extract_nonrepeat_table_long tibble contains expected columns for longitudinal REDCap databases with arms", {
+test_that("distill_nonrepeat_table_long tibble contains expected columns for longitudinal REDCap databases with arms", {
   ## Check longitudinal structure with arms ----
-  out <- extract_nonrepeat_table_long(form_name = "nonrepeated",
+  out <- distill_nonrepeat_table_long(form_name = "nonrepeated",
                                       db_data_long = db_data_long,
                                       db_metadata_long = db_metadata_long,
                                       linked_arms = linked_arms_long)
@@ -79,9 +79,9 @@ test_that("extract_nonrepeat_table_long tibble contains expected columns for lon
   )
 })
 
-test_that("extract_nonrepeat_table_long tibble contains expected columns for longitudinal REDCap databases without arms", {
+test_that("distill_nonrepeat_table_long tibble contains expected columns for longitudinal REDCap databases without arms", {
   ## Check longitudinal structure without arms ----
-  out <- extract_nonrepeat_table_long(form_name = "nonrepeated",
+  out <- distill_nonrepeat_table_long(form_name = "nonrepeated",
                                       db_data_long = db_data_long_noarms,
                                       db_metadata_long = db_metadata_long_noarms,
                                       linked_arms = linked_arms_long_noarms)
@@ -110,9 +110,9 @@ test_that("extract_nonrepeat_table_long tibble contains expected columns for lon
   )
 })
 
-test_that("extract_repeat_table_long returns tables for REDCap dbs with arms", {
+test_that("distill_repeat_table_long returns tables for REDCap dbs with arms", {
   ## Check longitudinal structure with arms ----
-  out <- extract_repeat_table_long(form_name = "repeated",
+  out <- distill_repeat_table_long(form_name = "repeated",
                                    db_data_long = db_data_long,
                                    db_metadata_long = db_metadata_long,
                                    linked_arms = linked_arms_long)
@@ -142,9 +142,9 @@ test_that("extract_repeat_table_long returns tables for REDCap dbs with arms", {
 
 })
 
-test_that("extract_repeat_table_long no arms returns tables  for REDCap dbs without arms", {
+test_that("distill_repeat_table_long no arms returns tables  for REDCap dbs without arms", {
   ## Check longitudinal structure without arms ----
-  out <- extract_repeat_table_long(form_name = "repeated",
+  out <- distill_repeat_table_long(form_name = "repeated",
                                    db_data_long = db_data_long_noarms,
                                    db_metadata_long = db_metadata_long_noarms,
                                    linked_arms = linked_arms_long_noarms)
