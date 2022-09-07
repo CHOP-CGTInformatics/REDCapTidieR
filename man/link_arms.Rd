@@ -15,7 +15,12 @@ link_arms(db_data_long, db_metadata_long, redcap_uri, token)
 
 \item{token}{The REDCap API token}
 }
+\value{
+Returns a \code{tibble} of \code{redcap_event_name}s with list elements
+containing a vector of associated forms.
+}
 \description{
-Returns a tibble of \code{redcap_event_name}s with list elements containing a vector of associated forms.
+For REDCap databases containing arms and events, it is necessary to determine
+how these are linked and what variables belong to them.
 }
 \keyword{internal}

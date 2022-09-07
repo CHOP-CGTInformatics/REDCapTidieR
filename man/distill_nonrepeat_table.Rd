@@ -9,7 +9,7 @@ distill_nonrepeat_table(form_name, db_data, db_metadata)
 \arguments{
 \item{form_name}{The \code{form_name} described in the named column from the REDCap metadata.}
 
-\item{db_data}{The REDCap database output defined by \code{REDCapR::reedcap_read_oneshot()$data}}
+\item{db_data}{The REDCap database output defined by \code{REDCapR::redcap_read_oneshot()$data}}
 
 \item{db_metadata}{The REDCap metadata output defined by \code{REDCapR::redcap_metadata_read()$data}}
 }

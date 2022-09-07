@@ -99,7 +99,7 @@ if(has_repeating){
 #' A \code{tibble} of all data related to a specified \code{form_name}
 #'
 #' @param form_name The \code{form_name} described in the named column from the REDCap metadata.
-#' @param db_data_long The REDCap database output defined by \code{REDCapR::reedcap_read_oneshot()$data}
+#' @param db_data_long The REDCap database output defined by \code{REDCapR::redcap_read_oneshot()$data}
 #' @param db_metadata_long The REDCap metadata output defined by \code{REDCapR::redcap_metadata_read()$data}
 #' @param linked_arms Output of \code{link_arms}, linking forms to REDCap events/arms
 #'
@@ -185,7 +185,7 @@ distill_nonrepeat_table_long <- function(
 #' A \code{tibble} of all data related to a specified \code{form_name}
 #'
 #' @param form_name The \code{form_name} described in the named column from the REDCap metadata.
-#' @param db_data_long The REDCap database output defined by \code{REDCapR::reedcap_read_oneshot()$data}
+#' @param db_data_long The REDCap database output defined by \code{REDCapR::redcap_read_oneshot()$data}
 #' @param db_metadata_long The REDCap metadata output defined by \code{REDCapR::redcap_metadata_read()$data}
 #' @param linked_arms Output of \code{link_arms}, linking forms to REDCap events/arms
 #'

@@ -6,7 +6,7 @@
 #' extraction and final processing of a tidy \code{tibble} to the user from
 #' a non-longitudinal REDCap database.
 #'
-#' @param db_data The REDCap database output defined by \code{REDCapR::reedcap_read_oneshot()$data}
+#' @param db_data The REDCap database output defined by \code{REDCapR::redcap_read_oneshot()$data}
 #' @param db_metadata The REDCap metadata output defined by \code{REDCapR::redcap_metadata_read()$data}
 #'
 #' @return
@@ -92,7 +92,7 @@ clean_redcap <- function(
 #' A \code{tibble} of all data related to a specified \code{form_name}
 #'
 #' @param form_name The \code{form_name} described in the named column from the REDCap metadata.
-#' @param db_data The REDCap database output defined by \code{REDCapR::reedcap_read_oneshot()$data}
+#' @param db_data The REDCap database output defined by \code{REDCapR::redcap_read_oneshot()$data}
 #' @param db_metadata The REDCap metadata output defined by \code{REDCapR::redcap_metadata_read()$data}
 #'
 #' @importFrom dplyr filter pull select relocate rename

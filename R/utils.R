@@ -1,11 +1,18 @@
+#' @title
 #' Add Partial Keys for Helper Variables
 #'
-#' Make helper vars \code{redcap_event} and \code{redcap_arm} available as offshoots from \code{redcap_event_name}.
+#' @description
+#' Make helper variables \code{redcap_event} and \code{redcap_arm} available as
+#' branches from \code{redcap_event_name} for later use.
 #'
-#' @param db_data A REDCap database export
+#' @returns Two appended columns, \code{redcap_event} and \code{redcap_arm}
+#' to the end of \code{read_redcap_tidy} output \code{tibble}s.
+#'
+#' @param db_data The REDCap database output defined by \code{REDCapR::redcap_read_oneshot()$data}
 #'
 #' @importFrom dplyr mutate
 #' @importFrom rlang .data
+#'
 #' @keywords internal
 
 add_partial_keys <- function(
@@ -22,9 +29,16 @@ add_partial_keys <- function(
   db_data
 }
 
+#' @title
 #' Link Longitudinal REDCap Forms with the Events/Arms They Belong To
 #'
-#' Returns a tibble of \code{redcap_event_name}s with list elements containing a vector of associated forms.
+#' @description
+#' For REDCap databases containing arms and events, it is necessary to determine
+#' how these are linked and what variables belong to them.
+#'
+#' @returns
+#' Returns a \code{tibble} of \code{redcap_event_name}s with list elements
+#' containing a vector of associated forms.
 #'
 #' @param db_data_long A longitudinal REDCap database export
 #' @param db_metadata_long A longitudinal REDCap metadata export
@@ -37,6 +51,7 @@ add_partial_keys <- function(
 #' @importFrom tibble tibble
 #' @importFrom purrr map
 #' @importFrom rlang .data
+#'
 #' @keywords internal
 
 link_arms <- function(
@@ -70,15 +85,26 @@ link_arms <- function(
                 values_fn = list)
 }
 
+#' @title
 #' Parse Labels Function
 #'
-#' Takes a string separated by \code{,}s and/or \code{|}s (i.e. comma/tab separated values) containing key value pairs (\code{raw} and \code{label}) and returns a tidy tibble.
+#' @description
+#' Takes a string separated by \code{,}s and/or \code{|}s (i.e. comma/tab
+#' separated values) containing key value pairs (\code{raw} and \code{label})
+#' and returns a tidy \code{tibble}.
+#'
+#' @details
+#' The associated \code{string} comes from metadata outputs.
+#'
+#' @returns A tidy \code{tibble} from a matrix giving raw and label outputs to
+#' be used in later functions.
 #'
 #' @param string A \code{db_metadata$select_choices_or_calculations} field pre-filtered for checkbox \code{field_type}
 #'
 #' @importFrom stringi stri_split_fixed
 #' @importFrom tibble as_tibble is_tibble
 #' @importFrom rlang .data
+#'
 #' @keywords internal
 
 parse_labels <- function(string){
@@ -120,12 +146,19 @@ parse_labels <- function(string){
   out
 }
 
+#' @title
 #' Checkbox String Appender Helper Function
 #'
-#' Takes a \code{db_metadata$select_choices_or_calculations} field pre-filtered for checkbox \code{field_type} and returns a vector of key names for appending to checkbox variables.
+#' @description
+#' Takes a \code{db_metadata$select_choices_or_calculations} field pre-filtered
+#' for checkbox \code{field_type}s and returns a vector of key names for
+#' appending to checkbox variables.
+#'
+#' @returns A vector.
 #'
 #' @param field_name The \code{db_metadata$field_name} to append onto the string
-#' @param string A \code{db_metadata$select_choices_or_calculations} field pre-filtered for checkbox \code{field_type}
+#' @param string A \code{db_metadata$select_choices_or_calculations} field
+#' pre-filtered for checkbox \code{field_type}
 #'
 #' @importFrom rlang .data
 #' @keywords internal
@@ -141,16 +174,24 @@ checkbox_appender <- function(field_name, string){
   out
 }
 
+#' @title
 #' Metadata field_name Updater Helper Function
 #'
-#' Takes a \code{db_metadata} object and appends a \code{field_name_updated} field to the end for checkbox variable handling.
+#' @description
+#' Takes a \code{db_metadata} object and appends a \code{field_name_updated}
+#' field to the end for checkbox variable handling.
 #'
-#' @param db_metadata A REDCap metadata object
+#' @returns Column \code{field_name_updated} appended to a given REDCap
+#' \code{db_metadata} object.
+#'
+#' @param db_metadata The REDCap metadata output defined by
+#' \code{REDCapR::redcap_metadata_read()$data}
 #'
 #' @return Returns an updated REDCap metadata object with updated field names
 #'
 #' @importFrom tidyr unnest
 #' @importFrom rlang .data
+#'
 #' @keywords internal
 
 update_field_names <- function(db_metadata){
@@ -178,18 +219,29 @@ update_field_names <- function(db_metadata){
     unnest(cols = .data$field_name_updated)
 }
 
-#' Database Colname Helper Function for Checkboxes with Minus Signs
+#' @title
+#' Database Column Name Helper Function for Checkboxes with Minus Signs
 #'
-#' Takes a \code{db_metadata} object and appends a \code{field_name_updated} field to the end for checkbox variable handling.
+#' @description
+#' Using \code{db_data} and \code{db_metadata}, temporarily create a conversion
+#' column that reverts automatic REDCap behavior where database column names
+#' have "-"s converted to "_"s.
 #'
-#' @param db_data A REDCap database object
-#' @param db_metadata A REDCap metadata object
+#' @details
+#' This is an issue with checkbox fields since analysts should be able to verify
+#' checkbox variable suffices with their label counterparts.
 #'
-#' @return Returns an updated REDCap database object with updated checkbox column names
+#' @param db_data The REDCap database output defined by \code{REDCapR::redcap_read_oneshot()$data}
+#' @param db_metadata The REDCap metadata output defined by
+#' \code{REDCapR::redcap_metadata_read()$data}
+#'
+#' @return Updated \code{db_data} column names for checkboxes where "-"s were
+#' replaced by "_"s.
 #'
 #' @importFrom rlang .data
 #' @importFrom stringr str_replace_all
 #' @importFrom dplyr %>% select filter
+#'
 #' @keywords internal
 
 update_data_col_names <- function(db_data, db_metadata){
@@ -211,7 +263,18 @@ update_data_col_names <- function(db_data, db_metadata){
   db_data
 }
 
+#' @title
 #' Update Multiple Choice Fields with Label Data
+#'
+#' @description
+#' Update REDCap variables with multi-choice types to standard form labels.
+#'
+#' @details
+#' Coerce variables of \code{field_type} "truefalse", "yesno", and "checkbox" to
+#' logical. Introduce \code{form_status_complete} column and append to end of
+#' \code{tibble} outputs. Ensure \code{field_type}s "dropdown" and "radio" are
+#' converted appropriately since label appendings are important and unique to
+#' these.
 #'
 #' @param db_data A REDCap database object
 #' @param db_metadata A REDCap metadata object
@@ -219,6 +282,7 @@ update_data_col_names <- function(db_data, db_metadata){
 #' @importFrom dplyr select mutate across case_when filter pull left_join
 #' @importFrom rlang .data :=
 #' @importFrom tidyselect any_of ends_with all_of
+#'
 #' @keywords internal
 
 multi_choice_to_labels <- function(db_data, db_metadata){

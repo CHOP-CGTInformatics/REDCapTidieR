@@ -12,6 +12,13 @@ multi_choice_to_labels(db_data, db_metadata)
 \item{db_metadata}{A REDCap metadata object}
 }
 \description{
-Update Multiple Choice Fields with Label Data
+Update REDCap variables with multi-choice types to standard form labels.
+}
+\details{
+Coerce variables of \code{field_type} "truefalse", "yesno", and "checkbox" to
+logical. Introduce \code{form_status_complete} column and append to end of
+\code{tibble} outputs. Ensure \code{field_type}s "dropdown" and "radio" are
+converted appropriately since label appendings are important and unique to
+these.
 }
 \keyword{internal}

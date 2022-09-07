@@ -9,7 +9,16 @@ parse_labels(string)
 \arguments{
 \item{string}{A \code{db_metadata$select_choices_or_calculations} field pre-filtered for checkbox \code{field_type}}
 }
+\value{
+A tidy \code{tibble} from a matrix giving raw and label outputs to
+be used in later functions.
+}
 \description{
-Takes a string separated by \code{,}s and/or \code{|}s (i.e. comma/tab separated values) containing key value pairs (\code{raw} and \code{label}) and returns a tidy tibble.
+Takes a string separated by \code{,}s and/or \code{|}s (i.e. comma/tab
+separated values) containing key value pairs (\code{raw} and \code{label})
+and returns a tidy \code{tibble}.
+}
+\details{
+The associated \code{string} comes from metadata outputs.
 }
 \keyword{internal}
