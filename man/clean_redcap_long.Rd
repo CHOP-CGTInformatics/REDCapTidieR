@@ -13,7 +13,14 @@ clean_redcap_long(db_data_long, db_metadata_long, linked_arms)
 
 \item{linked_arms}{Output of \code{link_arms}, linking forms to REDCap events/arms}
 }
+\value{
+Returns a \code{tibble} with list elements containing tidy dataframes. Users
+can access dataframes under the \code{redcap_data} column with reference to
+\code{form_name} and \code{structure} column details.
+}
 \description{
-Extract Longitudinal REDCap Databases into Tidy Tibbles
+Helper function internal to \code{read_redcap_tidy} responsible for
+extraction and final processing of a tidy \code{tibble} to the user from
+a longitudinal REDCap database.
 }
 \keyword{internal}

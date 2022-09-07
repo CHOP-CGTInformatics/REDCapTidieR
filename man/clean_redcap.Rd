@@ -7,11 +7,18 @@
 clean_redcap(db_data, db_metadata)
 }
 \arguments{
-\item{db_data}{The REDCap database output defined by \code{REDCapR::reedcap_read_oneshot()$data}}
+\item{db_data}{The REDCap database output defined by \code{REDCapR::redcap_read_oneshot()$data}}
 
 \item{db_metadata}{The REDCap metadata output defined by \code{REDCapR::redcap_metadata_read()$data}}
 }
+\value{
+Returns a \code{tibble} with list elements containing tidy dataframes. Users
+can access dataframes under the \code{redcap_data} column with reference to
+\code{form_name} and \code{structure} column details.
+}
 \description{
-Extract non-Longitudinal REDCap Databases into Tidy Tibbles
+Helper function internal to \code{read_redcap_tidy} responsible for
+extraction and final processing of a tidy \code{tibble} to the user from
+a non-longitudinal REDCap database.
 }
 \keyword{internal}

@@ -7,12 +7,17 @@
 update_field_names(db_metadata)
 }
 \arguments{
-\item{db_metadata}{A REDCap metadata object}
+\item{db_metadata}{The REDCap metadata output defined by
+\code{REDCapR::redcap_metadata_read()$data}}
 }
 \value{
+Column \code{field_name_updated} appended to a given REDCap
+\code{db_metadata} object.
+
 Returns an updated REDCap metadata object with updated field names
 }
 \description{
-Takes a \code{db_metadata} object and appends a \code{field_name_updated} field to the end for checkbox variable handling.
+Takes a \code{db_metadata} object and appends a \code{field_name_updated}
+field to the end for checkbox variable handling.
 }
 \keyword{internal}

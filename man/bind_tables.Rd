@@ -2,7 +2,7 @@
 % Please edit documentation in R/bind_tables.R
 \name{bind_tables}
 \alias{bind_tables}
-\title{Bind REDCap Tidy Tibbles to Specified Environments}
+\title{Bind REDCapTidieR Tibble Outputs to Specified Environments}
 \usage{
 bind_tables(
   .data,
@@ -20,6 +20,33 @@ bind_tables(
 
 \item{structure}{Specify REDCap structure to load into environment, either \code{repeating} or \code{nonrepeating}. Defaults to all structures.}
 }
+\value{
+Returns \code{tibble} objects to an environment specified by the
+user. Defaults to the global environment when no specification is given.
+}
 \description{
-Supply a \code{read_redcap_tidy()} output to load REDCap data tables to specified environment locations.
+Using a \code{read_redcap_tidy()} output, load REDCap data tables to
+user-specified environment locations.
+}
+\examples{
+\dontrun{
+redcap_uri <- Sys.getenv("REDCAP_URI")
+token <- Sys.getenv("REDCAP_TOKEN")
+sample_env <- environment()
+
+read_redcap_tidy(
+   redcap_uri,
+   token,
+   raw_or_label = "label"
+ )
+
+read_redcap_tidy(
+   redcap_uri,
+   token,
+   raw_or_label = "label"
+ ) \%>\%
+bind_tables(sample_env)
+}
+
+
 }

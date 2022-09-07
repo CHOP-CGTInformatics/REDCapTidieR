@@ -1,14 +1,26 @@
+#' @title
 #' Extract Longitudinal REDCap Databases into Tidy Tibbles
+#'
+#' @description
+#' Helper function internal to \code{read_redcap_tidy} responsible for
+#' extraction and final processing of a tidy \code{tibble} to the user from
+#' a longitudinal REDCap database.
 #'
 #' @param db_data_long The longitudinal REDCap database output defined by \code{REDCapR::redcap_read_oneshot()$data}
 #' @param db_metadata_long The longitudinal REDCap metadata output defined by \code{REDCapR::redcap_metadata_read()$data}
 #' @param linked_arms Output of \code{link_arms}, linking forms to REDCap events/arms
+#'
+#' @return
+#' Returns a \code{tibble} with list elements containing tidy dataframes. Users
+#' can access dataframes under the \code{redcap_data} column with reference to
+#' \code{form_name} and \code{structure} column details.
 #'
 #' @importFrom checkmate assert_data_frame
 #' @importFrom dplyr filter pull
 #' @importFrom purrr map
 #' @importFrom tibble tibble
 #' @importFrom rlang .data
+#'
 #' @keywords internal
 
 clean_redcap_long <- function(
@@ -41,7 +53,7 @@ if(has_repeating){
       redcap_form_name = repeated_forms,
       redcap_data = map(
         .data$redcap_form_name,
-        ~ extract_repeat_table_long(.x, db_data_long, db_metadata_long, linked_arms)
+        ~ distill_repeat_table_long(.x, db_data_long, db_metadata_long, linked_arms)
       ),
       structure = "repeating"
     )
@@ -61,7 +73,7 @@ if(has_repeating){
     redcap_form_name = nonrepeated_forms,
     redcap_data = map(
       .data$redcap_form_name,
-      ~ extract_nonrepeat_table_long(.x,
+      ~ distill_nonrepeat_table_long(.x,
                                      db_data_long,
                                      db_metadata_long,
                                      linked_arms)
@@ -76,10 +88,18 @@ if(has_repeating){
   }
 }
 
+#' @title
 #' Extract Non-Repeat Tables from Longitudinal REDCap Databases
 #'
+#' @description
+#' Sub-helper function to \code{clean_redcap_long} for single nonrepeat table
+#' extraction.
+#'
+#' @return
+#' A \code{tibble} of all data related to a specified \code{form_name}
+#'
 #' @param form_name The \code{form_name} described in the named column from the REDCap metadata.
-#' @param db_data_long The REDCap database output defined by \code{REDCapR::reedcap_read_oneshot()$data}
+#' @param db_data_long The REDCap database output defined by \code{REDCapR::redcap_read_oneshot()$data}
 #' @param db_metadata_long The REDCap metadata output defined by \code{REDCapR::redcap_metadata_read()$data}
 #' @param linked_arms Output of \code{link_arms}, linking forms to REDCap events/arms
 #'
@@ -90,7 +110,7 @@ if(has_repeating){
 #' @importFrom rlang .data
 #' @keywords internal
 
-extract_nonrepeat_table_long <- function(
+distill_nonrepeat_table_long <- function(
     form_name,
     db_data_long,
     db_metadata_long,
@@ -154,10 +174,18 @@ extract_nonrepeat_table_long <- function(
     tibble()
 }
 
+#' @title
 #' Extract Repeat Tables from Longitudinal REDCap Databases
 #'
+#' @description
+#' Sub-helper function to \code{clean_redcap_long} for single repeat table
+#' extraction.
+#'
+#' @return
+#' A \code{tibble} of all data related to a specified \code{form_name}
+#'
 #' @param form_name The \code{form_name} described in the named column from the REDCap metadata.
-#' @param db_data_long The REDCap database output defined by \code{REDCapR::reedcap_read_oneshot()$data}
+#' @param db_data_long The REDCap database output defined by \code{REDCapR::redcap_read_oneshot()$data}
 #' @param db_metadata_long The REDCap metadata output defined by \code{REDCapR::redcap_metadata_read()$data}
 #' @param linked_arms Output of \code{link_arms}, linking forms to REDCap events/arms
 #'
@@ -168,7 +196,7 @@ extract_nonrepeat_table_long <- function(
 #' @importFrom rlang .data
 #' @keywords internal
 
-extract_repeat_table_long <- function(
+distill_repeat_table_long <- function(
     form_name,
     db_data_long,
     db_metadata_long,

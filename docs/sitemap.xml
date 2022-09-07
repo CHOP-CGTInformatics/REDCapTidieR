@@ -46,16 +46,16 @@
     <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/clean_redcap_long.html</loc>
   </url>
   <url>
-    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/extract_nonrepeat_table.html</loc>
+    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/distill_nonrepeat_table.html</loc>
   </url>
   <url>
-    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/extract_nonrepeat_table_long.html</loc>
+    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/distill_nonrepeat_table_long.html</loc>
   </url>
   <url>
-    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/extract_repeat_table.html</loc>
+    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/distill_repeat_table.html</loc>
   </url>
   <url>
-    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/extract_repeat_table_long.html</loc>
+    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/distill_repeat_table_long.html</loc>
   </url>
   <url>
     <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/index.html</loc>

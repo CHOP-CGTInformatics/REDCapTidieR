@@ -1,6 +1,12 @@
-#' Bind REDCap Tidy Tibbles to Specified Environments
+#' @title
+#' Bind REDCapTidieR Tibble Outputs to Specified Environments
 #'
-#' Supply a \code{read_redcap_tidy()} output to load REDCap data tables to specified environment locations.
+#' @description
+#' Using a \code{read_redcap_tidy()} output, load REDCap data tables to
+#' user-specified environment locations.
+#'
+#' @returns Returns \code{tibble} objects to an environment specified by the
+#' user. Defaults to the global environment when no specification is given.
 #'
 #' @param .data A tidy table provided by \code{read_redcap_tidy()}
 #' @param environment The environment to assign the tidy data (default \code{global_env()}). For new environment, it is recommended to use \code{rlang::new_environment()}.
@@ -10,6 +16,29 @@
 #' @importFrom dplyr filter pull
 #' @importFrom rlang env_poke current_env new_environment global_env
 #' @importFrom purrr map2 pluck
+#'
+#' @examples
+#' \dontrun{
+#' redcap_uri <- Sys.getenv("REDCAP_URI")
+#' token <- Sys.getenv("REDCAP_TOKEN")
+#' sample_env <- environment()
+#'
+#' read_redcap_tidy(
+#'    redcap_uri,
+#'    token,
+#'    raw_or_label = "label"
+#'  )
+#'
+#' read_redcap_tidy(
+#'    redcap_uri,
+#'    token,
+#'    raw_or_label = "label"
+#'  ) %>%
+#' bind_tables(sample_env)
+#'}
+#'
+#'
+#' @export
 #'
 #' @export
 

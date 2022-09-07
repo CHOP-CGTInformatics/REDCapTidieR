@@ -9,9 +9,15 @@ checkbox_appender(field_name, string)
 \arguments{
 \item{field_name}{The \code{db_metadata$field_name} to append onto the string}
 
-\item{string}{A \code{db_metadata$select_choices_or_calculations} field pre-filtered for checkbox \code{field_type}}
+\item{string}{A \code{db_metadata$select_choices_or_calculations} field
+pre-filtered for checkbox \code{field_type}}
+}
+\value{
+A vector.
 }
 \description{
-Takes a \code{db_metadata$select_choices_or_calculations} field pre-filtered for checkbox \code{field_type} and returns a vector of key names for appending to checkbox variables.
+Takes a \code{db_metadata$select_choices_or_calculations} field pre-filtered
+for checkbox \code{field_type}s and returns a vector of key names for
+appending to checkbox variables.
 }
 \keyword{internal}

@@ -2,19 +2,27 @@
 % Please edit documentation in R/utils.R
 \name{update_data_col_names}
 \alias{update_data_col_names}
-\title{Database Colname Helper Function for Checkboxes with Minus Signs}
+\title{Database Column Name Helper Function for Checkboxes with Minus Signs}
 \usage{
 update_data_col_names(db_data, db_metadata)
 }
 \arguments{
-\item{db_data}{A REDCap database object}
+\item{db_data}{The REDCap database output defined by \code{REDCapR::redcap_read_oneshot()$data}}
 
-\item{db_metadata}{A REDCap metadata object}
+\item{db_metadata}{The REDCap metadata output defined by
+\code{REDCapR::redcap_metadata_read()$data}}
 }
 \value{
-Returns an updated REDCap database object with updated checkbox column names
+Updated \code{db_data} column names for checkboxes where "-"s were
+replaced by "_"s.
 }
 \description{
-Takes a \code{db_metadata} object and appends a \code{field_name_updated} field to the end for checkbox variable handling.
+Using \code{db_data} and \code{db_metadata}, temporarily create a conversion
+column that reverts automatic REDCap behavior where database column names
+have "-"s converted to "_"s.
+}
+\details{
+This is an issue with checkbox fields since analysts should be able to verify
+checkbox variable suffices with their label counterparts.
 }
 \keyword{internal}

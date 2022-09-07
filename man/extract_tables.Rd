@@ -2,19 +2,41 @@
 % Please edit documentation in R/extract_table.R
 \name{extract_tables}
 \alias{extract_tables}
-\title{Extract Tables from a REDCapTidieR Supertibble}
+\title{Extract One or More Tables from a REDCapTidieR Output}
 \usage{
 extract_tables(.data, tbls = everything())
 }
 \arguments{
-\item{.data}{A tidy table provided by \code{read_redcap_tidy()}}
+\item{.data}{A REDCapTidieR output provided by \code{read_redcap_tidy()}}
 
-\item{tbls}{REDCap table name specifications, one or more.}
+\item{tbls}{REDCap \code{form_name} specification, one or more. Default is
+\code{everything()}.}
 }
 \value{
-A named list of \code{tibble}s specified by the user.
+A named list of \code{tibble}s specified by the user via \code{form_name}.
 }
 \description{
-Supply a \code{read_redcap_tidy()} output and specify tables of interest to extract.
-Users may supply \code{tidyselect} statements such as `starts_with()` or `ends_with()` for easier selection.
+Supply a \code{read_redcap_tidy()} output and specify one or more
+\code{form_name}s to extract.
+}
+\details{
+Users may supply \code{tidyselect} statements such as \code{starts_with()}
+or \code{ends_with()} for easier selection.
+}
+\examples{
+\dontrun{
+redcap_uri <- Sys.getenv("REDCAP_URI")
+token <- Sys.getenv("REDCAP_TOKEN")
+
+out <- read_redcap_tidy(
+          redcap_uri,
+          token,
+          raw_or_label = "label"
+        )
+
+ extract_tables(out, c("sample_form_name1", "sample_form_name2"))
+ extract_tables(out, everything())
+ extract_tables(out, starts_with("demographics"))
+}
+
 }

@@ -7,9 +7,14 @@
 add_partial_keys(db_data)
 }
 \arguments{
-\item{db_data}{A REDCap database export}
+\item{db_data}{The REDCap database output defined by \code{REDCapR::redcap_read_oneshot()$data}}
+}
+\value{
+Two appended columns, \code{redcap_event} and \code{redcap_arm}
+to the end of \code{read_redcap_tidy} output \code{tibble}s.
 }
 \description{
-Make helper vars \code{redcap_event} and \code{redcap_arm} available as offshoots from \code{redcap_event_name}.
+Make helper variables \code{redcap_event} and \code{redcap_arm} available as
+branches from \code{redcap_event_name} for later use.
 }
 \keyword{internal}
