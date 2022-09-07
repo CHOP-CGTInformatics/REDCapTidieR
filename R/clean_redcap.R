@@ -182,7 +182,7 @@ distill_repeat_table <- function(
     names()
 
   db_data %>%
-    filter(!is.na(.data$redcap_repeat_instance)) %>%
+    filter(!is.na(.data$redcap_repeat_instance) & .data$redcap_repeat_instrument == my_form) %>%
     select(all_of(my_fields), .data$redcap_repeat_instance) %>%
     relocate(.data$redcap_repeat_instance, .after = all_of(my_record_id)) %>%
     rename("form_status_complete" = paste0(my_form, "_complete")) %>%

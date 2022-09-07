@@ -222,7 +222,7 @@ distill_repeat_table_long <- function(
   # Setup data for loop redcap_arm linking
   db_data_long <- db_data_long %>%
     add_partial_keys() %>%
-    filter(!is.na(.data$redcap_repeat_instance))
+    filter(!is.na(.data$redcap_repeat_instance) & .data$redcap_repeat_instrument == my_form)
 
   # Use link_arms() output to check if my_form appears in each event_name
   # If it does not, filter out all rows containing that event_name
