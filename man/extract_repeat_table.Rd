@@ -13,7 +13,10 @@ extract_repeat_table(form_name, db_data, db_metadata)
 
 \item{db_metadata}{The non-longitudinal REDCap metadata output defined by \code{REDCapR::redcap_metadata_read()$data}}
 }
+\value{
+A \code{tibble} of all data related to a specified \code{form_name}
+}
 \description{
-Extract Repeat Tables from non-Longitudinal REDCap Databases
+Sub-helper function to \code{clean_redcap} for single repeat table extraction.
 }
 \keyword{internal}

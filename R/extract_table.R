@@ -46,15 +46,18 @@ extract_table <- function(.data,
 #' Extract One or More Tables from a REDCapTidieR Output
 #'
 #' @description
-#' Supply a \code{read_redcap_tidy()} output and specify one or more \code{form_name}s to extract.
+#' Supply a \code{read_redcap_tidy()} output and specify one or more
+#' \code{form_name}s to extract.
 #'
 #' @details
-#' Users may supply \code{tidyselect} statements such as \code{starts_with()} or \code{ends_with()} for easier selection.
+#' Users may supply \code{tidyselect} statements such as \code{starts_with()}
+#' or \code{ends_with()} for easier selection.
 #'
 #' @returns A named list of \code{tibble}s specified by the user via \code{form_name}.
 #'
 #' @param .data A REDCapTidieR output provided by \code{read_redcap_tidy()}
-#' @param tbl REDCap \code{form_name} specification, one or more.
+#' @param tbl REDCap \code{form_name} specification, one or more. Default is
+#' \code{everything()}.
 #'
 #' @importFrom rlang .data enquo
 #' @importFrom dplyr select

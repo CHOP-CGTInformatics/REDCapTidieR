@@ -1,13 +1,26 @@
+#' @title
 #' Extract non-Longitudinal REDCap Databases into Tidy Tibbles
+#'
+#' @description
+#' Helper function internal to \code{read_redcap_tidy} responsible for
+#' extraction and final processing of a tidy \code{tibble} to the user from
+#' a non-longitudinal REDCap database.
 #'
 #' @param db_data The REDCap database output defined by \code{REDCapR::reedcap_read_oneshot()$data}
 #' @param db_metadata The REDCap metadata output defined by \code{REDCapR::redcap_metadata_read()$data}
 #'
-#' @importFrom checkmate assert_data_frame expect_logical expect_factor expect_character expect_double
+#' @return
+#' Returns a \code{tibble} with list elements containing tidy dataframes. Users
+#' can access dataframes under the \code{redcap_data} column with reference to
+#' \code{form_name} and \code{structure} column details.
+#'
+#' @importFrom
+#' checkmate assert_data_frame expect_logical expect_factor expect_character expect_double
 #' @importFrom dplyr filter pull
 #' @importFrom purrr map
 #' @importFrom tibble tibble
 #' @importFrom rlang .data
+#'
 #' @keywords internal
 
 clean_redcap <- function(
@@ -69,7 +82,14 @@ clean_redcap <- function(
   }
 }
 
+#' @title
 #' Extract Non-Repeat Tables from non-Longitudinal REDCap Databases
+#'
+#' @description
+#' Sub-helper function to \code{clean_redcap} for single nonrepeat table extraction.
+#'
+#' @return
+#' A \code{tibble} of all data related to a specified \code{form_name}
 #'
 #' @param form_name The \code{form_name} described in the named column from the REDCap metadata.
 #' @param db_data The REDCap database output defined by \code{REDCapR::reedcap_read_oneshot()$data}
@@ -120,7 +140,14 @@ extract_nonrepeat_table <- function(
     tibble()
 }
 
+#' @title
 #' Extract Repeat Tables from non-Longitudinal REDCap Databases
+#'
+#' @description
+#' Sub-helper function to \code{clean_redcap} for single repeat table extraction.
+#'
+#' @return
+#' A \code{tibble} of all data related to a specified \code{form_name}
 #'
 #' @param form_name The \code{form_name} described in the named column from the REDCap metadata.
 #' @param db_data The non-longitudinal REDCap database output defined by \code{REDCapR::redcap_read_oneshot()$data}

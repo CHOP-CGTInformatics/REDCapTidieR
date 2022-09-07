@@ -20,7 +20,11 @@ extract_nonrepeat_table_long(
 
 \item{linked_arms}{Output of \code{link_arms}, linking forms to REDCap events/arms}
 }
+\value{
+A \code{tibble} of all data related to a specified \code{form_name}
+}
 \description{
-Extract Non-Repeat Tables from Longitudinal REDCap Databases
+Sub-helper function to \code{clean_redcap_long} for single nonrepeat table
+extraction.
 }
 \keyword{internal}
