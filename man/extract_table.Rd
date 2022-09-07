@@ -2,18 +2,33 @@
 % Please edit documentation in R/extract_table.R
 \name{extract_table}
 \alias{extract_table}
-\title{Extract a Single Table from a REDCapTidieR Supertibble}
+\title{Extract a Single Table from a REDCapTidieR Output}
 \usage{
 extract_table(.data, tbl)
 }
 \arguments{
-\item{.data}{A REDCapTidieR supertibble provided by \code{read_redcap_tidy()}}
+\item{.data}{A REDCapTidieR output provided by \code{read_redcap_tidy()}}
 
-\item{tbl}{REDCap table name specification, one max.}
+\item{tbl}{REDCap \code{form_name} specification, one max.}
 }
 \value{
 A single \code{tibble} specified by the user.
 }
 \description{
-Supply a \code{read_redcap_tidy()} output and specify a table of interest to extract.
+Supply a \code{read_redcap_tidy()} output and specify a \code{form_name} to extract.
+}
+\examples{
+\dontrun{
+redcap_uri <- Sys.getenv("REDCAP_URI")
+token <- Sys.getenv("REDCAP_TOKEN")
+
+out <- read_redcap_tidy(
+          redcap_uri,
+          token,
+          raw_or_label = "label"
+        )
+
+ extract_table(out, "sample_form_name")
+}
+
 }

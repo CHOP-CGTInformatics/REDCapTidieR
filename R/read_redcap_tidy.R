@@ -1,22 +1,49 @@
+#' @title
 #' Extract REDCap Databases to Tidy Tibbles
 #'
-#' Automatically detect REDCap database structure for the following elements:
+#' @description
+#' Detect REDCap database outputs from \code{REDCapR} extracts for the
+#' following database structure elements:
 #' \itemize{
 #'   \item{Repeat Instruments}
 #'   \item{Longitudinal Events}
 #'   \item{Longitudinal Arms}
 #' }
-#' Output a \code{tibble} with list elements containing tidy dataframes. Ideal for combination of tables with join operations primary and composite keys.
+#' Return a tidy \code{tibble} to the user using the \code{REDCapTidieR}
+#' opinionated framework.
 #'
-#' @importFrom REDCapR redcap_read_oneshot  redcap_metadata_read
+#' @importFrom REDCapR redcap_read_oneshot redcap_metadata_read
 #' @importFrom dplyr filter bind_rows %>%
 #' @importFrom tibble tribble
 #' @importFrom rlang .data
 #'
-#' @param redcap_uri The URI (uniform resource identifier) of the REDCap project. Required.
-#' @param token The user-specific string that serves as the password for a project. Required.
-#' @param raw_or_label A string (either 'raw' or 'label') that specifies whether to export the raw coded values or the labels for the options of multiple choice fields. Default is 'label'.
-#' @param suppress_messages Optionally show or suppress messages. Default \code{TRUE}.
+#' @param redcap_uri The
+#' uri/url of the REDCap server typically formatted as
+#' "https://server.org/apps/redcap/api/". Required.
+#' @param token The user-specific string that serves as the password for a
+#' project. Required.
+#' @param raw_or_label A string (either 'raw' or 'label') that specifies whether
+#' to export the raw coded values or the labels for the options of multiple
+#' choice fields. Default is 'label'.
+#' @param suppress_messages Optionally show or suppress messages.
+#' Default \code{TRUE}.
+#'
+#' @return
+#' Returns a \code{tibble} with list elements containing tidy dataframes. Users
+#' can access dataframes under the \code{redcap_data} column with reference to
+#' \code{form_name} and \code{structure} column details.
+#'
+#' @examples
+#' \dontrun{
+#' redcap_uri <- Sys.getenv("REDCAP_URI")
+#' token <- Sys.getenv("REDCAP_TOKEN")
+#'
+#' read_redcap_tidy(
+#'    redcap_uri,
+#'    token,
+#'    raw_or_label = "label"
+#'  )
+#' }
 #'
 #' @export
 
