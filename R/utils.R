@@ -275,7 +275,7 @@ multi_choice_to_labels <- function(db_data, db_metadata){
       # Replace values from db_data$(field_name) with label values from  parse_labels key
       db_data <- db_data %>%
         mutate(
-          !!field_name := as.character(!!field_name)
+          across(.cols = !!field_name, .fns = as.character)
         ) %>%
         left_join(parse_labels_output %>% rename(!!field_name := .data$raw), # Could not get working in by argument, instead inject field name for rename in parse_labels_output
                   by = field_name) %>%
