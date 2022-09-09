@@ -77,12 +77,13 @@ containing a tibble for each instrument.
 superheroes_data <- read_redcap_tidy(redcap_uri, token)
 
 superheroes_data
-#> # A tibble: 2 × 3
-#>   redcap_form_name   redcap_data          structure   
-#>   <chr>              <list>               <chr>       
-#> 1 super_hero_powers  <tibble [5,966 × 4]> repeating   
-#> 2 heroes_information <tibble [734 × 12]>  nonrepeating
 ```
+
+    #> # A tibble: 2 × 3
+    #>   redcap_form_name   redcap_data          structure   
+    #>   <chr>              <list>               <chr>       
+    #> 1 super_hero_powers  <tibble [5,966 × 4]> repeating   
+    #> 2 heroes_information <tibble [734 × 12]>  nonrepeating
 
 In the above example, you can see that there is data from two
 instruments, `super_hero_powers` and `heroes_information`. From the
@@ -110,9 +111,8 @@ heroes_information
 #>  9         8 Agent 13 Female blue    -     Blond      173     61 Marvel… -      
 #> 10         9 Agent B… Male   brown   Human Brown      178     81 Marvel… -      
 #> # … with 724 more rows, 2 more variables: alignment <chr>,
-#> #   form_status_complete <dbl>, and abbreviated variable names ¹​eye_color,
+#> #   form_status_complete <fct>, and abbreviated variable names ¹​eye_color,
 #> #   ²​hair_color, ³​publisher, ⁴​skin_color
-#> # ℹ Use `print(n = ...)` to see more rows, and `colnames()` to see all variable names
 ```
 
 ### Binding `REDCapTidieR` tibbles into an environment
@@ -129,6 +129,7 @@ this is the global environment:
 
 ``` r
 ls.str(envir = globalenv())
+#> superheroes_data : tibble [2 × 3] (S3: tbl_df/tbl/data.frame)
 ```
 
 ``` r
@@ -140,6 +141,7 @@ superheroes_data %>%
 ls.str(envir = globalenv())
 #> heroes_information : tibble [734 × 12] (S3: tbl_df/tbl/data.frame)
 #> super_hero_powers : tibble [5,966 × 4] (S3: tbl_df/tbl/data.frame)
+#> superheroes_data : tibble [2 × 3] (S3: tbl_df/tbl/data.frame)
 ```
 
 Note that there are now two additional tibbles in the environment.
