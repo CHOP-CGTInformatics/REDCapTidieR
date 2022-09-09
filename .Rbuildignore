@@ -11,5 +11,7 @@
 ^data-raw$
 ^doc$
 ^Meta$
+^cran-comments\.md$
+README.html$
 
 utility/

@@ -8,3 +8,6 @@ docs
 inst/doc
 /doc/
 /Meta/
+vignettes/*.html
+vignettes/*.pdf
+README.html
