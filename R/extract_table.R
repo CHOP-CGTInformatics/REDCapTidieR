@@ -2,7 +2,8 @@
 #' Extract a Single Table from a REDCapTidieR Output
 #'
 #' @description
-#' Supply a \code{read_redcap_tidy()} output and specify a \code{form_name} to extract.
+#' Supply a \code{read_redcap_tidy()} output and specify a \code{form_name} to
+#' extract.
 #'
 #' @returns A single \code{tibble} specified by the user.
 #'
@@ -29,11 +30,11 @@
 #' @export
 
 extract_table <- function(.data,
-                          tbl){
+                          tbl) {
   # Check tbl is valid ----
   assert_character(all_of(tbl))
 
-  if (length(all_of(tbl)) > 1){
+  if (length(all_of(tbl)) > 1) {
     stop("Only one table may be supplied.")
   }
 
@@ -53,7 +54,8 @@ extract_table <- function(.data,
 #' Users may supply \code{tidyselect} statements such as \code{starts_with()}
 #' or \code{ends_with()} for easier selection.
 #'
-#' @returns A named list of \code{tibble}s specified by the user via \code{form_name}.
+#' @returns A named list of \code{tibble}s specified by the user via
+#' \code{form_name}.
 #'
 #' @param .data A REDCapTidieR output provided by \code{read_redcap_tidy()}
 #' @param tbls REDCap \code{form_name} specification, one or more. Default is
@@ -84,7 +86,7 @@ extract_table <- function(.data,
 #' @export
 
 extract_tables <- function(.data,
-                           tbls = everything()){
+                           tbls = everything()) {
 
   # Extract specified table ----
   # Pass tbls as an expression for enquosure

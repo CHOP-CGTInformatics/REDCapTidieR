@@ -6,8 +6,10 @@
 #' extraction and final processing of a tidy \code{tibble} to the user from
 #' a longitudinal REDCap database.
 #'
-#' @param db_data_long The longitudinal REDCap database output defined by \code{REDCapR::redcap_read_oneshot()$data}
-#' @param db_metadata_long The longitudinal REDCap metadata output defined by \code{REDCapR::redcap_metadata_read()$data}
+#' @param db_data_long The longitudinal REDCap database output defined by
+#' \code{REDCapR::redcap_read_oneshot()$data}
+#' @param db_metadata_long The longitudinal REDCap metadata output defined by
+#' \code{REDCapR::redcap_metadata_read()$data}
 #' @param linked_arms Output of \code{link_arms}, linking forms to REDCap events/arms
 #'
 #' @return
@@ -27,23 +29,28 @@ clean_redcap_long <- function(
     db_data_long,
     db_metadata_long,
     linked_arms
-){
+) {
 
   # Repeating Instrument Check ----
-  # Check if database supplied contains any repeating instruments to map onto `redcap_repeat_*` variables
+  # Check if database supplied contains any repeating instruments to map onto
+  # `redcap_repeat_*` variables
 
-  has_repeating <- if("redcap_repeat_instance" %in% names(db_data_long)){TRUE}else{FALSE}
+  has_repeating <- if ("redcap_repeat_instance" %in% names(db_data_long)) {
+    TRUE
+  } else {
+    FALSE
+  }
 
   # Apply checkmate checks
   assert_data_frame(db_data_long)
   assert_data_frame(db_metadata_long)
 
-if(has_repeating){
-  check_repeat_and_nonrepeat(db_data_long)
-}
+  if (has_repeating) {
+    check_repeat_and_nonrepeat(db_data_long)
+  }
 
   ## Repeating Forms Logic ----
-  if(has_repeating){
+  if (has_repeating) {
     repeated_forms <- db_data_long %>%
       filter(!is.na(.data$redcap_repeat_instrument)) %>%
       pull(.data$redcap_repeat_instrument) %>%
@@ -53,7 +60,10 @@ if(has_repeating){
       redcap_form_name = repeated_forms,
       redcap_data = map(
         .data$redcap_form_name,
-        ~ distill_repeat_table_long(.x, db_data_long, db_metadata_long, linked_arms)
+        ~ distill_repeat_table_long(.x,
+                                    db_data_long,
+                                    db_metadata_long,
+                                    linked_arms)
       ),
       structure = "repeating"
     )
@@ -81,10 +91,10 @@ if(has_repeating){
     structure = "nonrepeating"
   )
 
-  if(has_repeating){
-    clean_redcap_output <- rbind(repeated_forms_tibble, nonrepeated_forms_tibble)
+  if (has_repeating) {
+    rbind(repeated_forms_tibble, nonrepeated_forms_tibble)
   } else {
-    clean_redcap_output <- nonrepeated_forms_tibble
+    nonrepeated_forms_tibble
   }
 }
 
@@ -98,10 +108,13 @@ if(has_repeating){
 #' @return
 #' A \code{tibble} of all data related to a specified \code{form_name}
 #'
-#' @param form_name The \code{form_name} described in the named column from the REDCap metadata.
-#' @param db_data_long The REDCap database output defined by \code{REDCapR::redcap_read_oneshot()$data}
+#' @param form_name The \code{form_name} described in the named column from the
+#' REDCap metadata.
+#' @param db_data_long The REDCap database output defined by
+#' \code{REDCapR::redcap_read_oneshot()$data}
 #' @param db_metadata_long The REDCap metadata output defined by \code{REDCapR::redcap_metadata_read()$data}
-#' @param linked_arms Output of \code{link_arms}, linking forms to REDCap events/arms
+#' @param linked_arms Output of \code{link_arms}, linking forms to REDCap
+#' events/arms
 #'
 #' @importFrom dplyr filter pull select relocate rename
 #' @importFrom tidyselect all_of everything
@@ -115,11 +128,15 @@ distill_nonrepeat_table_long <- function(
     db_data_long,
     db_metadata_long,
     linked_arms
-){
-
+) {
   # Repeating Instrument Check ----
-  # Check if database supplied contains any repeating instruments to map onto `redcap_repeat_*` variables
-  has_repeating <- if("redcap_repeat_instance" %in% names(db_data_long)){TRUE}else{FALSE}
+  # Check if database supplied contains any repeating instruments to map onto
+  # `redcap_repeat_*` variables
+  has_repeating <- if ("redcap_repeat_instance" %in% names(db_data_long)) {
+    TRUE
+  } else {
+    FALSE
+  }
 
   my_record_id <- names(db_data_long)[1]
   my_form <- form_name
@@ -142,7 +159,7 @@ distill_nonrepeat_table_long <- function(
   db_data_long <- db_data_long %>%
     add_partial_keys()
 
-  if(has_repeating){
+  if (has_repeating) {
     db_data_long <- db_data_long %>%
       filter(is.na(.data$redcap_repeat_instance))
   }
@@ -160,12 +177,14 @@ distill_nonrepeat_table_long <- function(
   # Final aesthetic cleanup
   out <- db_data_long %>%
     select(all_of(my_fields), .data$redcap_event, .data$redcap_arm) %>%
-    relocate(c(.data$redcap_event, .data$redcap_arm), .after = !!my_record_id) %>%
+    relocate(
+      c(.data$redcap_event, .data$redcap_arm), .after = !!my_record_id
+    ) %>%
     rename("form_status_complete" = paste0(my_form, "_complete")) %>%
     relocate(.data$form_status_complete, .after = everything())
 
   # Remove arms column if necessary
-  if(!any(names(linked_arms) %>% str_detect("arm_2"))){
+  if (!any(names(linked_arms) %>% str_detect("arm_2"))) {
     out <- out %>%
       select(-.data$redcap_arm)
   }
@@ -184,10 +203,14 @@ distill_nonrepeat_table_long <- function(
 #' @return
 #' A \code{tibble} of all data related to a specified \code{form_name}
 #'
-#' @param form_name The \code{form_name} described in the named column from the REDCap metadata.
-#' @param db_data_long The REDCap database output defined by \code{REDCapR::redcap_read_oneshot()$data}
-#' @param db_metadata_long The REDCap metadata output defined by \code{REDCapR::redcap_metadata_read()$data}
-#' @param linked_arms Output of \code{link_arms}, linking forms to REDCap events/arms
+#' @param form_name The \code{form_name} described in the named column from the
+#' REDCap metadata.
+#' @param db_data_long The REDCap database output defined by
+#' \code{REDCapR::redcap_read_oneshot()$data}
+#' @param db_metadata_long The REDCap metadata output defined by
+#' \code{REDCapR::redcap_metadata_read()$data}
+#' @param linked_arms Output of \code{link_arms}, linking forms to REDCap
+#' events/arms
 #'
 #' @importFrom dplyr filter pull select relocate rename
 #' @importFrom tidyselect all_of everything
@@ -201,7 +224,7 @@ distill_repeat_table_long <- function(
     db_data_long,
     db_metadata_long,
     linked_arms
-){
+) {
   my_record_id <- names(db_data_long)[1]
   my_form <- form_name
 
@@ -222,7 +245,10 @@ distill_repeat_table_long <- function(
   # Setup data for loop redcap_arm linking
   db_data_long <- db_data_long %>%
     add_partial_keys() %>%
-    filter(!is.na(.data$redcap_repeat_instance) & .data$redcap_repeat_instrument == my_form)
+    filter(
+      !is.na(.data$redcap_repeat_instance) &
+        .data$redcap_repeat_instrument == my_form
+    )
 
   # Use link_arms() output to check if my_form appears in each event_name
   # If it does not, filter out all rows containing that event_name
@@ -237,13 +263,21 @@ distill_repeat_table_long <- function(
   # Final aesthetic cleanup
   out <- db_data_long %>%
     filter(.data$redcap_repeat_instrument == my_form) %>%
-    select(all_of(my_fields), .data$redcap_repeat_instance, .data$redcap_event, .data$redcap_arm) %>%
-    relocate(c(.data$redcap_repeat_instance, .data$redcap_event, .data$redcap_arm), .after = !!my_record_id) %>%
+    select(
+      all_of(my_fields),
+      .data$redcap_repeat_instance, .data$redcap_event, .data$redcap_arm
+    ) %>%
+    relocate(
+      c(.data$redcap_repeat_instance,
+        .data$redcap_event,
+        .data$redcap_arm),
+      .after = !!my_record_id
+    ) %>%
     rename("form_status_complete" = paste0(my_form, "_complete")) %>%
     relocate(.data$form_status_complete, .after = everything())
 
   # Remove arms column if necessary
-  if(!any(names(linked_arms) %>% str_detect("arm_2"))){
+  if (!any(names(linked_arms) %>% str_detect("arm_2"))) {
     out <- out %>%
       select(-.data$redcap_arm)
   }

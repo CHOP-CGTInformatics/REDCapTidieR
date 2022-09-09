@@ -6,8 +6,10 @@
 #' extraction and final processing of a tidy \code{tibble} to the user from
 #' a non-longitudinal REDCap database.
 #'
-#' @param db_data The REDCap database output defined by \code{REDCapR::redcap_read_oneshot()$data}
-#' @param db_metadata The REDCap metadata output defined by \code{REDCapR::redcap_metadata_read()$data}
+#' @param db_data The REDCap database output defined by
+#' \code{REDCapR::redcap_read_oneshot()$data}
+#' @param db_metadata The REDCap metadata output defined by
+#' \code{REDCapR::redcap_metadata_read()$data}
 #'
 #' @return
 #' Returns a \code{tibble} with list elements containing tidy dataframes. Users
@@ -15,7 +17,8 @@
 #' \code{form_name} and \code{structure} column details.
 #'
 #' @importFrom
-#' checkmate assert_data_frame expect_logical expect_factor expect_character expect_double
+#' checkmate assert_data_frame expect_logical expect_factor expect_character
+#' expect_double
 #' @importFrom dplyr filter pull
 #' @importFrom purrr map
 #' @importFrom tibble tibble
@@ -26,19 +29,24 @@
 clean_redcap <- function(
     db_data,
     db_metadata
-){
+) {
 
   # Apply checkmate checks ---
   assert_data_frame(db_data)
   assert_data_frame(db_metadata)
 
   # Repeating Instrument Check ----
-  # Check if database supplied contains any repeating instruments to map onto `redcap_repeat_*` variables
+  # Check if database supplied contains any repeating instruments to map onto `
+  # redcap_repeat_*` variables
 
-  has_repeating <- if("redcap_repeat_instance" %in% names(db_data)){TRUE}else{FALSE}
+  has_repeating <- if ("redcap_repeat_instance" %in% names(db_data)) {
+    TRUE
+  } else {
+    FALSE
+  }
 
   ## Repeating Forms Logic ----
-  if(has_repeating){
+  if (has_repeating) {
     repeated_forms <- db_data %>%
       filter(!is.na(.data$redcap_repeat_instrument)) %>%
       pull(.data$redcap_repeat_instrument) %>%
@@ -75,10 +83,10 @@ clean_redcap <- function(
     structure = "nonrepeating"
   )
 
-  if(has_repeating){
-    clean_redcap_output <- rbind(repeated_forms_tibble, nonrepeated_forms_tibble)
+  if (has_repeating) {
+    rbind(repeated_forms_tibble, nonrepeated_forms_tibble)
   } else {
-    clean_redcap_output <- nonrepeated_forms_tibble
+    nonrepeated_forms_tibble
   }
 }
 
@@ -91,9 +99,12 @@ clean_redcap <- function(
 #' @return
 #' A \code{tibble} of all data related to a specified \code{form_name}
 #'
-#' @param form_name The \code{form_name} described in the named column from the REDCap metadata.
-#' @param db_data The REDCap database output defined by \code{REDCapR::redcap_read_oneshot()$data}
-#' @param db_metadata The REDCap metadata output defined by \code{REDCapR::redcap_metadata_read()$data}
+#' @param form_name The \code{form_name} described in the named column from the
+#' REDCap metadata.
+#' @param db_data The REDCap database output defined by
+#' \code{REDCapR::redcap_read_oneshot()$data}
+#' @param db_metadata The REDCap metadata output defined by
+#' \code{REDCapR::redcap_metadata_read()$data}
 #'
 #' @importFrom dplyr filter pull select relocate rename
 #' @importFrom tidyselect all_of everything starts_with
@@ -105,11 +116,16 @@ distill_nonrepeat_table <- function(
     form_name,
     db_data,
     db_metadata
-){
+) {
 
   # Repeating Instrument Check ----
-  # Check if database supplied contains any repeating instruments to map onto `redcap_repeat_*` variables
-  has_repeating <- if("redcap_repeat_instance" %in% names(db_data)){TRUE}else{FALSE}
+  # Check if database supplied contains any repeating instruments to map onto
+  # `redcap_repeat_*` variables
+  has_repeating <- if ("redcap_repeat_instance" %in% names(db_data)) {
+    TRUE
+  } else {
+    FALSE
+  }
 
   my_record_id <- names(db_data)[1]
   my_form <- form_name
@@ -128,7 +144,7 @@ distill_nonrepeat_table <- function(
     select(starts_with(my_fields), paste0(my_form, "_complete")) %>%
     names()
 
-  if(has_repeating){
+  if (has_repeating) {
     db_data <- db_data %>%
       filter(is.na(.data$redcap_repeat_instance))
   }
@@ -149,9 +165,12 @@ distill_nonrepeat_table <- function(
 #' @return
 #' A \code{tibble} of all data related to a specified \code{form_name}
 #'
-#' @param form_name The \code{form_name} described in the named column from the REDCap metadata.
-#' @param db_data The non-longitudinal REDCap database output defined by \code{REDCapR::redcap_read_oneshot()$data}
-#' @param db_metadata The non-longitudinal REDCap metadata output defined by \code{REDCapR::redcap_metadata_read()$data}
+#' @param form_name The \code{form_name} described in the named column from the
+#' REDCap metadata.
+#' @param db_data The non-longitudinal REDCap database output defined by
+#' \code{REDCapR::redcap_read_oneshot()$data}
+#' @param db_metadata The non-longitudinal REDCap metadata output defined by
+#' \code{REDCapR::redcap_metadata_read()$data}
 #'
 #' @importFrom dplyr filter pull select relocate rename
 #' @importFrom tidyselect all_of everything starts_with
@@ -163,7 +182,7 @@ distill_repeat_table <- function(
     form_name,
     db_data,
     db_metadata
-){
+) {
   my_record_id <- names(db_data)[1]
   my_form <- form_name
 
@@ -182,7 +201,10 @@ distill_repeat_table <- function(
     names()
 
   db_data %>%
-    filter(!is.na(.data$redcap_repeat_instance) & .data$redcap_repeat_instrument == my_form) %>%
+    filter(
+      !is.na(.data$redcap_repeat_instance) &
+        .data$redcap_repeat_instrument == my_form
+    ) %>%
     select(all_of(my_fields), .data$redcap_repeat_instance) %>%
     relocate(.data$redcap_repeat_instance, .after = all_of(my_record_id)) %>%
     rename("form_status_complete" = paste0(my_form, "_complete")) %>%

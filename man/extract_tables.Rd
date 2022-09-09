@@ -13,7 +13,8 @@ extract_tables(.data, tbls = everything())
 \code{everything()}.}
 }
 \value{
-A named list of \code{tibble}s specified by the user via \code{form_name}.
+A named list of \code{tibble}s specified by the user via
+\code{form_name}.
 }
 \description{
 Supply a \code{read_redcap_tidy()} output and specify one or more

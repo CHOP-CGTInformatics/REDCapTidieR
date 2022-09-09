@@ -15,7 +15,8 @@ extract_table(.data, tbl)
 A single \code{tibble} specified by the user.
 }
 \description{
-Supply a \code{read_redcap_tidy()} output and specify a \code{form_name} to extract.
+Supply a \code{read_redcap_tidy()} output and specify a \code{form_name} to
+extract.
 }
 \examples{
 \dontrun{

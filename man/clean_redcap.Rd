@@ -7,9 +7,11 @@
 clean_redcap(db_data, db_metadata)
 }
 \arguments{
-\item{db_data}{The REDCap database output defined by \code{REDCapR::redcap_read_oneshot()$data}}
+\item{db_data}{The REDCap database output defined by
+\code{REDCapR::redcap_read_oneshot()$data}}
 
-\item{db_metadata}{The REDCap metadata output defined by \code{REDCapR::redcap_metadata_read()$data}}
+\item{db_metadata}{The REDCap metadata output defined by
+\code{REDCapR::redcap_metadata_read()$data}}
 }
 \value{
 Returns a \code{tibble} with list elements containing tidy dataframes. Users

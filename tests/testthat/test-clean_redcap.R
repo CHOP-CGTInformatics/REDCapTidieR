@@ -76,12 +76,12 @@ test_that("distill_nonrepeat_table tibble contains expected columns and data typ
 
   # Check last columns are form_status_complete
   expect_true(
-    names(out[,ncol(out)]) == "form_status_complete"
+    names(out[, ncol(out)]) == "form_status_complete"
   )
 
   # Check columns expected to be missing aren't included
   expect_false(
-    any(c("redcap_repeat_instrument","redcap_repeat_instance", "redcap_event", "redcap_arm") %in% names(out))
+    any(c("redcap_repeat_instrument", "redcap_repeat_instance", "redcap_event", "redcap_arm") %in% names(out))
   )
 
   # Check partial keys are filled out
@@ -101,12 +101,12 @@ test_that("distill_repeat_table returns tables", {
 
   # Check last columns are form_status_complete
   expect_true(
-    names(out[,ncol(out)]) == "form_status_complete"
+    names(out[, ncol(out)]) == "form_status_complete"
   )
 
   # Check columns expected to be missing aren't included
   expect_false(
-    any(c("redcap_repeat_instrument","redcap_event", "redcap_arm") %in% names(out))
+    any(c("redcap_repeat_instrument", "redcap_event", "redcap_arm") %in% names(out))
   )
 
   # Check partial keys are filled out

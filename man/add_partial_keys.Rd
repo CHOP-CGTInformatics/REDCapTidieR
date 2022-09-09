@@ -7,7 +7,8 @@
 add_partial_keys(db_data)
 }
 \arguments{
-\item{db_data}{The REDCap database output defined by \code{REDCapR::redcap_read_oneshot()$data}}
+\item{db_data}{The REDCap database output defined by
+\code{REDCapR::redcap_read_oneshot()$data}}
 }
 \value{
 Two appended columns, \code{redcap_event} and \code{redcap_arm}

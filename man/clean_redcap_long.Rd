@@ -7,9 +7,11 @@
 clean_redcap_long(db_data_long, db_metadata_long, linked_arms)
 }
 \arguments{
-\item{db_data_long}{The longitudinal REDCap database output defined by \code{REDCapR::redcap_read_oneshot()$data}}
+\item{db_data_long}{The longitudinal REDCap database output defined by
+\code{REDCapR::redcap_read_oneshot()$data}}
 
-\item{db_metadata_long}{The longitudinal REDCap metadata output defined by \code{REDCapR::redcap_metadata_read()$data}}
+\item{db_metadata_long}{The longitudinal REDCap metadata output defined by
+\code{REDCapR::redcap_metadata_read()$data}}
 
 \item{linked_arms}{Output of \code{link_arms}, linking forms to REDCap events/arms}
 }

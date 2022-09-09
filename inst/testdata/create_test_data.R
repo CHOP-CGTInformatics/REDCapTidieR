@@ -1,12 +1,22 @@
 # This script solely used for loading and saving testing data for the test suite
 
 # Load argument vars
-classic_token <- Sys.getenv("REDCAPTIDIER_CLASSIC_API")
-classic_norepeat_token <- Sys.getenv("REDCAPTIDIER_CLASSIC_NOREPEAT_API")
-longitudinal_token <- Sys.getenv("REDCAPTIDIER_LONGITUDINAL_API")
-longitudinal_norepeat_token <- Sys.getenv("REDCAPTIDIER_LONGITUDINAL_NOREPEAT_API")
-longitudinal_noarms_token <- Sys.getenv("REDCAPTIDIER_LONGITUDINAL_NOARMS_API")
-redcap_uri <- Sys.getenv("REDCAP_URI")
+classic_token <- Sys.getenv(
+  "REDCAPTIDIER_CLASSIC_API"
+)
+classic_norepeat_token <- Sys.getenv(
+  "REDCAPTIDIER_CLASSIC_NOREPEAT_API")
+longitudinal_token <- Sys.getenv("REDCAPTIDIER_LONGITUDINAL_API"
+)
+longitudinal_norepeat_token <- Sys.getenv(
+  "REDCAPTIDIER_LONGITUDINAL_NOREPEAT_API"
+)
+longitudinal_noarms_token <- Sys.getenv(
+  "REDCAPTIDIER_LONGITUDINAL_NOARMS_API"
+)
+redcap_uri <- Sys.getenv(
+  "REDCAP_URI"
+)
 
 # Classic DB ----
 db_data <- redcap_read_oneshot(redcap_uri = redcap_uri,
@@ -55,18 +65,19 @@ saveRDS(db_metadata_long, "inst/testdata/db_metadata_long.RDS")
 
 # Longitudinal No Repeat DB ----
 db_data_long_norepeat <- redcap_read_oneshot(redcap_uri = redcap_uri,
-                                    token = longitudinal_norepeat_token,
-                                    verbose = FALSE)$data
+                                             token = longitudinal_norepeat_token,
+                                             verbose = FALSE)$data
 
 db_metadata_long_norepeat <- redcap_metadata_read(redcap_uri = redcap_uri,
-                                         token = longitudinal_norepeat_token,
-                                         verbose = FALSE)$data
+                                                  token = longitudinal_norepeat_token,
+                                                  verbose = FALSE)$data
 
 # Apply checkbox appending functions to metadata
 db_metadata_long_norepeat <- update_field_names(db_metadata_long_norepeat)
 
 saveRDS(db_data_long_norepeat, "inst/testdata/db_data_long_norepeat.RDS")
-saveRDS(db_metadata_long_norepeat, "inst/testdata/db_metadata_long_norepeat.RDS")
+saveRDS(db_metadata_long_norepeat,
+        "inst/testdata/db_metadata_long_norepeat.RDS")
 
 # Longitudinal DB Linked Arms Output ----
 # Necessary because a separate API call is needed for `redcap_event_instruments`
@@ -93,9 +104,11 @@ db_data_long_noarms <- redcap_read_oneshot(redcap_uri = redcap_uri,
                                            token = longitudinal_noarms_token,
                                            verbose = FALSE)$data
 
-db_metadata_long_noarms <- redcap_metadata_read(redcap_uri = redcap_uri,
-                                                token = longitudinal_noarms_token,
-                                                verbose = FALSE)$data
+db_metadata_long_noarms <- redcap_metadata_read(
+  redcap_uri = redcap_uri,
+  token = longitudinal_noarms_token,
+  verbose = FALSE
+)$data
 
 # Apply checkbox appending functions to metadata
 db_metadata_long_noarms <- update_field_names(db_metadata_long_noarms)
@@ -117,5 +130,3 @@ saveRDS(linked_arms_long_noarms, "inst/testdata/linked_arms_long_noarms.RDS")
 read_redcap_tidy(redcap_uri = redcap_uri,
                  token = longitudinal_token) %>%
   saveRDS("inst/testdata/redcaptidier_longitudinal_db.RDS")
-
-

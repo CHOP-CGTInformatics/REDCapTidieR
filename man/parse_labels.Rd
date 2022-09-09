@@ -7,7 +7,8 @@
 parse_labels(string)
 }
 \arguments{
-\item{string}{A \code{db_metadata$select_choices_or_calculations} field pre-filtered for checkbox \code{field_type}}
+\item{string}{A \code{db_metadata$select_choices_or_calculations} field
+pre-filtered for checkbox \code{field_type}}
 }
 \value{
 A tidy \code{tibble} from a matrix giving raw and label outputs to

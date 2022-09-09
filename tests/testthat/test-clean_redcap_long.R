@@ -1,15 +1,35 @@
 # Load Sample Databases ----
 # Arms datasets
-db_data_long <- readRDS(system.file("testdata/db_data_long.RDS", package = "REDCapTidieR"))
-db_metadata_long <- readRDS(system.file("testdata/db_metadata_long.RDS", package = "REDCapTidieR"))
-linked_arms_long <- readRDS(system.file("testdata/linked_arms_long.RDS", package = "REDCapTidieR"))
-db_data_long_norepeat <- readRDS(system.file("testdata/db_data_long_norepeat.RDS", package = "REDCapTidieR"))
-db_metadata_long_norepeat <- readRDS(system.file("testdata/db_metadata_long_norepeat.RDS", package = "REDCapTidieR"))
-linked_arms_long_norepeat <- readRDS(system.file("testdata/linked_arms_long_norepeat.RDS", package = "REDCapTidieR"))
+db_data_long <- readRDS(
+  system.file("testdata/db_data_long.RDS", package = "REDCapTidieR")
+)
+db_metadata_long <- readRDS(
+  system.file("testdata/db_metadata_long.RDS", package = "REDCapTidieR")
+)
+linked_arms_long <- readRDS(
+  system.file("testdata/linked_arms_long.RDS", package = "REDCapTidieR"))
+db_data_long_norepeat <- readRDS(
+  system.file("testdata/db_data_long_norepeat.RDS", package = "REDCapTidieR")
+)
+db_metadata_long_norepeat <- readRDS(
+  system.file(
+    "testdata/db_metadata_long_norepeat.RDS", package = "REDCapTidieR"
+  )
+)
+linked_arms_long_norepeat <- readRDS(
+  system.file(
+    "testdata/linked_arms_long_norepeat.RDS", package = "REDCapTidieR")
+)
 # No arms datasets
-db_data_long_noarms <- readRDS(system.file("testdata/db_data_long_noarms.RDS", package = "REDCapTidieR"))
-db_metadata_long_noarms <- readRDS(system.file("testdata/db_metadata_long_noarms.RDS", package = "REDCapTidieR"))
-linked_arms_long_noarms <- readRDS(system.file("testdata/linked_arms_long_noarms.RDS", package = "REDCapTidieR"))
+db_data_long_noarms <- readRDS(
+  system.file("testdata/db_data_long_noarms.RDS", package = "REDCapTidieR")
+)
+db_metadata_long_noarms <- readRDS(
+  system.file("testdata/db_metadata_long_noarms.RDS", package = "REDCapTidieR")
+)
+linked_arms_long_noarms <- readRDS(
+  system.file("testdata/linked_arms_long_noarms.RDS", package = "REDCapTidieR")
+)
 
 # Run Tests ----
 test_that("clean_redcap_long with arms works", {
@@ -60,7 +80,7 @@ test_that("distill_nonrepeat_table_long tibble contains expected columns for lon
 
   # Check last columns are form_status_complete
   expect_true(
-    names(out[,ncol(out)]) == "form_status_complete"
+    names(out[, ncol(out)]) == "form_status_complete"
   )
 
   # Check for expected longitudinal arms columns
@@ -75,23 +95,25 @@ test_that("distill_nonrepeat_table_long tibble contains expected columns for lon
 
   # Check columns expected to be missing aren't included
   expect_false(
-    any(c("redcap_repeat_instrument","redcap_repeat_instance") %in% names(out))
+    any(c("redcap_repeat_instrument", "redcap_repeat_instance") %in% names(out))
   )
 })
 
 test_that("distill_nonrepeat_table_long tibble contains expected columns for longitudinal REDCap databases without arms", {
   ## Check longitudinal structure without arms ----
-  out <- distill_nonrepeat_table_long(form_name = "nonrepeated",
-                                      db_data_long = db_data_long_noarms,
-                                      db_metadata_long = db_metadata_long_noarms,
-                                      linked_arms = linked_arms_long_noarms)
+  out <- distill_nonrepeat_table_long(
+    form_name = "nonrepeated",
+    db_data_long = db_data_long_noarms,
+    db_metadata_long = db_metadata_long_noarms,
+    linked_arms = linked_arms_long_noarms
+  )
 
   # Check general structure
   expect_true(is_tibble(out))
 
   # Check last columns are form_status_complete
   expect_true(
-    names(out[,ncol(out)]) == "form_status_complete"
+    names(out[, ncol(out)]) == "form_status_complete"
   )
 
   # Check for expected longitudinal arms columns
@@ -106,7 +128,11 @@ test_that("distill_nonrepeat_table_long tibble contains expected columns for lon
 
   # Check columns expected to be missing aren't included
   expect_false(
-    any(c("redcap_repeat_instrument","redcap_repeat_instance", "redcap_arm") %in% names(out))
+    any(
+      c(
+        "redcap_repeat_instrument", "redcap_repeat_instance", "redcap_arm") %in%
+        names(out)
+    )
   )
 })
 
@@ -122,12 +148,14 @@ test_that("distill_repeat_table_long returns tables for REDCap dbs with arms", {
 
   # Check last columns are form_status_complete
   expect_true(
-    names(out[,ncol(out)]) == "form_status_complete"
+    names(out[, ncol(out)]) == "form_status_complete"
   )
 
   # Check for expected longitudinal arms columns
   expect_true(
-    all(c("redcap_repeat_instance", "redcap_event", "redcap_arm") %in% names(out))
+    all(
+      c("redcap_repeat_instance", "redcap_event", "redcap_arm") %in% names(out)
+    )
   )
 
   # Check partial keys are filled out
@@ -154,7 +182,7 @@ test_that("distill_repeat_table_long no arms returns tables  for REDCap dbs with
 
   # Check last columns are form_status_complete
   expect_true(
-    names(out[,ncol(out)]) == "form_status_complete"
+    names(out[, ncol(out)]) == "form_status_complete"
   )
 
   # Check for expected longitudinal no arms columns
@@ -172,4 +200,3 @@ test_that("distill_repeat_table_long no arms returns tables  for REDCap dbs with
     any(c("redcap_repeat_instrument", "redcap_arm") %in% names(out))
   )
 })
-

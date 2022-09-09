@@ -49,8 +49,8 @@
 
 read_redcap_tidy <- function(redcap_uri,
                              token,
-                             raw_or_label = 'label',
-                             suppress_messages = TRUE){
+                             raw_or_label = "label",
+                             suppress_messages = TRUE) {
 
   # Load Datasets ----
   # Load REDCap Dataset output
@@ -70,18 +70,18 @@ read_redcap_tidy <- function(redcap_uri,
   # Apply checkbox appending functions to metadata
   db_metadata <- update_field_names(db_metadata)
   # Note: Order of functions calls between `update_*` matters
-  if("checkbox" %in% db_metadata$field_type) {
+  if ("checkbox" %in% db_metadata$field_type) {
     db_data <- update_data_col_names(db_data, db_metadata)
   }
 
-  if (raw_or_label == "label"){
+  if (raw_or_label == "label") {
     db_data <- multi_choice_to_labels(db_data, db_metadata)
   }
 
   # Check for potential API rights issues ----
   # If any missing field names detected in metadata output, run the following
   # resulting in metadata with missing data removed and warn user of action
-  if(any(!db_metadata$field_name_updated %in% names(db_data))) {
+  if (any(!db_metadata$field_name_updated %in% names(db_data))) {
     check_user_rights(db_data, db_metadata)
     # Default behavior: Remove missing field names to prevent crash
     db_metadata <- db_metadata %>%
@@ -89,8 +89,13 @@ read_redcap_tidy <- function(redcap_uri,
   }
 
   # Longitudinal Arms Check and Cleaning Application ----
-  # Check if database supplied is longitudinal to determine appropriate function to use
-  is_longitudinal <- if("redcap_event_name" %in% names(db_data)){TRUE}else{FALSE}
+  # Check if database supplied is longitudinal to determine appropriate function
+  # to use
+  is_longitudinal <- if ("redcap_event_name" %in% names(db_data)) {
+    TRUE
+  } else {
+    FALSE
+  }
 
   if (is_longitudinal) {
     linked_arms <- link_arms(db_data_long = db_data,
@@ -106,4 +111,5 @@ read_redcap_tidy <- function(redcap_uri,
                         db_metadata = db_metadata)
   }
 
+  out
 }

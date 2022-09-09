@@ -8,7 +8,8 @@
 #' @returns Two appended columns, \code{redcap_event} and \code{redcap_arm}
 #' to the end of \code{read_redcap_tidy} output \code{tibble}s.
 #'
-#' @param db_data The REDCap database output defined by \code{REDCapR::redcap_read_oneshot()$data}
+#' @param db_data The REDCap database output defined by
+#' \code{REDCapR::redcap_read_oneshot()$data}
 #'
 #' @importFrom dplyr mutate
 #' @importFrom rlang .data
@@ -17,7 +18,7 @@
 
 add_partial_keys <- function(
     db_data
-){
+) {
   pattern <- "^(\\w+?)_arm_(\\d)$"
 
   db_data <- db_data %>%
@@ -59,13 +60,13 @@ link_arms <- function(
     db_metadata_long,
     redcap_uri,
     token
-){
+) {
 
   # First, add helper variables
   db_data_long <- add_partial_keys(db_data_long)
 
-  # Next map through all possible arms by identifying unique ones in db_data_long
-  # after it has helper variables added from `add_partial_keys()`
+  # Next map through all possible arms by identifying unique ones in
+  # db_data_long after it has helper variables added from `add_partial_keys()`
   db_event_instruments <- tibble() # Define empty tibble
 
   arms <- redcap_arm_export(redcap_uri, token, verbose = FALSE)$data
@@ -77,7 +78,8 @@ link_arms <- function(
   )$data) %>%
     bind_rows()
 
-  # Categorize all events/arms and assign all forms that appear in them to a vector. Vectors help with variable length assignments.
+  # Categorize all events/arms and assign all forms that appear in them to a
+  # vector. Vectors help with variable length assignments.
   db_event_instruments %>%
     select(-.data$arm_num) %>%
     pivot_wider(names_from = c("unique_event_name"),
@@ -99,7 +101,8 @@ link_arms <- function(
 #' @returns A tidy \code{tibble} from a matrix giving raw and label outputs to
 #' be used in later functions.
 #'
-#' @param string A \code{db_metadata$select_choices_or_calculations} field pre-filtered for checkbox \code{field_type}
+#' @param string A \code{db_metadata$select_choices_or_calculations} field
+#' pre-filtered for checkbox \code{field_type}
 #'
 #' @importFrom stringi stri_split_fixed
 #' @importFrom tibble as_tibble is_tibble
@@ -107,14 +110,15 @@ link_arms <- function(
 #'
 #' @keywords internal
 
-parse_labels <- function(string){
+parse_labels <- function(string) {
   out <- string %>%
     strsplit(" \\| ") # Split by "|"
 
   # Check there is a comma in all | delimited strsplit elements
   if (!all(grepl(",", out[[1]]))) {
-    # If this is a misattributed data field or blank, throw warning in multi_choice_to_labels
-    if (length(out[[1]]) > 1 & !all(is.na(out[[1]]))){
+    # If this is a misattributed data field or blank, throw warning in
+    # multi_choice_to_labels
+    if (length(out[[1]]) > 1 && !all(is.na(out[[1]]))) {
       stop(paste0("Cannot parse the select_choices_or_calculations field from REDCap metadata. This may happen if there is a pipe character `|` inside the label: ", string))
     }
   }
@@ -127,8 +131,9 @@ parse_labels <- function(string){
 
   # Check if vector is even for matrix creation. If not, then fail.
   if (length(out) %% 2 != 0) {
-    # If this is a misattributed data field or blank, throw warning in multi_choice_to_labels
-    if (length(out[[1]]) > 1 && !all(is.na(out[[1]]))){
+    # If this is a misattributed data field or blank, throw warning in
+    # multi_choice_to_labels
+    if (length(out[[1]]) > 1 && !all(is.na(out[[1]]))) {
       stop(paste0("Cannot parse the select_choices_or_calculations field from REDCap metadata. This may happen if there is a pipe character `|` inside the label: ", string))
     }
   }
@@ -163,12 +168,13 @@ parse_labels <- function(string){
 #' @importFrom rlang .data
 #' @keywords internal
 
-checkbox_appender <- function(field_name, string){
+checkbox_appender <- function(field_name, string) {
   prefix <- paste0(field_name, "___")
 
   out <- parse_labels(string)
   out$raw <- tolower(out$raw)
-  # append each element of the split vector with the field_name prefix and then recombine
+  # append each element of the split vector with the field_name prefix and then
+  # recombine
   out <- paste0(prefix, out[[1]])
 
   out
@@ -194,7 +200,7 @@ checkbox_appender <- function(field_name, string){
 #'
 #' @keywords internal
 
-update_field_names <- function(db_metadata){
+update_field_names <- function(db_metadata) {
   out <- db_metadata %>%
     mutate(
       field_name_updated = list(c())
@@ -231,7 +237,8 @@ update_field_names <- function(db_metadata){
 #' This is an issue with checkbox fields since analysts should be able to verify
 #' checkbox variable suffices with their label counterparts.
 #'
-#' @param db_data The REDCap database output defined by \code{REDCapR::redcap_read_oneshot()$data}
+#' @param db_data The REDCap database output defined by
+#' \code{REDCapR::redcap_read_oneshot()$data}
 #' @param db_metadata The REDCap metadata output defined by
 #' \code{REDCapR::redcap_metadata_read()$data}
 #'
@@ -244,19 +251,21 @@ update_field_names <- function(db_metadata){
 #'
 #' @keywords internal
 
-update_data_col_names <- function(db_data, db_metadata){
+update_data_col_names <- function(db_data, db_metadata) {
   # Resolve checkbox conversion ----
   # Note: REDCap auto-exports and enforces changes from "-" to "_". This is not
   # useful when analysts want to reference negative values or other naming
   # conventions for checkboxes.
   db_metadata$checkbox_conversion <- db_metadata$field_name_updated
-  db_metadata$checkbox_conversion <- str_replace_all(db_metadata$checkbox_conversion, "-", "_")
+  db_metadata$checkbox_conversion <- str_replace_all(
+    db_metadata$checkbox_conversion, "-", "_"
+  )
 
   changed_names <- db_metadata %>%
     select(.data$field_name_updated, .data$checkbox_conversion) %>%
     filter(.data$field_name_updated != .data$checkbox_conversion)
 
-  for (i in 1:nrow(changed_names)) {
+  for (i in seq_len(nrow(changed_names))) {
     names(db_data)[names(db_data) %in% changed_names$checkbox_conversion[i]] <- changed_names$field_name_updated[i]
   }
 
@@ -285,11 +294,12 @@ update_data_col_names <- function(db_data, db_metadata){
 #'
 #' @keywords internal
 
-multi_choice_to_labels <- function(db_data, db_metadata){
+multi_choice_to_labels <- function(db_data, db_metadata) {
 
   # form_status_complete Column Handling ----
   # Must be done before the creation of form_status_complete
-  # select columns that don't appear in field_name_updated and end with "_complete"
+  # select columns that don't appear in field_name_updated and end with
+  # "_complete"
   form_status_cols <- db_data %>%
     select(!any_of(db_metadata$field_name_updated) & ends_with("_complete")) %>%
     names()
@@ -307,7 +317,11 @@ multi_choice_to_labels <- function(db_data, db_metadata){
       # Convert to factor
       # Map constant values to raw values
       across(.cols = all_of(form_status_cols),
-             .fns = ~factor(., levels = c("Incomplete", "Unverified", "Complete")))
+             .fns = ~factor(., levels = c(
+               "Incomplete", "Unverified", "Complete"
+             )
+             )
+      )
     )
 
 
@@ -329,19 +343,25 @@ multi_choice_to_labels <- function(db_data, db_metadata){
     if (db_metadata$field_type[i] %in% c("dropdown", "radio")) {
 
       # Check for empty selection strings indicating missing data or incorrect data field attribute types in REDCap
-      if(is.na(db_metadata$select_choices_or_calculations[i])) {
-        warning(paste0("The field ", {field_name}, " in " , db_metadata$form_name[i], " is a ", db_metadata$field_type[i], " field type, however it does not have any categories."))
+      if (is.na(db_metadata$select_choices_or_calculations[i])) {
+        warning(paste0("The field ", {field_name}, " in ",
+                       db_metadata$form_name[i], " is a ",
+                       db_metadata$field_type[i],
+                       " field type, however it does not have any categories."))
       }
 
       # Retrieve parse_labels key for given field_name
-      parse_labels_output <- parse_labels(db_metadata$select_choices_or_calculations[i])
+      parse_labels_output <- parse_labels(
+        db_metadata$select_choices_or_calculations[i]
+      )
 
-      # Replace values from db_data$(field_name) with label values from  parse_labels key
+      # Replace values from db_data$(field_name) with label values from
+      # parse_labels key
       db_data <- db_data %>%
         mutate(
           across(.cols = !!field_name, .fns = as.character)
         ) %>%
-        left_join(parse_labels_output %>% rename(!!field_name := .data$raw), # Could not get working in by argument, instead inject field name for rename in parse_labels_output
+        left_join(parse_labels_output %>% rename(!!field_name := .data$raw),
                   by = field_name) %>%
         mutate(!!field_name := .data$label) %>% # Again, use rlang var injection
         select(-.data$label)

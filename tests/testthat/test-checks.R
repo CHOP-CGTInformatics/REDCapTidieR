@@ -13,7 +13,9 @@ test_that("check_user_rights works", {
     "missing_field",     "missing_form"
   )
 
-  expect_warning(check_user_rights(db_data = test_data, db_metadata = test_metadata))
+  expect_warning(
+    check_user_rights(db_data = test_data, db_metadata = test_metadata)
+    )
 })
 
 test_that("check_repeat_and_nonrepeat works", {

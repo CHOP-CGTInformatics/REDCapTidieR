@@ -12,13 +12,17 @@ distill_repeat_table_long(
 )
 }
 \arguments{
-\item{form_name}{The \code{form_name} described in the named column from the REDCap metadata.}
+\item{form_name}{The \code{form_name} described in the named column from the
+REDCap metadata.}
 
-\item{db_data_long}{The REDCap database output defined by \code{REDCapR::redcap_read_oneshot()$data}}
+\item{db_data_long}{The REDCap database output defined by
+\code{REDCapR::redcap_read_oneshot()$data}}
 
-\item{db_metadata_long}{The REDCap metadata output defined by \code{REDCapR::redcap_metadata_read()$data}}
+\item{db_metadata_long}{The REDCap metadata output defined by
+\code{REDCapR::redcap_metadata_read()$data}}
 
-\item{linked_arms}{Output of \code{link_arms}, linking forms to REDCap events/arms}
+\item{linked_arms}{Output of \code{link_arms}, linking forms to REDCap
+events/arms}
 }
 \value{
 A \code{tibble} of all data related to a specified \code{form_name}

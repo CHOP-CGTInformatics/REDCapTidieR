@@ -9,9 +9,13 @@
 #' user. Defaults to the global environment when no specification is given.
 #'
 #' @param .data A tidy table provided by \code{read_redcap_tidy()}
-#' @param environment The environment to assign the tidy data (default \code{global_env()}). For new environment, it is recommended to use \code{rlang::new_environment()}.
-#' @param redcap_form_name Specify REDCap form names to load into environment. Default behavior is all forms.
-#' @param structure Specify REDCap structure to load into environment, either \code{repeating} or \code{nonrepeating}. Defaults to all structures.
+#' @param environment The environment to assign the tidy data (default
+#' \code{global_env()}). For new environment, it is recommended to use
+#' \code{rlang::new_environment()}.
+#' @param redcap_form_name Specify REDCap form names to load into environment.
+#' Default behavior is all forms.
+#' @param structure Specify REDCap structure to load into environment, either
+#' \code{repeating} or \code{nonrepeating}. Defaults to all structures.
 #'
 #' @importFrom dplyr filter pull
 #' @importFrom rlang env_poke current_env new_environment global_env
@@ -45,13 +49,10 @@
 bind_tables <- function(.data,
                         environment = global_env(),
                         redcap_form_name = NULL,
-                        structure = NULL){
-
+                        structure = NULL) {
   # Name variables
   my_redcap_form_names <- redcap_form_name
   my_structures <- structure
-  assigned_environment <- environment
-
   env_data <- .data
 
   # Apply conditional loading for specific forms or structures
@@ -71,7 +72,7 @@ bind_tables <- function(.data,
   # Map over table names and environment data to load into environment
   map2(.x = table_names,
        .y = env_data$redcap_data,
-       .f = ~ env_poke(env = assigned_environment,
+       .f = ~ env_poke(env = environment,
                        nm = .x,
                        value = .y)
   )

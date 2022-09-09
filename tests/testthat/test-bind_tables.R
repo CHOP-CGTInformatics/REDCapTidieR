@@ -1,5 +1,9 @@
 # Load Sample Longitudinal Database
-redcaptidier_longitudintal_db <- readRDS(system.file("testdata/redcaptidier_longitudinal_db.RDS", package = "REDCapTidieR"))
+redcaptidier_longitudintal_db <- readRDS(
+  system.file(
+    "testdata/redcaptidier_longitudinal_db.RDS", package = "REDCapTidieR"
+    )
+  )
 
 test_that("bind_tables works with no specifications", {
     redcaptidier_longitudintal_db %>%
@@ -11,7 +15,8 @@ test_that("bind_tables works with no specifications", {
     expect_s3_class(nonrepeated, "data.frame")
     expect_s3_class(nonrepeated2, "data.frame")
     expect_s3_class(repeated, "data.frame")
-    rm(list = c("nonrepeated", "repeated", "nonrepeated2"), envir = global_env())
+    rm(list = c("nonrepeated", "repeated", "nonrepeated2"),
+       envir = global_env())
 })
 
 test_that("bind_tables works with environment specification", {

@@ -14,11 +14,15 @@ bind_tables(
 \arguments{
 \item{.data}{A tidy table provided by \code{read_redcap_tidy()}}
 
-\item{environment}{The environment to assign the tidy data (default \code{global_env()}). For new environment, it is recommended to use \code{rlang::new_environment()}.}
+\item{environment}{The environment to assign the tidy data (default
+\code{global_env()}). For new environment, it is recommended to use
+\code{rlang::new_environment()}.}
 
-\item{redcap_form_name}{Specify REDCap form names to load into environment. Default behavior is all forms.}
+\item{redcap_form_name}{Specify REDCap form names to load into environment.
+Default behavior is all forms.}
 
-\item{structure}{Specify REDCap structure to load into environment, either \code{repeating} or \code{nonrepeating}. Defaults to all structures.}
+\item{structure}{Specify REDCap structure to load into environment, either
+\code{repeating} or \code{nonrepeating}. Defaults to all structures.}
 }
 \value{
 Returns \code{tibble} objects to an environment specified by the
