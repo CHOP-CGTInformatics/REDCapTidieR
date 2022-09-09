@@ -116,15 +116,15 @@
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">superheroes_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_redcap_tidy.html">read_redcap_tidy</a></span><span class="op">(</span><span class="va">redcap_uri</span>, <span class="va">token</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">superheroes_data</span></span>
-<span><span class="co">#&gt; # A tibble: 2 × 3</span></span>
-<span><span class="co">#&gt;   redcap_form_name   redcap_data          structure   </span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;              &lt;list&gt;               &lt;chr&gt;       </span></span>
-<span><span class="co">#&gt; 1 super_hero_powers  &lt;tibble [5,966 × 4]&gt; repeating   </span></span>
-<span><span class="co">#&gt; 2 heroes_information &lt;tibble [734 × 12]&gt;  nonrepeating</span></span></code></pre></div>
+<span><span class="va">superheroes_data</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 2 × 3</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   redcap_form_name   redcap_data          structure   </span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;              &lt;list&gt;               &lt;chr&gt;       </span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 super_hero_powers  &lt;tibble [5,966 × 4]&gt; repeating   </span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 heroes_information &lt;tibble [734 × 12]&gt;  nonrepeating</span></span></code></pre></div>
 <p>In the above example, you can see that there is data from two instruments, <code>super_hero_powers</code> and <code>heroes_information</code>. From the <code>structure</code> column, you can see that the <code>super_hero_powers</code> instrument is <em>repeating</em> and the <code>heroes_information</code> instrument is <em>nonrepeating</em>.</p>
 <p>Let’s take a look at <code>heroes_information</code>:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">heroes_information</span> <span class="op">&lt;-</span> <span class="va">superheroes_data</span><span class="op">$</span><span class="va">redcap_data</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span></span>
 <span></span>
 <span><span class="va">heroes_information</span></span>
@@ -142,24 +142,25 @@
 <span><span class="co">#&gt;  9         8 Agent 13 Female blue    -     Blond      173     61 Marvel… -      </span></span>
 <span><span class="co">#&gt; 10         9 Agent B… Male   brown   Human Brown      178     81 Marvel… -      </span></span>
 <span><span class="co">#&gt; # … with 724 more rows, 2 more variables: alignment &lt;chr&gt;,</span></span>
-<span><span class="co">#&gt; #   form_status_complete &lt;dbl&gt;, and abbreviated variable names ¹​eye_color,</span></span>
-<span><span class="co">#&gt; #   ²​hair_color, ³​publisher, ⁴​skin_color</span></span>
-<span><span class="co">#&gt; # ℹ Use `print(n = ...)` to see more rows, and `colnames()` to see all variable names</span></span></code></pre></div>
+<span><span class="co">#&gt; #   form_status_complete &lt;fct&gt;, and abbreviated variable names ¹​eye_color,</span></span>
+<span><span class="co">#&gt; #   ²​hair_color, ³​publisher, ⁴​skin_color</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="binding-redcaptidier-tibbles-into-an-environment">Binding <code>REDCapTidieR</code> tibbles into an environment<a class="anchor" aria-label="anchor" href="#binding-redcaptidier-tibbles-into-an-environment"></a>
 </h3>
 <p>Above, we manually extracted the <code>heroes_information</code> tibble from the output of <code><a href="reference/read_redcap_tidy.html">read_redcap_tidy()</a></code>. This approach can become tedious when the REDCap project has lots of instruments, and there are many tibbles to extract.</p>
 <p>The <code><a href="reference/bind_tables.html">bind_tables()</a></code> function takes the output of <code><a href="reference/read_redcap_tidy.html">read_redcap_tidy()</a></code>, extracts the individual tibbles, and binds them to an <a href="http://adv-r.had.co.nz/Environments.html" class="external-link">environment</a>. By default, this is the global environment:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/ls_str.html" class="external-link">ls.str</a></span><span class="op">(</span>envir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/environment.html" class="external-link">globalenv</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/ls_str.html" class="external-link">ls.str</a></span><span class="op">(</span>envir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/environment.html" class="external-link">globalenv</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; superheroes_data : tibble [2 × 3] (S3: tbl_df/tbl/data.frame)</span></span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">superheroes_data</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="reference/bind_tables.html">bind_tables</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/ls_str.html" class="external-link">ls.str</a></span><span class="op">(</span>envir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/environment.html" class="external-link">globalenv</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; heroes_information : tibble [734 × 12] (S3: tbl_df/tbl/data.frame)</span></span>
-<span><span class="co">#&gt; super_hero_powers : tibble [5,966 × 4] (S3: tbl_df/tbl/data.frame)</span></span></code></pre></div>
+<span><span class="co">#&gt; super_hero_powers : tibble [5,966 × 4] (S3: tbl_df/tbl/data.frame)</span></span>
+<span><span class="co">#&gt; superheroes_data : tibble [2 × 3] (S3: tbl_df/tbl/data.frame)</span></span></code></pre></div>
 <p>Note that there are now two additional tibbles in the environment.</p>
 </div>
 </div>

@@ -134,17 +134,17 @@
 <p>The <code>read_redcap_tidy</code> function returns a tibble in which each row represents a REDCap instrument. The first column contains the instrument name. The second column is a <strong>list column</strong> containing a tibble for each instrument. The third column indicates the repeat/nonrepeat structure of the instrument.</p>
 <p>Let’s use a sample longitudinal REDCap database containing repeat instruments, longitudinal events, and multiple event arms:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/CHOP-CGTDataOps/REDCapTidieR" class="external-link">REDCapTidieR</a></span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">redcap_export</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_redcap_tidy.html">read_redcap_tidy</a></span><span class="op">(</span><span class="va">redcap_uri</span>, <span class="va">token</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/CHOP-CGTDataOps/REDCapTidieR" class="external-link">REDCapTidieR</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">redcap_export</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 3</span></span></span>
+<span><span class="va">redcap_export</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_redcap_tidy.html">read_redcap_tidy</a></span><span class="op">(</span><span class="va">redcap_uri</span>, <span class="va">token</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">redcap_export</span></span></code></pre></div>
+<pre><code><span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 3</span></span></span>
 <span><span class="co">#&gt;   redcap_form_name redcap_data      structure   </span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> repeated         <span style="color: #949494;">&lt;tibble [9 × 7]&gt;</span> repeating   </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> nonrepeated      <span style="color: #949494;">&lt;tibble [8 × 6]&gt;</span> nonrepeating</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> nonrepeated2     <span style="color: #949494;">&lt;tibble [3 × 6]&gt;</span> nonrepeating</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> nonrepeated2     <span style="color: #949494;">&lt;tibble [3 × 6]&gt;</span> nonrepeating</span></span></code></pre>
 <p>Here we have a database with two nonrepeating instruments and one repeating instrument. Let’s look at a sample nonrepeated data output first:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">redcap_export</span><span class="op">$</span><span class="va">redcap_data</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span></span>
