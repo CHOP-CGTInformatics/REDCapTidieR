@@ -35,19 +35,19 @@ The granularity of each table (i.e. what a single row represents) depends on the
 
 The `read_redcap_tidy` function returns a tibble in which each row represents a REDCap instrument. The first column contains the instrument name. The second column is a **list column** containing a tibble for each instrument. The third column indicates the repeat/nonrepeat structure of the instrument.
 
-```{r, include = FALSE}
-token <- Sys.getenv("REDCAPTIDIER_LONGITUDINAL_API")
-redcap_uri <- Sys.getenv("REDCAP_URI")
-```
-
 Let's use a sample longitudinal REDCap database containing repeat instruments, longitudinal events, and multiple event arms:
 
-```{r setup}
+```{r, eval=FALSE, message = FALSE, include = TRUE}
 library(REDCapTidieR)
+
+redcap_export <- read_redcap_tidy(redcap_uri, token)
+
+redcap_export
 ```
 
-```{r, message = FALSE}
-redcap_export <- read_redcap_tidy(redcap_uri, token)
+```{r, eval=TRUE, message = FALSE, include=TRUE, echo=FALSE}
+library(REDCapTidieR)
+redcap_export <- readRDS("redcaptidier_longitudinal_db.RDS")
 
 redcap_export
 ```

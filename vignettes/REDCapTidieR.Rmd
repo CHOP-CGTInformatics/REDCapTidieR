@@ -51,13 +51,14 @@ Here is a screenshot of the REDCap Status Dashboard of this database.
 
 Let's take a look at the output of a call to `REDCapR::redcap_read_oneshot()` with this database (we turned it into a tibble for better readability):
 
-```{r, include = FALSE}
-token <- Sys.getenv("SUPERHEROES_REDCAP_API")
-redcap_uri <- Sys.getenv("REDCAP_URI")
+```{r, eval=FALSE, message = FALSE, include = TRUE}
+superheroes <- REDCapR::redcap_read_oneshot(redcap_uri, token)$data
+
+superheroes %>% tibble()
 ```
 
-```{r, message = FALSE}
-superheroes <- REDCapR::redcap_read_oneshot(redcap_uri, token)$data
+```{r, eval=TRUE, message = FALSE, include=TRUE, echo=FALSE}
+superheroes <- readRDS("superheroes_oneshot.RDS")
 
 superheroes %>% tibble()
 ```
@@ -76,13 +77,16 @@ superheroes %>% tibble()
 
 Now, let's use the `read_redcap_tidy()` function to query the same database and observe the output:
 
-```{r}
+```{r, eval=FALSE, message = FALSE, include = TRUE}
 library(REDCapTidieR)
-```
-
-```{r, message = FALSE}
 superheroes_tidy <- read_redcap_tidy(redcap_uri, token)
 
+superheroes_tidy
+```
+
+```{r, eval=TRUE, message = FALSE, include=TRUE, echo=FALSE}
+library(REDCapTidieR)
+superheroes_tidy <- readRDS("superheroes_tidy.RDS")
 superheroes_tidy
 ```
 
@@ -95,7 +99,7 @@ There's a good chance that if we pull data from a REDCap database that we'd like
 `bind_tables()` takes the output of `read_redcap_tidy()`, extracts the individual tibbles and binds them to an environment. By default, this is the global environment. Let's take a look at the objects in the global environment before and after calling `bind_tables()`:
 
 ```{r, include = FALSE, warning = FALSE}
-rm(redcap_uri, token, superheroes)
+rm(superheroes)
 ```
 
 ```{r, eval = FALSE}
