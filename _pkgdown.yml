@@ -3,12 +3,23 @@ navbar:
   structure:
     left:  [intro, reference, articles]
     right: [search, github]
+search:
+  exclude: ['news/index.html']
 reference:
-- title: "Building Tidy Datasets"
+- title: "Main `REDCapTidieR` Function"
   desc: >
-    Main functions for extracting REDCap data into tidy tibbles.
+    Read REDCap Databases into tidy tibbles.
   contents:
   - read_redcap_tidy
+- title: "Binding Functions"
+  desc: >
+    Bind `read_redcap_tidy` output tibbles to a specified environment.
+  contents:
   - bind_tables
+- title: "Extraction Functions"
+  desc: >
+    Extract `read_redcap_tidy` output tibbles using direct callouts or
+    `tidyselect` evaluation functions.
+  contents:
   - extract_table
   - extract_tables

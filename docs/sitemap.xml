@@ -34,6 +34,9 @@
     <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/bind_tables.html</loc>
   </url>
   <url>
+    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/check_repeat_and_nonrepeat.html</loc>
+  </url>
+  <url>
     <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/check_user_rights.html</loc>
   </url>
   <url>
@@ -58,6 +61,12 @@
     <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/distill_repeat_table_long.html</loc>
   </url>
   <url>
+    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/extract_table.html</loc>
+  </url>
+  <url>
+    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/extract_tables.html</loc>
+  </url>
+  <url>
     <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/index.html</loc>
   </url>
   <url>
@@ -71,6 +80,9 @@
   </url>
   <url>
     <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/read_redcap_tidy.html</loc>
+  </url>
+  <url>
+    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/update_data_col_names.html</loc>
   </url>
   <url>
     <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/update_field_names.html</loc>
