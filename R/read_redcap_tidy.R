@@ -53,10 +53,14 @@ read_redcap_tidy <- function(redcap_uri,
                              suppress_messages = TRUE){
 
   # Load Datasets ----
+  # Load REDCap Dataset output
   db_data <- redcap_read_oneshot(redcap_uri = redcap_uri,
                                  token = token,
                                  verbose = FALSE)$data
 
+  check_redcap_populated(db_data)
+
+  # Load REDCap Metadata output
   db_metadata <- redcap_metadata_read(redcap_uri = redcap_uri,
                                       token = token,
                                       verbose = FALSE)$data %>%

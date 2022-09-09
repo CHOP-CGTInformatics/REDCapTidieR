@@ -26,3 +26,9 @@ test_that("check_repeat_and_nonrepeat works", {
 
   expect_error(check_repeat_and_nonrepeat(db_data = test_data))
 })
+
+test_that("check_repeat_and_nonrepeat works", {
+  test_data <- tribble()
+
+  expect_error(check_redcap_populated(db_data = test_data))
+})
