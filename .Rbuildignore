@@ -15,4 +15,5 @@
 README.html$
 
 utility/
+lastMiKTeXException/
 inst/testdata/create_test_data.R

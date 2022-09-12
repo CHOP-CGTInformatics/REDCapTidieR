@@ -10,13 +10,19 @@ vignette: >
 ---
 
 ```{r, include = FALSE}
+NOT_CRAN <- identical(tolower(Sys.getenv("NOT_CRAN")), "true")
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  purl = NOT_CRAN,
+  eval = NOT_CRAN
 )
 
 library(dplyr)
 library(REDCapTidieR)
+
+token <- Sys.getenv("SUPERHEROES_REDCAP_API")
+redcap_uri <- Sys.getenv("REDCAP_URI")
 ```
 
 ## Installation
@@ -51,14 +57,8 @@ Here is a screenshot of the REDCap Status Dashboard of this database.
 
 Let's take a look at the output of a call to `REDCapR::redcap_read_oneshot()` with this database (we turned it into a tibble for better readability):
 
-```{r, eval=FALSE, message = FALSE, include = TRUE}
+```{r, eval=TRUE, include = TRUE}
 superheroes <- REDCapR::redcap_read_oneshot(redcap_uri, token)$data
-
-superheroes %>% tibble()
-```
-
-```{r, eval=TRUE, message = FALSE, include=TRUE, echo=FALSE}
-superheroes <- readRDS("superheroes_oneshot.RDS")
 
 superheroes %>% tibble()
 ```
@@ -77,16 +77,10 @@ superheroes %>% tibble()
 
 Now, let's use the `read_redcap_tidy()` function to query the same database and observe the output:
 
-```{r, eval=FALSE, message = FALSE, include = TRUE}
+```{r, eval=TRUE, include = TRUE}
 library(REDCapTidieR)
 superheroes_tidy <- read_redcap_tidy(redcap_uri, token)
 
-superheroes_tidy
-```
-
-```{r, eval=TRUE, message = FALSE, include=TRUE, echo=FALSE}
-library(REDCapTidieR)
-superheroes_tidy <- readRDS("superheroes_tidy.RDS")
 superheroes_tidy
 ```
 

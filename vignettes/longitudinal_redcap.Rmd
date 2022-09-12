@@ -8,10 +8,19 @@ vignette: >
 ---
 
 ```{r, include = FALSE}
+NOT_CRAN <- identical(tolower(Sys.getenv("NOT_CRAN")), "true")
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  purl = NOT_CRAN,
+  eval = NOT_CRAN
 )
+
+library(dplyr)
+library(REDCapTidieR)
+
+token <- Sys.getenv("REDCAPTIDIER_LONGITUDINAL_API")
+redcap_uri <- Sys.getenv("REDCAP_URI")
 ```
 
 ## Background
@@ -37,17 +46,10 @@ The `read_redcap_tidy` function returns a tibble in which each row represents a 
 
 Let's use a sample longitudinal REDCap database containing repeat instruments, longitudinal events, and multiple event arms:
 
-```{r, eval=FALSE, message = FALSE, include = TRUE}
+```{r, eval=TRUE, include = TRUE}
 library(REDCapTidieR)
 
 redcap_export <- read_redcap_tidy(redcap_uri, token)
-
-redcap_export
-```
-
-```{r, eval=TRUE, message = FALSE, include=TRUE, echo=FALSE}
-library(REDCapTidieR)
-redcap_export <- readRDS("redcaptidier_longitudinal_db.RDS")
 
 redcap_export
 ```
