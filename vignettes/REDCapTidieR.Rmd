@@ -71,7 +71,7 @@ superheroes %>% tibble()
 
 -   Important metadata is missing. For example, it's not trivial to determine which fields are associated with a specific instrument.
 
--   The meaning of a row in the data set is inconsistent. It depends on whether the row is associated with a specific instance of a specific repeated instrument or not, which you can figure out by looking at the `redcap_repeat_instrument`. This is confusing because we'd expect the granularity of a table to be consistent. It also techincally violates the definition of [Tidy Data](https://cran.r-project.org/web/packages/tidyr/vignettes/tidy-data.html) because multiple types of observational units are stored in the same table.
+-   The meaning of a row in the data set is inconsistent. It depends on whether the row is associated with a specific instance of a specific repeated instrument or not, which you can figure out by looking at the `redcap_repeat_instrument`. This is confusing because we'd expect the granularity of a table to be consistent. It also technically violates the definition of [Tidy Data](https://cran.r-project.org/web/packages/tidyr/vignettes/tidy-data.html) because multiple types of observational units are stored in the same table.
 
 ### Tidying REDCap Exports
 
