@@ -46,7 +46,7 @@ The `read_redcap_tidy` function returns a tibble in which each row represents a 
 
 Let's use a sample longitudinal REDCap database containing repeat instruments, longitudinal events, and multiple event arms:
 
-```{r, eval=TRUE, include = TRUE}
+```{r, include = TRUE}
 library(REDCapTidieR)
 
 redcap_export <- read_redcap_tidy(redcap_uri, token)

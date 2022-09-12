@@ -57,7 +57,7 @@ Here is a screenshot of the REDCap Status Dashboard of this database.
 
 Let's take a look at the output of a call to `REDCapR::redcap_read_oneshot()` with this database (we turned it into a tibble for better readability):
 
-```{r, eval=TRUE, include = TRUE}
+```{r, include = TRUE}
 superheroes <- REDCapR::redcap_read_oneshot(redcap_uri, token)$data
 
 superheroes %>% tibble()
@@ -77,7 +77,7 @@ superheroes %>% tibble()
 
 Now, let's use the `read_redcap_tidy()` function to query the same database and observe the output:
 
-```{r, eval=TRUE, include = TRUE}
+```{r, include = TRUE}
 library(REDCapTidieR)
 superheroes_tidy <- read_redcap_tidy(redcap_uri, token)
 
