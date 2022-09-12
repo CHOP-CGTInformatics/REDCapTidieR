@@ -71,7 +71,7 @@ superheroes %>% tibble()
 
 -   Important metadata is missing. For example, it's not trivial to determine which fields are associated with a specific instrument.
 
--   The meaning of a row in the data set is inconsistent. It depends on whether the row is associated with a specific instance of a specific repeated instrument or not, which you can figure out by looking at the `redcap_repeat_instrument`. This is confusing because we'd expect the granularity of a table to be consistent. It also violates the definition of [Tidy Data](https://cran.r-project.org/web/packages/tidyr/vignettes/tidy-data.html) because multiple types of observational units are stored in the same table.
+-   The meaning of a row in the data set is inconsistent. It depends on whether the row is associated with a specific instance of a specific repeated instrument or not, which you can figure out by looking at the `redcap_repeat_instrument`. This is confusing because we'd expect the granularity of a table to be consistent. It also techincally violates the definition of [Tidy Data](https://cran.r-project.org/web/packages/tidyr/vignettes/tidy-data.html) because multiple types of observational units are stored in the same table.
 
 ### Tidying REDCap Exports
 
@@ -141,7 +141,7 @@ In summary, here are the rules by which `REDCapTidieR` contructs tibbles:
 
 -   Additional identifying columns may follow the record ID column, depending on the context and repeat type of the instrument. For example, we have seen the `redcap_repeat_instance` column which appears when the tibble is derived from a repeated instrument. Tibbles derived from [longitudinal projects](longitudinal_redcap.html) have up to two additional columns, one for event and one for arms.
 
-> Note: Taken in combination, the identifying columns of any `REDCapTidieR` tibble are guaranteed to be unique and NOT NULL, and can be used as **primary key**. This makes it easy to join tables.
+> Note: Taken in combination, the identifying columns of any `REDCapTidieR` tibble are guaranteed to be unique and NOT NULL, and can be used as **composite primary key**. This makes it easy to join tables.
 
 -   After the identifying columns, data columns appear in the same order as in the REDCap instrument. Columns derived from categorical field types (`yesno`, `truefalse`, `dropdown`, `radiobutton`, `checkbox`) are populated with data representing the **raw** value (e.g., `0` or `1` instead of `FALSE` or `TRUE`). **This behavior may change in the future**.
 
