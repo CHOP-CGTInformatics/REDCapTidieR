@@ -116,9 +116,10 @@
 <p>Let’s take a look at the output of a call to <code><a href="https://ouhscbbmc.github.io/REDCapR/reference/redcap_read_oneshot.html" class="external-link">REDCapR::redcap_read_oneshot()</a></code> with this database (we turned it into a tibble for better readability):</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">superheroes</span> <span class="op">&lt;-</span> <span class="fu">REDCapR</span><span class="fu">::</span><span class="fu"><a href="https://ouhscbbmc.github.io/REDCapR/reference/redcap_read_oneshot.html" class="external-link">redcap_read_oneshot</a></span><span class="op">(</span><span class="va">redcap_uri</span>, <span class="va">token</span><span class="op">)</span><span class="op">$</span><span class="va">data</span></span>
+<span><span class="co">#&gt; 6,700 records and 16 columns were read from REDCap in 1.1 seconds.  The http status code was 200.</span></span>
 <span></span>
-<span><span class="va">superheroes</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">tibble</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6,700 × 16</span></span></span>
+<span><span class="va">superheroes</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">tibble</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6,700 × 16</span></span></span>
 <span><span class="co">#&gt;    record_id redcap_r…¹ redca…² name  gender eye_c…³ race  hair_…⁴ height weight</span></span>
 <span><span class="co">#&gt;        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>         0 <span style="color: #BB0000;">NA</span>              <span style="color: #BB0000;">NA</span> A-Bo… Male   yellow  Human No Hair    203    441</span></span>
@@ -134,7 +135,7 @@
 <span><span class="co">#&gt; <span style="color: #949494;"># … with 6,690 more rows, 6 more variables: publisher &lt;chr&gt;, skin_color &lt;chr&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   alignment &lt;chr&gt;, heroes_information_complete &lt;dbl&gt;, power &lt;chr&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   super_hero_powers_complete &lt;dbl&gt;, and abbreviated variable names</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   ¹​redcap_repeat_instrument, ²​redcap_repeat_instance, ³​eye_color, ⁴​hair_color</span></span></span></code></pre>
+<span><span class="co">#&gt; <span style="color: #949494;">#   ¹​redcap_repeat_instrument, ²​redcap_repeat_instance, ³​eye_color, ⁴​hair_color</span></span></span></code></pre></div>
 <p><code>redcap_read_oneshot()</code> returns a list with an element named <code>data</code> in which all the data from the project is provided as a single large data frame. While it may seem a good idea to have everything in one data frame, there are significant downsides, including:</p>
 <ul>
 <li><p>It’s unwieldy! Although there are only 734 superheroes in the data set, there are 6,700 rows. Every transformation first requires whittling down a huge data set. This increases cognitive load.</p></li>
@@ -146,16 +147,16 @@
 <h3 id="tidying-redcap-exports">Tidying REDCap Exports<a class="anchor" aria-label="anchor" href="#tidying-redcap-exports"></a>
 </h3>
 <p>Now, let’s use the <code><a href="../reference/read_redcap_tidy.html">read_redcap_tidy()</a></code> function to query the same database and observe the output:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/CHOP-CGTDataOps/REDCapTidieR" class="external-link">REDCapTidieR</a></span><span class="op">)</span></span>
 <span><span class="va">superheroes_tidy</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_redcap_tidy.html">read_redcap_tidy</a></span><span class="op">(</span><span class="va">redcap_uri</span>, <span class="va">token</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">superheroes_tidy</span></span></code></pre></div>
-<pre><code><span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 2 × 3</span></span></span>
+<span><span class="va">superheroes_tidy</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 2 × 3</span></span></span>
 <span><span class="co">#&gt;   redcap_form_name   redcap_data          structure   </span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> super_hero_powers  <span style="color: #949494;">&lt;tibble [5,966 × 4]&gt;</span> repeating   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> heroes_information <span style="color: #949494;">&lt;tibble [734 × 12]&gt;</span>  nonrepeating</span></span></code></pre>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> heroes_information <span style="color: #949494;">&lt;tibble [734 × 12]&gt;</span>  nonrepeating</span></span></code></pre></div>
 <p>This returns a tibble with two rows. Each row represents a REDCap instrument. The first column contains the instrument name. The second column is a <strong>list column</strong> containing a tibble for each instrument. The third column indicates the repeat/nonrepeat structure of the instrument.</p>
 </div>
 <div class="section level3">
@@ -163,16 +164,19 @@
 </h3>
 <p>There’s a good chance that if we pull data from a REDCap database that we’d like that data to be represented as individual tibbles in the global environment. While it’s possible to do this manually, it becomes tedious if the REDCap project has many instruments. We provide the <code><a href="../reference/bind_tables.html">bind_tables()</a></code> function to automate this.</p>
 <p><code><a href="../reference/bind_tables.html">bind_tables()</a></code> takes the output of <code><a href="../reference/read_redcap_tidy.html">read_redcap_tidy()</a></code>, extracts the individual tibbles and binds them to an environment. By default, this is the global environment. Let’s take a look at the objects in the global environment before and after calling <code><a href="../reference/bind_tables.html">bind_tables()</a></code>:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/ls_str.html" class="external-link">ls.str</a></span><span class="op">(</span>envir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/environment.html" class="external-link">globalenv</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">superheroes_tidy</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/bind_tables.html">bind_tables</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/ls_str.html" class="external-link">ls.str</a></span><span class="op">(</span>envir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/environment.html" class="external-link">globalenv</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; heroes_information : tibble [734 × 12] (S3: tbl_df/tbl/data.frame)</span></span>
+<span><span class="co">#&gt; NOT_CRAN :  logi TRUE</span></span>
+<span><span class="co">#&gt; redcap_uri :  chr "https://redcap.chop.edu/api/"</span></span>
 <span><span class="co">#&gt; super_hero_powers : tibble [5,966 × 4] (S3: tbl_df/tbl/data.frame)</span></span>
-<span><span class="co">#&gt; superheroes_tidy : tibble [2 × 3] (S3: tbl_df/tbl/data.frame)</span></span></code></pre></div>
+<span><span class="co">#&gt; superheroes_tidy : tibble [2 × 3] (S3: tbl_df/tbl/data.frame)</span></span>
+<span><span class="co">#&gt; token :  chr "1ABEA57E6D77AAD6E144DF8A033875CD"</span></span></code></pre></div>
 <p>Note that there are now two additional tibbles in the global environment.</p>
 </div>
 <div class="section level3">
@@ -184,7 +188,7 @@
 <li><p>The tibble’s name <code>heroes_information</code> is descriptive - it tells you what’s in the tibble.</p></li>
 <li><p>Each row has the same observational unit - one <strong>superhero</strong>, identified by its <code>record_id</code>.</p></li>
 </ul>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">heroes_information</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 734 × 12</span></span></span>
 <span><span class="co">#&gt;    record_id name     gender eye_c…¹ race  hair_…² height weight publi…³ skin_…⁴</span></span>
@@ -207,7 +211,7 @@
 <li><p>Again, this is not a sparse table, making it easy to understand its data content, and the name is descriptive.</p></li>
 <li><p>Each row has the same observational unit - in this case, <strong>superpower per superhero</strong>, identified by <code>record_id</code> and <code>redcap_repeat_instance</code>. This is because <code>super_hero_powers</code> comes from a repeated instrument.</p></li>
 </ul>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">super_hero_powers</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 5,966 × 4</span></span></span>
 <span><span class="co">#&gt;    record_id redcap_repeat_instance power               form_status_complete</span></span>
