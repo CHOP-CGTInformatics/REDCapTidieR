@@ -116,7 +116,7 @@
 <p>Let’s take a look at the output of a call to <code><a href="https://ouhscbbmc.github.io/REDCapR/reference/redcap_read_oneshot.html" class="external-link">REDCapR::redcap_read_oneshot()</a></code> with this database (we turned it into a tibble for better readability):</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">superheroes</span> <span class="op">&lt;-</span> <span class="fu">REDCapR</span><span class="fu">::</span><span class="fu"><a href="https://ouhscbbmc.github.io/REDCapR/reference/redcap_read_oneshot.html" class="external-link">redcap_read_oneshot</a></span><span class="op">(</span><span class="va">redcap_uri</span>, <span class="va">token</span><span class="op">)</span><span class="op">$</span><span class="va">data</span></span>
-<span><span class="co">#&gt; 6,700 records and 16 columns were read from REDCap in 1.4 seconds.  The http status code was 200.</span></span>
+<span><span class="co">#&gt; 6,700 records and 16 columns were read from REDCap in 1.0 seconds.  The http status code was 200.</span></span>
 <span></span>
 <span><span class="va">superheroes</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">tibble</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6,700 × 16</span></span></span>
@@ -141,7 +141,7 @@
 <li><p>It’s unwieldy! Although there are only 734 superheroes in the data set, there are 6,700 rows. Every transformation first requires whittling down a huge data set. This increases cognitive load.</p></li>
 <li><p>It’s sparse - there are a lot of <code>NA</code> values indicating missing values. Confusingly, these <code>NA</code> values don’t represent data fields left blank in the database but instead are an artifact of how the table is built.</p></li>
 <li><p>Important metadata is missing. For example, it’s not trivial to determine which fields are associated with a specific instrument.</p></li>
-<li><p>The meaning of a row in the data set is inconsistent. It depends on whether the row is associated with a specific instance of a specific repeated instrument or not, which you can figure out by looking at the <code>redcap_repeat_instrument</code>. This is confusing because we’d expect the granularity of a table to be consistent. It also violates the definition of <a href="https://cran.r-project.org/web/packages/tidyr/vignettes/tidy-data.html" class="external-link">Tidy Data</a> because multiple types of observational units are stored in the same table.</p></li>
+<li><p>The meaning of a row in the data set is inconsistent. It depends on whether the row is associated with a specific instance of a specific repeated instrument or not, which you can figure out by looking at the <code>redcap_repeat_instrument</code>. This is confusing because we’d expect the granularity of a table to be consistent. It also techincally violates the definition of <a href="https://cran.r-project.org/web/packages/tidyr/vignettes/tidy-data.html" class="external-link">Tidy Data</a> because multiple types of observational units are stored in the same table.</p></li>
 </ul>
 <div class="section level3">
 <h3 id="tidying-redcap-exports">Tidying REDCap Exports<a class="anchor" aria-label="anchor" href="#tidying-redcap-exports"></a>
@@ -234,7 +234,7 @@
 <li><p>Additional identifying columns may follow the record ID column, depending on the context and repeat type of the instrument. For example, we have seen the <code>redcap_repeat_instance</code> column which appears when the tibble is derived from a repeated instrument. Tibbles derived from <a href="longitudinal_redcap.html">longitudinal projects</a> have up to two additional columns, one for event and one for arms.</p></li>
 </ul>
 <blockquote>
-<p>Note: Taken in combination, the identifying columns of any <code>REDCapTidieR</code> tibble are guaranteed to be unique and NOT NULL, and can be used as <strong>primary key</strong>. This makes it easy to join tables.</p>
+<p>Note: Taken in combination, the identifying columns of any <code>REDCapTidieR</code> tibble are guaranteed to be unique and NOT NULL, and can be used as <strong>composite primary key</strong>. This makes it easy to join tables.</p>
 </blockquote>
 <ul>
 <li><p>After the identifying columns, data columns appear in the same order as in the REDCap instrument. Columns derived from categorical field types (<code>yesno</code>, <code>truefalse</code>, <code>dropdown</code>, <code>radiobutton</code>, <code>checkbox</code>) are populated with data representing the <strong>raw</strong> value (e.g., <code>0</code> or <code>1</code> instead of <code>FALSE</code> or <code>TRUE</code>). <strong>This behavior may change in the future</strong>.</p></li>
