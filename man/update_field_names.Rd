@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{update_field_names}
 \alias{update_field_names}
-\title{Metadata field_name Updater Helper Function}
+\title{Update metadata field names for checkbox handling}
 \usage{
 update_field_names(db_metadata)
 }

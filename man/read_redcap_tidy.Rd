@@ -2,7 +2,7 @@
 % Please edit documentation in R/read_redcap_tidy.R
 \name{read_redcap_tidy}
 \alias{read_redcap_tidy}
-\title{Extract REDCap Databases to Tidy Tibbles}
+\title{Extract REDCap databases to tidy tibbles}
 \usage{
 read_redcap_tidy(
   redcap_uri,
@@ -28,19 +28,20 @@ Default \code{TRUE}.}
 }
 \value{
 Returns a \code{tibble} with list elements containing tidy dataframes. Users
-can access dataframes under the \code{redcap_data} column with reference to
-\code{form_name} and \code{structure} column details.
+can access dataframes under \code{$redcap_data} with reference to
+\code{form_name} and \code{$structure} column details.
 }
 \description{
-Detect REDCap database outputs from \code{REDCapR} extracts for the
-following database structure elements:
+Organize REDCap databases into structured tidy list elements.
+}
+\details{
+\code{REDCapTidieR} will detect REDCap database outputs for structure
+elements including:
 \itemize{
   \item{Repeat Instruments}
   \item{Longitudinal Events}
   \item{Longitudinal Arms}
 }
-Return a tidy \code{tibble} to the user using the \code{REDCapTidieR}
-opinionated framework.
 }
 \examples{
 \dontrun{

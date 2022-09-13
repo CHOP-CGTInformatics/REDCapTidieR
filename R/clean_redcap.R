@@ -1,5 +1,5 @@
 #' @title
-#' Extract non-Longitudinal REDCap Databases into Tidy Tibbles
+#' Extract non-longitudinal REDCap databases into tidy tibbles
 #'
 #' @description
 #' Helper function internal to \code{read_redcap_tidy} responsible for
@@ -91,13 +91,14 @@ clean_redcap <- function(
 }
 
 #' @title
-#' Extract Non-Repeat Tables from non-Longitudinal REDCap Databases
+#' Extract non-repeat tables from non-longitudinal REDCap databases
 #'
 #' @description
-#' Sub-helper function to \code{clean_redcap} for single nonrepeat table extraction.
+#' Sub-helper function to \code{clean_redcap} for single nonrepeat table
+#' extraction.
 #'
 #' @return
-#' A \code{tibble} of all data related to a specified \code{form_name}
+#' A subset \code{tibble} of all data related to a specified \code{form_name}
 #'
 #' @param form_name The \code{form_name} described in the named column from the
 #' REDCap metadata.
@@ -110,6 +111,7 @@ clean_redcap <- function(
 #' @importFrom tidyselect all_of everything starts_with
 #' @importFrom tibble tibble
 #' @importFrom rlang .data
+#'
 #' @keywords internal
 
 distill_nonrepeat_table <- function(
@@ -157,13 +159,14 @@ distill_nonrepeat_table <- function(
 }
 
 #' @title
-#' Extract Repeat Tables from non-Longitudinal REDCap Databases
+#' Extract repeat tables from non-longitudinal REDCap databases
 #'
 #' @description
-#' Sub-helper function to \code{clean_redcap} for single repeat table extraction.
+#' Sub-helper function to \code{clean_redcap} for single repeat table
+#' extraction.
 #'
 #' @return
-#' A \code{tibble} of all data related to a specified \code{form_name}
+#' A subset \code{tibble} of all data related to a specified \code{form_name}
 #'
 #' @param form_name The \code{form_name} described in the named column from the
 #' REDCap metadata.
@@ -176,6 +179,7 @@ distill_nonrepeat_table <- function(
 #' @importFrom tidyselect all_of everything starts_with
 #' @importFrom tibble tibble
 #' @importFrom rlang .data
+#'
 #' @keywords internal
 
 distill_repeat_table <- function(

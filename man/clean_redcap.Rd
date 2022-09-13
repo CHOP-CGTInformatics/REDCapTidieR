@@ -2,7 +2,7 @@
 % Please edit documentation in R/clean_redcap.R
 \name{clean_redcap}
 \alias{clean_redcap}
-\title{Extract non-Longitudinal REDCap Databases into Tidy Tibbles}
+\title{Extract non-longitudinal REDCap databases into tidy tibbles}
 \usage{
 clean_redcap(db_data, db_metadata)
 }

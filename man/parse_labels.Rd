@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{parse_labels}
 \alias{parse_labels}
-\title{Parse Labels Function}
+\title{Parse labels from REDCap metadata into usable formats}
 \usage{
 parse_labels(string)
 }

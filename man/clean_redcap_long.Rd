@@ -2,7 +2,7 @@
 % Please edit documentation in R/clean_redcap_long.R
 \name{clean_redcap_long}
 \alias{clean_redcap_long}
-\title{Extract Longitudinal REDCap Databases into Tidy Tibbles}
+\title{Extract longitudinal REDCap databases into tidy tibbles}
 \usage{
 clean_redcap_long(db_data_long, db_metadata_long, linked_arms)
 }
@@ -13,7 +13,8 @@ clean_redcap_long(db_data_long, db_metadata_long, linked_arms)
 \item{db_metadata_long}{The longitudinal REDCap metadata output defined by
 \code{REDCapR::redcap_metadata_read()$data}}
 
-\item{linked_arms}{Output of \code{link_arms}, linking forms to REDCap events/arms}
+\item{linked_arms}{Output of \code{link_arms}, linking forms to REDCap
+events/arms}
 }
 \value{
 Returns a \code{tibble} with list elements containing tidy dataframes. Users

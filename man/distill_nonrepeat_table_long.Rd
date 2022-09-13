@@ -2,7 +2,7 @@
 % Please edit documentation in R/clean_redcap_long.R
 \name{distill_nonrepeat_table_long}
 \alias{distill_nonrepeat_table_long}
-\title{Extract Non-Repeat Tables from Longitudinal REDCap Databases}
+\title{Extract non-repeat tables from longitudinal REDCap databases}
 \usage{
 distill_nonrepeat_table_long(
   form_name,

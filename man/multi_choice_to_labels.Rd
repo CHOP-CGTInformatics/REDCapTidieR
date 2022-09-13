@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{multi_choice_to_labels}
 \alias{multi_choice_to_labels}
-\title{Update Multiple Choice Fields with Label Data}
+\title{Update multiple choice fields with label data}
 \usage{
 multi_choice_to_labels(db_data, db_metadata)
 }
@@ -12,7 +12,8 @@ multi_choice_to_labels(db_data, db_metadata)
 \item{db_metadata}{A REDCap metadata object}
 }
 \description{
-Update REDCap variables with multi-choice types to standard form labels.
+Update REDCap variables with multi-choice types to standard form labels taken
+from REDCap metadata.
 }
 \details{
 Coerce variables of \code{field_type} "truefalse", "yesno", and "checkbox" to

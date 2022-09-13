@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{update_data_col_names}
 \alias{update_data_col_names}
-\title{Database Column Name Helper Function for Checkboxes with Minus Signs}
+\title{Correctly label variables belonging to checkboxes with minus signs}
 \usage{
 update_data_col_names(db_data, db_metadata)
 }

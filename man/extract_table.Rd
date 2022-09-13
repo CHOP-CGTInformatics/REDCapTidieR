@@ -2,7 +2,7 @@
 % Please edit documentation in R/extract_table.R
 \name{extract_table}
 \alias{extract_table}
-\title{Extract a Single Table from a REDCapTidieR Output}
+\title{Extract a single table from a REDCapTidieR output}
 \usage{
 extract_table(.data, tbl)
 }
@@ -15,8 +15,12 @@ extract_table(.data, tbl)
 A single \code{tibble} specified by the user.
 }
 \description{
-Supply a \code{read_redcap_tidy()} output and specify a \code{form_name} to
-extract.
+Given a \code{read_redcap_tidy()} output and \code{form_name} return a tidy
+\code{tibble} back to the user.
+}
+\details{
+\code{extract_table} requires a single table specification, i.e. a
+"\code{form_name}", given as a character string.
 }
 \examples{
 \dontrun{

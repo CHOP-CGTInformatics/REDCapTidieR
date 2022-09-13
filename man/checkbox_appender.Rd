@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{checkbox_appender}
 \alias{checkbox_appender}
-\title{Checkbox String Appender Helper Function}
+\title{Append REDCap checkbox variables with helpful labels}
 \usage{
 checkbox_appender(field_name, string)
 }

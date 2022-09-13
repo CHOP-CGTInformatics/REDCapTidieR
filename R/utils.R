@@ -1,5 +1,5 @@
 #' @title
-#' Add Partial Keys for Helper Variables
+#' Add partial key helper variables to dataframes
 #'
 #' @description
 #' Make helper variables \code{redcap_event} and \code{redcap_arm} available as
@@ -31,7 +31,7 @@ add_partial_keys <- function(
 }
 
 #' @title
-#' Link Longitudinal REDCap Forms with the Events/Arms They Belong To
+#' Link longitudinal REDCap forms with their events/arms
 #'
 #' @description
 #' For REDCap databases containing arms and events, it is necessary to determine
@@ -88,7 +88,7 @@ link_arms <- function(
 }
 
 #' @title
-#' Parse Labels Function
+#' Parse labels from REDCap metadata into usable formats
 #'
 #' @description
 #' Takes a string separated by \code{,}s and/or \code{|}s (i.e. comma/tab
@@ -119,7 +119,9 @@ parse_labels <- function(string) {
     # If this is a misattributed data field or blank, throw warning in
     # multi_choice_to_labels
     if (length(out[[1]]) > 1 && !all(is.na(out[[1]]))) {
-      stop(paste0("Cannot parse the select_choices_or_calculations field from REDCap metadata. This may happen if there is a pipe character `|` inside the label: ", string))
+      stop(paste0("Cannot parse the select_choices_or_calculations field from
+                  REDCap metadata. This may happen if there is a pipe character
+                  `|` inside the label: ", string))
     }
   }
 
@@ -134,7 +136,9 @@ parse_labels <- function(string) {
     # If this is a misattributed data field or blank, throw warning in
     # multi_choice_to_labels
     if (length(out[[1]]) > 1 && !all(is.na(out[[1]]))) {
-      stop(paste0("Cannot parse the select_choices_or_calculations field from REDCap metadata. This may happen if there is a pipe character `|` inside the label: ", string))
+      stop(paste0("Cannot parse the select_choices_or_calculations field from
+                  REDCap metadata. This may happen if there is a pipe character
+                  `|` inside the label: ", string))
     }
   }
 
@@ -152,7 +156,7 @@ parse_labels <- function(string) {
 }
 
 #' @title
-#' Checkbox String Appender Helper Function
+#' Append REDCap checkbox variables with helpful labels
 #'
 #' @description
 #' Takes a \code{db_metadata$select_choices_or_calculations} field pre-filtered
@@ -181,7 +185,7 @@ checkbox_appender <- function(field_name, string) {
 }
 
 #' @title
-#' Metadata field_name Updater Helper Function
+#' Update metadata field names for checkbox handling
 #'
 #' @description
 #' Takes a \code{db_metadata} object and appends a \code{field_name_updated}
@@ -226,7 +230,7 @@ update_field_names <- function(db_metadata) {
 }
 
 #' @title
-#' Database Column Name Helper Function for Checkboxes with Minus Signs
+#' Correctly label variables belonging to checkboxes with minus signs
 #'
 #' @description
 #' Using \code{db_data} and \code{db_metadata}, temporarily create a conversion
@@ -273,10 +277,11 @@ update_data_col_names <- function(db_data, db_metadata) {
 }
 
 #' @title
-#' Update Multiple Choice Fields with Label Data
+#' Update multiple choice fields with label data
 #'
 #' @description
-#' Update REDCap variables with multi-choice types to standard form labels.
+#' Update REDCap variables with multi-choice types to standard form labels taken
+#' from REDCap metadata.
 #'
 #' @details
 #' Coerce variables of \code{field_type} "truefalse", "yesno", and "checkbox" to
@@ -342,7 +347,8 @@ multi_choice_to_labels <- function(db_data, db_metadata) {
     # dropdown and radio datatype handling ----
     if (db_metadata$field_type[i] %in% c("dropdown", "radio")) {
 
-      # Check for empty selection strings indicating missing data or incorrect data field attribute types in REDCap
+      # Check for empty selection strings indicating missing data or incorrect
+      # data field attribute types in REDCap
       if (is.na(db_metadata$select_choices_or_calculations[i])) {
         warning(paste0("The field ", {field_name}, " in ",
                        db_metadata$form_name[i], " is a ",
@@ -368,10 +374,10 @@ multi_choice_to_labels <- function(db_data, db_metadata) {
 
       db_data <- db_data %>%
         mutate(
-          across(.cols = all_of(field_name), .fns = ~factor(., levels = parse_labels_output$label))
+          across(.cols = all_of(field_name),
+                 .fns = ~factor(., levels = parse_labels_output$label))
         )
     }
   }
-
   db_data
 }

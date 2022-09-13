@@ -2,7 +2,7 @@
 % Please edit documentation in R/clean_redcap.R
 \name{distill_repeat_table}
 \alias{distill_repeat_table}
-\title{Extract Repeat Tables from non-Longitudinal REDCap Databases}
+\title{Extract repeat tables from non-longitudinal REDCap databases}
 \usage{
 distill_repeat_table(form_name, db_data, db_metadata)
 }
@@ -17,9 +17,10 @@ REDCap metadata.}
 \code{REDCapR::redcap_metadata_read()$data}}
 }
 \value{
-A \code{tibble} of all data related to a specified \code{form_name}
+A subset \code{tibble} of all data related to a specified \code{form_name}
 }
 \description{
-Sub-helper function to \code{clean_redcap} for single repeat table extraction.
+Sub-helper function to \code{clean_redcap} for single repeat table
+extraction.
 }
 \keyword{internal}

@@ -1,5 +1,5 @@
 #' @title
-#' Extract Longitudinal REDCap Databases into Tidy Tibbles
+#' Extract longitudinal REDCap databases into tidy tibbles
 #'
 #' @description
 #' Helper function internal to \code{read_redcap_tidy} responsible for
@@ -10,7 +10,8 @@
 #' \code{REDCapR::redcap_read_oneshot()$data}
 #' @param db_metadata_long The longitudinal REDCap metadata output defined by
 #' \code{REDCapR::redcap_metadata_read()$data}
-#' @param linked_arms Output of \code{link_arms}, linking forms to REDCap events/arms
+#' @param linked_arms Output of \code{link_arms}, linking forms to REDCap
+#' events/arms
 #'
 #' @return
 #' Returns a \code{tibble} with list elements containing tidy dataframes. Users
@@ -99,7 +100,7 @@ clean_redcap_long <- function(
 }
 
 #' @title
-#' Extract Non-Repeat Tables from Longitudinal REDCap Databases
+#' Extract non-repeat tables from longitudinal REDCap databases
 #'
 #' @description
 #' Sub-helper function to \code{clean_redcap_long} for single nonrepeat table
@@ -121,6 +122,7 @@ clean_redcap_long <- function(
 #' @importFrom tibble tibble
 #' @importFrom stringr str_detect
 #' @importFrom rlang .data
+#'
 #' @keywords internal
 
 distill_nonrepeat_table_long <- function(
@@ -194,7 +196,7 @@ distill_nonrepeat_table_long <- function(
 }
 
 #' @title
-#' Extract Repeat Tables from Longitudinal REDCap Databases
+#' Extract repeat tables from longitudinal REDCap databases
 #'
 #' @description
 #' Sub-helper function to \code{clean_redcap_long} for single repeat table

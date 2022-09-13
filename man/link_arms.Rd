@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{link_arms}
 \alias{link_arms}
-\title{Link Longitudinal REDCap Forms with the Events/Arms They Belong To}
+\title{Link longitudinal REDCap forms with their events/arms}
 \usage{
 link_arms(db_data_long, db_metadata_long, redcap_uri, token)
 }

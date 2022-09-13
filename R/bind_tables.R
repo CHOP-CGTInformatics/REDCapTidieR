@@ -1,12 +1,13 @@
 #' @title
-#' Bind REDCapTidieR Supertibble to an Environment
+#' Bind REDCapTidieR supertibble to a specified environment
 #'
 #' @description
-#' Using a \code{read_redcap_tidy()} output, load REDCap data tables to
+#' Using a \code{read_redcap_tidy()} output, load REDCap dataframes to
 #' user-specified environment locations.
 #'
-#' @returns Returns \code{tibble} objects to an environment specified by the
-#' user. Defaults to the global environment when no specification is given.
+#' @returns
+#' Returns \code{tibble}s to an environment specified by the user.
+#' Defaults to the global environment when no specification is given.
 #'
 #' @param .data A tidy table provided by \code{read_redcap_tidy()}
 #' @param environment The environment to assign the tidy data (default
@@ -43,8 +44,6 @@
 #'
 #'
 #' @export
-#'
-#' @export
 
 bind_tables <- function(.data,
                         environment = global_env(),
@@ -76,6 +75,5 @@ bind_tables <- function(.data,
                        nm = .x,
                        value = .y)
   )
-
   return(invisible(NULL))
 }

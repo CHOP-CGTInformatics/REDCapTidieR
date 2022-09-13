@@ -1,9 +1,13 @@
 #' @title
-#' Extract a Single Table from a REDCapTidieR Output
+#' Extract a single table from a REDCapTidieR output
 #'
 #' @description
-#' Supply a \code{read_redcap_tidy()} output and specify a \code{form_name} to
-#' extract.
+#' Given a \code{read_redcap_tidy()} output and \code{form_name} return a tidy
+#' \code{tibble} back to the user.
+#'
+#' @details
+#' \code{extract_table} requires a single table specification, i.e. a
+#' "\code{form_name}", given as a character string.
 #'
 #' @returns A single \code{tibble} specified by the user.
 #'
@@ -44,18 +48,18 @@ extract_table <- function(.data,
   out
 }
 
-#' Extract One or More Tables from a REDCapTidieR Output
+#' Extract one or more dataframes from a REDCapTidieR output
 #'
 #' @description
-#' Supply a \code{read_redcap_tidy()} output and specify one or more
-#' \code{form_name}s to extract.
+#' Given a \code{read_redcap_tidy()} output and one or more \code{form_name}s,
+#' return a named list back to the user.
 #'
 #' @details
 #' Users may supply \code{tidyselect} statements such as \code{starts_with()}
 #' or \code{ends_with()} for easier selection.
 #'
-#' @returns A named list of \code{tibble}s specified by the user via
-#' \code{form_name}.
+#' @returns A named list of \code{tibble}s specified by the user from specified
+#' \code{form_name}s.
 #'
 #' @param .data A REDCapTidieR output provided by \code{read_redcap_tidy()}
 #' @param tbls REDCap \code{form_name} specification, one or more. Default is

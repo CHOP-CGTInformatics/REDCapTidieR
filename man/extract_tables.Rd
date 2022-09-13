@@ -2,7 +2,7 @@
 % Please edit documentation in R/extract_table.R
 \name{extract_tables}
 \alias{extract_tables}
-\title{Extract One or More Tables from a REDCapTidieR Output}
+\title{Extract one or more dataframes from a REDCapTidieR output}
 \usage{
 extract_tables(.data, tbls = everything())
 }
@@ -13,12 +13,12 @@ extract_tables(.data, tbls = everything())
 \code{everything()}.}
 }
 \value{
-A named list of \code{tibble}s specified by the user via
-\code{form_name}.
+A named list of \code{tibble}s specified by the user from specified
+\code{form_name}s.
 }
 \description{
-Supply a \code{read_redcap_tidy()} output and specify one or more
-\code{form_name}s to extract.
+Given a \code{read_redcap_tidy()} output and one or more \code{form_name}s,
+return a named list back to the user.
 }
 \details{
 Users may supply \code{tidyselect} statements such as \code{starts_with()}

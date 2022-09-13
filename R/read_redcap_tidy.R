@@ -1,16 +1,22 @@
 #' @title
-#' Extract REDCap Databases to Tidy Tibbles
+#' Extract REDCap databases to tidy tibbles
 #'
 #' @description
-#' Detect REDCap database outputs from \code{REDCapR} extracts for the
-#' following database structure elements:
+#' Organize REDCap databases into structured tidy list elements.
+#'
+#' @details
+#' \code{REDCapTidieR} will detect REDCap database outputs for structure
+#' elements including:
 #' \itemize{
 #'   \item{Repeat Instruments}
 #'   \item{Longitudinal Events}
 #'   \item{Longitudinal Arms}
 #' }
-#' Return a tidy \code{tibble} to the user using the \code{REDCapTidieR}
-#' opinionated framework.
+#'
+#' @return
+#' Returns a \code{tibble} with list elements containing tidy dataframes. Users
+#' can access dataframes under \code{$redcap_data} with reference to
+#' \code{form_name} and \code{$structure} column details.
 #'
 #' @importFrom REDCapR redcap_read_oneshot redcap_metadata_read
 #' @importFrom dplyr filter bind_rows %>%
@@ -27,11 +33,6 @@
 #' choice fields. Default is 'label'.
 #' @param suppress_messages Optionally show or suppress messages.
 #' Default \code{TRUE}.
-#'
-#' @return
-#' Returns a \code{tibble} with list elements containing tidy dataframes. Users
-#' can access dataframes under the \code{redcap_data} column with reference to
-#' \code{form_name} and \code{structure} column details.
 #'
 #' @examples
 #' \dontrun{

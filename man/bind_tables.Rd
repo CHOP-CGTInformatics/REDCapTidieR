@@ -2,7 +2,7 @@
 % Please edit documentation in R/bind_tables.R
 \name{bind_tables}
 \alias{bind_tables}
-\title{Bind REDCapTidieR Supertibble to an Environment}
+\title{Bind REDCapTidieR supertibble to a specified environment}
 \usage{
 bind_tables(
   .data,
@@ -25,11 +25,11 @@ Default behavior is all forms.}
 \code{repeating} or \code{nonrepeating}. Defaults to all structures.}
 }
 \value{
-Returns \code{tibble} objects to an environment specified by the
-user. Defaults to the global environment when no specification is given.
+Returns \code{tibble}s to an environment specified by the user.
+Defaults to the global environment when no specification is given.
 }
 \description{
-Using a \code{read_redcap_tidy()} output, load REDCap data tables to
+Using a \code{read_redcap_tidy()} output, load REDCap dataframes to
 user-specified environment locations.
 }
 \examples{

@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{add_partial_keys}
 \alias{add_partial_keys}
-\title{Add Partial Keys for Helper Variables}
+\title{Add partial key helper variables to dataframes}
 \usage{
 add_partial_keys(db_data)
 }
