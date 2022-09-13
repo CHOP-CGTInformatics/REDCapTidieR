@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
 
 <p align="center">
 
-<img src="man/figures/REDCapTidieR.png" alt="drawing" width="150" align="right"/>
+![Hex sticker](man/figures/REDCapTidieR.png){alt="drawing" align="right" width="150"}
 
 </p>
 
@@ -27,13 +27,9 @@ knitr::opts_chunk$set(
 
 <!-- badges: end -->
 
-[REDCap](https://www.project-redcap.org/) is a powerful database solution used by many research institutions:
+The {REDCapTidieR} package provides an elegant way to import data from a [REDCap](https://www.project-redcap.org/) database into an R environment. It builds upon the [{REDCapR}](https://ouhscbbmc.github.io/REDCapR/) package to query the REDCap API and then transforms the returned data into a set of tidy tibbles.
 
-> "REDCap is a secure web application for building and managing online surveys and databases. While REDCap can be used to collect virtually any type of data in any environment (including compliance with 21 CFR Part 11, FISMA, HIPAA, and GDPR), it is specifically geared to support online and offline data capture for research studies and operations."
-
-The [`REDCapR`](https://ouhscbbmc.github.io/REDCapR/) package streamlines calls to the REDCap API. A common use for `REDCapR` is to download records from a REDCap project and present it to the analyst as a data frame. This works well for simple projects, however becomes ugly when complex databases that include a longitudinal structure and/or repeated instruments are involved.
-
-The aim of `REDCapTidieR` is to make the life of analysts who deal with these complex databases easier. It does so by building upon `REDCapR` to make its output tidier. Instead of one large data frame, the analyst gets to work with a set of tidy tibbles, one for each REDCap instrument.
+{REDCapTidieR} is especially useful for dealing with complex databases that are longitudinal or include repeated instruments or both.
 
 ## Installation
 
@@ -43,73 +39,26 @@ You can install the development version of `REDCapTidieR` like so:
 devtools::install_github("CHOP-CGTDataOps/REDCapTidieR")
 ```
 
-## Getting started
+## Getting Started
 
-```{r}
-library(REDCapTidieR)
-library(magrittr)
-```
+Use `read_redcap_tidy()` together with `bind_tables()` to import data from all instruments into your environment.
 
-The two main functions of `REDCapTidieR` are `read_redcap_tidy()` and `bind_tables()`. Here is how they can be used together to import all data from a REDCap project and add a set of tidy tibbles in the global environment:
+![](man/figures/redcaptidier_demo.gif)
 
-```{r, eval = FALSE}
-read_redcap_tidy(redcap_uri, token) %>% 
-  bind_tables()
-```
+Read `vignette("getting-started")` to learn more.
 
-## Details
+## Collaboration
 
-### Structure of the tibble returned by `read_redcap_tidy`
+We invite you to give feedback and collaborate with us! If you are familiar with GitHub and R packages, please feel free to submit a [pull request](https://github.com/CHOP-CGTDataOps/REDCapTidieR/pulls). Please do let us know if {REDCapTidieR} fails for whatever reason with your database and submit a bug report by creating a GitHub [issue](https://github.com/CHOP-CGTDataOps/REDCapTidieR/issues).
 
-The `read_redcap_tidy` function returns a tibble in which each row represents a REDCap instrument. The first column (`redcap_form_name`) contains the instrument name. The second column (`redcap_data`) is a [**list column**](https://www.rstudio.com/resources/webinars/how-to-work-with-list-columns/) containing a tibble for each instrument.
+Please note that this project is released with a [Contributor Code of Conduct](https://github.com/CHOP-CGTDataOps/REDCapTidieR/blob/main/CONDUCT.md). By participating you agree to abide by its terms.
 
-```{r, eval=FALSE, message = FALSE, include = TRUE}
-superheroes_data <- read_redcap_tidy(redcap_uri, token)
+We'd like to thank the following folks for their advice and code contributions: [Will Beasley](https://github.com/wibeasley) and [Paul Wildenhain](https://github.com/pwildenhain).
 
-superheroes_data
-```
+## Funding
 
-```{r, eval=TRUE, message = FALSE, include = TRUE, echo = FALSE}
-superheroes_data <- readRDS("vignettes/superheroes_tidy_output.RDS")
+This package was developed by the [Children's Hospital of Philadelphia](https://www.chop.edu) Cell and Gene Therapy DataOps Team to support the needs of the [Cellular Therapy and Transplant Section](https://www.chop.edu/centers-programs/cellular-therapy-and-transplant-section). The development was funded using the following sources:
 
-superheroes_data
-```
+-   *Stephan Kadauke Start-up funds.* Stephan Kadauke, PI, CHOP, 2018-2024
 
-In the above example, you can see that there is data from two instruments, `super_hero_powers` and `heroes_information`. From the `structure` column, you can see that the `super_hero_powers` instrument is *repeating* and the `heroes_information` instrument is *nonrepeating*.
-
-Let's take a look at `heroes_information`:
-
-```{r}
-heroes_information <- superheroes_data$redcap_data[[2]]
-
-heroes_information
-```
-
-### Binding `REDCapTidieR` tibbles into an environment
-
-Above, we manually extracted the `heroes_information` tibble from the output of `read_redcap_tidy()`. This approach can become tedious when the REDCap project has lots of instruments, and there are many tibbles to extract.
-
-The `bind_tables()` function takes the output of `read_redcap_tidy()`, extracts the individual tibbles, and binds them to an [environment](http://adv-r.had.co.nz/Environments.html). By default, this is the global environment:
-
-```{r, include = FALSE, warning = FALSE}
-rm(redcap_uri, token, heroes_information)
-```
-
-```{r}
-ls.str(envir = globalenv())
-```
-
-```{r}
-superheroes_data %>%
-  bind_tables()
-```
-
-```{r}
-ls.str(envir = globalenv())
-```
-
-Note that there are now two additional tibbles in the environment.
-
-## Getting help
-
-If you encounter a bug, please file a minimal reproducible example on [github](https://github.com/CHOP-CGTDataOps/REDCapTidieR/issues). For questions and other discussion, please feel free to reach out to the authors by email.
+-   *CHOP-based GMP cell manufacturing (MFG) for CAR T clinical trials*. Stephan Grupp, PI; Stephan Kadauke, co-PI, CHOP, 2020-2022

@@ -1,5 +1,5 @@
 #' @title
-#' Bind REDCapTidieR Tibble Outputs to Specified Environments
+#' Bind REDCapTidieR Supertibble to an Environment
 #'
 #' @description
 #' Using a \code{read_redcap_tidy()} output, load REDCap data tables to
