@@ -5,11 +5,7 @@
 
 <p align="center">
 
-<figure>
-<img src="man/figures/REDCapTidieR.png" alt="drawing" data-align="right"
-width="150" />
-<figcaption>Hex sticker</figcaption>
-</figure>
+<img src="man/figures/REDCapTidieR.png" alt="drawing" width="150" align="right"/>
 
 </p>
 <!-- badges: start -->

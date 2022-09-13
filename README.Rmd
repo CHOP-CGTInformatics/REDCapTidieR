@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
 
 <p align="center">
 
-![Hex sticker](man/figures/REDCapTidieR.png){alt="drawing" align="right" width="150"}
+<img src="man/figures/REDCapTidieR.png" alt="drawing" width="150" align="right"/>
 
 </p>
 
