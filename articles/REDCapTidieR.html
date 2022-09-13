@@ -54,9 +54,6 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/getting_started.html">Getting Started with REDCapTidieR</a>
-    </li>
-    <li>
       <a href="../articles/longitudinal_redcap.html">Working with Longitudinal REDCap Databases</a>
     </li>
   </ul>
@@ -92,35 +89,190 @@
 
     
     
-<p>The {REDCapTidieR} package provides an elegant way to import data from a <a href="https://www.project-redcap.org/" class="external-link">REDCap</a> database into an R environment. It builds upon the <a href="https://ouhscbbmc.github.io/REDCapR/" class="external-link">{REDCapR}</a> package to query the REDCap API and then transforms the returned data into a set of tidy tibbles. {REDCapTidieR} is especially useful for dealing with complex databases that are longitudinal or include repeated instruments or both.</p>
 <div class="section level2">
-<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+<h2 id="introduction-to-redcap-and-redcapr">Introduction to REDCap and <code>REDCapR</code><a class="anchor" aria-label="anchor" href="#introduction-to-redcap-and-redcapr"></a>
 </h2>
-<p>You can install the development version of <code>REDCapTidieR</code> like so:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"CHOP-CGTDataOps/REDCapTidieR"</span><span class="op">)</span></span></code></pre></div>
-</div>
-<div class="section level2">
-<h2 id="getting-started">Getting Started<a class="anchor" aria-label="anchor" href="#getting-started"></a>
-</h2>
-<p>Use <code><a href="../reference/read_redcap_tidy.html">read_redcap_tidy()</a></code> together with <code><a href="../reference/bind_tables.html">bind_tables()</a></code> to import data from all instruments into your environment.</p>
-<p><img src="redcaptidier_demo.gif"></p>
-<p>Read <code>vignette("getting-started")</code> to learn more.</p>
-</div>
-<div class="section level2">
-<h2 id="collaboration">Collaboration<a class="anchor" aria-label="anchor" href="#collaboration"></a>
-</h2>
-<p>We invite you to give feedback and collaborate with us! If you are familiar with GitHub and R packages, please feel free to submit a <a href="https://github.com/CHOP-CGTDataOps/REDCapTidieR/pulls" class="external-link">pull request</a>. Please do let us know if {REDCapTidieR} fails for whatever reason with your database and submit a bug report by creating a GitHub <a href="https://github.com/CHOP-CGTDataOps/REDCapTidieR/issues" class="external-link">issue</a>.</p>
-<p>Please note that this project is released with a <a href="https://github.com/CHOP-CGTDataOps/REDCapTidieR/blob/main/CONDUCT.md" class="external-link">Contributor Code of Conduct</a>. By participating you agree to abide by its terms.</p>
-<p>We’d like to thank the following folks for their advice and code contributions: <a href="https://github.com/wibeasley" class="external-link">Will Beasley</a> and <a href="https://github.com/pwildenhain" class="external-link">Paul Wildenhain</a>.</p>
-</div>
-<div class="section level2">
-<h2 id="funders">Funders<a class="anchor" aria-label="anchor" href="#funders"></a>
-</h2>
-<p>This package was developed by the <a href="https://www.chop.edu" class="external-link">Children’s Hospital of Philadelphia</a> Cell and Gene Therapy DataOps Team to support the needs of the Cell Therapy and Transplant Section. The development was funded using the following sources:</p>
+<p><a href="https://www.project-redcap.org/" class="external-link">REDCap</a> is a powerful database solution used by many institutions around the world:</p>
+<blockquote>
+<p>“REDCap is a secure web application for building and managing online surveys and databases. While REDCap can be used to collect virtually any type of data in any environment (including compliance with 21 CFR Part 11, FISMA, HIPAA, and GDPR), it is specifically geared to support online and offline data capture for research studies and operations. The REDCap Consortium, a vast support network of collaborators, is composed of thousands of active institutional partners in over one hundred countries who utilize and support their own individual REDCap systems.”</p>
+</blockquote>
+<p>The <a href="https://ouhscbbmc.github.io/REDCapR/" class="external-link">{REDCapR}</a> package streamlines calls to the REDCap API. Arguably, its main use is to import records from a REDCap project. This works well for simple projects, however becomes ugly when complex databases that include longitudinal structure and/or repeated instruments are involved.</p>
+<p>We wrote the <code>REDCapTidieR</code> package to make the life of analysts who deal with complex REDCap databases easier. It does so by building upon <strong>{REDCapR}</strong> to make its output <strong>tidier</strong>. Instead of one large data frame composed of a sparse matrix, the analyst gets to work with a set of tidy tibbles, one for each REDCap instrument.</p>
+<p>To demonstrate the use of <code>REDCapTidieR</code>, let’s look at a REDCap database that has information about some 734 superheroes, derived from data scraped from the <a href="https://www.superherodb.com/" class="external-link">Superhero Database</a>.</p>
+<p>This REDCap project contains two instruments:</p>
 <ul>
-<li><p><em>Stephan Kadauke Start-up funds.</em> Stephan Kadauke, PI, CHOP, 2018-2024</p></li>
-<li><p><em>CHOP-based GMP cell manufacturing (MFG) for CAR T clinical trials</em>. Stephan Grupp, PI; Stephan Kadauke, co-PI, CHOP, 2020-2022</p></li>
+<li><p><strong>Heroes Information</strong> contains demographic data (name, eye color, height and weight, etc.). This is a <em>nonrepeating</em> instrument.</p></li>
+<li><p><strong>Super Hero Powers</strong> is a <em>repeating</em> instrument that captures all of the superpowers of a specific superhero. A superhero can have zero, one, or many superpowers associated with them.</p></li>
+</ul>
+<p>Here is a screenshot of the REDCap Status Dashboard of this database. Note that <em>Abin Sur</em> (record #2) has a single circle in the Super Hero Powers column, indicating that they have one superpower. <em>Agent 13</em> (record #8) has no superpowers.</p>
+<p><img src="record_status_dash.png"></p>
+<p>Great! Now let’s import the superheroes data into R. We can use <code><a href="https://ouhscbbmc.github.io/REDCapR/reference/redcap_read_oneshot.html" class="external-link">REDCapR::redcap_read_oneshot()</a></code> which returns a list with and element named <code>data</code> that contains all of the data as a data frame. We turned this data frame into a tibble for better readability:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">superheroes</span> <span class="op">&lt;-</span> <span class="fu">REDCapR</span><span class="fu">::</span><span class="fu"><a href="https://ouhscbbmc.github.io/REDCapR/reference/redcap_read_oneshot.html" class="external-link">redcap_read_oneshot</a></span><span class="op">(</span><span class="va">redcap_uri</span>, <span class="va">token</span><span class="op">)</span><span class="op">$</span><span class="va">data</span></span>
+<span><span class="co">#&gt; 6,700 records and 16 columns were read from REDCap in 1.1 seconds.  The http status code was 200.</span></span>
+<span></span>
+<span><span class="va">superheroes</span> <span class="op">%&gt;%</span> <span class="fu">tibble</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6,700 × 16</span></span></span>
+<span><span class="co">#&gt;    record_id redcap_r…¹ redca…² name  gender eye_c…³ race  hair_…⁴ height weight</span></span>
+<span><span class="co">#&gt;        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>         0 <span style="color: #BB0000;">NA</span>              <span style="color: #BB0000;">NA</span> A-Bo… Male   yellow  Human No Hair    203    441</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>         0 super_her…       1 <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>          <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>         0 super_her…       2 <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>          <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>         0 super_her…       3 <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>          <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>         0 super_her…       4 <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>          <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>         0 super_her…       5 <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>          <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>         0 super_her…       6 <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>          <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>         0 super_her…       7 <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>          <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>         1 <span style="color: #BB0000;">NA</span>              <span style="color: #BB0000;">NA</span> Abe … Male   blue    Icth… No Hair    191     65</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>         1 super_her…       1 <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>          <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># … with 6,690 more rows, 6 more variables: publisher &lt;chr&gt;, skin_color &lt;chr&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   alignment &lt;chr&gt;, heroes_information_complete &lt;dbl&gt;, power &lt;chr&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   super_hero_powers_complete &lt;dbl&gt;, and abbreviated variable names</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   ¹​redcap_repeat_instrument, ²​redcap_repeat_instance, ³​eye_color, ⁴​hair_color</span></span></span></code></pre></div>
+<p>This data structure is sometimes called the <strong>sparse matrix</strong>. It’s what happens when REDCap mashes the contents of a database that has both repeating and non-repeating instruments into a single table.</p>
+<p>While it may seem a good idea to have everything in one data frame, there are significant downsides, including:</p>
+<ul>
+<li><p>It’s unwieldy! Although there are only 734 superheroes in the data set, there are 6,700 rows. Every transformation first requires whittling down a huge data set. This increases cognitive load.</p></li>
+<li><p>It’s sparse - there are a lot of <code>NA</code> values indicating missing values. This is confusing and ambiguous, because these <code>NA</code> values don’t represent data fields left blank in the database but instead are an artifact of how the table is built.</p></li>
+<li><p>Important metadata is missing. For example, it’s not trivial to determine which fields are associated with a specific instrument.</p></li>
+<li><p>The meaning of a row in the data set is inconsistent. It depends on whether the row is associated with a specific instance of a specific repeated instrument or not (you can figure this out by looking at the <code>redcap_repeat_instrument</code> column). This is confusing because we’d expect the granularity of a table to be consistent. It also technically violates the definition of <a href="https://www.jstatsoft.org/article/view/v059i10" class="external-link">Tidy Data</a> because multiple types of observational units are stored in the same table.</p></li>
+</ul>
+</div>
+<div class="section level2">
+<h2 id="tidying-redcap-exports">Tidying REDCap Exports<a class="anchor" aria-label="anchor" href="#tidying-redcap-exports"></a>
+</h2>
+<p>The main function of the {REDCapTidieR} package is the <code><a href="../reference/read_redcap_tidy.html">read_redcap_tidy()</a></code> function. It has a similar API to <code><a href="https://ouhscbbmc.github.io/REDCapR/reference/redcap_read_oneshot.html" class="external-link">REDCapR::redcap_read_oneshot()</a></code>, requiring a REDCap database URI and an API token.</p>
+<p>Let’s try it out and observe the output:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/CHOP-CGTDataOps/REDCapTidieR" class="external-link">REDCapTidieR</a></span><span class="op">)</span></span>
+<span><span class="va">superheroes_tidy</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_redcap_tidy.html">read_redcap_tidy</a></span><span class="op">(</span><span class="va">redcap_uri</span>, <span class="va">token</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">superheroes_tidy</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 2 × 3</span></span></span>
+<span><span class="co">#&gt;   redcap_form_name   redcap_data          structure   </span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> super_hero_powers  <span style="color: #949494;">&lt;tibble [5,966 × 4]&gt;</span> repeating   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> heroes_information <span style="color: #949494;">&lt;tibble [734 × 12]&gt;</span>  nonrepeating</span></span></code></pre></div>
+<p>This returns a tibble with two rows. This may be surprising because you might expect more rows from a database with 734 superheroes. However, this is a <strong>tibble of tibbles</strong>, or a <strong>supertibble</strong>.</p>
+<p>In the <strong>REDCapTidieR</strong> <strong>supertibble,</strong> each row represents a REDCap instrument. The first column contains the instrument name. The second column is a <strong>list column</strong> containing a tibble for each instrument. The third column indicates the repeat/nonrepeat structure of the instrument.</p>
+</div>
+<div class="section level2">
+<h2 id="extracting-tibbles-from-the-supertibble">Extracting Tibbles from the Supertibble<a class="anchor" aria-label="anchor" href="#extracting-tibbles-from-the-supertibble"></a>
+</h2>
+<p>There’s a good chance that if we pull data from a REDCap database that we’d like that data to be represented as individual tibbles in the global environment. While it’s possible to do this manually (see below), this can become tedious if the REDCap project has many instruments. We wrote the <code><a href="../reference/bind_tables.html">bind_tables()</a></code> function to automate this.</p>
+<p><code><a href="../reference/bind_tables.html">bind_tables()</a></code> takes the output of <code><a href="../reference/read_redcap_tidy.html">read_redcap_tidy()</a></code>, extracts the individual tibbles and binds them to an environment. By default, this is the global environment, but you can also supply your own environment object which will be modified using reference semantics.</p>
+<p>Let’s take a look at the data frames in the global environment before and after calling <code><a href="../reference/bind_tables.html">bind_tables()</a></code>:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/ls_str.html" class="external-link">ls.str</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/funprog.html" class="external-link">Filter</a></span><span class="op">(</span><span class="va">is.data.frame</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">as.list</a></span><span class="op">(</span><span class="va">.GlobalEnv</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; superheroes_tidy : tibble [2 × 3] (S3: tbl_df/tbl/data.frame)</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">superheroes_tidy</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu"><a href="../reference/bind_tables.html">bind_tables</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/ls_str.html" class="external-link">ls.str</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/funprog.html" class="external-link">Filter</a></span><span class="op">(</span><span class="va">is.data.frame</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">as.list</a></span><span class="op">(</span><span class="va">.GlobalEnv</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; heroes_information : tibble [734 × 12] (S3: tbl_df/tbl/data.frame)</span></span>
+<span><span class="co">#&gt; super_hero_powers : tibble [5,966 × 4] (S3: tbl_df/tbl/data.frame)</span></span>
+<span><span class="co">#&gt; superheroes_tidy : tibble [2 × 3] (S3: tbl_df/tbl/data.frame)</span></span></code></pre></div>
+<p>Note that there are now two additional tibbles, <code>heroes_information</code> and <code>super_hero_powers</code>, in the global environment!</p>
+<p>If you don’t like the idea of tibbles magically appearing in your environment or if you’d like a more pure approach to extracting tibbles, you can use the <code><a href="../reference/extract_table.html">extract_table()</a></code> or <code><a href="../reference/extract_tables.html">extract_tables()</a></code> functions.</p>
+<p>Use <code><a href="../reference/extract_table.html">extract_table()</a></code> to extract a single tibble from the supertibble:</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">superheroes_tidy</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu"><a href="../reference/extract_table.html">extract_table</a></span><span class="op">(</span><span class="st">"heroes_information"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 734 × 12</span></span></span>
+<span><span class="co">#&gt;    record_id name     gender eye_c…¹ race  hair_…² height weight publi…³ skin_…⁴</span></span>
+<span><span class="co">#&gt;        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>         0 A-Bomb   Male   yellow  Human No Hair    203    441 Marvel… -      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>         1 Abe Sap… Male   blue    Icth… No Hair    191     65 Dark H… blue   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>         2 Abin Sur Male   blue    Unga… No Hair    185     90 DC Com… red    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>         3 Abomina… Male   green   Huma… No Hair    203    441 Marvel… -      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>         4 Abraxas  Male   blue    Cosm… Black      -<span style="color: #BB0000;">99</span>    -<span style="color: #BB0000;">99</span> Marvel… -      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>         5 Absorbi… Male   blue    Human No Hair    193    122 Marvel… -      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>         6 Adam Mo… Male   blue    -     Blond      -<span style="color: #BB0000;">99</span>    -<span style="color: #BB0000;">99</span> NBC - … -      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>         7 Adam St… Male   blue    Human Blond      185     88 DC Com… -      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>         8 Agent 13 Female blue    -     Blond      173     61 Marvel… -      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>         9 Agent B… Male   brown   Human Brown      178     81 Marvel… -      </span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># … with 724 more rows, 2 more variables: alignment &lt;chr&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   form_status_complete &lt;fct&gt;, and abbreviated variable names ¹​eye_color,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   ²​hair_color, ³​publisher, ⁴​skin_color</span></span></span></code></pre></div>
+<p>Use <code><a href="../reference/extract_tables.html">extract_tables()</a></code> to create a named list of tibbles from a supertibble. The default is to extract all tibbles:</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">superheroes_list_of_tibbles</span> <span class="op">&lt;-</span> <span class="va">superheroes_tidy</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu"><a href="../reference/extract_tables.html">extract_tables</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">superheroes_list_of_tibbles</span>, max.level <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="co">#&gt; List of 2</span></span>
+<span><span class="co">#&gt;  $ super_hero_powers : tibble [5,966 × 4] (S3: tbl_df/tbl/data.frame)</span></span>
+<span><span class="co">#&gt;  $ heroes_information: tibble [734 × 12] (S3: tbl_df/tbl/data.frame)</span></span></code></pre></div>
+<p>A neat feature of these extraction functions is that they support <code>tidy-select</code> semantics and selectors for picking tables:</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">superheroes_list_of_tibbles_ending_with_powers</span> <span class="op">&lt;-</span> <span class="va">superheroes_tidy</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu"><a href="../reference/extract_tables.html">extract_tables</a></span><span class="op">(</span><span class="fu">ends_with</span><span class="op">(</span><span class="st">"powers"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">superheroes_list_of_tibbles_ending_with_powers</span>, max.level <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="co">#&gt; List of 1</span></span>
+<span><span class="co">#&gt;  $ super_hero_powers: tibble [5,966 × 4] (S3: tbl_df/tbl/data.frame)</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="structure-of-redcaptidier-tibbles">Structure of <code>REDCapTidieR</code> Tibbles<a class="anchor" aria-label="anchor" href="#structure-of-redcaptidier-tibbles"></a>
+</h2>
+<p>So what do the REDCapTidieR tibbles (the ones inside the supertibble) look like? Consider <code>heroes_information</code>, which contains data from a <strong>nonrepeating</strong> instrument, and note the following:</p>
+<ul>
+<li><p>This is not a sparse table - no <code>NA</code>s</p></li>
+<li><p>The tibble’s name <code>heroes_information</code> is descriptive - it tells you what’s in the tibble. The tibble’s name is the same as the instrument name in REDCap.</p></li>
+<li><p>Each row has the same observational unit - one <strong>superhero</strong>, identified by its <code>record_id</code>.</p></li>
+</ul>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">heroes_information</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 734 × 12</span></span></span>
+<span><span class="co">#&gt;    record_id name     gender eye_c…¹ race  hair_…² height weight publi…³ skin_…⁴</span></span>
+<span><span class="co">#&gt;        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>         0 A-Bomb   Male   yellow  Human No Hair    203    441 Marvel… -      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>         1 Abe Sap… Male   blue    Icth… No Hair    191     65 Dark H… blue   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>         2 Abin Sur Male   blue    Unga… No Hair    185     90 DC Com… red    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>         3 Abomina… Male   green   Huma… No Hair    203    441 Marvel… -      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>         4 Abraxas  Male   blue    Cosm… Black      -<span style="color: #BB0000;">99</span>    -<span style="color: #BB0000;">99</span> Marvel… -      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>         5 Absorbi… Male   blue    Human No Hair    193    122 Marvel… -      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>         6 Adam Mo… Male   blue    -     Blond      -<span style="color: #BB0000;">99</span>    -<span style="color: #BB0000;">99</span> NBC - … -      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>         7 Adam St… Male   blue    Human Blond      185     88 DC Com… -      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>         8 Agent 13 Female blue    -     Blond      173     61 Marvel… -      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>         9 Agent B… Male   brown   Human Brown      178     81 Marvel… -      </span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># … with 724 more rows, 2 more variables: alignment &lt;chr&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   form_status_complete &lt;fct&gt;, and abbreviated variable names ¹​eye_color,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   ²​hair_color, ³​publisher, ⁴​skin_color</span></span></span></code></pre></div>
+<p>Now look at the <code>super_hero_powers</code> tibble, which contains data from a <strong>repeating</strong> instrument, and note the following:</p>
+<ul>
+<li><p>Again, this is not a sparse table, making it easy to understand its data content, and the name is descriptive.</p></li>
+<li><p>Each row has the same observational unit - in this case, <strong>superpower per superhero</strong>, identified by <code>record_id</code> and <code>redcap_repeat_instance</code>. This is because <code>super_hero_powers</code> comes from a repeated instrument.</p></li>
+</ul>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">super_hero_powers</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 5,966 × 4</span></span></span>
+<span><span class="co">#&gt;    record_id redcap_repeat_instance power               form_status_complete</span></span>
+<span><span class="co">#&gt;        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>               </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>         0                      1 Accelerated Healing Incomplete          </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>         0                      2 Durability          Incomplete          </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>         0                      3 Longevity           Incomplete          </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>         0                      4 Super Strength      Incomplete          </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>         0                      5 Stamina             Incomplete          </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>         0                      6 Camouflage          Incomplete          </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>         0                      7 Self-Sustenance     Incomplete          </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>         1                      1 Agility             Incomplete          </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>         1                      2 Accelerated Healing Incomplete          </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>         1                      3 Cold Resistance     Incomplete          </span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># … with 5,956 more rows</span></span></span></code></pre></div>
+<p>In summary, here are the rules by which <code>REDCapTidieR</code> constructs tibbles:</p>
+<ul>
+<li><p>There is one tibble per REDCap instrument. The tibble’s name is derived from the name given to the instrument in REDCap.</p></li>
+<li><p>The first column is always the record’s ID column. Note: by default, REDCap names the record id field <code>record_id</code>, but this can be changed. <code>REDCapTidieR</code> is smart enough to deal with this. For example, if the record ID field was renamed to <code>subject_id</code> then the first column of each tibble would be <code>subject_id</code>.</p></li>
+<li><p>Additional identifying columns may follow the record ID column, depending on the context and repeat type of the instrument. For example, we have seen the <code>redcap_repeat_instance</code> column which appears when the tibble is derived from a repeated instrument. Tibbles derived from <a href="longitudinal_redcap.html">longitudinal projects</a> have up to two additional columns, one for events and one for arms.</p></li>
+</ul>
+<blockquote>
+<p>Note: Taken in combination, the identifying columns of any <code>REDCapTidieR</code> tibble are guaranteed to be unique and NOT NULL, and can be used as <strong>composite primary key</strong>. This makes it easy to join REDCapTidieR tibbles!</p>
+</blockquote>
+<ul>
+<li><p>After the identifying columns, data columns appear in the same order as in the REDCap instrument. Columns derived from categorical field types (<code>yesno</code>, <code>truefalse</code>, <code>dropdown</code>, <code>radiobutton</code>, <code>checkbox</code>) are populated with data representing the <strong>label</strong>. This is different than REDCapR’s default behavior which will show the <strong>raw value</strong>.</p></li>
+<li><p>The final field is always <code>form_status_complete</code>, which is an column to indicate whether the instrument was marked complete.</p></li>
 </ul>
 </div>
   </div>
