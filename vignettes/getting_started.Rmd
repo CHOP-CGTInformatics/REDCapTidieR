@@ -45,7 +45,7 @@ This REDCap project contains two instruments:
 
 -   **Super Hero Powers** is a *repeating* instrument that captures all of the superpowers of a specific superhero. A superhero can have zero, one, or many superpowers associated with them.
 
-Here is a screenshot of the REDCap Status Dashboard of this database. Note that *Abin Sur* (record #2) has a single circle in the Super Hero Powers column, indiciating that they have one superpower. *Agent 13* (record #8) has no superpowers.
+Here is a screenshot of the REDCap Status Dashboard of this database. Note that *Abin Sur* (record #2) has a single circle in the Super Hero Powers column, indicating that they have one superpower. *Agent 13* (record #8) has no superpowers.
 
 ![](record_status_dash.png)
 
@@ -67,7 +67,7 @@ While it may seem a good idea to have everything in one data frame, there are si
 
 -   Important metadata is missing. For example, it's not trivial to determine which fields are associated with a specific instrument.
 
--   The meaning of a row in the data set is inconsistent. It depends on whether the row is associated with a specific instance of a specific repeated instrument or not (you can figure this out by looking at the `redcap_repeat_instrument` column). This is confusing because we'd expect the granularity of a table to be consistent. It also technically violates the definition of [Tidy Data](https://cran.r-project.org/web/packages/tidyr/vignettes/tidy-data.html) because multiple types of observational units are stored in the same table.
+-   The meaning of a row in the data set is inconsistent. It depends on whether the row is associated with a specific instance of a specific repeated instrument or not (you can figure this out by looking at the `redcap_repeat_instrument` column). This is confusing because we'd expect the granularity of a table to be consistent. It also technically violates the definition of [Tidy Data](https://www.jstatsoft.org/article/view/v059i10) because multiple types of observational units are stored in the same table.
 
 ## Tidying REDCap Exports
 

@@ -2,7 +2,7 @@
 % Please edit documentation in R/bind_tables.R
 \name{bind_tables}
 \alias{bind_tables}
-\title{Bind REDCapTidieR Tibble Outputs to Specified Environments}
+\title{Bind REDCapTidieR Supertibble to an Environment}
 \usage{
 bind_tables(
   .data,

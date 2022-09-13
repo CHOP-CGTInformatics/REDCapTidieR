@@ -13,6 +13,6 @@ check_redcap_populated(db_data)
 \description{
 Check for potential outputs where metadata is present but \code{nrow} and
 \code{ncol} equal `0`. This will cause \code{multi_choice_to_labels} to fail,
-but a helpeful error message should be provided.
+but a helpful error message should be provided.
 }
 \keyword{internal}

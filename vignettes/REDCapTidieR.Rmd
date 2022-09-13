@@ -4,7 +4,7 @@ output: rmarkdown::html_vignette
 description: >
   Start here for an introduction on how to use REDCapTidieR in your data analysis.
 vignette: >
-  %\VignetteIndexEntry{getting-started}
+  %\VignetteIndexEntry{REDCapTidieR}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
