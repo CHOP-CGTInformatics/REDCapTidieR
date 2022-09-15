@@ -17,7 +17,7 @@
 #' \code{repeating} or \code{nonrepeating}. Defaults to all structures.
 #'
 #' @importFrom dplyr filter pull
-#' @importFrom rlang env_poke current_env new_environment global_env
+#' @importFrom rlang env_poke current_env new_environment global_env .data
 #' @importFrom purrr map2 pluck
 #'
 #' @examples
@@ -55,16 +55,16 @@ bind_tables <- function(.data,
   # Apply conditional loading for specific forms or structures
   if (!is.null(my_tbls)) {
     env_data <- env_data %>%
-      filter(redcap_form_name %in% my_tbls)
+      filter(.data$redcap_form_name %in% my_tbls)
   }
 
   if (!is.null(my_structures)) {
     env_data <- env_data %>%
-      filter(structure %in% my_structures)
+      filter(.data$structure %in% my_structures)
   }
 
   table_names <- env_data %>%
-    pull(redcap_form_name)
+    pull(.data$redcap_form_name)
 
   # Map over table names and environment data to load into environment
   map2(.x = table_names,
