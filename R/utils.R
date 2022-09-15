@@ -350,7 +350,7 @@ multi_choice_to_labels <- function(db_data, db_metadata) {
       # Check for empty selection strings indicating missing data or incorrect
       # data field attribute types in REDCap
       if (is.na(db_metadata$select_choices_or_calculations[i])) {
-        warning(paste0("The field ", {field_name}, " in ",
+        warning(paste0("The field ", field_name, " in ",
                        db_metadata$form_name[i], " is a ",
                        db_metadata$field_type[i],
                        " field type, however it does not have any categories."))

@@ -12,7 +12,7 @@ check_repeat_and_nonrepeat(db_data)
 }
 \value{
 A helpful error message alerting the user to existence of a form containing
-both repeating and non-repeating strucutre.
+both repeating and non-repeating structure.
 }
 \description{
 Check for potential instruments that are given both repeating and

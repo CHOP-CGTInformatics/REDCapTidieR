@@ -7,7 +7,7 @@ Thank you for taking the time to review this submission and please reach out to 
 ## R CMD check results:
 
 - 0 ERRORs or WARNINGs on any builds
-- A NOTE is generated in R-hub Windows (Server 2022, R-devel 64-bit), but should be addressed by adding `lastMiKTeXException` to the `.Rbuildignore`
+- A NOTE is generated in R-hub Windows (Server 2022, R-devel 64-bit), a similar issue appears to arise in the `REDCapR` package and appears to be related to the R-hub test environment.
 
 ```
 * checking for detritus in the temp directory ... NOTE
