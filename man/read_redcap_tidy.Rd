@@ -2,7 +2,7 @@
 % Please edit documentation in R/read_redcap_tidy.R
 \name{read_redcap_tidy}
 \alias{read_redcap_tidy}
-\title{Extract REDCap databases to tidy tibbles}
+\title{Extract a REDCap database into a tidy supertibble}
 \usage{
 read_redcap_tidy(
   redcap_uri,
@@ -13,8 +13,8 @@ read_redcap_tidy(
 }
 \arguments{
 \item{redcap_uri}{The
-uri/url of the REDCap server typically formatted as
-"https://server.org/apps/redcap/api/". Required.}
+URI/URL of the REDCap server (e.g.,
+"https://server.org/apps/redcap/api/"). Required.}
 
 \item{token}{The user-specific string that serves as the password for a
 project. Required.}
@@ -27,21 +27,20 @@ choice fields. Default is 'label'.}
 Default \code{TRUE}.}
 }
 \value{
-Returns a \code{tibble} with list elements containing tidy dataframes. Users
-can access dataframes under \code{$redcap_data} with reference to
-\code{form_name} and \code{$structure} column details.
+Returns a \code{tibble} in which each row represents a REDCap instrument.
 }
 \description{
-Organize REDCap databases into structured tidy list elements.
+Call the REDCap API to retrieve data and metadata about a project,
+and then transform the output into a tidy "supertibble" that contains tidy
+tibbles, where each tibble represents a single instrument.
 }
 \details{
-\code{REDCapTidieR} will detect REDCap database outputs for structure
-elements including:
-\itemize{
-  \item{Repeat Instruments}
-  \item{Longitudinal Events}
-  \item{Longitudinal Arms}
-}
+This function uses {REDCapR} to call the REDCap API. The REDCap API returns
+a "sparse matrix" that mashes data from all data collection instruments
+together. In complex databases, such as those that contain repeated
+instruments, this is unwieldy. The `read_redcap_tidy` function intelligently
+deconvolutes the sparse matrix and splices the data into individual tibbles,
+where one tibble represents the data from one instrument.
 }
 \examples{
 \dontrun{
