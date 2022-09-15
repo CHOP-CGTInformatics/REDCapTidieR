@@ -1,22 +1,21 @@
 #' @title
-#' Extract REDCap databases to tidy tibbles
+#' Extract a REDCap database into a tidy supertibble
 #'
 #' @description
-#' Organize REDCap databases into structured tidy list elements.
+#' Call the REDCap API to retrieve data and metadata about a project,
+#' and then transform the output into a tidy "supertibble" that contains tidy
+#' tibbles, where each tibble represents a single instrument.
 #'
 #' @details
-#' \code{REDCapTidieR} will detect REDCap database outputs for structure
-#' elements including:
-#' \itemize{
-#'   \item{Repeat Instruments}
-#'   \item{Longitudinal Events}
-#'   \item{Longitudinal Arms}
-#' }
+#' This function uses {REDCapR} to call the REDCap API. The REDCap API returns
+#' a "sparse matrix" that mashes data from all data collection instruments
+#' together. In complex databases, such as those that contain repeated
+#' instruments, this is unwieldy. The `read_redcap_tidy` function intelligently
+#' deconvolutes the sparse matrix and splices the data into individual tibbles,
+#' where one tibble represents the data from one instrument.
 #'
 #' @return
-#' Returns a \code{tibble} with list elements containing tidy dataframes. Users
-#' can access dataframes under \code{$redcap_data} with reference to
-#' \code{form_name} and \code{$structure} column details.
+#' Returns a \code{tibble} in which each row represents a REDCap instrument.
 #'
 #' @importFrom REDCapR redcap_read_oneshot redcap_metadata_read
 #' @importFrom dplyr filter bind_rows %>%
@@ -24,8 +23,8 @@
 #' @importFrom rlang .data
 #'
 #' @param redcap_uri The
-#' uri/url of the REDCap server typically formatted as
-#' "https://server.org/apps/redcap/api/". Required.
+#' URI/URL of the REDCap server (e.g.,
+#' "https://server.org/apps/redcap/api/"). Required.
 #' @param token The user-specific string that serves as the password for a
 #' project. Required.
 #' @param raw_or_label A string (either 'raw' or 'label') that specifies whether

@@ -21,9 +21,7 @@ The {REDCapTidieR} package provides an elegant way to import data from a
 environment. It builds upon the
 [{REDCapR}](https://ouhscbbmc.github.io/REDCapR/) package to query the
 REDCap API and then transforms the returned data into a set of tidy
-tibbles.
-
-{REDCapTidieR} is especially useful for dealing with complex databases
+tibbles. {REDCapTidieR} is especially useful for dealing with complex databases
 that are longitudinal or include repeated instruments or both.
 
 ## Installation
@@ -41,7 +39,7 @@ from all instruments into your environment.
 
 ![](man/figures/redcaptidier_demo.gif)
 
-Read `vignette("getting-started")` to learn more.
+Read the [Getting Started vignette](https://chop-cgtdataops.github.io/REDCapTidieR/articles/REDCapTidieR.html) to learn more.
 
 ## Collaboration
 

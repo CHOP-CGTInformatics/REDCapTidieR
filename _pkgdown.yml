@@ -6,20 +6,15 @@ navbar:
 search:
   exclude: ['news/index.html']
 reference:
-- title: "Main `REDCapTidieR` Function"
+- title: "Import Data"
   desc: >
-    Read REDCap Databases into tidy tibbles.
+    Read a REDCap Database into a tidy supertibble.
   contents:
   - read_redcap_tidy
-- title: "Binding Functions"
+- title: "Extract Individual Tables"
   desc: >
-    Bind `read_redcap_tidy` output tibbles to a specified environment.
+    Use these convenience functions to extract individual tibbles from a supertibble.
   contents:
   - bind_tables
-- title: "Extraction Functions"
-  desc: >
-    Extract `read_redcap_tidy` output tibbles using direct callouts or
-    `tidyselect` evaluation functions.
-  contents:
   - extract_table
   - extract_tables

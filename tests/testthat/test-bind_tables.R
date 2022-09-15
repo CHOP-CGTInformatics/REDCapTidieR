@@ -34,7 +34,7 @@ test_that("bind_tables works with environment specification", {
 test_that("bind_tables works with forms specification", {
 
   redcaptidier_longitudintal_db %>%
-    bind_tables(redcap_form_name = c("nonrepeated", "repeated"))
+    bind_tables(tbls = c("nonrepeated", "repeated"))
 
   expect_true(exists("nonrepeated", envir = global_env()))
   expect_false(exists("nonrepeated2", envir = global_env()))
