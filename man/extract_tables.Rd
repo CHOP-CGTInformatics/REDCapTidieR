@@ -26,19 +26,17 @@ REDCapTidieR supertibble into a named list. Specifying instruments using
 or \code{ends_with()} is supported.
 }
 \examples{
-\dontrun{
-redcap_uri <- Sys.getenv("REDCAP_URI")
-token <- Sys.getenv("REDCAP_TOKEN")
+# Supply a `read_redcap_tidy()` output to for table extraction
 
-out <- read_redcap_tidy(
-          redcap_uri,
-          token,
-          raw_or_label = "label"
-        )
+# Default `everything()`
+sample_data <- tibble::tribble(
+   ~redcap_form_name,    ~redcap_data, ~structure,
+   "super_hero_powers",   list(),       "repeating",
+   "heroes_information",  list(),       "nonrepeating"
+)
 
- extract_tables(out, c("sample_form_name1", "sample_form_name2"))
- extract_tables(out, everything())
- extract_tables(out, starts_with("demographics"))
-}
+extract_tables(sample_data)
+
+extract_tables(sample_data, starts_with("heroes"))
 
 }

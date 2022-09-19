@@ -1,8 +1,15 @@
 # Description
 
-This is the first submission for the package.
+This is a resubmission to address feedback from email correspondence with Victoria Wimmer.
 
 Thank you for taking the time to review this submission and please reach out to either Stephan Kadauke or Richard Hanna for any questions, comments, or concerns.
+
+## Feedback Addressed:
+
+- `DESCRIPTION` misspellings have been edited using single quotes:
+  - `REDCap` & `tibble`
+- `\dontrun{}` have been removed from `@examples` tags where possible and replaced with simpler toy examples
+  - `\dontrun{}` has been kept in the `@examples` for `read_redcap_tidy` due to requiring an API token. This follows similarly to the underlying `REDCapR::redcap_read_oneshot` example documentation
 
 ## R CMD check results:
 
@@ -14,11 +21,3 @@ Thank you for taking the time to review this submission and please reach out to 
 Found the following files/directories:
   'lastMiKTeXException'
 ```
-- A NOTE is generated in R-hub regarding potential spellchecker errors. `REDCap` and `Tibbles` are intentionally written.
-
-```
-Possibly misspelled words in DESCRIPTION:
-  REDCap (3:16, 9:22, 9:75)
-  Tibbles (3:43)
-```
-

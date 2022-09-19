@@ -16,30 +16,22 @@
 #' @param structure Specify REDCap structure to load into environment, either
 #' \code{repeating} or \code{nonrepeating}. Defaults to all structures.
 #'
-#' @importFrom dplyr filter pull
+#' @importFrom dplyr filter pull %>%
 #' @importFrom rlang env_poke current_env new_environment global_env .data
 #' @importFrom purrr map2 pluck
 #'
 #' @examples
-#' \dontrun{
-#' redcap_uri <- Sys.getenv("REDCAP_URI")
-#' token <- Sys.getenv("REDCAP_TOKEN")
+#' # Designate a sample environment
 #' sample_env <- environment()
 #'
-#' read_redcap_tidy(
-#'    redcap_uri,
-#'    token,
-#'    raw_or_label = "label"
-#'  )
+#' # Supply a `read_redcap_tidy()` output to bind
+#' sample_data <- tibble::tribble(
+#'   ~"redcap_form_name",    ~"redcap_data",   ~"structure",
+#'   "super_hero_powers",     list(),         "repeating",
+#'   "heroes_information",    list(),         "nonrepeating"
+#' )
 #'
-#' read_redcap_tidy(
-#'    redcap_uri,
-#'    token,
-#'    raw_or_label = "label"
-#'  ) %>%
-#' bind_tables(sample_env)
-#'}
-#'
+#' bind_tables(sample_data, sample_env)
 #'
 #' @export
 

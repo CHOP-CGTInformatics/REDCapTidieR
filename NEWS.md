@@ -1,3 +1,14 @@
+# REDCapTidieR 0.1.1
+
+Version 0.1.1 (Released 2022-09-19)
+==========================================================
+
+### Documentation Updates
+
+* Addresses feedback received from CRAN
+* `DESCRIPTION` file fixes for spell check notes
+* `roxygen2` examples updated
+
 # REDCapTidieR 0.1.0
 
 Version 0.1 (Released 2022-09-15)
