@@ -23,17 +23,14 @@ This function makes it easy to extract a single instrument's data from a
 REDCapTidieR supertibble.
 }
 \examples{
-\dontrun{
-redcap_uri <- Sys.getenv("REDCAP_URI")
-token <- Sys.getenv("REDCAP_TOKEN")
+# Supply a `read_redcap_tidy()` output to for table extraction
+sample_data <- tibble::tribble(
+  ~"redcap_form_name",    ~"redcap_data",   ~"structure",
+  "super_hero_powers",     list(),         "repeating",
+  "heroes_information",    list(),         "nonrepeating"
+)
 
-out <- read_redcap_tidy(
-          redcap_uri,
-          token,
-          raw_or_label = "label"
-        )
 
- extract_table(out, "sample_form_name")
-}
+extract_table(sample_data, "heroes_information")
 
 }

@@ -26,24 +26,16 @@ Take a supertibble generated with \code{read_redcap_tidy()}
 and bind it to an environment. The default is the global environment.
 }
 \examples{
-\dontrun{
-redcap_uri <- Sys.getenv("REDCAP_URI")
-token <- Sys.getenv("REDCAP_TOKEN")
+# Designate a sample environment
 sample_env <- environment()
 
-read_redcap_tidy(
-   redcap_uri,
-   token,
-   raw_or_label = "label"
- )
+# Supply a `read_redcap_tidy()` output to bind
+sample_data <- tibble::tribble(
+  ~"redcap_form_name",    ~"redcap_data",   ~"structure",
+  "super_hero_powers",     list(),         "repeating",
+  "heroes_information",    list(),         "nonrepeating"
+)
 
-read_redcap_tidy(
-   redcap_uri,
-   token,
-   raw_or_label = "label"
- ) \%>\%
-bind_tables(sample_env)
-}
-
+bind_tables(sample_data, sample_env)
 
 }

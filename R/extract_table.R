@@ -18,18 +18,15 @@
 #' @importFrom rlang .data
 #'
 #' @examples
-#' \dontrun{
-#' redcap_uri <- Sys.getenv("REDCAP_URI")
-#' token <- Sys.getenv("REDCAP_TOKEN")
+#' # Supply a `read_redcap_tidy()` output to for table extraction
+#' sample_data <- tibble::tribble(
+#'   ~"redcap_form_name",    ~"redcap_data",   ~"structure",
+#'   "super_hero_powers",     list(),         "repeating",
+#'   "heroes_information",    list(),         "nonrepeating"
+#' )
 #'
-#' out <- read_redcap_tidy(
-#'           redcap_uri,
-#'           token,
-#'           raw_or_label = "label"
-#'         )
 #'
-#'  extract_table(out, "sample_form_name")
-#' }
+#' extract_table(sample_data, "heroes_information")
 #'
 #' @export
 
@@ -68,26 +65,24 @@ extract_table <- function(.data,
 #' \code{everything()}.
 #'
 #' @importFrom rlang .data enquo
-#' @importFrom dplyr select
+#' @importFrom dplyr select %>%
 #' @importFrom tidyselect eval_select everything
 #' @importFrom tidyr pivot_wider
 #' @importFrom purrr map pluck
 #'
 #' @examples
-#' \dontrun{
-#' redcap_uri <- Sys.getenv("REDCAP_URI")
-#' token <- Sys.getenv("REDCAP_TOKEN")
+#' # Supply a `read_redcap_tidy()` output to for table extraction
 #'
-#' out <- read_redcap_tidy(
-#'           redcap_uri,
-#'           token,
-#'           raw_or_label = "label"
-#'         )
+#' # Default `everything()`
+#' sample_data <- tibble::tribble(
+#'    ~redcap_form_name,    ~redcap_data, ~structure,
+#'    "super_hero_powers",   list(),       "repeating",
+#'    "heroes_information",  list(),       "nonrepeating"
+#' )
 #'
-#'  extract_tables(out, c("sample_form_name1", "sample_form_name2"))
-#'  extract_tables(out, everything())
-#'  extract_tables(out, starts_with("demographics"))
-#' }
+#' extract_tables(sample_data)
+#'
+#' extract_tables(sample_data, starts_with("heroes"))
 #'
 #' @export
 
