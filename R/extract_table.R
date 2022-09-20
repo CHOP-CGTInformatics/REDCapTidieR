@@ -20,9 +20,9 @@
 #' @examples
 #' # Supply a `read_redcap_tidy()` output to for table extraction
 #' sample_data <- tibble::tribble(
-#'   ~"redcap_form_name",    ~"redcap_data",   ~"structure",
-#'   "super_hero_powers",     list(),         "repeating",
-#'   "heroes_information",    list(),         "nonrepeating"
+#'   ~redcap_form_name,    ~redcap_data,   ~structure,
+#'   "super_hero_powers",   list(),         "repeating",
+#'   "heroes_information",  list(),         "nonrepeating"
 #' )
 #'
 #'

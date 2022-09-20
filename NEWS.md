@@ -1,3 +1,15 @@
+# REDCapTidieR 0.1.2
+
+Version 0.1.2 (Released 2022-09-20)
+==========================================================
+
+### Documentation Updates
+
+* Addresses feedback received from CRAN
+* `DESCRIPTION` file fixes for undirected quotation marks (e.g. `REDCap` to 'REDCap')
+* Fix quotations in `@examples` tags for `bind_tables` and `extract_table`
+* Update `pkgdown` site
+
 # REDCapTidieR 0.1.1
 
 Version 0.1.1 (Released 2022-09-19)

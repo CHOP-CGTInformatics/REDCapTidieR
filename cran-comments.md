@@ -6,10 +6,9 @@ Thank you for taking the time to review this submission and please reach out to 
 
 ## Feedback Addressed:
 
-- `DESCRIPTION` misspellings have been edited using single quotes:
-  - `REDCap` & `tibble`
-- `\dontrun{}` have been removed from `@examples` tags where possible and replaced with simpler toy examples
-  - `\dontrun{}` has been kept in the `@examples` for `read_redcap_tidy` due to requiring an API token. This follows similarly to the underlying `REDCapR::redcap_read_oneshot` example documentation
+- `DESCRIPTION` quotations have been edited to undirected quotations:
+  - `REDCap` & `tibble` to 'REDCap' & 'tibble'
+- Also fixed the quotations on `tribble`s in `@examples` tags for `bind_tables` and `extract_table` and updated documentation
 
 ## R CMD check results:
 
