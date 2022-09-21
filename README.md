@@ -11,9 +11,10 @@
 <!-- badges: start -->
 
 [![Lifecycle:
-experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 [![R-CMD-check](https://github.com/CHOP-CGTDataOps/REDCapTidieR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/CHOP-CGTDataOps/REDCapTidieR/actions/workflows/R-CMD-check.yaml)
-
+[![CRAN
+status](https://www.r-pkg.org/badges/version/REDCapTidieR)](https://CRAN.R-project.org/package=REDCapTidieR)
 <!-- badges: end -->
 
 The {REDCapTidieR} package provides an elegant way to import data from a
@@ -21,12 +22,22 @@ The {REDCapTidieR} package provides an elegant way to import data from a
 environment. It builds upon the
 [{REDCapR}](https://ouhscbbmc.github.io/REDCapR/) package to query the
 REDCap API and then transforms the returned data into a set of tidy
-tibbles. {REDCapTidieR} is especially useful for dealing with complex databases
+tibbles.
+
+{REDCapTidieR} is especially useful for dealing with complex databases
 that are longitudinal or include repeated instruments or both.
 
 ## Installation
 
-You can install the development version of `REDCapTidieR` like so:
+The release version can be installed from
+[CRAN](https://cran.r-project.org/package=REDCapTidieR).
+
+``` r
+install.packages("REDCapTidieR")
+```
+
+You can install the development version of `REDCapTidieR` from
+[GitHub](https://github.com/CHOP-CGTDataOps/REDCapTidieR):
 
 ``` r
 devtools::install_github("CHOP-CGTDataOps/REDCapTidieR")
@@ -39,7 +50,7 @@ from all instruments into your environment.
 
 ![](man/figures/redcaptidier_demo.gif)
 
-Read the [Getting Started vignette](https://chop-cgtdataops.github.io/REDCapTidieR/articles/REDCapTidieR.html) to learn more.
+Read `vignette("getting-started")` to learn more.
 
 ## Collaboration
 
