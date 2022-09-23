@@ -25,6 +25,7 @@ knitr::opts_chunk$set(
 [![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
  [![R-CMD-check](https://github.com/CHOP-CGTDataOps/REDCapTidieR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/CHOP-CGTDataOps/REDCapTidieR/actions/workflows/R-CMD-check.yaml)
 [![CRAN status](https://www.r-pkg.org/badges/version/REDCapTidieR)](https://CRAN.R-project.org/package=REDCapTidieR)
+[![](https://cranlogs.r-pkg.org/badges/grand-total/REDCapTidieR)](https://cran.r-project.org/package=REDCapTidieR)
 <!-- badges: end -->
 
 The {REDCapTidieR} package provides an elegant way to import data from a [REDCap](https://www.project-redcap.org/) database into an R environment. It builds upon the [{REDCapR}](https://ouhscbbmc.github.io/REDCapR/) package to query the REDCap API and then transforms the returned data into a set of tidy tibbles.
