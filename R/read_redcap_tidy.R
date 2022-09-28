@@ -30,6 +30,8 @@
 #' @param raw_or_label A string (either 'raw' or 'label') that specifies whether
 #' to export the raw coded values or the labels for the options of multiple
 #' choice fields. Default is 'label'.
+#' @param forms A character vector of form names that specifies the forms to
+#' export. Default returns all forms in the project.
 #' @param suppress_messages Optionally show or suppress messages.
 #' Default \code{TRUE}.
 #'
@@ -50,12 +52,14 @@
 read_redcap_tidy <- function(redcap_uri,
                              token,
                              raw_or_label = "label",
+                             forms = NULL,
                              suppress_messages = TRUE) {
 
   # Load Datasets ----
   # Load REDCap Dataset output
   db_data <- redcap_read_oneshot(redcap_uri = redcap_uri,
                                  token = token,
+                                 forms = forms,
                                  verbose = FALSE)$data
 
   check_redcap_populated(db_data)
@@ -65,6 +69,10 @@ read_redcap_tidy <- function(redcap_uri,
                                       token = token,
                                       verbose = FALSE)$data %>%
     filter(.data$field_type != "descriptive")
+
+  if (!is.null(forms)) {
+    db_metadata <- filter(db_metadata, .data$form_name %in% forms)
+  }
 
   # Apply database output changes ----
   # Apply checkbox appending functions to metadata
