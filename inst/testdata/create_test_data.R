@@ -25,10 +25,16 @@ db_data <- redcap_read_oneshot(redcap_uri = redcap_uri,
 
 db_metadata <- redcap_metadata_read(redcap_uri = redcap_uri,
                                     token = classic_token,
-                                    verbose = FALSE)$data
+                                    verbose = FALSE)$data %>%
+  filter(.data$field_type != "descriptive")
 
-# Apply checkbox appending functions to metadata
+# Apply checkbox appending functions to data and metadata
 db_metadata <- update_field_names(db_metadata)
+
+if ("checkbox" %in% db_metadata$field_type) {
+  db_data <- update_data_col_names(db_data, db_metadata)
+}
+
 
 saveRDS(db_data, "inst/testdata/db_data_classic.RDS")
 saveRDS(db_metadata, "inst/testdata/db_metadata_classic.RDS")
