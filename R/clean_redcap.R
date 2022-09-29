@@ -143,7 +143,7 @@ distill_nonrepeat_table <- function(
   # Below necessary to remove descriptive text fields
   # and to add column to indicate that form is completed
   my_fields <- db_data %>%
-    select(starts_with(my_fields), paste0(my_form, "_complete")) %>%
+    select(all_of(my_fields), paste0(my_form, "_complete")) %>%
     names()
 
   if (has_repeating) {
@@ -201,7 +201,7 @@ distill_repeat_table <- function(
   # Below necessary to remove descriptive text fields
   # and to add column to indicate that form is completed
   my_fields <- db_data %>%
-    select(starts_with(my_fields), paste0(my_form, "_complete")) %>%
+    select(all_of(my_fields), paste0(my_form, "_complete")) %>%
     names()
 
   db_data %>%
