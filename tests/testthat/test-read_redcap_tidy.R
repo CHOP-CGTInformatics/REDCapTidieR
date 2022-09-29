@@ -202,3 +202,18 @@ test_that("supplying forms is equivalent to post-hoc filtering for a longitudina
     filtered_by_api, filtered_locally
   )
 })
+
+test_that("errors when non-existent form is supplied alone", {
+    read_redcap_tidy(redcap_uri,
+                     classic_token,
+                     forms = "fake-form") %>%
+    expect_error(regexp = "fake-form")
+})
+
+test_that("errors when non-existent form is supplied with existing forms", {
+  read_redcap_tidy(redcap_uri,
+                   classic_token,
+                   forms = c("fake-form", "repeated")) %>%
+    expect_error(regexp = "fake-form")
+})
+

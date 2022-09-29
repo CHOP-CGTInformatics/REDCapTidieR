@@ -55,6 +55,17 @@ read_redcap_tidy <- function(redcap_uri,
                              forms = NULL,
                              suppress_messages = TRUE) {
 
+  # Load REDCap Metadata output
+  db_metadata <- redcap_metadata_read(redcap_uri = redcap_uri,
+                                      token = token,
+                                      verbose = FALSE)$data %>%
+    filter(.data$field_type != "descriptive")
+
+  if (!is.null(forms)) {
+    check_forms_exist(db_metadata, forms)
+    db_metadata <- filter(db_metadata, .data$form_name %in% forms)
+  }
+
   # Load Datasets ----
   # Load REDCap Dataset output
   db_data <- redcap_read_oneshot(redcap_uri = redcap_uri,
@@ -63,16 +74,6 @@ read_redcap_tidy <- function(redcap_uri,
                                  verbose = FALSE)$data
 
   check_redcap_populated(db_data)
-
-  # Load REDCap Metadata output
-  db_metadata <- redcap_metadata_read(redcap_uri = redcap_uri,
-                                      token = token,
-                                      verbose = FALSE)$data %>%
-    filter(.data$field_type != "descriptive")
-
-  if (!is.null(forms)) {
-    db_metadata <- filter(db_metadata, .data$form_name %in% forms)
-  }
 
   # Apply database output changes ----
   # Apply checkbox appending functions to metadata
