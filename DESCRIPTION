@@ -13,6 +13,7 @@ LazyData: true
 Imports: 
     checkmate,
     dplyr,
+    glue,
     purrr,
     REDCapR (>= 1.1.0),
     rlang,
