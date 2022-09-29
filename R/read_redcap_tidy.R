@@ -7,11 +7,13 @@
 #' tibbles, where each tibble represents a single instrument.
 #'
 #' @details
-#' This function uses {REDCapR} to call the REDCap API. The REDCap API returns
-#' a "sparse matrix" that mashes data from all data collection instruments
+#' This function uses [REDCapR](https://ouhscbbmc.github.io/REDCapR)
+#' to call the REDCap API. The REDCap API returns
+#' a [block matrix](https://en.wikipedia.org/wiki/Block_matrix) that mashes
+#' data from all data collection instruments
 #' together. In complex databases, such as those that contain repeated
 #' instruments, this is unwieldy. The `read_redcap_tidy` function intelligently
-#' deconvolutes the sparse matrix and splices the data into individual tibbles,
+#' deconvolutes the block matrix and splices the data into individual tibbles,
 #' where one tibble represents the data from one instrument.
 #'
 #' @return
