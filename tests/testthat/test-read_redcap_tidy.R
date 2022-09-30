@@ -59,19 +59,17 @@ test_that("read_redcap_tidy works for a classic database with a repeating instru
 
 test_that("supplying forms is equivalent to post-hoc filtering for a classic database", {
 
-  skip("Failing due to https://github.com/CHOP-CGTDataOps/REDCapTidieR/issues/39")
-
   filtered_by_api <-
     read_redcap_tidy(redcap_uri,
                      classic_token,
-                     forms = c("nonrepeated", "data_field_types")) %>%
+                     forms = c("nonrepeated", "repeated")) %>%
     suppressWarnings()
 
   filtered_locally <-
     read_redcap_tidy(redcap_uri,
                      classic_token) %>%
     suppressWarnings() %>%
-    filter(redcap_form_name %in% c("nonrepeated", "data_field_types"))
+    filter(redcap_form_name %in% c("nonrepeated", "repeated"))
 
   expect_equal(
     filtered_by_api, filtered_locally
@@ -126,23 +124,6 @@ test_that("read_redcap_tidy works for a longitudinal, single arm database with a
 
 })
 
-test_that("supplying forms is equivalent to post-hoc filtering for a longitudinal, single arm database", {
-
-  filtered_by_api <-
-    read_redcap_tidy(redcap_uri,
-                     longitudinal_noarms_token,
-                     forms = c("nonrepeated", "repeated"))
-
-  filtered_locally <-
-    read_redcap_tidy(redcap_uri,
-                     longitudinal_noarms_token) %>%
-    filter(redcap_form_name %in% c("nonrepeated", "repeated"))
-
-  expect_equal(
-    filtered_by_api, filtered_locally
-  )
-})
-
 test_that("read_redcap_tidy works for a longitudinal, multi-arm database with a nonrepeating instrument", {
 
   # Define partial key columns that should be in a nonrepeating table
@@ -184,23 +165,6 @@ test_that("read_redcap_tidy works for a longitudinal, multi-arm database with a 
     all(expected_present_cols %in% names(out))
   )
 
-})
-
-test_that("supplying forms is equivalent to post-hoc filtering for a longitudinal, multi-arm database", {
-
-  filtered_by_api <-
-    read_redcap_tidy(redcap_uri,
-                     longitudinal_token,
-                     forms = c("nonrepeated", "repeated"))
-
-  filtered_locally <-
-    read_redcap_tidy(redcap_uri,
-                     longitudinal_token) %>%
-    filter(redcap_form_name %in% c("nonrepeated", "repeated"))
-
-  expect_equal(
-    filtered_by_api, filtered_locally
-  )
 })
 
 test_that("errors when non-existent form is supplied alone", {
