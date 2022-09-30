@@ -22,10 +22,10 @@ jobs:
       REDCAPTIDIER_LONGITUDINAL_NOARMS_API: ${{ secrets.REDCAPTIDIER_LONGITUDINAL_NOARMS_API }}
       R_KEEP_PKG_SOURCE: yes
     steps:
-      - name: Update Ubuntu
-        run: sudo apt-get update
-      - name: Install cURL Headers
-        run: sudo apt-get install libcurl4-openssl-dev
+      - name: Update Ubuntu, Install cURL Headers, add Libraries
+        run: |
+         sudo apt-get update
+         sudo apt-get install libharfbuzz-dev libfribidi-dev libfontconfig1-dev
 
       - uses: actions/checkout@v2
 
