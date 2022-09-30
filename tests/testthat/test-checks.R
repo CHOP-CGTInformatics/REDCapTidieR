@@ -34,3 +34,10 @@ test_that("check_repeat_and_nonrepeat works", {
 
   expect_error(check_redcap_populated(db_data = test_data))
 })
+
+test_that("check_forms_exist works", {
+  metadata <- tibble(form_name = letters[1:4])
+  forms <- letters[3:6]
+
+  expect_error(check_forms_exist(metadata, forms), regexp = "e and f")
+})
