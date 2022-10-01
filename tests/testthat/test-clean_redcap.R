@@ -38,6 +38,14 @@ test_that("distill_nonrepeat_table tibble contains expected columns and data typ
                                  db_data = db_data_classic,
                                  db_metadata = db_metadata_classic)
 
+  # Check to ensure field names do not appear from other forms
+  # (See GH Issue #39 / PR #40)
+  field_names_from_other_forms <- db_metadata_classic %>%
+    filter(form_name != "data_field_types", field_name != "record_id") %>%
+    pull(field_name)
+
+  expect_true(!any(field_names_from_other_forms %in% names(out)))
+
   # Check general structure
   expect_true(is_tibble(out))
 
