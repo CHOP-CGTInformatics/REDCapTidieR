@@ -148,8 +148,7 @@ check_redcap_populated <- function(
 #' @return
 #' An error message listing the requested forms that don't exist
 #'
-#' @importFrom glue glue glue_collapse
-#' @importFrom dplyr if_else
+#' @importFrom cli cli_abort
 #'
 #' @param db_metadata The metadata file read by
 #' \code{REDCapR::redcap_metadata_read()}
@@ -161,12 +160,9 @@ check_forms_exist <- function(db_metadata, forms) {
   missing_forms <- setdiff(forms, unique(db_metadata$form_name))
 
   if (length(missing_forms) > 0) {
-    nice_form_names <- glue_collapse(missing_forms, ', ', last = ' and ')
-    suf <- if_else(length(missing_forms) == 1, "", "s")
-    do_does <- if_else(length(missing_forms) == 1, "does", "do")
-
-    stop(
-      glue("Form{suf} {nice_form_names} {do_does} not exist in REDCap project")
+    cli_abort(
+      c("x" = "Form{?s} {missing_forms} {?does/do} not exist in REDCap project"),
+      class = c("form_does_not_exist", "REDCapTidieR_cond")
     )
   }
 }

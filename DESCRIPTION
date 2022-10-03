@@ -12,8 +12,8 @@ Encoding: UTF-8
 LazyData: true
 Imports: 
     checkmate,
+    cli,
     dplyr,
-    glue,
     purrr,
     REDCapR (>= 1.1.0),
     rlang,
