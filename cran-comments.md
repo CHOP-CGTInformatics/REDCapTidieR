@@ -1,14 +1,8 @@
 # Description
 
-This is a resubmission to address feedback from email correspondence with Victoria Wimmer.
+This submission features a bug patch and a few minor documentation changes.
 
 Thank you for taking the time to review this submission and please reach out to either Stephan Kadauke or Richard Hanna for any questions, comments, or concerns.
-
-## Feedback Addressed:
-
-- `DESCRIPTION` quotations have been edited to undirected quotations:
-  - `REDCap` & `tibble` to 'REDCap' & 'tibble'
-- Also fixed the quotations on `tribble`s in `@examples` tags for `bind_tables` and `extract_table` and updated documentation
 
 ## R CMD check results:
 
@@ -20,3 +14,14 @@ Thank you for taking the time to review this submission and please reach out to 
 Found the following files/directories:
   'lastMiKTeXException'
 ```
+
+- A NOTE is generated in R-hub Fedora Linux (R-devel, clang, gfortran), but could not be reproduced locally. 
+
+```
+* checking HTML version of manual ... NOTE
+Skipping checking HTML validation: no command 'tidy' found
+```
+
+## Downstream Dependencies:
+
+No downstream packages are affected. The package that depends/imports/suggests REDCapR passes checks with `revdepcheck::revdep_check()`. Results: https://github.com/CHOP-CGTDataOps/REDCapTidieR/blob/main/revdep/cran.md
