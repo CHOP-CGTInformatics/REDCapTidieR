@@ -71,6 +71,7 @@ tibbles, where each tibble represents a single instrument.</p>
 <span>  <span class="va">redcap_uri</span>,</span>
 <span>  <span class="va">token</span>,</span>
 <span>  raw_or_label <span class="op">=</span> <span class="st">"label"</span>,</span>
+<span>  forms <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  suppress_messages <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -92,6 +93,11 @@ project. Required.</p></dd>
 <dd><p>A string (either 'raw' or 'label') that specifies whether
 to export the raw coded values or the labels for the options of multiple
 choice fields. Default is 'label'.</p></dd>
+
+
+<dt>forms</dt>
+<dd><p>A character vector of form names that specifies the forms to
+export. Default returns all forms in the project.</p></dd>
 
 
 <dt>suppress_messages</dt>
