@@ -3,14 +3,19 @@
 on:
   push:
     branches: [main, master]
-  pull_request:
+  pull_request_target:
     branches: [main, master]
+    types: [labeled]
 
 name: R-CMD-check
 
 jobs:
   R-CMD-check:
     runs-on: ubuntu-latest
+    name: Conditional check for 'safe to test' label vs push to main
+    if: |
+      contains(github.event.pull_request.labels.*.name, 'safe to test') ||
+      github.event_name == 'push'
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       REDCAP_URI: ${{ secrets.REDCAP_URI }}
@@ -22,11 +27,20 @@ jobs:
       REDCAPTIDIER_LONGITUDINAL_NOARMS_API: ${{ secrets.REDCAPTIDIER_LONGITUDINAL_NOARMS_API }}
       R_KEEP_PKG_SOURCE: yes
     steps:
+      - name: Update Ubuntu, Install cURL Headers, add Libraries
+        run: |
+         sudo apt-get update
+         sudo apt-get install libcurl4-openssl-dev
+         sudo apt-get install libharfbuzz-dev libfribidi-dev libfontconfig1-dev
+
       - uses: actions/checkout@v2
 
       - uses: r-lib/actions/setup-r@v2
         with:
           use-public-rspm: true
+      - uses: r-lib/actions/setup-renv@v2
+        with:
+          cache-version: 2
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:

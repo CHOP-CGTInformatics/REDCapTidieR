@@ -32,6 +32,8 @@
 #' @param raw_or_label A string (either 'raw' or 'label') that specifies whether
 #' to export the raw coded values or the labels for the options of multiple
 #' choice fields. Default is 'label'.
+#' @param forms A character vector of form names that specifies the forms to
+#' export. Default returns all forms in the project.
 #' @param suppress_messages Optionally show or suppress messages.
 #' Default \code{TRUE}.
 #'
@@ -52,15 +54,8 @@
 read_redcap_tidy <- function(redcap_uri,
                              token,
                              raw_or_label = "label",
+                             forms = NULL,
                              suppress_messages = TRUE) {
-
-  # Load Datasets ----
-  # Load REDCap Dataset output
-  db_data <- redcap_read_oneshot(redcap_uri = redcap_uri,
-                                 token = token,
-                                 verbose = FALSE)$data
-
-  check_redcap_populated(db_data)
 
   # Load REDCap Metadata output
   db_metadata <- redcap_metadata_read(redcap_uri = redcap_uri,
@@ -68,16 +63,26 @@ read_redcap_tidy <- function(redcap_uri,
                                       verbose = FALSE)$data %>%
     filter(.data$field_type != "descriptive")
 
+  if (!is.null(forms)) {
+    check_forms_exist(db_metadata, forms)
+    db_metadata <- filter(db_metadata, .data$form_name %in% forms)
+  }
+
+  # Load Datasets ----
+  # Load REDCap Dataset output
+  db_data <- redcap_read_oneshot(redcap_uri = redcap_uri,
+                                 token = token,
+                                 forms = forms,
+                                 verbose = FALSE)$data
+
+  check_redcap_populated(db_data)
+
   # Apply database output changes ----
   # Apply checkbox appending functions to metadata
   db_metadata <- update_field_names(db_metadata)
   # Note: Order of functions calls between `update_*` matters
   if ("checkbox" %in% db_metadata$field_type) {
     db_data <- update_data_col_names(db_data, db_metadata)
-  }
-
-  if (raw_or_label == "label") {
-    db_data <- multi_choice_to_labels(db_data, db_metadata)
   }
 
   # Check for potential API rights issues ----
@@ -88,6 +93,10 @@ read_redcap_tidy <- function(redcap_uri,
     # Default behavior: Remove missing field names to prevent crash
     db_metadata <- db_metadata %>%
       filter(.data$field_name_updated %in% names(db_data))
+  }
+
+  if (raw_or_label == "label") {
+    db_data <- multi_choice_to_labels(db_data, db_metadata)
   }
 
   # Longitudinal Arms Check and Cleaning Application ----
