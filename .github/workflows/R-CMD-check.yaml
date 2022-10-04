@@ -12,7 +12,6 @@ name: R-CMD-check
 jobs:
   R-CMD-check:
     runs-on: ubuntu-latest
-    name: Build on Ubuntu-latest and run R CMD check
     # Prevent Pwn Requests https://securitylab.github.com/research/github-actions-preventing-pwn-requests/
     if: |
       contains(github.event.pull_request.labels.*.name, 'safe to test') ||
