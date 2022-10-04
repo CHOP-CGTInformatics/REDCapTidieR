@@ -3,14 +3,18 @@
 on:
   push:
     branches: [main, master]
-  pull_request:
+  pull_request_target:
     branches: [main, master]
+    types: [labeled]
 
 name: R-CMD-check
 
 jobs:
   R-CMD-check:
     runs-on: ubuntu-latest
+    if: |
+      contains(github.event.pull_request.labels.*.name, 'safe to test') ||
+      github.event.push
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       REDCAP_URI: ${{ secrets.REDCAP_URI }}
