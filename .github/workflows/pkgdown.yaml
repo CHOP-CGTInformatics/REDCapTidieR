@@ -3,9 +3,8 @@
 on:
   push:
     branches: [main, master]
-  pull_request_target:
+  pull_request:
     branches: [main, master]
-    types: [labeled]
   release:
     types: [published]
   workflow_dispatch:
@@ -15,7 +14,6 @@ name: pkgdown
 jobs:
   pkgdown:
     runs-on: ubuntu-latest
-    if: contains(github.event.pull_request.labels.*.name, 'safe to test')
     # Only restrict concurrency for non-PR jobs
     concurrency:
       group: pkgdown-${{ github.event_name != 'pull_request' || github.run_id }}
