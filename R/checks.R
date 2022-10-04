@@ -130,3 +130,33 @@ check_redcap_populated <- function(
     )
   }
 }
+
+
+#' @title
+#' Check that all requested forms are in REDCap project metadata
+#'
+#' @description
+#' Provide an error message when any form names are passed to
+#' \code{read_redcap_tidy()} that do not exist in the project metadata.
+#'
+#' @return
+#' An error message listing the requested forms that don't exist
+#'
+#' @importFrom cli cli_abort
+#'
+#' @param db_metadata The metadata file read by
+#' \code{REDCapR::redcap_metadata_read()}
+#' @param forms The character vector of form names passed to
+#' \code{read_redcap_tidy()}
+#'
+#' @keywords internal
+check_forms_exist <- function(db_metadata, forms) {
+  missing_forms <- setdiff(forms, unique(db_metadata$form_name))
+
+  if (length(missing_forms) > 0) {
+    cli_abort(
+      c("x" = "Form{?s} {missing_forms} {?does/do} not exist in REDCap project"),
+      class = c("form_does_not_exist", "REDCapTidieR_cond")
+    )
+  }
+}
