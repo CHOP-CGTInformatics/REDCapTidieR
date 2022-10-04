@@ -11,6 +11,10 @@ name: test-coverage
 jobs:
   test-coverage:
     runs-on: ubuntu-latest
+    # Prevent Pwn Requests https://securitylab.github.com/research/github-actions-preventing-pwn-requests/
+    if: |
+      contains(github.event.pull_request.labels.*.name, 'safe to test') ||
+      github.event_name == 'push'
     env:
       NOT_CRAN: true
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
