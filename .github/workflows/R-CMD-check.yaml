@@ -12,9 +12,10 @@ name: R-CMD-check
 jobs:
   R-CMD-check:
     runs-on: ubuntu-latest
+    name: Conditional check for 'safe to test' label vs push to main
     if: |
       contains(github.event.pull_request.labels.*.name, 'safe to test') ||
-      github.event.push
+      github.event = 'push'
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       REDCAP_URI: ${{ secrets.REDCAP_URI }}
