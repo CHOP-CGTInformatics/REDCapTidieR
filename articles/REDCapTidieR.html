@@ -109,7 +109,7 @@
 <p>Great! Now let’s import the superheroes data into R. We can use <code><a href="https://ouhscbbmc.github.io/REDCapR/reference/redcap_read_oneshot.html" class="external-link">REDCapR::redcap_read_oneshot()</a></code> which returns a list with and element named <code>data</code> that contains all of the data as a data frame. We turned this data frame into a tibble for better readability:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">superheroes</span> <span class="op">&lt;-</span> <span class="fu">REDCapR</span><span class="fu">::</span><span class="fu"><a href="https://ouhscbbmc.github.io/REDCapR/reference/redcap_read_oneshot.html" class="external-link">redcap_read_oneshot</a></span><span class="op">(</span><span class="va">redcap_uri</span>, <span class="va">token</span><span class="op">)</span><span class="op">$</span><span class="va">data</span></span>
-<span><span class="co">#&gt; 6,700 records and 16 columns were read from REDCap in 1.5 seconds.  The http status code was 200.</span></span>
+<span><span class="co">#&gt; 6,700 records and 16 columns were read from REDCap in 1.4 seconds.  The http status code was 200.</span></span>
 <span></span>
 <span><span class="va">superheroes</span> <span class="op">%&gt;%</span> <span class="fu">tibble</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6,700 × 16</span></span></span>
