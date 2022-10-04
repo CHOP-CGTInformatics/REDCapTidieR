@@ -74,10 +74,6 @@ read_redcap_tidy <- function(redcap_uri,
     db_data <- update_data_col_names(db_data, db_metadata)
   }
 
-  if (raw_or_label == "label") {
-    db_data <- multi_choice_to_labels(db_data, db_metadata)
-  }
-
   # Check for potential API rights issues ----
   # If any missing field names detected in metadata output, run the following
   # resulting in metadata with missing data removed and warn user of action
@@ -86,6 +82,10 @@ read_redcap_tidy <- function(redcap_uri,
     # Default behavior: Remove missing field names to prevent crash
     db_metadata <- db_metadata %>%
       filter(.data$field_name_updated %in% names(db_data))
+  }
+
+  if (raw_or_label == "label") {
+    db_data <- multi_choice_to_labels(db_data, db_metadata)
   }
 
   # Longitudinal Arms Check and Cleaning Application ----
