@@ -3,14 +3,16 @@
 on:
   push:
     branches: [main, master]
-  pull_request:
+  pull_request_target:
     branches: [main, master]
+    types: [labeled]
 
 name: test-coverage
 
 jobs:
   test-coverage:
     runs-on: ubuntu-latest
+    if: contains(github.event.pull_request.labels.*.name, 'safe to test')
     env:
       NOT_CRAN: true
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
