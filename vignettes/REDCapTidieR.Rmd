@@ -35,7 +35,8 @@ redcap_uri <- Sys.getenv("REDCAP_URI")
 
 The [{REDCapR}](https://ouhscbbmc.github.io/REDCapR/) package streamlines calls to the REDCap API. Arguably, its main use is to import records from a REDCap project. This works well for simple projects, however becomes ugly when complex databases that include longitudinal structure and/or repeated instruments are involved.
 
-We wrote the `REDCapTidieR` package to make the life of analysts who deal with complex REDCap databases easier. It does so by building upon **{REDCapR}** to make its output **tidier**. Instead of one large data frame composed of a sparse matrix, the analyst gets to work with a set of tidy tibbles, one for each REDCap instrument.
+We wrote the `REDCapTidieR` package to make the life of analysts who deal with complex REDCap databases easier. It does so by building upon 
+[REDCapR](https://ouhscbbmc.github.io/REDCapR) to make its output **tidier**. Instead of one large data frame composed of a block matrix, the analyst gets to work with a set of tidy tibbles, one for each REDCap instrument.
 
 To demonstrate the use of `REDCapTidieR`, let's look at a REDCap database that has information about some 734 superheroes, derived from data scraped from the [Superhero Database](https://www.superherodb.com/).
 
@@ -57,7 +58,7 @@ superheroes <- REDCapR::redcap_read_oneshot(redcap_uri, token)$data
 superheroes %>% tibble()
 ```
 
-This data structure is sometimes called the **sparse matrix**. It's what happens when REDCap mashes the contents of a database that has both repeating and non-repeating instruments into a single table.
+This data structure is sometimes called the [block matrix](https://en.wikipedia.org/wiki/Block_matrix). It's what happens when REDCap mashes the contents of a database that has both repeating and non-repeating instruments into a single table.
 
 While it may seem a good idea to have everything in one data frame, there are significant downsides, including:
 
@@ -156,7 +157,7 @@ heroes_information
 
 Now look at the `super_hero_powers` tibble, which contains data from a **repeating** instrument, and note the following:
 
--   Again, this is not a sparse table, making it easy to understand its data content, and the name is descriptive.
+-   Again, this is not a block matrix/table, making it easy to understand its data content, and the name is descriptive.
 
 -   Each row has the same observational unit - in this case, **superpower per superhero**, identified by `record_id` and `redcap_repeat_instance`. This is because `super_hero_powers` comes from a repeated instrument.
 
