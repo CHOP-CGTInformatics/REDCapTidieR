@@ -97,7 +97,7 @@
 <p>“REDCap is a secure web application for building and managing online surveys and databases. While REDCap can be used to collect virtually any type of data in any environment (including compliance with 21 CFR Part 11, FISMA, HIPAA, and GDPR), it is specifically geared to support online and offline data capture for research studies and operations. The REDCap Consortium, a vast support network of collaborators, is composed of thousands of active institutional partners in over one hundred countries who utilize and support their own individual REDCap systems.”</p>
 </blockquote>
 <p>The <a href="https://ouhscbbmc.github.io/REDCapR/" class="external-link">{REDCapR}</a> package streamlines calls to the REDCap API. Arguably, its main use is to import records from a REDCap project. This works well for simple projects, however becomes ugly when complex databases that include longitudinal structure and/or repeated instruments are involved.</p>
-<p>We wrote the <code>REDCapTidieR</code> package to make the life of analysts who deal with complex REDCap databases easier. It does so by building upon <strong>{REDCapR}</strong> to make its output <strong>tidier</strong>. Instead of one large data frame composed of a sparse matrix, the analyst gets to work with a set of tidy tibbles, one for each REDCap instrument.</p>
+<p>We wrote the <code>REDCapTidieR</code> package to make the life of analysts who deal with complex REDCap databases easier. It does so by building upon <a href="https://ouhscbbmc.github.io/REDCapR" class="external-link">REDCapR</a> to make its output <strong>tidier</strong>. Instead of one large data frame composed of a block matrix, the analyst gets to work with a set of tidy tibbles, one for each REDCap instrument.</p>
 <p>To demonstrate the use of <code>REDCapTidieR</code>, let’s look at a REDCap database that has information about some 734 superheroes, derived from data scraped from the <a href="https://www.superherodb.com/" class="external-link">Superhero Database</a>.</p>
 <p>This REDCap project contains two instruments:</p>
 <ul>
@@ -109,7 +109,7 @@
 <p>Great! Now let’s import the superheroes data into R. We can use <code><a href="https://ouhscbbmc.github.io/REDCapR/reference/redcap_read_oneshot.html" class="external-link">REDCapR::redcap_read_oneshot()</a></code> which returns a list with and element named <code>data</code> that contains all of the data as a data frame. We turned this data frame into a tibble for better readability:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">superheroes</span> <span class="op">&lt;-</span> <span class="fu">REDCapR</span><span class="fu">::</span><span class="fu"><a href="https://ouhscbbmc.github.io/REDCapR/reference/redcap_read_oneshot.html" class="external-link">redcap_read_oneshot</a></span><span class="op">(</span><span class="va">redcap_uri</span>, <span class="va">token</span><span class="op">)</span><span class="op">$</span><span class="va">data</span></span>
-<span><span class="co">#&gt; 6,700 records and 16 columns were read from REDCap in 1.4 seconds.  The http status code was 200.</span></span>
+<span><span class="co">#&gt; 6,700 records and 16 columns were read from REDCap in 1.2 seconds.  The http status code was 200.</span></span>
 <span></span>
 <span><span class="va">superheroes</span> <span class="op">%&gt;%</span> <span class="fu">tibble</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6,700 × 16</span></span></span>
@@ -129,7 +129,7 @@
 <span><span class="co">#&gt; <span style="color: #949494;">#   alignment &lt;chr&gt;, heroes_information_complete &lt;dbl&gt;, power &lt;chr&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   super_hero_powers_complete &lt;dbl&gt;, and abbreviated variable names</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   ¹​redcap_repeat_instrument, ²​redcap_repeat_instance, ³​eye_color, ⁴​hair_color</span></span></span></code></pre></div>
-<p>This data structure is sometimes called the <strong>sparse matrix</strong>. It’s what happens when REDCap mashes the contents of a database that has both repeating and non-repeating instruments into a single table.</p>
+<p>This data structure is sometimes called the <a href="https://en.wikipedia.org/wiki/Block_matrix" class="external-link">block matrix</a>. It’s what happens when REDCap mashes the contents of a database that has both repeating and non-repeating instruments into a single table.</p>
 <p>While it may seem a good idea to have everything in one data frame, there are significant downsides, including:</p>
 <ul>
 <li><p>It’s unwieldy! Although there are only 734 superheroes in the data set, there are 6,700 rows. Every transformation first requires whittling down a huge data set. This increases cognitive load.</p></li>
@@ -242,7 +242,7 @@
 <span><span class="co">#&gt; <span style="color: #949494;">#   ²​hair_color, ³​publisher, ⁴​skin_color</span></span></span></code></pre></div>
 <p>Now look at the <code>super_hero_powers</code> tibble, which contains data from a <strong>repeating</strong> instrument, and note the following:</p>
 <ul>
-<li><p>Again, this is not a sparse table, making it easy to understand its data content, and the name is descriptive.</p></li>
+<li><p>Again, this is not a block matrix/table, making it easy to understand its data content, and the name is descriptive.</p></li>
 <li><p>Each row has the same observational unit - in this case, <strong>superpower per superhero</strong>, identified by <code>record_id</code> and <code>redcap_repeat_instance</code>. This is because <code>super_hero_powers</code> comes from a repeated instrument.</p></li>
 </ul>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
