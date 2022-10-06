@@ -1,0 +1,15 @@
+record_id,redcap_event_name,redcap_repeat_instrument,redcap_repeat_instance,nonrepeat_1,nonrepeat_2,nonrepeated_complete,nonrepeat_3,nonrepeat_4,nonrepeated2_complete,repeat_1,repeat_2,repeated_complete
+1,event_1_arm_1,,,1,2,0,3,4,0,,,
+1,event_2_arm_1,,,1,2,0,,,,,,
+1,event_1_arm_1,repeated,1,,,,,,,1,2,0
+1,event_1_arm_1,repeated,2,,,,,,,3,4,0
+1,event_1_arm_1,repeated,3,,,,,,,5,6,0
+1,event_2_arm_1,repeated,1,,,,,,,A,B,0
+1,event_2_arm_1,repeated,2,,,,,,,C,D,0
+2,event_1_arm_1,,,A,B,0,5,6,0,,,
+2,event_2_arm_1,,,5,6,0,,,,,,
+3,event_1_arm_1,,,,,0,,,0,,,
+3,event_2_arm_1,,,,,0,,,,,,
+3,event_1_arm_1,repeated,1,,,,,,,C,D,0
+3,event_2_arm_1,repeated,1,,,,,,,E,F,0
+3,event_2_arm_1,repeated,2,,,,,,,G,H,0

@@ -28,6 +28,7 @@ Imports:
     tidyselect
 Suggests: 
     covr,
+    httptest,
     knitr,
     rmarkdown,
     testthat (>= 3.0.0)
