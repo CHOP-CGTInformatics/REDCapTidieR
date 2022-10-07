@@ -1,5 +1,3 @@
-skip_on_cran()
-
 # Load initial variables
 `%notin%` <- Negate(`%in%`)
 
