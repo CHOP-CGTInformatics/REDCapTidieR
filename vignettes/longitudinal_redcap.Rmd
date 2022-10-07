@@ -8,19 +8,32 @@ vignette: >
 ---
 
 ```{r, include = FALSE}
-NOT_CRAN <- identical(tolower(Sys.getenv("NOT_CRAN")), "true")
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>",
-  purl = NOT_CRAN,
-  eval = NOT_CRAN
+  comment = "#>"
 )
 
+library(httptest)
+start_vignette("longitudinal_redcap")
+
 library(dplyr)
+# If creating mocks make sure REDCapTidieR is attached prior to any calls that
+# need to be mocked. Otherwise our custom redactor won't be found when knitting
+# TLDR: Don't move this library call
 library(REDCapTidieR)
 
-token <- Sys.getenv("REDCAPTIDIER_LONGITUDINAL_API")
-redcap_uri <- Sys.getenv("REDCAP_URI")
+# If we're creating mocks we need to use the real tokens. Otherwise, use fakes.
+
+# Check whether we're mocking
+mocking <- !dir.exists("longitudinal_redcap")
+
+if (mocking) {
+  token <- Sys.getenv("REDCAPTIDIER_LONGITUDINAL_API")
+  redcap_uri <- Sys.getenv("REDCAP_URI")
+} else {
+  token <- "123456789ABCDEF123456789ABCDEF02"
+  redcap_uri <- "https://my.institution.edu/redcap/api/"
+}
 ```
 
 ## Background
@@ -45,6 +58,11 @@ The granularity of each table (i.e. what a single row represents) depends on the
 The `read_redcap_tidy` function returns a tibble in which each row represents a REDCap instrument. The first column contains the instrument name. The second column is a **list column** containing a tibble for each instrument. The third column indicates the repeat/nonrepeat structure of the instrument.
 
 Let's use a sample longitudinal REDCap database containing repeat instruments, longitudinal events, and multiple event arms:
+
+```r
+token <- "123456789ABCDEF123456789ABCDEF02"
+redcap_uri <- "https://my.institution.edu/redcap/api/"
+```
 
 ```{r, include = TRUE}
 library(REDCapTidieR)

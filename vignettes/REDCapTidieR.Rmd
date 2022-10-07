@@ -10,21 +10,37 @@ vignette: >
 ---
 
 ```{r, include = FALSE}
-NOT_CRAN <- identical(tolower(Sys.getenv("NOT_CRAN")), "true")
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>",
-  purl = NOT_CRAN,
-  eval = NOT_CRAN
+  comment = "#>"
 )
 ```
 
 ```{r, include=FALSE}
+library(httptest)
+start_vignette("REDCapTidieR")
+
 library(dplyr)
+# If creating mocks make sure REDCapTidieR is attached prior to any calls that
+# need to be mocked. Otherwise our custom redactor won't be found when knitting
+# TLDR: Don't move this library call
 library(REDCapTidieR)
 
-token <- Sys.getenv("SUPERHEROES_REDCAP_API")
-redcap_uri <- Sys.getenv("REDCAP_URI")
+# If we're creating mocks we need to use the real tokens. Otherwise, use fakes.
+
+# Check whether we're mocking
+# start_vignette() starts mocking if the mock directory doesn't exist
+# Checking this way is slightly hacky but httptest doesn't seem to expose
+# anything that would allow an "official" check
+mocking <- !dir.exists("REDCapTidieR")
+
+if (mocking) {
+  token <- Sys.getenv("SUPERHEROES_REDCAP_API")
+  redcap_uri <- Sys.getenv("REDCAP_URI")
+} else {
+  token <- "123456789ABCDEF123456789ABCDEF04"
+  redcap_uri <- "https://my.institution.edu/redcap/api/"
+}
 ```
 
 ## Introduction to REDCap and `REDCapR`
@@ -52,6 +68,10 @@ Here is a screenshot of the REDCap Status Dashboard of this database. Note that 
 
 Great! Now let's import the superheroes data into R. We can use `REDCapR::redcap_read_oneshot()` which returns a list with and element named `data` that contains all of the data as a data frame. We turned this data frame into a tibble for better readability:
 
+```r
+token <- "123456789ABCDEF123456789ABCDEF04"
+redcap_uri <- "https://my.institution.edu/redcap/api/"
+```
 ```{r, include = TRUE}
 superheroes <- REDCapR::redcap_read_oneshot(redcap_uri, token)$data
 
@@ -178,3 +198,7 @@ In summary, here are the rules by which `REDCapTidieR` constructs tibbles:
 -   After the identifying columns, data columns appear in the same order as in the REDCap instrument. Columns derived from categorical field types (`yesno`, `truefalse`, `dropdown`, `radiobutton`, `checkbox`) are populated with data representing the **label**. This is different than REDCapR's default behavior which will show the **raw value**.
 
 -   The final field is always `form_status_complete`, which is an column to indicate whether the instrument was marked complete.
+
+```{r, include=FALSE}
+end_vignette()
+```
