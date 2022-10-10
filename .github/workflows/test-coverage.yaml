@@ -29,6 +29,11 @@ jobs:
       R_KEEP_PKG_SOURCE: yes
 
     steps:
+      - name: Update Ubuntu, Install cURL Headers, add Libraries
+        run: |
+         sudo apt-get update
+         sudo apt-get install libcurl4-openssl-dev libxml2-dev
+
       - uses: actions/checkout@v2
 
       - uses: r-lib/actions/setup-r@v2
