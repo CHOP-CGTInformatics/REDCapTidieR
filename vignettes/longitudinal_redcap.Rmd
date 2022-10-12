@@ -8,19 +8,22 @@ vignette: >
 ---
 
 ```{r, include = FALSE}
-NOT_CRAN <- identical(tolower(Sys.getenv("NOT_CRAN")), "true")
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>",
-  purl = NOT_CRAN,
-  eval = NOT_CRAN
+  comment = "#>"
 )
 
-library(dplyr)
+library(httptest)
 library(REDCapTidieR)
 
-token <- Sys.getenv("REDCAPTIDIER_LONGITUDINAL_API")
-redcap_uri <- Sys.getenv("REDCAP_URI")
+start_vignette("longitudinal_redcap")
+
+# creds object is created in start-vignette.R which gets sourced when
+# start_vignette runs
+redcap_uri <- creds["REDCAP_URI"]
+token <- creds["REDCAPTIDIER_LONGITUDINAL_API"]
+
+library(dplyr)
 ```
 
 ## Background
@@ -45,6 +48,11 @@ The granularity of each table (i.e. what a single row represents) depends on the
 The `read_redcap_tidy` function returns a tibble in which each row represents a REDCap instrument. The first column contains the instrument name. The second column is a **list column** containing a tibble for each instrument. The third column indicates the repeat/nonrepeat structure of the instrument.
 
 Let's use a sample longitudinal REDCap database containing repeat instruments, longitudinal events, and multiple event arms:
+
+```r
+token <- "123456789ABCDEF123456789ABCDEF02"
+redcap_uri <- "https://my.institution.edu/redcap/api/"
+```
 
 ```{r, include = TRUE}
 library(REDCapTidieR)
