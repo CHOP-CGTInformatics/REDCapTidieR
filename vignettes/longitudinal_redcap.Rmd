@@ -14,26 +14,16 @@ knitr::opts_chunk$set(
 )
 
 library(httptest)
-start_vignette("longitudinal_redcap")
-
-library(dplyr)
-# If creating mocks make sure REDCapTidieR is attached prior to any calls that
-# need to be mocked. Otherwise our custom redactor won't be found when knitting
-# TLDR: Don't move this library call
 library(REDCapTidieR)
 
-# If we're creating mocks we need to use the real tokens. Otherwise, use fakes.
+start_vignette("longitudinal_redcap")
 
-# Check whether we're mocking
-mocking <- !dir.exists("longitudinal_redcap")
+# creds object is created in start-vignette.R which gets sourced when
+# start_vignette runs
+redcap_uri <- creds["REDCAP_URI"]
+token <- creds["REDCAPTIDIER_LONGITUDINAL_API"]
 
-if (mocking) {
-  token <- Sys.getenv("REDCAPTIDIER_LONGITUDINAL_API")
-  redcap_uri <- Sys.getenv("REDCAP_URI")
-} else {
-  token <- "123456789ABCDEF123456789ABCDEF02"
-  redcap_uri <- "https://my.institution.edu/redcap/api/"
-}
+library(dplyr)
 ```
 
 ## Background
