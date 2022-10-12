@@ -108,8 +108,11 @@
 <p><img src="record_status_dash.png"></p>
 <p>Great! Now let’s import the superheroes data into R. We can use <code><a href="https://ouhscbbmc.github.io/REDCapR/reference/redcap_read_oneshot.html" class="external-link">REDCapR::redcap_read_oneshot()</a></code> which returns a list with and element named <code>data</code> that contains all of the data as a data frame. We turned this data frame into a tibble for better readability:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">token</span> <span class="op">&lt;-</span> <span class="st">"123456789ABCDEF123456789ABCDEF04"</span></span>
+<span><span class="va">redcap_uri</span> <span class="op">&lt;-</span> <span class="st">"https://my.institution.edu/redcap/api/"</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">superheroes</span> <span class="op">&lt;-</span> <span class="fu">REDCapR</span><span class="fu">::</span><span class="fu"><a href="https://ouhscbbmc.github.io/REDCapR/reference/redcap_read_oneshot.html" class="external-link">redcap_read_oneshot</a></span><span class="op">(</span><span class="va">redcap_uri</span>, <span class="va">token</span><span class="op">)</span><span class="op">$</span><span class="va">data</span></span>
-<span><span class="co">#&gt; 6,700 records and 16 columns were read from REDCap in 1.8 seconds.  The http status code was 200.</span></span>
+<span><span class="co">#&gt; 6,700 records and 16 columns were read from REDCap in 0.0 seconds.  The http status code was 200.</span></span>
 <span></span>
 <span><span class="va">superheroes</span> <span class="op">%&gt;%</span> <span class="fu">tibble</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6,700 × 16</span></span></span>
@@ -143,7 +146,7 @@
 </h2>
 <p>The main function of the {REDCapTidieR} package is the <code><a href="../reference/read_redcap_tidy.html">read_redcap_tidy()</a></code> function. It has a similar API to <code><a href="https://ouhscbbmc.github.io/REDCapR/reference/redcap_read_oneshot.html" class="external-link">REDCapR::redcap_read_oneshot()</a></code>, requiring a REDCap database URI and an API token.</p>
 <p>Let’s try it out and observe the output:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/CHOP-CGTDataOps/REDCapTidieR" class="external-link">REDCapTidieR</a></span><span class="op">)</span></span>
 <span><span class="va">superheroes_tidy</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_redcap_tidy.html">read_redcap_tidy</a></span><span class="op">(</span><span class="va">redcap_uri</span>, <span class="va">token</span><span class="op">)</span></span>
 <span></span>
@@ -162,13 +165,13 @@
 <p>There’s a good chance that if we pull data from a REDCap database that we’d like that data to be represented as individual tibbles in the global environment. While it’s possible to do this manually (see below), this can become tedious if the REDCap project has many instruments. We wrote the <code><a href="../reference/bind_tables.html">bind_tables()</a></code> function to automate this.</p>
 <p><code><a href="../reference/bind_tables.html">bind_tables()</a></code> takes the output of <code><a href="../reference/read_redcap_tidy.html">read_redcap_tidy()</a></code>, extracts the individual tibbles and binds them to an environment. By default, this is the global environment, but you can also supply your own environment object which will be modified using reference semantics.</p>
 <p>Let’s take a look at the data frames in the global environment before and after calling <code><a href="../reference/bind_tables.html">bind_tables()</a></code>:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/ls_str.html" class="external-link">ls.str</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/funprog.html" class="external-link">Filter</a></span><span class="op">(</span><span class="va">is.data.frame</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">as.list</a></span><span class="op">(</span><span class="va">.GlobalEnv</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; superheroes_tidy : tibble [2 × 3] (S3: tbl_df/tbl/data.frame)</span></span></code></pre></div>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">superheroes_tidy</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu"><a href="../reference/bind_tables.html">bind_tables</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/ls_str.html" class="external-link">ls.str</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/funprog.html" class="external-link">Filter</a></span><span class="op">(</span><span class="va">is.data.frame</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">as.list</a></span><span class="op">(</span><span class="va">.GlobalEnv</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; heroes_information : tibble [734 × 12] (S3: tbl_df/tbl/data.frame)</span></span>
 <span><span class="co">#&gt; super_hero_powers : tibble [5,966 × 4] (S3: tbl_df/tbl/data.frame)</span></span>
@@ -176,7 +179,7 @@
 <p>Note that there are now two additional tibbles, <code>heroes_information</code> and <code>super_hero_powers</code>, in the global environment!</p>
 <p>If you don’t like the idea of tibbles magically appearing in your environment or if you’d like a more pure approach to extracting tibbles, you can use the <code><a href="../reference/extract_table.html">extract_table()</a></code> or <code><a href="../reference/extract_tables.html">extract_tables()</a></code> functions.</p>
 <p>Use <code><a href="../reference/extract_table.html">extract_table()</a></code> to extract a single tibble from the supertibble:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">superheroes_tidy</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu"><a href="../reference/extract_table.html">extract_table</a></span><span class="op">(</span><span class="st">"heroes_information"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 734 × 12</span></span></span>
@@ -196,7 +199,7 @@
 <span><span class="co">#&gt; <span style="color: #949494;">#   form_status_complete &lt;fct&gt;, and abbreviated variable names ¹​eye_color,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   ²​hair_color, ³​publisher, ⁴​skin_color</span></span></span></code></pre></div>
 <p>Use <code><a href="../reference/extract_tables.html">extract_tables()</a></code> to create a named list of tibbles from a supertibble. The default is to extract all tibbles:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">superheroes_list_of_tibbles</span> <span class="op">&lt;-</span> <span class="va">superheroes_tidy</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu"><a href="../reference/extract_tables.html">extract_tables</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
@@ -205,7 +208,7 @@
 <span><span class="co">#&gt;  $ super_hero_powers : tibble [5,966 × 4] (S3: tbl_df/tbl/data.frame)</span></span>
 <span><span class="co">#&gt;  $ heroes_information: tibble [734 × 12] (S3: tbl_df/tbl/data.frame)</span></span></code></pre></div>
 <p>A neat feature of these extraction functions is that they support <code>tidy-select</code> semantics and selectors for picking tables:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">superheroes_list_of_tibbles_ending_with_powers</span> <span class="op">&lt;-</span> <span class="va">superheroes_tidy</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu"><a href="../reference/extract_tables.html">extract_tables</a></span><span class="op">(</span><span class="fu">ends_with</span><span class="op">(</span><span class="st">"powers"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
@@ -222,7 +225,7 @@
 <li><p>The tibble’s name <code>heroes_information</code> is descriptive - it tells you what’s in the tibble. The tibble’s name is the same as the instrument name in REDCap.</p></li>
 <li><p>Each row has the same observational unit - one <strong>superhero</strong>, identified by its <code>record_id</code>.</p></li>
 </ul>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">heroes_information</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 734 × 12</span></span></span>
 <span><span class="co">#&gt;    record_id name     gender eye_c…¹ race  hair_…² height weight publi…³ skin_…⁴</span></span>
@@ -245,7 +248,7 @@
 <li><p>Again, this is not a block matrix/table, making it easy to understand its data content, and the name is descriptive.</p></li>
 <li><p>Each row has the same observational unit - in this case, <strong>superpower per superhero</strong>, identified by <code>record_id</code> and <code>redcap_repeat_instance</code>. This is because <code>super_hero_powers</code> comes from a repeated instrument.</p></li>
 </ul>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">super_hero_powers</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 5,966 × 4</span></span></span>
 <span><span class="co">#&gt;    record_id redcap_repeat_instance power               form_status_complete</span></span>
