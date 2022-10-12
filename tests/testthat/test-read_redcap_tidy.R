@@ -1,11 +1,10 @@
 # Load initial variables
 `%notin%` <- Negate(`%in%`)
 
-# Fake tokens but must be length 32 hexadecimal to pass REDCapR's checks
-classic_token <- "123456789ABCDEF123456789ABCDEF01"
-longitudinal_token <- "123456789ABCDEF123456789ABCDEF02"
-longitudinal_noarms_token <- "123456789ABCDEF123456789ABCDEF03"
-redcap_uri <- "https://my.institution.edu/redcap/api/"
+classic_token <- get_fake_credentials("REDCAPTIDIER_CLASSIC_API")
+longitudinal_token <- get_fake_credentials("REDCAPTIDIER_LONGITUDINAL_API")
+longitudinal_noarms_token <- get_fake_credentials("REDCAPTIDIER_LONGITUDINAL_NOARMS_API")
+redcap_uri <- get_fake_credentials("REDCAP_URI")
 
 # Tell httptest where to looks for mocks
 httptest::.mockPaths(test_path("fixtures"))
