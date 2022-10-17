@@ -19,7 +19,7 @@ test_that("check_user_rights works", {
 })
 
 test_that("check_repeat_and_nonrepeat works", {
-  test_data2 <- tribble(
+  test_data <- tribble(
     ~record_id,  ~redcap_event_name, ~redcap_repeat_instrument, ~redcap_repeat_instance, ~combination_variable,
     1,            "event_1",         NA,                        NA,                      "A",
     2,            "event_2",         "combination",             1,                       "B",
