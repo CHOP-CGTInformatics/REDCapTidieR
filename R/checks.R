@@ -47,7 +47,8 @@ check_user_rights <- function(
 #'
 #' @description
 #' Check for potential instruments that are given both repeating and
-#' nonrepeating structure. This should never be used with \code{REDCapTidieR}.
+#' nonrepeating structure. \code{REDCapTidieR} does not support database
+#' structures built this way.
 #'
 #' @return
 #' A helpful error message alerting the user to existence of a form containing
@@ -57,50 +58,62 @@ check_user_rights <- function(
 #' \code{REDCapR::redcap_read_oneshot()$data}
 #'
 #' @importFrom rlang .data
-#' @importFrom dplyr slice pull %>% select
-#' @importFrom tidyr drop_na
-#' @importFrom tidyselect everything
+#' @importFrom dplyr %>% select mutate case_when
+#' @importFrom purrr map2
+#' @importFrom tidyselect any_of
 #'
 #' @keywords internal
 
 
 check_repeat_and_nonrepeat <- function(db_data) {
 
-  # Loop through dataframe columns then rows to determine if a variable has data
-  # and appears alongside redcap_repeat_instance when it is both NA and not NA
+  # This check function looks for potential repeat/nonrepeat behavior using the
+  # steps below:
+  # 1) Define standard columns that don't need checking and remove those from
+  #    analysis (i.e. "safe columns").
+  # 2) Create a dummy column for each remaining column and use case_when to
+  #    to assign whether the column demonstrates repeating, nonrepeating, or
+  #    indeterminant behavior per row. Indetemrinant would be the case for
+  #    data not yet filled out.
+  # 3) Use a mapping function to determine if any dummy columns contain both
+  #    "repeating" AND "nonrepeating" declarations, if so error out.
 
-  #start at 5 to skip record id, redcap event, instrument, and instance vars
-  for (i in 5:length(names(db_data))) {
+  # Step (1)
+  safe_cols <- c(names(db_data)[1], "redcap_event_name",
+                 "redcap_repeat_instrument", "redcap_repeat_instance")
 
-    nonrepeating <- NA
-    repeating <- NA
+  # Step (2)
+  check_data <- db_data %>%
+    mutate(
+      across(.cols = -any_of(safe_cols),
+             .names = "{.col}_repeatingcheck",
+             .fns = ~case_when(
+               !is.na(.x) & !is.na(redcap_repeat_instrument) ~ "repeating",
+               !is.na(.x) & is.na(redcap_repeat_instrument) ~ "nonrepeating",
+               TRUE ~ NA_character_
+             ))
+    )
 
-    for (j in seq_len(nrow(db_data))){
 
-      # Check if variable has data and redcap_repeat_instance is NA
-      if (!is.na(db_data[j, i]) && is.na(db_data$redcap_repeat_instance[j])) {
-        nonrepeating <- TRUE
-      }
+  # Step (3)
+  repeat_nonrepeat_error <- function(check_data, names){
 
-      # Check if variable and redcap_repeat_instance both have NA
-      if (!is.na(db_data[j, i]) && !is.na(db_data$redcap_repeat_instance[j])) {
-        repeating <- TRUE
-      }
-    }
-
-    # If variable is determined to be both repeating and nonrepeating, error out
-    if (isTRUE(nonrepeating) && isTRUE(repeating)) {
+    if ("repeating" %in% check_data &
+        "nonrepeating" %in% check_data){
       stop(
-        paste0("Instrument detected belonging to an instrument that is both repeating and nonrepeating: ",
-               db_data %>%
-                 select(.data$redcap_repeat_instrument, names(db_data)[i]) %>%
-                 drop_na(everything()) %>%
-                 slice(1) %>%
-                 pull(.data$redcap_repeat_instrument)
+        paste0("Instrument detected that has both repeated and nonrepeated
+               instances defined in the project: ",
+               gsub(pattern = "_repeatingcheck", replacement = "", x = names)
         )
       )
     }
   }
+
+  purrr::map2(.x = check_data %>% select(ends_with("_repeatingcheck")),
+              .y = check_data %>% select(ends_with("_repeatingcheck")) %>%
+                names(),
+              .f = ~repeat_nonrepeat_error(.x, .y)
+  )
 
 }
 

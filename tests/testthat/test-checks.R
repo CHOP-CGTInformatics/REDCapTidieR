@@ -19,14 +19,22 @@ test_that("check_user_rights works", {
 })
 
 test_that("check_repeat_and_nonrepeat works", {
-  test_data <- tibble::tribble(
+  test_data_longitudinal <- tibble::tribble(
     ~record_id,  ~redcap_event_name, ~redcap_repeat_instrument, ~redcap_repeat_instance, ~combination_variable,
     1,            "event_1",         NA,                        NA,                      "A",
     2,            "event_2",         "combination",             1,                       "B",
     3,            "event_3",         "combination",             2,                       "C"
   )
 
-  expect_error(check_repeat_and_nonrepeat(db_data = test_data))
+  test_data_not_longitudinal <- tibble::tribble(
+    ~new_record_id,  ~redcap_repeat_instrument, ~redcap_repeat_instance, ~combination_variable,
+    1,                NA,                        NA,                      "A",
+    2,                "combination",             1,                       "B",
+    3,                "combination",             2,                       "C"
+  )
+
+  expect_error(check_repeat_and_nonrepeat(db_data = test_data_longitudinal))
+  expect_error(check_repeat_and_nonrepeat(db_data = test_data_not_longitudinal))
 })
 
 test_that("check_repeat_and_nonrepeat works", {

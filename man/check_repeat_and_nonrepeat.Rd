@@ -16,6 +16,7 @@ both repeating and non-repeating structure.
 }
 \description{
 Check for potential instruments that are given both repeating and
-nonrepeating structure. This should never be used with \code{REDCapTidieR}.
+nonrepeating structure. \code{REDCapTidieR} does not support database
+structures built this way.
 }
 \keyword{internal}
