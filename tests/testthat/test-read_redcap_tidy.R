@@ -65,18 +65,39 @@ test_that("read_redcap_tidy works for a classic database with a repeating instru
 
 test_that("supplying forms is equivalent to post-hoc filtering for a classic database", {
 
+  # Explicitly testing form that doesn't contain identifiers
   httptest::with_mock_api({
     filtered_by_api <-
       read_redcap_tidy(redcap_uri,
                        classic_token,
-                       forms = c("nonrepeated", "repeated")) %>%
+                       forms = "repeated") %>%
       suppressWarnings()
 
     filtered_locally <-
       read_redcap_tidy(redcap_uri,
                        classic_token) %>%
       suppressWarnings() %>%
-      filter(redcap_form_name %in% c("nonrepeated", "repeated"))
+      filter(redcap_form_name == "repeated")
+  })
+
+  expect_equal(
+    filtered_by_api, filtered_locally
+  )
+})
+
+test_that("supplying forms is equivalent to post-hoc filtering for a longitudinal database", {
+
+  # Explicitly testing form that doesn't contain identifiers
+  httptest::with_mock_api({
+    filtered_by_api <-
+      read_redcap_tidy(redcap_uri,
+                       longitudinal_token,
+                       forms = "repeated")
+
+    filtered_locally <-
+      read_redcap_tidy(redcap_uri,
+                       longitudinal_token) %>%
+      filter(redcap_form_name == "repeated")
   })
 
   expect_equal(

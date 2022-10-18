@@ -20,8 +20,8 @@
 #' Returns a \code{tibble} in which each row represents a REDCap instrument.
 #'
 #' @importFrom REDCapR redcap_read_oneshot redcap_metadata_read
-#' @importFrom dplyr filter bind_rows %>%
-#' @importFrom tibble tribble
+#' @importFrom dplyr filter bind_rows %>% select
+#' @importFrom tidyselect any_of
 #' @importFrom rlang .data
 #'
 #' @param redcap_uri The
@@ -57,24 +57,44 @@ read_redcap_tidy <- function(redcap_uri,
                              forms = NULL,
                              suppress_messages = TRUE) {
 
-  # Load REDCap Metadata output
+  # Load REDCap Metadata ----
   db_metadata <- redcap_metadata_read(redcap_uri = redcap_uri,
                                       token = token,
                                       verbose = FALSE)$data %>%
     filter(.data$field_type != "descriptive")
 
+  # The user may not have requested form with identifiers. We need to make sure
+  # identifiers are kept regardless. This requires adding the form with
+  # identifiers to our redcap_read_oneshot call but filtering out extra,
+  # non-identifier fields in that form
+
+  # Set default forms for API call
+  forms_for_api_call <- forms
+  # Capture fields we need to keep in the output
+  fields_to_keep <- get_output_fields(db_metadata, forms)
+
+  # Filter metadata if forms parameter was used
   if (!is.null(forms)) {
     check_forms_exist(db_metadata, forms)
+
+    # Update forms for API call
+    id_form <- db_metadata$form_name[[1]]
+
+    forms_for_api_call <- unique(c(id_form, forms))
+
+    # Keep only user requested forms in the metadata
     db_metadata <- filter(db_metadata, .data$form_name %in% forms)
   }
 
-  # Load Datasets ----
-  # Load REDCap Dataset output
+  # Load REDCap Dataset output ----
+
   db_data <- redcap_read_oneshot(redcap_uri = redcap_uri,
                                  token = token,
-                                 forms = forms,
-                                 verbose = FALSE)$data
+                                 forms = forms_for_api_call,
+                                 verbose = FALSE)$data %>%
+    select(any_of(fields_to_keep))
 
+  # Check that results were returned
   check_redcap_populated(db_data)
 
   # Apply database output changes ----
@@ -123,4 +143,42 @@ read_redcap_tidy <- function(redcap_uri,
   }
 
   out
+}
+
+#' @title
+#' Determine the maximal set of fields to keep in the result of read_redcap_tidy
+#'
+#' @details
+#' This function applies rules to determine which fields are kept in the results
+#' of calling \code{REDCapR::redcap_read_oneshot}.
+#'
+#' @param db_metadata metadata tibble created by \code{REDCapR::redcap_metadata_read}
+#' @param forms \code{forms} argument passed to \code{read_redcap_tidy}
+#'
+#' @return
+#' A character vector fo field names that can be used to filter the results of
+#' \code{REDCapR::redcap_read_oneshot}
+#'
+#' @keywords internal
+get_output_fields <- function(db_metadata, forms) {
+  # If forms was NULL we want all forms in the metadata
+  if (is.null(forms)) {
+    forms <- unique(db_metadata$form_name)
+  }
+
+  # Assume the first form in the metadata contains IDs
+  # REDCap enforces this constraints
+  record_id_field <- db_metadata$field_name[[1]]
+
+  id_fields <- c(record_id_field, "redcap_event_name",
+                 "redcap_repeat_instrument", "redcap_repeat_instance")
+
+  # 1. Fields in requested forms
+  res <- with(db_metadata, field_name[form_name %in% forms])
+  # 2. ID fields
+  res <- unique(c(id_fields, res))
+  # 3. Completion fields in requested forms (these aren't in metadata)
+  res <- c(res, paste0(forms, "_complete"))
+
+  res
 }

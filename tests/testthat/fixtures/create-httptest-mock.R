@@ -12,7 +12,9 @@ start_capturing(path = testthat::test_path("fixtures"))
 
 read_redcap_tidy(redcap_uri, classic_token)
 
-read_redcap_tidy(redcap_uri, classic_token, forms = c("nonrepeated", "repeated"))
+read_redcap_tidy(redcap_uri, classic_token, forms = "repeated")
+
+read_redcap_tidy(redcap_uri, longitudinal_token, forms = "repeated")
 
 read_redcap_tidy(redcap_uri, longitudinal_noarms_token)
 

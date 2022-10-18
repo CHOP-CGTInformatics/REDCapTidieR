@@ -1,12 +1,12 @@
 # Load Sample Databases ----
 
 test_that("check_user_rights works", {
-  test_data <- tribble(
+  test_data <- tibble::tribble(
     ~field_1,  ~field_2,
     "1",       "2"
   )
 
-  test_metadata <- tribble(
+  test_metadata <- tibble::tribble(
     ~field_name_updated,  ~form_name,
     "field_1",           "form_1",
     "field_2",           "form_2",
@@ -19,7 +19,7 @@ test_that("check_user_rights works", {
 })
 
 test_that("check_repeat_and_nonrepeat works", {
-  test_data <- tribble(
+  test_data <- tibble::tribble(
     ~record_id,  ~redcap_event_name, ~redcap_repeat_instrument, ~redcap_repeat_instance, ~combination_variable,
     1,            "event_1",         NA,                        NA,                      "A",
     2,            "event_2",         "combination",             1,                       "B",
@@ -30,7 +30,7 @@ test_that("check_repeat_and_nonrepeat works", {
 })
 
 test_that("check_repeat_and_nonrepeat works", {
-  test_data <- tribble()
+  test_data <- tibble::tribble()
 
   expect_error(check_redcap_populated(db_data = test_data))
 })
