@@ -60,6 +60,7 @@ check_user_rights <- function(
 #' @importFrom rlang .data
 #' @importFrom dplyr %>% select mutate case_when
 #' @importFrom purrr map2
+#' @importFrom tidyselect any_of
 #'
 #' @keywords internal
 
@@ -78,12 +79,13 @@ check_repeat_and_nonrepeat <- function(db_data) {
   #    "repeating" AND "nonrepeating" declarations, if so error out.
 
   # Step (1)
-  safe_cols <- names(db_data)[1:4]
+  safe_cols <- c(names(db_data)[1], "redcap_event_name",
+                 "redcap_repeat_instrument", "redcap_repeat_instance")
 
   # Step (2)
   check_data <- db_data %>%
     mutate(
-      across(.cols = -all_of(safe_cols),
+      across(.cols = -any_of(safe_cols),
              .names = "{.col}_repeatingcheck",
              .fns = ~case_when(
                !is.na(.x) & !is.na(redcap_repeat_instrument) ~ "repeating",
@@ -99,8 +101,8 @@ check_repeat_and_nonrepeat <- function(db_data) {
     if ("repeating" %in% check_data &
         "nonrepeating" %in% check_data){
       stop(
-        paste0("Instrument detected belonging to an instrument that is both
-               repeating and nonrepeating: ",
+        paste0("Instrument detected that has both repeated and nonrepeated
+               instances defined in the project: ",
                gsub(pattern = "_repeatingcheck", replacement = "", x = names)
         )
       )
@@ -108,7 +110,8 @@ check_repeat_and_nonrepeat <- function(db_data) {
   }
 
   purrr::map2(.x = check_data %>% select(ends_with("_repeatingcheck")),
-              .y = check_data %>% select(ends_with("_repeatingcheck")) %>% names(),
+              .y = check_data %>% select(ends_with("_repeatingcheck")) %>%
+                names(),
               .f = ~repeat_nonrepeat_error(.x, .y)
   )
 
