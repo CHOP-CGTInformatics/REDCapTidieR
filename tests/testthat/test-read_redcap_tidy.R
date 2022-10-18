@@ -89,15 +89,15 @@ test_that("supplying forms is equivalent to post-hoc filtering for a longitudina
 
   # Explicitly testing form that doesn't contain identifiers
   httptest::with_mock_api({
-  filtered_by_api <-
-    read_redcap_tidy(redcap_uri,
-                     longitudinal_token,
-                     forms = "repeated")
+    filtered_by_api <-
+      read_redcap_tidy(redcap_uri,
+                       longitudinal_token,
+                       forms = "repeated")
 
-  filtered_locally <-
-    read_redcap_tidy(redcap_uri,
-                     longitudinal_token) %>%
-    filter(redcap_form_name == "repeated")
+    filtered_locally <-
+      read_redcap_tidy(redcap_uri,
+                       longitudinal_token) %>%
+      filter(redcap_form_name == "repeated")
   })
 
   expect_equal(
