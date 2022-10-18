@@ -3,14 +3,14 @@ db_data_classic <- readRDS(system.file("testdata/db_data_classic.RDS", package =
 db_metadata_classic <- readRDS(system.file("testdata/db_metadata_classic.RDS", package = "REDCapTidieR"))
 
 test_that("update_data_field_names works", {
-  test_data <- tribble(
+  test_data <- tibble::tribble(
     ~`checkbox____99`,   ~`checkbox____98`,
     0,                    1,
     1,                    0,
     1,                    0
   )
 
-  test_meta <- tribble(
+  test_meta <- tibble::tribble(
     ~field_name_updated,
     "checkbox___-99",
     "checkbox___-98",
@@ -57,7 +57,7 @@ test_that("multi_choice_to_labels works", {
 test_that("parse_labels works", {
 
   valid_string <- "choice_1, one | choice_2, two | choice_3, three"
-  valid_output <- tribble(
+  valid_output <- tibble::tribble(
     ~raw,       ~label,
     "choice_1", "one",
     "choice_2", "two",
