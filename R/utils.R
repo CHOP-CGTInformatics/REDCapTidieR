@@ -266,7 +266,7 @@ update_data_col_names <- function(db_data, db_metadata) {
   )
 
   changed_names <- db_metadata %>%
-    select(.data$field_name_updated, .data$checkbox_conversion) %>%
+    select("field_name_updated", "checkbox_conversion") %>%
     filter(.data$field_name_updated != .data$checkbox_conversion)
 
   for (i in seq_len(nrow(changed_names))) {
@@ -373,10 +373,10 @@ multi_choice_to_labels <- function(db_data, db_metadata) {
         mutate(
           across(.cols = !!field_name, .fns = as.character)
         ) %>%
-        left_join(parse_labels_output %>% rename(!!field_name := .data$raw),
+        left_join(parse_labels_output %>% rename(!!field_name := "raw"),
                   by = field_name) %>%
         mutate(!!field_name := .data$label) %>% # Again, use rlang var injection
-        select(-.data$label)
+        select(-"label")
 
       db_data <- db_data %>%
         mutate(
