@@ -181,6 +181,7 @@ read_redcap_tidy <- function(redcap_uri,
 #' results of \code{REDCapR::redcap_read_oneshot}
 #'
 #' @importFrom dplyr filter pull %>%
+#' @importFrom rlang .data
 #'
 #' @keywords internal
 get_fields_to_drop <- function(db_metadata, form) {
@@ -189,10 +190,10 @@ get_fields_to_drop <- function(db_metadata, form) {
   record_id_field <- db_metadata$field_name[[1]]
 
   res <- db_metadata %>%
-    filter(form_name == form) %>%
+    filter(.data$form_name == form) %>%
     # Add checkbox field names to metadata
     update_field_names() %>%
-    pull(field_name_updated)
+    pull(.data$field_name_updated)
 
   # Remove identifier since we want to keep it
   res <- setdiff(res, record_id_field)
