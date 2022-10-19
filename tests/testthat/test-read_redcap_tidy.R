@@ -20,7 +20,8 @@ test_that("read_redcap_tidy works for a classic database with a nonrepeating ins
   httptest::with_mock_api({
     out <-
       read_redcap_tidy(redcap_uri, classic_token) %>%
-      suppressWarnings() %>% # necessary for CRAN submission
+      # suppress expected warning
+      suppressWarnings(classes = "field_missing_categories") %>%
       filter(redcap_form_name == "nonrepeated") %>%
       select(redcap_data) %>%
       pluck(1, 1)
@@ -47,7 +48,8 @@ test_that("read_redcap_tidy works for a classic database with a repeating instru
   httptest::with_mock_api({
     out <-
       read_redcap_tidy(redcap_uri, classic_token) %>%
-      suppressWarnings() %>% # necessary for CRAN submission
+      # suppress expected warning
+      suppressWarnings(classes = "field_missing_categories") %>%
       filter(redcap_form_name == "repeated") %>%
       select(redcap_data) %>%
       pluck(1, 1)
@@ -70,13 +72,13 @@ test_that("supplying forms is equivalent to post-hoc filtering for a classic dat
     filtered_by_api <-
       read_redcap_tidy(redcap_uri,
                        classic_token,
-                       forms = "repeated") %>%
-      suppressWarnings()
+                       forms = "repeated")
 
     filtered_locally <-
       read_redcap_tidy(redcap_uri,
                        classic_token) %>%
-      suppressWarnings() %>%
+      # suppress expected warning
+      suppressWarnings(classes = "field_missing_categories") %>%
       filter(redcap_form_name == "repeated")
   })
 

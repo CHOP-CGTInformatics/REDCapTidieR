@@ -296,6 +296,7 @@ update_data_col_names <- function(db_data, db_metadata) {
 #' @importFrom dplyr select mutate across case_when filter pull left_join
 #' @importFrom rlang .data :=
 #' @importFrom tidyselect any_of ends_with all_of
+#' @importFrom cli cli_warn
 #'
 #' @keywords internal
 
@@ -350,10 +351,15 @@ multi_choice_to_labels <- function(db_data, db_metadata) {
       # Check for empty selection strings indicating missing data or incorrect
       # data field attribute types in REDCap
       if (is.na(db_metadata$select_choices_or_calculations[i])) {
-        warning(paste0("The field ", field_name, " in ",
-                       db_metadata$form_name[i], " is a ",
-                       db_metadata$field_type[i],
-                       " field type, however it does not have any categories."))
+        msg <- paste(
+          "The field {field_name} in {db_metadata$form_name[i]} is a",
+          "{db_metadata$field_type[i]} field type, however it does not have",
+          "any categories."
+        )
+        cli_warn(
+          c("!" = msg),
+          class = c("field_missing_categories", "REDCapTidieR_cond")
+        )
       }
 
       # Retrieve parse_labels key for given field_name
