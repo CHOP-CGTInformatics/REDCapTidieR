@@ -20,7 +20,8 @@ test_that("read_redcap_tidy works for a classic database with a nonrepeating ins
   httptest::with_mock_api({
     out <-
       read_redcap_tidy(redcap_uri, classic_token) %>%
-      suppressWarnings() %>% # necessary for CRAN submission
+      # suppress expected warning
+      suppressWarnings(classes = "field_missing_categories") %>%
       filter(redcap_form_name == "nonrepeated") %>%
       select(redcap_data) %>%
       pluck(1, 1)
@@ -47,7 +48,8 @@ test_that("read_redcap_tidy works for a classic database with a repeating instru
   httptest::with_mock_api({
     out <-
       read_redcap_tidy(redcap_uri, classic_token) %>%
-      suppressWarnings() %>% # necessary for CRAN submission
+      # suppress expected warning
+      suppressWarnings(classes = "field_missing_categories") %>%
       filter(redcap_form_name == "repeated") %>%
       select(redcap_data) %>%
       pluck(1, 1)
@@ -63,6 +65,23 @@ test_that("read_redcap_tidy works for a classic database with a repeating instru
 
 })
 
+test_that("read_redcap_tidy returns checkbox fields", {
+
+  # Pull a nonrepeating table from a classic database
+  httptest::with_mock_api({
+    out <-
+      read_redcap_tidy(redcap_uri, classic_token) %>%
+      # suppress expected warning
+      suppressWarnings(classes = "field_missing_categories") %>%
+      filter(redcap_form_name == "data_field_types") %>%
+      select(redcap_data) %>%
+      pluck(1, 1)
+  })
+
+  expect_true("checkbox_multiple___1" %in% names(out))
+
+})
+
 test_that("supplying forms is equivalent to post-hoc filtering for a classic database", {
 
   # Explicitly testing form that doesn't contain identifiers
@@ -70,13 +89,13 @@ test_that("supplying forms is equivalent to post-hoc filtering for a classic dat
     filtered_by_api <-
       read_redcap_tidy(redcap_uri,
                        classic_token,
-                       forms = "repeated") %>%
-      suppressWarnings()
+                       forms = "repeated")
 
     filtered_locally <-
       read_redcap_tidy(redcap_uri,
                        classic_token) %>%
-      suppressWarnings() %>%
+      # suppress expected warning
+      suppressWarnings(classes = "field_missing_categories") %>%
       filter(redcap_form_name == "repeated")
   })
 
@@ -220,5 +239,21 @@ test_that("errors when non-existent form is supplied with existing forms", {
                      forms = c("fake-form", "repeated")) %>%
       expect_error(class = "form_does_not_exist")
   })
+})
+
+test_that("get_fields_to_drop handles checkboxes", {
+  # Example metadata
+  test_meta <- tibble::tribble(
+    ~field_name,   ~form_name, ~field_type, ~select_choices_or_calculations,
+    "record_id",   "my_form",  "text",      NA_character_,
+    "my_checkbox", "my_form",  "checkbox",  "1, 1 | -99, Unknown"
+  )
+
+  res <- get_fields_to_drop(test_meta, "my_form")
+
+  expect_setequal(
+    res,
+    c("my_checkbox___1", "my_checkbox___-99", "my_form_complete" )
+  )
 })
 

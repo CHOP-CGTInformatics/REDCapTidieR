@@ -70,8 +70,6 @@ read_redcap_tidy <- function(redcap_uri,
 
   # Set default forms for API call
   forms_for_api_call <- forms
-  # Capture fields we need to keep in the output
-  fields_to_keep <- get_output_fields(db_metadata, forms)
 
   # Filter metadata if forms parameter was used
   if (!is.null(forms)) {
@@ -80,7 +78,21 @@ read_redcap_tidy <- function(redcap_uri,
     # Update forms for API call
     id_form <- db_metadata$form_name[[1]]
 
-    forms_for_api_call <- unique(c(id_form, forms))
+    if (id_form %in% forms) {
+      # If form with identifiers was already requested:
+      # Use forms for API call
+      forms_for_api_call <- forms
+
+      # and no need to drop any fields
+      extra_fields_to_drop <- NULL
+    } else {
+      # If form with identifiers was not requested:
+      # Add it to the API call
+      forms_for_api_call <- c(id_form, forms)
+
+      # Store the extra fields we need to drop
+      extra_fields_to_drop <- get_fields_to_drop(db_metadata, id_form)
+    }
 
     # Keep only user requested forms in the metadata
     db_metadata <- filter(db_metadata, .data$form_name %in% forms)
@@ -91,8 +103,7 @@ read_redcap_tidy <- function(redcap_uri,
   db_data <- redcap_read_oneshot(redcap_uri = redcap_uri,
                                  token = token,
                                  forms = forms_for_api_call,
-                                 verbose = FALSE)$data %>%
-    select(any_of(fields_to_keep))
+                                 verbose = FALSE)$data
 
   # Check that results were returned
   check_redcap_populated(db_data)
@@ -103,6 +114,14 @@ read_redcap_tidy <- function(redcap_uri,
   # Note: Order of functions calls between `update_*` matters
   if ("checkbox" %in% db_metadata$field_type) {
     db_data <- update_data_col_names(db_data, db_metadata)
+  }
+
+  # Drop any extra fields that may have been added because we added extra forms
+  # to the API call
+  # This assumes the names of checkbox fields in the data have been updated by
+  # update_data_col_names
+  if (!is.null(forms)) {
+    db_data <- select(db_data, !any_of(extra_fields_to_drop))
   }
 
   # Check for potential API rights issues ----
@@ -146,39 +165,43 @@ read_redcap_tidy <- function(redcap_uri,
 }
 
 #' @title
-#' Determine the maximal set of fields to keep in the result of read_redcap_tidy
+#' Determine fields included in \code{REDCapR::redcap_read_oneshot} output
+#' that should be dropped from results of \code{read_redcap_tidy}
 #'
 #' @details
-#' This function applies rules to determine which fields are kept in the results
-#' of calling \code{REDCapR::redcap_read_oneshot}.
+#' This function applies rules to determine which fields are included in the
+#' results of \code{REDCapR::redcap_read_oneshot} because the user didn't
+#' request the form containing identifiers
 #'
 #' @param db_metadata metadata tibble created by \code{REDCapR::redcap_metadata_read}
-#' @param forms \code{forms} argument passed to \code{read_redcap_tidy}
+#' @param form the name of the form containing identifiers
 #'
 #' @return
-#' A character vector fo field names that can be used to filter the results of
-#' \code{REDCapR::redcap_read_oneshot}
+#' A character vector of extra field names that can be used to filter the
+#' results of \code{REDCapR::redcap_read_oneshot}
+#'
+#' @importFrom dplyr filter pull %>%
+#' @importFrom rlang .data
 #'
 #' @keywords internal
-get_output_fields <- function(db_metadata, forms) {
-  # If forms was NULL we want all forms in the metadata
-  if (is.null(forms)) {
-    forms <- unique(db_metadata$form_name)
-  }
-
+get_fields_to_drop <- function(db_metadata, form) {
   # Assume the first form in the metadata contains IDs
   # REDCap enforces this constraints
   record_id_field <- db_metadata$field_name[[1]]
 
-  id_fields <- c(record_id_field, "redcap_event_name",
-                 "redcap_repeat_instrument", "redcap_repeat_instance")
+  res <- db_metadata %>%
+    filter(.data$form_name == form) %>%
+    # Add checkbox field names to metadata
+    update_field_names() %>%
+    pull(.data$field_name_updated)
 
-  # 1. Fields in requested forms
-  res <- with(db_metadata, field_name[form_name %in% forms])
-  # 2. ID fields
-  res <- unique(c(id_fields, res))
-  # 3. Completion fields in requested forms (these aren't in metadata)
-  res <- c(res, paste0(forms, "_complete"))
+  # Remove identifier since we want to keep it
+  res <- setdiff(res, record_id_field)
+
+  # Add form complete field which is not in metadata but should be removed from
+  # read_redcap_tidy output
+
+  res <- c(res, paste0(form, "_complete"))
 
   res
 }
