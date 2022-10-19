@@ -65,6 +65,23 @@ test_that("read_redcap_tidy works for a classic database with a repeating instru
 
 })
 
+test_that("read_redcap_tidy returns checkbox fields", {
+
+  # Pull a nonrepeating table from a classic database
+  httptest::with_mock_api({
+    out <-
+      read_redcap_tidy(redcap_uri, classic_token) %>%
+      # suppress expected warning
+      suppressWarnings(classes = "field_missing_categories") %>%
+      filter(redcap_form_name == "data_field_types") %>%
+      select(redcap_data) %>%
+      pluck(1, 1)
+  })
+
+  expect_true("checkbox_multiple___1" %in% names(out))
+
+})
+
 test_that("supplying forms is equivalent to post-hoc filtering for a classic database", {
 
   # Explicitly testing form that doesn't contain identifiers
