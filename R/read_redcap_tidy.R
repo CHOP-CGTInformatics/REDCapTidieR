@@ -161,7 +161,7 @@ read_redcap_tidy <- function(redcap_uri,
                         db_metadata = db_metadata)
   }
 
-  add_metadata(out, redcap_uri, token)
+  add_metadata(out, db_metadata, redcap_uri, token)
 }
 
 #' @title
@@ -207,32 +207,54 @@ get_fields_to_drop <- function(db_metadata, form) {
 }
 
 #' @title
-#' Add metadata to a supertibble
+#' Supplement a supertibble with addtional metadata fields
 #'
 #' @param supertbl a supertibble object to supplement with metadata
+#' @param db_metadata
 #' @inheritParams read_redcap_tidy
 #'
 #' @return
-#' A supertibble with ...
+#' The original supertibble with additional fields:
+#' - \code{instrument_label} containing labels for each form
+#' - \code{metadata} containing metadata for the fields in each for as a
+#' list column
 #'
 #' @importFrom REDCapR redcap_instruments
-#' @importFrom dplyr left_join rename %>%
+#' @importFrom dplyr left_join rename %>% select rename relocate
+#' @importFrom tidyr nest
+#' @importFrom tidyselect everything
 #'
 #' @keywords internal
 
-add_metadata <- function(supertbl, redcap_uri, token) {
+add_metadata <- function(supertbl, db_metadata, redcap_uri, token) {
 
+  # Get instrument labels ----
   instrument_labs <- redcap_instruments(
     redcap_uri,
     token,
     verbose = FALSE
   )$data %>%
-    rename("redcap_form_label" = "instrument_label")
+    rename(
+      redcap_form_label = "instrument_label",
+      redcap_form_name = "instrument_name"
+    )
 
-  left_join(
-    supertbl,
-    instrument_labs,
-    by = c("redcap_form_name" = "instrument_name")
-  )
+  # Process metadata ----
+  metadata <- db_metadata %>%
+    # At this stage select_choices_or_calculations has been unpacked into
+    # field_name_updated so we can drop it. Likewise, field_name has a subset
+    # of info from field_name_updated
+    select(!c("field_name", "select_choices_or_calculations")) %>%
+    rename(
+      field_name = "field_name_updated",
+      redcap_form_name = "form_name"
+    ) %>%
+    relocate("field_name", "field_label", "field_type", .before = everything()) %>%
+    # nest by form
+    nest(metadata = !"redcap_form_name")
 
+  # Combine ----
+  supertbl %>%
+    left_join(instrument_labs, by = "redcap_form_name") %>%
+    left_join(metadata, by = "redcap_form_name")
 }
