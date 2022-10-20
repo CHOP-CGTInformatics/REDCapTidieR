@@ -161,7 +161,7 @@ read_redcap_tidy <- function(redcap_uri,
                         db_metadata = db_metadata)
   }
 
-  out
+  add_metadata(out, redcap_uri, token)
 }
 
 #' @title
@@ -204,4 +204,35 @@ get_fields_to_drop <- function(db_metadata, form) {
   res <- c(res, paste0(form, "_complete"))
 
   res
+}
+
+#' @title
+#' Add metadata to a supertibble
+#'
+#' @param supertbl a supertibble object to supplement with metadata
+#' @inheritParams read_redcap_tidy
+#'
+#' @return
+#' A supertibble with ...
+#'
+#' @importFrom REDCapR redcap_instruments
+#' @importFrom dplyr left_join rename %>%
+#'
+#' @keywords internal
+
+add_metadata <- function(supertbl, redcap_uri, token) {
+
+  instrument_labs <- redcap_instruments(
+    redcap_uri,
+    token,
+    verbose = FALSE
+  )$data %>%
+    rename("redcap_form_label" = "instrument_label")
+
+  left_join(
+    supertbl,
+    instrument_labs,
+    by = c("redcap_form_name" = "instrument_name")
+  )
+
 }
