@@ -148,7 +148,7 @@ distill_nonrepeat_table_long <- function(
     pull(.data$field_name_updated)
 
   if (my_fields[1] != my_record_id) {
-    my_fields <- c(my_record_id, all_of(my_fields))
+    my_fields <- c(my_record_id, my_fields)
   }
 
   # Below necessary to remove descriptive text fields
@@ -178,17 +178,17 @@ distill_nonrepeat_table_long <- function(
 
   # Final aesthetic cleanup
   out <- db_data_long %>%
-    select(all_of(my_fields), .data$redcap_event, .data$redcap_arm) %>%
+    select(all_of(my_fields), "redcap_event", "redcap_arm") %>%
     relocate(
       c(.data$redcap_event, .data$redcap_arm), .after = !!my_record_id
     ) %>%
     rename("form_status_complete" = paste0(my_form, "_complete")) %>%
-    relocate(.data$form_status_complete, .after = everything())
+    relocate("form_status_complete", .after = everything())
 
   # Remove arms column if necessary
   if (!any(names(linked_arms) %>% str_detect("arm_2"))) {
     out <- out %>%
-      select(-.data$redcap_arm)
+      select(-"redcap_arm")
   }
 
   out %>%
@@ -235,7 +235,7 @@ distill_repeat_table_long <- function(
     pull(.data$field_name_updated)
 
   if (my_fields[1] != my_record_id) {
-    my_fields <- c(my_record_id, all_of(my_fields))
+    my_fields <- c(my_record_id, my_fields)
   }
 
   # Below necessary to remove descriptive text fields
@@ -267,21 +267,21 @@ distill_repeat_table_long <- function(
     filter(.data$redcap_repeat_instrument == my_form) %>%
     select(
       all_of(my_fields),
-      .data$redcap_repeat_instance, .data$redcap_event, .data$redcap_arm
+      "redcap_repeat_instance", "redcap_event", "redcap_arm"
     ) %>%
     relocate(
-      c(.data$redcap_repeat_instance,
-        .data$redcap_event,
-        .data$redcap_arm),
+      "redcap_repeat_instance",
+      "redcap_event",
+      "redcap_arm",
       .after = !!my_record_id
     ) %>%
     rename("form_status_complete" = paste0(my_form, "_complete")) %>%
-    relocate(.data$form_status_complete, .after = everything())
+    relocate("form_status_complete", .after = everything())
 
   # Remove arms column if necessary
   if (!any(names(linked_arms) %>% str_detect("arm_2"))) {
     out <- out %>%
-      select(-.data$redcap_arm)
+      select(-"redcap_arm")
   }
 
   out %>%

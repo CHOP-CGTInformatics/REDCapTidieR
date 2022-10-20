@@ -81,7 +81,7 @@ link_arms <- function(
   # Categorize all events/arms and assign all forms that appear in them to a
   # vector. Vectors help with variable length assignments.
   db_event_instruments %>%
-    select(-.data$arm_num) %>%
+    select(-"arm_num") %>%
     pivot_wider(names_from = c("unique_event_name"),
                 values_from = c("form"),
                 values_fn = list)
@@ -200,7 +200,6 @@ checkbox_appender <- function(field_name, string) {
 #' @return Returns an updated REDCap metadata object with updated field names
 #'
 #' @importFrom tidyr unnest
-#' @importFrom rlang .data
 #'
 #' @keywords internal
 
@@ -226,7 +225,7 @@ update_field_names <- function(db_metadata) {
 
   # Unnest and expand checkbox list elements
   out %>%
-    unnest(cols = .data$field_name_updated)
+    unnest(cols = "field_name_updated")
 }
 
 #' @title

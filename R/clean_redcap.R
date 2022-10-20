@@ -137,7 +137,7 @@ distill_nonrepeat_table <- function(
     pull(.data$field_name_updated)
 
   if (my_fields[1] != my_record_id) {
-    my_fields <- c(my_record_id, all_of(my_fields))
+    my_fields <- c(my_record_id, my_fields)
   }
 
   # Below necessary to remove descriptive text fields
@@ -154,7 +154,7 @@ distill_nonrepeat_table <- function(
   db_data %>%
     select(all_of(my_fields)) %>%
     rename("form_status_complete" = paste0(my_form, "_complete")) %>%
-    relocate(.data$form_status_complete, .after = everything()) %>%
+    relocate("form_status_complete", .after = everything()) %>%
     tibble()
 }
 
@@ -195,7 +195,7 @@ distill_repeat_table <- function(
     pull(.data$field_name_updated)
 
   if (my_fields[1] != my_record_id) {
-    my_fields <- c(my_record_id, all_of(my_fields))
+    my_fields <- c(my_record_id, my_fields)
   }
 
   # Below necessary to remove descriptive text fields
@@ -209,9 +209,9 @@ distill_repeat_table <- function(
       !is.na(.data$redcap_repeat_instance) &
         .data$redcap_repeat_instrument == my_form
     ) %>%
-    select(all_of(my_fields), .data$redcap_repeat_instance) %>%
-    relocate(.data$redcap_repeat_instance, .after = all_of(my_record_id)) %>%
+    select(all_of(my_fields), "redcap_repeat_instance") %>%
+    relocate("redcap_repeat_instance", .after = all_of(my_record_id)) %>%
     rename("form_status_complete" = paste0(my_form, "_complete")) %>%
-    relocate(.data$form_status_complete, .after = everything()) %>%
+    relocate("form_status_complete", .after = everything()) %>%
     tibble()
 }
