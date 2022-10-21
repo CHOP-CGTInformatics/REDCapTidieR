@@ -44,10 +44,8 @@ add_partial_keys <- function(
 #' @param redcap_uri The REDCap URI
 #' @param token The REDCap API token
 #'
-#' @importFrom dplyr select
-#' @importFrom tidyr pivot_wider
+#' @importFrom dplyr rename left_join
 #' @importFrom REDCapR redcap_event_instruments redcap_arm_export
-#' @importFrom rlang .data
 #'
 #' @keywords internal
 
@@ -67,13 +65,7 @@ link_arms <- function(
     verbose = FALSE
   )$data
 
-  # Categorize all events/arms and assign all forms that appear in them to a
-  # vector. Vectors help with variable length assignments.
-  db_event_instruments %>%
-    select(-.data$arm_num) %>%
-    pivot_wider(names_from = c("unique_event_name"),
-                values_from = c("form"),
-                values_fn = list)
+  left_join(db_event_instruments, arms, by = "arm_num")
 }
 
 #' @title
