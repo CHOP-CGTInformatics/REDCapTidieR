@@ -47,7 +47,7 @@ test_that("read_redcap_tidy works for a classic database with a repeating instru
   # Pull a repeating table from a classic database
   httptest::with_mock_api({
     out <-
-      read_redcap_tidy(redcap_uri, classic_token) %>%
+      read_redcap_tidy(redcap_uri, classic_token, include_metadata = FALSE) %>%
       # suppress expected warning
       suppressWarnings(classes = "field_missing_categories") %>%
       filter(redcap_form_name == "repeated") %>%
@@ -70,7 +70,7 @@ test_that("read_redcap_tidy returns checkbox fields", {
   # Pull a nonrepeating table from a classic database
   httptest::with_mock_api({
     out <-
-      read_redcap_tidy(redcap_uri, classic_token) %>%
+      read_redcap_tidy(redcap_uri, classic_token, include_metadata = FALSE) %>%
       # suppress expected warning
       suppressWarnings(classes = "field_missing_categories") %>%
       filter(redcap_form_name == "data_field_types") %>%
@@ -111,11 +111,13 @@ test_that("supplying forms is equivalent to post-hoc filtering for a longitudina
     filtered_by_api <-
       read_redcap_tidy(redcap_uri,
                        longitudinal_token,
-                       forms = "repeated")
+                       forms = "repeated",
+                       include_metadata = FALSE)
 
     filtered_locally <-
       read_redcap_tidy(redcap_uri,
-                       longitudinal_token) %>%
+                       longitudinal_token,
+                       include_metadata = FALSE) %>%
       filter(redcap_form_name == "repeated")
   })
 
@@ -134,7 +136,7 @@ test_that("read_redcap_tidy works for a longitudinal, single arm database with a
   # Pull a nonrepeating table from a longitudinal, single arm database
   httptest::with_mock_api({
     out <-
-      read_redcap_tidy(redcap_uri, longitudinal_noarms_token) %>%
+      read_redcap_tidy(redcap_uri, longitudinal_noarms_token, include_metadata = FALSE) %>%
       filter(redcap_form_name == "nonrepeated") %>%
       select(redcap_data) %>%
       pluck(1, 1)
@@ -160,7 +162,7 @@ test_that("read_redcap_tidy works for a longitudinal, single arm database with a
   # Pull a repeating table from a longitudinal, single arm database
   httptest::with_mock_api({
     out <-
-      read_redcap_tidy(redcap_uri, longitudinal_noarms_token) %>%
+      read_redcap_tidy(redcap_uri, longitudinal_noarms_token, include_metadata = FALSE) %>%
       filter(redcap_form_name == "repeated") %>%
       select(redcap_data) %>%
       pluck(1, 1)
@@ -186,7 +188,7 @@ test_that("read_redcap_tidy works for a longitudinal, multi-arm database with a 
   # Pull a nonrepeating table from a longitudinal, multi arm database
   httptest::with_mock_api({
     out <-
-      read_redcap_tidy(redcap_uri, longitudinal_token) %>%
+      read_redcap_tidy(redcap_uri, longitudinal_token, include_metadata = FALSE) %>%
       filter(redcap_form_name == "nonrepeated") %>%
       select(redcap_data) %>%
       pluck(1, 1)
@@ -211,7 +213,7 @@ test_that("read_redcap_tidy works for a longitudinal, multi-arm database with a 
   # Pull a repeating table from a longitudinal, multi arm database
   httptest::with_mock_api({
     out <-
-      read_redcap_tidy(redcap_uri, longitudinal_token) %>%
+      read_redcap_tidy(redcap_uri, longitudinal_token, include_metadata = FALSE) %>%
       filter(redcap_form_name == "repeated") %>%
       select(redcap_data) %>%
       pluck(1, 1)
@@ -226,8 +228,9 @@ test_that("read_redcap_tidy works for a longitudinal, multi-arm database with a 
 test_that("errors when non-existent form is supplied alone", {
   httptest::with_mock_api({
     read_redcap_tidy(redcap_uri,
-                       classic_token,
-                       forms = "fake-form") %>%
+                     classic_token,
+                     forms = "fake-form",
+                     include_metadata = FALSE) %>%
       expect_error(class = "form_does_not_exist")
   })
 })
@@ -236,7 +239,8 @@ test_that("errors when non-existent form is supplied with existing forms", {
   httptest::with_mock_api({
     read_redcap_tidy(redcap_uri,
                      classic_token,
-                     forms = c("fake-form", "repeated")) %>%
+                     forms = c("fake-form", "repeated"),
+                     include_metadata = FALSE) %>%
       expect_error(class = "form_does_not_exist")
   })
 })
@@ -257,3 +261,62 @@ test_that("get_fields_to_drop handles checkboxes", {
   )
 })
 
+test_that("read_redcap_tidy returns metadata", {
+  httptest::with_mock_api({
+    out <- read_redcap_tidy(redcap_uri, longitudinal_token)
+  })
+
+  metadata_cols <- c("redcap_form_label", "metadata")
+
+  # metadata fields exist
+  expect_true(
+    all(metadata_cols %in% names(out))
+  )
+
+  # metadata fields consists of tibbles
+  out$metadata %>%
+    purrr::map_lgl(inherits, what = "tbl_df") %>%
+    all() %>%
+    expect_true()
+
+  # metadata contains all expected fields in data
+
+  # fields we don't expect
+  # presence of record_id tested separately
+  exclude_fields <- c(
+    "record_id", "redcap_repeat_instance",
+    "redcap_event", "redcap_arm", "form_status_complete"
+  )
+
+  fields_in_metadata <- out$metadata %>%
+    map("field_name") %>%
+    map(setdiff, y = exclude_fields)
+
+  fields_in_data <- out$redcap_data %>%
+    map(colnames) %>%
+    map(setdiff, y = exclude_fields)
+
+  expect_equal(fields_in_metadata, fields_in_data)
+
+  # record_id is in the metadata
+  flat_metadata_field_names <- out$metadata %>%
+    map("field_name") %>%
+    unlist()
+
+  expect_true("record_id" %in% flat_metadata_field_names)
+
+})
+
+test_that("read_redcap_tidy suppresses metadata when include_metadata is FALSE", {
+  httptest::with_mock_api({
+    out <- read_redcap_tidy(redcap_uri,
+                            longitudinal_token,
+                            include_metadata = FALSE)
+  })
+
+  metadata_cols <- c("redcap_form_label", "metadata")
+
+  expect_false(
+    any(metadata_cols %in% names(out))
+  )
+})

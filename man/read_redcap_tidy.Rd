@@ -9,7 +9,8 @@ read_redcap_tidy(
   token,
   raw_or_label = "label",
   forms = NULL,
-  suppress_messages = TRUE
+  suppress_messages = TRUE,
+  include_metadata = TRUE
 )
 }
 \arguments{
@@ -28,6 +29,9 @@ choice fields. Default is 'label'.}
 export. Default returns all forms in the project.}
 
 \item{suppress_messages}{Optionally show or suppress messages.
+Default \code{TRUE}.}
+
+\item{include_metadata}{Optionally include metadata columns in the result.
 Default \code{TRUE}.}
 }
 \value{

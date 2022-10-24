@@ -36,6 +36,8 @@
 #' export. Default returns all forms in the project.
 #' @param suppress_messages Optionally show or suppress messages.
 #' Default \code{TRUE}.
+#' @param include_metadata Optionally include metadata columns in the result.
+#' Default \code{TRUE}.
 #'
 #' @examples
 #' \dontrun{
@@ -55,7 +57,8 @@ read_redcap_tidy <- function(redcap_uri,
                              token,
                              raw_or_label = "label",
                              forms = NULL,
-                             suppress_messages = TRUE) {
+                             suppress_messages = TRUE,
+                             include_metadata = TRUE) {
 
   # Load REDCap Metadata ----
   db_metadata <- redcap_metadata_read(redcap_uri = redcap_uri,
@@ -161,7 +164,12 @@ read_redcap_tidy <- function(redcap_uri,
                         db_metadata = db_metadata)
   }
 
-  add_metadata(out, db_metadata, redcap_uri, token)
+  # Augment with metadata ----
+  if (include_metadata) {
+    out <- add_metadata(out, db_metadata, redcap_uri, token)
+  }
+
+  out
 }
 
 #' @title
@@ -210,14 +218,20 @@ get_fields_to_drop <- function(db_metadata, form) {
 #' Supplement a supertibble with addtional metadata fields
 #'
 #' @param supertbl a supertibble object to supplement with metadata
-#' @param db_metadata
+#' @param db_metadata a REDCap metadata tibble
 #' @inheritParams read_redcap_tidy
+#'
+#' @details This function assumes that \code{db_metadata} has been processed to
+#' include a row for each option of each multiselection field, i.e. with
+#' \code{update_field_names()}
 #'
 #' @return
 #' The original supertibble with additional fields:
 #' - \code{instrument_label} containing labels for each form
-#' - \code{metadata} containing metadata for the fields in each for as a
+#' - \code{metadata} containing metadata for the fields in each form as a
 #' list column
+#' - \code{events} containing information about the events and arms represented
+#' in each form. Longitudinal REDCaps pnly.
 #'
 #' @importFrom REDCapR redcap_instruments
 #' @importFrom dplyr left_join rename %>% select rename relocate
@@ -246,9 +260,11 @@ add_metadata <- function(supertbl, db_metadata, redcap_uri, token) {
     # of info from field_name_updated
     select(!c("field_name", "select_choices_or_calculations")) %>%
     rename(
+      # TODO: consider changing this name upstream in update_field_names
       field_name = "field_name_updated",
       redcap_form_name = "form_name"
     ) %>%
+    # TODO: Consider adding form completion fields to metadata
     relocate("field_name", "field_label", "field_type", .before = everything()) %>%
     # nest by form
     nest(metadata = !"redcap_form_name")
@@ -257,4 +273,10 @@ add_metadata <- function(supertbl, db_metadata, redcap_uri, token) {
   supertbl %>%
     left_join(instrument_labs, by = "redcap_form_name") %>%
     left_join(metadata, by = "redcap_form_name")
+
+  # TODO: add event/arm with:
+  # arm id
+  # arm name
+  # event id
+  # event name -- would need call to API w/ event method
 }
