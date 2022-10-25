@@ -151,10 +151,7 @@ read_redcap_tidy <- function(redcap_uri,
   }
 
   if (is_longitudinal) {
-    linked_arms <- link_arms(db_data_long = db_data,
-                             db_metadata_long = db_metadata,
-                             redcap_uri = redcap_uri,
-                             token = token)
+    linked_arms <- link_arms(redcap_uri = redcap_uri, token = token)
 
     out <- clean_redcap_long(db_data_long = db_data,
                              db_metadata_long = db_metadata,
