@@ -1,13 +1,10 @@
+# Tell httptest where to looks for mocks
+# Need this here since devtools::test_path doesn't work in helper.R
+# https://github.com/r-lib/testthat/issues/1270
+httptest::.mockPaths(test_path("fixtures"))
+
 # Load initial variables
 `%notin%` <- Negate(`%in%`)
-
-classic_token <- get_fake_credentials("REDCAPTIDIER_CLASSIC_API")
-longitudinal_token <- get_fake_credentials("REDCAPTIDIER_LONGITUDINAL_API")
-longitudinal_noarms_token <- get_fake_credentials("REDCAPTIDIER_LONGITUDINAL_NOARMS_API")
-redcap_uri <- get_fake_credentials("REDCAP_URI")
-
-# Tell httptest where to looks for mocks
-httptest::.mockPaths(test_path("fixtures"))
 
 test_that("read_redcap_tidy works for a classic database with a nonrepeating instrument", {
 
