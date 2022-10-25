@@ -168,7 +168,7 @@ distill_nonrepeat_table_long <- function(
 
   # Find events in form
   events <- linked_arms %>%
-    filter(form == my_form) %>%
+    filter(.data$form == my_form) %>%
     pull("unique_event_name")
 
   # Filter events
@@ -252,7 +252,7 @@ distill_repeat_table_long <- function(
 
   # Find events in form
   events <- linked_arms %>%
-    filter(form == my_form) %>%
+    filter(.data$form == my_form) %>%
     pull("unique_event_name")
 
   # Filter events

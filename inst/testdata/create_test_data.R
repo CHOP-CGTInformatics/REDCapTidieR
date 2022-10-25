@@ -121,9 +121,7 @@ saveRDS(db_metadata_long_noarms, "inst/testdata/db_metadata_long_noarms.RDS")
 # Longitudinal DB Linked Arms Output (No Arms)----
 # Necessary because a separate API call is needed for `redcap_event_instruments`
 
-linked_arms_long_noarms <- link_arms(db_data_long = db_data_long_noarms,
-                                     db_metadata_long = db_metadata_long_noarms,
-                                     redcap_uri = redcap_uri,
+linked_arms_long_noarms <- link_arms(redcap_uri = redcap_uri,
                                      token = longitudinal_noarms_token)
 
 saveRDS(linked_arms_long_noarms, "inst/testdata/linked_arms_long_noarms.RDS")
