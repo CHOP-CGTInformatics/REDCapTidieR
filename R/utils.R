@@ -41,50 +41,31 @@ add_partial_keys <- function(
 #' Returns a \code{tibble} of \code{redcap_event_name}s with list elements
 #' containing a vector of associated forms.
 #'
-#' @param db_data_long A longitudinal REDCap database export
-#' @param db_metadata_long A longitudinal REDCap metadata export
 #' @param redcap_uri The REDCap URI
 #' @param token The REDCap API token
 #'
-#' @importFrom dplyr select
-#' @importFrom tidyr pivot_wider
+#' @importFrom dplyr rename left_join
 #' @importFrom REDCapR redcap_event_instruments redcap_arm_export
-#' @importFrom tibble tibble
-#' @importFrom purrr map
-#' @importFrom rlang .data
 #'
 #' @keywords internal
 
 link_arms <- function(
-    db_data_long,
-    db_metadata_long,
     redcap_uri,
     token
 ) {
 
-  # First, add helper variables
-  db_data_long <- add_partial_keys(db_data_long)
+  arms <- redcap_arm_export(redcap_uri, token, verbose = FALSE)$data %>%
+    # match field name of redcap_event_instruments() output
+    rename(arm_num = "arm_number")
 
-  # Next map through all possible arms by identifying unique ones in
-  # db_data_long after it has helper variables added from `add_partial_keys()`
-  db_event_instruments <- tibble() # Define empty tibble
-
-  arms <- redcap_arm_export(redcap_uri, token, verbose = FALSE)$data
-
-  db_event_instruments <- map(arms$arm_number, ~redcap_event_instruments(
+  db_event_instruments <- redcap_event_instruments(
     redcap_uri = redcap_uri,
-    token = token, arms = .x,
+    token = token,
+    arms = NULL, # get all arms
     verbose = FALSE
-  )$data) %>%
-    bind_rows()
+  )$data
 
-  # Categorize all events/arms and assign all forms that appear in them to a
-  # vector. Vectors help with variable length assignments.
-  db_event_instruments %>%
-    select(-.data$arm_num) %>%
-    pivot_wider(names_from = c("unique_event_name"),
-                values_from = c("form"),
-                values_fn = list)
+  left_join(db_event_instruments, arms, by = "arm_num")
 }
 
 #' @title
