@@ -1,5 +1,0 @@
-arm_num,unique_event_name,form
-2,event_1_arm_2,nonrepeated
-2,event_1_arm_2,repeated
-2,event_3_arm_2,nonrepeated
-2,event_3_arm_2,repeated

@@ -4,13 +4,9 @@
 \alias{link_arms}
 \title{Link longitudinal REDCap forms with their events/arms}
 \usage{
-link_arms(db_data_long, db_metadata_long, redcap_uri, token)
+link_arms(redcap_uri, token)
 }
 \arguments{
-\item{db_data_long}{A longitudinal REDCap database export}
-
-\item{db_metadata_long}{A longitudinal REDCap metadata export}
-
 \item{redcap_uri}{The REDCap URI}
 
 \item{token}{The REDCap API token}

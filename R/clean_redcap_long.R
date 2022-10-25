@@ -166,15 +166,13 @@ distill_nonrepeat_table_long <- function(
       filter(is.na(.data$redcap_repeat_instance))
   }
 
-  # Use link_arms() output to check if my_form appears in each event_name
-  # If it does not, filter out all rows containing that event_name
-  for (i in seq_along(names(linked_arms))) {
-    if (my_form %in% unlist(linked_arms[[i]]) == FALSE) {
-      db_data_long <- db_data_long %>%
-        filter(.data$redcap_event_name != names(linked_arms[i]))
-    }
-    db_data_long
-  }
+  # Find events in form
+  events <- linked_arms %>%
+    filter(.data$form == my_form) %>%
+    pull("unique_event_name")
+
+  # Filter events
+  db_data_long <- filter(db_data_long, .data$redcap_event_name %in% events)
 
   # Final aesthetic cleanup
   out <- db_data_long %>%
@@ -186,7 +184,7 @@ distill_nonrepeat_table_long <- function(
     relocate("form_status_complete", .after = everything())
 
   # Remove arms column if necessary
-  if (!any(names(linked_arms) %>% str_detect("arm_2"))) {
+  if (!any(linked_arms$unique_event_name %>% str_detect("arm_2"))) {
     out <- out %>%
       select(-"redcap_arm")
   }
@@ -252,15 +250,13 @@ distill_repeat_table_long <- function(
         .data$redcap_repeat_instrument == my_form
     )
 
-  # Use link_arms() output to check if my_form appears in each event_name
-  # If it does not, filter out all rows containing that event_name
-  for (i in seq_along(names(linked_arms))) {
-    if (my_form %in% unlist(linked_arms[[i]]) == FALSE) {
-      db_data_long <- db_data_long %>%
-        filter(.data$redcap_event_name != names(linked_arms[i]))
-    }
-    db_data_long
-  }
+  # Find events in form
+  events <- linked_arms %>%
+    filter(.data$form == my_form) %>%
+    pull("unique_event_name")
+
+  # Filter events
+  db_data_long <- filter(db_data_long, .data$redcap_event_name %in% events)
 
   # Final aesthetic cleanup
   out <- db_data_long %>%
@@ -279,7 +275,7 @@ distill_repeat_table_long <- function(
     relocate("form_status_complete", .after = everything())
 
   # Remove arms column if necessary
-  if (!any(names(linked_arms) %>% str_detect("arm_2"))) {
+  if (!any(linked_arms$unique_event_name %>% str_detect("arm_2"))) {
     out <- out %>%
       select(-"redcap_arm")
   }
