@@ -81,11 +81,6 @@ test_that("parse_labels works", {
   expect_warning(parse_labels(warning_string_1), regexp = NA)
 })
 
-# uri <- Sys.getenv("REDCAP_URI")
-# token <- Sys.getenv("REDCAPTIDIER_LONGITUDINAL_API")
-#
-# link_arms(uri, token)
-
 test_that("link_arms works", {
   httptest::with_mock_api({
     out <- link_arms(redcap_uri, longitudinal_token)

@@ -263,7 +263,7 @@ test_that("read_redcap_tidy returns metadata", {
     out <- read_redcap_tidy(redcap_uri, longitudinal_token)
   })
 
-  metadata_cols <- c("redcap_form_label", "metadata")
+  metadata_cols <- c("redcap_form_label", "redcap_metadata", "redcap_events")
 
   # metadata fields exist
   expect_true(
@@ -271,8 +271,14 @@ test_that("read_redcap_tidy returns metadata", {
   )
 
   # metadata fields consists of tibbles
-  out$metadata %>%
-    purrr::map_lgl(inherits, what = "tbl_df") %>%
+  out$redcap_metadata %>%
+    purrr::map_lgl(inherits, what = "tbl") %>%
+    all() %>%
+    expect_true()
+
+  # event fields consists of tibbles
+  out$redcap_events %>%
+    purrr::map_lgl(inherits, what = "tbl") %>%
     all() %>%
     expect_true()
 
@@ -285,7 +291,7 @@ test_that("read_redcap_tidy returns metadata", {
     "redcap_event", "redcap_arm", "form_status_complete"
   )
 
-  fields_in_metadata <- out$metadata %>%
+  fields_in_metadata <- out$redcap_metadata %>%
     map("field_name") %>%
     map(setdiff, y = exclude_fields)
 
@@ -296,7 +302,7 @@ test_that("read_redcap_tidy returns metadata", {
   expect_equal(fields_in_metadata, fields_in_data)
 
   # record_id is in the metadata
-  flat_metadata_field_names <- out$metadata %>%
+  flat_metadata_field_names <- out$redcap_metadata %>%
     map("field_name") %>%
     unlist()
 

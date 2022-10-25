@@ -164,6 +164,10 @@ read_redcap_tidy <- function(redcap_uri,
   # Augment with metadata ----
   if (include_metadata) {
     out <- add_metadata(out, db_metadata, redcap_uri, token)
+
+    if (is_longitudinal) {
+      out <- add_event_mapping(out, linked_arms)
+    }
   }
 
   out
@@ -212,7 +216,7 @@ get_fields_to_drop <- function(db_metadata, form) {
 }
 
 #' @title
-#' Supplement a supertibble with addtional metadata fields
+#' Supplement a supertibble with additional metadata fields
 #'
 #' @param supertbl a supertibble object to supplement with metadata
 #' @param db_metadata a REDCap metadata tibble
@@ -225,10 +229,8 @@ get_fields_to_drop <- function(db_metadata, form) {
 #' @return
 #' The original supertibble with additional fields:
 #' - \code{instrument_label} containing labels for each form
-#' - \code{metadata} containing metadata for the fields in each form as a
+#' - \code{redcap_metadata} containing metadata for the fields in each form as a
 #' list column
-#' - \code{events} containing information about the events and arms represented
-#' in each form. Longitudinal REDCaps pnly.
 #'
 #' @importFrom REDCapR redcap_instruments
 #' @importFrom dplyr left_join rename %>% select rename relocate
@@ -264,16 +266,35 @@ add_metadata <- function(supertbl, db_metadata, redcap_uri, token) {
     # TODO: Consider adding form completion fields to metadata
     relocate("field_name", "field_label", "field_type", .before = everything()) %>%
     # nest by form
-    nest(metadata = !"redcap_form_name")
+    nest(redcap_metadata = !"redcap_form_name")
 
   # Combine ----
   supertbl %>%
     left_join(instrument_labs, by = "redcap_form_name") %>%
     left_join(metadata, by = "redcap_form_name")
+}
 
-  # TODO: add event/arm with:
-  # arm id
-  # arm name
-  # event id
-  # event name -- would need call to API w/ event method
+#' @title
+#' Supplement a supertibble from a longitudinal database with information about
+#' the events associated with each instrument
+#'
+#' @param supertbl a supertibble object to supplement with metadata
+#' @param linked_arms the tibble with event mappings created by
+#' \code{link_arms()}
+#'
+#' @importFrom rlang .data
+#' @importFrom dplyr select left_join
+#' @importFrom tidyr nest
+#'
+#' @return
+#' The original supertibble with an events \code{redcap_events} list column
+#' containing arms and events associated with each instrument
+#'
+add_event_mapping <- function(supertbl, linked_arms) {
+  event_info <- linked_arms %>%
+    add_partial_keys(.data$unique_event_name) %>%
+    select(redcap_form_name = "form", "redcap_event", "redcap_arm", "arm_name") %>%
+    nest(redcap_events = !"redcap_form_name")
+
+  left_join(supertbl, event_info, by = "redcap_form_name")
 }
