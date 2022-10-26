@@ -2,7 +2,7 @@
 % Please edit documentation in R/read_redcap_tidy.R
 \name{add_metadata}
 \alias{add_metadata}
-\title{Supplement a supertibble with addtional metadata fields}
+\title{Supplement a supertibble with additional metadata fields}
 \usage{
 add_metadata(supertbl, db_metadata, redcap_uri, token)
 }
@@ -21,13 +21,11 @@ project. Required.}
 \value{
 The original supertibble with additional fields:
 - \code{instrument_label} containing labels for each form
-- \code{metadata} containing metadata for the fields in each form as a
+- \code{redcap_metadata} containing metadata for the fields in each form as a
 list column
-- \code{events} containing information about the events and arms represented
-in each form. Longitudinal REDCaps pnly.
 }
 \description{
-Supplement a supertibble with addtional metadata fields
+Supplement a supertibble with additional metadata fields
 }
 \details{
 This function assumes that \code{db_metadata} has been processed to

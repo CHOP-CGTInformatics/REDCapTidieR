@@ -17,7 +17,27 @@
 #' where one tibble represents the data from one instrument.
 #'
 #' @return
-#' Returns a \code{tibble} in which each row represents a REDCap instrument.
+#' Returns a \code{tibble} in which each row represents a REDCap instrument. The
+#' results contains the following fields:
+#' - \code{redcap_form_name}, the name of the instrument
+#' - \code{redcap_form_label}, the label for the instrument. Only if
+#' \code{include_metadata = TRUE}
+#' - \code{redcap_data}, the data for the instrument
+#' - \code{redcap_metadata}, a \code{tibble} of data dictionary entries for each
+#' field in the instrument. Only if \code{include_metadata = TRUE}
+#' - \code{redcap_events}, a \code{tibble} with information about the arms and
+#' longitudinal events represented in the instrument. Only if the project has
+#' longitudinal events enables and \code{include_metadata = TRUE}
+#' - \code{structure}, the type of instrument, "repeating" or "nonrepeating"
+#' - \code{data_rows}, the number of rows in the instrument's data. Only if
+#' \code{include_metadata = TRUE}
+#' - \code{data_cols}, the number of columns in the instrument's data. Only if
+#' \code{include_metadata = TRUE}
+#' - \code{data_size}, the size in memory of the instrument's data computed by
+#' \code{lobstr::obj_size}. Only if \code{include_metadata = TRUE}
+#' - \code{data_na_pct}, the percentage of cells in the instrument's data that
+#' are \code{NA} excluding identifier and form completion fields. Only if
+#' \code{include_metadata = TRUE}
 #'
 #' @importFrom REDCapR redcap_read_oneshot redcap_metadata_read
 #' @importFrom dplyr filter bind_rows %>% select

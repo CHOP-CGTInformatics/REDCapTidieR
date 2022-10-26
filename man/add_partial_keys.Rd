@@ -4,11 +4,14 @@
 \alias{add_partial_keys}
 \title{Add partial key helper variables to dataframes}
 \usage{
-add_partial_keys(db_data)
+add_partial_keys(db_data, var)
 }
 \arguments{
 \item{db_data}{The REDCap database output defined by
 \code{REDCapR::redcap_read_oneshot()$data}}
+
+\item{var}{the unquoted name of the field containing event and arm
+identifiers}
 }
 \value{
 Two appended columns, \code{redcap_event} and \code{redcap_arm}
@@ -16,6 +19,6 @@ to the end of \code{read_redcap_tidy} output \code{tibble}s.
 }
 \description{
 Make helper variables \code{redcap_event} and \code{redcap_arm} available as
-branches from \code{redcap_event_name} for later use.
+branches from \code{var} for later use.
 }
 \keyword{internal}
