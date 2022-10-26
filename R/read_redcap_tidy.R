@@ -233,9 +233,11 @@ get_fields_to_drop <- function(db_metadata, form) {
 #' list column
 #'
 #' @importFrom REDCapR redcap_instruments
-#' @importFrom dplyr left_join rename %>% select rename relocate
-#' @importFrom tidyr nest
+#' @importFrom dplyr left_join rename %>% select rename relocate mutate
+#' @importFrom tidyr nest unnest_wider
 #' @importFrom tidyselect everything
+#' @importFrom rlang .data
+#' @importFrom purrr map
 #'
 #' @keywords internal
 
@@ -259,19 +261,24 @@ add_metadata <- function(supertbl, db_metadata, redcap_uri, token) {
     # of info from field_name_updated
     select(!c("field_name", "select_choices_or_calculations")) %>%
     rename(
-      # TODO: consider changing this name upstream in update_field_names
       field_name = "field_name_updated",
       redcap_form_name = "form_name"
     ) %>%
-    # TODO: Consider adding form completion fields to metadata
     relocate("field_name", "field_label", "field_type", .before = everything()) %>%
     # nest by form
     nest(redcap_metadata = !"redcap_form_name")
 
   # Combine ----
-  supertbl %>%
+  res <- supertbl %>%
     left_join(instrument_labs, by = "redcap_form_name") %>%
-    left_join(metadata, by = "redcap_form_name")
+    left_join(metadata, by = "redcap_form_name") %>%
+    relocate("redcap_form_name", "redcap_form_label", "redcap_data",
+             "redcap_metadata", "structure")
+
+  # Add summary stats ----
+  res %>%
+    mutate(summary = map(.data$redcap_data, calc_metadata_stats)) %>%
+    unnest_wider(summary)
 }
 
 #' @title
@@ -283,12 +290,14 @@ add_metadata <- function(supertbl, db_metadata, redcap_uri, token) {
 #' \code{link_arms()}
 #'
 #' @importFrom rlang .data
-#' @importFrom dplyr select left_join
+#' @importFrom dplyr select left_join relocate
 #' @importFrom tidyr nest
 #'
 #' @return
 #' The original supertibble with an events \code{redcap_events} list column
 #' containing arms and events associated with each instrument
+#'
+#' @keywords internal
 #'
 add_event_mapping <- function(supertbl, linked_arms) {
   event_info <- linked_arms %>%
@@ -296,5 +305,43 @@ add_event_mapping <- function(supertbl, linked_arms) {
     select(redcap_form_name = "form", "redcap_event", "redcap_arm", "arm_name") %>%
     nest(redcap_events = !"redcap_form_name")
 
-  left_join(supertbl, event_info, by = "redcap_form_name")
+  left_join(supertbl, event_info, by = "redcap_form_name") %>%
+    relocate("redcap_events", .after = "redcap_metadata")
+}
+
+#' @title
+#' Utility function to calculate summary for each tibble in a supertibble
+#'
+#' @param data a tibble of redcap data stored in the \code{redcap_data} column
+#' of a supertibble
+#'
+#' @importFrom dplyr select
+#' @importFrom tidyselect any_of
+#' @importFrom utils object.size
+#'
+#' @return
+#' A list containing:
+#' - \code{data_rows}, the number of rows in the data
+#' - \code{data_cols}, the number of columns in the data
+#' - \code{data_size}, the size of the data in bytes
+#' - \code{data_na_pct}, the percentage of cells that are NA excluding
+#' identifiers and form completion fields
+#'
+#' @keywords internal
+#'
+calc_metadata_stats <- function(data) {
+  na_pct <- data %>%
+    # drop identifier
+    select(-1) %>%
+    # drop cols to exclude from AN calc
+    select(!any_of(
+      c("redcap_repeat_instance", "redcap_event",
+        "redcap_arm", "form_status_complete"))) %>%
+    is.na() %>%
+    mean()
+
+  list(
+    data_rows = nrow(data), data_cols = ncol(data),
+    data_size = object.size(data), data_na_pct = na_pct
+  )
 }

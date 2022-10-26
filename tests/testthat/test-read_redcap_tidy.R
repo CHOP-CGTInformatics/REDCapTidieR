@@ -263,29 +263,35 @@ test_that("read_redcap_tidy returns metadata", {
     out <- read_redcap_tidy(redcap_uri, longitudinal_token)
   })
 
-  metadata_cols <- c("redcap_form_label", "redcap_metadata", "redcap_events")
-
-  # metadata fields exist
-  expect_true(
-    all(metadata_cols %in% names(out))
+  expected_cols <- c(
+    "redcap_form_name", "redcap_form_label", "redcap_data", "redcap_metadata",
+    "redcap_events", "structure", "data_rows", "data_cols", "data_size",
+    "data_na_pct"
   )
 
-  # metadata fields consists of tibbles
-  out$redcap_metadata %>%
+  # metadata fields exist and correctly ordered
+  expect_equal(expected_cols, names(out))
+
+  # metadata fields have the correct data types
+
+  ## redcap_metadata and redcap_events fields consist of tibbles
+  c(out$redcap_metadata, out$redcap_events) %>%
     purrr::map_lgl(inherits, what = "tbl") %>%
     all() %>%
     expect_true()
 
-  # event fields consists of tibbles
-  out$redcap_events %>%
-    purrr::map_lgl(inherits, what = "tbl") %>%
-    all() %>%
-    expect_true()
+  ## summary fields have correct types
+  expect_type(out$data_rows, "integer")
+  expect_type(out$data_cols, "integer")
+  expect_s3_class(out$data_size, "object_size")
+  expect_true(
+    all(out$data_na_pct >= 0) && all(out$data_na_pct <= 1)
+  )
 
   # metadata contains all expected fields in data
 
-  # fields we don't expect
-  # presence of record_id tested separately
+  ## fields we don't expect
+  ## presence of record_id tested separately
   exclude_fields <- c(
     "record_id", "redcap_repeat_instance",
     "redcap_event", "redcap_arm", "form_status_complete"
@@ -317,9 +323,21 @@ test_that("read_redcap_tidy suppresses metadata when include_metadata is FALSE",
                             include_metadata = FALSE)
   })
 
-  metadata_cols <- c("redcap_form_label", "metadata")
+  metadata_cols <- c(
+    "redcap_form_label", "redcap_metadata", "redcap_events", "data_rows",
+    "data_cols", "data_size", "data_na_pct"
+  )
 
   expect_false(
     any(metadata_cols %in% names(out))
   )
+})
+
+test_that("read_redcap_tidy suppresses events metadata for non-longitudinal database", {
+  httptest::with_mock_api({
+    out <- read_redcap_tidy(redcap_uri, classic_token) %>%
+      suppressWarnings(classes = "field_missing_categories")
+  })
+
+  expect_false("redcap_events" %in% names(out))
 })
