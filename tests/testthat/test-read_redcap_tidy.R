@@ -283,7 +283,7 @@ test_that("read_redcap_tidy returns metadata", {
   ## summary fields have correct types
   expect_type(out$data_rows, "integer")
   expect_type(out$data_cols, "integer")
-  expect_s3_class(out$data_size, "object_size")
+  expect_s3_class(out$data_size, "lobstr_bytes")
   expect_true(
     all(out$data_na_pct >= 0) && all(out$data_na_pct <= 1)
   )

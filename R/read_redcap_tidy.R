@@ -317,7 +317,7 @@ add_event_mapping <- function(supertbl, linked_arms) {
 #'
 #' @importFrom dplyr select
 #' @importFrom tidyselect any_of
-#' @importFrom utils object.size
+#' @importFrom lobstr obj_size
 #'
 #' @return
 #' A list containing:
@@ -342,6 +342,6 @@ calc_metadata_stats <- function(data) {
 
   list(
     data_rows = nrow(data), data_cols = ncol(data),
-    data_size = object.size(data), data_na_pct = na_pct
+    data_size = obj_size(data), data_na_pct = na_pct
   )
 }

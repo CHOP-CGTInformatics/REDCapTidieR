@@ -18,6 +18,7 @@ Imports:
     checkmate,
     cli,
     dplyr,
+    lobstr,
     purrr,
     REDCapR (>= 1.1.0),
     rlang,
