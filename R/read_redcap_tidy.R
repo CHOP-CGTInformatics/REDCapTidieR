@@ -233,8 +233,8 @@ get_fields_to_drop <- function(db_metadata, form) {
 #' list column
 #'
 #' @importFrom REDCapR redcap_instruments
-#' @importFrom dplyr left_join rename %>% select rename relocate mutate
-#' @importFrom tidyr nest unnest_wider
+#' @importFrom dplyr left_join rename %>% select rename relocate mutate bind_rows
+#' @importFrom tidyr nest unnest_wider complete fill
 #' @importFrom tidyselect everything
 #' @importFrom rlang .data
 #' @importFrom purrr map
@@ -255,7 +255,7 @@ add_metadata <- function(supertbl, db_metadata, redcap_uri, token) {
     )
 
   # Process metadata ----
-  metadata <- db_metadata %>%
+  db_metadata <- db_metadata %>%
     # At this stage select_choices_or_calculations has been unpacked into
     # field_name_updated so we can drop it. Likewise, field_name has a subset
     # of info from field_name_updated
@@ -264,9 +264,23 @@ add_metadata <- function(supertbl, db_metadata, redcap_uri, token) {
       field_name = "field_name_updated",
       redcap_form_name = "form_name"
     ) %>%
-    relocate("field_name", "field_label", "field_type", .before = everything()) %>%
-    # nest by form
-    nest(redcap_metadata = !"redcap_form_name")
+    relocate("field_name", "field_label", "field_type", .before = everything())
+
+  ## Create a record with the project identifier for each form
+  all_forms <- unique(db_metadata$redcap_form_name)
+  record_id_field <- get_project_id_field(supertbl$redcap_data[[1]])
+
+  db_metadata <- db_metadata %>%
+    # Just the record_id fields
+    filter(.data$field_name == record_id_field) %>%
+    complete(field_name = record_id_field, redcap_form_name = all_forms) %>%
+    # Fill in metadata from first entry
+    fill(everything()) %>%
+    # Combine with non-record_id fields
+    bind_rows(filter(db_metadata, .data$field_name != record_id_field))
+
+  # nest by form
+  metadata <- nest(db_metadata, redcap_metadata = !"redcap_form_name")
 
   # Combine ----
   res <- supertbl %>%
@@ -330,13 +344,16 @@ add_event_mapping <- function(supertbl, linked_arms) {
 #' @keywords internal
 #'
 calc_metadata_stats <- function(data) {
+
+  excluded_fields <- c(
+    get_project_id_field(data),
+    "redcap_repeat_instance", "redcap_event",
+    "redcap_arm", "form_status_complete"
+  )
+
   na_pct <- data %>%
-    # drop identifier
-    select(-1) %>%
-    # drop cols to exclude from AN calc
-    select(!any_of(
-      c("redcap_repeat_instance", "redcap_event",
-        "redcap_arm", "form_status_complete"))) %>%
+    # drop cols to exclude from NA calc
+    select(!any_of(excluded_fields)) %>%
     is.na() %>%
     mean()
 

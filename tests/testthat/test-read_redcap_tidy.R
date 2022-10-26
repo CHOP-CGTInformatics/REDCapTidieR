@@ -108,13 +108,11 @@ test_that("supplying forms is equivalent to post-hoc filtering for a longitudina
     filtered_by_api <-
       read_redcap_tidy(redcap_uri,
                        longitudinal_token,
-                       forms = "repeated",
-                       include_metadata = FALSE)
+                       forms = "repeated")
 
     filtered_locally <-
       read_redcap_tidy(redcap_uri,
-                       longitudinal_token,
-                       include_metadata = FALSE) %>%
+                       longitudinal_token) %>%
       filter(redcap_form_name == "repeated")
   })
 
@@ -291,10 +289,9 @@ test_that("read_redcap_tidy returns metadata", {
   # metadata contains all expected fields in data
 
   ## fields we don't expect
-  ## presence of record_id tested separately
   exclude_fields <- c(
-    "record_id", "redcap_repeat_instance",
-    "redcap_event", "redcap_arm", "form_status_complete"
+    "redcap_repeat_instance", "redcap_event",
+    "redcap_arm", "form_status_complete"
   )
 
   fields_in_metadata <- out$redcap_metadata %>%
@@ -306,13 +303,6 @@ test_that("read_redcap_tidy returns metadata", {
     map(setdiff, y = exclude_fields)
 
   expect_equal(fields_in_metadata, fields_in_data)
-
-  # record_id is in the metadata
-  flat_metadata_field_names <- out$redcap_metadata %>%
-    map("field_name") %>%
-    unlist()
-
-  expect_true("record_id" %in% flat_metadata_field_names)
 
 })
 

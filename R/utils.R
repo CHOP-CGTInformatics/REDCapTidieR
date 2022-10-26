@@ -370,3 +370,22 @@ multi_choice_to_labels <- function(db_data, db_metadata) {
   }
   db_data
 }
+
+#' @title
+#' Utility function to extract the name of the project identifier field for
+#' a tibble of REDCap data
+#'
+#' @details
+#' The current implementation assumes that the first field in the data is the
+#' project identifier
+#'
+#' @param data a tibble of REDCap data
+#'
+#' @return
+#' The name of the identifier field in the data
+#'
+#' @keywords internal
+#'
+get_project_id_field <- function(data) {
+  names(data)[[1]]
+}
