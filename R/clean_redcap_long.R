@@ -72,6 +72,7 @@ clean_redcap_long <- function(
 
   ## Nonrepeating Forms Logic ----
   nonrepeated_forms <- db_metadata_long %>%
+    filter(!is.na(.data$form_name)) %>%
     pull(.data$form_name) %>%
     unique()
 

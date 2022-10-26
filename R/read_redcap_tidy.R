@@ -86,6 +86,10 @@ read_redcap_tidy <- function(redcap_uri,
                                       verbose = FALSE)$data %>%
     filter(.data$field_type != "descriptive")
 
+  # Dissociate primary project id from any instrument
+  # primary id will always be first in the metadata
+  db_metadata$form_name[[1]] <- NA_character_
+
   # The user may not have requested form with identifiers. We need to make sure
   # identifiers are kept regardless. This requires adding the form with
   # identifiers to our redcap_read_oneshot call but filtering out extra,
@@ -118,7 +122,11 @@ read_redcap_tidy <- function(redcap_uri,
     }
 
     # Keep only user requested forms in the metadata
-    db_metadata <- filter(db_metadata, .data$form_name %in% forms)
+    # form_name is NA for primary id
+    db_metadata <- filter(
+      db_metadata,
+      .data$form_name %in% forms | is.na(.data$form_name)
+    )
   }
 
   # Load REDCap Dataset output ----
@@ -254,6 +262,7 @@ get_fields_to_drop <- function(db_metadata, form) {
 #'
 #' @importFrom REDCapR redcap_instruments
 #' @importFrom dplyr left_join rename %>% select rename relocate mutate bind_rows
+#' filter
 #' @importFrom tidyr nest unnest_wider complete fill
 #' @importFrom tidyselect everything
 #' @importFrom rlang .data
@@ -295,9 +304,10 @@ add_metadata <- function(supertbl, db_metadata, redcap_uri, token) {
     filter(.data$field_name == record_id_field) %>%
     complete(field_name = record_id_field, redcap_form_name = all_forms) %>%
     # Fill in metadata from first entry
-    fill(everything()) %>%
+    fill(everything(), .direction = "up") %>%
     # Combine with non-record_id fields
-    bind_rows(filter(db_metadata, .data$field_name != record_id_field))
+    bind_rows(filter(db_metadata, .data$field_name != record_id_field)) %>%
+    filter(!is.na(.data$redcap_form_name))
 
   # nest by form
   metadata <- nest(db_metadata, redcap_metadata = !"redcap_form_name")
