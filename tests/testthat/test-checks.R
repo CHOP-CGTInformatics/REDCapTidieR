@@ -37,7 +37,7 @@ test_that("check_repeat_and_nonrepeat works", {
   expect_error(check_repeat_and_nonrepeat(db_data = test_data_not_longitudinal))
 })
 
-test_that("check_repeat_and_nonrepeat works", {
+test_that("check_redcap_populated works", {
   test_data <- tibble::tribble()
 
   expect_error(check_redcap_populated(db_data = test_data))
