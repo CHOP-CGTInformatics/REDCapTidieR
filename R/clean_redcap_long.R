@@ -178,7 +178,7 @@ distill_nonrepeat_table_long <- function(
   out <- db_data_long %>%
     select(all_of(my_fields), "redcap_event", "redcap_arm") %>%
     relocate(
-      c(.data$redcap_event, .data$redcap_arm), .after = !!my_record_id
+      c("redcap_event", "redcap_arm"), .after = !!my_record_id
     ) %>%
     rename("form_status_complete" = paste0(my_form, "_complete")) %>%
     relocate("form_status_complete", .after = everything())
