@@ -16,6 +16,7 @@
 #'
 #' @importFrom checkmate assert_character
 #' @importFrom rlang .data
+#' @importFrom tidyselect all_of
 #'
 #' @examples
 #' # Supply a `read_redcap_tidy()` output to for table extraction
@@ -33,9 +34,9 @@
 extract_table <- function(.data,
                           tbl) {
   # Check tbl is valid ----
-  assert_character(all_of(tbl))
+  assert_character(tbl)
 
-  if (length(all_of(tbl)) > 1) {
+  if (length(tbl) > 1) {
     stop("Only one table may be supplied.")
   }
 
@@ -94,9 +95,9 @@ extract_tables <- function(.data,
   tbls <- enquo(tbls)
 
   out <- .data %>%
-    select(-.data$structure) %>%
-    pivot_wider(names_from = .data$redcap_form_name,
-                values_from = .data$redcap_data)
+    select(-"structure") %>%
+    pivot_wider(names_from = "redcap_form_name",
+                values_from = "redcap_data")
 
   out <- out[eval_select(tbls, data = out)]
 
