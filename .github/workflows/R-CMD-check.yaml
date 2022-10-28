@@ -30,6 +30,11 @@ jobs:
         with:
           cache-version: 2
 
+      - name: Install pak dependency
+        run: |
+          install.packages("pak")
+        shell: Rscript {0}
+
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
           extra-packages: any::rcmdcheck
