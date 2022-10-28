@@ -78,7 +78,7 @@ test_that("parse_labels works", {
   expect_equal(parse_labels(valid_string), valid_output)
   expect_error(parse_labels(invalid_string_1))
   expect_error(parse_labels(invalid_string_2))
-  expect_warning(parse_labels(warning_string_1), regexp = NA)
+  expect_warning(parse_labels(warning_string_1))
 })
 
 # uri <- Sys.getenv("REDCAP_URI")

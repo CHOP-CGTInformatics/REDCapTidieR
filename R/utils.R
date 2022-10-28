@@ -88,10 +88,17 @@ link_arms <- function(
 #' @importFrom stringi stri_split_fixed
 #' @importFrom tibble as_tibble is_tibble
 #' @importFrom rlang .data
+#' @importFrom cli cli_abort cli_warn
 #'
 #' @keywords internal
 
 parse_labels <- function(string) {
+
+  # If string is empty/NA, throw a warning
+  if(is.na(string)){
+    cli_warn("Empty string detected for a given multiple choice label.")
+  }
+
   out <- string %>%
     strsplit(" \\| ") # Split by "|"
 
@@ -100,9 +107,9 @@ parse_labels <- function(string) {
     # If this is a misattributed data field or blank, throw warning in
     # multi_choice_to_labels
     if (length(out[[1]]) > 1 && !all(is.na(out[[1]]))) {
-      stop(paste0("Cannot parse the select_choices_or_calculations field from
+      cli_abort("Cannot parse the select_choices_or_calculations field from
                   REDCap metadata. This may happen if there is a pipe character
-                  `|` inside the label: ", string))
+                  `|` inside the label: {string}")
     }
   }
 
@@ -117,9 +124,9 @@ parse_labels <- function(string) {
     # If this is a misattributed data field or blank, throw warning in
     # multi_choice_to_labels
     if (length(out[[1]]) > 1 && !all(is.na(out[[1]]))) {
-      stop(paste0("Cannot parse the select_choices_or_calculations field from
+      cli_abort("Cannot parse the select_choices_or_calculations field from
                   REDCap metadata. This may happen if there is a pipe character
-                  `|` inside the label: ", string))
+                  `|` inside the label: {string}")
     }
   }
 

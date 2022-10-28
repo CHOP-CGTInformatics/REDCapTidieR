@@ -10,7 +10,9 @@ test_that("check_user_rights works", {
     ~field_name_updated,  ~form_name,
     "field_1",           "form_1",
     "field_2",           "form_2",
-    "missing_field",     "missing_form"
+    "missing_field",     "missing_form",
+    "missing_field_2",   "missing_form",
+    "missing_field_3",   "missing_form2"
   )
 
   expect_warning(

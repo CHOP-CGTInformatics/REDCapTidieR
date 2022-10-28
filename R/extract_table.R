@@ -16,6 +16,7 @@
 #'
 #' @importFrom checkmate assert_character
 #' @importFrom rlang .data
+#' @importFrom cli cli_abort
 #'
 #' @examples
 #' # Supply a `read_redcap_tidy()` output to for table extraction
@@ -36,7 +37,7 @@ extract_table <- function(.data,
   assert_character(all_of(tbl))
 
   if (length(all_of(tbl)) > 1) {
-    stop("Only one table may be supplied.")
+    cli_abort("Only one table may be supplied.")
   }
 
   # Extract specified table ----
