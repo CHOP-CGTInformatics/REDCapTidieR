@@ -92,21 +92,52 @@
 <div class="section level2">
 <h2 id="introduction-to-redcap-and-redcapr">Introduction to REDCap and <code>REDCapR</code><a class="anchor" aria-label="anchor" href="#introduction-to-redcap-and-redcapr"></a>
 </h2>
-<p><a href="https://www.project-redcap.org/" class="external-link">REDCap</a> is a powerful database solution used by many institutions around the world:</p>
+<p><a href="https://www.project-redcap.org/" class="external-link">REDCap</a> is a powerful
+database solution used by many institutions around the world:</p>
 <blockquote>
-<p>“REDCap is a secure web application for building and managing online surveys and databases. While REDCap can be used to collect virtually any type of data in any environment (including compliance with 21 CFR Part 11, FISMA, HIPAA, and GDPR), it is specifically geared to support online and offline data capture for research studies and operations. The REDCap Consortium, a vast support network of collaborators, is composed of thousands of active institutional partners in over one hundred countries who utilize and support their own individual REDCap systems.”</p>
+<p>“REDCap is a secure web application for building and managing online
+surveys and databases. While REDCap can be used to collect virtually any
+type of data in any environment (including compliance with 21 CFR Part
+11, FISMA, HIPAA, and GDPR), it is specifically geared to support online
+and offline data capture for research studies and operations. The REDCap
+Consortium, a vast support network of collaborators, is composed of
+thousands of active institutional partners in over one hundred countries
+who utilize and support their own individual REDCap systems.”</p>
 </blockquote>
-<p>The <a href="https://ouhscbbmc.github.io/REDCapR/" class="external-link">{REDCapR}</a> package streamlines calls to the REDCap API. Arguably, its main use is to import records from a REDCap project. This works well for simple projects, however becomes ugly when complex databases that include longitudinal structure and/or repeated instruments are involved.</p>
-<p>We wrote the <code>REDCapTidieR</code> package to make the life of analysts who deal with complex REDCap databases easier. It does so by building upon <a href="https://ouhscbbmc.github.io/REDCapR" class="external-link">REDCapR</a> to make its output <strong>tidier</strong>. Instead of one large data frame composed of a block matrix, the analyst gets to work with a set of tidy tibbles, one for each REDCap instrument.</p>
-<p>To demonstrate the use of <code>REDCapTidieR</code>, let’s look at a REDCap database that has information about some 734 superheroes, derived from data scraped from the <a href="https://www.superherodb.com/" class="external-link">Superhero Database</a>.</p>
+<p>The <a href="https://ouhscbbmc.github.io/REDCapR/" class="external-link">{REDCapR}</a>
+package streamlines calls to the REDCap API. Arguably, its main use is
+to import records from a REDCap project. This works well for simple
+projects, however becomes ugly when complex databases that include
+longitudinal structure and/or repeated instruments are involved.</p>
+<p>We wrote the <code>REDCapTidieR</code> package to make the life of
+analysts who deal with complex REDCap databases easier. It does so by
+building upon <a href="https://ouhscbbmc.github.io/REDCapR" class="external-link">REDCapR</a>
+to make its output <strong>tidier</strong>. Instead of one large data
+frame composed of a block matrix, the analyst gets to work with a set of
+tidy tibbles, one for each REDCap instrument.</p>
+<p>To demonstrate the use of <code>REDCapTidieR</code>, let’s look at a
+REDCap database that has information about some 734 superheroes, derived
+from data scraped from the <a href="https://www.superherodb.com/" class="external-link">Superhero Database</a>.</p>
 <p>This REDCap project contains two instruments:</p>
 <ul>
-<li><p><strong>Heroes Information</strong> contains demographic data (name, eye color, height and weight, etc.). This is a <em>nonrepeating</em> instrument.</p></li>
-<li><p><strong>Super Hero Powers</strong> is a <em>repeating</em> instrument that captures all of the superpowers of a specific superhero. A superhero can have zero, one, or many superpowers associated with them.</p></li>
+<li><p><strong>Heroes Information</strong> contains demographic data
+(name, eye color, height and weight, etc.). This is a
+<em>nonrepeating</em> instrument.</p></li>
+<li><p><strong>Super Hero Powers</strong> is a <em>repeating</em>
+instrument that captures all of the superpowers of a specific superhero.
+A superhero can have zero, one, or many superpowers associated with
+them.</p></li>
 </ul>
-<p>Here is a screenshot of the REDCap Status Dashboard of this database. Note that <em>Abin Sur</em> (record #2) has a single circle in the Super Hero Powers column, indicating that they have one superpower. <em>Agent 13</em> (record #8) has no superpowers.</p>
+<p>Here is a screenshot of the REDCap Status Dashboard of this database.
+Note that <em>Abin Sur</em> (record #2) has a single circle in the Super
+Hero Powers column, indicating that they have one superpower. <em>Agent
+13</em> (record #8) has no superpowers.</p>
 <p><img src="record_status_dash.png"></p>
-<p>Great! Now let’s import the superheroes data into R. We can use <code><a href="https://ouhscbbmc.github.io/REDCapR/reference/redcap_read_oneshot.html" class="external-link">REDCapR::redcap_read_oneshot()</a></code> which returns a list with and element named <code>data</code> that contains all of the data as a data frame. We turned this data frame into a tibble for better readability:</p>
+<p>Great! Now let’s import the superheroes data into R. We can use
+<code><a href="https://ouhscbbmc.github.io/REDCapR/reference/redcap_read_oneshot.html" class="external-link">REDCapR::redcap_read_oneshot()</a></code> which returns a list with
+and element named <code>data</code> that contains all of the data as a
+data frame. We turned this data frame into a tibble for better
+readability:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">token</span> <span class="op">&lt;-</span> <span class="st">"123456789ABCDEF123456789ABCDEF04"</span></span>
 <span><span class="va">redcap_uri</span> <span class="op">&lt;-</span> <span class="st">"https://my.institution.edu/redcap/api/"</span></span></code></pre></div>
@@ -132,19 +163,40 @@
 <span><span class="co">#&gt; <span style="color: #949494;">#   alignment &lt;chr&gt;, heroes_information_complete &lt;dbl&gt;, power &lt;chr&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   super_hero_powers_complete &lt;dbl&gt;, and abbreviated variable names</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   ¹​redcap_repeat_instrument, ²​redcap_repeat_instance, ³​eye_color, ⁴​hair_color</span></span></span></code></pre></div>
-<p>This data structure is sometimes called the <a href="https://en.wikipedia.org/wiki/Block_matrix" class="external-link">block matrix</a>. It’s what happens when REDCap mashes the contents of a database that has both repeating and non-repeating instruments into a single table.</p>
-<p>While it may seem a good idea to have everything in one data frame, there are significant downsides, including:</p>
+<p>This data structure is sometimes called the <a href="https://en.wikipedia.org/wiki/Block_matrix" class="external-link">block matrix</a>. It’s
+what happens when REDCap mashes the contents of a database that has both
+repeating and non-repeating instruments into a single table.</p>
+<p>While it may seem a good idea to have everything in one data frame,
+there are significant downsides, including:</p>
 <ul>
-<li><p>It’s unwieldy! Although there are only 734 superheroes in the data set, there are 6,700 rows. Every transformation first requires whittling down a huge data set. This increases cognitive load.</p></li>
-<li><p>It’s sparse - there are a lot of <code>NA</code> values indicating missing values. This is confusing and ambiguous, because these <code>NA</code> values don’t represent data fields left blank in the database but instead are an artifact of how the table is built.</p></li>
-<li><p>Important metadata is missing. For example, it’s not trivial to determine which fields are associated with a specific instrument.</p></li>
-<li><p>The meaning of a row in the data set is inconsistent. It depends on whether the row is associated with a specific instance of a specific repeated instrument or not (you can figure this out by looking at the <code>redcap_repeat_instrument</code> column). This is confusing because we’d expect the granularity of a table to be consistent. It also technically violates the definition of <a href="https://www.jstatsoft.org/article/view/v059i10" class="external-link">Tidy Data</a> because multiple types of observational units are stored in the same table.</p></li>
+<li><p>It’s unwieldy! Although there are only 734 superheroes in the
+data set, there are 6,700 rows. Every transformation first requires
+whittling down a huge data set. This increases cognitive load.</p></li>
+<li><p>It’s sparse - there are a lot of <code>NA</code> values
+indicating missing values. This is confusing and ambiguous, because
+these <code>NA</code> values don’t represent data fields left blank in
+the database but instead are an artifact of how the table is
+built.</p></li>
+<li><p>Important metadata is missing. For example, it’s not trivial to
+determine which fields are associated with a specific
+instrument.</p></li>
+<li><p>The meaning of a row in the data set is inconsistent. It depends
+on whether the row is associated with a specific instance of a specific
+repeated instrument or not (you can figure this out by looking at the
+<code>redcap_repeat_instrument</code> column). This is confusing because
+we’d expect the granularity of a table to be consistent. It also
+technically violates the definition of <a href="https://www.jstatsoft.org/article/view/v059i10" class="external-link">Tidy Data</a>
+because multiple types of observational units are stored in the same
+table.</p></li>
 </ul>
 </div>
 <div class="section level2">
 <h2 id="tidying-redcap-exports">Tidying REDCap Exports<a class="anchor" aria-label="anchor" href="#tidying-redcap-exports"></a>
 </h2>
-<p>The main function of the {REDCapTidieR} package is the <code><a href="../reference/read_redcap_tidy.html">read_redcap_tidy()</a></code> function. It has a similar API to <code><a href="https://ouhscbbmc.github.io/REDCapR/reference/redcap_read_oneshot.html" class="external-link">REDCapR::redcap_read_oneshot()</a></code>, requiring a REDCap database URI and an API token.</p>
+<p>The main function of the {REDCapTidieR} package is the
+<code><a href="../reference/read_redcap_tidy.html">read_redcap_tidy()</a></code> function. It has a similar API to
+<code><a href="https://ouhscbbmc.github.io/REDCapR/reference/redcap_read_oneshot.html" class="external-link">REDCapR::redcap_read_oneshot()</a></code>, requiring a REDCap database
+URI and an API token.</p>
 <p>Let’s try it out and observe the output:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/CHOP-CGTDataOps/REDCapTidieR" class="external-link">REDCapTidieR</a></span><span class="op">)</span></span>
@@ -156,15 +208,31 @@
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> super_hero_powers  <span style="color: #949494;">&lt;tibble [5,966 × 4]&gt;</span> repeating   </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> heroes_information <span style="color: #949494;">&lt;tibble [734 × 12]&gt;</span>  nonrepeating</span></span></code></pre></div>
-<p>This returns a tibble with two rows. This may be surprising because you might expect more rows from a database with 734 superheroes. However, this is a <strong>tibble of tibbles</strong>, or a <strong>supertibble</strong>.</p>
-<p>In the <strong>REDCapTidieR</strong> <strong>supertibble,</strong> each row represents a REDCap instrument. The first column contains the instrument name. The second column is a <strong>list column</strong> containing a tibble for each instrument. The third column indicates the repeat/nonrepeat structure of the instrument.</p>
+<p>This returns a tibble with two rows. This may be surprising because
+you might expect more rows from a database with 734 superheroes.
+However, this is a <strong>tibble of tibbles</strong>, or a
+<strong>supertibble</strong>.</p>
+<p>In the <strong>REDCapTidieR</strong> <strong>supertibble,</strong>
+each row represents a REDCap instrument. The first column contains the
+instrument name. The second column is a <strong>list column</strong>
+containing a tibble for each instrument. The third column indicates the
+repeat/nonrepeat structure of the instrument.</p>
 </div>
 <div class="section level2">
 <h2 id="extracting-tibbles-from-the-supertibble">Extracting Tibbles from the Supertibble<a class="anchor" aria-label="anchor" href="#extracting-tibbles-from-the-supertibble"></a>
 </h2>
-<p>There’s a good chance that if we pull data from a REDCap database that we’d like that data to be represented as individual tibbles in the global environment. While it’s possible to do this manually (see below), this can become tedious if the REDCap project has many instruments. We wrote the <code><a href="../reference/bind_tables.html">bind_tables()</a></code> function to automate this.</p>
-<p><code><a href="../reference/bind_tables.html">bind_tables()</a></code> takes the output of <code><a href="../reference/read_redcap_tidy.html">read_redcap_tidy()</a></code>, extracts the individual tibbles and binds them to an environment. By default, this is the global environment, but you can also supply your own environment object which will be modified using reference semantics.</p>
-<p>Let’s take a look at the data frames in the global environment before and after calling <code><a href="../reference/bind_tables.html">bind_tables()</a></code>:</p>
+<p>There’s a good chance that if we pull data from a REDCap database
+that we’d like that data to be represented as individual tibbles in the
+global environment. While it’s possible to do this manually (see below),
+this can become tedious if the REDCap project has many instruments. We
+wrote the <code><a href="../reference/bind_tables.html">bind_tables()</a></code> function to automate this.</p>
+<p><code><a href="../reference/bind_tables.html">bind_tables()</a></code> takes the output of
+<code><a href="../reference/read_redcap_tidy.html">read_redcap_tidy()</a></code>, extracts the individual tibbles and
+binds them to an environment. By default, this is the global
+environment, but you can also supply your own environment object which
+will be modified using reference semantics.</p>
+<p>Let’s take a look at the data frames in the global environment before
+and after calling <code><a href="../reference/bind_tables.html">bind_tables()</a></code>:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/ls_str.html" class="external-link">ls.str</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/funprog.html" class="external-link">Filter</a></span><span class="op">(</span><span class="va">is.data.frame</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">as.list</a></span><span class="op">(</span><span class="va">.GlobalEnv</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; superheroes_tidy : tibble [2 × 3] (S3: tbl_df/tbl/data.frame)</span></span></code></pre></div>
@@ -176,9 +244,15 @@
 <span><span class="co">#&gt; heroes_information : tibble [734 × 12] (S3: tbl_df/tbl/data.frame)</span></span>
 <span><span class="co">#&gt; super_hero_powers : tibble [5,966 × 4] (S3: tbl_df/tbl/data.frame)</span></span>
 <span><span class="co">#&gt; superheroes_tidy : tibble [2 × 3] (S3: tbl_df/tbl/data.frame)</span></span></code></pre></div>
-<p>Note that there are now two additional tibbles, <code>heroes_information</code> and <code>super_hero_powers</code>, in the global environment!</p>
-<p>If you don’t like the idea of tibbles magically appearing in your environment or if you’d like a more pure approach to extracting tibbles, you can use the <code><a href="../reference/extract_table.html">extract_table()</a></code> or <code><a href="../reference/extract_tables.html">extract_tables()</a></code> functions.</p>
-<p>Use <code><a href="../reference/extract_table.html">extract_table()</a></code> to extract a single tibble from the supertibble:</p>
+<p>Note that there are now two additional tibbles,
+<code>heroes_information</code> and <code>super_hero_powers</code>, in
+the global environment!</p>
+<p>If you don’t like the idea of tibbles magically appearing in your
+environment or if you’d like a more pure approach to extracting tibbles,
+you can use the <code><a href="../reference/extract_table.html">extract_table()</a></code> or
+<code><a href="../reference/extract_tables.html">extract_tables()</a></code> functions.</p>
+<p>Use <code><a href="../reference/extract_table.html">extract_table()</a></code> to extract a single tibble from the
+supertibble:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">superheroes_tidy</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu"><a href="../reference/extract_table.html">extract_table</a></span><span class="op">(</span><span class="st">"heroes_information"</span><span class="op">)</span></span>
@@ -198,7 +272,8 @@
 <span><span class="co">#&gt; <span style="color: #949494;"># … with 724 more rows, 2 more variables: alignment &lt;chr&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   form_status_complete &lt;fct&gt;, and abbreviated variable names ¹​eye_color,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   ²​hair_color, ³​publisher, ⁴​skin_color</span></span></span></code></pre></div>
-<p>Use <code><a href="../reference/extract_tables.html">extract_tables()</a></code> to create a named list of tibbles from a supertibble. The default is to extract all tibbles:</p>
+<p>Use <code><a href="../reference/extract_tables.html">extract_tables()</a></code> to create a named list of tibbles
+from a supertibble. The default is to extract all tibbles:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">superheroes_list_of_tibbles</span> <span class="op">&lt;-</span> <span class="va">superheroes_tidy</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu"><a href="../reference/extract_tables.html">extract_tables</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -207,7 +282,8 @@
 <span><span class="co">#&gt; List of 2</span></span>
 <span><span class="co">#&gt;  $ super_hero_powers : tibble [5,966 × 4] (S3: tbl_df/tbl/data.frame)</span></span>
 <span><span class="co">#&gt;  $ heroes_information: tibble [734 × 12] (S3: tbl_df/tbl/data.frame)</span></span></code></pre></div>
-<p>A neat feature of these extraction functions is that they support <code>tidy-select</code> semantics and selectors for picking tables:</p>
+<p>A neat feature of these extraction functions is that they support
+<code>tidy-select</code> semantics and selectors for picking tables:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">superheroes_list_of_tibbles_ending_with_powers</span> <span class="op">&lt;-</span> <span class="va">superheroes_tidy</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu"><a href="../reference/extract_tables.html">extract_tables</a></span><span class="op">(</span><span class="fu">ends_with</span><span class="op">(</span><span class="st">"powers"</span><span class="op">)</span><span class="op">)</span></span>
@@ -219,11 +295,18 @@
 <div class="section level2">
 <h2 id="structure-of-redcaptidier-tibbles">Structure of <code>REDCapTidieR</code> Tibbles<a class="anchor" aria-label="anchor" href="#structure-of-redcaptidier-tibbles"></a>
 </h2>
-<p>So what do the REDCapTidieR tibbles (the ones inside the supertibble) look like? Consider <code>heroes_information</code>, which contains data from a <strong>nonrepeating</strong> instrument, and note the following:</p>
+<p>So what do the REDCapTidieR tibbles (the ones inside the supertibble)
+look like? Consider <code>heroes_information</code>, which contains data
+from a <strong>nonrepeating</strong> instrument, and note the
+following:</p>
 <ul>
 <li><p>This is not a sparse table - no <code>NA</code>s</p></li>
-<li><p>The tibble’s name <code>heroes_information</code> is descriptive - it tells you what’s in the tibble. The tibble’s name is the same as the instrument name in REDCap.</p></li>
-<li><p>Each row has the same observational unit - one <strong>superhero</strong>, identified by its <code>record_id</code>.</p></li>
+<li><p>The tibble’s name <code>heroes_information</code> is descriptive
+- it tells you what’s in the tibble. The tibble’s name is the same as
+the instrument name in REDCap.</p></li>
+<li><p>Each row has the same observational unit - one
+<strong>superhero</strong>, identified by its
+<code>record_id</code>.</p></li>
 </ul>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">heroes_information</span></span>
@@ -243,10 +326,17 @@
 <span><span class="co">#&gt; <span style="color: #949494;"># … with 724 more rows, 2 more variables: alignment &lt;chr&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   form_status_complete &lt;fct&gt;, and abbreviated variable names ¹​eye_color,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   ²​hair_color, ³​publisher, ⁴​skin_color</span></span></span></code></pre></div>
-<p>Now look at the <code>super_hero_powers</code> tibble, which contains data from a <strong>repeating</strong> instrument, and note the following:</p>
+<p>Now look at the <code>super_hero_powers</code> tibble, which contains
+data from a <strong>repeating</strong> instrument, and note the
+following:</p>
 <ul>
-<li><p>Again, this is not a block matrix/table, making it easy to understand its data content, and the name is descriptive.</p></li>
-<li><p>Each row has the same observational unit - in this case, <strong>superpower per superhero</strong>, identified by <code>record_id</code> and <code>redcap_repeat_instance</code>. This is because <code>super_hero_powers</code> comes from a repeated instrument.</p></li>
+<li><p>Again, this is not a block matrix/table, making it easy to
+understand its data content, and the name is descriptive.</p></li>
+<li><p>Each row has the same observational unit - in this case,
+<strong>superpower per superhero</strong>, identified by
+<code>record_id</code> and <code>redcap_repeat_instance</code>. This is
+because <code>super_hero_powers</code> comes from a repeated
+instrument.</p></li>
 </ul>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">super_hero_powers</span></span>
@@ -264,18 +354,42 @@
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>         1                      2 Accelerated Healing Incomplete          </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>         1                      3 Cold Resistance     Incomplete          </span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># … with 5,956 more rows</span></span></span></code></pre></div>
-<p>In summary, here are the rules by which <code>REDCapTidieR</code> constructs tibbles:</p>
+<p>In summary, here are the rules by which <code>REDCapTidieR</code>
+constructs tibbles:</p>
 <ul>
-<li><p>There is one tibble per REDCap instrument. The tibble’s name is derived from the name given to the instrument in REDCap.</p></li>
-<li><p>The first column is always the record’s ID column. Note: by default, REDCap names the record id field <code>record_id</code>, but this can be changed. <code>REDCapTidieR</code> is smart enough to deal with this. For example, if the record ID field was renamed to <code>subject_id</code> then the first column of each tibble would be <code>subject_id</code>.</p></li>
-<li><p>Additional identifying columns may follow the record ID column, depending on the context and repeat type of the instrument. For example, we have seen the <code>redcap_repeat_instance</code> column which appears when the tibble is derived from a repeated instrument. Tibbles derived from <a href="longitudinal_redcap.html">longitudinal projects</a> have up to two additional columns, one for events and one for arms.</p></li>
+<li><p>There is one tibble per REDCap instrument. The tibble’s name is
+derived from the name given to the instrument in REDCap.</p></li>
+<li><p>The first column is always the record’s ID column. Note: by
+default, REDCap names the record id field <code>record_id</code>, but
+this can be changed. <code>REDCapTidieR</code> is smart enough to deal
+with this. For example, if the record ID field was renamed to
+<code>subject_id</code> then the first column of each tibble would be
+<code>subject_id</code>.</p></li>
+<li><p>Additional identifying columns may follow the record ID column,
+depending on the context and repeat type of the instrument. For example,
+we have seen the <code>redcap_repeat_instance</code> column which
+appears when the tibble is derived from a repeated instrument. Tibbles
+derived from <a href="longitudinal_redcap.html">longitudinal
+projects</a> have up to two additional columns, one for events and one
+for arms.</p></li>
 </ul>
 <blockquote>
-<p>Note: Taken in combination, the identifying columns of any <code>REDCapTidieR</code> tibble are guaranteed to be unique and NOT NULL, and can be used as <strong>composite primary key</strong>. This makes it easy to join REDCapTidieR tibbles!</p>
+<p>Note: Taken in combination, the identifying columns of any
+<code>REDCapTidieR</code> tibble are guaranteed to be unique and NOT
+NULL, and can be used as <strong>composite primary key</strong>. This
+makes it easy to join REDCapTidieR tibbles!</p>
 </blockquote>
 <ul>
-<li><p>After the identifying columns, data columns appear in the same order as in the REDCap instrument. Columns derived from categorical field types (<code>yesno</code>, <code>truefalse</code>, <code>dropdown</code>, <code>radiobutton</code>, <code>checkbox</code>) are populated with data representing the <strong>label</strong>. This is different than REDCapR’s default behavior which will show the <strong>raw value</strong>.</p></li>
-<li><p>The final field is always <code>form_status_complete</code>, which is an column to indicate whether the instrument was marked complete.</p></li>
+<li><p>After the identifying columns, data columns appear in the same
+order as in the REDCap instrument. Columns derived from categorical
+field types (<code>yesno</code>, <code>truefalse</code>,
+<code>dropdown</code>, <code>radiobutton</code>, <code>checkbox</code>)
+are populated with data representing the <strong>label</strong>. This is
+different than REDCapR’s default behavior which will show the
+<strong>raw value</strong>.</p></li>
+<li><p>The final field is always <code>form_status_complete</code>,
+which is an column to indicate whether the instrument was marked
+complete.</p></li>
 </ul>
 </div>
   </div>

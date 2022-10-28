@@ -91,11 +91,17 @@
 <div class="section level2">
 <h2 id="background">Background<a class="anchor" aria-label="anchor" href="#background"></a>
 </h2>
-<p>REDCap databases support two main mechanisms to allow collecting the same data multiple times: repeated instruments and longitudinal projects.</p>
-<p>The granularity of each table (i.e. what a single row represents) depends on the structure of the database (classic, longitudinal with one arm, longitudinal with multiple arms) as well as whether the instruments are repeatable or not. Based on this, <code>REDCapTidieR</code> tibbles contain the following columns to uniquely identify a specific row:</p>
-<table style="width:100%;" class="table">
+<p>REDCap databases support two main mechanisms to allow collecting the
+same data multiple times: repeated instruments and longitudinal
+projects.</p>
+<p>The granularity of each table (i.e. what a single row represents)
+depends on the structure of the database (classic, longitudinal with one
+arm, longitudinal with multiple arms) as well as whether the instruments
+are repeatable or not. Based on this, <code>REDCapTidieR</code> tibbles
+contain the following columns to uniquely identify a specific row:</p>
+<table style="width:98%;" class="table">
 <colgroup>
-<col width="17%">
+<col width="16%">
 <col width="25%">
 <col width="28%">
 <col width="28%">
@@ -131,8 +137,13 @@
 </tr>
 </tbody>
 </table>
-<p>The <code>read_redcap_tidy</code> function returns a tibble in which each row represents a REDCap instrument. The first column contains the instrument name. The second column is a <strong>list column</strong> containing a tibble for each instrument. The third column indicates the repeat/nonrepeat structure of the instrument.</p>
-<p>Let’s use a sample longitudinal REDCap database containing repeat instruments, longitudinal events, and multiple event arms:</p>
+<p>The <code>read_redcap_tidy</code> function returns a tibble in which
+each row represents a REDCap instrument. The first column contains the
+instrument name. The second column is a <strong>list column</strong>
+containing a tibble for each instrument. The third column indicates the
+repeat/nonrepeat structure of the instrument.</p>
+<p>Let’s use a sample longitudinal REDCap database containing repeat
+instruments, longitudinal events, and multiple event arms:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">token</span> <span class="op">&lt;-</span> <span class="st">"123456789ABCDEF123456789ABCDEF02"</span></span>
 <span><span class="va">redcap_uri</span> <span class="op">&lt;-</span> <span class="st">"https://my.institution.edu/redcap/api/"</span></span></code></pre></div>
@@ -148,7 +159,9 @@
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> repeated         <span style="color: #949494;">&lt;tibble [9 × 7]&gt;</span> repeating   </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> nonrepeated      <span style="color: #949494;">&lt;tibble [8 × 6]&gt;</span> nonrepeating</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> nonrepeated2     <span style="color: #949494;">&lt;tibble [3 × 6]&gt;</span> nonrepeating</span></span></code></pre></div>
-<p>Here we have a database with two nonrepeating instruments and one repeating instrument. Let’s look at a sample nonrepeated data output first:</p>
+<p>Here we have a database with two nonrepeating instruments and one
+repeating instrument. Let’s look at a sample nonrepeated data output
+first:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">redcap_export</span><span class="op">$</span><span class="va">redcap_data</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 8 × 6</span></span></span>
@@ -162,7 +175,13 @@
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>         3 event_2               1 <span style="color: #BB0000;">NA</span>          <span style="color: #BB0000;">NA</span>          Incomplete          </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span>         4 event_1               2 Red         Blue        Incomplete          </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">8</span>         4 event_3               2 Green       Yellow      Incomplete</span></span></code></pre></div>
-<p>While in classic databases we would expect only unique <code>record_id</code>s per row, in a longitudinal database <code>record_id</code>s can appear multiple times based on both the event (<code>redcap_event</code>) and arm (<code>redcap_arm</code>) where forms and their respective variables appear. This is illustrated in the earlier table depicting what columns are necessary to uniquely identify rows.</p>
+<p>While in classic databases we would expect only unique
+<code>record_id</code>s per row, in a longitudinal database
+<code>record_id</code>s can appear multiple times based on both the
+event (<code>redcap_event</code>) and arm (<code>redcap_arm</code>)
+where forms and their respective variables appear. This is illustrated
+in the earlier table depicting what columns are necessary to uniquely
+identify rows.</p>
 <p>Now let’s look at the repeated instrument data output:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">redcap_export</span><span class="op">$</span><span class="va">redcap_data</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
@@ -180,11 +199,18 @@
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">9</span>         4                      1 event_3             2 R1      R2      Incomp…</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># … with abbreviated variable names ¹​redcap_arm, ²​repeat_1, ³​repeat_2,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   ⁴​form_status_complete</span></span></span></code></pre></div>
-<p>The only really noticeable difference here is the inclusion of <code>redcap_repeat_instance</code>. This adds a further level of complexity, allowing a single instrument to have repeating values of variable length for a given record.</p>
+<p>The only really noticeable difference here is the inclusion of
+<code>redcap_repeat_instance</code>. This adds a further level of
+complexity, allowing a single instrument to have repeating values of
+variable length for a given record.</p>
 <div class="section level3">
 <h3 id="single-arm-longitudinal-redcap-databases">Single-Arm Longitudinal REDCap Databases<a class="anchor" aria-label="anchor" href="#single-arm-longitudinal-redcap-databases"></a>
 </h3>
-<p>By default, longitudinal REDCap databases are automatically assigned arms. We have found that if the database does not make use of more than the single default arm the assignment of arms is redundant. Therefore, <code>redcap_arm</code> will only appear in data outputs if more than one arm are detected in a database.</p>
+<p>By default, longitudinal REDCap databases are automatically assigned
+arms. We have found that if the database does not make use of more than
+the single default arm the assignment of arms is redundant. Therefore,
+<code>redcap_arm</code> will only appear in data outputs if more than
+one arm are detected in a database.</p>
 </div>
 </div>
   </div>
