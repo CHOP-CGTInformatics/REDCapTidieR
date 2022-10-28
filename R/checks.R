@@ -34,9 +34,10 @@ check_user_rights <- function(
     cli_warn(
       c("Form name{?s} {missing_db_metadata$form_name} detected in metadata,
         but not found in the database export.",
-        "x" = "This can happen when the user privileges are not set to allow
+        "i" = "This can happen when the user privileges are not set to allow
         exporting certain forms via the API. The following variable{?s} are
-        affected: {unlist(missing_db_metadata$fields)}")
+        affected: {unlist(missing_db_metadata$fields)}"),
+      class = c("redcap_user_rights", "REDCapTidieR_cond")
     )
 }
 
@@ -101,7 +102,8 @@ check_repeat_and_nonrepeat <- function(db_data) {
     if ("repeating" %in% check_data &
         "nonrepeating" %in% check_data){
       cli_abort(c("x" = "Instrument detected that has both repeated and
-      nonrepeated instances defined in the project: {rep}"))
+      nonrepeated instances defined in the project: {rep}"),
+                class = c("repeat_nonrepeat_instrument", "REDCapTidieR_cond"))
     }
   }
 
@@ -136,7 +138,8 @@ check_redcap_populated <- function(
 ) {
   if (ncol(db_data) == 0) {
     cli_abort(
-      "The REDCap API did not return any data. This can happen when there are no data entered or when the access isn't configured to allow data download through the API."
+      "The REDCap API did not return any data. This can happen when there are no data entered or when the access isn't configured to allow data download through the API.",
+      class = c("redcap_unpopulated", "REDCapTidieR_cond")
     )
   }
 }

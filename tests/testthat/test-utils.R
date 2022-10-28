@@ -33,12 +33,17 @@ test_that("multi_choice_to_labels works", {
   db_data_classic <- update_data_col_names(db_data_classic,
                                            db_metadata_classic)
 
-  # Expect warning on error variable where a radio button is created for a descriptive text field
+  # Expect warning on error variable where a radio button is created for a
+  # descriptive text field
   expect_warning(multi_choice_to_labels(db_data = db_data_classic,
-                                        db_metadata = db_metadata_classic))
+                                        db_metadata = db_metadata_classic) %>%
+                   suppressWarnings(classes = "empty_parse_warning"),
+                 class = "field_missing_categories")
 
   out <- multi_choice_to_labels(db_data = db_data_classic,
-                                db_metadata = db_metadata_classic) %>% suppressWarnings()
+                                db_metadata = db_metadata_classic) %>%
+    suppressWarnings(classes = c("empty_parse_warning",
+                                 "field_missing_categories"))
 
   # Test general structure
   expect_true(is.data.frame(out))
@@ -71,20 +76,18 @@ test_that("parse_labels works", {
 
   invalid_string_1 <- "raw, label | that has | pipes but no other | commas"
 
-  invalid_string_2 <- "raw, label | structure, | with odd matrix dimensions"
+  invalid_string_2 <- "raw, label | structure, | with odd, matrix dimensions"
 
   warning_string_1 <- NA_character_
 
   expect_equal(parse_labels(valid_string), valid_output)
-  expect_error(parse_labels(invalid_string_1))
-  expect_error(parse_labels(invalid_string_2))
-  expect_warning(parse_labels(warning_string_1))
+  expect_error(parse_labels(invalid_string_1),
+               class = "comma_parse_error")
+  expect_error(parse_labels(invalid_string_2),
+               class = "matrix_parse_error")
+  expect_warning(parse_labels(warning_string_1),
+                 class = "empty_parse_warning")
 })
-
-# uri <- Sys.getenv("REDCAP_URI")
-# token <- Sys.getenv("REDCAPTIDIER_LONGITUDINAL_API")
-#
-# link_arms(uri, token)
 
 test_that("link_arms works", {
   httptest::with_mock_api({
