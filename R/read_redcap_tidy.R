@@ -313,7 +313,11 @@ add_metadata <- function(supertbl, db_metadata, redcap_uri, token) {
   # Add summary stats ----
   res %>%
     mutate(summary = map(.data$redcap_data, calc_metadata_stats)) %>%
-    unnest_wider(summary)
+    unnest_wider(summary) %>%
+    relocate(
+      "redcap_form_name", "redcap_form_label", "redcap_data", "redcap_metadata",
+      "structure", "data_rows", "data_cols", "data_size", "data_na_pct"
+    )
 }
 
 #' @title
