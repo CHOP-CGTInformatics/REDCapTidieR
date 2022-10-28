@@ -67,12 +67,14 @@ test_that("multi_choice_to_labels works", {
 test_that("parse_labels works", {
 
   valid_string <- "choice_1, one | choice_2, two | choice_3, three"
-  valid_output <- tibble::tribble(
+  valid_tibble_output <- tibble::tribble(
     ~raw,       ~label,
     "choice_1", "one",
     "choice_2", "two",
     "choice_3", "three"
   )
+  valid_vector_output <- c("one", "two", "three")
+  names(valid_vector_output) <- c("choice_1", "choice_2", "choice_3")
 
   invalid_string_1 <- "raw, label | that has | pipes but no other | commas"
 
@@ -80,7 +82,11 @@ test_that("parse_labels works", {
 
   warning_string_1 <- NA_character_
 
-  expect_equal(parse_labels(valid_string), valid_output)
+  expect_equal(parse_labels(valid_string), valid_tibble_output)
+  expect_equal(
+    parse_labels(valid_string, return_vector = TRUE),
+    valid_vector_output
+  )
   expect_error(parse_labels(invalid_string_1),
                class = "comma_parse_error")
   expect_error(parse_labels(invalid_string_2),
