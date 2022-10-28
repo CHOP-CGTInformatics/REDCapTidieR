@@ -9,8 +9,7 @@ read_redcap_tidy(
   token,
   raw_or_label = "label",
   forms = NULL,
-  suppress_messages = TRUE,
-  include_metadata = TRUE
+  suppress_messages = TRUE
 )
 }
 \arguments{
@@ -30,32 +29,25 @@ export. Default returns all forms in the project.}
 
 \item{suppress_messages}{Optionally show or suppress messages.
 Default \code{TRUE}.}
-
-\item{include_metadata}{Optionally include metadata columns in the result.
-Default \code{TRUE}.}
 }
 \value{
 Returns a \code{tibble} in which each row represents a REDCap instrument. The
 results contains the following fields:
 - \code{redcap_form_name}, the name of the instrument
-- \code{redcap_form_label}, the label for the instrument. Only if
-\code{include_metadata = TRUE}
+- \code{redcap_form_label}, the label for the instrument
 - \code{redcap_data}, the data for the instrument
 - \code{redcap_metadata}, a \code{tibble} of data dictionary entries for each
-field in the instrument. Only if \code{include_metadata = TRUE}
+field in the instrument
 - \code{redcap_events}, a \code{tibble} with information about the arms and
 longitudinal events represented in the instrument. Only if the project has
-longitudinal events enables and \code{include_metadata = TRUE}
+longitudinal events enabled
 - \code{structure}, the type of instrument, "repeating" or "nonrepeating"
-- \code{data_rows}, the number of rows in the instrument's data. Only if
-\code{include_metadata = TRUE}
-- \code{data_cols}, the number of columns in the instrument's data. Only if
-\code{include_metadata = TRUE}
+- \code{data_rows}, the number of rows in the instrument's data
+- \code{data_cols}, the number of columns in the instrument's data
 - \code{data_size}, the size in memory of the instrument's data computed by
-\code{lobstr::obj_size}. Only if \code{include_metadata = TRUE}
+\code{lobstr::obj_size}
 - \code{data_na_pct}, the percentage of cells in the instrument's data that
-are \code{NA} excluding identifier and form completion fields. Only if
-\code{include_metadata = TRUE}
+are \code{NA} excluding identifier and form completion fields
 }
 \description{
 Call the REDCap API to retrieve data and metadata about a project,

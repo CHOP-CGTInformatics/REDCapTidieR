@@ -16,29 +16,23 @@ read_redcap_tidy(redcap_uri,
                  classic_token,
                  forms = "repeated")
 
-read_redcap_tidy(redcap_uri,
-                 longitudinal_token,
-                 forms = "repeated")
+read_redcap_tidy(redcap_uri, longitudinal_token, forms = "repeated")
 
-read_redcap_tidy(redcap_uri, longitudinal_noarms_token, include_metadata = FALSE)
+read_redcap_tidy(redcap_uri, longitudinal_noarms_token)
 
 read_redcap_tidy(redcap_uri, longitudinal_token)
 
 # Ignore expected form_does_not_exist errors
 tryCatch(
   form_does_not_exist = function(cnd) {},
-  read_redcap_tidy(redcap_uri,
-                   classic_token,
-                   forms = "fake-form",
-                   include_metadata = FALSE)
+  read_redcap_tidy(redcap_uri, classic_token, forms = "fake-form")
 )
 
 tryCatch(
   form_does_not_exist = function(cnd) {},
   read_redcap_tidy(redcap_uri,
                    classic_token,
-                   forms = c("fake-form", "repeated"),
-                   include_metadata = FALSE)
+                   forms = c("fake-form", "repeated"))
 )
 
 stop_capturing()

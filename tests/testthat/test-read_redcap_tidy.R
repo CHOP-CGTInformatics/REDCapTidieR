@@ -44,7 +44,7 @@ test_that("read_redcap_tidy works for a classic database with a repeating instru
   # Pull a repeating table from a classic database
   httptest::with_mock_api({
     out <-
-      read_redcap_tidy(redcap_uri, classic_token, include_metadata = FALSE) %>%
+      read_redcap_tidy(redcap_uri, classic_token) %>%
       # suppress expected warning
       suppressWarnings(classes = "field_missing_categories") %>%
       filter(redcap_form_name == "repeated") %>%
@@ -67,7 +67,7 @@ test_that("read_redcap_tidy returns checkbox fields", {
   # Pull a nonrepeating table from a classic database
   httptest::with_mock_api({
     out <-
-      read_redcap_tidy(redcap_uri, classic_token, include_metadata = FALSE) %>%
+      read_redcap_tidy(redcap_uri, classic_token) %>%
       # suppress expected warning
       suppressWarnings(classes = "field_missing_categories") %>%
       filter(redcap_form_name == "data_field_types") %>%
@@ -131,7 +131,7 @@ test_that("read_redcap_tidy works for a longitudinal, single arm database with a
   # Pull a nonrepeating table from a longitudinal, single arm database
   httptest::with_mock_api({
     out <-
-      read_redcap_tidy(redcap_uri, longitudinal_noarms_token, include_metadata = FALSE) %>%
+      read_redcap_tidy(redcap_uri, longitudinal_noarms_token) %>%
       filter(redcap_form_name == "nonrepeated") %>%
       select(redcap_data) %>%
       pluck(1, 1)
@@ -157,7 +157,7 @@ test_that("read_redcap_tidy works for a longitudinal, single arm database with a
   # Pull a repeating table from a longitudinal, single arm database
   httptest::with_mock_api({
     out <-
-      read_redcap_tidy(redcap_uri, longitudinal_noarms_token, include_metadata = FALSE) %>%
+      read_redcap_tidy(redcap_uri, longitudinal_noarms_token) %>%
       filter(redcap_form_name == "repeated") %>%
       select(redcap_data) %>%
       pluck(1, 1)
@@ -183,7 +183,7 @@ test_that("read_redcap_tidy works for a longitudinal, multi-arm database with a 
   # Pull a nonrepeating table from a longitudinal, multi arm database
   httptest::with_mock_api({
     out <-
-      read_redcap_tidy(redcap_uri, longitudinal_token, include_metadata = FALSE) %>%
+      read_redcap_tidy(redcap_uri, longitudinal_token) %>%
       filter(redcap_form_name == "nonrepeated") %>%
       select(redcap_data) %>%
       pluck(1, 1)
@@ -208,7 +208,7 @@ test_that("read_redcap_tidy works for a longitudinal, multi-arm database with a 
   # Pull a repeating table from a longitudinal, multi arm database
   httptest::with_mock_api({
     out <-
-      read_redcap_tidy(redcap_uri, longitudinal_token, include_metadata = FALSE) %>%
+      read_redcap_tidy(redcap_uri, longitudinal_token) %>%
       filter(redcap_form_name == "repeated") %>%
       select(redcap_data) %>%
       pluck(1, 1)
@@ -224,8 +224,7 @@ test_that("errors when non-existent form is supplied alone", {
   httptest::with_mock_api({
     read_redcap_tidy(redcap_uri,
                      classic_token,
-                     forms = "fake-form",
-                     include_metadata = FALSE) %>%
+                     forms = "fake-form") %>%
       expect_error(class = "form_does_not_exist")
   })
 })
@@ -234,8 +233,7 @@ test_that("errors when non-existent form is supplied with existing forms", {
   httptest::with_mock_api({
     read_redcap_tidy(redcap_uri,
                      classic_token,
-                     forms = c("fake-form", "repeated"),
-                     include_metadata = FALSE) %>%
+                     forms = c("fake-form", "repeated")) %>%
       expect_error(class = "form_does_not_exist")
   })
 })
@@ -304,23 +302,6 @@ test_that("read_redcap_tidy returns metadata", {
 
   expect_equal(fields_in_metadata, fields_in_data)
 
-})
-
-test_that("read_redcap_tidy suppresses metadata when include_metadata is FALSE", {
-  httptest::with_mock_api({
-    out <- read_redcap_tidy(redcap_uri,
-                            longitudinal_token,
-                            include_metadata = FALSE)
-  })
-
-  metadata_cols <- c(
-    "redcap_form_label", "redcap_metadata", "redcap_events", "data_rows",
-    "data_cols", "data_size", "data_na_pct"
-  )
-
-  expect_false(
-    any(metadata_cols %in% names(out))
-  )
 })
 
 test_that("read_redcap_tidy suppresses events metadata for non-longitudinal database", {
