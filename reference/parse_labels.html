@@ -67,7 +67,7 @@ and returns a tidy <code>tibble</code>.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">parse_labels</span><span class="op">(</span><span class="va">string</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">parse_labels</span><span class="op">(</span><span class="va">string</span>, return_vector <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -76,13 +76,19 @@ and returns a tidy <code>tibble</code>.</p>
 <dd><p>A <code>db_metadata$select_choices_or_calculations</code> field
 pre-filtered for checkbox <code>field_type</code></p></dd>
 
+
+<dt>return_vector</dt>
+<dd><p>logical for whether to return result as a vector</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
     
 
 <p>A tidy <code>tibble</code> from a matrix giving raw and label outputs to
-be used in later functions.</p>
+be used in later functions if <code>return_vector = FALSE</code>, the default.
+Otherwise a vector result in a c(raw = label) format to use with
+dplyr::recode</p>
     </div>
     <div id="details">
     <h2>Details</h2>
