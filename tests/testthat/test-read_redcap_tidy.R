@@ -284,22 +284,28 @@ test_that("read_redcap_tidy returns metadata", {
     all(out$data_na_pct >= 0) && all(out$data_na_pct <= 1)
   )
 
-  # metadata contains all expected fields in data
+  # check that for each tibble in out$redcap_data, all fields in the data are
+  # represented in the corresponding tibble in out$redcap_metadata
 
-  ## fields we don't expect
+  ## Some fields we know won't be in the metadata
   exclude_fields <- c(
     "redcap_repeat_instance", "redcap_event",
     "redcap_arm", "form_status_complete"
   )
 
+  ## map over rows of supertibble and extract fields in metadata from each
+  ## instrument
   fields_in_metadata <- out$redcap_metadata %>%
-    map("field_name") %>%
-    map(setdiff, y = exclude_fields)
+    map(~.[["field_name"]])
 
+  ## map over rows of supertibble and extract fields in data from each
+  ## instrument
   fields_in_data <- out$redcap_data %>%
     map(colnames) %>%
+    # remove fields that we don't expected in metadata
     map(setdiff, y = exclude_fields)
 
+  ## make metadata fields match data fields for each instrument
   expect_equal(fields_in_metadata, fields_in_data)
 
 })
