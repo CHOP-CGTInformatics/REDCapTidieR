@@ -27,7 +27,7 @@ check_user_rights <- function(
 
   missing_db_metadata <- db_metadata %>%
     filter(!.data$field_name_updated %in% names(db_data)) %>%
-    select(.data$field_name_updated, .data$form_name) %>%
+    select("field_name_updated", "form_name") %>%
     group_by(.data$form_name) %>%
     summarise(fields = list(.data$field_name_updated))
 

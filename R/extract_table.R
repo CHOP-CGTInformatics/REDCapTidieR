@@ -37,7 +37,7 @@ extract_table <- function(.data,
   # Check tbl is valid ----
   assert_character(tbl)
 
-  if (length(all_of(tbl)) > 1) {
+  if (length(tbl) > 1) {
     cli_abort("Only one table may be supplied.")
   }
 
