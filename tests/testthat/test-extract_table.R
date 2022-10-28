@@ -45,7 +45,6 @@ test_that("extract_tables works with a vector and tidyselect selectors", {
 })
 
 test_that("extract_table works", {
-  expect_error(extract_table(redcaptidier_longitudintal_db, c("repeated", "nonrepeated")))
   expect_error(extract_table(redcaptidier_longitudintal_db, "fake_instrument_name"))
 
   expected_out <- redcaptidier_longitudintal_db$redcap_data[[1]]

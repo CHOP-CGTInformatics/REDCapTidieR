@@ -16,6 +16,7 @@
 #'
 #' @importFrom checkmate assert_character
 #' @importFrom rlang .data
+#' @importFrom cli cli_abort
 #' @importFrom tidyselect all_of
 #'
 #' @examples
@@ -37,7 +38,7 @@ extract_table <- function(.data,
   assert_character(tbl)
 
   if (length(tbl) > 1) {
-    stop("Only one table may be supplied.")
+    cli_abort("Only one table may be supplied.")
   }
 
   # Extract specified table ----

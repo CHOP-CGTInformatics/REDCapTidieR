@@ -10,12 +10,21 @@ test_that("check_user_rights works", {
     ~field_name_updated,  ~form_name,
     "field_1",           "form_1",
     "field_2",           "form_2",
-    "missing_field",     "missing_form"
+    "missing_field",     "missing_form",
+    "missing_field_2",   "missing_form",
+    "missing_field_3",   "missing_form2"
+  )
+
+  readable_metadata <- tibble::tribble(
+    ~field_name_updated,  ~form_name,
+    "field 1",            "form_1",
+    "missing_field",      "missing_form"
   )
 
   expect_warning(
-    check_user_rights(db_data = test_data, db_metadata = test_metadata)
-    )
+    check_user_rights(test_data, test_metadata)
+  )
+
 })
 
 test_that("check_repeat_and_nonrepeat works", {
@@ -37,10 +46,10 @@ test_that("check_repeat_and_nonrepeat works", {
   expect_error(check_repeat_and_nonrepeat(db_data = test_data_not_longitudinal))
 })
 
-test_that("check_repeat_and_nonrepeat works", {
+test_that("check_redcap_populated works", {
   test_data <- tibble::tribble()
 
-  expect_error(check_redcap_populated(db_data = test_data))
+  expect_error(check_redcap_populated(db_data = test_data), class = "redcap_unpopulated")
 })
 
 test_that("check_forms_exist works", {

@@ -91,10 +91,18 @@ link_arms <- function(
 #' @importFrom stringi stri_split_fixed
 #' @importFrom tibble as_tibble is_tibble
 #' @importFrom rlang .data
+#' @importFrom cli cli_abort cli_warn
 #'
 #' @keywords internal
 
 parse_labels <- function(string, return_vector = FALSE) {
+
+  # If string is empty/NA, throw a warning
+  if(is.na(string)){
+    cli_warn("Empty string detected for a given multiple choice label.",
+             class = c("empty_parse_warning", "REDCapTidieR_cond"))
+  }
+
   out <- string %>%
     strsplit(" \\| ") # Split by "|"
 
@@ -103,9 +111,12 @@ parse_labels <- function(string, return_vector = FALSE) {
     # If this is a misattributed data field or blank, throw warning in
     # multi_choice_to_labels
     if (length(out[[1]]) > 1 && !all(is.na(out[[1]]))) {
-      stop(paste0("Cannot parse the select_choices_or_calculations field from
-                  REDCap metadata. This may happen if there is a pipe character
-                  `|` inside the label: ", string))
+      cli_abort(
+        "Cannot parse the select_choices_or_calculations field from
+        REDCap metadata. This may happen if there is a comma separator missing
+        inside the label: {string}",
+        class = c("label_parse_error", "comma_parse_error", "REDCapTidieR_cond")
+      )
     }
   }
 
@@ -119,10 +130,13 @@ parse_labels <- function(string, return_vector = FALSE) {
   if (length(out) %% 2 != 0) {
     # If this is a misattributed data field or blank, throw warning in
     # multi_choice_to_labels
-    if (length(out[[1]]) > 1 && !all(is.na(out[[1]]))) {
-      stop(paste0("Cannot parse the select_choices_or_calculations field from
-                  REDCap metadata. This may happen if there is a pipe character
-                  `|` inside the label: ", string))
+    if (length(out) > 1 && !all(is.na(out))) {
+      cli_abort(
+        "Cannot parse the select_choices_or_calculations field from
+        REDCap metadata. This may happen if there is a pipe character
+        `|` inside the label: {string}",
+        class = c("label_parse_error", "matrix_parse_error", "REDCapTidieR_cond")
+      )
     }
   }
 
