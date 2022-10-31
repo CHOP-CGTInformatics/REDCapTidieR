@@ -227,8 +227,8 @@ test_that("read_redcap_tidy works for a longitudinal, multi-arm database with a 
 test_that("errors when non-existent form is supplied alone", {
   httptest::with_mock_api({
     read_redcap_tidy(redcap_uri,
-                       classic_token,
-                       forms = "fake-form") %>%
+                     classic_token,
+                     forms = "fake-form") %>%
       expect_error(class = "form_does_not_exist")
   })
 })
@@ -258,3 +258,65 @@ test_that("get_fields_to_drop handles checkboxes", {
   )
 })
 
+test_that("read_redcap_tidy returns metadata", {
+  httptest::with_mock_api({
+    out <- read_redcap_tidy(redcap_uri, longitudinal_token)
+  })
+
+  expected_cols <- c(
+    "redcap_form_name", "redcap_form_label", "redcap_data", "redcap_metadata",
+    "redcap_events", "structure", "data_rows", "data_cols", "data_size",
+    "data_na_pct"
+  )
+
+  # metadata fields exist and correctly ordered
+  expect_equal(expected_cols, names(out))
+
+  # metadata fields have the correct data types
+
+  ## redcap_metadata and redcap_events fields consist of tibbles
+  expect_s3_class(out$redcap_metadata[[1]], "tbl")
+  expect_s3_class(out$redcap_events[[1]], "tbl")
+
+  ## summary fields have correct types
+  expect_type(out$data_rows, "integer")
+  expect_type(out$data_cols, "integer")
+  expect_s3_class(out$data_size, "lobstr_bytes")
+  expect_true(
+    all(out$data_na_pct >= 0) && all(out$data_na_pct <= 1)
+  )
+
+  # check that for each tibble in out$redcap_data, all fields in the data are
+  # represented in the corresponding tibble in out$redcap_metadata
+
+  ## Some fields we know won't be in the metadata
+  exclude_fields <- c(
+    "redcap_repeat_instance", "redcap_event",
+    "redcap_arm", "form_status_complete"
+  )
+
+  ## map over rows of supertibble and extract fields in metadata from each
+  ## instrument
+  fields_in_metadata <- out$redcap_metadata %>%
+    map(~.[["field_name"]])
+
+  ## map over rows of supertibble and extract fields in data from each
+  ## instrument
+  fields_in_data <- out$redcap_data %>%
+    map(colnames) %>%
+    # remove fields that we don't expected in metadata
+    map(setdiff, y = exclude_fields)
+
+  ## make sure metadata fields match data fields for each instrument
+  expect_equal(fields_in_metadata, fields_in_data)
+
+})
+
+test_that("read_redcap_tidy suppresses events metadata for non-longitudinal database", {
+  httptest::with_mock_api({
+    out <- read_redcap_tidy(redcap_uri, classic_token) %>%
+      suppressWarnings(classes = "field_missing_categories")
+  })
+
+  expect_false("redcap_events" %in% names(out))
+})

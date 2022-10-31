@@ -3,28 +3,30 @@
 #'
 #' @description
 #' Make helper variables \code{redcap_event} and \code{redcap_arm} available as
-#' branches from \code{redcap_event_name} for later use.
+#' branches from \code{var} for later use.
 #'
 #' @returns Two appended columns, \code{redcap_event} and \code{redcap_arm}
 #' to the end of \code{read_redcap_tidy} output \code{tibble}s.
 #'
 #' @param db_data The REDCap database output defined by
 #' \code{REDCapR::redcap_read_oneshot()$data}
+#' @param var the unquoted name of the field containing event and arm
+#' identifiers
 #'
 #' @importFrom dplyr mutate
-#' @importFrom rlang .data
 #'
 #' @keywords internal
 
 add_partial_keys <- function(
-    db_data
+    db_data,
+    var
 ) {
   pattern <- "^(\\w+?)_arm_(\\d)$"
 
   db_data <- db_data %>%
     mutate(
-      redcap_event = sub(pattern, "\\1", .data$redcap_event_name),
-      redcap_arm   = as.integer(sub(pattern, "\\2", .data$redcap_event_name))
+      redcap_event = sub(pattern, "\\1", {{ var }}),
+      redcap_arm   = as.integer(sub(pattern, "\\2", {{ var }}))
     )
 
   db_data
@@ -388,4 +390,23 @@ multi_choice_to_labels <- function(db_data, db_metadata) {
     }
   }
   db_data
+}
+
+#' @title
+#' Utility function to extract the name of the project identifier field for
+#' a tibble of REDCap data
+#'
+#' @details
+#' The current implementation assumes that the first field in the data is the
+#' project identifier
+#'
+#' @param data a tibble of REDCap data
+#'
+#' @return
+#' The name of the identifier field in the data
+#'
+#' @keywords internal
+#'
+get_project_id_field <- function(data) {
+  names(data)[[1]]
 }

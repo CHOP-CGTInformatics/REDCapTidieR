@@ -167,6 +167,14 @@
       "Hash": "3f038e5ac7f41d4ac41ce658c85e3042",
       "Requirements": []
     },
+    "clisymbols": {
+      "Package": "clisymbols",
+      "Version": "1.2.0",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "96c01552bfd5661b9bbdefbc762f4bcd",
+      "Requirements": []
+    },
     "codetools": {
       "Package": "codetools",
       "Version": "0.2-18",
@@ -455,6 +463,29 @@
       "Hash": "4f2596dfb05dac67b9dc558e5c6fba2e",
       "Requirements": []
     },
+    "goodpractice": {
+      "Package": "goodpractice",
+      "Version": "1.0.4",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "0f6da9489ee2bc6197a4a4e845b5a217",
+      "Requirements": [
+        "clisymbols",
+        "covr",
+        "crayon",
+        "cyclocomp",
+        "desc",
+        "jsonlite",
+        "lintr",
+        "praise",
+        "rcmdcheck",
+        "rstudioapi",
+        "whoami",
+        "withr",
+        "xml2",
+        "xmlparsedata"
+      ]
+    },
     "highr": {
       "Package": "highr",
       "Version": "0.9",
@@ -645,6 +676,19 @@
         "rex",
         "xml2",
         "xmlparsedata"
+      ]
+    },
+    "lobstr": {
+      "Package": "lobstr",
+      "Version": "1.1.2",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "f2a94f8fc9db382a642e965339635ad6",
+      "Requirements": [
+        "cpp11",
+        "crayon",
+        "prettyunits",
+        "rlang"
       ]
     },
     "magrittr": {
@@ -1367,6 +1411,17 @@
       "Repository": "CRAN",
       "Hash": "ca970b96d894e90397ed20637a0c1bbe",
       "Requirements": []
+    },
+    "whoami": {
+      "Package": "whoami",
+      "Version": "1.3.0",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "ef0f4d9b8f2cc2ebeccae1d725b8a023",
+      "Requirements": [
+        "httr",
+        "jsonlite"
+      ]
     },
     "withr": {
       "Package": "withr",

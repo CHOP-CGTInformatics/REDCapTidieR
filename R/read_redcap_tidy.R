@@ -17,7 +17,23 @@
 #' where one tibble represents the data from one instrument.
 #'
 #' @return
-#' Returns a \code{tibble} in which each row represents a REDCap instrument.
+#' Returns a \code{tibble} in which each row represents a REDCap instrument. The
+#' results contains the following fields:
+#' - \code{redcap_form_name}, the name of the instrument
+#' - \code{redcap_form_label}, the label for the instrument
+#' - \code{redcap_data}, the data for the instrument
+#' - \code{redcap_metadata}, a \code{tibble} of data dictionary entries for each
+#' field in the instrument
+#' - \code{redcap_events}, a \code{tibble} with information about the arms and
+#' longitudinal events represented in the instrument. Only if the project has
+#' longitudinal events enabled
+#' - \code{structure}, the type of instrument, "repeating" or "nonrepeating"
+#' - \code{data_rows}, the number of rows in the instrument's data
+#' - \code{data_cols}, the number of columns in the instrument's data
+#' - \code{data_size}, the size in memory of the instrument's data computed by
+#' \code{lobstr::obj_size}
+#' - \code{data_na_pct}, the percentage of cells in the instrument's data that
+#' are \code{NA} excluding identifier and form completion fields
 #'
 #' @importFrom REDCapR redcap_read_oneshot redcap_metadata_read
 #' @importFrom dplyr filter bind_rows %>% select
@@ -63,6 +79,10 @@ read_redcap_tidy <- function(redcap_uri,
                                       verbose = FALSE)$data %>%
     filter(.data$field_type != "descriptive")
 
+  # Dissociate primary project id from any instrument
+  # primary id will always be first in the metadata
+  db_metadata$form_name[[1]] <- NA_character_
+
   # The user may not have requested form with identifiers. We need to make sure
   # identifiers are kept regardless. This requires adding the form with
   # identifiers to our redcap_read_oneshot call but filtering out extra,
@@ -95,7 +115,11 @@ read_redcap_tidy <- function(redcap_uri,
     }
 
     # Keep only user requested forms in the metadata
-    db_metadata <- filter(db_metadata, .data$form_name %in% forms)
+    # form_name is NA for primary id
+    db_metadata <- filter(
+      db_metadata,
+      .data$form_name %in% forms | is.na(.data$form_name)
+    )
   }
 
   # Load REDCap Dataset output ----
@@ -158,6 +182,13 @@ read_redcap_tidy <- function(redcap_uri,
                         db_metadata = db_metadata)
   }
 
+  # Augment with metadata ----
+  out <- add_metadata(out, db_metadata, redcap_uri, token)
+
+  if (is_longitudinal) {
+    out <- add_event_mapping(out, linked_arms)
+  }
+
   out
 }
 
@@ -201,4 +232,158 @@ get_fields_to_drop <- function(db_metadata, form) {
   res <- c(res, paste0(form, "_complete"))
 
   res
+}
+
+#' @title
+#' Supplement a supertibble with additional metadata fields
+#'
+#' @param supertbl a supertibble object to supplement with metadata
+#' @param db_metadata a REDCap metadata tibble
+#' @inheritParams read_redcap_tidy
+#'
+#' @details This function assumes that \code{db_metadata} has been processed to
+#' include a row for each option of each multiselection field, i.e. with
+#' \code{update_field_names()}
+#'
+#' @return
+#' The original supertibble with additional fields:
+#' - \code{instrument_label} containing labels for each form
+#' - \code{redcap_metadata} containing metadata for the fields in each form as a
+#' list column
+#'
+#' @importFrom REDCapR redcap_instruments
+#' @importFrom dplyr left_join rename %>% select rename relocate mutate bind_rows
+#' filter
+#' @importFrom tidyr nest unnest_wider complete fill
+#' @importFrom tidyselect everything
+#' @importFrom rlang .data
+#' @importFrom purrr map
+#'
+#' @keywords internal
+
+add_metadata <- function(supertbl, db_metadata, redcap_uri, token) {
+
+  # Get instrument labels ----
+  instrument_labs <- redcap_instruments(
+    redcap_uri,
+    token,
+    verbose = FALSE
+  )$data %>%
+    rename(
+      redcap_form_label = "instrument_label",
+      redcap_form_name = "instrument_name"
+    )
+
+  # Process metadata ----
+  db_metadata <- db_metadata %>%
+    # At this stage select_choices_or_calculations has been unpacked into
+    # field_name_updated so we can drop it. Likewise, field_name has a subset
+    # of info from field_name_updated
+    select(!c("field_name", "select_choices_or_calculations")) %>%
+    rename(
+      field_name = "field_name_updated",
+      redcap_form_name = "form_name"
+    ) %>%
+    relocate("field_name", "field_label", "field_type", .before = everything())
+
+  ## Create a record with the project identifier for each form
+  all_forms <- unique(db_metadata$redcap_form_name)
+  record_id_field <- get_project_id_field(supertbl$redcap_data[[1]])
+
+  db_metadata <- db_metadata %>%
+    # Just the record_id fields
+    filter(.data$field_name == record_id_field) %>%
+    complete(field_name = record_id_field, redcap_form_name = all_forms) %>%
+    # Fill in metadata from first entry
+    fill(everything(), .direction = "up") %>%
+    # Combine with non-record_id fields
+    bind_rows(filter(db_metadata, .data$field_name != record_id_field)) %>%
+    filter(!is.na(.data$redcap_form_name))
+
+  # nest by form
+  metadata <- nest(db_metadata, redcap_metadata = !"redcap_form_name")
+
+  # Combine ----
+  res <- supertbl %>%
+    left_join(instrument_labs, by = "redcap_form_name") %>%
+    left_join(metadata, by = "redcap_form_name") %>%
+    relocate("redcap_form_name", "redcap_form_label", "redcap_data",
+             "redcap_metadata", "structure")
+
+  # Add summary stats ----
+  res %>%
+    mutate(summary = map(.data$redcap_data, calc_metadata_stats)) %>%
+    unnest_wider(summary) %>%
+    relocate(
+      "redcap_form_name", "redcap_form_label", "redcap_data", "redcap_metadata",
+      "structure", "data_rows", "data_cols", "data_size", "data_na_pct"
+    )
+}
+
+#' @title
+#' Supplement a supertibble from a longitudinal database with information about
+#' the events associated with each instrument
+#'
+#' @param supertbl a supertibble object to supplement with metadata
+#' @param linked_arms the tibble with event mappings created by
+#' \code{link_arms()}
+#'
+#' @importFrom rlang .data
+#' @importFrom dplyr select left_join relocate
+#' @importFrom tidyr nest
+#'
+#' @return
+#' The original supertibble with an events \code{redcap_events} list column
+#' containing arms and events associated with each instrument
+#'
+#' @keywords internal
+#'
+add_event_mapping <- function(supertbl, linked_arms) {
+  event_info <- linked_arms %>%
+    add_partial_keys(.data$unique_event_name) %>%
+    select(redcap_form_name = "form", "redcap_event", "redcap_arm", "arm_name") %>%
+    nest(redcap_events = !"redcap_form_name")
+
+  left_join(supertbl, event_info, by = "redcap_form_name") %>%
+    relocate("redcap_events", .after = "redcap_metadata")
+}
+
+#' @title
+#' Utility function to calculate summary for each tibble in a supertibble
+#'
+#' @param data a tibble of redcap data stored in the \code{redcap_data} column
+#' of a supertibble
+#'
+#' @importFrom dplyr select
+#' @importFrom tidyselect any_of
+#' @importFrom lobstr obj_size
+#'
+#' @return
+#' A list containing:
+#' - \code{data_rows}, the number of rows in the data
+#' - \code{data_cols}, the number of columns in the data
+#' - \code{data_size}, the size of the data in bytes
+#' - \code{data_na_pct}, the percentage of cells that are NA excluding
+#' identifiers and form completion fields
+#'
+#' @keywords internal
+#'
+calc_metadata_stats <- function(data) {
+
+  excluded_fields <- c(
+    get_project_id_field(data),
+    "redcap_repeat_instance", "redcap_event",
+    "redcap_arm", "form_status_complete"
+  )
+
+  na_pct <- data %>%
+    # drop cols to exclude from NA calc
+    select(!any_of(excluded_fields)) %>%
+    is.na() %>%
+    mean()
+
+  list(
+    data_rows = nrow(data), data_cols = ncol(data),
+    data_size = obj_size(data), data_na_pct = na_pct
+  )
 }

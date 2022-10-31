@@ -72,6 +72,7 @@ clean_redcap_long <- function(
 
   ## Nonrepeating Forms Logic ----
   nonrepeated_forms <- db_metadata_long %>%
+    filter(!is.na(.data$form_name)) %>%
     pull(.data$form_name) %>%
     unique()
 
@@ -159,7 +160,7 @@ distill_nonrepeat_table_long <- function(
 
   # Setup data for loop redcap_arm linking
   db_data_long <- db_data_long %>%
-    add_partial_keys()
+    add_partial_keys(.data$redcap_event_name)
 
   if (has_repeating) {
     db_data_long <- db_data_long %>%
@@ -244,7 +245,7 @@ distill_repeat_table_long <- function(
 
   # Setup data for loop redcap_arm linking
   db_data_long <- db_data_long %>%
-    add_partial_keys() %>%
+    add_partial_keys(.data$redcap_event_name) %>%
     filter(
       !is.na(.data$redcap_repeat_instance) &
         .data$redcap_repeat_instrument == my_form
