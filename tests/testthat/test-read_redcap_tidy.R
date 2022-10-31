@@ -271,10 +271,8 @@ test_that("read_redcap_tidy returns metadata", {
   # metadata fields have the correct data types
 
   ## redcap_metadata and redcap_events fields consist of tibbles
-  c(out$redcap_metadata, out$redcap_events) %>%
-    purrr::map_lgl(inherits, what = "tbl") %>%
-    all() %>%
-    expect_true()
+  expect_s3_class(out$redcap_metadata[[1]], "tbl")
+  expect_s3_class(out$redcap_events[[1]], "tbl")
 
   ## summary fields have correct types
   expect_type(out$data_rows, "integer")
@@ -305,7 +303,7 @@ test_that("read_redcap_tidy returns metadata", {
     # remove fields that we don't expected in metadata
     map(setdiff, y = exclude_fields)
 
-  ## make metadata fields match data fields for each instrument
+  ## make sure metadata fields match data fields for each instrument
   expect_equal(fields_in_metadata, fields_in_data)
 
 })
