@@ -82,18 +82,29 @@ link_arms <- function(
 #' The associated \code{string} comes from metadata outputs.
 #'
 #' @returns A tidy \code{tibble} from a matrix giving raw and label outputs to
-#' be used in later functions.
+#' be used in later functions if \code{return_vector = FALSE}, the default.
+#' Otherwise a vector result in a c(raw = label) format to use with
+#' dplyr::recode
 #'
 #' @param string A \code{db_metadata$select_choices_or_calculations} field
 #' pre-filtered for checkbox \code{field_type}
+#' @param return_vector logical for whether to return result as a vector
 #'
 #' @importFrom stringi stri_split_fixed
 #' @importFrom tibble as_tibble is_tibble
 #' @importFrom rlang .data
+#' @importFrom cli cli_abort cli_warn
 #'
 #' @keywords internal
 
-parse_labels <- function(string) {
+parse_labels <- function(string, return_vector = FALSE) {
+
+  # If string is empty/NA, throw a warning
+  if(is.na(string)){
+    cli_warn("Empty string detected for a given multiple choice label.",
+             class = c("empty_parse_warning", "REDCapTidieR_cond"))
+  }
+
   out <- string %>%
     strsplit(" \\| ") # Split by "|"
 
@@ -102,9 +113,12 @@ parse_labels <- function(string) {
     # If this is a misattributed data field or blank, throw warning in
     # multi_choice_to_labels
     if (length(out[[1]]) > 1 && !all(is.na(out[[1]]))) {
-      stop(paste0("Cannot parse the select_choices_or_calculations field from
-                  REDCap metadata. This may happen if there is a pipe character
-                  `|` inside the label: ", string))
+      cli_abort(
+        "Cannot parse the select_choices_or_calculations field from
+        REDCap metadata. This may happen if there is a comma separator missing
+        inside the label: {string}",
+        class = c("label_parse_error", "comma_parse_error", "REDCapTidieR_cond")
+      )
     }
   }
 
@@ -118,11 +132,28 @@ parse_labels <- function(string) {
   if (length(out) %% 2 != 0) {
     # If this is a misattributed data field or blank, throw warning in
     # multi_choice_to_labels
-    if (length(out[[1]]) > 1 && !all(is.na(out[[1]]))) {
-      stop(paste0("Cannot parse the select_choices_or_calculations field from
-                  REDCap metadata. This may happen if there is a pipe character
-                  `|` inside the label: ", string))
+    if (length(out) > 1 && !all(is.na(out))) {
+      cli_abort(
+        "Cannot parse the select_choices_or_calculations field from
+        REDCap metadata. This may happen if there is a pipe character
+        `|` inside the label: {string}",
+        class = c("label_parse_error", "matrix_parse_error", "REDCapTidieR_cond")
+      )
     }
+  }
+
+  if (return_vector) {
+    if(all(is.na(out))){
+      # handle no label case
+      return(c(`NA` = NA_character_))
+    }
+
+    # labels are odd numbered locations in out
+    res <- out[seq_along(out) %% 2 == 0]
+    # raw are event numbered
+    names(res) <- out[seq_along(out) %% 2 == 1]
+
+    return(res)
   }
 
   out <- out %>%
@@ -275,8 +306,8 @@ update_data_col_names <- function(db_data, db_metadata) {
 #' @param db_data A REDCap database object
 #' @param db_metadata A REDCap metadata object
 #'
-#' @importFrom dplyr select mutate across case_when filter pull left_join
-#' @importFrom rlang .data :=
+#' @importFrom dplyr select mutate across case_when filter pull recode
+#' @importFrom rlang .data
 #' @importFrom tidyselect any_of ends_with all_of
 #' @importFrom cli cli_warn
 #'
@@ -346,25 +377,16 @@ multi_choice_to_labels <- function(db_data, db_metadata) {
 
       # Retrieve parse_labels key for given field_name
       parse_labels_output <- parse_labels(
-        db_metadata$select_choices_or_calculations[i]
+        db_metadata$select_choices_or_calculations[i],
+        return_vector = TRUE
       )
 
       # Replace values from db_data$(field_name) with label values from
       # parse_labels key
-      db_data <- db_data %>%
-        mutate(
-          across(.cols = !!field_name, .fns = as.character)
-        ) %>%
-        left_join(parse_labels_output %>% rename(!!field_name := "raw"),
-                  by = field_name) %>%
-        mutate(!!field_name := .data$label) %>% # Again, use rlang var injection
-        select(-"label")
-
-      db_data <- db_data %>%
-        mutate(
-          across(.cols = all_of(field_name),
-                 .fns = ~factor(., levels = parse_labels_output$label))
-        )
+      db_data[[field_name]] <- db_data[[field_name]] %>%
+        as.character() %>%
+        recode(!!!parse_labels_output) %>%
+        factor(levels = parse_labels_output)
     }
   }
   db_data

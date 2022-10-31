@@ -18,7 +18,8 @@ test_that("read_redcap_tidy works for a classic database with a nonrepeating ins
     out <-
       read_redcap_tidy(redcap_uri, classic_token) %>%
       # suppress expected warning
-      suppressWarnings(classes = "field_missing_categories") %>%
+      suppressWarnings(classes = c("field_missing_categories",
+                                   "empty_parse_warning")) %>%
       filter(redcap_form_name == "nonrepeated") %>%
       select(redcap_data) %>%
       pluck(1, 1)
@@ -46,7 +47,8 @@ test_that("read_redcap_tidy works for a classic database with a repeating instru
     out <-
       read_redcap_tidy(redcap_uri, classic_token) %>%
       # suppress expected warning
-      suppressWarnings(classes = "field_missing_categories") %>%
+      suppressWarnings(classes = c("field_missing_categories",
+                                   "empty_parse_warning")) %>%
       filter(redcap_form_name == "repeated") %>%
       select(redcap_data) %>%
       pluck(1, 1)
@@ -69,7 +71,8 @@ test_that("read_redcap_tidy returns checkbox fields", {
     out <-
       read_redcap_tidy(redcap_uri, classic_token) %>%
       # suppress expected warning
-      suppressWarnings(classes = "field_missing_categories") %>%
+      suppressWarnings(classes = c("field_missing_categories",
+                                   "empty_parse_warning")) %>%
       filter(redcap_form_name == "data_field_types") %>%
       select(redcap_data) %>%
       pluck(1, 1)
@@ -92,7 +95,8 @@ test_that("supplying forms is equivalent to post-hoc filtering for a classic dat
       read_redcap_tidy(redcap_uri,
                        classic_token) %>%
       # suppress expected warning
-      suppressWarnings(classes = "field_missing_categories") %>%
+      suppressWarnings(classes = c("field_missing_categories",
+                                   "empty_parse_warning")) %>%
       filter(redcap_form_name == "repeated")
   })
 

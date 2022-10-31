@@ -4,15 +4,19 @@
 \alias{parse_labels}
 \title{Parse labels from REDCap metadata into usable formats}
 \usage{
-parse_labels(string)
+parse_labels(string, return_vector = FALSE)
 }
 \arguments{
 \item{string}{A \code{db_metadata$select_choices_or_calculations} field
 pre-filtered for checkbox \code{field_type}}
+
+\item{return_vector}{logical for whether to return result as a vector}
 }
 \value{
 A tidy \code{tibble} from a matrix giving raw and label outputs to
-be used in later functions.
+be used in later functions if \code{return_vector = FALSE}, the default.
+Otherwise a vector result in a c(raw = label) format to use with
+dplyr::recode
 }
 \description{
 Takes a string separated by \code{,}s and/or \code{|}s (i.e. comma/tab
