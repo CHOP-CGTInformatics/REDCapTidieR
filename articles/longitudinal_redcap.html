@@ -153,12 +153,15 @@ instruments, longitudinal events, and multiple event arms:</p>
 <span><span class="va">redcap_export</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_redcap_tidy.html">read_redcap_tidy</a></span><span class="op">(</span><span class="va">redcap_uri</span>, <span class="va">token</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">redcap_export</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 3</span></span></span>
-<span><span class="co">#&gt;   redcap_form_name redcap_data      structure   </span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> repeated         <span style="color: #949494;">&lt;tibble [9 × 7]&gt;</span> repeating   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> nonrepeated      <span style="color: #949494;">&lt;tibble [8 × 6]&gt;</span> nonrepeating</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> nonrepeated2     <span style="color: #949494;">&lt;tibble [3 × 6]&gt;</span> nonrepeating</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 10</span></span></span>
+<span><span class="co">#&gt;   redcap_fo…¹ redca…² redcap…³ redcap…⁴ redcap…⁵ struc…⁶ data_…⁷ data_…⁸ data_…⁹</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lbstr&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> repeated    Repeat… &lt;tibble&gt; &lt;tibble&gt; &lt;tibble&gt; repeat…       9       7 4.04 kB</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> nonrepeated Nonrep… &lt;tibble&gt; &lt;tibble&gt; &lt;tibble&gt; nonrep…       8       6 3.18 kB</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> nonrepeate… Nonrep… &lt;tibble&gt; &lt;tibble&gt; &lt;tibble&gt; nonrep…       3       6 2.30 kB</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># … with 1 more variable: data_na_pct &lt;dbl&gt;, and abbreviated variable names</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   ¹​redcap_form_name, ²​redcap_form_label, ³​redcap_data, ⁴​redcap_metadata,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   ⁵​redcap_events, ⁶​structure, ⁷​data_rows, ⁸​data_cols, ⁹​data_size</span></span></span></code></pre></div>
 <p>Here we have a database with two nonrepeating instruments and one
 repeating instrument. Let’s look at a sample nonrepeated data output
 first:</p>

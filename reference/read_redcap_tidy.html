@@ -109,7 +109,25 @@ Default <code>TRUE</code>.</p></dd>
     <h2>Value</h2>
     
 
-<p>Returns a <code>tibble</code> in which each row represents a REDCap instrument.</p>
+<p>Returns a <code>tibble</code> in which each row represents a REDCap instrument. The
+results contains the following fields:
+- <code>redcap_form_name</code>, the name of the instrument
+- <code>redcap_form_label</code>, the label for the instrument
+- <code>redcap_data</code>, the data for the instrument
+- <code>redcap_metadata</code>, a <code>tibble</code> of data dictionary entries for each
+field in the instrument
+- <code>redcap_events</code>, a <code>tibble</code> with information about the arms and
+longitudinal events represented in the instrument. Only if the project has
+longitudinal events enabled
+- <code>structure</code>, the type of instrument, "repeating" or "nonrepeating"
+- <code>data_rows</code>, the number of rows in the instrument's data
+- <code>data_cols</code>, the number of columns in the instrument's data
+- <code>data_size</code>, the size in memory of the instrument's data computed by
+<code><a href="https://lobstr.r-lib.org/reference/obj_size.html" class="external-link">lobstr::obj_size</a></code></p>
+
+
+<p>- <code>data_na_pct</code>, the percentage of cells in the instrument's data that
+are <code>NA</code> excluding identifier and form completion fields</p>
     </div>
     <div id="details">
     <h2>Details</h2>

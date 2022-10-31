@@ -203,11 +203,14 @@ URI and an API token.</p>
 <span><span class="va">superheroes_tidy</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_redcap_tidy.html">read_redcap_tidy</a></span><span class="op">(</span><span class="va">redcap_uri</span>, <span class="va">token</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">superheroes_tidy</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 2 × 3</span></span></span>
-<span><span class="co">#&gt;   redcap_form_name   redcap_data          structure   </span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> super_hero_powers  <span style="color: #949494;">&lt;tibble [5,966 × 4]&gt;</span> repeating   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> heroes_information <span style="color: #949494;">&lt;tibble [734 × 12]&gt;</span>  nonrepeating</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 2 × 9</span></span></span>
+<span><span class="co">#&gt;   redcap_for…¹ redca…² redcap…³ redcap…⁴ struc…⁵ data_…⁶ data_…⁷ data_…⁸ data_…⁹</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lbstr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> super_hero_… Super … &lt;tibble&gt; &lt;tibble&gt; repeat…    <span style="text-decoration: underline;">5</span>966       4 180.21… 0      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> heroes_info… Heroes… &lt;tibble&gt; &lt;tibble&gt; nonrep…     734      12 123.24… 0.002<span style="text-decoration: underline;">32</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># … with abbreviated variable names ¹​redcap_form_name, ²​redcap_form_label,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   ³​redcap_data, ⁴​redcap_metadata, ⁵​structure, ⁶​data_rows, ⁷​data_cols,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   ⁸​data_size, ⁹​data_na_pct</span></span></span></code></pre></div>
 <p>This returns a tibble with two rows. This may be surprising because
 you might expect more rows from a database with 734 superheroes.
 However, this is a <strong>tibble of tibbles</strong>, or a
@@ -235,7 +238,7 @@ will be modified using reference semantics.</p>
 and after calling <code><a href="../reference/bind_tables.html">bind_tables()</a></code>:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/ls_str.html" class="external-link">ls.str</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/funprog.html" class="external-link">Filter</a></span><span class="op">(</span><span class="va">is.data.frame</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">as.list</a></span><span class="op">(</span><span class="va">.GlobalEnv</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; superheroes_tidy : tibble [2 × 3] (S3: tbl_df/tbl/data.frame)</span></span></code></pre></div>
+<span><span class="co">#&gt; superheroes_tidy : tibble [2 × 9] (S3: tbl_df/tbl/data.frame)</span></span></code></pre></div>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">superheroes_tidy</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu"><a href="../reference/bind_tables.html">bind_tables</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
@@ -243,7 +246,7 @@ and after calling <code><a href="../reference/bind_tables.html">bind_tables()</a
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/ls_str.html" class="external-link">ls.str</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/funprog.html" class="external-link">Filter</a></span><span class="op">(</span><span class="va">is.data.frame</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">as.list</a></span><span class="op">(</span><span class="va">.GlobalEnv</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; heroes_information : tibble [734 × 12] (S3: tbl_df/tbl/data.frame)</span></span>
 <span><span class="co">#&gt; super_hero_powers : tibble [5,966 × 4] (S3: tbl_df/tbl/data.frame)</span></span>
-<span><span class="co">#&gt; superheroes_tidy : tibble [2 × 3] (S3: tbl_df/tbl/data.frame)</span></span></code></pre></div>
+<span><span class="co">#&gt; superheroes_tidy : tibble [2 × 9] (S3: tbl_df/tbl/data.frame)</span></span></code></pre></div>
 <p>Note that there are now two additional tibbles,
 <code>heroes_information</code> and <code>super_hero_powers</code>, in
 the global environment!</p>
@@ -256,22 +259,7 @@ supertibble:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">superheroes_tidy</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu"><a href="../reference/extract_table.html">extract_table</a></span><span class="op">(</span><span class="st">"heroes_information"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 734 × 12</span></span></span>
-<span><span class="co">#&gt;    record_id name     gender eye_c…¹ race  hair_…² height weight publi…³ skin_…⁴</span></span>
-<span><span class="co">#&gt;        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>         0 A-Bomb   Male   yellow  Human No Hair    203    441 Marvel… -      </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>         1 Abe Sap… Male   blue    Icth… No Hair    191     65 Dark H… blue   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>         2 Abin Sur Male   blue    Unga… No Hair    185     90 DC Com… red    </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>         3 Abomina… Male   green   Huma… No Hair    203    441 Marvel… -      </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>         4 Abraxas  Male   blue    Cosm… Black      -<span style="color: #BB0000;">99</span>    -<span style="color: #BB0000;">99</span> Marvel… -      </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>         5 Absorbi… Male   blue    Human No Hair    193    122 Marvel… -      </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>         6 Adam Mo… Male   blue    -     Blond      -<span style="color: #BB0000;">99</span>    -<span style="color: #BB0000;">99</span> NBC - … -      </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>         7 Adam St… Male   blue    Human Blond      185     88 DC Com… -      </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>         8 Agent 13 Female blue    -     Blond      173     61 Marvel… -      </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>         9 Agent B… Male   brown   Human Brown      178     81 Marvel… -      </span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># … with 724 more rows, 2 more variables: alignment &lt;chr&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   form_status_complete &lt;fct&gt;, and abbreviated variable names ¹​eye_color,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   ²​hair_color, ³​publisher, ⁴​skin_color</span></span></span></code></pre></div>
+<span><span class="co">#&gt; NULL</span></span></code></pre></div>
 <p>Use <code><a href="../reference/extract_tables.html">extract_tables()</a></code> to create a named list of tibbles
 from a supertibble. The default is to extract all tibbles:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
@@ -279,9 +267,15 @@ from a supertibble. The default is to extract all tibbles:</p>
 <span>  <span class="fu"><a href="../reference/extract_tables.html">extract_tables</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">superheroes_list_of_tibbles</span>, max.level <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
-<span><span class="co">#&gt; List of 2</span></span>
+<span><span class="co">#&gt; List of 8</span></span>
+<span><span class="co">#&gt;  $ redcap_form_label : chr "Super Hero Powers"</span></span>
+<span><span class="co">#&gt;  $ redcap_metadata   : tibble [2 × 16] (S3: tbl_df/tbl/data.frame)</span></span>
+<span><span class="co">#&gt;  $ data_rows         : int 5966</span></span>
+<span><span class="co">#&gt;  $ data_cols         : int 4</span></span>
+<span><span class="co">#&gt;  $ data_size         : num 180208</span></span>
+<span><span class="co">#&gt;  $ data_na_pct       : num 0</span></span>
 <span><span class="co">#&gt;  $ super_hero_powers : tibble [5,966 × 4] (S3: tbl_df/tbl/data.frame)</span></span>
-<span><span class="co">#&gt;  $ heroes_information: tibble [734 × 12] (S3: tbl_df/tbl/data.frame)</span></span></code></pre></div>
+<span><span class="co">#&gt;  $ heroes_information: NULL</span></span></code></pre></div>
 <p>A neat feature of these extraction functions is that they support
 <code>tidy-select</code> semantics and selectors for picking tables:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
