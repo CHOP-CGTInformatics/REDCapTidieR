@@ -26,6 +26,8 @@
 make_labelled <- function(supertbl) {
 
   # TODO: Input checking on supertibble
+
+
   # TODO: Check labelled installation
   # TODO: Implement redcap_data labeling
 
@@ -47,13 +49,17 @@ make_labelled <- function(supertbl) {
 
   # Apply formatting to existing metadata fields to derive labels
 
+  # Extract unique set of colnames from metadata tibble rows of supertibble
   # Edge cases: user removed the metadata field; user changes the name of the metadata field
-  # Is it safe to rely on just the first metadata tibble?
-  metadata_labs <- colnames(supertbl$redcap_metadata[[1]]) %>%
+  metadata_cols <- map(supertbl$redcap_metadata, colnames) %>%
+    unlist() %>%
+    unique()
+
+  metadata_labs <- metadata_cols %>%
     str_replace_all("_", " ") %>%
     str_to_title()
 
-  names(metadata_labs) <- colnames(supertbl$redcap_metadata[[1]])
+  names(metadata_labs) <- metadata_cols
 
   # Apply labels ----
 
@@ -61,12 +67,11 @@ make_labelled <- function(supertbl) {
   # Set labels of tibble from named vector but don't fail if labels vector has
   # variables that aren't in the data
   safe_set_variable_labels <- function(data, labs) {
-    labs <- labs[colnames(data)]
-    labelled::set_variable_labels(data, !!!labs)
+    labs_to_keep <- intersect(names(labs), colnames(data))
+    labelled::set_variable_labels(data, !!!labs[labs_to_keep])
   }
 
-  # Label main cols
-  out <- safe_set_variable_labels(supertbl, main_labs)
+  out <- supertbl
 
   # Label cols of each metadata table
   out$redcap_metadata <- map(
@@ -74,6 +79,10 @@ make_labelled <- function(supertbl) {
     .f = safe_set_variable_labels,
     labs = metadata_labs
   )
+
+  # Label main cols
+  # Do this last since map removes labels from columns we map over
+  out <- safe_set_variable_labels(out, main_labs)
 
   out
 }
