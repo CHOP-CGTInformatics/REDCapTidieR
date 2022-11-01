@@ -3,6 +3,7 @@
 export(bind_tables)
 export(extract_table)
 export(extract_tables)
+export(make_labelled)
 export(read_redcap_tidy)
 importFrom(REDCapR,redcap_arm_export)
 importFrom(REDCapR,redcap_event_instruments)
