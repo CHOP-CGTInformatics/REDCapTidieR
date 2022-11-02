@@ -26,7 +26,7 @@
 make_labelled <- function(supertbl) {
 
   # TODO: Input checking on supertibble
-
+  check_labelled(supertbl)
 
   # TODO: Check labelled installation
   # TODO: Implement redcap_data labeling

@@ -83,3 +83,14 @@ test_that("make_labelled handles redcap_metadata tibbles of different sizes ", {
 
 })
 
+test_that("make_labelled errors if redcap_metadata column is absent", {
+  supertbl <- tibble::tribble(
+    ~ redcap_form_name, ~ redcap_data,
+    "form_1", tibble(x = letters[1:3])
+  )
+
+  make_labelled(supertbl) %>%
+    expect_error(class = "missing_metadata")
+
+})
+
