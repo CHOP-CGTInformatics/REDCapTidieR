@@ -1,9 +1,9 @@
 
-test_that("make_labelled applies labels to supertibble",{
+test_that("make_labelled applies labels to all elements of supertibble",{
   supertbl <- tibble::tribble(
-    ~ redcap_form_name, ~ redcap_data, ~ redcap_metadata,
-    "form_1", tibble(x = letters[1:3]), tibble(field_name = "x", field_label = "X Label"),
-    "form_2", tibble(y = letters[1:3]), tibble(field_name = "y", field_label = "Y Label")
+    ~ redcap_data, ~ redcap_metadata,
+    tibble(x = letters[1:3]), tibble(field_name = "x", field_label = "X Label"),
+    tibble(y = letters[1:3]), tibble(field_name = "y", field_label = "Y Label")
   )
 
   out <- make_labelled(supertbl)
@@ -12,7 +12,6 @@ test_that("make_labelled applies labels to supertibble",{
   labs <- labelled::var_label(out)
 
   expected_labs <- list(
-    redcap_form_name = "Form Name",
     redcap_data = "Data",
     redcap_metadata = "Metadata"
   )
@@ -31,7 +30,13 @@ test_that("make_labelled applies labels to supertibble",{
   expect_equal(metadata_labs1, expected_metadata_labs)
   expect_equal(metadata_labs2, expected_metadata_labs)
 
-  # TODO: Labels are applied to both data tibbles
+  # Labels are applied to both data tibbles
+
+  data_labs1 <- labelled::var_label(out$redcap_data[[1]])
+  data_labs2 <- labelled::var_label(out$redcap_data[[2]])
+
+  expect_equal(data_labs1, list(x = "X Label"))
+  expect_equal(data_labs2, list(y = "Y Label"))
 
 })
 

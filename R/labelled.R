@@ -6,7 +6,7 @@
 #'
 #' @importFrom dplyr %>%
 #' @importFrom stringr str_replace_all str_to_title
-#' @importFrom purrr map
+#' @importFrom purrr map map2
 #'
 #' @return
 #' Supertibble with labels applied to:
@@ -73,11 +73,37 @@ make_labelled <- function(supertbl) {
 
   out <- supertbl
 
-  # Label cols of each metadata table
+  # Label cols of each metadata tibble
   out$redcap_metadata <- map(
     out$redcap_metadata,
     .f = safe_set_variable_labels,
     labs = metadata_labs
+  )
+
+  # Label cols of each data tibble
+
+  ## Set some predefined labels for data fields that aren't in the metadata
+  predef_labs <- c(
+    redcap_repeat_instance = "Repeat Instance",
+    redcap_event = "Event",
+    redcap_arm = "Arm",
+    form_status_complete = "Form Status"
+  )
+
+  out$redcap_data <- map2(
+    out$redcap_data,
+    out$redcap_metadata,
+    .f = ~ {
+      # build labels from metadata
+      labs <- .y$field_label
+      names(labs) <- .y$field_name
+
+      # add pre-defined labels
+      labs <- c(labs, predef_labs)
+
+      # set them
+      safe_set_variable_labels(.x, labs)
+    }
   )
 
   # Label main cols
