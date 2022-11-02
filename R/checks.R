@@ -173,3 +173,27 @@ check_forms_exist <- function(db_metadata, forms) {
     )
   }
 }
+
+#' @title
+#' Check that supertibble contains metadata
+#'
+#' @description
+#' Provide an error message when the supertibble has no \code{redcap_metadata}
+#' column
+#'
+#' @importFrom cli cli_abort
+#'
+#' @param supertbl a supertibble
+#'
+#' @return
+#' An error message indicating that the metadata column is missing
+#'
+#' @keywords internal
+check_labelled <- function(supertbl) {
+  if (!"redcap_metadata" %in% colnames(supertbl)) {
+    cli_abort(
+      c("x" = "{.arg supertbl} must contain a {.code redcap_metadata} column."),
+      class = c("missing_metadata", "REDCapTidieR_cond")
+    )
+  }
+}
