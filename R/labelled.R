@@ -7,6 +7,8 @@
 #' @importFrom dplyr %>%
 #' @importFrom stringr str_replace_all str_to_title
 #' @importFrom purrr map map2
+#' @importFrom rlang check_installed
+#' @importFrom checkmate assert_data_frame
 #'
 #' @return
 #' Supertibble with labels applied to:
@@ -25,17 +27,15 @@
 #' @export
 make_labelled <- function(supertbl) {
 
-  # TODO: Input checking on supertibble
-  check_labelled(supertbl)
+  check_installed("labelled", reason = "to use `make_labelled()`")
 
-  # TODO: Check labelled installation
-  # TODO: Implement redcap_data labeling
+  assert_data_frame(supertbl)
+  check_req_labelled_fields(supertbl)
+  check_req_labelled_metadata_fields(supertbl)
 
   # Derive labels ----
   main_labs <- c(
     redcap_form_name = "Form Name",
-    # TODO: consider doing  val_label(redcap_form_name, redcap_form_label)
-    # and dropping redcap_form_label
     redcap_form_label = "Form Label",
     redcap_data = "Data",
     redcap_metadata = "Metadata",
