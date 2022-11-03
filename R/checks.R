@@ -175,25 +175,99 @@ check_forms_exist <- function(db_metadata, forms) {
 }
 
 #' @title
-#' Check that supertibble contains metadata
+#' Check that a supertibble contains \code{redcap_data} and
+#' \code{redcap_metadata} fields
 #'
 #' @description
-#' Provide an error message when the supertibble has no \code{redcap_metadata}
-#' column
+#' Provide an error message when a tibble is missing \code{redcap_data} or
+#' \code{redcap_metadata}
 #'
 #' @importFrom cli cli_abort
 #'
 #' @param supertbl a supertibble
 #'
 #' @return
-#' An error message indicating that the metadata column is missing
+#' An error message indicating that the required columns are missing
 #'
 #' @keywords internal
-check_labelled <- function(supertbl) {
-  if (!"redcap_metadata" %in% colnames(supertbl)) {
+check_req_labelled_fields <- function(supertbl) {
+  # Check for presence of req fields
+  req_fields <- c("redcap_data", "redcap_metadata")
+  missing_fields <- setdiff(req_fields, colnames(supertbl))
+
+  # If any are missing give an error message
+  if (length(missing_fields) > 0) {
     cli_abort(
-      c("x" = "{.arg supertbl} must contain a {.code redcap_metadata} column."),
-      class = c("missing_metadata", "REDCapTidieR_cond")
+      c("!" = "{.arg supertbl} must contain {.code {req_fields}}",
+        "x" = "You are missing {.code {missing_fields}}"),
+      class = c("missing_req_labelled_fields", "REDCapTidieR_cond"),
+      # pass along the fields that were missing as metadata
+      missing_fields = missing_fields
     )
   }
+}
+
+#' @title
+#' Check that all metadata tibbles within a supertibble contain
+#' \code{field_name} and \code{field_label} columns
+#'
+#' @importFrom purrr map map_int
+#' @importFrom dplyr %>% filter
+#' @importFrom cli cli_abort
+#'
+#' @param supertbl a supertibble containing a \code{redcap_metadata} column
+#'
+#' @return
+#' an error message alerting that instrument metadata is incomplete
+#'
+#' @keywords internal
+check_req_labelled_metadata_fields <- function(supertbl) {
+
+  req_fields <- c("field_name", "field_label")
+
+  # map over each metadata tibble and return list element with missing fields
+  missing_fields <- supertbl$redcap_metadata %>%
+    map(~setdiff(req_fields, colnames(.)))
+
+  # If any missing fields were found error
+  if (length(unlist(missing_fields)) > 0) {
+
+    # Build error message bullets of the form:
+    # x: {form} is missing {missing fields}
+    msg_data <- tibble(missing_fields = missing_fields)
+
+    # Form names to use in message. Use redcap_form_name if available but don't
+    # assume it's in the data
+    if ("redcap_form_name" %in% colnames(supertbl)) {
+      msg_data$form <- supertbl$redcap_form_name
+    } else {
+      msg_data$form <- paste0(
+        "supertbl$redcap_metadata[[", 1:length(missing_fields), "]]"
+      )
+    }
+
+    # Drop rows without missing fields
+    msg_data <- msg_data %>%
+      filter(map_int(.data$missing_fields, length) > 0)
+
+    # Create vector of messages and apply 'x' label
+    msg <- paste0(
+      "{.code {msg_data$form[[", 1:nrow(msg_data), "]]}} ",
+      "is missing {.code {msg_data$missing_fields[[", 1:nrow(msg_data), "]]}}"
+    )
+
+    names(msg) <- rep("x", length(msg))
+
+    # Prepend note about required fields
+    msg <- c(
+      "!" = "All elements of {.arg supertbl$redcap_metadata} must contain {.code {req_fields}}",
+      msg
+    )
+
+    cli_abort(
+      msg,
+      class = c("missing_req_labelled_metadata_fields", "REDCapTidieR_cond")
+    )
+  }
+
 }

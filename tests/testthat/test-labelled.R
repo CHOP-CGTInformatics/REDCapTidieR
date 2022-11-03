@@ -150,14 +150,47 @@ test_that("make_labelled handles redcap_metadata tibbles of different sizes ", {
 
 })
 
-test_that("make_labelled errors if redcap_metadata column is absent", {
-  supertbl <- tibble::tribble(
-    ~ redcap_form_name, ~ redcap_data,
-    "form_1", tibble(x = letters[1:3])
+test_that("make_labelled errors if required columns are absent", {
+  # Check data and metadata column errors
+  supertbl_no_data <- tibble::tribble(
+    ~ redcap_metadata,
+    tibble(field_name = "x", field_label = "X Label"),
+    tibble(field_name = "y", field_label = "Y Label")
   )
 
-  make_labelled(supertbl) %>%
-    expect_error(class = "missing_metadata")
+  supertbl_no_metadata <- tibble::tribble(
+    ~ redcap_data,
+    tibble(x = letters[1:3]),
+    tibble(y = letters[1:3])
+  )
 
+  ## Errors when data is missing
+  make_labelled(supertbl_no_data) %>%
+    expect_error(class = "missing_req_labelled_fields")
+
+  ## Errors when metadata is missing
+  make_labelled(supertbl_no_metadata) %>%
+    expect_error(class = "missing_req_labelled_fields")
+
+  # Check field_name and field_label within metadata
+  supertbl_no_field_name <- tibble::tribble(
+    ~ redcap_data, ~ redcap_metadata,
+    tibble(x = letters[1:3]), tibble(field_label = "X Label"),
+    tibble(y = letters[1:3]), tibble(field_label = "Y Label")
+  )
+
+  supertbl_no_field_label <- tibble::tribble(
+    ~ redcap_data, ~ redcap_metadata,
+    tibble(x = letters[1:3]), tibble(field_name = "x"),
+    tibble(y = letters[1:3]), tibble(field_name = "y")
+  )
+
+  ## Errors when field_name is missing
+  make_labelled(supertbl_no_field_name) %>%
+    expect_error(class = "missing_req_labelled_metadata_fields")
+
+  ## Errors when field_label is missing
+  make_labelled(supertbl_no_field_label) %>%
+    expect_error(class = "missing_req_labelled_metadata_fields")
 })
 
