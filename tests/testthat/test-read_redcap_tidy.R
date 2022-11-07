@@ -315,7 +315,7 @@ test_that("read_redcap_tidy returns metadata", {
 test_that("read_redcap_tidy suppresses events metadata for non-longitudinal database", {
   httptest::with_mock_api({
     out <- read_redcap_tidy(redcap_uri, classic_token) %>%
-      suppressWarnings(classes = "field_missing_categories")
+      suppressWarnings(classes = c("field_missing_categories", "empty_parse_warning"))
   })
 
   expect_false("redcap_events" %in% names(out))
