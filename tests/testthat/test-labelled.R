@@ -230,3 +230,24 @@ test_that("make_labelled handles supertibbles with NULL redcap_events", {
   expect_null(event_labs2)
 
 })
+
+test_that("format_labels_default works", {
+  labs <- c("<b>Label</b>", "Label {field_embedding_logic}", "Label:")
+
+  formatted_labs <- format_labels_default(labs)
+
+  expect_equal(formatted_labs, rep("Label", 3))
+})
+
+test_that("make_labelled accepts arbitrary function in format_labels", {
+  supertbl <- tibble::tribble(
+    ~ redcap_data, ~ redcap_metadata,
+    tibble(x = letters[1:3]), tibble(field_name = "x", field_label = "X Label")
+  )
+
+  out <- make_labelled(supertbl, format_labels = tolower)
+
+  labs <- labelled::var_label(out$redcap_data[[1]])
+
+  expect_equal(labs, list(x = "x label"))
+})

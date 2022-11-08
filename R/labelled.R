@@ -3,6 +3,15 @@
 #'
 #' @param supertbl a supertibble containing REDCap data created by
 #' \code{read_redcap_tidy()}
+#' @param format_labels One of:
+#' \itemize{
+#'   \item \code{NULL} to apply field labels to elements of \code{redcap_data}
+#'   as they appear in \code{redcap_metadata}
+#'   \item The name of a \code{REDCapTidieR} \code{label_format_*} function.
+#'   Currently only \code{"default"}
+#'   \item A function that takes the labels in \code{redcap_metadata} as input
+#'   and returns a vector of formatted labels of the same length as output
+#' }
 #'
 #' @importFrom dplyr %>%
 #' @importFrom purrr map map2
@@ -16,6 +25,14 @@
 #' - z
 #'
 #' @examples
+#' supertbl <- tibble::tribble(
+#'   ~ redcap_data, ~ redcap_metadata,
+#'   tibble::tibble(x = letters[1:3]), tibble::tibble(field_name = "x", field_label = "X Label"),
+#'   tibble::tibble(y = letters[1:3]), tibble::tibble(field_name = "y", field_label = "Y Label")
+#' )
+#'
+#' make_labelled(supertbl)
+#'
 #' \dontrun{
 #' redcap_uri <- Sys.getenv("REDCAP_URI")
 #' token <- Sys.getenv("REDCAP_TOKEN")
@@ -24,9 +41,20 @@
 #' make_labelled(supertbl)
 #' }
 #' @export
-make_labelled <- function(supertbl) {
+make_labelled <- function(supertbl, format_labels = NULL) {
 
   check_installed("labelled", reason = "to use `make_labelled()`")
+
+  if (is.null(format_labels)) {
+    formatter <- identity
+  } else if (is.function(format_labels)) {
+    formatter <- format_labels
+  } else if (format_labels == "default") {
+    formatter <- format_labels_default
+  } else {
+    # TODO: add informative error with cli
+    stop()
+  }
 
   assert_data_frame(supertbl)
   check_req_labelled_fields(supertbl)
@@ -104,14 +132,14 @@ make_labelled <- function(supertbl) {
     out$redcap_data,
     out$redcap_metadata,
     .f = ~ {
-      # build labels from metadata
-      labs <- .y$field_label
-      names(labs) <- .y$field_name
+      # build labels from metadata + predefined labs
+      labs <- c(.y$field_label, data_labs) %>%
+        formatter()
 
-      # add pre-defined labels
-      labs <- c(labs, data_labs)
+      # Formatter may have wiped names so set them after
+      names(labs) <- c(.y$field_name, names(data_labs))
 
-      # set them
+      # set labs
       safe_set_variable_labels(.x, labs)
     }
   )
@@ -130,4 +158,51 @@ make_labelled <- function(supertbl) {
   out <- safe_set_variable_labels(out, main_labs)
 
   out
+}
+
+#' @title
+#' Format REDCap field labels for display
+#'
+#' @description
+#' Use this function with the \code{format_labels} argument of
+#' \code{make_labelled()} to define how field labels are formatted before being
+#' applied to the elements of \code{redcap_data}. The default formatter does the
+#' following in order:
+#' \itemize{
+#'   \item Removes text between curly braces (\code{\{\}}) which contains
+#'   special "field embedding" logic in REDCap
+#'   \item Removes html tags
+#'   \item Removes extra whitespace
+#'   \item Removes terminal colons
+#' }
+#'
+#' @importFrom stringr str_replace str_replace_all str_squish str_trim
+#' @importFrom dplyr %>%
+#' @param x a vector of labels
+#'
+#' @return a vector of formatted labels
+#'
+#' @export
+#'
+#' @examples
+#'
+#' format_labels_default("<b>Bold Label:</b>")
+#'
+#' format_labels_default("Label {field_embedding_logic}")
+#'
+#' supertbl <- tibble::tribble(
+#'   ~ redcap_data, ~ redcap_metadata,
+#'   tibble::tibble(x = letters[1:3]), tibble::tibble(field_name = "x", field_label = "X Label:"),
+#'   tibble::tibble(y = letters[1:3]), tibble::tibble(field_name = "y", field_label = "<b>Y Label</b>")
+#' )
+#'
+#' make_labelled(supertbl, format_labels = format_labels_default)
+#'
+format_labels_default <- function(x) {
+  x %>%
+    str_replace_all("\\{.*?\\}", "") %>%
+    str_replace_all("<.*?>", "") %>%
+    str_squish() %>%
+    str_trim() %>%
+    str_replace(":$", "")
 }
