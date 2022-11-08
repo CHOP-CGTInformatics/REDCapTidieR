@@ -36,7 +36,7 @@
 #' are \code{NA} excluding identifier and form completion fields
 #'
 #' @importFrom REDCapR redcap_read_oneshot redcap_metadata_read
-#' @importFrom dplyr filter bind_rows %>% select
+#' @importFrom dplyr filter bind_rows %>% select slice
 #' @importFrom tidyselect any_of
 #' @importFrom rlang .data
 #'
@@ -78,6 +78,11 @@ read_redcap_tidy <- function(redcap_uri,
                                       token = token,
                                       verbose = FALSE)$data %>%
     filter(.data$field_type != "descriptive")
+
+  # Retrieve initial instrument/form_name order for preservation later
+  form_name_order <- db_metadata %>%
+    pull("form_name") %>%
+    unique()
 
   # Dissociate primary project id from any instrument
   # primary id will always be first in the metadata
@@ -189,7 +194,13 @@ read_redcap_tidy <- function(redcap_uri,
     out <- add_event_mapping(out, linked_arms)
   }
 
-  out
+  out %>%
+    dplyr::slice(
+      order(
+        factor(.data$redcap_form_name,
+               levels = form_name_order)
+      )
+    )
 }
 
 #' @title
