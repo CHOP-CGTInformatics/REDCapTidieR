@@ -156,9 +156,9 @@ instruments, longitudinal events, and multiple event arms:</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 10</span></span></span>
 <span><span class="co">#&gt;   redcap_fo…¹ redca…² redcap…³ redcap…⁴ redcap…⁵ struc…⁶ data_…⁷ data_…⁸ data_…⁹</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lbstr&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> repeated    Repeat… &lt;tibble&gt; &lt;tibble&gt; &lt;tibble&gt; repeat…       9       7 4.04 kB</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> nonrepeated Nonrep… &lt;tibble&gt; &lt;tibble&gt; &lt;tibble&gt; nonrep…       8       6 3.18 kB</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> nonrepeate… Nonrep… &lt;tibble&gt; &lt;tibble&gt; &lt;tibble&gt; nonrep…       3       6 2.30 kB</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> nonrepeated Nonrep… &lt;tibble&gt; &lt;tibble&gt; &lt;tibble&gt; nonrep…       8       6 3.18 kB</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> nonrepeate… Nonrep… &lt;tibble&gt; &lt;tibble&gt; &lt;tibble&gt; nonrep…       3       6 2.30 kB</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> repeated    Repeat… &lt;tibble&gt; &lt;tibble&gt; &lt;tibble&gt; repeat…       9       7 4.04 kB</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># … with 1 more variable: data_na_pct &lt;dbl&gt;, and abbreviated variable names</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   ¹​redcap_form_name, ²​redcap_form_label, ³​redcap_data, ⁴​redcap_metadata,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   ⁵​redcap_events, ⁶​structure, ⁷​data_rows, ⁸​data_cols, ⁹​data_size</span></span></span></code></pre></div>
@@ -167,6 +167,22 @@ repeating instrument. Let’s look at a sample nonrepeated data output
 first:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">redcap_export</span><span class="op">$</span><span class="va">redcap_data</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 6</span></span></span>
+<span><span class="co">#&gt;   record_id redcap_event redcap_arm nonrepeat_3 nonrepeat_4 form_status_complete</span></span>
+<span><span class="co">#&gt;       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>               </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>         1 event_1               1           3           4 Incomplete          </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>         2 event_1               1           5           6 Incomplete          </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>         3 event_1               1          <span style="color: #BB0000;">NA</span>          <span style="color: #BB0000;">NA</span> Incomplete</span></span></code></pre></div>
+<p>While in classic databases we would expect only unique
+<code>record_id</code>s per row, in a longitudinal database
+<code>record_id</code>s can appear multiple times based on both the
+event (<code>redcap_event</code>) and arm (<code>redcap_arm</code>)
+where forms and their respective variables appear. This is illustrated
+in the earlier table depicting what columns are necessary to uniquely
+identify rows.</p>
+<p>Now let’s look at the repeated instrument data output:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">redcap_export</span><span class="op">$</span><span class="va">redcap_data</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 8 × 6</span></span></span>
 <span><span class="co">#&gt;   record_id redcap_event redcap_arm nonrepeat_1 nonrepeat_2 form_status_complete</span></span>
 <span><span class="co">#&gt;       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>               </span></span>
@@ -178,30 +194,6 @@ first:</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>         3 event_2               1 <span style="color: #BB0000;">NA</span>          <span style="color: #BB0000;">NA</span>          Incomplete          </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span>         4 event_1               2 Red         Blue        Incomplete          </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">8</span>         4 event_3               2 Green       Yellow      Incomplete</span></span></code></pre></div>
-<p>While in classic databases we would expect only unique
-<code>record_id</code>s per row, in a longitudinal database
-<code>record_id</code>s can appear multiple times based on both the
-event (<code>redcap_event</code>) and arm (<code>redcap_arm</code>)
-where forms and their respective variables appear. This is illustrated
-in the earlier table depicting what columns are necessary to uniquely
-identify rows.</p>
-<p>Now let’s look at the repeated instrument data output:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">redcap_export</span><span class="op">$</span><span class="va">redcap_data</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 9 × 7</span></span></span>
-<span><span class="co">#&gt;   record_id redcap_repeat_instance redcap_event redcap…¹ repea…² repea…³ form_…⁴</span></span>
-<span><span class="co">#&gt;       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>         1                      1 event_1             1 1       2       Incomp…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>         1                      2 event_1             1 3       4       Incomp…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>         1                      3 event_1             1 5       6       Incomp…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>         1                      1 event_2             1 A       B       Incomp…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>         1                      2 event_2             1 C       D       Incomp…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>         3                      1 event_1             1 C       D       Incomp…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span>         3                      1 event_2             1 E       F       Incomp…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">8</span>         3                      2 event_2             1 G       H       Incomp…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">9</span>         4                      1 event_3             2 R1      R2      Incomp…</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># … with abbreviated variable names ¹​redcap_arm, ²​repeat_1, ³​repeat_2,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   ⁴​form_status_complete</span></span></span></code></pre></div>
 <p>The only really noticeable difference here is the inclusion of
 <code>redcap_repeat_instance</code>. This adds a further level of
 complexity, allowing a single instrument to have repeating values of
