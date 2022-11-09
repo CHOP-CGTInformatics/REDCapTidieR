@@ -160,6 +160,10 @@ distill_nonrepeat_table_long <- function(
            paste0(my_form, "_complete")) %>%
     names()
 
+  if (paste0(my_form, "_timestamp") %in% names(db_data_long)) {
+    my_fields <- c(my_fields, "redcap_survey_identifier")
+  }
+
   # Setup data for loop redcap_arm linking
   db_data_long <- db_data_long %>%
     add_partial_keys(.data$redcap_event_name)
@@ -246,6 +250,10 @@ distill_repeat_table_long <- function(
            matches(paste0("^",my_form, "_timestamp$")),
            paste0(my_form, "_complete")) %>%
     names()
+
+  if (paste0(my_form, "_timestamp") %in% names(db_data_long)) {
+    my_fields <- c(my_fields, "redcap_survey_identifier")
+  }
 
   # Setup data for loop redcap_arm linking
   db_data_long <- db_data_long %>%

@@ -150,6 +150,10 @@ distill_nonrepeat_table <- function(
            paste0(my_form, "_complete")) %>%
     names()
 
+  if (paste0(my_form, "_timestamp") %in% names(db_data)) {
+    my_fields <- c(my_fields, "redcap_survey_identifier")
+  }
+
   if (has_repeating) {
     db_data <- db_data %>%
       filter(is.na(.data$redcap_repeat_instance))
@@ -209,6 +213,10 @@ distill_repeat_table <- function(
            matches(paste0("^",my_form, "_timestamp$")),
            paste0(my_form, "_complete")) %>%
     names()
+
+  if (paste0(my_form, "_timestamp") %in% names(db_data)) {
+    my_fields <- c(my_fields, "redcap_survey_identifier")
+  }
 
   db_data %>%
     filter(
