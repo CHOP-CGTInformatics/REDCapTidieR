@@ -9,6 +9,7 @@ read_redcap_tidy(
   token,
   raw_or_label = "label",
   forms = NULL,
+  export_survey_fields = FALSE,
   suppress_messages = TRUE
 )
 }
@@ -26,6 +27,12 @@ choice fields. Default is 'label'.}
 
 \item{forms}{A character vector of form names that specifies the forms to
 export. Default returns all forms in the project.}
+
+\item{export_survey_fields}{A boolean that specifies whether to export the
+survey identifier field (e.g., 'redcap_survey_identifier') or survey
+timestamp fields (e.g., instrument+'_timestamp'). The timestamp outputs
+reflect the survey's completion time (according to the time and timezone of
+the REDCap server.)}
 
 \item{suppress_messages}{Optionally show or suppress messages.
 Default \code{TRUE}.}
