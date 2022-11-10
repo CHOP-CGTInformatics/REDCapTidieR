@@ -79,8 +79,11 @@ read_redcap_tidy <- function(redcap_uri,
                                       verbose = FALSE)$data %>%
     filter(.data$field_type != "descriptive")
 
+  # Cache unedited db_metadata to reduce dependencies on the order of edits
+  db_metadata_orig <- db_metadata
+
   # Retrieve initial instrument/form_name order for preservation later
-  form_name_order <- db_metadata %>%
+  form_name_order <- db_metadata_orig %>%
     pull("form_name") %>%
     unique()
 
@@ -101,7 +104,9 @@ read_redcap_tidy <- function(redcap_uri,
     check_forms_exist(db_metadata, forms)
 
     # Update forms for API call
-    id_form <- db_metadata$form_name[[1]]
+
+    # Get name of first form from unedited metadata
+    id_form <- db_metadata_orig$form_name[[1]]
 
     if (id_form %in% forms) {
       # If form with identifiers was already requested:

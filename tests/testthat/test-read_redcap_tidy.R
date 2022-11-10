@@ -315,7 +315,8 @@ test_that("read_redcap_tidy returns metadata", {
 test_that("read_redcap_tidy suppresses events metadata for non-longitudinal database", {
   httptest::with_mock_api({
     out <- read_redcap_tidy(redcap_uri, classic_token) %>%
-      suppressWarnings(classes = "field_missing_categories")
+      suppressWarnings(classes = c("field_missing_categories",
+                                   "empty_parse_warning"))
   })
 
   expect_false("redcap_events" %in% names(out))
@@ -324,12 +325,14 @@ test_that("read_redcap_tidy suppresses events metadata for non-longitudinal data
 test_that("read_redcap_tidy preserves form_name order mirroring original REDCapR metadata order", {
   httptest::with_mock_api({
     expected_order <- REDCapR::redcap_metadata_read(redcap_uri,
-                                                       classic_token)$data %>%
+                                                    classic_token,
+                                                    verbose = FALSE)$data %>%
       pull(form_name) %>%
       unique()
 
     out <- read_redcap_tidy(redcap_uri, classic_token) %>%
-      suppressWarnings(classes = "field_missing_categories")
+      suppressWarnings(classes = c("field_missing_categories",
+                                   "empty_parse_warning"))
   })
 
   expect_equal(expected_order, out$redcap_form_name)
