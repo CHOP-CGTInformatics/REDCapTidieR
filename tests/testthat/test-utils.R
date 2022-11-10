@@ -112,3 +112,63 @@ test_that("link_arms works", {
   expect_equal(n_unique_arms, 2)
 
 })
+
+test_that("update_field_names works", {
+  test_meta <- tibble::tribble(
+    ~field_name,   ~form_name, ~field_type, ~field_label, ~select_choices_or_calculations,
+    "record_id",   NA_character_,  "text", NA_character_, NA_character_,
+    "my_checkbox", "my_form",  "checkbox", "Field Label", "1, 1 | -99, Unknown {embedded logic}",
+    "checkbox_no_label", "my_form",  "checkbox", NA_character_, "1, 1"
+  )
+
+  out <- update_field_names(test_meta)
+
+  # Check cols are present and correctly ordered
+  expected_cols <- c(
+    "field_name", "form_name", "field_type", "field_label",
+    "select_choices_or_calculations", "field_name_updated"
+  )
+
+  expect_equal(colnames(out), expected_cols)
+
+  # Check field_name_updated was created correctly
+  field_name_updated <- out$field_name_updated[-1] # drop record_id row
+
+  expect_equal(
+    field_name_updated,
+    c("my_checkbox___1", "my_checkbox___-99", "checkbox_no_label___1")
+  )
+
+  # Check field_label was correctly updated in place
+
+  ## Checkbox labs appended in parentheses
+  ## field embedding logic stripped
+  ## Missing field labels converted to NA
+  field_label <- out$field_label[-1] # drop record_id row
+
+  expect_equal(
+    field_label,
+    c("Field Label (1)", "Field Label (Unknown)", "NA (1)")
+  )
+
+})
+
+test_that("update_field_names handles metadata without checkbox fields", {
+  test_meta <- tibble::tribble(
+    ~field_name,   ~form_name, ~field_type, ~field_label, ~select_choices_or_calculations,
+    "record_id",   NA_character_,  "text", NA_character_, NA_character_,
+    "my_radio",   NA_character_,  "radio", "xyz", "abc"
+  )
+
+  out <- update_field_names(test_meta)
+
+  # field_name_update is the same as field_name
+
+  expect_equal(out$field_name, out$field_name_updated)
+
+  # field_label is unchanged
+
+  expect_equal(out$field_label, test_meta$field_label)
+
+
+})
