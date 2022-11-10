@@ -170,25 +170,6 @@ parse_labels <- function(string, return_vector = FALSE) {
 }
 
 #' @title
-#' Append REDCap checkbox variables with helpful labels
-#'
-#' @description
-#' Formats raw checkbox values by converting to lowercase and appending the
-#' name of the checkbox field from \code{field_name}
-#'
-#' @returns A vector.
-#'
-#' @param field_name The \code{db_metadata$field_name} to append onto the string
-#' @param raw A vector of raw checkbox values produced by \code{parse_labels}
-#'
-#' @keywords internal
-
-checkbox_appender <- function(field_name, raw) {
-  prefix <- paste0(field_name, "___")
-  paste0(prefix, tolower(raw))
-}
-
-#' @title
 #' Update metadata field names for checkbox handling
 #'
 #' @description
@@ -208,10 +189,18 @@ checkbox_appender <- function(field_name, raw) {
 #' @param db_metadata The REDCap metadata output defined by
 #' \code{REDCapR::redcap_metadata_read()$data}
 #'
+#' @details
+#' Assumes \code{db_metadata}:
+#' \itemize{
+#'   \item has non-zero number of rows
+#'   \item contains \code{field_name} and \code{field_label} columns
+#' }
+#'
 #' @importFrom tidyr unnest
 #' @importFrom dplyr %>% select mutate
 #' @importFrom tibble tibble
 #' @importFrom rlang .data
+#' @importFrom stringr str_replace_all str_trim str_squish
 #'
 #' @keywords internal
 
@@ -227,11 +216,26 @@ update_field_names <- function(db_metadata) {
       # containing updated field names and labels
       parsed_labs <- parse_labels(out$select_choices_or_calculations[i])
 
+      # Build updated field names and labs
+      clean_names <- paste(
+        out$field_name[[i]],
+        tolower(parsed_labs$raw),
+        sep = "___"
+      )
+
+      # Strip embedding logic and white space before appending to field labels
+      clean_labs <- parsed_labs$label %>%
+        # TODO: replace with formatting functions?
+        str_replace_all("\\{.*?\\}", "") %>%
+        str_trim() %>%
+        str_squish()
+
+      clean_labs <- paste0(out$field_label[[i]], " (", clean_labs, ")")
+
       out$updated_metadata[i] <- list(
         tibble(
-          field_name_updated = checkbox_appender(out$field_name[[i]], parsed_labs$raw),
-          # Append checkbox option to field label in parentheses
-          field_label_updated = paste0(out$field_label[[i]], " (", parsed_labs$label, ")")
+          field_name_updated = clean_names,
+          field_label_updated = clean_labs
         )
       )
 

@@ -265,9 +265,9 @@ test_that("errors when non-existent form is supplied with existing forms", {
 test_that("get_fields_to_drop handles checkboxes", {
   # Example metadata
   test_meta <- tibble::tribble(
-    ~field_name,   ~form_name, ~field_type, ~select_choices_or_calculations,
-    "record_id",   "my_form",  "text",      NA_character_,
-    "my_checkbox", "my_form",  "checkbox",  "1, 1 | -99, Unknown"
+    ~field_name,   ~form_name, ~field_type, ~select_choices_or_calculations, ~field_label,
+    "record_id",   "my_form",  "text",      NA_character_, NA_character_,
+    "my_checkbox", "my_form",  "checkbox",  "1, 1 | -99, Unknown", NA_character_
   )
 
   res <- get_fields_to_drop(test_meta, "my_form")
