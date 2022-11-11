@@ -4,20 +4,20 @@ redcaptidier_longitudintal_db <- readRDS(system.file("testdata/redcaptidier_long
 test_that("extract_tables works with a vector and tidyselect selectors", {
   # Test tidyselectors work
   expected_everything_out <- list(
-    repeated = redcaptidier_longitudintal_db$redcap_data[[1]],
-    nonrepeated = redcaptidier_longitudintal_db$redcap_data[[2]],
-    nonrepeated2 = redcaptidier_longitudintal_db$redcap_data[[3]]
+    nonrepeated = redcaptidier_longitudintal_db$redcap_data[[1]],
+    nonrepeated2 = redcaptidier_longitudintal_db$redcap_data[[2]],
+    repeated = redcaptidier_longitudintal_db$redcap_data[[3]]
   )
   expected_starts_with_out <- list(
-    nonrepeated = redcaptidier_longitudintal_db$redcap_data[[2]],
-    nonrepeated2 = redcaptidier_longitudintal_db$redcap_data[[3]]
+    nonrepeated = redcaptidier_longitudintal_db$redcap_data[[1]],
+    nonrepeated2 = redcaptidier_longitudintal_db$redcap_data[[2]]
   )
   expected_ends_with_out <- list(
-    nonrepeated2 = redcaptidier_longitudintal_db$redcap_data[[3]]
+    nonrepeated2 = redcaptidier_longitudintal_db$redcap_data[[2]]
   )
   expected_traditional_out <- list(
-    repeated = redcaptidier_longitudintal_db$redcap_data[[1]],
-    nonrepeated = redcaptidier_longitudintal_db$redcap_data[[2]]
+    nonrepeated = redcaptidier_longitudintal_db$redcap_data[[1]],
+    repeated = redcaptidier_longitudintal_db$redcap_data[[3]]
   )
 
   expect_equal(
@@ -37,7 +37,7 @@ test_that("extract_tables works with a vector and tidyselect selectors", {
   )
   expect_equal(
     redcaptidier_longitudintal_db %>%
-      extract_tables(tbls = c("repeated", "nonrepeated")),
+      extract_tables(tbls = c("nonrepeated", "repeated")),
     expected_traditional_out
   )
   expect_error(redcaptidier_longitudintal_db %>%
@@ -50,6 +50,6 @@ test_that("extract_table works", {
   expected_out <- redcaptidier_longitudintal_db$redcap_data[[1]]
   expect_equal(expected_out,
                redcaptidier_longitudintal_db %>%
-                 extract_table(tbl = "repeated")
+                 extract_table(tbl = "nonrepeated")
   )
 })
