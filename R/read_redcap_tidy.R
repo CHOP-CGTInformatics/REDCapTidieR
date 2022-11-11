@@ -36,7 +36,7 @@
 #' are \code{NA} excluding identifier and form completion fields
 #'
 #' @importFrom REDCapR redcap_read_oneshot redcap_metadata_read
-#' @importFrom dplyr filter bind_rows %>% select
+#' @importFrom dplyr filter bind_rows %>% select slice
 #' @importFrom tidyselect any_of
 #' @importFrom rlang .data
 #'
@@ -85,6 +85,14 @@ read_redcap_tidy <- function(redcap_uri,
                                       verbose = FALSE)$data %>%
     filter(.data$field_type != "descriptive")
 
+  # Cache unedited db_metadata to reduce dependencies on the order of edits
+  db_metadata_orig <- db_metadata
+
+  # Retrieve initial instrument/form_name order for preservation later
+  form_name_order <- db_metadata_orig %>%
+    pull("form_name") %>%
+    unique()
+
   # Dissociate primary project id from any instrument
   # primary id will always be first in the metadata
   db_metadata$form_name[[1]] <- NA_character_
@@ -102,7 +110,9 @@ read_redcap_tidy <- function(redcap_uri,
     check_forms_exist(db_metadata, forms)
 
     # Update forms for API call
-    id_form <- db_metadata$form_name[[1]]
+
+    # Get name of first form from unedited metadata
+    id_form <- db_metadata_orig$form_name[[1]]
 
     if (id_form %in% forms) {
       # If form with identifiers was already requested:
@@ -196,7 +206,13 @@ read_redcap_tidy <- function(redcap_uri,
     out <- add_event_mapping(out, linked_arms)
   }
 
-  out
+  out %>%
+    dplyr::slice(
+      order(
+        factor(.data$redcap_form_name,
+               levels = form_name_order)
+      )
+    )
 }
 
 #' @title
