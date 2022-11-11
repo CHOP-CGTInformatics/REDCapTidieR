@@ -19,7 +19,7 @@ tibbles, where each tibble represents a single instrument.'><!-- mathjax --><scr
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">REDCapTidieR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.3</span>
       </span>
     </div>
 
@@ -71,6 +71,8 @@ tibbles, where each tibble represents a single instrument.</p>
 <span>  <span class="va">redcap_uri</span>,</span>
 <span>  <span class="va">token</span>,</span>
 <span>  raw_or_label <span class="op">=</span> <span class="st">"label"</span>,</span>
+<span>  forms <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  export_survey_fields <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  suppress_messages <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -94,6 +96,19 @@ to export the raw coded values or the labels for the options of multiple
 choice fields. Default is 'label'.</p></dd>
 
 
+<dt>forms</dt>
+<dd><p>A character vector of form names that specifies the forms to
+export. Default returns all forms in the project.</p></dd>
+
+
+<dt>export_survey_fields</dt>
+<dd><p>A boolean that specifies whether to export the
+survey identifier field (e.g., 'redcap_survey_identifier') or survey
+timestamp fields (e.g., instrument+'_timestamp'). The timestamp outputs
+reflect the survey's completion time (according to the time and timezone of
+the REDCap server.). Default <code>TRUE</code>.</p></dd>
+
+
 <dt>suppress_messages</dt>
 <dd><p>Optionally show or suppress messages.
 Default <code>TRUE</code>.</p></dd>
@@ -103,15 +118,35 @@ Default <code>TRUE</code>.</p></dd>
     <h2>Value</h2>
     
 
-<p>Returns a <code>tibble</code> in which each row represents a REDCap instrument.</p>
+<p>Returns a <code>tibble</code> in which each row represents a REDCap instrument. The
+results contains the following fields:
+- <code>redcap_form_name</code>, the name of the instrument
+- <code>redcap_form_label</code>, the label for the instrument
+- <code>redcap_data</code>, the data for the instrument
+- <code>redcap_metadata</code>, a <code>tibble</code> of data dictionary entries for each
+field in the instrument
+- <code>redcap_events</code>, a <code>tibble</code> with information about the arms and
+longitudinal events represented in the instrument. Only if the project has
+longitudinal events enabled
+- <code>structure</code>, the type of instrument, "repeating" or "nonrepeating"
+- <code>data_rows</code>, the number of rows in the instrument's data
+- <code>data_cols</code>, the number of columns in the instrument's data
+- <code>data_size</code>, the size in memory of the instrument's data computed by
+<code><a href="https://lobstr.r-lib.org/reference/obj_size.html" class="external-link">lobstr::obj_size</a></code></p>
+
+
+<p>- <code>data_na_pct</code>, the percentage of cells in the instrument's data that
+are <code>NA</code> excluding identifier and form completion fields</p>
     </div>
     <div id="details">
     <h2>Details</h2>
-    <p>This function uses REDCapR to call the REDCap API. The REDCap API returns
-a "sparse matrix" that mashes data from all data collection instruments
+    <p>This function uses [REDCapR](https://ouhscbbmc.github.io/REDCapR)
+to call the REDCap API. The REDCap API returns
+a [block matrix](https://en.wikipedia.org/wiki/Block_matrix) that mashes
+data from all data collection instruments
 together. In complex databases, such as those that contain repeated
 instruments, this is unwieldy. The `read_redcap_tidy` function intelligently
-deconvolutes the sparse matrix and splices the data into individual tibbles,
+deconvolutes the block matrix and splices the data into individual tibbles,
 where one tibble represents the data from one instrument.</p>
     </div>
 
