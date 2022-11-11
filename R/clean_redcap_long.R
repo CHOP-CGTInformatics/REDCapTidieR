@@ -157,12 +157,9 @@ distill_nonrepeat_table_long <- function(
   my_fields <- db_data_long %>%
     select(all_of(my_fields),
            matches(paste0("^",my_form, "_timestamp$")),
+           matches("^redcap_survey_identifier$"),
            paste0(my_form, "_complete")) %>%
     names()
-
-  if (paste0(my_form, "_timestamp") %in% names(db_data_long)) {
-    my_fields <- c(my_fields, "redcap_survey_identifier")
-  }
 
   # Setup data for loop redcap_arm linking
   db_data_long <- db_data_long %>%
@@ -248,12 +245,9 @@ distill_repeat_table_long <- function(
   my_fields <- db_data_long %>%
     select(all_of(my_fields),
            matches(paste0("^",my_form, "_timestamp$")),
+           matches("^redcap_survey_identifier$"),
            paste0(my_form, "_complete")) %>%
     names()
-
-  if (paste0(my_form, "_timestamp") %in% names(db_data_long)) {
-    my_fields <- c(my_fields, "redcap_survey_identifier")
-  }
 
   # Setup data for loop redcap_arm linking
   db_data_long <- db_data_long %>%

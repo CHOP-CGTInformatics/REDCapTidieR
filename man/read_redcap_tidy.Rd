@@ -9,7 +9,7 @@ read_redcap_tidy(
   token,
   raw_or_label = "label",
   forms = NULL,
-  export_survey_fields = FALSE,
+  export_survey_fields = TRUE,
   suppress_messages = TRUE
 )
 }
@@ -32,7 +32,7 @@ export. Default returns all forms in the project.}
 survey identifier field (e.g., 'redcap_survey_identifier') or survey
 timestamp fields (e.g., instrument+'_timestamp'). The timestamp outputs
 reflect the survey's completion time (according to the time and timezone of
-the REDCap server.)}
+the REDCap server.). Default \code{TRUE}.}
 
 \item{suppress_messages}{Optionally show or suppress messages.
 Default \code{TRUE}.}
