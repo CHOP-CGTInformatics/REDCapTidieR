@@ -96,7 +96,7 @@ extract_tables <- function(.data,
   tbls <- enquo(tbls)
 
   out <- .data %>%
-    select(-"structure") %>%
+    select("redcap_form_name", "redcap_data") %>%
     pivot_wider(names_from = "redcap_form_name",
                 values_from = "redcap_data")
 
