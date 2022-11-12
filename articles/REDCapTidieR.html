@@ -282,15 +282,9 @@ from a supertibble. The default is to extract all tibbles:</p>
 <span>  <span class="fu"><a href="../reference/extract_tables.html">extract_tables</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">superheroes_list_of_tibbles</span>, max.level <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
-<span><span class="co">#&gt; List of 8</span></span>
-<span><span class="co">#&gt;  $ redcap_form_label : chr "Heroes Information"</span></span>
-<span><span class="co">#&gt;  $ redcap_metadata   : tibble [11 × 16] (S3: tbl_df/tbl/data.frame)</span></span>
-<span><span class="co">#&gt;  $ data_rows         : int 734</span></span>
-<span><span class="co">#&gt;  $ data_cols         : int 12</span></span>
-<span><span class="co">#&gt;  $ data_size         : num 123240</span></span>
-<span><span class="co">#&gt;  $ data_na_pct       : num 0.00232</span></span>
+<span><span class="co">#&gt; List of 2</span></span>
 <span><span class="co">#&gt;  $ heroes_information: tibble [734 × 12] (S3: tbl_df/tbl/data.frame)</span></span>
-<span><span class="co">#&gt;  $ super_hero_powers : NULL</span></span></code></pre></div>
+<span><span class="co">#&gt;  $ super_hero_powers : tibble [5,966 × 4] (S3: tbl_df/tbl/data.frame)</span></span></code></pre></div>
 <p>A neat feature of these extraction functions is that they support
 <code>tidy-select</code> semantics and selectors for picking tables:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
@@ -299,7 +293,7 @@ from a supertibble. The default is to extract all tibbles:</p>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">superheroes_list_of_tibbles_ending_with_powers</span>, max.level <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="co">#&gt; List of 1</span></span>
-<span><span class="co">#&gt;  $ super_hero_powers: NULL</span></span></code></pre></div>
+<span><span class="co">#&gt;  $ super_hero_powers: tibble [5,966 × 4] (S3: tbl_df/tbl/data.frame)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="structure-of-redcaptidier-tibbles">Structure of <code>REDCapTidieR</code> Tibbles<a class="anchor" aria-label="anchor" href="#structure-of-redcaptidier-tibbles"></a>
