@@ -125,6 +125,26 @@ test_that("supplying forms is equivalent to post-hoc filtering for a longitudina
   )
 })
 
+test_that("supplying forms is equivalent to post-hoc filtering for a database with a repeating first instrument", {
+
+  # Explicitly testing form that doesn't contain identifiers
+  httptest::with_mock_api({
+    filtered_by_api <-
+      read_redcap_tidy(redcap_uri,
+                       repeat_first_instrument_token,
+                       forms = "form_2")
+
+    filtered_locally <-
+      read_redcap_tidy(redcap_uri,
+                       repeat_first_instrument_token) %>%
+      filter(redcap_form_name == "form_2")
+  })
+
+  expect_equal(
+    filtered_by_api, filtered_locally
+  )
+})
+
 test_that("read_redcap_tidy works for a longitudinal, single arm database with a nonrepeating instrument", {
 
   # Define partial key columns that should be in a nonrepeating table

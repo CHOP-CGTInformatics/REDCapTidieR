@@ -25,4 +25,5 @@ get_fake_credentials <- function(credentials) {
 classic_token <- get_fake_credentials("REDCAPTIDIER_CLASSIC_API")
 longitudinal_token <- get_fake_credentials("REDCAPTIDIER_LONGITUDINAL_API")
 longitudinal_noarms_token <- get_fake_credentials("REDCAPTIDIER_LONGITUDINAL_NOARMS_API")
+repeat_first_instrument_token <- get_fake_credentials("REDCAPTIDIER_REPEAT_FIRST_INSTRUMENT_API")
 redcap_uri <- get_fake_credentials("REDCAP_URI")

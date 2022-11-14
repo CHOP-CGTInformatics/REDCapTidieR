@@ -5,6 +5,7 @@ library(httptest)
 classic_token <- Sys.getenv("REDCAPTIDIER_CLASSIC_API")
 longitudinal_token <- Sys.getenv("REDCAPTIDIER_LONGITUDINAL_API")
 longitudinal_noarms_token <- Sys.getenv("REDCAPTIDIER_LONGITUDINAL_NOARMS_API")
+repeat_first_instrument_token <- Sys.getenv("REDCAPTIDIER_REPEAT_FIRST_INSTRUMENT_API")
 redcap_uri <- Sys.getenv("REDCAP_URI")
 
 # Create mocks -----------
@@ -38,5 +39,8 @@ tryCatch(
                    classic_token,
                    forms = c("fake-form", "repeated"))
 )
+
+read_redcap_tidy(redcap_uri, repeat_first_instrument_token)
+read_redcap_tidy(redcap_uri, repeat_first_instrument_token, forms = "form_2")
 
 stop_capturing()
