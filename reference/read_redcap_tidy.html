@@ -72,6 +72,7 @@ tibbles, where each tibble represents a single instrument.</p>
 <span>  <span class="va">token</span>,</span>
 <span>  raw_or_label <span class="op">=</span> <span class="st">"label"</span>,</span>
 <span>  forms <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  export_survey_fields <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  suppress_messages <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -98,6 +99,14 @@ choice fields. Default is 'label'.</p></dd>
 <dt>forms</dt>
 <dd><p>A character vector of form names that specifies the forms to
 export. Default returns all forms in the project.</p></dd>
+
+
+<dt>export_survey_fields</dt>
+<dd><p>A boolean that specifies whether to export the
+survey identifier field (e.g., 'redcap_survey_identifier') or survey
+timestamp fields (e.g., instrument+'_timestamp'). The timestamp outputs
+reflect the survey's completion time (according to the time and timezone of
+the REDCap server.). Default <code>TRUE</code>.</p></dd>
 
 
 <dt>suppress_messages</dt>
