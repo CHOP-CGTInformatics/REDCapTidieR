@@ -110,7 +110,7 @@ clean_redcap <- function(
 #' \code{REDCapR::redcap_metadata_read()$data}
 #'
 #' @importFrom dplyr filter pull select relocate rename
-#' @importFrom tidyselect all_of everything starts_with matches
+#' @importFrom tidyselect all_of everything starts_with any_of
 #' @importFrom tibble tibble
 #' @importFrom rlang .data
 #'
@@ -146,8 +146,8 @@ distill_nonrepeat_table <- function(
   # and to add column to indicate that form is completed
   my_fields <- db_data %>%
     select(all_of(my_fields),
-           matches(paste0("^",my_form, "_timestamp$")),
-           matches("^redcap_survey_identifier$"),
+           any_of(paste0(my_form, "_timestamp")),
+           any_of("redcap_survey_identifier"),
            paste0(my_form, "_complete")) %>%
     names()
 
@@ -181,7 +181,7 @@ distill_nonrepeat_table <- function(
 #' \code{REDCapR::redcap_metadata_read()$data}
 #'
 #' @importFrom dplyr filter pull select relocate rename
-#' @importFrom tidyselect all_of everything starts_with matches
+#' @importFrom tidyselect all_of everything starts_with any_of
 #' @importFrom tibble tibble
 #' @importFrom rlang .data
 #'
@@ -207,8 +207,8 @@ distill_repeat_table <- function(
   # and to add column to indicate that form is completed
   my_fields <- db_data %>%
     select(all_of(my_fields),
-           matches(paste0("^",my_form, "_timestamp$")),
-           matches("^redcap_survey_identifier$"),
+           any_of(paste0(my_form, "_timestamp")),
+           any_of("redcap_survey_identifier"),
            paste0(my_form, "_complete")) %>%
     names()
 
