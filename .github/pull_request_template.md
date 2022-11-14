@@ -18,6 +18,7 @@ If applicable, add screenshots to help explain the proposed changes
 Before submitting this PR, please check and verify below that the submission meets the below criteria:
 
 - [ ] New/revised functions have associated tests
+- [ ] New/revised functions that update downstream outputs have associated static testing files (`.RDS`) updated under `inst/testdata/create_test_data.R`
 - [ ] New tests that make API calls use `httptest::with_mock_api` and any new mocks were added to `tests/testthat/fixtures/create_httptest_mocks.R`
 - [ ] New/revised functions use appropriate naming conventions
 - [ ] New/revised functions don't repeat code
