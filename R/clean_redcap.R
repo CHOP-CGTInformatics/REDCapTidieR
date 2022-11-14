@@ -56,7 +56,8 @@ clean_redcap <- function(
       redcap_form_name = repeated_forms,
       redcap_data = map(
         repeated_forms,
-        ~ distill_repeat_table(.x, db_data, db_metadata)
+        ~ distill_repeat_table(.x, db_data,
+                               db_metadata)
       ),
       structure = "repeating"
     )
@@ -109,7 +110,7 @@ clean_redcap <- function(
 #' \code{REDCapR::redcap_metadata_read()$data}
 #'
 #' @importFrom dplyr filter pull select relocate rename
-#' @importFrom tidyselect all_of everything starts_with
+#' @importFrom tidyselect all_of everything starts_with any_of
 #' @importFrom tibble tibble
 #' @importFrom rlang .data
 #'
@@ -144,7 +145,10 @@ distill_nonrepeat_table <- function(
   # Below necessary to remove descriptive text fields
   # and to add column to indicate that form is completed
   my_fields <- db_data %>%
-    select(all_of(my_fields), paste0(my_form, "_complete")) %>%
+    select(all_of(my_fields),
+           any_of(paste0(my_form, "_timestamp")),
+           any_of("redcap_survey_identifier"),
+           paste0(my_form, "_complete")) %>%
     names()
 
   if (has_repeating) {
@@ -177,7 +181,7 @@ distill_nonrepeat_table <- function(
 #' \code{REDCapR::redcap_metadata_read()$data}
 #'
 #' @importFrom dplyr filter pull select relocate rename
-#' @importFrom tidyselect all_of everything starts_with
+#' @importFrom tidyselect all_of everything starts_with any_of
 #' @importFrom tibble tibble
 #' @importFrom rlang .data
 #'
@@ -202,7 +206,10 @@ distill_repeat_table <- function(
   # Below necessary to remove descriptive text fields
   # and to add column to indicate that form is completed
   my_fields <- db_data %>%
-    select(all_of(my_fields), paste0(my_form, "_complete")) %>%
+    select(all_of(my_fields),
+           any_of(paste0(my_form, "_timestamp")),
+           any_of("redcap_survey_identifier"),
+           paste0(my_form, "_complete")) %>%
     names()
 
   db_data %>%

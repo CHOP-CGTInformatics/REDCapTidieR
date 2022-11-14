@@ -50,6 +50,11 @@
 #' choice fields. Default is 'label'.
 #' @param forms A character vector of form names that specifies the forms to
 #' export. Default returns all forms in the project.
+#' @param export_survey_fields A boolean that specifies whether to export the
+#'  survey identifier field (e.g., 'redcap_survey_identifier') or survey
+#'  timestamp fields (e.g., instrument+'_timestamp'). The timestamp outputs
+#'  reflect the survey's completion time (according to the time and timezone of
+#'  the REDCap server.). Default \code{TRUE}.
 #' @param suppress_messages Optionally show or suppress messages.
 #' Default \code{TRUE}.
 #'
@@ -71,6 +76,7 @@ read_redcap_tidy <- function(redcap_uri,
                              token,
                              raw_or_label = "label",
                              forms = NULL,
+                             export_survey_fields = TRUE,
                              suppress_messages = TRUE) {
 
   # Load REDCap Metadata ----
@@ -137,6 +143,7 @@ read_redcap_tidy <- function(redcap_uri,
   db_data <- redcap_read_oneshot(redcap_uri = redcap_uri,
                                  token = token,
                                  forms = forms_for_api_call,
+                                 export_survey_fields = export_survey_fields,
                                  verbose = FALSE)$data
 
   # Check that results were returned

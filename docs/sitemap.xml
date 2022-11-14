@@ -34,10 +34,22 @@
     <loc>https://chop-cgtdataops.github.io/REDCapTidieR/pull_request_template.html</loc>
   </url>
   <url>
+    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/add_event_mapping.html</loc>
+  </url>
+  <url>
+    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/add_metadata.html</loc>
+  </url>
+  <url>
     <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/add_partial_keys.html</loc>
   </url>
   <url>
     <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/bind_tables.html</loc>
+  </url>
+  <url>
+    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/calc_metadata_stats.html</loc>
+  </url>
+  <url>
+    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/check_forms_exist.html</loc>
   </url>
   <url>
     <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/check_redcap_populated.html</loc>
@@ -74,6 +86,12 @@
   </url>
   <url>
     <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/extract_tables.html</loc>
+  </url>
+  <url>
+    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/get_fields_to_drop.html</loc>
+  </url>
+  <url>
+    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/get_project_id_field.html</loc>
   </url>
   <url>
     <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/index.html</loc>

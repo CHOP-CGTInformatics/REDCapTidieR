@@ -338,3 +338,23 @@ test_that("read_redcap_tidy preserves form_name order mirroring original REDCapR
   expect_equal(expected_order, out$redcap_form_name)
 })
 
+test_that("read_redcap_tidy returns expected survey fields", {
+  httptest::with_mock_api({
+    out <- read_redcap_tidy(redcap_uri,
+                            classic_token,
+                            export_survey_fields = TRUE) %>%
+      suppressWarnings(classes = c("field_missing_categories",
+                                   "empty_parse_warning"))
+  })
+
+  survey_data <- out$redcap_data[out$redcap_form_name == "survey"][[1]]
+  repeat_survey_data <- out$redcap_data[out$redcap_form_name == "repeat_survey"][[1]]
+
+  expected_nonrep_cols <- c("redcap_survey_identifier", "survey_timestamp")
+  expected_rep_cols <- c("redcap_survey_identifier", "repeat_survey_timestamp")
+
+  expect_true(all(expected_nonrep_cols %in% names(survey_data)))
+  expect_true(all(expected_rep_cols %in% names(repeat_survey_data)))
+
+  checkmate::expect_class(survey_data$survey_timestamp, c("POSIXct", "POSIXt"))
+})
