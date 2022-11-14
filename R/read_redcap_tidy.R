@@ -104,6 +104,7 @@ read_redcap_tidy <- function(redcap_uri,
 
   # Set default forms for API call
   forms_for_api_call <- forms
+  api_call_edited <- FALSE
 
   # Filter metadata if forms parameter was used
   if (!is.null(forms)) {
@@ -128,6 +129,8 @@ read_redcap_tidy <- function(redcap_uri,
 
       # Store the extra fields we need to drop
       extra_fields_to_drop <- get_fields_to_drop(db_metadata, id_form)
+
+      api_call_edited <- TRUE
     }
 
     # Keep only user requested forms in the metadata
@@ -157,12 +160,27 @@ read_redcap_tidy <- function(redcap_uri,
     db_data <- update_data_col_names(db_data, db_metadata)
   }
 
-  # Drop any extra fields that may have been added because we added extra forms
-  # to the API call
-  # This assumes the names of checkbox fields in the data have been updated by
-  # update_data_col_names
-  if (!is.null(forms)) {
+  # If we edited the redcap_read_oneshot API call to get the first form then
+  # do some cleanup
+  if (api_call_edited) {
+    # Drop any extra fields that may have been added because we added extra
+    # forms to the API call
+    # This assumes the names of checkbox fields in the data have been updated by
+    # update_data_col_names
     db_data <- select(db_data, !any_of(extra_fields_to_drop))
+
+    # Drop repeating instrument rows that may be associated with extra form
+    if ("redcap_repeat_instrument" %in% colnames(db_data)) {
+      db_data <- db_data %>%
+        filter(.data$redcap_repeat_instrument %in% forms |
+          is.na(.data$redcap_repeat_instrument))
+
+      # Drop repeating fields if there are no remaining repeating instruments
+      if (all(is.na(db_data$redcap_repeat_instrument))) {
+        db_data <- db_data %>%
+          select(-"redcap_repeat_instrument", -"redcap_repeat_instance")
+      }
+    }
   }
 
   # Check for potential API rights issues ----
