@@ -66,6 +66,8 @@ test_that("multi_choice_to_labels works", {
 
 test_that("parse_labels works", {
 
+  # Note: implicitly testing strip_html_field_embedding() by checking that
+  # parse_labels successfully stipes html tags and field embedding logic
   valid_string <- "choice_1, one | choice_2, two {abc} | choice_3, <b>three</b>"
   valid_tibble_output <- tibble::tribble(
     ~raw,       ~label,

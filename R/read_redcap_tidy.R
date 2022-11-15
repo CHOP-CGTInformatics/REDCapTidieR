@@ -329,7 +329,7 @@ add_metadata <- function(supertbl, db_metadata, redcap_uri, token) {
 
   ## Create a record with the project identifier for each form
   all_forms <- unique(db_metadata$redcap_form_name)
-  record_id_field <- get_project_id_field(supertbl$redcap_data[[1]])
+  record_id_field <- get_record_id_field(supertbl$redcap_data[[1]])
 
   db_metadata <- db_metadata %>%
     # Just the record_id fields
@@ -412,7 +412,7 @@ add_event_mapping <- function(supertbl, linked_arms) {
 calc_metadata_stats <- function(data) {
 
   excluded_fields <- c(
-    get_project_id_field(data),
+    get_record_id_field(data),
     "redcap_repeat_instance", "redcap_event",
     "redcap_arm", "form_status_complete"
   )

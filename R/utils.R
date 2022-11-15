@@ -222,18 +222,18 @@ update_field_names <- function(db_metadata) {
 
       # Build updated field names and labs
       clean_names <- paste(
-        out$field_name[[i]],
+        out$field_name[i],
         tolower(parsed_labs$raw),
         sep = "___"
       )
 
       # If field_label or options_labels are missing don't label
-      if (is.na(out$field_label[[i]]) || any(is.na(parsed_labs$label))) {
+      if (is.na(out$field_label[i]) || any(is.na(parsed_labs$label))) {
 
         clean_labs <- NA_character_
       } else {
         # Otherwise build labs
-        field_label <- out$field_label[[i]] %>%
+        field_label <- out$field_label[i] %>%
           strip_html_field_embedding() %>%
           # Remove terminal colons since we add them in the next step
           str_replace(":$", "")
@@ -252,8 +252,8 @@ update_field_names <- function(db_metadata) {
       # Otherwise carry through existing field name and label
       out$updated_metadata[i] <- list(
         tibble(
-          field_name_updated = out$field_name[[i]],
-          field_label_updated = out$field_label[[i]]
+          field_name_updated = out$field_name[i],
+          field_label_updated = out$field_label[i]
         )
       )
     }
@@ -433,7 +433,7 @@ multi_choice_to_labels <- function(db_data, db_metadata) {
 #'
 #' @keywords internal
 #'
-get_project_id_field <- function(data) {
+get_record_id_field <- function(data) {
   names(data)[[1]]
 }
 
