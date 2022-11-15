@@ -66,7 +66,7 @@ test_that("multi_choice_to_labels works", {
 
 test_that("parse_labels works", {
 
-  valid_string <- "choice_1, one | choice_2, two | choice_3, three"
+  valid_string <- "choice_1, one | choice_2, two {abc} | choice_3, <b>three</b>"
   valid_tibble_output <- tibble::tribble(
     ~raw,       ~label,
     "choice_1", "one",
@@ -114,14 +114,19 @@ test_that("link_arms works", {
 })
 
 test_that("update_field_names works", {
+
   test_meta <- tibble::tribble(
     ~field_name,   ~form_name, ~field_type, ~field_label, ~select_choices_or_calculations,
     "record_id",   NA_character_,  "text", NA_character_, NA_character_,
-    "my_checkbox", "my_form",  "checkbox", "Field Label", "1, 1 | -99, Unknown {embedded logic}",
-    "checkbox_no_label", "my_form",  "checkbox", NA_character_, "1, 1"
+    "checkbox", "my_form", "checkbox", "Field Label", "1, 1 | -99, <b>Unknown</b> {embedded logic}",
+    "checkbox_no_label", "my_form", "checkbox", NA_character_, "1, 1",
+    "checkbox_w_colon", "my_form", "checkbox", "Field Label:", "1, 1",
+    "checkbox_no_opts", "my_form", "checkbox", "Field Label:", NA_character_,
+    "field", "my_form",  "text", "<b>Field Label</b> {embedded logic}", NA_character_
   )
 
-  out <- update_field_names(test_meta)
+  out <- update_field_names(test_meta) %>%
+    suppressWarnings(classes = "empty_parse_warning")
 
   # Check cols are present and correctly ordered
   expected_cols <- c(
@@ -136,7 +141,8 @@ test_that("update_field_names works", {
 
   expect_equal(
     field_name_updated,
-    c("my_checkbox___1", "my_checkbox___-99", "checkbox_no_label___1")
+    c("checkbox___1", "checkbox___-99", "checkbox_no_label___1",
+      "checkbox_w_colon___1", "checkbox_no_opts___NA", "field")
   )
 
   # Check field_label was correctly updated in place
@@ -148,7 +154,8 @@ test_that("update_field_names works", {
 
   expect_equal(
     field_label,
-    c("Field Label (1)", "Field Label (Unknown)", "NA (1)")
+    c("Field Label: 1", "Field Label: Unknown", NA_character_,
+      "Field Label: 1", NA_character_, "Field Label")
   )
 
 })

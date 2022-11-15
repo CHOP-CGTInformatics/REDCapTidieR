@@ -142,6 +142,9 @@ parse_labels <- function(string, return_vector = FALSE) {
     }
   }
 
+  # strip html and field embedding
+  out <- strip_html_field_embedding(out)
+
   if (return_vector) {
     if(all(is.na(out))){
       # handle no label case
@@ -180,7 +183,8 @@ parse_labels <- function(string, return_vector = FALSE) {
 #'   \item appends a \code{field_name_updated} field to the end for checkbox
 #'   variable handling
 #'   \item updates \code{field_label} for any new checkbox rows to include the
-#'   specific option in parenthese
+#'   specific option in "field_label: option label" format
+#'   \item strips html and field embedding logic from \code{field_label}
 #' }
 #'
 #' @returns Column \code{db_metadata} with \code{field_name_updated} appended
@@ -200,7 +204,7 @@ parse_labels <- function(string, return_vector = FALSE) {
 #' @importFrom dplyr %>% select mutate
 #' @importFrom tibble tibble
 #' @importFrom rlang .data
-#' @importFrom stringr str_replace_all str_trim str_squish
+#' @importFrom stringr str_replace
 #'
 #' @keywords internal
 
@@ -223,14 +227,19 @@ update_field_names <- function(db_metadata) {
         sep = "___"
       )
 
-      # Strip embedding logic and white space before appending to field labels
-      clean_labs <- parsed_labs$label %>%
-        # TODO: replace with formatting functions?
-        str_replace_all("\\{.*?\\}", "") %>%
-        str_trim() %>%
-        str_squish()
+      # If field_label or options_labels are missing don't label
+      if (is.na(out$field_label[[i]]) || any(is.na(parsed_labs$label))) {
 
-      clean_labs <- paste0(out$field_label[[i]], " (", clean_labs, ")")
+        clean_labs <- NA_character_
+      } else {
+        # Otherwise build labs
+        field_label <- out$field_label[[i]] %>%
+          strip_html_field_embedding() %>%
+          # Remove terminal colons since we add them in the next step
+          str_replace(":$", "")
+
+        clean_labs <- paste(field_label, parsed_labs$label, sep = ": ")
+      }
 
       out$updated_metadata[i] <- list(
         tibble(
@@ -255,7 +264,7 @@ update_field_names <- function(db_metadata) {
 
   out %>%
     unnest(cols = "updated_metadata") %>%
-    mutate(field_label = .data$field_label_updated) %>%
+    mutate(field_label = strip_html_field_embedding(.data$field_label_updated)) %>%
     select(-"field_label_updated")
 }
 
@@ -426,4 +435,23 @@ multi_choice_to_labels <- function(db_data, db_metadata) {
 #'
 get_project_id_field <- function(data) {
   names(data)[[1]]
+}
+
+#' @title
+#' Remove html tags and field embedding logic from a string
+#'
+#' @param x vector of strings to format
+#'
+#' @importFrom dplyr %>%
+#' @importFrom stringr str_replace_all str_trim str_squish
+#'
+#' @return
+#' vector of strings with html tags, field embedding logic, and extra whitespace
+#' removed
+strip_html_field_embedding <- function(x) {
+  x %>%
+    str_replace_all("\\{.+?\\}", "") %>%
+    str_replace_all("<.+?\\>", "") %>%
+    str_trim() %>%
+    str_squish()
 }
