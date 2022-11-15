@@ -11,13 +11,26 @@ update_field_names(db_metadata)
 \code{REDCapR::redcap_metadata_read()$data}}
 }
 \value{
-Column \code{field_name_updated} appended to a given REDCap
-\code{db_metadata} object.
-
-Returns an updated REDCap metadata object with updated field names
+Column \code{db_metadata} with \code{field_name_updated} appended
+and \code{field_label} updated for new rows corresponding to checkbox options
 }
 \description{
-Takes a \code{db_metadata} object and appends a \code{field_name_updated}
-field to the end for checkbox variable handling.
+Takes a \code{db_metadata} object and:
+\itemize{
+  \item replaces checkbox field rows with a set of rows, one for each
+  checkbox option
+  \item appends a \code{field_name_updated} field to the end for checkbox
+  variable handling
+  \item updates \code{field_label} for any new checkbox rows to include the
+  specific option in "field_label: option label" format
+  \item strips html and field embedding logic from \code{field_label}
+}
+}
+\details{
+Assumes \code{db_metadata}:
+\itemize{
+  \item has non-zero number of rows
+  \item contains \code{field_name} and \code{field_label} columns
+}
 }
 \keyword{internal}
