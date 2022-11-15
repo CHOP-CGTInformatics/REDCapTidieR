@@ -16,3 +16,4 @@ removed
 \description{
 Remove html tags and field embedding logic from a string
 }
+\keyword{internal}

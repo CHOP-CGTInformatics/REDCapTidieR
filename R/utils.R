@@ -448,6 +448,9 @@ get_project_id_field <- function(data) {
 #' @return
 #' vector of strings with html tags, field embedding logic, and extra whitespace
 #' removed
+#'
+#' @keywords internal
+#'
 strip_html_field_embedding <- function(x) {
   x %>%
     str_replace_all("\\{.+?\\}", "") %>%
