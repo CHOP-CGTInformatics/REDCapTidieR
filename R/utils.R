@@ -142,6 +142,9 @@ parse_labels <- function(string, return_vector = FALSE) {
     }
   }
 
+  # strip html and field embedding
+  out <- strip_html_field_embedding(out)
+
   if (return_vector) {
     if(all(is.na(out))){
       # handle no label case
@@ -170,76 +173,99 @@ parse_labels <- function(string, return_vector = FALSE) {
 }
 
 #' @title
-#' Append REDCap checkbox variables with helpful labels
-#'
-#' @description
-#' Takes a \code{db_metadata$select_choices_or_calculations} field pre-filtered
-#' for checkbox \code{field_type}s and returns a vector of key names for
-#' appending to checkbox variables.
-#'
-#' @returns A vector.
-#'
-#' @param field_name The \code{db_metadata$field_name} to append onto the string
-#' @param string A \code{db_metadata$select_choices_or_calculations} field
-#' pre-filtered for checkbox \code{field_type}
-#'
-#' @importFrom rlang .data
-#' @keywords internal
-
-checkbox_appender <- function(field_name, string) {
-  prefix <- paste0(field_name, "___")
-
-  out <- parse_labels(string)
-  out$raw <- tolower(out$raw)
-  # append each element of the split vector with the field_name prefix and then
-  # recombine
-  out <- paste0(prefix, out[[1]])
-
-  out
-}
-
-#' @title
 #' Update metadata field names for checkbox handling
 #'
 #' @description
-#' Takes a \code{db_metadata} object and appends a \code{field_name_updated}
-#' field to the end for checkbox variable handling.
+#' Takes a \code{db_metadata} object and:
+#' \itemize{
+#'   \item replaces checkbox field rows with a set of rows, one for each
+#'   checkbox option
+#'   \item appends a \code{field_name_updated} field to the end for checkbox
+#'   variable handling
+#'   \item updates \code{field_label} for any new checkbox rows to include the
+#'   specific option in "field_label: option label" format
+#'   \item strips html and field embedding logic from \code{field_label}
+#' }
 #'
-#' @returns Column \code{field_name_updated} appended to a given REDCap
-#' \code{db_metadata} object.
+#' @returns Column \code{db_metadata} with \code{field_name_updated} appended
+#' and \code{field_label} updated for new rows corresponding to checkbox options
 #'
 #' @param db_metadata The REDCap metadata output defined by
 #' \code{REDCapR::redcap_metadata_read()$data}
 #'
-#' @return Returns an updated REDCap metadata object with updated field names
+#' @details
+#' Assumes \code{db_metadata}:
+#' \itemize{
+#'   \item has non-zero number of rows
+#'   \item contains \code{field_name} and \code{field_label} columns
+#' }
 #'
 #' @importFrom tidyr unnest
+#' @importFrom dplyr %>% select mutate
+#' @importFrom tibble tibble
+#' @importFrom rlang .data
+#' @importFrom stringr str_replace
 #'
 #' @keywords internal
 
 update_field_names <- function(db_metadata) {
   out <- db_metadata %>%
     mutate(
-      field_name_updated = list(c())
+      updated_metadata = list(c())
     )
 
-  # Apply checkbox appender function to rows of field_type == "checkbox"
-  # Assign all field names, including expanded checkbox variables, to a list col
   for (i in seq_len(nrow(out))) {
     if (out$field_type[i] == "checkbox") {
-      out$field_name_updated[i] <- list(
-        checkbox_appender(field_name = out$field_name[i],
-                          string = out$select_choices_or_calculations[i])
+      # If checkbox field, parse labels fill updated_metadata with a tibble
+      # containing updated field names and labels
+      parsed_labs <- parse_labels(out$select_choices_or_calculations[i])
+
+      # Build updated field names and labs
+      clean_names <- paste(
+        out$field_name[i],
+        tolower(parsed_labs$raw),
+        sep = "___"
+      )
+
+      # If field_label or options_labels are missing don't label
+      if (is.na(out$field_label[i]) || any(is.na(parsed_labs$label))) {
+
+        clean_labs <- NA_character_
+      } else {
+        # Otherwise build labs
+        field_label <- out$field_label[i] %>%
+          strip_html_field_embedding() %>%
+          # Remove terminal colons since we add them in the next step
+          str_replace(":$", "")
+
+        clean_labs <- paste(field_label, parsed_labs$label, sep = ": ")
+      }
+
+      out$updated_metadata[i] <- list(
+        tibble(
+          field_name_updated = clean_names,
+          field_label_updated = clean_labs
+        )
       )
 
     } else {
-      out$field_name_updated[i] <- list(out$field_name[i])
+      # Otherwise carry through existing field name and label
+      out$updated_metadata[i] <- list(
+        tibble(
+          field_name_updated = out$field_name[i],
+          field_label_updated = out$field_label[i]
+        )
+      )
     }
   }
 
-  # Unnest and expand checkbox list elements
+  # Unnest and expand checkbox list elements + overwrite field_labels with
+  # updated field labels
+
   out %>%
-    unnest(cols = "field_name_updated")
+    unnest(cols = "updated_metadata") %>%
+    mutate(field_label = strip_html_field_embedding(.data$field_label_updated)) %>%
+    select(-"field_label_updated")
 }
 
 #' @title
@@ -407,6 +433,28 @@ multi_choice_to_labels <- function(db_data, db_metadata) {
 #'
 #' @keywords internal
 #'
-get_project_id_field <- function(data) {
+get_record_id_field <- function(data) {
   names(data)[[1]]
+}
+
+#' @title
+#' Remove html tags and field embedding logic from a string
+#'
+#' @param x vector of strings to format
+#'
+#' @importFrom dplyr %>%
+#' @importFrom stringr str_replace_all str_trim str_squish
+#'
+#' @return
+#' vector of strings with html tags, field embedding logic, and extra whitespace
+#' removed
+#'
+#' @keywords internal
+#'
+strip_html_field_embedding <- function(x) {
+  x %>%
+    str_replace_all("\\{.+?\\}", "") %>%
+    str_replace_all("<.+?\\>", "") %>%
+    str_trim() %>%
+    str_squish()
 }
