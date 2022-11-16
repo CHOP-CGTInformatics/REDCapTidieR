@@ -231,23 +231,60 @@ test_that("make_labelled handles supertibbles with NULL redcap_events", {
 
 })
 
-test_that("format_labels_default works", {
-  labs <- c("<b>Label</b>", "Label {field_embedding_logic}", "Label:")
+test_that("format helpers work", {
 
-  formatted_labs <- format_labels_default(labs)
+  expect_equal(fmt_strip_whitespace("My   Label "), "My Label")
+  expect_equal(fmt_strip_trailing_colon("My Label:"), "My Label")
+  expect_equal(fmt_strip_trailing_punct("My Label-"), "My Label")
+  expect_equal(fmt_strip_html("<b>My Label</b>"), "My Label")
+  expect_equal(fmt_strip_field_embedding("My Label{abc}"), "My Label")
 
-  expect_equal(formatted_labs, rep("Label", 3))
 })
 
-test_that("make_labelled accepts arbitrary function in format_labels", {
+test_that("make_labelled accepts all valid input types to format_labels", {
+  # This implicitly tests resolve_formatter
+
   supertbl <- tibble::tribble(
     ~ redcap_data, ~ redcap_metadata,
     tibble(x = letters[1:3]), tibble(field_name = "x", field_label = "X Label")
   )
 
+  # NULL
+  out <- make_labelled(supertbl, format_labels = NULL)
+
+  labs <- labelled::var_label(out$redcap_data[[1]])
+
+  expect_equal(labs, list(x = "X Label"))
+
+  # function
   out <- make_labelled(supertbl, format_labels = tolower)
 
   labs <- labelled::var_label(out$redcap_data[[1]])
 
   expect_equal(labs, list(x = "x label"))
+
+  # character
+  out <- make_labelled(supertbl, format_labels = "tolower")
+
+  labs <- labelled::var_label(out$redcap_data[[1]])
+
+  expect_equal(labs, list(x = "x label"))
+
+  # formula function
+  out <- make_labelled(supertbl, format_labels = ~paste0(., "!"))
+
+  labs <- labelled::var_label(out$redcap_data[[1]])
+
+  expect_equal(labs, list(x = "X Label!"))
+
+  # list
+  out <- make_labelled(supertbl, format_labels = list(tolower, ~paste0(., "!")))
+
+  labs <- labelled::var_label(out$redcap_data[[1]])
+
+  expect_equal(labs, list(x = "x label!"))
+
+  # unsupported
+  make_labelled(supertbl, format_labels = 1) %>%
+    expect_error(class = "unresolved_formatter")
 })
