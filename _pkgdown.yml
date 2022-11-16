@@ -18,3 +18,9 @@ reference:
   - bind_tables
   - extract_table
   - extract_tables
+- title: "Apply Labels"
+  desc: >
+    Apply column labels from REDCap metadata using `labelled`
+  contents:
+  - make_labelled
+  - format-helpers

@@ -1,5 +1,16 @@
 #' @title
-#' add labels!!!
+#' Apply \code{labelled} labels to the elements of a REDCap supertibble based on
+#' project metadata
+#'
+#' @description
+#' This function applies labels to the columns of:
+#' \itemize{
+#'   \item the supertibble itself
+#'   \item each element of \code{redcap_data} based on the labels in
+#'   \code{redcap_metadata}
+#'   \item each element of \code{redcap_metadata}
+#'   \item each element of \code{redcap_events}
+#' }
 #'
 #' @param supertbl a supertibble containing REDCap data created by
 #' \code{read_redcap_tidy()}
@@ -7,10 +18,11 @@
 #' \itemize{
 #'   \item \code{NULL} to apply field labels to elements of \code{redcap_data}
 #'   as they appear in \code{redcap_metadata}
-#'   \item The name of a \code{REDCapTidieR} \code{label_format_*} function.
-#'   Currently only \code{"default"}
 #'   \item A function that takes the labels in \code{redcap_metadata} as input
 #'   and returns a vector of formatted labels of the same length as output
+#'   \item A string with the name of a function to be used to format labels
+#'   \item A list of label formatting functions or function names to be applied
+#'   in order. Note that ordering may affect results
 #' }
 #'
 #' @importFrom dplyr %>%
@@ -19,10 +31,7 @@
 #' @importFrom checkmate assert_data_frame
 #'
 #' @return
-#' Supertibble with labels applied to:
-#' - x
-#' - y
-#' - z
+#' A labelled supertibble
 #'
 #' @examples
 #' supertbl <- tibble::tribble(
@@ -32,6 +41,8 @@
 #' )
 #'
 #' make_labelled(supertbl)
+#'
+#' make_labelled(supertbl, format_labels = tolower)
 #'
 #' \dontrun{
 #' redcap_uri <- Sys.getenv("REDCAP_URI")
@@ -45,16 +56,7 @@ make_labelled <- function(supertbl, format_labels = NULL) {
 
   check_installed("labelled", reason = "to use `make_labelled()`")
 
-  if (is.null(format_labels)) {
-    formatter <- identity
-  } else if (is.function(format_labels)) {
-    formatter <- format_labels
-  } else if (format_labels == "default") {
-    formatter <- format_labels_default
-  } else {
-    # TODO: add informative error with cli
-    stop()
-  }
+  formatter <- resolve_formatter(format_labels)
 
   assert_data_frame(supertbl)
   check_req_labelled_fields(supertbl)
@@ -164,45 +166,128 @@ make_labelled <- function(supertbl, format_labels = NULL) {
 #' Format REDCap field labels for display
 #'
 #' @description
-#' Use this function with the \code{format_labels} argument of
+#' Use these functions with the \code{format_labels} argument of
 #' \code{make_labelled()} to define how field labels are formatted before being
-#' applied to the elements of \code{redcap_data}. The default formatter does the
-#' following in order:
-#' \itemize{
-#'   \item Removes text between curly braces (\code{\{\}}) which contains
-#'   special "field embedding" logic in REDCap
-#'   \item Removes html tags
-#'   \item Removes extra whitespace
-#'   \item Removes terminal colons
-#' }
+#' applied to the elements of \code{redcap_data}.
 #'
-#' @importFrom stringr str_replace str_replace_all str_squish str_trim
-#' @importFrom dplyr %>%
+#' \code{fmt_strip_whitespace()} removes extra whitespace inside and at the ends
+#' of labels. It is a thin wrapper of \code{stringr::str_trim()} and
+#' \code{stringr::str_squish()}. \code{fmt_strip_trailing_colon()} and
+#' \code{fmt_strip_trailing_punct()} remove terminal punctuation.
+#' \code{fmt_strip_html()} removes html tags. \code{fmt_strip_field_embedding()}
+#' removes text between curly braces (\code{\{\}}) which contains special
+#' "field embedding" logic in REDCap. Note that \code{read_redcap_tidy()}
+#' removes html tags and field embedding logic from field labels in the metadata
+#' by default.
+#'
 #' @param x a vector of labels
 #'
 #' @return a vector of formatted labels
 #'
-#' @export
-#'
 #' @examples
 #'
-#' format_labels_default("<b>Bold Label:</b>")
+#' fmt_strip_whitespace("Poorly Spaced   Label ")
 #'
-#' format_labels_default("Label {field_embedding_logic}")
+#' fmt_strip_trailing_colon("Label:")
+#'
+#' fmt_strip_trailing_punct("Label-")
+#'
+#' fmt_strip_html("<b>Bold Label</b>")
+#'
+#' fmt_strip_field_embedding("Label{another_field}")
 #'
 #' supertbl <- tibble::tribble(
 #'   ~ redcap_data, ~ redcap_metadata,
-#'   tibble::tibble(x = letters[1:3]), tibble::tibble(field_name = "x", field_label = "X Label:"),
-#'   tibble::tibble(y = letters[1:3]), tibble::tibble(field_name = "y", field_label = "<b>Y Label</b>")
+#'   tibble::tibble(x = letters[1:3]), tibble::tibble(field_name = "x", field_label = "X Label:")
 #' )
 #'
-#' make_labelled(supertbl, format_labels = format_labels_default)
+#' make_labelled(supertbl, format_labels = fmt_strip_trailing_colon)
 #'
-format_labels_default <- function(x) {
+#' @name format-helpers
+NULL
+
+#' @rdname format-helpers
+#' @importFrom stringr str_squish str_trim
+#' @export
+fmt_strip_whitespace <- function(x) {
   x %>%
-    str_replace_all("\\{.*?\\}", "") %>%
-    str_replace_all("<.*?>", "") %>%
     str_squish() %>%
-    str_trim() %>%
-    str_replace(":$", "")
+    str_trim()
+}
+
+#' @rdname format-helpers
+#' @importFrom stringr str_replace
+#' @export
+fmt_strip_trailing_colon <- function(x) {
+  str_replace(x, ":$", "")
+}
+
+#' @rdname format-helpers
+#' @importFrom stringr str_replace
+#' @export
+fmt_strip_trailing_punct <- function(x) {
+  str_replace(x, "[:punct:]$", "")
+}
+
+#' @rdname format-helpers
+#' @importFrom stringr str_replace_all
+#' @export
+fmt_strip_html <- function(x) {
+  str_replace_all(x, "<.+?\\>", "")
+}
+
+#' @rdname format-helpers
+#' @importFrom stringr str_replace_all
+#' @export
+fmt_strip_field_embedding <- function(x) {
+  str_replace_all(x, "\\{.+?\\}", "")
+}
+
+#' @title
+#' Convert user input into label formatting function
+#'
+#' @param format_labels argument passed to \code{make_labelled}
+#' @param env the environment in which to look up functions if
+#' \code{format_labels} contains character elements. The default,
+#' \code{caller_env(n = 2)}, uses the environment from which the user called
+#' \code{make_labelled()}
+#'
+#' @importFrom purrr map compose
+#' @importFrom rlang !!! as_closure caller_env is_bare_formula
+#' @importFrom cli cli_abort
+#'
+#' @return a function
+#'
+#' @keywords internal
+#'
+resolve_formatter <- function(format_labels, env = caller_env(n = 2)) {
+  if (is.null(format_labels)) {
+    # If NULL pass labels through unchanged
+    return(identity)
+  }
+  if (is.function(format_labels)) {
+    # If a single function then return it to apply to labels
+    return(format_labels)
+  }
+  if (is_bare_formula(format_labels, lhs = FALSE)) {
+    # If a one-sided formula convert to a function
+    return(as_closure(format_labels))
+  }
+  if (is.list(format_labels) || is.character(format_labels)) {
+    # If a list or character vector compose the functions into a function
+    # that applies them in order
+
+    # By default compose() converts character inputs to functions but we want
+    # to convert them ourselves to ensure they're looked up in the right env
+    fns <- map(format_labels, as_closure, env = env)
+    return(compose(!!!fns, .dir = "forward"))
+  }
+
+  supported_classes <- c("NULL", "list", "function", "character")
+  cli_abort(
+    c("!" = "{.arg format_labels} must be of class {.cls {supported_classes}}",
+      "x" = "{.arg format_labels} is {.cls {class(format_labels)}}"),
+    class = c("unresolved_formatter", "REDCapTidieR_cond")
+  )
+
 }
