@@ -58,3 +58,50 @@ test_that("check_forms_exist works", {
 
   expect_error(check_forms_exist(metadata, forms), regexp = "e and f")
 })
+
+
+test_that("check_req_labelled_fields works", {
+  # Check data and metadata column errors
+  supertbl_no_data <- tibble::tribble(
+    ~ redcap_metadata,
+    tibble(field_name = "x", field_label = "X Label"),
+    tibble(field_name = "y", field_label = "Y Label")
+  )
+
+  supertbl_no_metadata <- tibble::tribble(
+    ~ redcap_data,
+    tibble(x = letters[1:3]),
+    tibble(y = letters[1:3])
+  )
+
+  ## Errors when data is missing
+  check_req_labelled_fields(supertbl_no_data) %>%
+    expect_error(class = "missing_req_labelled_fields")
+
+  ## Errors when metadata is missing
+  check_req_labelled_fields(supertbl_no_metadata) %>%
+    expect_error(class = "missing_req_labelled_fields")
+})
+
+test_that("check_req_labelled_metadata_fields works", {
+  # Check field_name and field_label within metadata
+  supertbl_no_field_name <- tibble::tribble(
+    ~ redcap_data, ~ redcap_metadata,
+    tibble(x = letters[1:3]), tibble(field_label = "X Label"),
+    tibble(y = letters[1:3]), tibble(field_label = "Y Label")
+  )
+
+  supertbl_no_field_label <- tibble::tribble(
+    ~ redcap_data, ~ redcap_metadata,
+    tibble(x = letters[1:3]), tibble(field_name = "x"),
+    tibble(y = letters[1:3]), tibble(field_name = "y")
+  )
+
+  ## Errors when field_name is missing
+  check_req_labelled_metadata_fields(supertbl_no_field_name) %>%
+    expect_error(class = "missing_req_labelled_metadata_fields")
+
+  ## Errors when field_label is missing
+  check_req_labelled_metadata_fields(supertbl_no_field_label) %>%
+    expect_error(class = "missing_req_labelled_metadata_fields")
+})
