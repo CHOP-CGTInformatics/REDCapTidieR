@@ -28,6 +28,7 @@ redcap_uri <- creds["REDCAP_URI"]
 token <- creds["SUPERHEROES_REDCAP_API"]
 
 library(dplyr)
+library(tidyr)
 ```
 
 ## Introduction to REDCap and `REDCapR`
@@ -38,8 +39,7 @@ library(dplyr)
 
 The [{REDCapR}](https://ouhscbbmc.github.io/REDCapR/) package streamlines calls to the REDCap API. Arguably, its main use is to import records from a REDCap project. This works well for simple projects, however becomes ugly when complex databases that include longitudinal structure and/or repeated instruments are involved.
 
-We wrote the `REDCapTidieR` package to make the life of analysts who deal with complex REDCap databases easier. It does so by building upon 
-[REDCapR](https://ouhscbbmc.github.io/REDCapR) to make its output **tidier**. Instead of one large data frame composed of a block matrix, the analyst gets to work with a set of tidy tibbles, one for each REDCap instrument.
+We wrote the `REDCapTidieR` package to make the life of analysts who deal with complex REDCap databases easier. It does so by building upon [REDCapR](https://ouhscbbmc.github.io/REDCapR) to make its output **tidier**. Instead of one large data frame composed of a block matrix, the analyst gets to work with a set of tidy tibbles, one for each REDCap instrument.
 
 To demonstrate the use of `REDCapTidieR`, let's look at a REDCap database that has information about some 734 superheroes, derived from data scraped from the [Superhero Database](https://www.superherodb.com/).
 
@@ -55,10 +55,11 @@ Here is a screenshot of the REDCap Status Dashboard of this database. Note that 
 
 Great! Now let's import the superheroes data into R. We can use `REDCapR::redcap_read_oneshot()` which returns a list with and element named `data` that contains all of the data as a data frame. We turned this data frame into a tibble for better readability:
 
-```r
+``` r
 token <- "123456789ABCDEF123456789ABCDEF04"
 redcap_uri <- "https://my.institution.edu/redcap/api/"
 ```
+
 ```{r, include = TRUE}
 superheroes <- REDCapR::redcap_read_oneshot(redcap_uri, token)$data
 
@@ -185,6 +186,60 @@ In summary, here are the rules by which `REDCapTidieR` constructs tibbles:
 -   After the identifying columns, data columns appear in the same order as in the REDCap instrument. Columns derived from categorical field types (`yesno`, `truefalse`, `dropdown`, `radiobutton`, `checkbox`) are populated with data representing the **label**. This is different than REDCapR's default behavior which will show the **raw value**.
 
 -   The final field is always `form_status_complete`, which is an column to indicate whether the instrument was marked complete.
+
+## Adding variable labels with the `labelled` package
+
+`REDCapTidieR` integrates with the [{labelled}](http://larmarange.github.io/labelled/) package to allow you to add variable labels to your instrument tibbles. Let's load `labelled` to explore.
+
+```{r}
+library(labelled)
+```
+
+Use `make_labelled()` to apply labels to your supertibble. Let's also bind those tables into our global environment and use `labelled::look_for()` to see our labels. If you're using the RStudio IDE the labels also appear below your variable names in the viewer.
+
+```{r}
+make_labelled(superheroes_tidy) %>%
+  bind_tables()
+
+look_for(super_hero_powers)
+```
+
+Where did these labels come from? `make_labelled()` inferred them from the metadata stored in `superheroes_tidy$redcap_metadata`.
+
+```{r}
+superheroes_tidy %>%
+  filter(redcap_form_name == "super_hero_powers") %>%
+  unnest(redcap_metadata) %>%
+  select(field_name, field_label) %>%
+  glimpse()
+```
+
+The label for `power` doesn't look quite right. Let's remove that trailing "`:`". `make_labelled()` has a `format_labels` argument that we can use to preprocess labels in the metadata before applying them to the data.
+
+```{r}
+make_labelled(superheroes_tidy, format_labels = ~gsub(":", "", .)) %>%
+  bind_tables()
+
+look_for(super_hero_powers, "power")
+```
+
+This operation is common enough that `REDCapTidier` comes with a built-in helper function.
+
+```{r}
+fmt_strip_trailing_colon("Super Power:")
+```
+
+See the other available helpers with `` ?`format-helpers` ``.
+
+`format_labels` will accept any function that takes a vector of raw labels and returns a vector of formatted labels of the same length. You can also pass it a list functions to be executed on the raw labels in order.
+
+```{r}
+make_labelled(superheroes_tidy, format_labels = c(fmt_strip_trailing_colon, tolower)) %>%
+  bind_tables()
+
+look_for(super_hero_powers, "power")
+```
+
 
 ```{r, include=FALSE}
 end_vignette()
