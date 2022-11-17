@@ -425,6 +425,6 @@ calc_metadata_stats <- function(data) {
 
   list(
     data_rows = nrow(data), data_cols = ncol(data),
-    data_size = obj_size(data), data_na_pct = na_pct
+    data_size = obj_size(data), data_na_pct = na_pct * 100
   )
 }
