@@ -7,7 +7,7 @@
 \alias{fmt_strip_trailing_punct}
 \alias{fmt_strip_html}
 \alias{fmt_strip_field_embedding}
-\title{Format REDCap field labels for display}
+\title{Format REDCap variable labels for display}
 \usage{
 fmt_strip_whitespace(x)
 
@@ -27,8 +27,8 @@ a vector of formatted labels
 }
 \description{
 Use these functions with the \code{format_labels} argument of
-\code{make_labelled()} to define how field labels are formatted before being
-applied to the elements of \code{redcap_data}.
+\code{make_labelled()} to define how variable labels are formatted before
+being applied to the elements of \code{redcap_data}.
 
 \code{fmt_strip_whitespace()} removes extra whitespace inside and at the ends
 of labels. It is a thin wrapper of \code{stringr::str_trim()} and

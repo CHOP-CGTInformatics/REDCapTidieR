@@ -13,7 +13,7 @@ make_labelled(supertbl, format_labels = NULL)
 
 \item{format_labels}{One of:
 \itemize{
-  \item \code{NULL} to apply field labels to elements of \code{redcap_data}
+  \item \code{NULL} to apply variable labels to elements of \code{redcap_data}
   as they appear in \code{redcap_metadata}
   \item A function that takes the labels in \code{redcap_metadata} as input
   and returns a vector of formatted labels of the same length as output
@@ -26,7 +26,7 @@ make_labelled(supertbl, format_labels = NULL)
 A labelled supertibble
 }
 \description{
-This function applies labels to the columns of:
+This function applies variable labels to the columns of:
 \itemize{
   \item the supertibble itself
   \item each element of \code{redcap_data} based on the labels in

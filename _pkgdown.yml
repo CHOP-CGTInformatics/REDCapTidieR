@@ -20,7 +20,7 @@ reference:
   - extract_tables
 - title: "Apply Labels"
   desc: >
-    Apply column labels from REDCap metadata using `labelled`
+    Apply variable labels from REDCap metadata using `labelled`
   contents:
   - make_labelled
   - format-helpers

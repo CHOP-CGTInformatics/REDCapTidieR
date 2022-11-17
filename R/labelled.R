@@ -3,7 +3,7 @@
 #' project metadata
 #'
 #' @description
-#' This function applies labels to the columns of:
+#' This function applies variable labels to the columns of:
 #' \itemize{
 #'   \item the supertibble itself
 #'   \item each element of \code{redcap_data} based on the labels in
@@ -16,7 +16,7 @@
 #' \code{read_redcap_tidy()}
 #' @param format_labels One of:
 #' \itemize{
-#'   \item \code{NULL} to apply field labels to elements of \code{redcap_data}
+#'   \item \code{NULL} to apply variable labels to elements of \code{redcap_data}
 #'   as they appear in \code{redcap_metadata}
 #'   \item A function that takes the labels in \code{redcap_metadata} as input
 #'   and returns a vector of formatted labels of the same length as output
@@ -165,12 +165,12 @@ make_labelled <- function(supertbl, format_labels = NULL) {
 }
 
 #' @title
-#' Format REDCap field labels for display
+#' Format REDCap variable labels for display
 #'
 #' @description
 #' Use these functions with the \code{format_labels} argument of
-#' \code{make_labelled()} to define how field labels are formatted before being
-#' applied to the elements of \code{redcap_data}.
+#' \code{make_labelled()} to define how variable labels are formatted before
+#' being applied to the elements of \code{redcap_data}.
 #'
 #' \code{fmt_strip_whitespace()} removes extra whitespace inside and at the ends
 #' of labels. It is a thin wrapper of \code{stringr::str_trim()} and
