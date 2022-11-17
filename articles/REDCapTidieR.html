@@ -395,6 +395,73 @@ which is an column to indicate whether the instrument was marked
 complete.</p></li>
 </ul>
 </div>
+<div class="section level2">
+<h2 id="adding-variable-labels-with-the-labelled-package">Adding variable labels with the <code>labelled</code> package<a class="anchor" aria-label="anchor" href="#adding-variable-labels-with-the-labelled-package"></a>
+</h2>
+<p><code>REDCapTidieR</code> integrates with the <a href="http://larmarange.github.io/labelled/" class="external-link">{labelled}</a> package to
+allow you to add variable labels to your instrument tibbles. Let’s load
+<code>labelled</code> to explore.</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://larmarange.github.io/labelled/" class="external-link">labelled</a></span><span class="op">)</span></span></code></pre></div>
+<p>Use <code><a href="../reference/make_labelled.html">make_labelled()</a></code> to apply labels to your supertibble.
+Let’s also bind those tables into our global environment and use
+<code><a href="http://larmarange.github.io/labelled/reference/look_for.html" class="external-link">labelled::look_for()</a></code> to see our labels. If you’re using the
+RStudio IDE the labels also appear below your variable names in the
+viewer.</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/make_labelled.html">make_labelled</a></span><span class="op">(</span><span class="va">superheroes_tidy</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/bind_tables.html">bind_tables</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="http://larmarange.github.io/labelled/reference/look_for.html" class="external-link">look_for</a></span><span class="op">(</span><span class="va">super_hero_powers</span><span class="op">)</span></span>
+<span><span class="co">#&gt;  pos variable               label                  col_type values    </span></span>
+<span><span class="co">#&gt;  1   record_id              Record ID              dbl                </span></span>
+<span><span class="co">#&gt;  2   redcap_repeat_instance REDCap Repeat Instance dbl                </span></span>
+<span><span class="co">#&gt;  3   power                  Super Power:           chr                </span></span>
+<span><span class="co">#&gt;  4   form_status_complete   REDCap Form Status     fct      Incomplete</span></span>
+<span><span class="co">#&gt;                                                             Unverified</span></span>
+<span><span class="co">#&gt;                                                             Complete</span></span></code></pre></div>
+<p>Where did these labels come from? <code><a href="../reference/make_labelled.html">make_labelled()</a></code>
+inferred them from the metadata stored in
+<code>superheroes_tidy$redcap_metadata</code>.</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">superheroes_tidy</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">redcap_form_name</span> <span class="op">==</span> <span class="st">"super_hero_powers"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu">unnest</span><span class="op">(</span><span class="va">redcap_metadata</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu">select</span><span class="op">(</span><span class="va">field_name</span>, <span class="va">field_label</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu">glimpse</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Rows: 2</span></span>
+<span><span class="co">#&gt; Columns: 2</span></span>
+<span><span class="co">#&gt; $ field_name  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "record_id", "power"</span></span>
+<span><span class="co">#&gt; $ field_label <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "Record ID", "Super Power:"</span></span></code></pre></div>
+<p>The label for <code>power</code> doesn’t look quite right. Let’s
+remove that trailing “<code>:</code>”. <code><a href="../reference/make_labelled.html">make_labelled()</a></code> has
+a <code>format_labels</code> argument that we can use to preprocess
+labels in the metadata before applying them to the data.</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/make_labelled.html">make_labelled</a></span><span class="op">(</span><span class="va">superheroes_tidy</span>, format_labels <span class="op">=</span> <span class="op">~</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">gsub</a></span><span class="op">(</span><span class="st">":"</span>, <span class="st">""</span>, <span class="va">.</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/bind_tables.html">bind_tables</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="http://larmarange.github.io/labelled/reference/look_for.html" class="external-link">look_for</a></span><span class="op">(</span><span class="va">super_hero_powers</span>, <span class="st">"power"</span><span class="op">)</span></span>
+<span><span class="co">#&gt;  pos variable label       col_type values</span></span>
+<span><span class="co">#&gt;  3   power    Super Power chr</span></span></code></pre></div>
+<p>This operation is common enough that <code>REDCapTidier</code> comes
+with a built-in helper function.</p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/format-helpers.html">fmt_strip_trailing_colon</a></span><span class="op">(</span><span class="st">"Super Power:"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "Super Power"</span></span></code></pre></div>
+<p>See the other available helpers with
+<code><a href="../reference/format-helpers.html">?`format-helpers`</a></code>.</p>
+<p><code>format_labels</code> will also accept a list of functions, but
+it’s important to note that the functions will be executed in the order
+they are supplied.</p>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/make_labelled.html">make_labelled</a></span><span class="op">(</span><span class="va">superheroes_tidy</span>, format_labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">fmt_strip_trailing_colon</span>, <span class="va">tolower</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/bind_tables.html">bind_tables</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="http://larmarange.github.io/labelled/reference/look_for.html" class="external-link">look_for</a></span><span class="op">(</span><span class="va">super_hero_powers</span>, <span class="st">"power"</span><span class="op">)</span></span>
+<span><span class="co">#&gt;  pos variable label       col_type values</span></span>
+<span><span class="co">#&gt;  3   power    super power chr</span></span></code></pre></div>
+</div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
