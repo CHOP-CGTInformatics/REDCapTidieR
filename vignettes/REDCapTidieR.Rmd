@@ -231,7 +231,7 @@ fmt_strip_trailing_colon("Super Power:")
 
 See the other available helpers with `` ?`format-helpers` ``.
 
-`format_labels` will accept any function that takes a vector of raw labels and returns a vector of formatted labels of the same length. You can also pass it a list functions to be executed on the raw labels in order.
+`format_labels` will also accept a list of functions, but it's important to note that the functions will be executed in the order they are supplied.
 
 ```{r}
 make_labelled(superheroes_tidy, format_labels = c(fmt_strip_trailing_colon, tolower)) %>%
