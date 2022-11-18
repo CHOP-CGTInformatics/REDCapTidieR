@@ -58,6 +58,49 @@
     </div>
 
     <div class="section level2">
+<h2 class="page-header" data-toc-text="0.2.0" id="upcoming-changes-in-v020">Upcoming Changes in v0.2.0<a class="anchor" aria-label="anchor" href="#upcoming-changes-in-v020"></a></h2>
+<div class="section level4">
+<h4 id="new-features-0-2-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-2-0"></a></h4>
+<ul><li>Instrument/form-level metadata included in supertibble output:
+<ul><li>
+<code>redcap_form_label</code>: The instrument’s human-readable label</li>
+<li>
+<code>redcap_metadata</code>: REDCap metadata associated with the instrument (derived from <code><a href="https://ouhscbbmc.github.io/REDCapR/reference/redcap_metadata_read.html" class="external-link">REDCapR::redcap_metadata_read</a></code>)</li>
+<li>
+<code>redcap_events</code>: Events and arms associated with this instrument (for longitudinal projects only)</li>
+<li>
+<code>data_rows</code>, <code>data_cols</code>: Row and column counts of <code>redcap_data</code>
+</li>
+<li>
+<code>data_size</code>: Size of the redcap_data tibble in memory</li>
+<li>
+<code>data_na_pct</code>: The percentage of missing data in the corresponding redcap_data</li>
+</ul></li>
+<li>New <code><a href="../reference/make_labelled.html">make_labelled()</a></code> function allowing for descriptive labelling application to variables via the <a href="https://larmarange.github.io/labelled/" class="external-link"><code>labelled</code></a> package</li>
+<li>New arguments available for <code>read_redcap_tidy</code> capabilities:
+<ul><li>
+<code>forms</code>: Allows for <code>forms</code> specification during API calls instead of defaulting to full database downloads</li>
+<li>
+<code>export_survey_fields</code>: Allows for export of <code>[instrument_name]_timestamp</code> and <code>redcap_survey_identifier</code> fields related to survey-enabled REDCap databases (<code>TRUE</code> by default)</li>
+</ul></li>
+</ul></div>
+<div class="section level4">
+<h4 id="performance-improvements-and-enhancements-0-2-0">Performance Improvements and Enhancements<a class="anchor" aria-label="anchor" href="#performance-improvements-and-enhancements-0-2-0"></a></h4>
+<ul><li>Improved execution time by &gt;2.5X by optimizing internal functions <code>check_repeat_and_nonrepeat</code>, <code>distill_*_table_long</code>, and <code>multi_choice_to_labels</code>
+</li>
+<li>All warnings and error messages are now produced using <code>cli</code>
+</li>
+<li>Tests and vignettes now use <code>httptest</code> to mock and cache REDCap API calls</li>
+<li>Replaced deprecated <code>.data</code> pronoun in <code>tidyselect</code> expressions</li>
+</ul></div>
+<div class="section level4">
+<h4 id="bug-fixes-0-2-0">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-2-0"></a></h4>
+<ul><li>Fixed a bug in which similarly named variables could be duplicated under some circumstances</li>
+<li>Order of instruments in the supertibble is now the same as the order of instruments in REDCap</li>
+<li>Fixed an issue in which <code>extract_*</code> functions under some circumstances returned <code>NULL</code> instead of the expected tibbles</li>
+</ul></div>
+</div>
+    <div class="section level2">
 <h2 class="page-header" data-toc-text="0.1.3" id="redcaptidier-013">REDCapTidieR 0.1.3<small>2022-10-03</small><a class="anchor" aria-label="anchor" href="#redcaptidier-013"></a></h2>
 </div>
     <div class="section level2">
