@@ -59,9 +59,9 @@ Read `vignette("getting-started")` to learn more.
 
 We invite you to give feedback and collaborate with us! If you are
 familiar with GitHub and R packages, please feel free to submit a [pull
-request](https://github.com/CHOP-CGTInformatics/REDCapTidieR/pulls). Please
-do let us know if {REDCapTidieR} fails for whatever reason with your
-database and submit a bug report by creating a GitHub
+request](https://github.com/CHOP-CGTInformatics/REDCapTidieR/pulls).
+Please do let us know if {REDCapTidieR} fails for whatever reason with
+your database and submit a bug report by creating a GitHub
 [issue](https://github.com/CHOP-CGTInformatics/REDCapTidieR/issues).
 
 Please note that this project is released with a [Contributor Code of
@@ -75,13 +75,12 @@ Wildenhain](https://github.com/pwildenhain).
 ## Funding
 
 This package was developed by the [Children’s Hospital of
-Philadelphia](https://www.chop.edu) Cell and Gene Therapy Informatics Team
-to support the needs of the [Cellular Therapy and Transplant
+Philadelphia](https://www.chop.edu) Cell and Gene Therapy Informatics
+Team to support the needs of the [Cellular Therapy and Transplant
 Section](https://www.chop.edu/centers-programs/cellular-therapy-and-transplant-section).
 The development was funded using the following sources:
 
--   *Stephan Kadauke Start-up funds.* Stephan Kadauke, PI, CHOP,
-    2018-2024
+- *Stephan Kadauke Start-up funds.* Stephan Kadauke, PI, CHOP, 2018-2024
 
--   *CHOP-based GMP cell manufacturing (MFG) for CAR T clinical trials*.
-    Stephan Grupp, PI; Stephan Kadauke, co-PI, CHOP, 2020-2022
+- *CHOP-based GMP cell manufacturing (MFG) for CAR T clinical trials*.
+  Stephan Grupp, PI; Stephan Kadauke, co-PI, CHOP, 2020-2022

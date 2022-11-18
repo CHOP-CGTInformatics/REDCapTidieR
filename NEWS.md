@@ -1,8 +1,8 @@
 # Release History
 
 * [CRAN Archive of Older Versions](https://cran.r-project.org/src/contrib/Archive/REDCapTidieR/)
-* [Current and Previous GitHub Issues](https://github.com/CHOP-CGTDataOps/REDCapTidieR/issues)
-* [Current `REDCapTidieR` Documentation](https://chop-cgtdataops.github.io/REDCapTidieR/)
+* [Current and Previous GitHub Issues](https://github.com/CHOP-CGTInformatics/REDCapTidieR/issues)
+* [Current `REDCapTidieR` Documentation](https://chop-cgtinformatics.github.io/REDCapTidieR/)
 
 # Upcoming Changes in v0.2.0
 
@@ -79,5 +79,5 @@ Version 0.1 (Released 2022-09-15)
 
 GitHub Commits and Releases
 
-* For a detailed change log, please see https://github.com/CHOP-CGTDataOps/REDCapTidieR/commits/main.
-* For a list of the major releases, please see https://github.com/CHOP-CGTDataOps/REDCapTidieR/releases.
+* For a detailed change log, please see https://github.com/CHOP-CGTInformatics/REDCapTidieR/commits/main.
+* For a list of the major releases, please see https://github.com/CHOP-CGTInformatics/REDCapTidieR/releases.
