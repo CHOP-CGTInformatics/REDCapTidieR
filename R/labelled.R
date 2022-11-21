@@ -6,23 +6,23 @@
 #' This function applies variable labels to the columns of:
 #' \itemize{
 #'   \item the supertibble itself
-#'   \item each element of \code{redcap_data} based on the labels in
+#'   \item each element of \code{redcap_data} based on the `field_label` column in
 #'   \code{redcap_metadata}
 #'   \item each element of \code{redcap_metadata}
 #'   \item each element of \code{redcap_events}
 #' }
 #'
-#' @param supertbl a supertibble containing REDCap data created by
-#' \code{read_redcap_tidy()}
+#' @param supertbl a supertibble generated using \code{read_redcap_tidy()}
 #' @param format_labels One of:
 #' \itemize{
 #'   \item \code{NULL} to apply variable labels to elements of \code{redcap_data}
-#'   as they appear in \code{redcap_metadata}
-#'   \item A function that takes the labels in \code{redcap_metadata} as input
-#'   and returns a vector of formatted labels of the same length as output
-#'   \item A string with the name of a function to be used to format labels
+#'   as they appear in \code{redcap_metadata}. Default.
+#'   \item A function that takes a character vector and returns a modified character vector
+#'   of the same length. This function is applied to field labels before attaching them
+#'   to variables.
+#'   \item A character with the name of a function to be used to format labels
 #'   \item A list of label formatting functions or function names to be applied
-#'   in order. Note that ordering may affect results
+#'   in order. Note that ordering may affect results.
 #' }
 #'
 #' @importFrom dplyr %>%
@@ -31,7 +31,7 @@
 #' @importFrom checkmate assert_data_frame
 #'
 #' @return
-#' A labelled supertibble
+#' A labelled supertibble.
 #'
 #' @examples
 #' supertbl <- tibble::tribble(
@@ -170,12 +170,12 @@ make_labelled <- function(supertbl, format_labels = NULL) {
 #' @description
 #' Use these functions with the \code{format_labels} argument of
 #' \code{make_labelled()} to define how variable labels are formatted before
-#' being applied to the elements of \code{redcap_data}.
+#' being applied to the data columns of \code{redcap_data}.
 #'
 #' \code{fmt_strip_whitespace()} removes extra whitespace inside and at the ends
 #' of labels. It is a thin wrapper of \code{stringr::str_trim()} and
 #' \code{stringr::str_squish()}. \code{fmt_strip_trailing_colon()} and
-#' \code{fmt_strip_trailing_punct()} remove terminal punctuation.
+#' \code{fmt_strip_trailing_punct()} remove punctuation at the end of a label.
 #' \code{fmt_strip_html()} removes html tags. \code{fmt_strip_field_embedding()}
 #' removes text between curly braces (\code{\{\}}) which contains special
 #' "field embedding" logic in REDCap. Note that \code{read_redcap_tidy()}

@@ -3,37 +3,31 @@
 #'
 #' @description
 #' Call the REDCap API to retrieve data and metadata about a project,
-#' and then transform the output into a tidy "supertibble" that contains tidy
-#' tibbles, where each tibble represents a single instrument.
+#' and then transform the output into a tidy "supertibble" that contains data
+#' and metadata organized into tidy tibbles, broken down by instrument.
 #'
 #' @details
-#' This function uses [REDCapR](https://ouhscbbmc.github.io/REDCapR)
-#' to call the REDCap API. The REDCap API returns
-#' a [block matrix](https://en.wikipedia.org/wiki/Block_matrix) that mashes
+#' This function uses the \link[=https://ouhscbbmc.github.io/REDCapR/index.html]{REDCapR}
+#' package to call the REDCap API. The REDCap API returns a
+#' \link[https://en.wikipedia.org/wiki/Block_matrix]{block matrix} that mashes
 #' data from all data collection instruments
-#' together. In complex databases, such as those that contain repeated
-#' instruments, this is unwieldy. The `read_redcap_tidy` function intelligently
+#' together. The `read_redcap_tidy` function intelligently
 #' deconvolutes the block matrix and splices the data into individual tibbles,
 #' where one tibble represents the data from one instrument.
 #'
 #' @return
 #' Returns a \code{tibble} in which each row represents a REDCap instrument. The
 #' results contains the following fields:
-#' - \code{redcap_form_name}, the name of the instrument
-#' - \code{redcap_form_label}, the label for the instrument
-#' - \code{redcap_data}, the data for the instrument
-#' - \code{redcap_metadata}, a \code{tibble} of data dictionary entries for each
-#' field in the instrument
-#' - \code{redcap_events}, a \code{tibble} with information about the arms and
-#' longitudinal events represented in the instrument. Only if the project has
-#' longitudinal events enabled
-#' - \code{structure}, the type of instrument, "repeating" or "nonrepeating"
-#' - \code{data_rows}, the number of rows in the instrument's data
-#' - \code{data_cols}, the number of columns in the instrument's data
-#' - \code{data_size}, the size in memory of the instrument's data computed by
-#' \code{lobstr::obj_size}
-#' - \code{data_na_pct}, the percentage of cells in the instrument's data that
-#' are \code{NA} excluding identifier and form completion fields
+#' * \code{redcap_form_name}, the name of the instrument
+#' * \code{redcap_form_label}, the label for the instrument
+#' * \code{redcap_data}, a \code{tibble} with the data for the instrument
+#' * \code{redcap_metadata}, a \code{tibble} of data dictionary entries for each field in the instrument
+#' * \code{redcap_events}, a \code{tibble} with information about the arms and longitudinal events represented in the instrument. Only if the project has longitudinal events enabled
+#' * \code{structure}, either "repeating" or "nonrepeating"
+#' * \code{data_rows}, the number of rows in the instrument's data tibble
+#' * \code{data_cols}, the number of columns in the instrument's data tibble
+#' * \code{data_size}, the size in memory of the instrument's data tibble computed by \code{lobstr::obj_size}
+#' * \code{data_na_pct}, the percentage of cells in the instrument's data that are \code{NA} excluding identifier and form completion fields
 #'
 #' @importFrom REDCapR redcap_read_oneshot redcap_metadata_read
 #' @importFrom dplyr filter bind_rows %>% select slice
@@ -46,17 +40,17 @@
 #' @param token The user-specific string that serves as the password for a
 #' project. Required.
 #' @param raw_or_label A string (either 'raw' or 'label') that specifies whether
-#' to export the raw coded values or the labels for the options of multiple
-#' choice fields. Default is 'label'.
+#' to export the raw coded values or the labels for the options of categorical
+#' fields. Default is 'label'.
 #' @param forms A character vector of form names that specifies the forms to
-#' export. Default returns all forms in the project.
-#' @param export_survey_fields A boolean that specifies whether to export the
-#'  survey identifier field (e.g., 'redcap_survey_identifier') or survey
-#'  timestamp fields (e.g., instrument+'_timestamp'). The timestamp outputs
-#'  reflect the survey's completion time (according to the time and timezone of
-#'  the REDCap server.). Default \code{TRUE}.
-#' @param suppress_messages Optionally show or suppress messages.
-#' Default \code{TRUE}.
+#' export. Default is \code{NULL} which returns all forms in the project.
+#' @param export_survey_fields A logical that specifies whether to export the
+#' survey identifier field (e.g., 'redcap_survey_identifier') or survey
+#' timestamp fields ('[instrument_name]_timestamp'). The timestamp data
+#' reflect the survey's completion time (according to the time and timezone of
+#' the REDCap server.). Default is \code{TRUE}.
+#' @param suppress_messages A logical to control whether to suppress messages
+#' from REDCapR API calls. Default \code{TRUE}.
 #'
 #' @examples
 #' \dontrun{
