@@ -5,7 +5,6 @@
 # the cache of mocks associated with the vignette so that fresh mocks
 # will be created.
 
-print("Hi")
 # Credential getter function from testthat/helper.R
 get_fake_credentials <- function(credentials) {
   creds <- readr::read_csv(
@@ -27,15 +26,13 @@ get_fake_credentials <- function(credentials) {
 }
 
 # Assumes cache has same name as vignette
-stop(paste("knitr::current_input():", knitr::current_input()))
-
 path_to_cache <- knitr::current_input() %>%
   gsub(".Rmd", "", ., fixed = TRUE)
 
 needed_credentials <- c(
   "REDCAP_URI",
   "SUPERHEROES_REDCAP_API",
-  "REDCAPTIDIER_LONGITUDINAL_API"
+  "REDCAPTIDIER_DEEP_DIVE_VIGNETTE_API"
 )
 
 creds <- Sys.getenv(needed_credentials, "none")
