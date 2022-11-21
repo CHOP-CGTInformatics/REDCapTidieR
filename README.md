@@ -20,14 +20,14 @@ status](https://www.r-pkg.org/badges/version/REDCapTidieR)](https://CRAN.R-proje
 coverage](https://codecov.io/gh/CHOP-CGTInformatics/REDCapTidieR/branch/main/graph/badge.svg)](https://app.codecov.io/gh/CHOP-CGTInformatics/REDCapTidieR?branch=main)
 <!-- badges: end -->
 
-The {REDCapTidieR} package provides an elegant way to import data from a
+The REDCapTidieR package provides an elegant way to import data from a
 [REDCap](https://www.project-redcap.org/) database into an R
 environment. It builds upon the
-[{REDCapR}](https://ouhscbbmc.github.io/REDCapR/) package to query the
+[REDCapR](https://ouhscbbmc.github.io/REDCapR/) package to query the
 REDCap API and then transforms the returned data into a set of tidy
 tibbles.
 
-{REDCapTidieR} is especially useful for dealing with complex databases
+REDCapTidieR is especially useful for dealing with complex databases
 that are longitudinal or include repeated instruments or both.
 
 ## Installation
@@ -48,12 +48,13 @@ devtools::install_github("CHOP-CGTInformatics/REDCapTidieR")
 
 ## Getting Started
 
-Use `read_redcap_tidy()` together with `bind_tables()` to import data
-from all instruments into your environment.
+Use `read_redcap_tidy` together with `bind_tables` to import data from
+all instruments into your environment.
 
 ![](man/figures/redcaptidier_demo.gif)
 
-Read `vignette("getting-started")` to learn more.
+Read the [Getting Started vignette](articles/REDCapTidieR.html) to learn
+more.
 
 ## Collaboration
 
