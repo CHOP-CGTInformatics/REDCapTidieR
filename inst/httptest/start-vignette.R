@@ -32,7 +32,8 @@ path_to_cache <- knitr::current_input() %>%
 needed_credentials <- c(
   "REDCAP_URI",
   "SUPERHEROES_REDCAP_API",
-  "REDCAPTIDIER_DEEP_DIVE_VIGNETTE_API"
+  "REDCAPTIDIER_DEEP_DIVE_VIGNETTE_API",
+  "REDCAPTIDIER_CLASSIC_API"
 )
 
 creds <- Sys.getenv(needed_credentials, "none")

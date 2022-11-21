@@ -21,12 +21,14 @@ if (rlang::is_interactive()) {
   redcap_uri <- Sys.getenv("REDCAP_URI")
   superheroes_token <- Sys.getenv("SUPERHEROES_REDCAP_API")
   longitudinal_token <- Sys.getenv("REDCAPTIDIER_DEEP_DIVE_VIGNETTE_API")
+  survey_token <- Sys.getenv("REDCAPTIDIER_CLASSIC_API")
 } else {
   start_vignette("diving_deeper")
   # creds object is created in start-vignette.R which gets sourced when start_vignette runs
   redcap_uri <- creds["REDCAP_URI"]
   superheroes_token <- creds["SUPERHEROES_REDCAP_API"]
   longitudinal_token <- creds["REDCAPTIDIER_DEEP_DIVE_VIGNETTE_API"]
+  survey_token <- creds["REDCAPTIDIER_CLASSIC_API"]
 }
 ```
 
