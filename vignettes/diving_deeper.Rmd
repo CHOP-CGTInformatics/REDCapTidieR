@@ -27,6 +27,7 @@ redcap_uri <- 'https://redcap.chop.edu/api/'
 #token <- creds["SUPERHEROES_REDCAP_API"]
 superheroes_token <- '1ABEA57E6D77AAD6E144DF8A033875CD'
 longitudinal_token <- 'C66988D95DB2A3387BE4296362389D15'
+survey_token <- 'FF921E7058FE2BE4A0DD3891D2C8F48A'
 ```
 
 ## The Block Matrix
@@ -65,7 +66,7 @@ While it may seem a good idea to have everything in one data frame, there are si
 
 REDCapTidieR breaks the block matrix up into individual tidy data tibbles, one for each instrument. It then aggregates them inside the supertibble. Let's take a look at individual data tibbles and contrast with the block matrix.
 
-Consider `heroes_information`, which contains data from a **nonrepeating** instrument. Note that this is a much smaller table than the block matrix at 734 rows by 12 columns, and there are no `NA`s. The table's name `heroes_information` is descriptive. Each entry has the same observational unit, one **superhero**, identified by its `record_id`.
+Consider `heroes_information`, which contains data from a **nonrepeating** instrument. Note that this is a much smaller table than the block matrix at 734 rows by 12 columns, and there are no `NA`s. The table's name `heroes_information` is descriptive. Each entry has the same observational unit, one **superhero**, identified by its `record_id`. A number of data columns follow, starting with `name`, `gender`, `eye_color`, `race`, etc. These columns are in the same order as on the REDCap instrument. The last column of a REDCapTidieR data tibble is always `form_status_complete` which indicates whether the form has been marked as completed.
 
 ```{r}
 library(REDCapTidieR)
@@ -77,7 +78,7 @@ heroes_information |>
   rmarkdown::paged_table()
 ```
 
-Now consider the `super_hero_powers` table, which contains data from a **repeating** instrument. Note that in addition to `record_id` there is a `redcap_repeat_instance` column. The observational unit, or granularity, of each row is one **superpower per superhero**, identified by its `record_id` and `redcap_repeat_instance`.
+Now consider the `super_hero_powers` table, which contains data from a **repeating** instrument. In addition to `record_id` there is a `redcap_repeat_instance` column. The observational unit, or granularity, of each row is one **superpower per superhero**, identified by its `record_id` and `redcap_repeat_instance`. After these two **identifier columns** follow data columns and `form_status_complete`.
 
 ```{r}
 super_hero_powers |> 
@@ -154,7 +155,7 @@ REDCapTidieR supports projects with multiple arms. If you have a project with mu
 
 ## Categorical variables
 
-REDCapTidieR performs a number of opinionated transformations to categorical variables to streamline exploring and working with them.
+REDCapTidieR performs a number of opinionated transformations to categorical fields to streamline exploring and working with them.
 
 Fields that are of type `yesno` or `truefalse` fields are converted to logical variables.
 
@@ -163,13 +164,13 @@ adverse_events$adverse_event_serious |>
   dplyr::glimpse()
 ```
 
-Fields of single-answer categorical type (`dropdown`, `radio`) are converted to factor variables. The levels of the factor and their order are determined by the choices defined in REDCap. This makes it possible to discover all of the different options for a specific field even if not all of those options are represented in the data.
+Fields of single-answer categorical type (`dropdown`, `radio`) are converted to factor variables. The levels of the factor and their order are determined by the choices defined in REDCap. This makes it possible to discover all of the different options for a specific field even if not all of those options are represented in the data. For example, even though we only have 5 adverse events in this database, we can see that there are 837 different choices for adverse events.
 
 ```{r}
 adverse_events$adverse_event_meddra_ae_code
 ```
 
-In addition, since the order of choices is preserved, it is possible to convert instrinsically ordinal variables to ordinal factors.
+In addition, since the order of choices is preserved, it is possible to convert instrinsically ordinal variables to ordinal factors. For example, there is an intrinsic order in adverse event grades.
 
 ```{r}
 ae_grade <- adverse_events$adverse_event_grade
@@ -178,7 +179,7 @@ ae_grade |>
   factor(ordered = TRUE, levels = levels(ae_grade))
 ```
 
-Fields of the multi-answer `checkbox` type are expanded so that each option is represented as one logical variable. The name of each of those variables is constructed from the name of the field, followed by three underscores, followed by the name of the choice defined in REDCap (i.e. the part before the comma in the **Choices** field of the field editor). For example, the `adverse_event_relationship_other` field in REDCap has eight choices, `apheresis`, `ld_chemo`, `soc_treatment`, `underlying_disease`, `other_research_proc`, `con_meds`, and `other`. REDCapTidieR generates the following variables:
+Fields of the multi-answer `checkbox` type are expanded so that each option is represented as one logical variable. The name of each of those variables is constructed from the name of the field, followed by three underscores, followed by the name of the choice defined in REDCap (i.e. the part before the comma in the **Choices** field of the field editor). For example, the `adverse_event_relationship_other` field in REDCap has eight choices, `apheresis`, `ld_chemo`, `soc_treatment`, `underlying_disease`, `other_research_proc`, `con_meds`, and `other`. REDCapTidieR generates the following logical variables from this field:
 
 ```{r}
 adverse_events |>
@@ -186,22 +187,34 @@ adverse_events |>
   dplyr::glimpse()
 ```
 
+## Surveys
+
+Instruments that are used to generate REDCap Surveys generate additional data fields:
+
+-   `[instrument_name]_timestamp`: the time at which the survey was competed
+
+-   `redcap_survey_identifier`: the participant identifier. This will be `NA` if the Participant Identifier feature in REDCap is disabled.
+
+By default, `read_redcap_tidy` returns these fields if the instrument is used as a survey. For the `survey` instrument, we get `survey_timestamp` and `redcap_survey_identifier`.
+
+```{r, warning = FALSE}
+survey <- read_redcap_tidy(redcap_uri, survey_token) |>
+  extract_table("survey")
+
+survey |>
+  dplyr::glimpse()
+```
+
 ## Summary
 
 In summary, here are the rules by which REDCapTidieR constructs data tibbles:
 
--   There is one data tibble per REDCap instrument. When you extract a data tibble using `bind_tables()` or `extract_tables()`, its name is derived from the name given to the instrument in REDCap.
-
--   The first column is always the record's ID column. By default, REDCap names the record ID field `record_id`, but this can be changed. REDCapTidieR is smart enough to handle this. For example, if the record ID field was renamed to `subject_id` then the first column of each tibble would be `subject_id`.
-
--   Additional identifying columns may follow the record ID column, depending on the context and repeat type of the instrument (see the table above).
-
-```{=html}
-<!-- -->
-```
--   After the identifying columns, data columns appear in the same order as in the REDCap instrument. True/false type fields are converted to logical. Single-answer categorical fields are converted to factors. Multi-answer checkbox fields are expanded to a set of logical columns, one for each choice.
-
--   The final field is always `form_status_complete`, which is an column to indicate whether the instrument was marked complete.
+1.  There is one data tibble per REDCap instrument.
+2.  The first column is always the record's ID column. By default, REDCap names the record ID field `record_id`, but this can be changed. REDCapTidieR is smart enough to handle this. For example, if the record ID field was renamed to `subject_id` then the first column of each tibble would be `subject_id`.
+3.  Additional identifying columns may follow the record ID column, depending on the context and repeat type of the instrument (see the table above).
+4.  After the identifying columns, data columns appear in the same order as in the REDCap instrument. True/false type fields are converted to logical. Single-answer categorical fields are converted to factors. Multi-answer checkbox fields are expanded to a set of logical columns, one for each choice.
+5.  If the instrument is used as a survey, the survey timestamp and identifier columns will appear next.
+6.  The final column is always `form_status_complete`.
 
 ```{r, include=FALSE}
 end_vignette()
