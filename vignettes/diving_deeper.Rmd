@@ -1,5 +1,5 @@
 ---
-title: "Diving Deeper: Understanding the REDCapTidieR Supertibble"
+title: "Diving Deeper: Understanding REDCapTidieR Data Tibbles"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Diving Deeper: Understanding the REDCapTidieR Supertibble}
@@ -35,22 +35,21 @@ In the [Getting Started](REDCapTidieR.html) vignette, we stated that importing r
 
 The `REDCapR::redcap_read_oneshot()` function provides data from the REDCap API without performing much processing. It returns a list with an element named `data` that contains all of the data of the project as a single data frame.
 
-Below, we use it to import data from the [Superheroes REDCap database](REDCapTidieR.html), which contains both a nonrepeating and a repeating instrument. We use `rmarkdown::paged_table()` to allow you to explore this large data frame.
+Below, we use it to import data from the [Superheroes REDCap database](REDCapTidieR.html#case-study-the-superheroes-database), which contains a **nonrepeating** and a **repeating** instrument. We use `rmarkdown::paged_table()` to allow you to explore this large data frame interactively.
 
 ``` r
 superheroes_token <- "123456789ABCDEF123456789ABCDEF04"
 redcap_uri <- "https://my.institution.edu/redcap/api/"
 ```
 
-```{r, include = TRUE}
+```{r, include = TRUE, message = FALSE}
 superheroes_ugly <- REDCapR::redcap_read_oneshot(redcap_uri, superheroes_token)$data
 
-# Display as a tibble for easier readability
 superheroes_ugly |> 
   rmarkdown::paged_table()
 ```
 
-This data structure is sometimes called the [block matrix](https://en.wikipedia.org/wiki/Block_matrix). It's what happens when REDCap mashes the contents of a database that has both repeating and nonrepeating instruments into a single table.
+This data structure is called a [block matrix](https://en.wikipedia.org/wiki/Block_matrix). It's what happens when REDCap mashes the contents of a database that has both repeating and nonrepeating instruments into a single table.
 
 While it may seem a good idea to have everything in one data frame, there are significant downsides, including:
 
@@ -62,9 +61,11 @@ While it may seem a good idea to have everything in one data frame, there are si
 
 -   The meaning of a row in the data set is inconsistent. It depends on whether the row is associated with a specific instance of a specific repeated instrument or not (you can figure this out by looking at the `redcap_repeat_instrument` column). This is confusing because you would expect that the granularity of a table is consistent. It also technically violates the definition of [Tidy Data](https://www.jstatsoft.org/article/view/v059i10) because multiple types of observational units are stored in the same table.
 
-## Structure of REDCapTidieR Tibbles
+## Structure of REDCapTidieR Data Tibbles
 
-So what do the REDCapTidieR data tibbles look like? Consider `heroes_information`, which contains data from a **nonrepeating** instrument. Note that this is a much smaller table at 734 rows by 12 columns, and there are no `NA`s. The table's name `heroes_information` is descriptive. Each entry has the same observational unit, one **superhero**, identified by its `record_id`.
+REDCapTidieR breaks the block matrix up into individual tidy data tibbles, one for each instrument. It then aggregates them inside the supertibble. Let's take a look at individual data tibbles and contrast with the block matrix.
+
+Consider `heroes_information`, which contains data from a **nonrepeating** instrument. Note that this is a much smaller table than the block matrix at 734 rows by 12 columns, and there are no `NA`s. The table's name `heroes_information` is descriptive. Each entry has the same observational unit, one **superhero**, identified by its `record_id`.
 
 ```{r}
 library(REDCapTidieR)
@@ -76,7 +77,7 @@ heroes_information |>
   rmarkdown::paged_table()
 ```
 
-Now consider the `super_hero_powers` table, which contains data from a **repeating** instrument. Note that in addition to `record_id` there is a `redcap_repeat_instance` column. The observational unit, or granularity, of each row is a **superpower per superhero**, identified by its `record_id` and `redcap_repeat_instance`.
+Now consider the `super_hero_powers` table, which contains data from a **repeating** instrument. Note that in addition to `record_id` there is a `redcap_repeat_instance` column. The observational unit, or granularity, of each row is one **superpower per superhero**, identified by its `record_id` and `redcap_repeat_instance`.
 
 ```{r}
 super_hero_powers |> 
@@ -87,7 +88,7 @@ super_hero_powers |>
 
 REDCap databases support two main mechanisms to allow collecting the same data multiple times: **repeating instruments** and **longitudinal projects**.
 
-The **granularity** of each table (i.e. the observational unit that a single row represents) depends on the structure of the project (classic, longitudinal with one arm, longitudinal with multiple arms) as well as the structure of the instrument (repeating or nonrepeating). `REDCapTidieR` adds appropriate identifying columns according to the following table:
+The **granularity** of each table (i.e. the observational unit that a single row represents) depends on the structure of the project (classic, longitudinal with one arm, longitudinal with multiple arms) as well as the structure of the instrument (repeating or nonrepeating). REDCapTidieR adds appropriate identifying columns according to the following table:
 
 +------------------+--------------------------+-----------------------------+-----------------------------+
 |                  | **Classic**              | **Longitudinal, one arm**   | **Longitudinal, multi-arm** |
@@ -102,7 +103,7 @@ The **granularity** of each table (i.e. the observational unit that a single row
 |                  |                          |                             | `redcap_arm`                |
 +------------------+--------------------------+-----------------------------+-----------------------------+
 
-> Note: Taken in combination, the identifying columns of any `REDCapTidieR` tibble are guaranteed to be unique and not `NA` and can therefore be used as **composite primary key**. This makes it easy to join REDCapTidieR tibbles to each other!
+> Note: Taken in combination, the identifying columns of any REDCapTidieR tibble are guaranteed to be unique and not `NA` and can therefore be used as **composite primary key**. This makes it easy to join REDCapTidieR tibbles to each other!
 
 Let's look at a REDCap database you might use to capture data for a clinical trial. This is a longitudinal database that assesses some data once, such as demographics, and other data, such as a physical exam or chemistry laboratory values, at multiple pre-defined study visits. We are using `dplyr::select` here to highlight instrument names and whether or not each instrument is repeating. This database has six nonrepeating and three repeating instruments.
 
@@ -187,11 +188,11 @@ adverse_events |>
 
 ## Summary
 
-In summary, here are the rules by which `REDCapTidieR` constructs data tibbles:
+In summary, here are the rules by which REDCapTidieR constructs data tibbles:
 
 -   There is one data tibble per REDCap instrument. When you extract a data tibble using `bind_tables()` or `extract_tables()`, its name is derived from the name given to the instrument in REDCap.
 
--   The first column is always the record's ID column. By default, REDCap names the record ID field `record_id`, but this can be changed. `REDCapTidieR` is smart enough to handle this. For example, if the record ID field was renamed to `subject_id` then the first column of each tibble would be `subject_id`.
+-   The first column is always the record's ID column. By default, REDCap names the record ID field `record_id`, but this can be changed. REDCapTidieR is smart enough to handle this. For example, if the record ID field was renamed to `subject_id` then the first column of each tibble would be `subject_id`.
 
 -   Additional identifying columns may follow the record ID column, depending on the context and repeat type of the instrument (see the table above).
 
