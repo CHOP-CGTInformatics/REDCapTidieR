@@ -3,7 +3,7 @@
 project metadata — make_labelled • REDCapTidieR</title><!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous"><script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css"><script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet"><script src="../pkgdown.js"></script><meta property="og:title" content="Apply labelled labels to the elements of a REDCap supertibble based on
 project metadata — make_labelled"><meta property="og:description" content="This function applies variable labels to the columns of:
 the supertibble itself
-each element of redcap_data based on the labels in
+each element of redcap_data based on the `field_label` column in
   redcap_metadata
 each element of redcap_metadata
 each element of redcap_events
@@ -70,7 +70,7 @@ project metadata</h1>
 
     <div class="ref-description">
     <p>This function applies variable labels to the columns of:</p><ul><li><p>the supertibble itself</p></li>
-<li><p>each element of <code>redcap_data</code> based on the labels in
+<li><p>each element of <code>redcap_data</code> based on the `field_label` column in
   <code>redcap_metadata</code></p></li>
 <li><p>each element of <code>redcap_metadata</code></p></li>
 <li><p>each element of <code>redcap_events</code></p></li>
@@ -83,18 +83,18 @@ project metadata</h1>
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>supertbl</dt>
-<dd><p>a supertibble containing REDCap data created by
-<code><a href="read_redcap_tidy.html">read_redcap_tidy()</a></code></p></dd>
+<dd><p>a supertibble generated using <code><a href="read_redcap_tidy.html">read_redcap_tidy()</a></code></p></dd>
 
 
 <dt>format_labels</dt>
 <dd><p>One of:</p><ul><li><p><code>NULL</code> to apply variable labels to elements of <code>redcap_data</code>
-  as they appear in <code>redcap_metadata</code></p></li>
-<li><p>A function that takes the labels in <code>redcap_metadata</code> as input
-  and returns a vector of formatted labels of the same length as output</p></li>
-<li><p>A string with the name of a function to be used to format labels</p></li>
+  as they appear in <code>redcap_metadata</code>. Default.</p></li>
+<li><p>A function that takes a character vector and returns a modified character vector
+  of the same length. This function is applied to field labels before attaching them
+  to variables.</p></li>
+<li><p>A character with the name of a function to be used to format labels</p></li>
 <li><p>A list of label formatting functions or function names to be applied
-  in order. Note that ordering may affect results</p></li>
+  in order. Note that ordering may affect results.</p></li>
 </ul></dd>
 
 </dl></div>
@@ -102,7 +102,7 @@ project metadata</h1>
     <h2>Value</h2>
     
 
-<p>A labelled supertibble</p>
+<p>A labelled supertibble.</p>
     </div>
 
     <div id="ref-examples">
