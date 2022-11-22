@@ -20,9 +20,11 @@ project. Required.}
 }
 \value{
 The original supertibble with additional fields:
-- \code{instrument_label} containing labels for each form
-- \code{redcap_metadata} containing metadata for the fields in each form as a
+\itemize{
+\item \code{instrument_label} containing labels for each form
+\item \code{redcap_metadata} containing metadata for the fields in each form as a
 list column
+}
 }
 \description{
 Supplement a supertibble with additional metadata fields
