@@ -2,7 +2,7 @@
 % Please edit documentation in R/extract_table.R
 \name{extract_tables}
 \alias{extract_tables}
-\title{Extract one or more tibbles from a REDCapTidieR supertibble}
+\title{Extract one or more tibbles from a REDCapTidieR supertibble into a list}
 \usage{
 extract_tables(.data, tbls = everything())
 }

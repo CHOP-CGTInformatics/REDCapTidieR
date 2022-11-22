@@ -28,12 +28,12 @@ a vector of formatted labels
 \description{
 Use these functions with the \code{format_labels} argument of
 \code{make_labelled()} to define how variable labels are formatted before
-being applied to the elements of \code{redcap_data}.
+being applied to the data columns of \code{redcap_data}.
 
 \code{fmt_strip_whitespace()} removes extra whitespace inside and at the ends
 of labels. It is a thin wrapper of \code{stringr::str_trim()} and
 \code{stringr::str_squish()}. \code{fmt_strip_trailing_colon()} and
-\code{fmt_strip_trailing_punct()} remove terminal punctuation.
+\code{fmt_strip_trailing_punct()} remove punctuation at the end of a label.
 \code{fmt_strip_html()} removes html tags. \code{fmt_strip_field_embedding()}
 removes text between curly braces (\code{\{\}}) which contains special
 "field embedding" logic in REDCap. Note that \code{read_redcap_tidy()}
