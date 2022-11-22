@@ -104,7 +104,7 @@ export. Default is <code>NULL</code> which returns all forms in the project.</p>
 <dt>export_survey_fields</dt>
 <dd><p>A logical that specifies whether to export the
 survey identifier field (e.g., 'redcap_survey_identifier') or survey
-timestamp fields ('[instrument_name]_timestamp'). The timestamp data
+timestamp fields <code>[instrument_name]_timestamp</code>. The timestamp data
 reflect the survey's completion time (according to the time and timezone of
 the REDCap server.). Default is <code>TRUE</code>.</p></dd>
 
@@ -119,28 +119,25 @@ from REDCapR API calls. Default <code>TRUE</code>.</p></dd>
     
 
 <p>Returns a <code>tibble</code> in which each row represents a REDCap instrument. The
-results contains the following fields:
-* <code>redcap_form_name</code>, the name of the instrument
-* <code>redcap_form_label</code>, the label for the instrument
-* <code>redcap_data</code>, a <code>tibble</code> with the data for the instrument
-* <code>redcap_metadata</code>, a <code>tibble</code> of data dictionary entries for each field in the instrument
-* <code>redcap_events</code>, a <code>tibble</code> with information about the arms and longitudinal events represented in the instrument. Only if the project has longitudinal events enabled
-* <code>structure</code>, either "repeating" or "nonrepeating"
-* <code>data_rows</code>, the number of rows in the instrument's data tibble
-* <code>data_cols</code>, the number of columns in the instrument's data tibble
-* <code>data_size</code>, the size in memory of the instrument's data tibble computed by <code><a href="https://lobstr.r-lib.org/reference/obj_size.html" class="external-link">lobstr::obj_size</a></code></p>
-
-
-<p>* <code>data_na_pct</code>, the percentage of cells in the instrument's data that are <code>NA</code> excluding identifier and form completion fields</p>
-    </div>
+results contains the following fields:</p><ul><li><p><code>redcap_form_name</code>, the name of the instrument</p></li>
+<li><p><code>redcap_form_label</code>, the label for the instrument</p></li>
+<li><p><code>redcap_data</code>, a <code>tibble</code> with the data for the instrument</p></li>
+<li><p><code>redcap_metadata</code>, a <code>tibble</code> of data dictionary entries for each field in the instrument</p></li>
+<li><p><code>redcap_events</code>, a <code>tibble</code> with information about the arms and longitudinal events represented in the instrument. Only if the project has longitudinal events enabled</p></li>
+<li><p><code>structure</code>, either "repeating" or "nonrepeating"</p></li>
+<li><p><code>data_rows</code>, the number of rows in the instrument's data tibble</p></li>
+<li><p><code>data_cols</code>, the number of columns in the instrument's data tibble</p></li>
+<li><p><code>data_size</code>, the size in memory of the instrument's data tibble computed by <code><a href="https://lobstr.r-lib.org/reference/obj_size.html" class="external-link">lobstr::obj_size()</a></code></p></li>
+<li><p><code>data_na_pct</code>, the percentage of cells in the instrument's data that are <code>NA</code> excluding identifier and form completion fields</p></li>
+</ul></div>
     <div id="details">
     <h2>Details</h2>
     <p>This function uses the <a href="https://ouhscbbmc.github.io/REDCapR/index.html" class="external-link">REDCapR</a>
 package to call the REDCap API. The REDCap API returns a
 <a href="https://en.wikipedia.org/wiki/Block_matrix" class="external-link">block matrix</a> that mashes
 data from all data collection instruments
-together. The <code>read_redcap_tidy</code> function intelligently
-deconvolutes the block matrix and splices the data into individual tibbles,
+together. The <code>read_redcap_tidy()</code> function intelligently
+deconstructs the block matrix and splices the data into individual tibbles,
 where one tibble represents the data from one instrument.</p>
     </div>
 

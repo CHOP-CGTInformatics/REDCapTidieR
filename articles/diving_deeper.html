@@ -95,17 +95,19 @@ Tibbles</h1>
 </h2>
 <p>In the <a href="REDCapTidieR.html">Getting Started</a> vignette, we
 stated that importing records from complex REDCap projects via the
-REDCap API can be <em>ugly</em>. The aim of this section is to describe
-what we mean by this in more precise language.</p>
-<p>The <code><a href="https://ouhscbbmc.github.io/REDCapR/reference/redcap_read_oneshot.html" class="external-link">REDCapR::redcap_read_oneshot()</a></code> function provides
-data from the REDCap API without performing much processing. It returns
-a list with an element named <code>data</code> that contains all of the
-data of the project as a single data frame.</p>
-<p>Below, we use it to import data from the <a href="REDCapTidieR.html#case-study-the-superheroes-database">Superheroes
-REDCap database</a>, which contains a <strong>nonrepeating</strong> and
-a <strong>repeating</strong> instrument. We use
-<code><a href="https://pkgs.rstudio.com/rmarkdown/reference/paged_table.html" class="external-link">rmarkdown::paged_table()</a></code> to allow you to explore this large
-data frame interactively.</p>
+REDCap API can be <em>ugly</em>. In this section we will describe what
+we mean by this in more precise language.</p>
+<p>The <code><a href="https://ouhscbbmc.github.io/REDCapR/reference/redcap_read_oneshot.html" class="external-link">REDCapR::redcap_read_oneshot()</a></code> function pulls data
+from a REDCap project via the REDCap API and provides it to the R
+environment without performing much processing. It returns a list with
+an element named <code>data</code> that contains all of the data of the
+project as a single data frame.</p>
+<p>Below, we use this function to import data from the <a href="REDCapTidieR.html#case-study-the-superhero-database">Superhero
+REDCap database</a>, which contains a <strong>nonrepeating</strong>
+instrument <code>heroes_information</code> and a
+<strong>repeating</strong> instrument <code>super_hero_powers</code>. We
+use <code><a href="https://pkgs.rstudio.com/rmarkdown/reference/paged_table.html" class="external-link">rmarkdown::paged_table()</a></code> to allow you to explore this
+large data frame in the browser.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">superheroes_token</span> <span class="op">&lt;-</span> <span class="st">"123456789ABCDEF123456789ABCDEF04"</span></span>
 <span><span class="va">redcap_uri</span> <span class="op">&lt;-</span> <span class="st">"https://my.institution.edu/redcap/api/"</span></span></code></pre></div>
@@ -128,20 +130,18 @@ there are significant downsides, including:</p>
 <li><p>It’s unwieldy! Although there are only 734 superheroes in the
 data set, there are 6,700 rows. Every transformation first requires
 whittling down a huge data set.</p></li>
-<li><p>It’s sparse - there are a lot of <code>NA</code> values
-indicating missing values. This is confusing and ambiguous, because
-these <code>NA</code> values don’t represent data fields left blank in
-the database but instead are an artifact of how the table is
+<li><p>There are a lot of <code>NA</code> values. Many of these
+<code>NA</code> values don’t represent data fields left blank in the
+database but instead are an artifact of how the table is
 generated.</p></li>
-<li><p>Important metadata is missing. For example, it’s not always
-possible to determine which fields are associated with a specific
-instrument.</p></li>
-<li><p>The meaning of a row in the data set is inconsistent. It depends
-on whether the row is associated with a specific instance of a specific
-repeated instrument or not (you can figure this out by looking at the
-<code>redcap_repeat_instrument</code> column). This is confusing because
-you would expect that the granularity of a table is consistent. It also
-technically violates the definition of <a href="https://www.jstatsoft.org/article/view/v059i10" class="external-link">Tidy Data</a>
+<li><p>Metadata that would be helpful is missing. For example, it’s not
+possible to determine which columns are associated with a specific
+instrument for nonrepeating instruments.</p></li>
+<li><p>The meaning of a row in the data set is inconsistent. Some rows
+represent observations on a per-record level (i.e. those derived from
+nonrepeating instruments) and others represent observations on a
+per-repeat-instance level (i.e. those derived from repeating
+instruments). This technically violates the definition of <a href="https://www.jstatsoft.org/article/view/v059i10" class="external-link">Tidy Data</a>
 because multiple types of observational units are stored in the same
 table.</p></li>
 </ul>
@@ -149,22 +149,30 @@ table.</p></li>
 <div class="section level2">
 <h2 id="structure-of-redcaptidier-data-tibbles">Structure of REDCapTidieR Data Tibbles<a class="anchor" aria-label="anchor" href="#structure-of-redcaptidier-data-tibbles"></a>
 </h2>
-<p>REDCapTidieR breaks the block matrix up into individual tidy data
-tibbles, one for each instrument. It then aggregates them inside the
-supertibble. Let’s take a look at individual data tibbles and contrast
-with the block matrix.</p>
-<p>Consider <code>heroes_information</code>, which contains data from a
-<strong>nonrepeating</strong> instrument. Note that this is a much
-smaller table than the block matrix at 734 rows by 12 columns, and there
-are no <code>NA</code>s. The table’s name
-<code>heroes_information</code> is descriptive. Each entry has the same
-observational unit, one <strong>superhero</strong>, identified by its
-<code>record_id</code>. A number of data columns follow, starting with
-<code>name</code>, <code>gender</code>, <code>eye_color</code>,
-<code>race</code>, etc. These columns are in the same order as on the
-REDCap instrument. The last column of a REDCapTidieR data tibble is
-always <code>form_status_complete</code> which indicates whether the
-form has been marked as completed.</p>
+<p>REDCapTidieR breaks the block matrix up into <strong>data
+tibbles</strong>, one for each instrument. REDCapTidieR then collects
+the data tibbles as a <strong>list column</strong> in the
+<strong>supertibble</strong>.</p>
+<p>These data tibbles are <strong>tidier</strong> than the block matrix
+because one instrument can only be repeating or nonrepeating, and
+therefore each data tibble can only have one type of observational unit
+stored inside of it.</p>
+<p>Let’s take a look at the data tibbles derived from the Superhero
+database and contrast with the block matrix. Consider
+<code>heroes_information</code>, which contains data from a
+<strong>nonrepeating</strong> instrument. This tibble is much smaller
+than the block matrix at 734 rows by 12 columns, and there are no
+<code>NA</code>s. The data tibble’s name <code>heroes_information</code>
+is descriptive. REDCapTidieR knows the names of all instruments because
+in addition to querying the project’s data it also queries the project’s
+metadata. Each entry has the same observational unit, one
+<strong>superhero</strong>, identified by its <code>record_id</code>. A
+number of data columns follow, starting with <code>name</code>,
+<code>gender</code>, <code>eye_color</code>, <code>race</code>, etc.
+These columns are in the same order as on the REDCap instrument. The
+last column of a REDCapTidieR data tibble is always
+<code>form_status_complete</code> which indicates whether the form has
+been marked as completed.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/CHOP-CGTInformatics/REDCapTidieR" class="external-link">REDCapTidieR</a></span><span class="op">)</span></span>
 <span></span>
@@ -183,9 +191,13 @@ data from a <strong>repeating</strong> instrument. In addition to
 <code>record_id</code> there is a <code>redcap_repeat_instance</code>
 column. The observational unit, or granularity, of each row is one
 <strong>superpower per superhero</strong>, identified by its
-<code>record_id</code> and <code>redcap_repeat_instance</code>. After
-these two <strong>identifier columns</strong> follow data columns and
-<code>form_status_complete</code>.</p>
+<code>record_id</code> and <code>redcap_repeat_instance</code>. Because
+these two columns uniquely identify a row in the data tibble, we call
+them <strong>identifier columns</strong>. In the REDCapTidieR
+supertibble, identifier columns always come first, followed by
+<strong>data columns</strong>. The last column is always
+<code>form_status_complete</code>. This column indicates whether the
+instrument has been marked off as completed.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">super_hero_powers</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">rmarkdown</span><span class="fu">::</span><span class="fu"><a href="https://pkgs.rstudio.com/rmarkdown/reference/paged_table.html" class="external-link">paged_table</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
@@ -205,8 +217,9 @@ same data multiple times: <strong>repeating instruments</strong> and
 observational unit that a single row represents) depends on the
 structure of the project (classic, longitudinal with one arm,
 longitudinal with multiple arms) as well as the structure of the
-instrument (repeating or nonrepeating). REDCapTidieR adds appropriate
-identifying columns according to the following table:</p>
+instrument (repeating or nonrepeating). REDCapTidieR generates
+<strong>identifier columns</strong> according to the following
+table:</p>
 <table style="width:98%;" class="table">
 <colgroup>
 <col width="17%">
@@ -246,16 +259,16 @@ identifying columns according to the following table:</p>
 </tbody>
 </table>
 <blockquote>
-<p>Note: Taken in combination, the identifying columns of any
+<p>Note: Taken in combination, the identifier columns of any
 REDCapTidieR tibble are guaranteed to be unique and not <code>NA</code>
 and can therefore be used as <strong>composite primary key</strong>.
 This makes it easy to join REDCapTidieR tibbles to each other!</p>
 </blockquote>
 <p>Let’s look at a REDCap database you might use to capture data for a
 clinical trial. This is a longitudinal database that assesses some data
-once, such as demographics, and other data, such as a physical exam or
-chemistry laboratory values, at multiple pre-defined study visits. We
-are using <code><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">dplyr::select</a></code> here to highlight instrument names
+(e.g. demographics) just once at enrollment, and other data
+(e.g. physical exam or labs) multiple times at pre-defined study visits.
+We use <code><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">dplyr::select()</a></code> here to highlight instrument names
 and whether or not each instrument is repeating. This database has six
 nonrepeating and three repeating instruments.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
@@ -277,7 +290,8 @@ nonrepeating and three repeating instruments.</p>
 granularity is one row per study subject per event, but since it is only
 designated for a single event, it is really one row per study subject.
 The <code>redcap_event</code> column identifies the name of the event
-with which the instrument is associated.</p>
+with which the instrument is associated: <code>screening__enrollm</code>
+(Screening and Enrollment).</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">longitudinal</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="../reference/bind_tables.html">bind_tables</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -291,10 +305,12 @@ with which the instrument is associated.</p>
 </div>
 <p>The <code>chemistry</code> instrument is nonrepeating as well.
 However, it is designated for multiple events because chemistry labs are
-drawn at multiple study visits. The granularity is one row per study
-subject per event. You can see that each of the three subjects has
-multiple rows. Each row is identified by the combination of
-<code>subject_id</code> and <code>redcap_event</code>.</p>
+drawn at multiple study visits. The <code>redcap_event</code> column
+shows that we have <code>chemistry</code> data from four different
+events. The granularity is one row per study subject per event. Each of
+the three subjects has multiple rows. Each row is identified by the
+combination of <code>subject_id</code> and
+<code>redcap_event</code>.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">chemistry</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">rmarkdown</span><span class="fu">::</span><span class="fu"><a href="https://pkgs.rstudio.com/rmarkdown/reference/paged_table.html" class="external-link">paged_table</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
@@ -310,9 +326,9 @@ to designate this instrument to a single special event
 <code>adverse_event</code>, which is what we’ve done here. The
 granularity of this table is one row per study subject per repeat
 instance per event. However since it is only designated for a single
-event, it is really one row per study subject per repeat instance. You
-can see that the first subject has three adverse events listed, and the
-second subject has two.</p>
+event, it is really one row per study subject per repeat instance. The
+first subject has three adverse events listed, and the second subject
+has two.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">adverse_events</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">rmarkdown</span><span class="fu">::</span><span class="fu"><a href="https://pkgs.rstudio.com/rmarkdown/reference/paged_table.html" class="external-link">paged_table</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
@@ -321,9 +337,12 @@ second subject has two.</p>
 {"columns":[{"label":["subject_id"],"name":[1],"type":["chr"],"align":["left"]},{"label":["redcap_repeat_instance"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["redcap_event"],"name":[3],"type":["chr"],"align":["left"]},{"label":["adverse_event_meddra_soc"],"name":[4],"type":["fct"],"align":["left"]},{"label":["adverse_event_meddra_ae_code"],"name":[5],"type":["fct"],"align":["left"]},{"label":["adverse_event_meddra_ae_code_specify"],"name":[6],"type":["lgl"],"align":["right"]},{"label":["adverse_event_details"],"name":[7],"type":["chr"],"align":["left"]},{"label":["adverse_event_onset"],"name":[8],"type":["fct"],"align":["left"]},{"label":["adverse_event_serious"],"name":[9],"type":["lgl"],"align":["right"]},{"label":["adverse_event_serious_why"],"name":[10],"type":["fct"],"align":["left"]},{"label":["adverse_event_grade"],"name":[11],"type":["fct"],"align":["left"]},{"label":["adverse_event_start_date_known"],"name":[12],"type":["lgl"],"align":["right"]},{"label":["adverse_event_start_date"],"name":[13],"type":["date"],"align":["right"]},{"label":["adverse_event_stop_date_known"],"name":[14],"type":["lgl"],"align":["right"]},{"label":["adverse_event_stop_date"],"name":[15],"type":["date"],"align":["right"]},{"label":["adverse_event_stop_date_specify"],"name":[16],"type":["fct"],"align":["left"]},{"label":["adverse_event_relationship_product"],"name":[17],"type":["fct"],"align":["left"]},{"label":["adverse_event_relationship_other___apheresis"],"name":[18],"type":["lgl"],"align":["right"]},{"label":["adverse_event_relationship_other___ld_chemo"],"name":[19],"type":["lgl"],"align":["right"]},{"label":["adverse_event_relationship_other___soc_treatment"],"name":[20],"type":["lgl"],"align":["right"]},{"label":["adverse_event_relationship_other___underlying_disease"],"name":[21],"type":["lgl"],"align":["right"]},{"label":["adverse_event_relationship_other___other_research_proc"],"name":[22],"type":["lgl"],"align":["right"]},{"label":["adverse_event_relationship_other___con_meds"],"name":[23],"type":["lgl"],"align":["right"]},{"label":["adverse_event_relationship_other___other"],"name":[24],"type":["lgl"],"align":["right"]},{"label":["adverse_event_relationship_other___none"],"name":[25],"type":["lgl"],"align":["right"]},{"label":["adverse_event_relationship_other_specify"],"name":[26],"type":["chr"],"align":["left"]},{"label":["adverse_event_expected"],"name":[27],"type":["lgl"],"align":["right"]},{"label":["adverse_event_study_treatment_action"],"name":[28],"type":["fct"],"align":["left"]},{"label":["adverse_event_participant_status"],"name":[29],"type":["fct"],"align":["left"]},{"label":["adverse_event_ae_action"],"name":[30],"type":["lgl"],"align":["right"]},{"label":["adverse_event_ae_action_taken"],"name":[31],"type":["fct"],"align":["left"]},{"label":["adverse_event_ae_action_taken_specify"],"name":[32],"type":["lgl"],"align":["right"]},{"label":["adverse_event_multiple_grades"],"name":[33],"type":["lgl"],"align":["right"]},{"label":["adverse_event_cadsr_dose_limiting_tox"],"name":[34],"type":["lgl"],"align":["right"]},{"label":["adverse_event_comments"],"name":[35],"type":["lgl"],"align":["right"]},{"label":["form_status_complete"],"name":[36],"type":["fct"],"align":["left"]}],"data":[{"1":"001-123-001","2":"1","3":"adverse_event","4":"Endocrine Disorder","5":"Eyelid function disorder","6":"NA","7":"intermittent","8":"Before LD Chemo","9":"FALSE","10":"NA","11":"Grade 2","12":"TRUE","13":"2022-11-02","14":"TRUE","15":"2022-11-04","16":"NA","17":"Unrelated","18":"FALSE","19":"FALSE","20":"FALSE","21":"TRUE","22":"FALSE","23":"TRUE","24":"FALSE","25":"FALSE","26":"NA","27":"TRUE","28":"No Action Taken","29":"Recovered or Resolved","30":"TRUE","31":"Non-drug Therapies","32":"NA","33":"FALSE","34":"FALSE","35":"NA","36":"Complete"},{"1":"001-123-001","2":"2","3":"adverse_event","4":"Gastrointestinal Disorder","5":"Diarrhea","6":"NA","7":"intermittent","8":"Before LD Chemo","9":"FALSE","10":"NA","11":"Grade 1","12":"TRUE","13":"2022-11-05","14":"TRUE","15":"2022-11-17","16":"NA","17":"Unrelated","18":"FALSE","19":"FALSE","20":"FALSE","21":"FALSE","22":"FALSE","23":"FALSE","24":"FALSE","25":"TRUE","26":"NA","27":"FALSE","28":"No Action Taken","29":"Recovered or Resolved","30":"TRUE","31":"Medication","32":"NA","33":"FALSE","34":"FALSE","35":"NA","36":"Complete"},{"1":"001-123-001","2":"3","3":"adverse_event","4":"Skin Disorder","5":"Rash maculo-papular","6":"NA","7":"left cheek","8":"Before LD Chemo","9":"FALSE","10":"NA","11":"Grade 1","12":"TRUE","13":"2022-11-08","14":"FALSE","15":"<NA>","16":"Event/Occurrence is Ongoing","17":"Unrelated","18":"FALSE","19":"FALSE","20":"FALSE","21":"FALSE","22":"FALSE","23":"TRUE","24":"FALSE","25":"FALSE","26":"NA","27":"FALSE","28":"No Action Taken","29":"Recovered or Resolved","30":"FALSE","31":"NA","32":"NA","33":"FALSE","34":"FALSE","35":"NA","36":"Complete"},{"1":"001-123-002","2":"1","3":"adverse_event","4":"Infection and infestation","5":"Flu like symptoms","6":"NA","7":"NA","8":"Before LD Chemo","9":"FALSE","10":"NA","11":"Grade 2","12":"TRUE","13":"2022-11-08","14":"TRUE","15":"2022-11-10","16":"NA","17":"Unrelated","18":"FALSE","19":"FALSE","20":"FALSE","21":"FALSE","22":"FALSE","23":"FALSE","24":"FALSE","25":"TRUE","26":"NA","27":"FALSE","28":"No Action Taken","29":"Recovered or Resolved","30":"FALSE","31":"NA","32":"NA","33":"FALSE","34":"FALSE","35":"NA","36":"Incomplete"},{"1":"001-123-002","2":"2","3":"adverse_event","4":"Eye Disorder","5":"Dry eye","6":"NA","7":"intermittent","8":"Before LD Chemo","9":"FALSE","10":"NA","11":"Grade 1","12":"TRUE","13":"2022-11-07","14":"FALSE","15":"<NA>","16":"Event/Occurrence is Ongoing","17":"Unrelated","18":"FALSE","19":"FALSE","20":"FALSE","21":"FALSE","22":"FALSE","23":"TRUE","24":"TRUE","25":"FALSE","26":"weather","27":"FALSE","28":"No Action Taken","29":"Not Recovered or Not Resolved","30":"TRUE","31":"Medication","32":"NA","33":"FALSE","34":"FALSE","35":"NA","36":"Complete"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
-<p>Note that it is possible to have a repeating instrument designated to
-multiple events, however this is an uncommon pattern. REDCapTidieR
-supports this scenario as well.</p>
+<p>It is possible to have a repeating instrument designated to multiple
+events, however this is an uncommon pattern. REDCapTidieR supports this
+scenario as well.</p>
+<p>REDCapTidieR does <em>not</em> allow you to have the same instrument
+designated both as a repeating and as a nonrepeating instrument in
+different events. It will throw an error if it detects this.</p>
 <p>At this time, REDCapTidieR does not support repeating events. Please
 submit a <a href="https://github.com/CHOP-CGTInformatics/REDCapTidieR/issues" class="external-link">feature
 request</a> if this is something you’re interested in!</p>
@@ -335,30 +354,45 @@ with.</p>
 <div class="section level2">
 <h2 id="categorical-variables">Categorical variables<a class="anchor" aria-label="anchor" href="#categorical-variables"></a>
 </h2>
-<p>REDCapTidieR performs a number of opinionated transformations to
+<p>REDCapTidieR performs a number of opinionated transformations on
 categorical fields to streamline exploring and working with them.</p>
 <p>Fields that are of type <code>yesno</code> or <code>truefalse</code>
-fields are converted to logical variables.</p>
+are converted to <strong>logical</strong> variables.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">adverse_events</span><span class="op">$</span><span class="va">adverse_event_serious</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;  logi [1:5] FALSE FALSE FALSE FALSE FALSE</span></span></code></pre></div>
 <p>Fields of single-answer categorical type (<code>dropdown</code>,
-<code>radio</code>) are converted to factor variables. The levels of the
-factor and their order are determined by the choices defined in REDCap.
-This makes it possible to discover all of the different options for a
-specific field even if not all of those options are represented in the
-data. For example, even though we only have 5 adverse events in this
-database, we can see that there are 837 different choices for adverse
-events.</p>
+<code>radio</code>) are converted to <strong>factor</strong> variables
+by default. To understand how REDCapTidieR constructs this factor,
+consider the Field Editor for the <code>adverse_event_grade</code>
+variable which is a single-answer <code>radio</code> field. There are
+five choices for this field. Choices have <strong>raw values</strong>
+and <strong>choice labels</strong>, separated by a comma. Here, the raw
+values are <code>1</code>, <code>2</code>, <code>3</code>,
+<code>4</code>, and <code>5</code>, and their associated choice labels
+are <code>Grade 1</code>, <code>Grade 2</code>, <code>Grade 3</code>,
+<code>Grade 4</code>, and <code>Grade 5</code>. We find that choice
+labels are generally more useful and intuitive to work with than raw
+values. For this reason, REDCapTidieR derives the labels of the factor
+from the choice label. The order of the factor levels is the same as the
+order of choices in REDCap.</p>
+<center>
+<p><img src="field-editor-ae-grade.png"></p>
+</center>
+<p>The fact that all makes it possible to discover all of the different
+options for a specific field even if not all of those options are
+represented in the data. For example, even though we only Grade 1 and 2
+adverse events in the database, we can see that there are 5 grades.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">adverse_events</span><span class="op">$</span><span class="va">adverse_event_meddra_ae_code</span></span>
-<span><span class="co">#&gt; [1] Eyelid function disorder Diarrhea                 Rash maculo-papular     </span></span>
-<span><span class="co">#&gt; [4] Flu like symptoms        Dry eye                 </span></span>
-<span><span class="co">#&gt; 837 Levels: Anemia ... Vasculitis</span></span></code></pre></div>
-<p>In addition, since the order of choices is preserved, it is possible
-to convert instrinsically ordinal variables to ordinal factors. For
-example, there is an intrinsic order in adverse event grades.</p>
+<code class="sourceCode R"><span><span class="va">adverse_events</span><span class="op">$</span><span class="va">adverse_event_grade</span></span>
+<span><span class="co">#&gt; [1] Grade 2 Grade 1 Grade 1 Grade 2 Grade 1</span></span>
+<span><span class="co">#&gt; Levels: Grade 1 Grade 2 Grade 3 Grade 4 Grade 5</span></span></code></pre></div>
+<p>Adverse event grades are intrinsically ordered. When a multiple
+choice field has intrinsically ordered choices, those choices are
+usually presented in the proper order. Since REDCapTidieR preserves the
+order of choices from REDCap, you can convert intrinsically ordered
+variables to ordinal factors.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ae_grade</span> <span class="op">&lt;-</span> <span class="va">adverse_events</span><span class="op">$</span><span class="va">adverse_event_grade</span></span>
 <span></span>
@@ -367,17 +401,25 @@ example, there is an intrinsic order in adverse event grades.</p>
 <span><span class="co">#&gt; [1] Grade 2 Grade 1 Grade 1 Grade 2 Grade 1</span></span>
 <span><span class="co">#&gt; Levels: Grade 1 &lt; Grade 2 &lt; Grade 3 &lt; Grade 4 &lt; Grade 5</span></span></code></pre></div>
 <p>Fields of the multi-answer <code>checkbox</code> type are expanded so
-that each option is represented as one logical variable. The name of
-each of those variables is constructed from the name of the field,
-followed by three underscores, followed by the name of the choice
-defined in REDCap (i.e. the part before the comma in the
-<strong>Choices</strong> field of the field editor). For example, the
-<code>adverse_event_relationship_other</code> field in REDCap has eight
-choices, <code>apheresis</code>, <code>ld_chemo</code>,
+that <strong>each option</strong> is represented as <strong>one logical
+variable</strong>. Consider the
+<code>adverse_event_relationship_other</code> field. This field has
+eight choices, and their raw values (i.e. the part before the comma) are
+<code>apheresis</code>, <code>ld_chemo</code>,
 <code>soc_treatment</code>, <code>underlying_disease</code>,
 <code>other_research_proc</code>, <code>con_meds</code>, and
-<code>other</code>. REDCapTidieR generates the following logical
-variables from this field:</p>
+<code>other</code>.</p>
+<center>
+<p><img src="field-editor-contributing-factors.png"></p>
+</center>
+<p>We recommend that for multi-answer <code>checkbox</code> fields you
+make the raw value a human readable word as we do in the above example,
+and not serial number which is the default value REDCap will provide.
+REDCapTidieR will construct the name of each variable from the name of
+the field, followed by three underscores, followed by the raw value of
+the choice defined in REDCap. Here are the variables REDCapTidieR
+generates from the <code>adverse_event_relationship_other</code>
+field:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">adverse_events</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">starts_with</a></span><span class="op">(</span><span class="st">"adverse_event_relationship_other___"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -433,7 +475,7 @@ we get <code>survey_timestamp</code> and
 <p>In summary, here are the rules by which REDCapTidieR constructs data
 tibbles:</p>
 <ol style="list-style-type: decimal">
-<li>There is one data tibble per REDCap instrument.</li>
+<li>One data tibble is built for each REDCap instrument.</li>
 <li>The first column is always the record’s ID column. By default,
 REDCap names the record ID field <code>record_id</code>, but this can be
 changed. REDCapTidieR is smart enough to handle this. For example, if
