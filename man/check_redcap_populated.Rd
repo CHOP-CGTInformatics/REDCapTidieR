@@ -15,7 +15,7 @@ A helpful error message alerting the user to check their API privileges.
 }
 \description{
 Check for potential outputs where metadata is present, but \code{nrow} and
-\code{ncol} equal `0`. This causes \code{multi_choice_to_labels} to fail, but
+\code{ncol} equal \code{0}. This causes \code{multi_choice_to_labels} to fail, but
 a helpful error message should be provided.
 }
 \keyword{internal}

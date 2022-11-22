@@ -12,11 +12,13 @@ of a supertibble}
 }
 \value{
 A list containing:
-- \code{data_rows}, the number of rows in the data
-- \code{data_cols}, the number of columns in the data
-- \code{data_size}, the size of the data in bytes
-- \code{data_na_pct}, the percentage of cells that are NA excluding
+\itemize{
+\item \code{data_rows}, the number of rows in the data
+\item \code{data_cols}, the number of columns in the data
+\item \code{data_size}, the size of the data in bytes
+\item \code{data_na_pct}, the percentage of cells that are NA excluding
 identifiers and form completion fields
+}
 }
 \description{
 Utility function to calculate summary for each tibble in a supertibble
