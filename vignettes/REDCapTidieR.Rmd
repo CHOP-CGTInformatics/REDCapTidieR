@@ -34,13 +34,13 @@ if (rlang::is_interactive()) {
 
 [REDCap](https://www.project-redcap.org/) is a powerful database solution used by many institutions around the world. The [REDCapR](https://ouhscbbmc.github.io/REDCapR/) package streamlines calls to the REDCap API. One of its main uses is to import records from a REDCap project. This works well for simple projects, however becomes ugly when complex databases that include longitudinal structure and/or repeated instruments are involved.
 
-The REDCapTidieR package aims to make the life of analysts who deal with complex REDCap databases easier. It builds upon **REDCapR** to make its output **tidier**. Instead of one large data frame that contains all data from all instruments, the analyst gets to work with a set of tidy tibbles, one for each REDCap instrument.
+The REDCapTidieR package aims to make the life of analysts who deal with complex REDCap databases easier. It builds upon **REDCapR** to make its output **tidier**. Instead of one large data frame that contains all the data from your project, you get to work with a set of tidy tibbles, one for each REDCap instrument.
 
 ## Case Study: The Superhero Database
 
 Let's look at a REDCap database that has information about some 734 superheroes, derived from the [Superhero Database](https://www.superherodb.com/).
 
-Here is a screenshot of the REDCap Status Dashboard of this database. Note that there are two instruments, **Heroes Information** which captures data about each individual superhero, and **Super Hero Powers** which captures each one of the superpowers that a specific superhero possesses.
+Here is a screenshot of the REDCap Status Dashboard of this database. It has two instruments, **Heroes Information** which captures "demographic" data about each individual superhero such as their name, gender, and alignment (good or evil), and **Super Hero Powers** which captures each one of the superpowers that a specific superhero possesses.
 
 <center>
 
@@ -50,23 +50,23 @@ Here is a screenshot of the REDCap Status Dashboard of this database. Note that 
 
 ## Importing data from REDCap
 
-The `read_redcap_tidy` function is the workhorse of REDCapTidieR. It requires a REDCap database URI and a REDCap API token. *Note that you need to have API access to the REDCap database to use REDCapTidieR. You cannot use REDCapTidieR with files exported from REDCap.*
+The `read_redcap_tidy()` function is the workhorse of REDCapTidieR. It requires a REDCap database URI and a REDCap API token. *You need to have API access to the REDCap database to use REDCapTidieR. REDCapTidieR does not work with files exported from REDCap.* We use it here to import data from the Superheroes database into a tibble named `superheroes`. We use `rmarkdown::paged_table()` to allow you to explore this tibble.
 
 ```{r}
 library(REDCapTidieR)
 superheroes <- read_redcap_tidy(redcap_uri, token)
 
 superheroes |>
-  dplyr::glimpse()
+  rmarkdown::paged_table()
 ```
 
-This returns a tibble with two rows. You might expect more rows from a database with 734 superheroes. `read_redcap_tidy` returns data in a special object, the **supertibble**, which contains a set of tidy tibbles, one for each REDCap instrument's data.
+This returns a tibble with two rows. You might expect more rows from a database with 734 superheroes. `read_redcap_tidy()` returns data in a special object that we call the **supertibble**. The supertibble contains, among other things, a set of tidy tibbles with the data and metadata from the REDCap project, broken down by instrument. We call these the **data tibble** and **metadata tibble**.
 
-Each row of the supertibble corresponds to one REDCap instrument. The `redcap_form_name` and `redcap_form_label` columns identify that instrument. The `redcap_data` column contains a tidy tibble with its data. Similarly, the `redcap_metadata` column contains a tidy tibble with the REDCap metadata from that instrument. Additional columns contain useful information about the `redcap_data` tibble, such as the number of rows and columns, the size in memory, and the percentage of missing values.
+Each row of the supertibble corresponds to one REDCap instrument. The `redcap_form_name` and `redcap_form_label` columns identify that instrument. The `redcap_data` column contains the data tibbles. The `redcap_metadata` column contains the metadata tibbles. Additional columns contain useful information about the data tibble, such as the number of rows and columns, the size in memory, and the percentage of missing values.
 
 ## Exploring the contents of the supertibble
 
-The supertibble is designed to be explored using the RStudio Data Viewer. Clicking on the table icon in the Environment tab opens a view of the supertibble. At a glance you see an overview of the instruments in the REDCap project.
+The supertibble is designed to be explored using the [RStudio Data Viewer](https://support.posit.co/hc/en-us/articles/205175388-Using-the-Data-Viewer-in-the-RStudio-IDE). You can click on the table icon in the Environment tab to view of the supertibble in the data viewer. At a glance you see an overview of the instruments in the REDCap project.
 
 <center>
 
@@ -74,35 +74,37 @@ The supertibble is designed to be explored using the RStudio Data Viewer. Clicki
 
 </center>
 
-You can drill down into the individual data tables in the `redcap_data` and `redcap_metadata` columns. Note that in the `heroes_information` each row represents a superhero, identified by their `record_id`.
+You can drill down into individual tables in the `redcap_data` and `redcap_metadata` columns. Note that in the `heroes_information` data tibble, each row represents a superhero, identified by their `record_id`.
 
 <center>
 
-![Data Viewer showing the `heroes_information` tibble](viewer-heroes-information.gif){width=75%}
+![Data Viewer showing the `heroes_information` data tibble](viewer-heroes-information.gif){width=75%}
+
 </center>
 
-In the `super_hero_powers` data tibble, each row represents a superpower of a specific hero. Each row is identified by the combination of `record_id` and `redcap_repeat_instance`. This difference in granularity is because `super_hero_powers` is a **repeating** instrument whereas `heroes_information` is a **nonrepeating** instrument.
+In the `super_hero_powers` data tibble, each row represents a superpower of a specific hero. Each row is identified by the combination of `record_id` and `redcap_repeat_instance`. This difference in granularity is because in REDCap `super_hero_powers` is configured as a **repeating** instrument whereas `heroes_information` is configured as a **nonrepeating** instrument.
 
 <center>
 
-![Data Viewer showing the `super_hero_powers` tibble](viewer-super-hero-powers.gif){width=75%}
+![Data Viewer showing the `super_hero_powers` data tibble](viewer-super-hero-powers.gif){width=75%}
+
 </center>
 
-You can also explore the tibbles in the `redcap_metadata` column to find out about field labels, field types, and other field attributes.
+You can also explore the metadata tibbles in the `redcap_metadata` column to find out about field labels, field types, and other field attributes.
 
 <center>
 
-![Data Viewer showing a the metadata tibble of `heroes_information`](viewer-metadata.gif){width=100%}
+![Data Viewer showing the `heroes_information` metadata tibble](viewer-metadata.gif){width=75%}
 
 </center>
 
-## Extracting tibbles from the supertibble
+## Extracting data tibbles from the supertibble
 
-REDCapTidieR provides three different functions to extract tibbles with data from individual instruments from a supertibble.
+REDCapTidieR provides three different functions to extract data tibbles from a supertibble.
 
-### Binding tibbles into the environment
+### Binding data tibbles into the environment
 
-The `bind_tables` function takes a supertibble and binds individual instruments directly into the environment. Note how the `super_hero_powers` and `heroes_information` tibbles appear in the Environment pane.
+The `bind_tables()` function takes a supertibble and binds its data tibbles directly into the global environment. When you use `bind_tables()` while working interactively in the RStudio IDE, you will see data tibbles appear in the Environment pane.
 
 <center>
 
@@ -110,11 +112,11 @@ The `bind_tables` function takes a supertibble and binds individual instruments 
 
 </center>
 
-By default, `bind_tables` extracts all data tibbles from the supertibble. With the `tbls` argument you can specify a subset of tibbles that should be extracted. You can also supply your own environment object to which the tibbles will be added using the `environment` argument.
+By default, `bind_tables()` extracts all data tibbles from the supertibble. With the `tbls` argument you can specify a subset of data tibbles that should be extracted. With the `environment` argument you can supply your own environment object to which the tibbles will be bound.
 
-### Extracting a list of tibbles
+### Extracting a list of data tibbles
 
-The `extract_tables` function takes a supertibble and returns a list of tibbles. The default is to extract all tibbles.
+The `extract_tables()` function takes a supertibble and returns a named list of data tibbles. The default is to extract all data tibbles. We use `str` here to show the structure of the list returned by `extract_tables()`.
 
 ```{r}
 superheroes_list <- superheroes |>
@@ -124,7 +126,7 @@ superheroes_list |>
   str(max.level = 1)
 ```
 
-You can use tidyselect semantics to select specific tibbles.
+You can use [tidyselect selectors](https://tidyselect.r-lib.org/reference/language.html) to select specific data tibbles.
 
 ```{r}
 superheroes |>
@@ -132,18 +134,19 @@ superheroes |>
   str(max.level = 1)
 ```
 
-### Extracting a single tibble
+### Extracting a single data tibble
 
-The `extract_table()` takes a supertibble and returns a single tibble.
+The `extract_table()` takes a supertibble and returns a single data tibble.
 
 ```{r}
 superheroes |>
-  extract_table("heroes_information")
+  extract_table("heroes_information") |>
+  rmarkdown::paged_table()
 ```
 
 ## Adding variable labels with the labelled package
 
-`REDCapTidieR` integrates with the [labelled](http://larmarange.github.io/labelled/) package to allow you to attach labels to variables in the supertibble. Variable labels can make data exploration easier. An increasing number of R packages support labelled data, including [ggplot](https://ggplot2.tidyverse.org/) (via [ggeasy](https://jonocarroll.github.io/ggeasy/)) and [gtsummary](https://www.danieldsjoberg.com/gtsummary/). The RStudio Data Viewer shows variable labels below variable names.
+REDCapTidieR integrates with the [labelled](http://larmarange.github.io/labelled/) package to allow you to attach labels to variables in the supertibble. Variable labels can make data exploration easier. An increasing number of R packages support labelled data, including [ggplot](https://ggplot2.tidyverse.org/) (via [ggeasy](https://jonocarroll.github.io/ggeasy/)) and [gtsummary](https://www.danieldsjoberg.com/gtsummary/). The RStudio Data Viewer shows variable labels below variable names.
 
 <center>
 
@@ -151,9 +154,9 @@ superheroes |>
 
 </center>
 
-The `make_labelled()` function takes a supertibble and returns a supertibble with variable labels applied to the variables of the supertibble as well as to the variables of all the tibbles in `redcap_data` and `redcap_metadata`.
+The `make_labelled()` function takes a supertibble and returns a supertibble with variable labels applied to the variables of the supertibble as well as to the variables of all data and metadata tibbles in `redcap_data` and `redcap_metadata`.
 
-The `labelled::look_for` function can be used to explore the variable labels of a tibble.
+You can use the `labelled::look_for()` function to explore the variable labels of a tibble.
 
 ```{r}
 superheroes |>
@@ -163,7 +166,7 @@ superheroes |>
 labelled::look_for(heroes_information)
 ```
 
-Where did these labels come from? These labels are actually the REDCap field labels that prompt data entry in the REDCap instrument! REDCapTidieR places them into the `field_label` variable of the `redcap_metadata` tibble corresponding to the instrument.
+Where did these labels come from? These labels are actually the REDCap **field labels** that prompt data entry in the REDCap instrument! REDCapTidieR places them into the `field_label` variable of the instrument's metadata tibble. Below you can see that the field labels of the REDCap instrument for `heroes_information` are the same as the labels above.
 
 <center>
 
@@ -171,7 +174,7 @@ Where did these labels come from? These labels are actually the REDCap field lab
 
 </center>
 
-The label for `name` doesn't look quite right. Let's remove that trailing `:`. The `make_labelled` function has a `format_labels` argument that you can use to preprocess labels before applying them to the variables.
+The label for `name` doesn't look quite right. Let's remove that trailing `:`. The `make_labelled()` function has a `format_labels` argument that you can use to preprocess labels before applying them to the variables.
 
 ```{r}
 superheroes |>
@@ -181,15 +184,15 @@ superheroes |>
 labelled::look_for(heroes_information, "hero")
 ```
 
-Removing trailing `:` characters is a fairly common operation, so REDCapTidieR provides a helper function that can be passed to the `format_labels` argument:
+Removing trailing `:` characters is a fairly common operation, so REDCapTidieR provides a helper function that you can pass to the `format_labels` argument:
 
 ```{r}
 fmt_strip_trailing_colon("Hero name:")
 ```
 
-See the other available helpers with `` ?`format-helpers` ``.
+To find out about other helpers included with REDCapTidieR, see `` ?`format-helpers` ``.
 
-The `format_labels` argument will also accept a multiple functions in a vector or list. Any function that takes a character vector and returns a modified character vector can be used. `make_labelled` will process the variable labels using these functions in the order they are supplied. In the following example, we remove the trailing colon and make the labels lower case.
+The `format_labels` argument will also accept a multiple functions in a vector or list. You can use any function that takes a character vector and returns a modified character vector. `make_labelled()` will process the variable labels using these functions in the order they are supplied. In the following example, we remove the trailing colon with `fmt_strip_trailing_colon()` and then make the labels lower case with `base::tolower()`.
 
 ```{r}
 superheroes |>
