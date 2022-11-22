@@ -12,7 +12,7 @@ extract_table(.data, tbl)
 \item{tbl}{The \code{form_name} to extract. Required.}
 }
 \value{
-A \code{tibble}
+A \code{tibble}.
 }
 \description{
 Take a supertibble generated with \code{read_redcap_tidy()}

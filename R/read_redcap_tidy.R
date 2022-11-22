@@ -7,11 +7,11 @@
 #' and metadata organized into tidy tibbles, broken down by instrument.
 #'
 #' @details
-#' This function uses the \link[=https://ouhscbbmc.github.io/REDCapR/index.html]{REDCapR}
+#' This function uses the \href{https://ouhscbbmc.github.io/REDCapR/index.html}{REDCapR}
 #' package to call the REDCap API. The REDCap API returns a
-#' \link[https://en.wikipedia.org/wiki/Block_matrix]{block matrix} that mashes
+#' \href{https://en.wikipedia.org/wiki/Block_matrix}{block matrix} that mashes
 #' data from all data collection instruments
-#' together. The `read_redcap_tidy` function intelligently
+#' together. The \code{read_redcap_tidy} function intelligently
 #' deconvolutes the block matrix and splices the data into individual tibbles,
 #' where one tibble represents the data from one instrument.
 #'
