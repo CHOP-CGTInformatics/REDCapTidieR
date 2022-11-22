@@ -4,7 +4,7 @@ pkgdown_sha: ~
 articles:
   REDCapTidieR: REDCapTidieR.html
   diving_deeper: diving_deeper.html
-last_built: 2022-11-22T18:59Z
+last_built: 2022-11-22T19:14Z
 urls:
   reference: https://chop-cgtdataops.github.io/REDCapTidieR/reference
   article: https://chop-cgtdataops.github.io/REDCapTidieR/articles

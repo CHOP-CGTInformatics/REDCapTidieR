@@ -114,7 +114,7 @@ large data frame in the browser.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">superheroes_ugly</span> <span class="op">&lt;-</span> <span class="fu">REDCapR</span><span class="fu">::</span><span class="fu"><a href="https://ouhscbbmc.github.io/REDCapR/reference/redcap_read_oneshot.html" class="external-link">redcap_read_oneshot</a></span><span class="op">(</span><span class="va">redcap_uri</span>, <span class="va">superheroes_token</span><span class="op">)</span><span class="op">$</span><span class="va">data</span></span>
 <span></span>
-<span><span class="va">superheroes_ugly</span> <span class="op">|&gt;</span> </span>
+<span><span class="va">superheroes_ugly</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">rmarkdown</span><span class="fu">::</span><span class="fu"><a href="https://pkgs.rstudio.com/rmarkdown/reference/paged_table.html" class="external-link">paged_table</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
@@ -179,7 +179,7 @@ been marked as completed.</p>
 <span><span class="fu"><a href="../reference/read_redcap_tidy.html">read_redcap_tidy</a></span><span class="op">(</span><span class="va">redcap_uri</span>, <span class="va">superheroes_token</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/bind_tables.html">bind_tables</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">heroes_information</span> <span class="op">|&gt;</span> </span>
+<span><span class="va">heroes_information</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">rmarkdown</span><span class="fu">::</span><span class="fu"><a href="https://pkgs.rstudio.com/rmarkdown/reference/paged_table.html" class="external-link">paged_table</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
@@ -199,7 +199,7 @@ supertibble, identifier columns always come first, followed by
 <code>form_status_complete</code>. This column indicates whether the
 instrument has been marked off as completed.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">super_hero_powers</span> <span class="op">|&gt;</span> </span>
+<code class="sourceCode R"><span><span class="va">super_hero_powers</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">rmarkdown</span><span class="fu">::</span><span class="fu"><a href="https://pkgs.rstudio.com/rmarkdown/reference/paged_table.html" class="external-link">paged_table</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
@@ -278,8 +278,8 @@ nonrepeating and three repeating instruments.</p>
 <span></span>
 <span><span class="va">longitudinal</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_redcap_tidy.html">read_redcap_tidy</a></span><span class="op">(</span><span class="va">redcap_uri</span>, <span class="va">longitudinal_token</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">longitudinal</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">redcap_form_name</span>, <span class="va">redcap_form_label</span>, <span class="va">structure</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span><span class="va">longitudinal</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">redcap_form_name</span>, <span class="va">redcap_form_label</span>, <span class="va">structure</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">rmarkdown</span><span class="fu">::</span><span class="fu"><a href="https://pkgs.rstudio.com/rmarkdown/reference/paged_table.html" class="external-link">paged_table</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
@@ -293,10 +293,10 @@ The <code>redcap_event</code> column identifies the name of the event
 with which the instrument is associated: <code>screening__enrollm</code>
 (Screening and Enrollment).</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">longitudinal</span> <span class="op">|&gt;</span> </span>
+<code class="sourceCode R"><span><span class="va">longitudinal</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/bind_tables.html">bind_tables</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">demographics</span> <span class="op">|&gt;</span> </span>
+<span><span class="va">demographics</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">rmarkdown</span><span class="fu">::</span><span class="fu"><a href="https://pkgs.rstudio.com/rmarkdown/reference/paged_table.html" class="external-link">paged_table</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
@@ -312,7 +312,7 @@ the three subjects has multiple rows. Each row is identified by the
 combination of <code>subject_id</code> and
 <code>redcap_event</code>.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">chemistry</span> <span class="op">|&gt;</span> </span>
+<code class="sourceCode R"><span><span class="va">chemistry</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">rmarkdown</span><span class="fu">::</span><span class="fu"><a href="https://pkgs.rstudio.com/rmarkdown/reference/paged_table.html" class="external-link">paged_table</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
@@ -330,7 +330,7 @@ event, it is really one row per study subject per repeat instance. The
 first subject has three adverse events listed, and the second subject
 has two.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">adverse_events</span> <span class="op">|&gt;</span> </span>
+<code class="sourceCode R"><span><span class="va">adverse_events</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">rmarkdown</span><span class="fu">::</span><span class="fu"><a href="https://pkgs.rstudio.com/rmarkdown/reference/paged_table.html" class="external-link">paged_table</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
@@ -396,7 +396,7 @@ variables to ordinal factors.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ae_grade</span> <span class="op">&lt;-</span> <span class="va">adverse_events</span><span class="op">$</span><span class="va">adverse_event_grade</span></span>
 <span></span>
-<span><span class="va">ae_grade</span> <span class="op">|&gt;</span> </span>
+<span><span class="va">ae_grade</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span>ordered <span class="op">=</span> <span class="cn">TRUE</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/levels.html" class="external-link">levels</a></span><span class="op">(</span><span class="va">ae_grade</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] Grade 2 Grade 1 Grade 1 Grade 2 Grade 1</span></span>
 <span><span class="co">#&gt; Levels: Grade 1 &lt; Grade 2 &lt; Grade 3 &lt; Grade 4 &lt; Grade 5</span></span></code></pre></div>
