@@ -10,8 +10,10 @@ urlchecker::url_check(); urlchecker::url_update()
 
 devtools::document()
 devtools::check_man() #Should return NULL
-devtools::clean_vignettes()
-devtools::build_vignettes()
+# Dont use clean_vignettes, does not work with Mock APIs from httptest
+# Therefore set clean = F
+# devtools::clean_vignettes()
+devtools::build_vignettes(clean = F)
 
 checks_to_exclude <- c(
   "covr",
