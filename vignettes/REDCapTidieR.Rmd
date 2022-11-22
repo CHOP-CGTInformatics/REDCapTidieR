@@ -40,7 +40,7 @@ The REDCapTidieR package aims to make the life of analysts who deal with complex
 
 Let's look at a REDCap database that has information about some 734 superheroes, derived from the [Superhero Database](https://www.superherodb.com/).
 
-Here is a screenshot of the REDCap Status Dashboard of this database. It has two instruments, **Heroes Information** which captures "demographic" data about each individual superhero such as their name, gender, and alignment (good or evil), and **Super Hero Powers** which captures each one of the superpowers that a specific superhero possesses.
+Here is a screenshot of the REDCap Record Status Dashboard of this database. It has two instruments, **Heroes Information** which captures "demographic" data about each individual superhero such as their name, gender, and alignment (good or evil), and **Super Hero Powers** which captures each one of the superpowers that a specific superhero possesses.
 
 <center>
 

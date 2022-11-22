@@ -2,7 +2,7 @@
 title: "Diving Deeper: Understanding REDCapTidieR Data Tibbles"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Diving Deeper: Understanding the REDCapTidieR Supertibble}
+  %\VignetteIndexEntry{Diving Deeper: Understanding REDCapTidieR Data Tibbles}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -110,7 +110,7 @@ The **granularity** of each table (i.e. the observational unit that a single row
 
 > Note: Taken in combination, the identifier columns of any REDCapTidieR tibble are guaranteed to be unique and not `NA` and can therefore be used as **composite primary key**. This makes it easy to join REDCapTidieR tibbles to each other!
 
-Let's look at a REDCap database you might use to capture data for a clinical trial. This is a longitudinal database that assesses some data, such as demographics, just once at enrollment, and other data, such as a physical exam or chemistry laboratory values, multiple times at pre-defined study visits. We use `dplyr::select()` here to highlight instrument names and whether or not each instrument is repeating. This database has six nonrepeating and three repeating instruments.
+Let's look at a REDCap database you might use to capture data for a clinical trial. This is a longitudinal database that assesses some data (e.g. demographics) just once at enrollment, and other data (e.g. physical exam or labs) multiple times at pre-defined study visits. We use `dplyr::select()` here to highlight instrument names and whether or not each instrument is repeating. This database has six nonrepeating and three repeating instruments.
 
 ``` r
 longitudinal_token <- "123456789ABCDEF123456789ABCDEF06"
@@ -126,7 +126,7 @@ longitudinal |>
   rmarkdown::paged_table()
 ```
 
-The `demographics` instrument is nonrepeating. The granularity is one row per study subject per event, but since it is only designated for a single event, it is really one row per study subject. The `redcap_event` column identifies the name of the event with which the instrument is associated, `screening__enrollm` (Screening and Enrollment).
+The `demographics` instrument is nonrepeating. The granularity is one row per study subject per event, but since it is only designated for a single event, it is really one row per study subject. The `redcap_event` column identifies the name of the event with which the instrument is associated: `screening__enrollm` (Screening and Enrollment).
 
 ```{r}
 longitudinal |> 
@@ -183,7 +183,7 @@ The fact that all makes it possible to discover all of the different options for
 adverse_events$adverse_event_grade
 ```
 
-Adverse event grades are intrinsically ordered. When a multiple choice field has intrinsically ordered choices, those choices are usually presented in the proper order. Since REDCapTidieR preserves the order of choices from REDCap, you can convert intrinsically ordered variables to ordined factors.
+Adverse event grades are intrinsically ordered. When a multiple choice field has intrinsically ordered choices, those choices are usually presented in the proper order. Since REDCapTidieR preserves the order of choices from REDCap, you can convert intrinsically ordered variables to ordinal factors.
 
 ```{r}
 ae_grade <- adverse_events$adverse_event_grade
