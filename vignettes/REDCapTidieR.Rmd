@@ -18,20 +18,20 @@ knitr::opts_chunk$set(
 
 ```{r, include=FALSE}
 library(httptest)
-# Make sure REDCapTidieR is attached so start_vignette() 
-# can find start-vignette.R
-library(REDCapTidieR)
 
-if (rlang::is_interactive()) {
+if (dir.exists("REDCapTidieR")) {
+  # Make sure these match inst/misc/fake_credentials.csv
+  redcap_uri <- "https://my.institution.edu/redcap/api/"
+  token <- "123456789ABCDEF123456789ABCDEF04"
+} else {
   redcap_uri <- Sys.getenv("REDCAP_URI")
   token <- Sys.getenv("SUPERHEROES_REDCAP_API")
-} else {
-  start_vignette("REDCapTidieR")
-  # creds object is created in start-vignette.R which gets sourced when 
-  # start_vignette runs
-  redcap_uri <- creds["REDCAP_URI"]
-  token <- creds["SUPERHEROES_REDCAP_API"]
 }
+
+# Make sure REDCapTidieR is attached so start_vignette() can find start-vignette.R
+library(REDCapTidieR)
+
+start_vignette("REDCapTidieR")
 ```
 
 [REDCap](https://www.project-redcap.org/) is a powerful database solution used by many institutions around the world. The [REDCapR](https://ouhscbbmc.github.io/REDCapR/) package streamlines calls to the REDCap API. One of its main uses is to import records from a REDCap project. This works well for simple projects, however becomes ugly when complex databases that include longitudinal structure and/or repeated instruments are involved.

@@ -14,22 +14,25 @@ knitr::opts_chunk$set(
 )
 
 library(httptest)
-# Make sure REDCapTidieR is attached so start_vignette() can find start-vignette.R
-library(REDCapTidieR)
 
-if (rlang::is_interactive()) {
+if (dir.exists("diving_deeper")) {
+  # Make sure these match inst/misc/fake_credentials.csv
+  redcap_uri <- "https://my.institution.edu/redcap/api/"
+  superheroes_token <- "123456789ABCDEF123456789ABCDEF04"
+  longitudinal_token <- "123456789ABCDEF123456789ABCDEF06"
+  survey_token <- "123456789ABCDEF123456789ABCDEF01"
+} else {
   redcap_uri <- Sys.getenv("REDCAP_URI")
   superheroes_token <- Sys.getenv("SUPERHEROES_REDCAP_API")
   longitudinal_token <- Sys.getenv("REDCAPTIDIER_DEEP_DIVE_VIGNETTE_API")
   survey_token <- Sys.getenv("REDCAPTIDIER_CLASSIC_API")
-} else {
-  start_vignette("diving_deeper")
-  # creds object is created in start-vignette.R which gets sourced when start_vignette runs
-  redcap_uri <- creds["REDCAP_URI"]
-  superheroes_token <- creds["SUPERHEROES_REDCAP_API"]
-  longitudinal_token <- creds["REDCAPTIDIER_DEEP_DIVE_VIGNETTE_API"]
-  survey_token <- creds["REDCAPTIDIER_CLASSIC_API"]
 }
+
+# Make sure REDCapTidieR is attached so start_vignette() can find start-vignette.R
+library(REDCapTidieR)
+
+start_vignette("diving_deeper")
+
 ```
 
 ## The Block Matrix
