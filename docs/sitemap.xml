@@ -16,10 +16,10 @@
     <loc>https://chop-cgtdataops.github.io/REDCapTidieR/articles/REDCapTidieR.html</loc>
   </url>
   <url>
-    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/articles/index.html</loc>
+    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/articles/diving_deeper.html</loc>
   </url>
   <url>
-    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/articles/longitudinal_redcap.html</loc>
+    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/articles/index.html</loc>
   </url>
   <url>
     <loc>https://chop-cgtdataops.github.io/REDCapTidieR/authors.html</loc>
@@ -67,9 +67,6 @@
     <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/check_user_rights.html</loc>
   </url>
   <url>
-    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/checkbox_appender.html</loc>
-  </url>
-  <url>
     <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/clean_redcap.html</loc>
   </url>
   <url>
@@ -98,9 +95,6 @@
   </url>
   <url>
     <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/get_fields_to_drop.html</loc>
-  </url>
-  <url>
-    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/get_project_id_field.html</loc>
   </url>
   <url>
     <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/get_record_id_field.html</loc>

@@ -21,13 +21,18 @@
 #' * \code{redcap_form_name}, the name of the instrument
 #' * \code{redcap_form_label}, the label for the instrument
 #' * \code{redcap_data}, a \code{tibble} with the data for the instrument
-#' * \code{redcap_metadata}, a \code{tibble} of data dictionary entries for each field in the instrument
-#' * \code{redcap_events}, a \code{tibble} with information about the arms and longitudinal events represented in the instrument. Only if the project has longitudinal events enabled
+#' * \code{redcap_metadata}, a \code{tibble} of data dictionary entries for each
+#' field in the instrument
+#' * \code{redcap_events}, a \code{tibble} with information about the arms and
+#' longitudinal events represented in the instrument. Only if the project has
+#' longitudinal events enabled
 #' * \code{structure}, either "repeating" or "nonrepeating"
 #' * \code{data_rows}, the number of rows in the instrument's data tibble
 #' * \code{data_cols}, the number of columns in the instrument's data tibble
-#' * \code{data_size}, the size in memory of the instrument's data tibble computed by \code{lobstr::obj_size}
-#' * \code{data_na_pct}, the percentage of cells in the instrument's data that are \code{NA} excluding identifier and form completion fields
+#' * \code{data_size}, the size in memory of the instrument's data tibble
+#' computed by \code{lobstr::obj_size}
+#' * \code{data_na_pct}, the percentage of cells in the instrument's data that
+#' are \code{NA} excluding identifier and form completion fields
 #'
 #' @importFrom REDCapR redcap_read_oneshot redcap_metadata_read
 #' @importFrom dplyr filter bind_rows %>% select slice
@@ -167,7 +172,7 @@ read_redcap_tidy <- function(redcap_uri,
     if ("redcap_repeat_instrument" %in% colnames(db_data)) {
       db_data <- db_data %>%
         filter(.data$redcap_repeat_instrument %in% forms |
-          is.na(.data$redcap_repeat_instrument))
+                 is.na(.data$redcap_repeat_instrument))
 
       # Drop repeating fields if there are no remaining repeating instruments
       if (all(is.na(db_data$redcap_repeat_instrument))) {
@@ -236,7 +241,8 @@ read_redcap_tidy <- function(redcap_uri,
 #' results of \code{REDCapR::redcap_read_oneshot} because the user didn't
 #' request the form containing identifiers
 #'
-#' @param db_metadata metadata tibble created by \code{REDCapR::redcap_metadata_read}
+#' @param db_metadata metadata tibble created by
+#' \code{REDCapR::redcap_metadata_read}
 #' @param form the name of the form containing identifiers
 #'
 #' @return
@@ -287,8 +293,8 @@ get_fields_to_drop <- function(db_metadata, form) {
 #' list column
 #'
 #' @importFrom REDCapR redcap_instruments
-#' @importFrom dplyr left_join rename %>% select rename relocate mutate bind_rows
-#' filter
+#' @importFrom dplyr left_join rename %>% select rename relocate mutate
+#' bind_rows filter
 #' @importFrom tidyr nest unnest_wider complete fill
 #' @importFrom tidyselect everything
 #' @importFrom rlang .data
@@ -376,7 +382,9 @@ add_metadata <- function(supertbl, db_metadata, redcap_uri, token) {
 add_event_mapping <- function(supertbl, linked_arms) {
   event_info <- linked_arms %>%
     add_partial_keys(.data$unique_event_name) %>%
-    select(redcap_form_name = "form", "redcap_event", "redcap_arm", "arm_name") %>%
+    select(
+      redcap_form_name = "form", "redcap_event", "redcap_arm", "arm_name"
+    ) %>%
     nest(redcap_events = !"redcap_form_name")
 
   left_join(supertbl, event_info, by = "redcap_form_name") %>%

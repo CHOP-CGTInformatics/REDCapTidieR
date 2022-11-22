@@ -70,13 +70,17 @@ saveRDS(db_data_long, "inst/testdata/db_data_long.RDS")
 saveRDS(db_metadata_long, "inst/testdata/db_metadata_long.RDS")
 
 # Longitudinal No Repeat DB ----
-db_data_long_norepeat <- redcap_read_oneshot(redcap_uri = redcap_uri,
-                                             token = longitudinal_norepeat_token,
-                                             verbose = FALSE)$data
+db_data_long_norepeat <- redcap_read_oneshot(
+  redcap_uri = redcap_uri,
+  token = longitudinal_norepeat_token,
+  verbose = FALSE
+)$data
 
-db_metadata_long_norepeat <- redcap_metadata_read(redcap_uri = redcap_uri,
-                                                  token = longitudinal_norepeat_token,
-                                                  verbose = FALSE)$data
+db_metadata_long_norepeat <- redcap_metadata_read(
+  redcap_uri = redcap_uri,
+  token = longitudinal_norepeat_token,
+  verbose = FALSE
+)$data
 
 # Apply checkbox appending functions to metadata
 db_metadata_long_norepeat <- update_field_names(db_metadata_long_norepeat)

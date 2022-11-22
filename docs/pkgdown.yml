@@ -3,8 +3,8 @@ pkgdown: 2.0.6
 pkgdown_sha: ~
 articles:
   REDCapTidieR: REDCapTidieR.html
-  longitudinal_redcap: longitudinal_redcap.html
-last_built: 2022-11-17T04:34Z
+  diving_deeper: diving_deeper.html
+last_built: 2022-11-22T16:48Z
 urls:
   reference: https://chop-cgtdataops.github.io/REDCapTidieR/reference
   article: https://chop-cgtdataops.github.io/REDCapTidieR/articles

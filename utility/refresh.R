@@ -39,13 +39,13 @@ devtools::run_examples(); #dev.off() #This overwrites the NAMESPACE file too
 # devtools::run_examples(, "redcap_read.Rd")
 # pkgload::load_all()
 test_results_checked <- devtools::test()
-test_results_checked <- devtools::test(filter = "read-batch-simple")
-test_results_checked <- devtools::test(filter = "^metadata-coltypes")
-withr::local_envvar(ONLYREADTESTS = "true")
-test_results_checked <- devtools::test(filter = "write-batch")
+# test_results_checked <- devtools::test(filter = "read-batch-simple")
+# test_results_checked <- devtools::test(filter = "^metadata-coltypes")
+# withr::local_envvar(ONLYREADTESTS = "true")
+# test_results_checked <- devtools::test(filter = "write-batch")
 
 # testthat::test_dir("./tests/")
-test_results_not_checked <- testthat::test_dir("./tests/manual/")
+# test_results_not_checked <- testthat::test_dir("./tests/manual/")
 
 # devtools::check(force_suggests = FALSE)
 devtools::check(cran=TRUE)

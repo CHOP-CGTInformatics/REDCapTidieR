@@ -114,7 +114,8 @@ clean_redcap_long <- function(
 #' REDCap metadata.
 #' @param db_data_long The REDCap database output defined by
 #' \code{REDCapR::redcap_read_oneshot()$data}
-#' @param db_metadata_long The REDCap metadata output defined by \code{REDCapR::redcap_metadata_read()$data}
+#' @param db_metadata_long The REDCap metadata output defined by
+#' \code{REDCapR::redcap_metadata_read()$data}
 #' @param linked_arms Output of \code{link_arms}, linking forms to REDCap
 #' events/arms
 #'

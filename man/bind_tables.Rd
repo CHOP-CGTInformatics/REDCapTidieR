@@ -2,7 +2,8 @@
 % Please edit documentation in R/bind_tables.R
 \name{bind_tables}
 \alias{bind_tables}
-\title{Extract tibbles from a REDCapTidieR supertibble and bind them to an environment}
+\title{Extract tibbles from a REDCapTidieR supertibble and bind them to an
+environment}
 \usage{
 bind_tables(.data, environment = global_env(), tbls = NULL, structure = NULL)
 }
@@ -16,8 +17,8 @@ bind_tables(.data, environment = global_env(), tbls = NULL, structure = NULL)
 Default is \code{NULL} which binds all tables.}
 
 \item{structure}{A one-element character vector to control whether to extract
-only \code{repeating} or \code{nonrepeating} instruments. Default is \code{NULL}
-which extracts both types of instruments.}
+only \code{repeating} or \code{nonrepeating} instruments. Default is
+\code{NULL} which extracts both types of instruments.}
 }
 \value{
 This function returns nothing as it's used solely for its side effect of
@@ -25,7 +26,8 @@ modifying an environment.
 }
 \description{
 Take a supertibble generated with \code{read_redcap_tidy()}
-and bind its data tibbles to an environment. The default is the global environment.
+and bind its data tibbles to an environment. The default is the global
+environment.
 }
 \examples{
 # Designate a sample environment

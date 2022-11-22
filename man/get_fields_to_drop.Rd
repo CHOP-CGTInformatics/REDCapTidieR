@@ -8,7 +8,8 @@ that should be dropped from results of \code{read_redcap_tidy}}
 get_fields_to_drop(db_metadata, form)
 }
 \arguments{
-\item{db_metadata}{metadata tibble created by \code{REDCapR::redcap_metadata_read}}
+\item{db_metadata}{metadata tibble created by
+\code{REDCapR::redcap_metadata_read}}
 
 \item{form}{the name of the form containing identifiers}
 }

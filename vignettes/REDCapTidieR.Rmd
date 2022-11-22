@@ -18,7 +18,8 @@ knitr::opts_chunk$set(
 
 ```{r, include=FALSE}
 library(httptest)
-# Make sure REDCapTidieR is attached so start_vignette() can find start-vignette.R
+# Make sure REDCapTidieR is attached so start_vignette() 
+# can find start-vignette.R
 library(REDCapTidieR)
 
 if (rlang::is_interactive()) {
@@ -26,7 +27,8 @@ if (rlang::is_interactive()) {
   token <- Sys.getenv("SUPERHEROES_REDCAP_API")
 } else {
   start_vignette("REDCapTidieR")
-  # creds object is created in start-vignette.R which gets sourced when start_vignette runs
+  # creds object is created in start-vignette.R which gets sourced when 
+  # start_vignette runs
   redcap_uri <- creds["REDCAP_URI"]
   token <- creds["SUPERHEROES_REDCAP_API"]
 }
@@ -197,7 +199,7 @@ superheroes |>
     format_labels = c(
       fmt_strip_trailing_colon, 
       base::tolower)
-    ) |>
+  ) |>
   bind_tables()
 
 labelled::look_for(heroes_information)

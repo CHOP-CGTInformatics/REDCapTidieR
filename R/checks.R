@@ -95,12 +95,12 @@ check_repeat_and_nonrepeat <- function(db_data) {
 
 
   # Step (3)
-  repeat_nonrepeat_error <- function(check_data, names){
+  repeat_nonrepeat_error <- function(check_data, names) {
 
     rep <- gsub(pattern = "_repeatingcheck", replacement = "", x = names)
 
-    if ("repeating" %in% check_data &
-        "nonrepeating" %in% check_data){
+    if ("repeating" %in% check_data &&
+        "nonrepeating" %in% check_data) {
       cli_abort(c("x" = "Instrument detected that has both repeated and
       nonrepeated instances defined in the project: {rep}"),
                 class = c("repeat_nonrepeat_instrument", "REDCapTidieR_cond"))
@@ -138,7 +138,9 @@ check_redcap_populated <- function(
 ) {
   if (ncol(db_data) == 0) {
     cli_abort(
-      "The REDCap API did not return any data. This can happen when there are no data entered or when the access isn't configured to allow data download through the API.",
+      "The REDCap API did not return any data. This can happen when there are no
+      data entered or when the access isn't configured to allow data download
+      through the API.",
       class = c("redcap_unpopulated", "REDCapTidieR_cond")
     )
   }
@@ -168,7 +170,8 @@ check_forms_exist <- function(db_metadata, forms) {
 
   if (length(missing_forms) > 0) {
     cli_abort(
-      c("x" = "Form{?s} {missing_forms} {?does/do} not exist in REDCap project"),
+      c("x" = "Form{?s} {missing_forms} {?does/do} not exist in REDCap
+        project"),
       class = c("form_does_not_exist", "REDCapTidieR_cond")
     )
   }
@@ -242,7 +245,7 @@ check_req_labelled_metadata_fields <- function(supertbl) {
       msg_data$form <- supertbl$redcap_form_name
     } else {
       msg_data$form <- paste0(
-        "supertbl$redcap_metadata[[", 1:length(missing_fields), "]]"
+        "supertbl$redcap_metadata[[", seq_along(missing_fields), "]]"
       )
     }
 
@@ -252,8 +255,8 @@ check_req_labelled_metadata_fields <- function(supertbl) {
 
     # Create vector of messages and apply 'x' label
     msg <- paste0(
-      "{.code {msg_data$form[[", 1:nrow(msg_data), "]]}} ",
-      "is missing {.code {msg_data$missing_fields[[", 1:nrow(msg_data), "]]}}"
+      "{.code {msg_data$form[[", seq_len(nrow(msg_data)), "]]}} ",
+      "is missing {.code {msg_data$missing_fields[[", seq_len(nrow(msg_data)), "]]}}"
     )
 
     names(msg) <- rep("x", length(msg))

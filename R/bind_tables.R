@@ -1,9 +1,11 @@
 #' @title
-#' Extract tibbles from a REDCapTidieR supertibble and bind them to an environment
+#' Extract tibbles from a REDCapTidieR supertibble and bind them to an
+#' environment
 #'
 #' @description
 #' Take a supertibble generated with \code{read_redcap_tidy()}
-#' and bind its data tibbles to an environment. The default is the global environment.
+#' and bind its data tibbles to an environment. The default is the global
+#' environment.
 #'
 #' @returns
 #' This function returns nothing as it's used solely for its side effect of
@@ -15,8 +17,8 @@
 #' @param tbls A vector of \code{form_name}s to bind to the environment.
 #' Default is \code{NULL} which binds all tables.
 #' @param structure A one-element character vector to control whether to extract
-#' only \code{repeating} or \code{nonrepeating} instruments. Default is \code{NULL}
-#' which extracts both types of instruments.
+#' only \code{repeating} or \code{nonrepeating} instruments. Default is
+#' \code{NULL} which extracts both types of instruments.
 #'
 #' @importFrom dplyr filter pull %>%
 #' @importFrom rlang env_poke current_env new_environment global_env .data

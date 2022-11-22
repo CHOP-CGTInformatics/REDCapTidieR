@@ -43,13 +43,18 @@ results contains the following fields:
 * \code{redcap_form_name}, the name of the instrument
 * \code{redcap_form_label}, the label for the instrument
 * \code{redcap_data}, a \code{tibble} with the data for the instrument
-* \code{redcap_metadata}, a \code{tibble} of data dictionary entries for each field in the instrument
-* \code{redcap_events}, a \code{tibble} with information about the arms and longitudinal events represented in the instrument. Only if the project has longitudinal events enabled
+* \code{redcap_metadata}, a \code{tibble} of data dictionary entries for each
+field in the instrument
+* \code{redcap_events}, a \code{tibble} with information about the arms and
+longitudinal events represented in the instrument. Only if the project has
+longitudinal events enabled
 * \code{structure}, either "repeating" or "nonrepeating"
 * \code{data_rows}, the number of rows in the instrument's data tibble
 * \code{data_cols}, the number of columns in the instrument's data tibble
-* \code{data_size}, the size in memory of the instrument's data tibble computed by \code{lobstr::obj_size}
-* \code{data_na_pct}, the percentage of cells in the instrument's data that are \code{NA} excluding identifier and form completion fields
+* \code{data_size}, the size in memory of the instrument's data tibble
+computed by \code{lobstr::obj_size}
+* \code{data_na_pct}, the percentage of cells in the instrument's data that
+are \code{NA} excluding identifier and form completion fields
 }
 \description{
 Call the REDCap API to retrieve data and metadata about a project,

@@ -100,7 +100,7 @@ link_arms <- function(
 parse_labels <- function(string, return_vector = FALSE) {
 
   # If string is empty/NA, throw a warning
-  if(is.na(string)){
+  if (is.na(string)) {
     cli_warn("Empty string detected for a given multiple choice label.",
              class = c("empty_parse_warning", "REDCapTidieR_cond"))
   }
@@ -137,7 +137,9 @@ parse_labels <- function(string, return_vector = FALSE) {
         "Cannot parse the select_choices_or_calculations field from
         REDCap metadata. This may happen if there is a pipe character
         `|` inside the label: {string}",
-        class = c("label_parse_error", "matrix_parse_error", "REDCapTidieR_cond")
+        class = c(
+          "label_parse_error", "matrix_parse_error", "REDCapTidieR_cond"
+        )
       )
     }
   }
@@ -146,7 +148,7 @@ parse_labels <- function(string, return_vector = FALSE) {
   out <- strip_html_field_embedding(out)
 
   if (return_vector) {
-    if(all(is.na(out))){
+    if(all(is.na(out))) {
       # handle no label case
       return(c(`NA` = NA_character_))
     }

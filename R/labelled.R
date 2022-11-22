@@ -6,8 +6,8 @@
 #' This function applies variable labels to the columns of:
 #' \itemize{
 #'   \item the supertibble itself
-#'   \item each element of \code{redcap_data} based on the `field_label` column in
-#'   \code{redcap_metadata}
+#'   \item each element of \code{redcap_data} based on the `field_label` column
+#'   in \code{redcap_metadata}
 #'   \item each element of \code{redcap_metadata}
 #'   \item each element of \code{redcap_events}
 #' }
@@ -17,9 +17,9 @@
 #' \itemize{
 #'   \item \code{NULL} to apply variable labels to elements of \code{redcap_data}
 #'   as they appear in \code{redcap_metadata}. Default.
-#'   \item A function that takes a character vector and returns a modified character vector
-#'   of the same length. This function is applied to field labels before attaching them
-#'   to variables.
+#'   \item A function that takes a character vector and returns a modified
+#'   character vector of the same length. This function is applied to field
+#'   labels before attaching them to variables.
 #'   \item A character with the name of a function to be used to format labels
 #'   \item A list of label formatting functions or function names to be applied
 #'   in order. Note that ordering may affect results.

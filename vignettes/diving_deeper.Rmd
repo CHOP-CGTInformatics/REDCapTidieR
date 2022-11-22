@@ -48,7 +48,7 @@ redcap_uri <- "https://my.institution.edu/redcap/api/"
 ```{r, include = TRUE, message = FALSE}
 superheroes_ugly <- REDCapR::redcap_read_oneshot(redcap_uri, superheroes_token)$data
 
-superheroes_ugly |> 
+superheroes_ugly |>
   rmarkdown::paged_table()
 ```
 
@@ -76,14 +76,14 @@ library(REDCapTidieR)
 read_redcap_tidy(redcap_uri, superheroes_token) |>
   bind_tables()
 
-heroes_information |> 
+heroes_information |>
   rmarkdown::paged_table()
 ```
 
 Now consider the `super_hero_powers` table, which contains data from a **repeating** instrument. In addition to `record_id` there is a `redcap_repeat_instance` column. The observational unit, or granularity, of each row is one **superpower per superhero**, identified by its `record_id` and `redcap_repeat_instance`. After these two **identifier columns** follow data columns and `form_status_complete`.
 
 ```{r}
-super_hero_powers |> 
+super_hero_powers |>
   rmarkdown::paged_table()
 ```
 
@@ -119,32 +119,32 @@ library(REDCapTidieR)
 
 longitudinal <- read_redcap_tidy(redcap_uri, longitudinal_token)
 
-longitudinal |> 
-  dplyr::select(redcap_form_name, redcap_form_label, structure) |> 
+longitudinal |>
+  dplyr::select(redcap_form_name, redcap_form_label, structure) |>
   rmarkdown::paged_table()
 ```
 
 The `demographics` instrument is nonrepeating. The granularity is one row per study subject per event, but since it is only designated for a single event, it is really one row per study subject. The `redcap_event` column identifies the name of the event with which the instrument is associated.
 
 ```{r}
-longitudinal |> 
+longitudinal |>
   bind_tables()
 
-demographics |> 
+demographics |>
   rmarkdown::paged_table()
 ```
 
 The `chemistry` instrument is nonrepeating as well. However, it is designated for multiple events because chemistry labs are drawn at multiple study visits. The granularity is one row per study subject per event. You can see that each of the three subjects has multiple rows. Each row is identified by the combination of `subject_id` and `redcap_event`.
 
 ```{r}
-chemistry |> 
+chemistry |>
   rmarkdown::paged_table()
 ```
 
 The `adverse_events` is **repeating**. Since adverse events aren't tied to specific study visits, and a patient can have any number of different adverse events at any time, it makes sense to designate this instrument to a single special event `adverse_event`, which is what we've done here. The granularity of this table is one row per study subject per repeat instance per event. However since it is only designated for a single event, it is really one row per study subject per repeat instance. You can see that the first subject has three adverse events listed, and the second subject has two.
 
 ```{r}
-adverse_events |> 
+adverse_events |>
   rmarkdown::paged_table()
 ```
 
@@ -176,7 +176,7 @@ In addition, since the order of choices is preserved, it is possible to convert 
 ```{r}
 ae_grade <- adverse_events$adverse_event_grade
 
-ae_grade |> 
+ae_grade |>
   factor(ordered = TRUE, levels = levels(ae_grade))
 ```
 
