@@ -85,3 +85,4 @@ The development was funded using the following sources:
 
 - *CHOP-based GMP cell manufacturing (MFG) for CAR T clinical trials*.
   Stephan Grupp, PI; Stephan Kadauke, co-PI, CHOP, 2020-2022
+
