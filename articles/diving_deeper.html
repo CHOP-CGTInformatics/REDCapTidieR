@@ -39,8 +39,9 @@
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
+<li class="dropdown-header">Getting Started</li>
 <li>
-  <a href="../articles/REDCapTidieR.html">Get started</a>
+  <a href="../articles/glossary.html">Glossary</a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -54,6 +55,9 @@
   <ul class="dropdown-menu" role="menu">
 <li>
       <a href="../articles/diving_deeper.html">Diving Deeper: Understanding REDCapTidieR Data Tibbles</a>
+    </li>
+    <li>
+      <a href="../articles/glossary.html">Glossary of REDCap and REDCapTidieR Terms</a>
     </li>
   </ul>
 </li>
@@ -382,8 +386,9 @@ order of choices in REDCap.</p>
 </center>
 <p>The fact that all makes it possible to discover all of the different
 options for a specific field even if not all of those options are
-represented in the data. For example, even though we only Grade 1 and 2
-adverse events in the database, we can see that there are 5 grades.</p>
+represented in the data. For example, even though we have only Grade 1
+and 2 adverse events in the database, we can see that there are 5
+possible grades.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">adverse_events</span><span class="op">$</span><span class="va">adverse_event_grade</span></span>
 <span><span class="co">#&gt; [1] Grade 2 Grade 1 Grade 1 Grade 2 Grade 1</span></span>
@@ -392,7 +397,7 @@ adverse events in the database, we can see that there are 5 grades.</p>
 choice field has intrinsically ordered choices, those choices are
 usually presented in the proper order. Since REDCapTidieR preserves the
 order of choices from REDCap, you can convert intrinsically ordered
-variables to ordinal factors.</p>
+variables to ordered factors.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ae_grade</span> <span class="op">&lt;-</span> <span class="va">adverse_events</span><span class="op">$</span><span class="va">adverse_event_grade</span></span>
 <span></span>
@@ -401,7 +406,7 @@ variables to ordinal factors.</p>
 <span><span class="co">#&gt; [1] Grade 2 Grade 1 Grade 1 Grade 2 Grade 1</span></span>
 <span><span class="co">#&gt; Levels: Grade 1 &lt; Grade 2 &lt; Grade 3 &lt; Grade 4 &lt; Grade 5</span></span></code></pre></div>
 <p>Fields of the multi-answer <code>checkbox</code> type are expanded so
-that <strong>each option</strong> is represented as <strong>one logical
+that <strong>each choice</strong> is represented as <strong>one logical
 variable</strong>. Consider the
 <code>adverse_event_relationship_other</code> field. This field has
 eight choices, and their raw values (i.e. the part before the comma) are
@@ -414,7 +419,7 @@ eight choices, and their raw values (i.e. the part before the comma) are
 </center>
 <p>We recommend that for multi-answer <code>checkbox</code> fields you
 make the raw value a human readable word as we do in the above example,
-and not serial number which is the default value REDCap will provide.
+and not serial number which is with REDCap will provide by default.
 REDCapTidieR will construct the name of each variable from the name of
 the field, followed by three underscores, followed by the raw value of
 the choice defined in REDCap. Here are the variables REDCapTidieR
@@ -475,22 +480,23 @@ we get <code>survey_timestamp</code> and
 <p>In summary, here are the rules by which REDCapTidieR constructs data
 tibbles:</p>
 <ol style="list-style-type: decimal">
-<li>One data tibble is built for each REDCap instrument.</li>
-<li>The first column is always the record’s ID column. By default,
-REDCap names the record ID field <code>record_id</code>, but this can be
-changed. REDCapTidieR is smart enough to handle this. For example, if
-the record ID field was renamed to <code>subject_id</code> then the
-first column of each tibble would be <code>subject_id</code>.</li>
+<li>One data tibble is built for each instrument.</li>
+<li>The first column is always the record ID column which is derived
+from the record ID field. By default, REDCap names the record ID field
+<code>record_id</code>, but this can be changed, and REDCapTidieR is
+smart enough to handle this. For example, if the record ID field was
+renamed to <code>subject_id</code> then the record ID column of each
+data tibble would be <code>subject_id</code>.</li>
 <li>Additional identifying columns may follow the record ID column,
-depending on the context and repeat type of the instrument (see the
-table above).</li>
+depending on the structure of the instrument and the structure of the
+project (see the table above).</li>
 <li>After the identifying columns, data columns appear in the same order
 as in the REDCap instrument. True/false type fields are converted to
-logical. Single-answer categorical fields are converted to factors.
-Multi-answer checkbox fields are expanded to a set of logical columns,
-one for each choice.</li>
+logical columns. Single-answer categorical fields are converted to
+factor columns. Multi-answer checkbox fields are expanded to a set of
+logical columns, one for each choice.</li>
 <li>If the instrument is used as a survey, the survey timestamp and
-identifier columns will appear next.</li>
+survey identifier columns will appear next.</li>
 <li>The final column is always <code>form_status_complete</code>.</li>
 </ol>
 </div>

@@ -40,8 +40,9 @@
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
+<li class="dropdown-header">Getting Started</li>
 <li>
-  <a href="../articles/REDCapTidieR.html">Get started</a>
+  <a href="../articles/glossary.html">Glossary</a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -55,6 +56,9 @@
   <ul class="dropdown-menu" role="menu">
 <li>
       <a href="../articles/diving_deeper.html">Diving Deeper: Understanding REDCapTidieR Data Tibbles</a>
+    </li>
+    <li>
+      <a href="../articles/glossary.html">Glossary of REDCap and REDCapTidieR Terms</a>
     </li>
   </ul>
 </li>
@@ -90,12 +94,14 @@
 
     
     
-<p><a href="https://www.project-redcap.org/" class="external-link">REDCap</a> is a powerful
-database solution used by many institutions around the world. The <a href="https://ouhscbbmc.github.io/REDCapR/" class="external-link">REDCapR</a> package
-streamlines calls to the REDCap API. One of its main uses is to import
-records from a REDCap project. This works well for simple projects,
-however becomes ugly when complex databases that include longitudinal
-structure and/or repeated instruments are involved.</p>
+<p><a href="https://www.project-redcap.org/" class="external-link">REDCap</a> is an electronic
+data capture software that is widely used in the academic research
+community. The <a href="https://ouhscbbmc.github.io/REDCapR/" class="external-link">REDCapR</a> package
+streamlines calls to the REDCap API from an R environment. One of
+REDCapR’s main uses is to import records from a REDCap project. This
+works well for simple projects, however becomes ugly when complex
+databases that include longitudinal structure and/or repeating
+instruments are involved.</p>
 <p>The REDCapTidieR package aims to make the life of analysts who deal
 with complex REDCap databases easier. It builds upon
 <strong>REDCapR</strong> to make its output <strong>tidier</strong>.
@@ -128,9 +134,9 @@ REDCapTidieR. It requires a REDCap database URI and a REDCap API token.
 <em>You need to have API access to the REDCap database to use
 REDCapTidieR. REDCapTidieR does not work with files exported from
 REDCap.</em> We use it here to import data from the Superheroes database
-into a tibble named <code>superheroes</code>. We use
-<code><a href="https://pkgs.rstudio.com/rmarkdown/reference/paged_table.html" class="external-link">rmarkdown::paged_table()</a></code> to allow you to explore this
-tibble.</p>
+into a <a href="https://tibble.tidyverse.org/" class="external-link">tibble</a> named
+<code>superheroes</code>. We use <code><a href="https://pkgs.rstudio.com/rmarkdown/reference/paged_table.html" class="external-link">rmarkdown::paged_table()</a></code>
+to allow you to explore this tibble.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/CHOP-CGTInformatics/REDCapTidieR" class="external-link">REDCapTidieR</a></span><span class="op">)</span></span>
 <span><span class="va">superheroes</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_redcap_tidy.html">read_redcap_tidy</a></span><span class="op">(</span><span class="va">redcap_uri</span>, <span class="va">token</span><span class="op">)</span></span>
@@ -145,10 +151,9 @@ tibble.</p>
 <p>This returns a tibble with two rows. You might expect more rows from
 a database with 734 superheroes. <code><a href="../reference/read_redcap_tidy.html">read_redcap_tidy()</a></code> returns
 data in a special object that we call the <strong>supertibble</strong>.
-The supertibble contains, among other things, a set of tidy tibbles with
-the data and metadata from the REDCap project, broken down by
-instrument. We call these the <strong>data tibble</strong> and
-<strong>metadata tibble</strong>.</p>
+The supertibble contains, among other things, tidy tibbles with the data
+and metadata derived from each instrument. We call these the
+<strong>data tibble</strong> and <strong>metadata tibble</strong>.</p>
 <p>Each row of the supertibble corresponds to one REDCap instrument. The
 <code>redcap_form_name</code> and <code>redcap_form_label</code> columns
 identify that instrument. The <code>redcap_data</code> column contains
@@ -280,8 +285,8 @@ RStudio Data Viewer shows variable labels below variable names.</p>
 <p>The <code><a href="../reference/make_labelled.html">make_labelled()</a></code> function takes a supertibble and
 returns a supertibble with variable labels applied to the variables of
 the supertibble as well as to the variables of all data and metadata
-tibbles in <code>redcap_data</code> and
-<code>redcap_metadata</code>.</p>
+tibbles in the <code>redcap_data</code> and <code>redcap_metadata</code>
+columns of the supertibble.</p>
 <p>You can use the <code><a href="http://larmarange.github.io/labelled/reference/look_for.html" class="external-link">labelled::look_for()</a></code> function to explore
 the variable labels of a tibble.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">

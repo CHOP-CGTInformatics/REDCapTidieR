@@ -22,8 +22,9 @@
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav"><li>
-  <a href="../articles/REDCapTidieR.html">Get started</a>
+      <ul class="nav navbar-nav"><li class="dropdown-header">Getting Started</li>
+<li>
+  <a href="../articles/glossary.html">Glossary</a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -36,6 +37,9 @@
   </a>
   <ul class="dropdown-menu" role="menu"><li>
       <a href="../articles/diving_deeper.html">Diving Deeper: Understanding REDCapTidieR Data Tibbles</a>
+    </li>
+    <li>
+      <a href="../articles/glossary.html">Glossary of REDCap and REDCapTidieR Terms</a>
     </li>
   </ul></li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
@@ -58,15 +62,15 @@
 
     <table class="ref-index"><colgroup><col class="alias"><col class="title"></colgroup><tbody><tr><th colspan="2">
           <h2 id="import-data">Import Data <a href="#import-data" class="anchor" aria-hidden="true"></a></h2>
-          <p class="section-desc"></p><p>Read a REDCap Database into a tidy supertibble.</p>
+          <p class="section-desc"></p><p>Import a REDCap Database into a tidy supertibble.</p>
         </th>
       </tr></tbody><tbody><tr><td>
           <p><code><a href="read_redcap_tidy.html">read_redcap_tidy()</a></code> </p>
         </td>
         <td><p>Extract a REDCap database into a tidy supertibble</p></td>
       </tr></tbody><tbody><tr><th colspan="2">
-          <h2 id="extract-individual-tables">Extract Individual Tables <a href="#extract-individual-tables" class="anchor" aria-hidden="true"></a></h2>
-          <p class="section-desc"></p><p>Use these convenience functions to extract individual tibbles from a supertibble.</p>
+          <h2 id="extract-data-tibbles">Extract Data Tibbles <a href="#extract-data-tibbles" class="anchor" aria-hidden="true"></a></h2>
+          <p class="section-desc"></p><p>Use these functions to extract individual data tibbles from a supertibble.</p>
         </th>
       </tr></tbody><tbody><tr><td>
           <p><code><a href="bind_tables.html">bind_tables()</a></code> </p>
@@ -80,20 +84,19 @@ environment</p></td>
       </tr><tr><td>
           <p><code><a href="extract_tables.html">extract_tables()</a></code> </p>
         </td>
-        <td><p>Extract one or more tibbles from a REDCapTidieR supertibble into a list</p></td>
+        <td><p>Extract tibbles from a REDCapTidieR supertibble into a list</p></td>
       </tr></tbody><tbody><tr><th colspan="2">
-          <h2 id="apply-labels">Apply Labels <a href="#apply-labels" class="anchor" aria-hidden="true"></a></h2>
-          <p class="section-desc"></p><p>Apply variable labels from REDCap metadata using <code>labelled</code>.</p>
+          <h2 id="apply-variable-labels">Apply Variable Labels <a href="#apply-variable-labels" class="anchor" aria-hidden="true"></a></h2>
+          <p class="section-desc"></p><p>Apply variable labels to a supertibble using <code>labelled</code>.</p>
         </th>
       </tr></tbody><tbody><tr><td>
           <p><code><a href="make_labelled.html">make_labelled()</a></code> </p>
         </td>
-        <td><p>Apply <code>labelled</code> labels to the elements of a REDCap supertibble based on
-project metadata</p></td>
+        <td><p>Apply variable labels to a REDCapTidieR supertibble</p></td>
       </tr><tr><td>
           <p><code><a href="format-helpers.html">fmt_strip_whitespace()</a></code> <code><a href="format-helpers.html">fmt_strip_trailing_colon()</a></code> <code><a href="format-helpers.html">fmt_strip_trailing_punct()</a></code> <code><a href="format-helpers.html">fmt_strip_html()</a></code> <code><a href="format-helpers.html">fmt_strip_field_embedding()</a></code> </p>
         </td>
-        <td><p>Format REDCap variable labels for display</p></td>
+        <td><p>Format REDCap variable labels</p></td>
       </tr></tbody></table></div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
