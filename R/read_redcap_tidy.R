@@ -16,7 +16,7 @@
 #' where one tibble represents the data from one instrument.
 #'
 #' @return
-#' Returns a `tibble` in which each row represents a REDCap instrument. It
+#' A `tibble` in which each row represents a REDCap instrument. It
 #' contains the following columns:
 #' * `redcap_form_name`, the name of the instrument
 #' * `redcap_form_label`, the label for the instrument
