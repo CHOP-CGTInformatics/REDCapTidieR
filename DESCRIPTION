@@ -19,6 +19,7 @@ Imports:
     cli,
     dplyr,
     lobstr,
+    lifecycle,
     purrr,
     REDCapR (>= 1.1.0),
     rlang,
