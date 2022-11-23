@@ -1,29 +1,26 @@
 #' @title
-#' Apply \code{labelled} labels to the elements of a REDCap supertibble based on
-#' project metadata
+#' Apply variable labels to a REDCapTidieR supertibble
 #'
 #' @description
-#' This function applies variable labels to the columns of:
-#' \itemize{
-#'   \item the supertibble itself
-#'   \item each element of \code{redcap_data} based on the `field_label` column
-#'   in \code{redcap_metadata}
-#'   \item each element of \code{redcap_metadata}
-#'   \item each element of \code{redcap_events}
-#' }
+#' Take a supertibble and use the `labelled` package to apply variable labels to
+#' the columns of the supertibble as well as to each tibble in the
+#' `redcap_data`, `redcap_metadata`, and `redcap_events` columns
+#' of that supertibble.
 #'
-#' @param supertbl a supertibble generated using \code{read_redcap_tidy()}
-#' @param format_labels One of:
-#' \itemize{
-#'   \item \code{NULL} to apply variable labels to elements of \code{redcap_data}
-#'   as they appear in \code{redcap_metadata}. Default.
-#'   \item A function that takes a character vector and returns a modified
-#'   character vector of the same length. This function is applied to field
-#'   labels before attaching them to variables.
-#'   \item A character with the name of a function to be used to format labels
-#'   \item A list of label formatting functions or function names to be applied
+#' @details
+#' The variable labels for the data tibbles are derived from the `field_label`
+#' column of the metadata tibble.
+#'
+#' @param supertbl a supertibble generated using `read_redcap_tidy()`
+#' @param format_labels one or multiple optional label formatting functions.
+#' A label formatting function is a function that takes a character vector and
+#' returns a modified character vector of the same length. This function is
+#' applied to field labels before attaching them to variables. One of:
+#' - `NULL` to apply no additional formatting. Default.
+#' - A label formatting function.
+#' - A character with the name of a label formatting function.
+#' - A vector or list of label formatting functions or function names to be applied
 #'   in order. Note that ordering may affect results.
-#' }
 #'
 #' @importFrom dplyr %>%
 #' @importFrom purrr map map2
@@ -165,26 +162,28 @@ make_labelled <- function(supertbl, format_labels = NULL) {
 }
 
 #' @title
-#' Format REDCap variable labels for display
+#' Format REDCap variable labels
 #'
 #' @description
-#' Use these functions with the \code{format_labels} argument of
-#' \code{make_labelled()} to define how variable labels are formatted before
-#' being applied to the data columns of \code{redcap_data}.
+#' Use these functions with the `format_labels` argument of
+#' `make_labelled()` to define how variable labels should be formatted before
+#' being applied to the data columns of `redcap_data`. These functions are
+#' helpful to create pretty variable labels from REDCap field labels.
 #'
-#' \code{fmt_strip_whitespace()} removes extra whitespace inside and at the ends
-#' of labels. It is a thin wrapper of \code{stringr::str_trim()} and
-#' \code{stringr::str_squish()}. \code{fmt_strip_trailing_colon()} and
-#' \code{fmt_strip_trailing_punct()} remove punctuation at the end of a label.
-#' \code{fmt_strip_html()} removes html tags. \code{fmt_strip_field_embedding()}
-#' removes text between curly braces (\code{\{\}}) which contains special
-#' "field embedding" logic in REDCap. Note that \code{read_redcap_tidy()}
+#' - `fmt_strip_whitespace()` removes extra white space inside and at the start
+#' and end of a string. It is a thin wrapper of `stringr::str_trim()` and
+#' `stringr::str_squish()`.
+#' - `fmt_strip_trailing_colon()` removes a colon character at the end of a string.
+#' - `fmt_strip_trailing_punct()` removes punctuation at the end of a string.
+#' - `fmt_strip_html()` removes html tags from a string.
+#' - `fmt_strip_field_embedding()` removes text between curly braces `{}` which
+#' REDCap uses for special "field embedding" logic. Note that `read_redcap_tidy()`
 #' removes html tags and field embedding logic from field labels in the metadata
 #' by default.
 #'
-#' @param x a vector of labels
+#' @param x a character vector
 #'
-#' @return a vector of formatted labels
+#' @return a modified character vector
 #'
 #' @examples
 #'

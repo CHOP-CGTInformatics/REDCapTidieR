@@ -7,7 +7,7 @@
 \alias{fmt_strip_trailing_punct}
 \alias{fmt_strip_html}
 \alias{fmt_strip_field_embedding}
-\title{Format REDCap variable labels for display}
+\title{Format REDCap variable labels}
 \usage{
 fmt_strip_whitespace(x)
 
@@ -20,25 +20,28 @@ fmt_strip_html(x)
 fmt_strip_field_embedding(x)
 }
 \arguments{
-\item{x}{a vector of labels}
+\item{x}{a character vector}
 }
 \value{
-a vector of formatted labels
+a modified character vector
 }
 \description{
 Use these functions with the \code{format_labels} argument of
-\code{make_labelled()} to define how variable labels are formatted before
-being applied to the data columns of \code{redcap_data}.
-
-\code{fmt_strip_whitespace()} removes extra whitespace inside and at the ends
-of labels. It is a thin wrapper of \code{stringr::str_trim()} and
-\code{stringr::str_squish()}. \code{fmt_strip_trailing_colon()} and
-\code{fmt_strip_trailing_punct()} remove punctuation at the end of a label.
-\code{fmt_strip_html()} removes html tags. \code{fmt_strip_field_embedding()}
-removes text between curly braces (\code{\{\}}) which contains special
-"field embedding" logic in REDCap. Note that \code{read_redcap_tidy()}
+\code{make_labelled()} to define how variable labels should be formatted before
+being applied to the data columns of \code{redcap_data}. These functions are
+helpful to create pretty variable labels from REDCap field labels.
+\itemize{
+\item \code{fmt_strip_whitespace()} removes extra white space inside and at the start
+and end of a string. It is a thin wrapper of \code{stringr::str_trim()} and
+\code{stringr::str_squish()}.
+\item \code{fmt_strip_trailing_colon()} removes a colon character at the end of a string.
+\item \code{fmt_strip_trailing_punct()} removes punctuation at the end of a string.
+\item \code{fmt_strip_html()} removes html tags from a string.
+\item \code{fmt_strip_field_embedding()} removes text between curly braces \code{{}} which
+REDCap uses for special "field embedding" logic. Note that \code{read_redcap_tidy()}
 removes html tags and field embedding logic from field labels in the metadata
 by default.
+}
 }
 \examples{
 

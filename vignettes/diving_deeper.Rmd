@@ -180,13 +180,13 @@ Fields of single-answer categorical type (`dropdown`, `radio`) are converted to 
 
 </center>
 
-The fact that all makes it possible to discover all of the different options for a specific field even if not all of those options are represented in the data. For example, even though we only Grade 1 and 2 adverse events in the database, we can see that there are 5 grades.
+The fact that all makes it possible to discover all of the different options for a specific field even if not all of those options are represented in the data. For example, even though we have only Grade 1 and 2 adverse events in the database, we can see that there are 5 possible grades.
 
 ```{r}
 adverse_events$adverse_event_grade
 ```
 
-Adverse event grades are intrinsically ordered. When a multiple choice field has intrinsically ordered choices, those choices are usually presented in the proper order. Since REDCapTidieR preserves the order of choices from REDCap, you can convert intrinsically ordered variables to ordinal factors.
+Adverse event grades are intrinsically ordered. When a multiple choice field has intrinsically ordered choices, those choices are usually presented in the proper order. Since REDCapTidieR preserves the order of choices from REDCap, you can convert intrinsically ordered variables to ordered factors.
 
 ```{r}
 ae_grade <- adverse_events$adverse_event_grade
@@ -195,7 +195,7 @@ ae_grade |>
   factor(ordered = TRUE, levels = levels(ae_grade))
 ```
 
-Fields of the multi-answer `checkbox` type are expanded so that **each option** is represented as **one logical variable**. Consider the `adverse_event_relationship_other` field. This field has eight choices, and their raw values (i.e. the part before the comma) are `apheresis`, `ld_chemo`, `soc_treatment`, `underlying_disease`, `other_research_proc`, `con_meds`, and `other`.
+Fields of the multi-answer `checkbox` type are expanded so that **each choice** is represented as **one logical variable**. Consider the `adverse_event_relationship_other` field. This field has eight choices, and their raw values (i.e. the part before the comma) are `apheresis`, `ld_chemo`, `soc_treatment`, `underlying_disease`, `other_research_proc`, `con_meds`, and `other`.
 
 <center>
 
@@ -203,7 +203,7 @@ Fields of the multi-answer `checkbox` type are expanded so that **each option** 
 
 </center>
 
-We recommend that for multi-answer `checkbox` fields you make the raw value a human readable word as we do in the above example, and not serial number which is the default value REDCap will provide. REDCapTidieR will construct the name of each variable from the name of the field, followed by three underscores, followed by the raw value of the choice defined in REDCap. Here are the variables REDCapTidieR generates from the `adverse_event_relationship_other` field:
+We recommend that for multi-answer `checkbox` fields you make the raw value a human readable word as we do in the above example, and not serial number which is with REDCap will provide by default. REDCapTidieR will construct the name of each variable from the name of the field, followed by three underscores, followed by the raw value of the choice defined in REDCap. Here are the variables REDCapTidieR generates from the `adverse_event_relationship_other` field:
 
 ```{r}
 adverse_events |>
@@ -233,11 +233,11 @@ survey |>
 
 In summary, here are the rules by which REDCapTidieR constructs data tibbles:
 
-1.  One data tibble is built for each REDCap instrument.
-2.  The first column is always the record's ID column. By default, REDCap names the record ID field `record_id`, but this can be changed. REDCapTidieR is smart enough to handle this. For example, if the record ID field was renamed to `subject_id` then the first column of each tibble would be `subject_id`.
-3.  Additional identifying columns may follow the record ID column, depending on the context and repeat type of the instrument (see the table above).
-4.  After the identifying columns, data columns appear in the same order as in the REDCap instrument. True/false type fields are converted to logical. Single-answer categorical fields are converted to factors. Multi-answer checkbox fields are expanded to a set of logical columns, one for each choice.
-5.  If the instrument is used as a survey, the survey timestamp and identifier columns will appear next.
+1.  One data tibble is built for each instrument.
+2.  The first column is always the record ID column which is derived from the record ID field. By default, REDCap names the record ID field `record_id`, but this can be changed, and REDCapTidieR is smart enough to handle this. For example, if the record ID field was renamed to `subject_id` then the record ID column of each data tibble would be `subject_id`.
+3.  Additional identifying columns may follow the record ID column, depending on the structure of the instrument and the structure of the project (see the table above).
+4.  After the identifying columns, data columns appear in the same order as in the REDCap instrument. True/false type fields are converted to logical columns. Single-answer categorical fields are converted to factor columns. Multi-answer checkbox fields are expanded to a set of logical columns, one for each choice.
+5.  If the instrument is used as a survey, the survey timestamp and survey identifier columns will appear next.
 6.  The final column is always `form_status_complete`.
 
 ```{r, include=FALSE}
