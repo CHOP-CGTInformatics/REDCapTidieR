@@ -2,7 +2,7 @@
 #' Extract a REDCap database into a tidy supertibble
 #'
 #' @description
-#' Query the REDCap API using to retrieve data and metadata about a project,
+#' Query the REDCap API to retrieve data and metadata about a project,
 #' and transform the output into a "supertibble" that contains data
 #' and metadata organized into tibbles, broken down by instrument.
 #'
