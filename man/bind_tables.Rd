@@ -13,7 +13,7 @@ bind_tables(.data, environment = global_env(), tbls = NULL, structure = NULL)
 \item{environment}{The environment to bind the tibbles to. Default is
 \code{rlang::global_env()}.}
 
-\item{tbls}{A vector of the \code{form_name}s of the data tibbles to bind to
+\item{tbls}{A vector of the \code{redcap_form_name}s of the data tibbles to bind to
 the environment. Default is \code{NULL} which binds all data tibbles.}
 
 \item{structure}{A one-element character vector to control whether to extract

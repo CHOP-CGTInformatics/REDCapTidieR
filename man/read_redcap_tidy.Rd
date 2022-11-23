@@ -38,7 +38,7 @@ the REDCap server.). Default is \code{TRUE}.}
 from REDCapR API calls. Default \code{TRUE}.}
 }
 \value{
-Returns a \code{tibble} in which each row represents a REDCap instrument. It
+A \code{tibble} in which each row represents a REDCap instrument. It
 contains the following columns:
 \itemize{
 \item \code{redcap_form_name}, the name of the instrument
@@ -54,7 +54,7 @@ contains the following columns:
 }
 }
 \description{
-Query the REDCap API using to retrieve data and metadata about a project,
+Query the REDCap API to retrieve data and metadata about a project,
 and transform the output into a "supertibble" that contains data
 and metadata organized into tibbles, broken down by instrument.
 }
