@@ -38,7 +38,7 @@ and end of a string. It is a thin wrapper of \code{stringr::str_trim()} and
 \item \code{fmt_strip_trailing_punct()} removes punctuation at the end of a string.
 \item \code{fmt_strip_html()} removes html tags from a string.
 \item \code{fmt_strip_field_embedding()} removes text between curly braces \code{{}} which
-REDCap uses for special "field embedding" logic. Note that \code{read_redcap_tidy()}
+REDCap uses for special "field embedding" logic. Note that \code{import_redcap()}
 removes html tags and field embedding logic from field labels in the metadata
 by default.
 }

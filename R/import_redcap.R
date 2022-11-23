@@ -1,5 +1,5 @@
 #' @title
-#' Extract a REDCap database into a tidy supertibble
+#' Import a REDCap database into a tidy supertibble
 #'
 #' @description
 #' Query the REDCap API to retrieve data and metadata about a project,
@@ -11,7 +11,7 @@
 #' package to query the REDCap API. The REDCap API returns a
 #' [block matrix](https://en.wikipedia.org/wiki/Block_matrix) that mashes
 #' data from all data collection instruments
-#' together. The `read_redcap_tidy()` function
+#' together. The `import_redcap()` function
 #' deconstructs the block matrix and splices the data into individual tibbles,
 #' where one tibble represents the data from one instrument.
 #'
@@ -42,14 +42,11 @@
 #' @param raw_or_label A string (either 'raw' or 'label') that specifies whether
 #' to export the raw coded values or the labels for the options of categorical
 #' fields. Default is 'label'.
-#' @param forms A character vector of form names that specifies the forms to
-#' export. Default is `NULL` which returns all forms in the project.
+#' @param forms A character vector of REDCap form names that specifies the forms to
+#' import. Default is `NULL` which returns all forms in the project.
 #' @param export_survey_fields A logical that specifies whether to export the
-#' survey identifier field (e.g., 'redcap_survey_identifier') or survey
-#' timestamp fields `[instrument_name]_timestamp`. The timestamp data
-#' reflect the survey's completion time (according to the time and timezone of
-#' the REDCap server.). Default is `TRUE`.
-#' @param suppress_messages A logical to control whether to suppress messages
+#' survey identifier and timestamp fields if available. Default is `TRUE`.
+#' @param suppress_redcapr_messages A logical to control whether to suppress messages
 #' from REDCapR API calls. Default `TRUE`.
 #'
 #' @examples
@@ -57,7 +54,7 @@
 #' redcap_uri <- Sys.getenv("REDCAP_URI")
 #' token <- Sys.getenv("REDCAP_TOKEN")
 #'
-#' read_redcap_tidy(
+#' import_redcap(
 #'    redcap_uri,
 #'    token,
 #'    raw_or_label = "label"
@@ -66,12 +63,12 @@
 #'
 #' @export
 
-read_redcap_tidy <- function(redcap_uri,
+import_redcap <- function(redcap_uri,
                              token,
                              raw_or_label = "label",
                              forms = NULL,
                              export_survey_fields = TRUE,
-                             suppress_messages = TRUE) {
+                             suppress_redcapr_messages = TRUE) {
 
   # Load REDCap Metadata ----
   db_metadata <- redcap_metadata_read(redcap_uri = redcap_uri,
@@ -229,7 +226,7 @@ read_redcap_tidy <- function(redcap_uri,
 
 #' @title
 #' Determine fields included in \code{REDCapR::redcap_read_oneshot} output
-#' that should be dropped from results of \code{read_redcap_tidy}
+#' that should be dropped from results of \code{import_redcap}
 #'
 #' @details
 #' This function applies rules to determine which fields are included in the
@@ -263,7 +260,7 @@ get_fields_to_drop <- function(db_metadata, form) {
   res <- setdiff(res, record_id_field)
 
   # Add form complete field which is not in metadata but should be removed from
-  # read_redcap_tidy output
+  # import_redcap output
 
   res <- c(res, paste0(form, "_complete"))
 
@@ -275,7 +272,7 @@ get_fields_to_drop <- function(db_metadata, form) {
 #'
 #' @param supertbl a supertibble object to supplement with metadata
 #' @param db_metadata a REDCap metadata tibble
-#' @inheritParams read_redcap_tidy
+#' @inheritParams import_redcap
 #'
 #' @details This function assumes that \code{db_metadata} has been processed to
 #' include a row for each option of each multiselection field, i.e. with

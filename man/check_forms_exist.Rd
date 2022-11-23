@@ -11,13 +11,13 @@ check_forms_exist(db_metadata, forms)
 \code{REDCapR::redcap_metadata_read()}}
 
 \item{forms}{The character vector of form names passed to
-\code{read_redcap_tidy()}}
+\code{import_redcap()}}
 }
 \value{
 An error message listing the requested forms that don't exist
 }
 \description{
 Provide an error message when any form names are passed to
-\code{read_redcap_tidy()} that do not exist in the project metadata.
+\code{import_redcap()} that do not exist in the project metadata.
 }
 \keyword{internal}

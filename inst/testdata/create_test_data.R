@@ -131,6 +131,6 @@ linked_arms_long_noarms <- link_arms(redcap_uri = redcap_uri,
 saveRDS(linked_arms_long_noarms, "inst/testdata/linked_arms_long_noarms.RDS")
 
 # REDCapTidieR Longitudinal Output ----
-read_redcap_tidy(redcap_uri = redcap_uri,
+import_redcap(redcap_uri = redcap_uri,
                  token = longitudinal_token) %>%
   saveRDS("inst/testdata/redcaptidier_longitudinal_db.RDS")

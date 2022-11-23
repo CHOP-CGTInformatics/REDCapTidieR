@@ -78,7 +78,7 @@ Let's take a look at the data tibbles derived from the Superhero database and co
 ```{r}
 library(REDCapTidieR)
 
-read_redcap_tidy(redcap_uri, superheroes_token) |>
+import_redcap(redcap_uri, superheroes_token) |>
   bind_tables()
 
 heroes_information |>
@@ -122,7 +122,7 @@ longitudinal_token <- "123456789ABCDEF123456789ABCDEF06"
 ```{r, include = TRUE}
 library(REDCapTidieR)
 
-longitudinal <- read_redcap_tidy(redcap_uri, longitudinal_token)
+longitudinal <- import_redcap(redcap_uri, longitudinal_token)
 
 longitudinal |>
   dplyr::select(redcap_form_name, redcap_form_label, structure) |>
@@ -219,10 +219,10 @@ Instruments that are used to generate REDCap Surveys generate additional data fi
 
 -   `redcap_survey_identifier`: the participant identifier. This will be `NA` if the Participant Identifier feature in REDCap is disabled.
 
-By default, `read_redcap_tidy` returns these fields if the instrument is used as a survey. For the `survey` instrument, we get `survey_timestamp` and `redcap_survey_identifier`.
+By default, `import_redcap()` returns these fields if the instrument is used as a survey. For the `survey` instrument, we get `survey_timestamp` and `redcap_survey_identifier`.
 
 ```{r, warning = FALSE}
-survey <- read_redcap_tidy(redcap_uri, survey_token) |>
+survey <- import_redcap(redcap_uri, survey_token) |>
   extract_table("survey")
 
 survey |>

@@ -20,7 +20,7 @@ reference:
   desc: >
     Import a REDCap Database into a tidy supertibble.
   contents:
-  - read_redcap_tidy
+  - import_redcap
 - title: "Extract Data Tibbles"
   desc: >
     Use these functions to extract individual data tibbles from a supertibble.
