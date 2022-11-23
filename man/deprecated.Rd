@@ -3,6 +3,7 @@
 \name{deprecated}
 \alias{deprecated}
 \alias{read_redcap_tidy}
+\alias{bind_tables}
 \title{Deprecated functions}
 \usage{
 read_redcap_tidy(
@@ -13,10 +14,16 @@ read_redcap_tidy(
   export_survey_fields = TRUE,
   suppress_messages = TRUE
 )
+
+bind_tables(.data, environment = global_env(), tbls = NULL, structure = NULL)
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
 
-Use \code{\link[=import_redcap]{import_redcap()}} instead of \code{read_redcap_tidy()}.
+Use \code{\link[=import_redcap]{import_redcap()}} instead of \code{read_redcap_tidy()}. Note that the
+\code{suppress_messages} argument was renamed to \code{suppress_redcapr_messages}.
+
+Use \code{\link[=bind_tibbles]{bind_tibbles()}} instead of \code{bind_tables()}. Note that the \code{.data}
+argument was renamed to \code{supertbl} and the \code{structure} argument was removed.
 }
 \keyword{internal}

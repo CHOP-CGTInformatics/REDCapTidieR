@@ -106,7 +106,7 @@ REDCapTidieR provides three different functions to extract data tibbles from a s
 
 ### Binding data tibbles into the environment
 
-The `bind_tables()` function takes a supertibble and binds its data tibbles directly into the global environment. When you use `bind_tables()` while working interactively in the RStudio IDE, you will see data tibbles appear in the Environment pane.
+The `bind_tibbles()` function takes a supertibble and binds its data tibbles directly into the global environment. When you use `bind_tibbles()` while working interactively in the RStudio IDE, you will see data tibbles appear in the Environment pane.
 
 <center>
 
@@ -114,7 +114,7 @@ The `bind_tables()` function takes a supertibble and binds its data tibbles dire
 
 </center>
 
-By default, `bind_tables()` extracts all data tibbles from the supertibble. With the `tbls` argument you can specify a subset of data tibbles that should be extracted. With the `environment` argument you can supply your own environment object to which the tibbles will be bound.
+By default, `bind_tibbles()` extracts all data tibbles from the supertibble. With the `tbls` argument you can specify a subset of data tibbles that should be extracted. With the `environment` argument you can supply your own environment object to which the tibbles will be bound.
 
 ### Extracting a list of data tibbles
 
@@ -163,7 +163,7 @@ You can use the `labelled::look_for()` function to explore the variable labels o
 ```{r}
 superheroes |>
   make_labelled() |>
-  bind_tables()
+  bind_tibbles()
 
 labelled::look_for(heroes_information)
 ```
@@ -181,7 +181,7 @@ The label for `name` doesn't look quite right. Let's remove that trailing `:`. T
 ```{r}
 superheroes |>
   make_labelled(format_labels = ~gsub(":", "", .)) |>
-  bind_tables()
+  bind_tibbles()
 
 labelled::look_for(heroes_information, "hero")
 ```
@@ -203,7 +203,7 @@ superheroes |>
       fmt_strip_trailing_colon, 
       base::tolower)
   ) |>
-  bind_tables()
+  bind_tibbles()
 
 labelled::look_for(heroes_information)
 ```

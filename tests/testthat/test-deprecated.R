@@ -16,3 +16,28 @@ test_that("read_redcap_tidy and import_redcap produce the same output", {
 
   expect_identical(out_1, out_2)
 })
+
+test_that("bind_tables and bind_tibbles produce the same output", {
+
+  redcaptidier_longitudintal_db <- readRDS(
+    system.file(
+      "testdata/redcaptidier_longitudinal_db.RDS", package = "REDCapTidieR"
+    )
+  )
+
+  env_1 <- new_environment()
+
+  redcaptidier_longitudintal_db %>%
+    bind_tibbles(tbls = c("nonrepeated", "repeated"),
+                 environment = env_1)
+
+  env_2 <- new_environment()
+
+  redcaptidier_longitudintal_db %>%
+    bind_tables(tbls = c("nonrepeated", "repeated"),
+                 environment = env_2) %>%
+    suppressWarnings() # Suppress deprecation warning
+
+  expect_true(all.equal(env_1, env_2))
+
+})

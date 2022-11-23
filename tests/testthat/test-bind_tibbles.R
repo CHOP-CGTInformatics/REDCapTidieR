@@ -5,9 +5,9 @@ redcaptidier_longitudintal_db <- readRDS(
     )
   )
 
-test_that("bind_tables works with no specifications", {
+test_that("bind_tibbles works with no specifications", {
     redcaptidier_longitudintal_db %>%
-      bind_tables()
+      bind_tibbles()
 
     expect_true(exists("nonrepeated", envir = global_env()))
     expect_true(exists("nonrepeated2", envir = global_env()))
@@ -19,22 +19,22 @@ test_that("bind_tables works with no specifications", {
        envir = global_env())
 })
 
-test_that("bind_tables works with environment specification", {
+test_that("bind_tibbles works with environment specification", {
 
   sample_env <- new_environment()
 
   redcaptidier_longitudintal_db %>%
-    bind_tables(environment = sample_env)
+    bind_tibbles(environment = sample_env)
 
   expect_true(exists("nonrepeated", envir = sample_env))
   expect_true(exists("nonrepeated2", envir = sample_env))
   expect_true(exists("repeated", envir = sample_env))
 })
 
-test_that("bind_tables works with forms specification", {
+test_that("bind_tibbles works with forms specification", {
 
   redcaptidier_longitudintal_db %>%
-    bind_tables(tbls = c("nonrepeated", "repeated"))
+    bind_tibbles(tbls = c("nonrepeated", "repeated"))
 
   expect_true(exists("nonrepeated", envir = global_env()))
   expect_false(exists("nonrepeated2", envir = global_env()))
@@ -42,13 +42,3 @@ test_that("bind_tables works with forms specification", {
   rm(list = c("nonrepeated", "repeated"), envir = global_env())
 })
 
-test_that("bind_tables works with structure specification", {
-
-  redcaptidier_longitudintal_db %>%
-    bind_tables(structure = "nonrepeating")
-
-  expect_true(exists("nonrepeated", envir = global_env()))
-  expect_true(exists("nonrepeated2", envir = global_env()))
-  expect_false(exists("repeated", envir = global_env()))
-  rm(list = c("nonrepeated", "nonrepeated2"), envir = global_env())
-})

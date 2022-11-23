@@ -79,7 +79,7 @@ Let's take a look at the data tibbles derived from the Superhero database and co
 library(REDCapTidieR)
 
 import_redcap(redcap_uri, superheroes_token) |>
-  bind_tables()
+  bind_tibbles()
 
 heroes_information |>
   rmarkdown::paged_table()
@@ -133,7 +133,7 @@ The `demographics` instrument is nonrepeating. The granularity is one row per st
 
 ```{r}
 longitudinal |>
-  bind_tables()
+  bind_tibbles()
 
 demographics |>
   rmarkdown::paged_table()
