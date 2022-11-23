@@ -118,11 +118,11 @@ By default, `bind_tibbles()` extracts all data tibbles from the supertibble. Wit
 
 ### Extracting a list of data tibbles
 
-The `extract_tables()` function takes a supertibble and returns a named list of data tibbles. The default is to extract all data tibbles. We use `str` here to show the structure of the list returned by `extract_tables()`.
+The `extract_tibbles()` function takes a supertibble and returns a named list of data tibbles. The default is to extract all data tibbles. We use `str` here to show the structure of the list returned by `extract_tibbles()`.
 
 ```{r}
 superheroes_list <- superheroes |>
-  extract_tables()
+  extract_tibbles()
 
 superheroes_list |>
   str(max.level = 1)
@@ -132,17 +132,17 @@ You can use [tidyselect selectors](https://tidyselect.r-lib.org/reference/langua
 
 ```{r}
 superheroes |>
-  extract_tables(ends_with("powers")) |>
+  extract_tibbles(ends_with("powers")) |>
   str(max.level = 1)
 ```
 
 ### Extracting a single data tibble
 
-The `extract_table()` takes a supertibble and returns a single data tibble.
+The `extract_tibble()` takes a supertibble and returns a single data tibble.
 
 ```{r}
 superheroes |>
-  extract_table("heroes_information") |>
+  extract_tibble("heroes_information") |>
   rmarkdown::paged_table()
 ```
 

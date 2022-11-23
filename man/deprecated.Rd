@@ -4,6 +4,8 @@
 \alias{deprecated}
 \alias{read_redcap_tidy}
 \alias{bind_tables}
+\alias{extract_table}
+\alias{extract_tables}
 \title{Deprecated functions}
 \usage{
 read_redcap_tidy(
@@ -16,6 +18,10 @@ read_redcap_tidy(
 )
 
 bind_tables(.data, environment = global_env(), tbls = NULL, structure = NULL)
+
+extract_table(.data, tbl)
+
+extract_tables(.data, tbls = everything())
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
@@ -25,5 +31,11 @@ Use \code{\link[=import_redcap]{import_redcap()}} instead of \code{read_redcap_t
 
 Use \code{\link[=bind_tibbles]{bind_tibbles()}} instead of \code{bind_tables()}. Note that the \code{.data}
 argument was renamed to \code{supertbl} and the \code{structure} argument was removed.
+
+Use \code{\link[=extract_tibble]{extract_tibble()}} instead of \code{extract_table()}. Note that the \code{.data}
+argument was renamed to \code{supertbl}.
+
+Use \code{\link[=extract_tibbles]{extract_tibbles()}} instead of \code{extract_tables()}. Note that the \code{.data}
+argument was renamed to \code{supertbl}.
 }
 \keyword{internal}

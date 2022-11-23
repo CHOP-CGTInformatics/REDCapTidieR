@@ -70,3 +70,44 @@ bind_tables <- function(.data,
   )
   return(invisible(NULL))
 }
+
+#' @description
+#'
+#' Use [extract_tibble()] instead of `extract_table()`. Note that the `.data`
+#' argument was renamed to `supertbl`.
+#'
+#' @export
+#' @rdname deprecated
+extract_table <- function(.data,
+                          tbl) {
+  deprecate_warn("0.2.0", "extract_table()", "extract_tibble()", always = TRUE)
+
+  extract_tibble(supertbl = .data, tbl = tbl)
+}
+
+#' @description
+#'
+#' Use [extract_tibbles()] instead of `extract_tables()`. Note that the `.data`
+#' argument was renamed to `supertbl`.
+#'
+#' @export
+#' @rdname deprecated
+extract_tables <- function(.data,
+                           tbls = everything()) {
+
+  deprecate_warn("0.2.0", "extract_tables()", "extract_tibbles()", always = TRUE)
+
+  # Extract specified table ----
+  # Pass tbls as an expression for enquosure
+  tbls <- enquo(tbls)
+
+  out <- .data %>%
+    select("redcap_form_name", "redcap_data") %>%
+    pivot_wider(names_from = "redcap_form_name",
+                values_from = "redcap_data")
+
+  out <- out[eval_select(tbls, data = out)]
+
+  out %>%
+    map(.f = ~pluck(.)[[1]])
+}

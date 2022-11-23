@@ -223,7 +223,7 @@ By default, `import_redcap()` returns these fields if the instrument is used as 
 
 ```{r, warning = FALSE}
 survey <- import_redcap(redcap_uri, survey_token) |>
-  extract_table("survey")
+  extract_tibble("survey")
 
 survey |>
   dplyr::glimpse()

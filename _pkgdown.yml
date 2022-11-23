@@ -26,8 +26,8 @@ reference:
     Use these functions to extract individual data tibbles from a supertibble.
   contents:
   - bind_tibbles
-  - extract_table
-  - extract_tables
+  - extract_tibble
+  - extract_tibbles
 - title: "Apply Variable Labels"
   desc: >
     Apply variable labels to a supertibble using `labelled`.

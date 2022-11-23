@@ -41,3 +41,41 @@ test_that("bind_tables and bind_tibbles produce the same output", {
   expect_true(all.equal(env_1, env_2))
 
 })
+
+test_that("extact_table and extract_tibble produce the same output", {
+
+  redcaptidier_longitudintal_db <- readRDS(
+    system.file(
+      "testdata/redcaptidier_longitudinal_db.RDS", package = "REDCapTidieR"
+    )
+  )
+
+  out_1 <- redcaptidier_longitudintal_db %>%
+    extract_tibble(tbl = "nonrepeated")
+
+  out_2 <- redcaptidier_longitudintal_db %>%
+    extract_table(tbl = "nonrepeated") %>%
+    suppressWarnings() # Suppress deprecation warning
+
+  expect_equal(out_1, out_2)
+
+})
+
+test_that("extact_tables and extract_tibbles produce the same output", {
+
+  redcaptidier_longitudintal_db <- readRDS(
+    system.file(
+      "testdata/redcaptidier_longitudinal_db.RDS", package = "REDCapTidieR"
+    )
+  )
+
+  out_1 <- redcaptidier_longitudintal_db %>%
+    extract_tibbles(tbls = starts_with("non"))
+
+  out_2 <- redcaptidier_longitudintal_db %>%
+    extract_tables(tbls = starts_with("non")) %>%
+    suppressWarnings() # Suppress deprecation warning
+
+  expect_equal(out_1, out_2)
+
+})
