@@ -101,8 +101,8 @@ check_repeat_and_nonrepeat <- function(db_data) {
 
     if ("repeating" %in% check_data &&
         "nonrepeating" %in% check_data) {
-      cli_abort(c("x" = "Instrument detected that has both repeated and
-      nonrepeated instances defined in the project: {rep}"),
+      cli_abort(c("x" = "Instrument detected that has both repeating and
+      nonrepeating instances defined in the project: {rep}"),
                 class = c("repeat_nonrepeat_instrument", "REDCapTidieR_cond"))
     }
   }
@@ -139,7 +139,7 @@ check_redcap_populated <- function(
   if (ncol(db_data) == 0) {
     cli_abort(
       "The REDCap API did not return any data. This can happen when there are no
-      data entered or when the access isn't configured to allow data download
+      data entered or when the access isn't configured to allow data export
       through the API.",
       class = c("redcap_unpopulated", "REDCapTidieR_cond")
     )

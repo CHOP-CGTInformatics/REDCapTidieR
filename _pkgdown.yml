@@ -1,26 +1,36 @@
 url: https://chop-cgtdataops.github.io/REDCapTidieR/
+
 navbar:
   structure:
-    left:  [intro, reference, articles]
+    left:  [intro, glossary, reference, articles]
     right: [search, github]
+  components:
+    intro:
+      text: Getting Started
+      hred: articles/REDCapTidieR.html
+    glossary:
+      text: Glossary
+      href: articles/glossary.html
+
 search:
   exclude: ['news/index.html']
+
 reference:
 - title: "Import Data"
   desc: >
-    Read a REDCap Database into a tidy supertibble.
+    Import a REDCap Database into a tidy supertibble.
   contents:
   - read_redcap_tidy
-- title: "Extract Individual Tables"
+- title: "Extract Data Tibbles"
   desc: >
-    Use these convenience functions to extract individual tibbles from a supertibble.
+    Use these functions to extract individual data tibbles from a supertibble.
   contents:
   - bind_tables
   - extract_table
   - extract_tables
-- title: "Apply Labels"
+- title: "Apply Variable Labels"
   desc: >
-    Apply variable labels from REDCap metadata using `labelled`.
+    Apply variable labels to a supertibble using `labelled`.
   contents:
   - make_labelled
   - format-helpers

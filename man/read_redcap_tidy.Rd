@@ -38,32 +38,32 @@ the REDCap server.). Default is \code{TRUE}.}
 from REDCapR API calls. Default \code{TRUE}.}
 }
 \value{
-Returns a \code{tibble} in which each row represents a REDCap instrument. The
-results contains the following fields:
+Returns a \code{tibble} in which each row represents a REDCap instrument. It
+contains the following columns:
 \itemize{
 \item \code{redcap_form_name}, the name of the instrument
 \item \code{redcap_form_label}, the label for the instrument
-\item \code{redcap_data}, a \code{tibble} with the data for the instrument
-\item \code{redcap_metadata}, a \code{tibble} of data dictionary entries for each field in the instrument
-\item \code{redcap_events}, a \code{tibble} with information about the arms and longitudinal events represented in the instrument. Only if the project has longitudinal events enabled
-\item \code{structure}, either "repeating" or "nonrepeating"
+\item \code{redcap_data}, a tibble with the data for the instrument
+\item \code{redcap_metadata}, a tibble of data dictionary entries for each field in the instrument
+\item \code{redcap_events}, a tibble with information about the arms and longitudinal events represented in the instrument. Only if the project has longitudinal events enabled
+\item \code{structure}, the instrument structure, either "repeating" or "nonrepeating"
 \item \code{data_rows}, the number of rows in the instrument's data tibble
 \item \code{data_cols}, the number of columns in the instrument's data tibble
 \item \code{data_size}, the size in memory of the instrument's data tibble computed by \code{lobstr::obj_size()}
-\item \code{data_na_pct}, the percentage of cells in the instrument's data that are \code{NA} excluding identifier and form completion fields
+\item \code{data_na_pct}, the percentage of cells in the instrument's data columns that are \code{NA} excluding identifier and form completion columns
 }
 }
 \description{
-Call the REDCap API to retrieve data and metadata about a project,
-and then transform the output into a tidy "supertibble" that contains data
-and metadata organized into tidy tibbles, broken down by instrument.
+Query the REDCap API using to retrieve data and metadata about a project,
+and transform the output into a "supertibble" that contains data
+and metadata organized into tibbles, broken down by instrument.
 }
 \details{
 This function uses the \href{https://ouhscbbmc.github.io/REDCapR/index.html}{REDCapR}
-package to call the REDCap API. The REDCap API returns a
+package to query the REDCap API. The REDCap API returns a
 \href{https://en.wikipedia.org/wiki/Block_matrix}{block matrix} that mashes
 data from all data collection instruments
-together. The \code{read_redcap_tidy()} function intelligently
+together. The \code{read_redcap_tidy()} function
 deconstructs the block matrix and splices the data into individual tibbles,
 where one tibble represents the data from one instrument.
 }

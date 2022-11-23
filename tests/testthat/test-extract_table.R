@@ -1,4 +1,4 @@
-# Load Sample REDCapTidier Database Longitudinal Output
+# Load Sample REDCapTidieR Database Longitudinal Output
 redcaptidier_longitudintal_db <- readRDS(system.file("testdata/redcaptidier_longitudinal_db.RDS", package = "REDCapTidieR"))
 
 test_that("extract_tables works with a vector and tidyselect selectors", {

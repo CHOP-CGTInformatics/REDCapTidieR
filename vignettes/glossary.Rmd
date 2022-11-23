@@ -1,0 +1,145 @@
+---
+title: "Glossary of REDCap and REDCapTidieR Terms"
+author: "Stephan Kadauke"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Glossary of REDCap and REDCapTidieR Terms}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+The REDCapTidieR package uses vocabulary that is standard for REDCap database architects but not necessarily well known to all R users. It also introduces a number of idiosyncratic terms which we will define here.
+
+### Arm
+
+A mechanism that allows one longitudinal project to have multiple different sequences of events defined.
+
+### Block matrix
+
+A matrix that is constructed from multiple submatrices. In the context of REDCap, the block matrix is the rectangular data set that is returned by the REDCap API that contains data from all instruments.
+
+### Column
+
+A vertical series of cells in a data frame or tibble. Synonym: variable.
+
+### Composite primary key
+
+A primary key is a column in a table that is distinct in each row and serves to identify each row. A composite primary key is a primary key that consists of multiple columns that in combination are distinct in each row and serve to identify each row. Taken together, the identifier columns of the data tibble create a composite primary key. This makes it easy to join data tibbles together.
+
+### Choice
+
+An option or category defined in the context of a single-answer or multi-answer categorical type field in REDCap. You can define choices using the REDCap Field Editor. Choices have a **raw value** (a unique identifier - usually a serial number but this can be changed) and a **choice label** (a human readable description of the choice, which is displayed during data entry).
+
+In the context of REDCapTidieR, choices come into play in two scenarios. Choice labels of single-answer type fields (`dropdown` and `radio`) are used to define the values of data columns derived from them. Raw values of the multi-answer `checkbox` field are used to construct the names of data columns derived from them. See also ...
+
+### Classic project
+
+Also known as a **traditional** project, this the simplest type of REDCap project. You can define one or multiple instruments (also called forms) for data entry. Both repeating and nonrepeating instruments are allowed. Nonrepeating instruments are completed only once for each record. Repeating instruments can be completed an arbitrary number of times for each record.
+
+### Database
+
+See: Project.
+
+### Data column
+
+A column of the data tibble that is derived from the fields of a REDCap instrument.
+
+### Data tibble
+
+A tibble that contains data collected in a specific instrument. The supertibble collects data tibbles for all instruments in the `redcap_data` column. REDCapTidieR provides several functions to extract data tibbles from the supertibble.
+
+### Data viewer
+
+A part of the RStudio IDE functionality that allows you to inspect data frames, tibbles, and some other data structures. It includes features to perform basic exploratory data analysis such as sorting, filtering, and searching. [The supertibble is designed to work well with the data viewer](REDCapTidieR.html#exploring-the-contents-of-the-supertibble).
+
+### Environment
+
+A fundamental data structure in R that allows binding a set of names to a set of objects. The **global environment** is the namespace in which you bind objects during interactive work.
+
+### Event
+
+A basic unit of a longitudinal project. Each event can be associated with one or multiple instruments.
+
+Factor variable (can be ordered)
+
+### Field
+
+### Field editor
+
+### Field label
+
+### Field type
+
+### Form (form name, form label)
+
+### Format helper
+
+### Granularity
+
+### Identifier column
+
+### Import
+
+### Instrument
+
+### labelled
+
+### List
+
+### List column
+
+### Logical variable
+
+### Longitudinal project
+
+### Metadata
+
+### Metadata tibble
+
+### NA
+
+### Nonrepeating
+
+### Observational unit
+
+### Project
+
+### Record
+
+### REDCap API
+
+### REDCapR
+
+### Repeating
+
+### Repeat instance
+
+### Row
+
+### Structure (instrument / project)
+
+### Supertibble
+
+### Survey
+
+### Tibble
+
+### Tidy data
+
+### Tidyselect
+
+### Token
+
+### URI
+
+### Variable
+
+### Variable label

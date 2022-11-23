@@ -28,7 +28,7 @@ REDCap API and then transforms the returned data into a set of tidy
 tibbles.
 
 REDCapTidieR is especially useful for dealing with complex databases
-that are longitudinal or include repeated instruments or both.
+that are longitudinal or include repeating instruments or both.
 
 ## Installation
 
@@ -39,7 +39,7 @@ The release version can be installed from
 install.packages("REDCapTidieR")
 ```
 
-You can install the development version of `REDCapTidieR` from
+You can install the development version of REDCapTidieR from
 [GitHub](https://github.com/CHOP-CGTInformatics/REDCapTidieR):
 
 ``` r
@@ -61,7 +61,7 @@ more.
 We invite you to give feedback and collaborate with us! If you are
 familiar with GitHub and R packages, please feel free to submit a [pull
 request](https://github.com/CHOP-CGTInformatics/REDCapTidieR/pulls).
-Please do let us know if {REDCapTidieR} fails for whatever reason with
+Please do let us know if REDCapTidieR fails for whatever reason with
 your database and submit a bug report by creating a GitHub
 [issue](https://github.com/CHOP-CGTInformatics/REDCapTidieR/issues).
 

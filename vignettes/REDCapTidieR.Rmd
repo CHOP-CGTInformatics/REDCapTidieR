@@ -34,7 +34,7 @@ if (rlang::is_interactive()) {
 }
 ```
 
-[REDCap](https://www.project-redcap.org/) is a powerful database solution used by many institutions around the world. The [REDCapR](https://ouhscbbmc.github.io/REDCapR/) package streamlines calls to the REDCap API. One of its main uses is to import records from a REDCap project. This works well for simple projects, however becomes ugly when complex databases that include longitudinal structure and/or repeated instruments are involved.
+[REDCap](https://www.project-redcap.org/) is an electronic data capture software that is widely used in the academic research community. The [REDCapR](https://ouhscbbmc.github.io/REDCapR/) package streamlines calls to the REDCap API from an R environment. One of REDCapR's main uses is to import records from a REDCap project. This works well for simple projects, however becomes ugly when complex databases that include longitudinal structure and/or repeating instruments are involved.
 
 The REDCapTidieR package aims to make the life of analysts who deal with complex REDCap databases easier. It builds upon **REDCapR** to make its output **tidier**. Instead of one large data frame that contains all the data from your project, you get to work with a set of tidy tibbles, one for each REDCap instrument.
 
@@ -52,7 +52,7 @@ Here is a screenshot of the REDCap Record Status Dashboard of this database. It 
 
 ## Importing data from REDCap
 
-The `read_redcap_tidy()` function is the workhorse of REDCapTidieR. It requires a REDCap database URI and a REDCap API token. *You need to have API access to the REDCap database to use REDCapTidieR. REDCapTidieR does not work with files exported from REDCap.* We use it here to import data from the Superheroes database into a tibble named `superheroes`. We use `rmarkdown::paged_table()` to allow you to explore this tibble.
+The `read_redcap_tidy()` function is the workhorse of REDCapTidieR. It requires a REDCap database URI and a REDCap API token. *You need to have API access to the REDCap database to use REDCapTidieR. REDCapTidieR does not work with files exported from REDCap.* We use it here to import data from the Superheroes database into a [tibble](https://tibble.tidyverse.org/) named `superheroes`. We use `rmarkdown::paged_table()` to allow you to explore this tibble.
 
 ```{r}
 library(REDCapTidieR)
@@ -62,7 +62,7 @@ superheroes |>
   rmarkdown::paged_table()
 ```
 
-This returns a tibble with two rows. You might expect more rows from a database with 734 superheroes. `read_redcap_tidy()` returns data in a special object that we call the **supertibble**. The supertibble contains, among other things, a set of tidy tibbles with the data and metadata from the REDCap project, broken down by instrument. We call these the **data tibble** and **metadata tibble**.
+This returns a tibble with two rows. You might expect more rows from a database with 734 superheroes. `read_redcap_tidy()` returns data in a special object that we call the **supertibble**. The supertibble contains, among other things, tidy tibbles with the data and metadata derived from each instrument. We call these the **data tibble** and **metadata tibble**.
 
 Each row of the supertibble corresponds to one REDCap instrument. The `redcap_form_name` and `redcap_form_label` columns identify that instrument. The `redcap_data` column contains the data tibbles. The `redcap_metadata` column contains the metadata tibbles. Additional columns contain useful information about the data tibble, such as the number of rows and columns, the size in memory, and the percentage of missing values.
 
@@ -156,7 +156,7 @@ REDCapTidieR integrates with the [labelled](http://larmarange.github.io/labelled
 
 </center>
 
-The `make_labelled()` function takes a supertibble and returns a supertibble with variable labels applied to the variables of the supertibble as well as to the variables of all data and metadata tibbles in `redcap_data` and `redcap_metadata`.
+The `make_labelled()` function takes a supertibble and returns a supertibble with variable labels applied to the variables of the supertibble as well as to the variables of all data and metadata tibbles in the `redcap_data` and `redcap_metadata` columns of the supertibble.
 
 You can use the `labelled::look_for()` function to explore the variable labels of a tibble.
 

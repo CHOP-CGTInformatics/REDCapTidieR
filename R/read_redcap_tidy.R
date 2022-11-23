@@ -2,32 +2,32 @@
 #' Extract a REDCap database into a tidy supertibble
 #'
 #' @description
-#' Call the REDCap API to retrieve data and metadata about a project,
-#' and then transform the output into a tidy "supertibble" that contains data
-#' and metadata organized into tidy tibbles, broken down by instrument.
+#' Query the REDCap API using to retrieve data and metadata about a project,
+#' and transform the output into a "supertibble" that contains data
+#' and metadata organized into tibbles, broken down by instrument.
 #'
 #' @details
 #' This function uses the [REDCapR](https://ouhscbbmc.github.io/REDCapR/index.html)
-#' package to call the REDCap API. The REDCap API returns a
+#' package to query the REDCap API. The REDCap API returns a
 #' [block matrix](https://en.wikipedia.org/wiki/Block_matrix) that mashes
 #' data from all data collection instruments
-#' together. The `read_redcap_tidy()` function intelligently
+#' together. The `read_redcap_tidy()` function
 #' deconstructs the block matrix and splices the data into individual tibbles,
 #' where one tibble represents the data from one instrument.
 #'
 #' @return
-#' Returns a `tibble` in which each row represents a REDCap instrument. The
-#' results contains the following fields:
+#' Returns a `tibble` in which each row represents a REDCap instrument. It
+#' contains the following columns:
 #' * `redcap_form_name`, the name of the instrument
 #' * `redcap_form_label`, the label for the instrument
-#' * `redcap_data`, a `tibble` with the data for the instrument
-#' * `redcap_metadata`, a `tibble` of data dictionary entries for each field in the instrument
-#' * `redcap_events`, a `tibble` with information about the arms and longitudinal events represented in the instrument. Only if the project has longitudinal events enabled
-#' * `structure`, either "repeating" or "nonrepeating"
+#' * `redcap_data`, a tibble with the data for the instrument
+#' * `redcap_metadata`, a tibble of data dictionary entries for each field in the instrument
+#' * `redcap_events`, a tibble with information about the arms and longitudinal events represented in the instrument. Only if the project has longitudinal events enabled
+#' * `structure`, the instrument structure, either "repeating" or "nonrepeating"
 #' * `data_rows`, the number of rows in the instrument's data tibble
 #' * `data_cols`, the number of columns in the instrument's data tibble
 #' * `data_size`, the size in memory of the instrument's data tibble computed by `lobstr::obj_size()`
-#' * `data_na_pct`, the percentage of cells in the instrument's data that are `NA` excluding identifier and form completion fields
+#' * `data_na_pct`, the percentage of cells in the instrument's data columns that are `NA` excluding identifier and form completion columns
 #'
 #' @importFrom REDCapR redcap_read_oneshot redcap_metadata_read
 #' @importFrom dplyr filter bind_rows %>% select slice
