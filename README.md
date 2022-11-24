@@ -51,7 +51,7 @@ devtools::install_github("CHOP-CGTInformatics/REDCapTidieR")
 Use `import_redcap()` together with `bind_tibbles()` to import data from
 all instruments into your environment.
 
-![](man/figures/redcaptidier_demo.gif)
+![](man/figures/redcaptidier-demo.gif)
 
 Read the [Getting Started vignette](articles/REDCapTidieR.html) to learn
 more.
@@ -85,4 +85,3 @@ The development was funded using the following sources:
 
 - *CHOP-based GMP cell manufacturing (MFG) for CAR T clinical trials*.
   Stephan Grupp, PI; Stephan Kadauke, co-PI, CHOP, 2020-2022
-

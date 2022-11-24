@@ -46,13 +46,13 @@ Here is a screenshot of the REDCap Record Status Dashboard of this database. It 
 
 <center>
 
-![REDCap Record Status Dashboard for the Superhero database](record_status_dash.png)
+![REDCap Record Status Dashboard for the Superhero database](record-status-dash.png)
 
 </center>
 
 ## Importing data from REDCap
 
-The `import_redcap()` function is the workhorse of REDCapTidieR. It requires a REDCap database URI and a REDCap API token. *You need to have API access to the REDCap database to use REDCapTidieR. REDCapTidieR does not work with files exported from REDCap.* We use it here to import data from the Superheroes database into a [tibble](https://tibble.tidyverse.org/) named `superheroes`. We use `rmarkdown::paged_table()` to allow you to explore this tibble.
+To import data from REDCap, use the `import_redcap()` function. `import_redcap()` requires a REDCap database URI and a REDCap API token. *You need to have API access to the REDCap database to use REDCapTidieR. REDCapTidieR does not work with files exported from REDCap.* We use it here to import data from the Superheroes database. You can see that it returns a [tibble](https://tibble.tidyverse.org/) named `superheroes`. We use `rmarkdown::paged_table()` so you can explore this tibble.
 
 ```{r}
 library(REDCapTidieR)
@@ -62,13 +62,13 @@ superheroes |>
   rmarkdown::paged_table()
 ```
 
-This returns a tibble with two rows. You might expect more rows from a database with 734 superheroes. `import_redcap()` returns data in a special object that we call the **supertibble**. The supertibble contains, among other things, tidy tibbles with the data and metadata derived from each instrument. We call these the **data tibble** and **metadata tibble**.
+You can see that the tibble that `import_redcap()` returned has only two rows. This may be surprising because you might expect more rows from a database with 734 superheroes. `import_redcap()` returns data in a special object that we call the **supertibble**. The supertibble contains, among other things, tibbles with the data and metadata derived from each instrument. We call these the **data tibbles** and **metadata tibbles**.
 
-Each row of the supertibble corresponds to one REDCap instrument. The `redcap_form_name` and `redcap_form_label` columns identify that instrument. The `redcap_data` column contains the data tibbles. The `redcap_metadata` column contains the metadata tibbles. Additional columns contain useful information about the data tibble, such as the number of rows and columns, the size in memory, and the percentage of missing values.
+**Each row of the supertibble corresponds to one REDCap instrument**. The `redcap_form_name` and `redcap_form_label` columns identify which instrument the row relates to. The `redcap_data` column contains the data tibbles. The `redcap_metadata` column contains the metadata tibbles. Additional columns contain useful information about the data tibble, such as the number of its rows and columns, its size in memory, and the percentage of missing values in the data.
 
 ## Exploring the contents of the supertibble
 
-The supertibble is designed to be explored using the [RStudio Data Viewer](https://support.posit.co/hc/en-us/articles/205175388-Using-the-Data-Viewer-in-the-RStudio-IDE). You can click on the table icon in the Environment tab to view of the supertibble in the data viewer. At a glance you see an overview of the instruments in the REDCap project.
+We designed the supertibble so you can explore it with the [RStudio Data Viewer](https://support.posit.co/hc/en-us/articles/205175388-Using-the-Data-Viewer-in-the-RStudio-IDE). You can click on the table icon in the Environment tab to view of the supertibble in the data viewer. At a glance you see an overview of the instruments in the REDCap project.
 
 <center>
 
@@ -84,7 +84,7 @@ You can drill down into individual tables in the `redcap_data` and `redcap_metad
 
 </center>
 
-In the `super_hero_powers` data tibble, each row represents a superpower of a specific hero. Each row is identified by the combination of `record_id` and `redcap_repeat_instance`. This difference in granularity is because in REDCap `super_hero_powers` is configured as a **repeating** instrument whereas `heroes_information` is configured as a **nonrepeating** instrument.
+In the `super_hero_powers` data tibble, each row represents a superpower of a specific hero. Each row is identified by the combination of `record_id` and `redcap_repeat_instance`. This difference in granularity is because in REDCap `super_hero_powers` was designated to be a **repeating** instrument whereas `heroes_information` was designated as a **nonrepeating** instrument.
 
 <center>
 
@@ -110,7 +110,7 @@ The `bind_tibbles()` function takes a supertibble and binds its data tibbles dir
 
 <center>
 
-![](bind-tables.gif){width=75%}
+![](bind-tibbles.gif){width=75%}
 
 </center>
 

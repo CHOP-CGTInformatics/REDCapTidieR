@@ -7,7 +7,7 @@ navbar:
   components:
     intro:
       text: Getting Started
-      hred: articles/REDCapTidieR.html
+      href: articles/REDCapTidieR.html
     glossary:
       text: Glossary
       href: articles/glossary.html
