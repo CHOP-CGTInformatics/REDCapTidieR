@@ -176,7 +176,7 @@ Fields of single-answer categorical type (`dropdown`, `radio`) are converted to 
 
 <center>
 
-![](field-editor-ae-grade.png)
+![REDCap field editor showing the choices of a single-answer field](field-editor-ae-grade.png)
 
 </center>
 
@@ -199,7 +199,7 @@ Fields of the multi-answer `checkbox` type are expanded so that **each choice** 
 
 <center>
 
-![](field-editor-contributing-factors.png)
+![REDCap field editor showing the choices of a multi-answer field](field-editor-contributing-factors.png)
 
 </center>
 

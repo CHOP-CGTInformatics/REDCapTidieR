@@ -97,17 +97,5 @@ extract_tables <- function(.data,
 
   deprecate_warn("0.2.0", "extract_tables()", "extract_tibbles()", always = TRUE)
 
-  # Extract specified table ----
-  # Pass tbls as an expression for enquosure
-  tbls <- enquo(tbls)
-
-  out <- .data %>%
-    select("redcap_form_name", "redcap_data") %>%
-    pivot_wider(names_from = "redcap_form_name",
-                values_from = "redcap_data")
-
-  out <- out[eval_select(tbls, data = out)]
-
-  out %>%
-    map(.f = ~pluck(.)[[1]])
+  extract_tibbles(supertbl = .data, tbls = tbls)
 }

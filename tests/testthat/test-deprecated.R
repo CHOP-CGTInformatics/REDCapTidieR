@@ -11,7 +11,7 @@ test_that("read_redcap_tidy and import_redcap produce the same output", {
 
     out_2 <-
       read_redcap_tidy(redcap_uri, longitudinal_token) %>%
-      suppressWarnings() # Suppress deprecation warning
+      suppressWarnings(classes = "lifecycle_warning_deprecated")
   })
 
   expect_identical(out_1, out_2)
@@ -36,7 +36,7 @@ test_that("bind_tables and bind_tibbles produce the same output", {
   redcaptidier_longitudintal_db %>%
     bind_tables(tbls = c("nonrepeated", "repeated"),
                  environment = env_2) %>%
-    suppressWarnings() # Suppress deprecation warning
+    suppressWarnings(classes = "lifecycle_warning_deprecated")
 
   expect_true(all.equal(env_1, env_2))
 
@@ -55,7 +55,7 @@ test_that("extact_table and extract_tibble produce the same output", {
 
   out_2 <- redcaptidier_longitudintal_db %>%
     extract_table(tbl = "nonrepeated") %>%
-    suppressWarnings() # Suppress deprecation warning
+    suppressWarnings(classes = "lifecycle_warning_deprecated")
 
   expect_equal(out_1, out_2)
 
@@ -74,7 +74,7 @@ test_that("extact_tables and extract_tibbles produce the same output", {
 
   out_2 <- redcaptidier_longitudintal_db %>%
     extract_tables(tbls = starts_with("non")) %>%
-    suppressWarnings() # Suppress deprecation warning
+    suppressWarnings(classes = "lifecycle_warning_deprecated")
 
   expect_equal(out_1, out_2)
 
