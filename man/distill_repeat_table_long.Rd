@@ -21,7 +21,7 @@ REDCap metadata.}
 \item{db_metadata_long}{The REDCap metadata output defined by
 \code{REDCapR::redcap_metadata_read()$data}}
 
-\item{linked_arms}{Output of \code{link_arms}, linking forms to REDCap
+\item{linked_arms}{Output of \code{link_arms}, linking instruments to REDCap
 events/arms}
 }
 \value{

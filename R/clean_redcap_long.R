@@ -10,7 +10,7 @@
 #' \code{REDCapR::redcap_read_oneshot()$data}
 #' @param db_metadata_long The longitudinal REDCap metadata output defined by
 #' \code{REDCapR::redcap_metadata_read()$data}
-#' @param linked_arms Output of \code{link_arms}, linking forms to REDCap
+#' @param linked_arms Output of \code{link_arms}, linking instruments to REDCap
 #' events/arms
 #'
 #' @return
@@ -50,7 +50,7 @@ clean_redcap_long <- function(
     check_repeat_and_nonrepeat(db_data_long)
   }
 
-  ## Repeating Forms Logic ----
+  ## Repeating Instruments Logic ----
   if (has_repeating) {
     repeated_forms <- db_data_long %>%
       filter(!is.na(.data$redcap_repeat_instrument)) %>%
@@ -70,7 +70,7 @@ clean_redcap_long <- function(
     )
   }
 
-  ## Nonrepeating Forms Logic ----
+  ## Nonrepeating Instruments Logic ----
   nonrepeated_forms <- db_metadata_long %>%
     filter(!is.na(.data$form_name)) %>%
     pull(.data$form_name) %>%
@@ -116,7 +116,7 @@ clean_redcap_long <- function(
 #' \code{REDCapR::redcap_read_oneshot()$data}
 #' @param db_metadata_long The REDCap metadata output defined by
 #' \code{REDCapR::redcap_metadata_read()$data}
-#' @param linked_arms Output of \code{link_arms}, linking forms to REDCap
+#' @param linked_arms Output of \code{link_arms}, linking instruments to REDCap
 #' events/arms
 #'
 #' @importFrom dplyr filter pull select relocate rename
@@ -154,7 +154,7 @@ distill_nonrepeat_table_long <- function(
   }
 
   # Below necessary to remove descriptive text fields
-  # and to add column to indicate that form is completed
+  # and to add column to indicate that instrument is completed
   my_fields <- db_data_long %>%
     select(all_of(my_fields),
            any_of(paste0(my_form, "_timestamp")),
@@ -171,7 +171,7 @@ distill_nonrepeat_table_long <- function(
       filter(is.na(.data$redcap_repeat_instance))
   }
 
-  # Find events in form
+  # Find events associated with instrument
   events <- linked_arms %>%
     filter(.data$form == my_form) %>%
     pull("unique_event_name")
@@ -214,7 +214,7 @@ distill_nonrepeat_table_long <- function(
 #' \code{REDCapR::redcap_read_oneshot()$data}
 #' @param db_metadata_long The REDCap metadata output defined by
 #' \code{REDCapR::redcap_metadata_read()$data}
-#' @param linked_arms Output of \code{link_arms}, linking forms to REDCap
+#' @param linked_arms Output of \code{link_arms}, linking instruments to REDCap
 #' events/arms
 #'
 #' @importFrom dplyr filter pull select relocate rename
@@ -242,7 +242,7 @@ distill_repeat_table_long <- function(
   }
 
   # Below necessary to remove descriptive text fields
-  # and to add column to indicate that form is completed
+  # and to add column to indicate that instrument is completed
   my_fields <- db_data_long %>%
     select(all_of(my_fields),
            any_of(paste0(my_form, "_timestamp")),
@@ -258,7 +258,7 @@ distill_repeat_table_long <- function(
         .data$redcap_repeat_instrument == my_form
     )
 
-  # Find events in form
+  # Find events associated with instrument
   events <- linked_arms %>%
     filter(.data$form == my_form) %>%
     pull("unique_event_name")

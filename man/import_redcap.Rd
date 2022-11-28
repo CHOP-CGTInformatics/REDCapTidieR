@@ -25,8 +25,9 @@ project. Required.}
 to export the raw coded values or the labels for the options of categorical
 fields. Default is 'label'.}
 
-\item{forms}{A character vector of REDCap form names that specifies the forms to
-import. Default is \code{NULL} which returns all forms in the project.}
+\item{forms}{A character vector of REDCap instrument names that specifies
+which instruments to import. Default is \code{NULL} which imports all instruments
+in the project.}
 
 \item{export_survey_fields}{A logical that specifies whether to export the
 survey identifier and timestamp fields if available. Default is \code{TRUE}.}

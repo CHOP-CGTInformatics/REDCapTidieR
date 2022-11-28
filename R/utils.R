@@ -33,7 +33,7 @@ add_partial_keys <- function(
 }
 
 #' @title
-#' Link longitudinal REDCap forms with their events/arms
+#' Link longitudinal REDCap instruments with their events/arms
 #'
 #' @description
 #' For REDCap databases containing arms and events, it is necessary to determine
@@ -41,7 +41,7 @@ add_partial_keys <- function(
 #'
 #' @returns
 #' Returns a \code{tibble} of \code{redcap_event_name}s with list elements
-#' containing a vector of associated forms.
+#' containing a vector of associated instruments.
 #'
 #' @param redcap_uri The REDCap URI
 #' @param token The REDCap API token

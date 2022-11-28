@@ -42,8 +42,9 @@
 #' @param raw_or_label A string (either 'raw' or 'label') that specifies whether
 #' to export the raw coded values or the labels for the options of categorical
 #' fields. Default is 'label'.
-#' @param forms A character vector of REDCap form names that specifies the forms to
-#' import. Default is `NULL` which returns all forms in the project.
+#' @param forms A character vector of REDCap instrument names that specifies
+#' which instruments to import. Default is `NULL` which imports all instruments
+#' in the project.
 #' @param export_survey_fields A logical that specifies whether to export the
 #' survey identifier and timestamp fields if available. Default is `TRUE`.
 #' @param suppress_redcapr_messages A logical to control whether to suppress messages
@@ -88,33 +89,33 @@ import_redcap <- function(redcap_uri,
   # primary id will always be first in the metadata
   db_metadata$form_name[[1]] <- NA_character_
 
-  # The user may not have requested form with identifiers. We need to make sure
-  # identifiers are kept regardless. This requires adding the form with
-  # identifiers to our redcap_read_oneshot call but filtering out extra,
-  # non-identifier fields in that form
+  # The user may not have requested instrument with identifiers. We need to
+  # make sure identifiers are kept regardless. This requires adding the
+  # instrument with identifiers to our redcap_read_oneshot call but filtering
+  # out extra, non-identifier fields in that instrument
 
-  # Set default forms for API call
+  # Set default instruments for API call
   forms_for_api_call <- forms
   api_call_edited <- FALSE
 
-  # Filter metadata if forms parameter was used
+  # Filter metadata if `forms` parameter was used
   if (!is.null(forms)) {
     check_forms_exist(db_metadata, forms)
 
     # Update forms for API call
 
-    # Get name of first form from unedited metadata
+    # Get name of first instrument from unedited metadata
     id_form <- db_metadata_orig$form_name[[1]]
 
     if (id_form %in% forms) {
-      # If form with identifiers was already requested:
+      # If instrument with identifiers was already requested:
       # Use forms for API call
       forms_for_api_call <- forms
 
       # and no need to drop any fields
       extra_fields_to_drop <- NULL
     } else {
-      # If form with identifiers was not requested:
+      # If instrument with identifiers was not requested:
       # Add it to the API call
       forms_for_api_call <- c(id_form, forms)
 
@@ -124,7 +125,7 @@ import_redcap <- function(redcap_uri,
       api_call_edited <- TRUE
     }
 
-    # Keep only user requested forms in the metadata
+    # Keep only user-requested instruments in the metadata
     # form_name is NA for primary id
     db_metadata <- filter(
       db_metadata,
@@ -151,16 +152,16 @@ import_redcap <- function(redcap_uri,
     db_data <- update_data_col_names(db_data, db_metadata)
   }
 
-  # If we edited the redcap_read_oneshot API call to get the first form then
-  # do some cleanup
+  # If we edited the redcap_read_oneshot API call to get the first instrument
+  # then do some cleanup
   if (api_call_edited) {
     # Drop any extra fields that may have been added because we added extra
-    # forms to the API call
+    # instruments to the API call
     # This assumes the names of checkbox fields in the data have been updated by
     # update_data_col_names
     db_data <- select(db_data, !any_of(extra_fields_to_drop))
 
-    # Drop repeating instrument rows that may be associated with extra form
+    # Drop repeating instrument rows that may be associated with extra instrument
     if ("redcap_repeat_instrument" %in% colnames(db_data)) {
       db_data <- db_data %>%
         filter(.data$redcap_repeat_instrument %in% forms |
@@ -231,11 +232,11 @@ import_redcap <- function(redcap_uri,
 #' @details
 #' This function applies rules to determine which fields are included in the
 #' results of \code{REDCapR::redcap_read_oneshot} because the user didn't
-#' request the form containing identifiers
+#' request the instrument containing identifiers
 #'
 #' @param db_metadata metadata tibble created by
 #' \code{REDCapR::redcap_metadata_read}
-#' @param form the name of the form containing identifiers
+#' @param form the name of the instrument containing identifiers
 #'
 #' @return
 #' A character vector of extra field names that can be used to filter the
@@ -246,7 +247,7 @@ import_redcap <- function(redcap_uri,
 #'
 #' @keywords internal
 get_fields_to_drop <- function(db_metadata, form) {
-  # Assume the first form in the metadata contains IDs
+  # Assume the first instrument in the metadata contains IDs
   # REDCap enforces this constraints
   record_id_field <- db_metadata$field_name[[1]]
 
@@ -280,9 +281,9 @@ get_fields_to_drop <- function(db_metadata, form) {
 #'
 #' @return
 #' The original supertibble with additional fields:
-#' - \code{instrument_label} containing labels for each form
-#' - \code{redcap_metadata} containing metadata for the fields in each form as a
-#' list column
+#' - \code{instrument_label} containing labels for each instrument
+#' - \code{redcap_metadata} containing metadata for the fields in each
+#' instrument as a list column
 #'
 #' @importFrom REDCapR redcap_instruments
 #' @importFrom dplyr left_join rename %>% select rename relocate mutate
@@ -319,7 +320,7 @@ add_metadata <- function(supertbl, db_metadata, redcap_uri, token) {
     ) %>%
     relocate("field_name", "field_label", "field_type", .before = everything())
 
-  ## Create a record with the project identifier for each form
+  ## Create a record with the project identifier for each instrument
   all_forms <- unique(db_metadata$redcap_form_name)
   record_id_field <- get_record_id_field(supertbl$redcap_data[[1]])
 
@@ -333,7 +334,7 @@ add_metadata <- function(supertbl, db_metadata, redcap_uri, token) {
     bind_rows(filter(db_metadata, .data$field_name != record_id_field)) %>%
     filter(!is.na(.data$redcap_form_name))
 
-  # nest by form
+  # nest by instrument
   metadata <- nest(db_metadata, redcap_metadata = !"redcap_form_name")
 
   # Combine ----
