@@ -46,7 +46,7 @@
     <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/add_partial_keys.html</loc>
   </url>
   <url>
-    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/bind_tables.html</loc>
+    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/bind_tibbles.html</loc>
   </url>
   <url>
     <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/calc_metadata_stats.html</loc>
@@ -76,6 +76,9 @@
     <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/clean_redcap_long.html</loc>
   </url>
   <url>
+    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/deprecated.html</loc>
+  </url>
+  <url>
     <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/distill_nonrepeat_table.html</loc>
   </url>
   <url>
@@ -88,10 +91,10 @@
     <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/distill_repeat_table_long.html</loc>
   </url>
   <url>
-    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/extract_table.html</loc>
+    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/extract_tibble.html</loc>
   </url>
   <url>
-    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/extract_tables.html</loc>
+    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/extract_tibbles.html</loc>
   </url>
   <url>
     <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/format-helpers.html</loc>
@@ -101,6 +104,9 @@
   </url>
   <url>
     <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/get_record_id_field.html</loc>
+  </url>
+  <url>
+    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/import_redcap.html</loc>
   </url>
   <url>
     <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/index.html</loc>
@@ -116,9 +122,6 @@
   </url>
   <url>
     <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/parse_labels.html</loc>
-  </url>
-  <url>
-    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/read_redcap_tidy.html</loc>
   </url>
   <url>
     <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/resolve_formatter.html</loc>

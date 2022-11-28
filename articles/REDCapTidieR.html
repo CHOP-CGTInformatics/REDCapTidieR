@@ -40,7 +40,9 @@
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li class="dropdown-header">Getting Started</li>
+<li>
+  <a href="../articles/REDCapTidieR.html">Getting Started</a>
+</li>
 <li>
   <a href="../articles/glossary.html">Glossary</a>
 </li>
@@ -121,7 +123,7 @@ Hero Powers</strong> which captures each one of the superpowers that a
 specific superhero possesses.</p>
 <center>
 <div class="figure">
-<img src="record_status_dash.png" alt=""><p class="caption">REDCap Record Status Dashboard for the Superhero
+<img src="record-status-dash.png" alt=""><p class="caption">REDCap Record Status Dashboard for the Superhero
 database</p>
 </div>
 </center>
@@ -129,17 +131,17 @@ database</p>
 <div class="section level2">
 <h2 id="importing-data-from-redcap">Importing data from REDCap<a class="anchor" aria-label="anchor" href="#importing-data-from-redcap"></a>
 </h2>
-<p>The <code><a href="../reference/read_redcap_tidy.html">read_redcap_tidy()</a></code> function is the workhorse of
-REDCapTidieR. It requires a REDCap database URI and a REDCap API token.
-<em>You need to have API access to the REDCap database to use
-REDCapTidieR. REDCapTidieR does not work with files exported from
-REDCap.</em> We use it here to import data from the Superheroes database
-into a <a href="https://tibble.tidyverse.org/" class="external-link">tibble</a> named
+<p>To import data from REDCap, use the <code><a href="../reference/import_redcap.html">import_redcap()</a></code>
+function. <code><a href="../reference/import_redcap.html">import_redcap()</a></code> requires a REDCap database URI
+and a REDCap API token. <em>You need to have API access to the REDCap
+database to use REDCapTidieR. REDCapTidieR does not work with files
+exported from REDCap.</em> We use it here to import data from the
+Superheroes database. You can see that it returns a <a href="https://tibble.tidyverse.org/" class="external-link">tibble</a> named
 <code>superheroes</code>. We use <code><a href="https://pkgs.rstudio.com/rmarkdown/reference/paged_table.html" class="external-link">rmarkdown::paged_table()</a></code>
-to allow you to explore this tibble.</p>
+so you can explore this tibble.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/CHOP-CGTInformatics/REDCapTidieR" class="external-link">REDCapTidieR</a></span><span class="op">)</span></span>
-<span><span class="va">superheroes</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_redcap_tidy.html">read_redcap_tidy</a></span><span class="op">(</span><span class="va">redcap_uri</span>, <span class="va">token</span><span class="op">)</span></span>
+<span><span class="va">superheroes</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/import_redcap.html">import_redcap</a></span><span class="op">(</span><span class="va">redcap_uri</span>, <span class="va">token</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">superheroes</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">rmarkdown</span><span class="fu">::</span><span class="fu"><a href="https://pkgs.rstudio.com/rmarkdown/reference/paged_table.html" class="external-link">paged_table</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
@@ -148,24 +150,27 @@ to allow you to explore this tibble.</p>
 {"columns":[{"label":["redcap_form_name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["redcap_form_label"],"name":[2],"type":["chr"],"align":["left"]},{"label":["redcap_data"],"name":[3],"type":["list"],"align":["right"]},{"label":["redcap_metadata"],"name":[4],"type":["list"],"align":["right"]},{"label":["structure"],"name":[5],"type":["chr"],"align":["left"]},{"label":["data_rows"],"name":[6],"type":["int"],"align":["right"]},{"label":["data_cols"],"name":[7],"type":["int"],"align":["right"]},{"label":["data_size"],"name":[8],"type":["lbstr_by"],"align":["right"]},{"label":["data_na_pct"],"name":[9],"type":["dbl"],"align":["right"]}],"data":[{"1":"heroes_information","2":"Heroes Information","3":"<tibble[,12]>","4":"<tibble[,16]>","5":"nonrepeating","6":"734","7":"12","8":"123.24 kB","9":"0.2316076"},{"1":"super_hero_powers","2":"Super Hero Powers","3":"<tibble[,4]>","4":"<tibble[,16]>","5":"repeating","6":"5966","7":"4","8":"180.21 kB","9":"0.0000000"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
-<p>This returns a tibble with two rows. You might expect more rows from
-a database with 734 superheroes. <code><a href="../reference/read_redcap_tidy.html">read_redcap_tidy()</a></code> returns
-data in a special object that we call the <strong>supertibble</strong>.
-The supertibble contains, among other things, tidy tibbles with the data
-and metadata derived from each instrument. We call these the
-<strong>data tibble</strong> and <strong>metadata tibble</strong>.</p>
-<p>Each row of the supertibble corresponds to one REDCap instrument. The
-<code>redcap_form_name</code> and <code>redcap_form_label</code> columns
-identify that instrument. The <code>redcap_data</code> column contains
-the data tibbles. The <code>redcap_metadata</code> column contains the
-metadata tibbles. Additional columns contain useful information about
-the data tibble, such as the number of rows and columns, the size in
-memory, and the percentage of missing values.</p>
+<p>You can see that the tibble that <code><a href="../reference/import_redcap.html">import_redcap()</a></code>
+returned has only two rows. This may be surprising because you might
+expect more rows from a database with 734 superheroes.
+<code><a href="../reference/import_redcap.html">import_redcap()</a></code> returns data in a special object that we
+call the <strong>supertibble</strong>. The supertibble contains, among
+other things, tibbles with the data and metadata derived from each
+instrument. We call these the <strong>data tibbles</strong> and
+<strong>metadata tibbles</strong>.</p>
+<p><strong>Each row of the supertibble corresponds to one REDCap
+instrument</strong>. The <code>redcap_form_name</code> and
+<code>redcap_form_label</code> columns identify which instrument the row
+relates to. The <code>redcap_data</code> column contains the data
+tibbles. The <code>redcap_metadata</code> column contains the metadata
+tibbles. Additional columns contain useful information about the data
+tibble, such as row and column counts, size in memory, and the
+percentage of missing values in the data.</p>
 </div>
 <div class="section level2">
 <h2 id="exploring-the-contents-of-the-supertibble">Exploring the contents of the supertibble<a class="anchor" aria-label="anchor" href="#exploring-the-contents-of-the-supertibble"></a>
 </h2>
-<p>The supertibble is designed to be explored using the <a href="https://support.posit.co/hc/en-us/articles/205175388-Using-the-Data-Viewer-in-the-RStudio-IDE" class="external-link">RStudio
+<p>We designed the supertibble so you can explore it with the <a href="https://support.posit.co/hc/en-us/articles/205175388-Using-the-Data-Viewer-in-the-RStudio-IDE" class="external-link">RStudio
 Data Viewer</a>. You can click on the table icon in the Environment tab
 to view of the supertibble in the data viewer. At a glance you see an
 overview of the instruments in the REDCap project.</p>
@@ -189,9 +194,9 @@ represents a superhero, identified by their <code>record_id</code>.</p>
 represents a superpower of a specific hero. Each row is identified by
 the combination of <code>record_id</code> and
 <code>redcap_repeat_instance</code>. This difference in granularity is
-because in REDCap <code>super_hero_powers</code> is configured as a
+because in REDCap <code>super_hero_powers</code> was designated to be a
 <strong>repeating</strong> instrument whereas
-<code>heroes_information</code> is configured as a
+<code>heroes_information</code> was designated as a
 <strong>nonrepeating</strong> instrument.</p>
 <center>
 <div class="figure">
@@ -217,29 +222,33 @@ tibbles from a supertibble.</p>
 <div class="section level3">
 <h3 id="binding-data-tibbles-into-the-environment">Binding data tibbles into the environment<a class="anchor" aria-label="anchor" href="#binding-data-tibbles-into-the-environment"></a>
 </h3>
-<p>The <code><a href="../reference/bind_tables.html">bind_tables()</a></code> function takes a supertibble and binds
-its data tibbles directly into the global environment. When you use
-<code><a href="../reference/bind_tables.html">bind_tables()</a></code> while working interactively in the RStudio
-IDE, you will see data tibbles appear in the Environment pane.</p>
+<p>The <code><a href="../reference/bind_tibbles.html">bind_tibbles()</a></code> function takes a supertibble and
+binds its data tibbles directly into the global environment. When you
+use <code><a href="../reference/bind_tibbles.html">bind_tibbles()</a></code> while working interactively in the
+RStudio IDE, you will see data tibbles appear in the Environment
+pane.</p>
 <center>
-<p><img src="bind-tables.gif" style="width:75.0%"></p>
+<div class="figure">
+<img src="bind-tibbles.gif" style="width:75.0%" alt=""><p class="caption">Demonstration of the <code>bind_tibbles</code>
+function</p>
+</div>
 </center>
-<p>By default, <code><a href="../reference/bind_tables.html">bind_tables()</a></code> extracts all data tibbles from
-the supertibble. With the <code>tbls</code> argument you can specify a
-subset of data tibbles that should be extracted. With the
+<p>By default, <code><a href="../reference/bind_tibbles.html">bind_tibbles()</a></code> extracts all data tibbles
+from the supertibble. With the <code>tbls</code> argument you can
+specify a subset of data tibbles that should be extracted. With the
 <code>environment</code> argument you can supply your own environment
 object to which the tibbles will be bound.</p>
 </div>
 <div class="section level3">
 <h3 id="extracting-a-list-of-data-tibbles">Extracting a list of data tibbles<a class="anchor" aria-label="anchor" href="#extracting-a-list-of-data-tibbles"></a>
 </h3>
-<p>The <code><a href="../reference/extract_tables.html">extract_tables()</a></code> function takes a supertibble and
+<p>The <code><a href="../reference/extract_tibbles.html">extract_tibbles()</a></code> function takes a supertibble and
 returns a named list of data tibbles. The default is to extract all data
 tibbles. We use <code>str</code> here to show the structure of the list
-returned by <code><a href="../reference/extract_tables.html">extract_tables()</a></code>.</p>
+returned by <code><a href="../reference/extract_tibbles.html">extract_tibbles()</a></code>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">superheroes_list</span> <span class="op">&lt;-</span> <span class="va">superheroes</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="../reference/extract_tables.html">extract_tables</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="../reference/extract_tibbles.html">extract_tibbles</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">superheroes_list</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span>max.level <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
@@ -250,7 +259,7 @@ returned by <code><a href="../reference/extract_tables.html">extract_tables()</a
 selectors</a> to select specific data tibbles.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">superheroes</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="../reference/extract_tables.html">extract_tables</a></span><span class="op">(</span><span class="fu">ends_with</span><span class="op">(</span><span class="st">"powers"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/extract_tibbles.html">extract_tibbles</a></span><span class="op">(</span><span class="fu">ends_with</span><span class="op">(</span><span class="st">"powers"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span>max.level <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="co">#&gt; List of 1</span></span>
 <span><span class="co">#&gt;  $ super_hero_powers: tibble [5,966 × 4] (S3: tbl_df/tbl/data.frame)</span></span></code></pre></div>
@@ -258,11 +267,11 @@ selectors</a> to select specific data tibbles.</p>
 <div class="section level3">
 <h3 id="extracting-a-single-data-tibble">Extracting a single data tibble<a class="anchor" aria-label="anchor" href="#extracting-a-single-data-tibble"></a>
 </h3>
-<p>The <code><a href="../reference/extract_table.html">extract_table()</a></code> takes a supertibble and returns a
+<p>The <code><a href="../reference/extract_tibble.html">extract_tibble()</a></code> takes a supertibble and returns a
 single data tibble.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">superheroes</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="../reference/extract_table.html">extract_table</a></span><span class="op">(</span><span class="st">"heroes_information"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/extract_tibble.html">extract_tibble</a></span><span class="op">(</span><span class="st">"heroes_information"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">rmarkdown</span><span class="fu">::</span><span class="fu"><a href="https://pkgs.rstudio.com/rmarkdown/reference/paged_table.html" class="external-link">paged_table</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
@@ -280,7 +289,10 @@ labels can make data exploration easier. An increasing number of R
 packages support labelled data, including <a href="https://ggplot2.tidyverse.org/" class="external-link">ggplot</a> (via <a href="https://jonocarroll.github.io/ggeasy/" class="external-link">ggeasy</a>) and <a href="https://www.danieldsjoberg.com/gtsummary/" class="external-link">gtsummary</a>. The
 RStudio Data Viewer shows variable labels below variable names.</p>
 <center>
-<p><img src="labelled-supertibble.png" style="width:75.0%"></p>
+<div class="figure">
+<img src="labelled-supertibble.png" style="width:75.0%" alt=""><p class="caption">Data Viewer showing part of a labelled
+supertibble</p>
+</div>
 </center>
 <p>The <code><a href="../reference/make_labelled.html">make_labelled()</a></code> function takes a supertibble and
 returns a supertibble with variable labels applied to the variables of
@@ -292,7 +304,7 @@ the variable labels of a tibble.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">superheroes</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/make_labelled.html">make_labelled</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="../reference/bind_tables.html">bind_tables</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="../reference/bind_tibbles.html">bind_tibbles</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">labelled</span><span class="fu">::</span><span class="fu"><a href="http://larmarange.github.io/labelled/reference/look_for.html" class="external-link">look_for</a></span><span class="op">(</span><span class="va">heroes_information</span><span class="op">)</span></span>
 <span><span class="co">#&gt;  pos variable             label              col_type values    </span></span>
@@ -317,7 +329,10 @@ REDCap instrument! REDCapTidieR places them into the
 Below you can see that the field labels of the REDCap instrument for
 <code>heroes_information</code> are the same as the labels above.</p>
 <center>
-<p><img src="heroes-information-redcap-form.png" style="width:75.0%"></p>
+<div class="figure">
+<img src="heroes-information-redcap-form.png" style="width:75.0%" alt=""><p class="caption">REDCap data entry view of the
+<code>heroes_information</code> instrument</p>
+</div>
 </center>
 <p>The label for <code>name</code> doesn’t look quite right. Let’s
 remove that trailing <code>:</code>. The <code><a href="../reference/make_labelled.html">make_labelled()</a></code>
@@ -326,7 +341,7 @@ preprocess labels before applying them to the variables.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">superheroes</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/make_labelled.html">make_labelled</a></span><span class="op">(</span>format_labels <span class="op">=</span> <span class="op">~</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">gsub</a></span><span class="op">(</span><span class="st">":"</span>, <span class="st">""</span>, <span class="va">.</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="../reference/bind_tables.html">bind_tables</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="../reference/bind_tibbles.html">bind_tibbles</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">labelled</span><span class="fu">::</span><span class="fu"><a href="http://larmarange.github.io/labelled/reference/look_for.html" class="external-link">look_for</a></span><span class="op">(</span><span class="va">heroes_information</span>, <span class="st">"hero"</span><span class="op">)</span></span>
 <span><span class="co">#&gt;  pos variable label     col_type values</span></span>
@@ -354,7 +369,7 @@ case with <code><a href="https://rdrr.io/r/base/chartr.html" class="external-lin
 <span>      <span class="va">fmt_strip_trailing_colon</span>, </span>
 <span>      <span class="fu">base</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/r/base/chartr.html" class="external-link">tolower</a></span><span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="../reference/bind_tables.html">bind_tables</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="../reference/bind_tibbles.html">bind_tibbles</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">labelled</span><span class="fu">::</span><span class="fu"><a href="http://larmarange.github.io/labelled/reference/look_for.html" class="external-link">look_for</a></span><span class="op">(</span><span class="va">heroes_information</span><span class="op">)</span></span>
 <span><span class="co">#&gt;  pos variable             label              col_type values    </span></span>
