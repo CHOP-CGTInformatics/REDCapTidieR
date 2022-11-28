@@ -88,12 +88,12 @@ test_that("supplying forms is equivalent to post-hoc filtering for a classic dat
   httptest::with_mock_api({
     filtered_by_api <-
       import_redcap(redcap_uri,
-                       classic_token,
-                       forms = "repeated")
+                    classic_token,
+                    forms = "repeated")
 
     filtered_locally <-
       import_redcap(redcap_uri,
-                       classic_token) %>%
+                    classic_token) %>%
       # suppress expected warning
       suppressWarnings(classes = c("field_missing_categories",
                                    "empty_parse_warning")) %>%
@@ -111,12 +111,12 @@ test_that("supplying forms is equivalent to post-hoc filtering for a longitudina
   httptest::with_mock_api({
     filtered_by_api <-
       import_redcap(redcap_uri,
-                       longitudinal_token,
-                       forms = "repeated")
+                    longitudinal_token,
+                    forms = "repeated")
 
     filtered_locally <-
       import_redcap(redcap_uri,
-                       longitudinal_token) %>%
+                    longitudinal_token) %>%
       filter(redcap_form_name == "repeated")
   })
 
@@ -131,12 +131,12 @@ test_that("supplying forms is equivalent to post-hoc filtering for a database wi
   httptest::with_mock_api({
     filtered_by_api <-
       import_redcap(redcap_uri,
-                       repeat_first_instrument_token,
-                       forms = "form_2")
+                    repeat_first_instrument_token,
+                    forms = "form_2")
 
     filtered_locally <-
       import_redcap(redcap_uri,
-                       repeat_first_instrument_token) %>%
+                    repeat_first_instrument_token) %>%
       filter(redcap_form_name == "form_2")
   })
 
@@ -247,8 +247,8 @@ test_that("import_redcap works for a longitudinal, multi-arm database with a rep
 test_that("errors when non-existent form is supplied alone", {
   httptest::with_mock_api({
     import_redcap(redcap_uri,
-                     classic_token,
-                     forms = "fake-form") %>%
+                  classic_token,
+                  forms = "fake-form") %>%
       expect_error(class = "form_does_not_exist")
   })
 })
@@ -256,8 +256,8 @@ test_that("errors when non-existent form is supplied alone", {
 test_that("errors when non-existent form is supplied with existing forms", {
   httptest::with_mock_api({
     import_redcap(redcap_uri,
-                     classic_token,
-                     forms = c("fake-form", "repeated")) %>%
+                  classic_token,
+                  forms = c("fake-form", "repeated")) %>%
       expect_error(class = "form_does_not_exist")
   })
 })
@@ -361,8 +361,8 @@ test_that("import_redcap preserves form_name order mirroring original REDCapR me
 test_that("import_redcap returns expected survey fields", {
   httptest::with_mock_api({
     out <- import_redcap(redcap_uri,
-                            classic_token,
-                            export_survey_fields = TRUE) %>%
+                         classic_token,
+                         export_survey_fields = TRUE) %>%
       suppressWarnings(classes = c("field_missing_categories",
                                    "empty_parse_warning"))
   })
@@ -370,8 +370,8 @@ test_that("import_redcap returns expected survey fields", {
   survey_data <- out$redcap_data[out$redcap_form_name == "survey"][[1]]
   repeat_survey_data <- out$redcap_data[out$redcap_form_name == "repeat_survey"][[1]]
 
-  expected_nonrep_cols <- c("redcap_survey_identifier", "survey_timestamp")
-  expected_rep_cols <- c("redcap_survey_identifier", "repeat_survey_timestamp")
+  expected_nonrep_cols <- c("redcap_survey_identifier", "redcap_survey_timestamp")
+  expected_rep_cols <- c("redcap_survey_identifier", "redcap_survey_timestamp")
 
   expect_true(all(expected_nonrep_cols %in% names(survey_data)))
   expect_true(all(expected_rep_cols %in% names(repeat_survey_data)))

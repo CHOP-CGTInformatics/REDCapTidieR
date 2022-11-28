@@ -147,9 +147,12 @@ distill_nonrepeat_table <- function(
   my_fields <- db_data %>%
     select(all_of(my_fields),
            any_of(paste0(my_form, "_timestamp")),
-           any_of("redcap_survey_identifier"),
            paste0(my_form, "_complete")) %>%
     names()
+
+  if (paste0(my_form, "_timestamp") %in% my_fields) {
+    my_fields <- c(my_fields, "redcap_survey_identifier")
+  }
 
   if (has_repeating) {
     db_data <- db_data %>%
@@ -158,6 +161,8 @@ distill_nonrepeat_table <- function(
 
   db_data %>%
     select(all_of(my_fields)) %>%
+    rename("redcap_survey_timestamp" = any_of(paste0(my_form, "_timestamp"))) %>%
+    relocate(any_of("redcap_survey_timestamp"), .after = everything()) %>%
     rename("form_status_complete" = paste0(my_form, "_complete")) %>%
     relocate("form_status_complete", .after = everything()) %>%
     tibble()
@@ -208,9 +213,12 @@ distill_repeat_table <- function(
   my_fields <- db_data %>%
     select(all_of(my_fields),
            any_of(paste0(my_form, "_timestamp")),
-           any_of("redcap_survey_identifier"),
            paste0(my_form, "_complete")) %>%
     names()
+
+  if (paste0(my_form, "_timestamp") %in% my_fields) {
+    my_fields <- c(my_fields, "redcap_survey_identifier")
+  }
 
   db_data %>%
     filter(
@@ -219,6 +227,8 @@ distill_repeat_table <- function(
     ) %>%
     select(all_of(my_fields), "redcap_repeat_instance") %>%
     relocate("redcap_repeat_instance", .after = all_of(my_record_id)) %>%
+    rename("redcap_survey_timestamp" = any_of(paste0(my_form, "_timestamp"))) %>%
+    relocate(any_of("redcap_survey_timestamp"), .after = everything()) %>%
     rename("form_status_complete" = paste0(my_form, "_complete")) %>%
     relocate("form_status_complete", .after = everything()) %>%
     tibble()
