@@ -376,5 +376,5 @@ test_that("import_redcap returns expected survey fields", {
   expect_true(all(expected_nonrep_cols %in% names(survey_data)))
   expect_true(all(expected_rep_cols %in% names(repeat_survey_data)))
 
-  checkmate::expect_class(survey_data$survey_timestamp, c("POSIXct", "POSIXt"))
+  checkmate::expect_class(survey_data$redcap_survey_timestamp, c("POSIXct", "POSIXt"))
 })

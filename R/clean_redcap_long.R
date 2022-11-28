@@ -161,6 +161,7 @@ distill_nonrepeat_table_long <- function(
            paste0(my_form, "_complete")) %>%
     names()
 
+  # For forms containing surveys, also pull redcap_survey_identifier
   if (paste0(my_form, "_timestamp") %in% my_fields) {
     my_fields <- c(my_fields, "redcap_survey_identifier")
   }
@@ -254,6 +255,7 @@ distill_repeat_table_long <- function(
            paste0(my_form, "_complete")) %>%
     names()
 
+  # For forms containing surveys, also pull redcap_survey_identifier
   if (paste0(my_form, "_timestamp") %in% my_fields) {
     my_fields <- c(my_fields, "redcap_survey_identifier")
   }
