@@ -5,7 +5,7 @@
 
 <p align="center">
 
-<img src="man/figures/REDCapTidieR.png" alt="drawing" width="150" align="right"/>
+<img src="man/figures/REDCapTidieR.png" alt="REDCapTidieR hex logo" width="150" align="right"/>
 
 </p>
 <!-- badges: start -->
@@ -48,10 +48,11 @@ devtools::install_github("CHOP-CGTInformatics/REDCapTidieR")
 
 ## Getting Started
 
-Use `read_redcap_tidy()` together with `bind_tables()` to import data
-from all instruments into your environment.
+Use `import_redcap()` together with `bind_tibbles()` to import data from
+all instruments into your environment.
 
-![](man/figures/redcaptidier_demo.gif)
+![Demonstration of using the `import_redcap` and `bind_tibbles`
+functions](man/figures/redcaptidier-demo.gif)
 
 Read the [Getting Started vignette](articles/REDCapTidieR.html) to learn
 more.

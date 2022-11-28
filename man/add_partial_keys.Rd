@@ -15,7 +15,7 @@ identifiers}
 }
 \value{
 Two appended columns, \code{redcap_event} and \code{redcap_arm}
-to the end of \code{read_redcap_tidy} output \code{tibble}s.
+to the end of \code{import_redcap} output \code{tibble}s.
 }
 \description{
 Make helper variables \code{redcap_event} and \code{redcap_arm} available as

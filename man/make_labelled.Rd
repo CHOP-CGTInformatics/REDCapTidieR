@@ -7,7 +7,7 @@
 make_labelled(supertbl, format_labels = NULL)
 }
 \arguments{
-\item{supertbl}{a supertibble generated using \code{read_redcap_tidy()}}
+\item{supertbl}{a supertibble generated using \code{import_redcap()}}
 
 \item{format_labels}{one or multiple optional label formatting functions.
 A label formatting function is a function that takes a character vector and
@@ -49,7 +49,7 @@ make_labelled(supertbl, format_labels = tolower)
 redcap_uri <- Sys.getenv("REDCAP_URI")
 token <- Sys.getenv("REDCAP_TOKEN")
 
-supertbl <- read_redcap_tidy(redcap_uri, token)
+supertbl <- import_redcap(redcap_uri, token)
 make_labelled(supertbl)
 }
 }

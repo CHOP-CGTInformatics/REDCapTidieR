@@ -2,7 +2,7 @@
 #' Extract non-longitudinal REDCap databases into tidy tibbles
 #'
 #' @description
-#' Helper function internal to \code{read_redcap_tidy} responsible for
+#' Helper function internal to \code{import_redcap} responsible for
 #' extraction and final processing of a tidy \code{tibble} to the user from
 #' a non-longitudinal REDCap database.
 #'

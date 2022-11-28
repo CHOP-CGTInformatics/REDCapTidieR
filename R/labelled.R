@@ -11,7 +11,7 @@
 #' The variable labels for the data tibbles are derived from the `field_label`
 #' column of the metadata tibble.
 #'
-#' @param supertbl a supertibble generated using `read_redcap_tidy()`
+#' @param supertbl a supertibble generated using `import_redcap()`
 #' @param format_labels one or multiple optional label formatting functions.
 #' A label formatting function is a function that takes a character vector and
 #' returns a modified character vector of the same length. This function is
@@ -45,7 +45,7 @@
 #' redcap_uri <- Sys.getenv("REDCAP_URI")
 #' token <- Sys.getenv("REDCAP_TOKEN")
 #'
-#' supertbl <- read_redcap_tidy(redcap_uri, token)
+#' supertbl <- import_redcap(redcap_uri, token)
 #' make_labelled(supertbl)
 #' }
 #' @export
@@ -177,7 +177,7 @@ make_labelled <- function(supertbl, format_labels = NULL) {
 #' - `fmt_strip_trailing_punct()` removes punctuation at the end of a string.
 #' - `fmt_strip_html()` removes html tags from a string.
 #' - `fmt_strip_field_embedding()` removes text between curly braces `{}` which
-#' REDCap uses for special "field embedding" logic. Note that `read_redcap_tidy()`
+#' REDCap uses for special "field embedding" logic. Note that `import_redcap()`
 #' removes html tags and field embedding logic from field labels in the metadata
 #' by default.
 #'

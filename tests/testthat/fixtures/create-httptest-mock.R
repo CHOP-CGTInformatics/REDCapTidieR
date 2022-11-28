@@ -1,4 +1,4 @@
-# Create mocks for tests in test-read_redcap_tidy.R
+# Create mocks for tests in test-import_redcap.R
 
 library(httptest)
 
@@ -11,36 +11,36 @@ redcap_uri <- Sys.getenv("REDCAP_URI")
 # Create mocks -----------
 start_capturing(path = testthat::test_path("fixtures"))
 
-read_redcap_tidy(redcap_uri, classic_token)
+import_redcap(redcap_uri, classic_token)
 
-read_redcap_tidy(redcap_uri,
+import_redcap(redcap_uri,
                  classic_token,
                  forms = "repeated")
 
-read_redcap_tidy(redcap_uri,
+import_redcap(redcap_uri,
                  classic_token,
                  export_survey_fields = TRUE)
 
-read_redcap_tidy(redcap_uri, longitudinal_token, forms = "repeated")
+import_redcap(redcap_uri, longitudinal_token, forms = "repeated")
 
-read_redcap_tidy(redcap_uri, longitudinal_noarms_token)
+import_redcap(redcap_uri, longitudinal_noarms_token)
 
-read_redcap_tidy(redcap_uri, longitudinal_token)
+import_redcap(redcap_uri, longitudinal_token)
 
 # Ignore expected form_does_not_exist errors
 tryCatch(
   form_does_not_exist = function(cnd) {},
-  read_redcap_tidy(redcap_uri, classic_token, forms = "fake-form")
+  import_redcap(redcap_uri, classic_token, forms = "fake-form")
 )
 
 tryCatch(
   form_does_not_exist = function(cnd) {},
-  read_redcap_tidy(redcap_uri,
+  import_redcap(redcap_uri,
                    classic_token,
                    forms = c("fake-form", "repeated"))
 )
 
-read_redcap_tidy(redcap_uri, repeat_first_instrument_token)
-read_redcap_tidy(redcap_uri, repeat_first_instrument_token, forms = "form_2")
+import_redcap(redcap_uri, repeat_first_instrument_token)
+import_redcap(redcap_uri, repeat_first_instrument_token, forms = "form_2")
 
 stop_capturing()
