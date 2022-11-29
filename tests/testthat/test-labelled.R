@@ -151,7 +151,7 @@ test_that("make_labelled applies all predefined labeles", {
     redcap_arm = "REDCap Arm",
     survey_timestamp = "REDCap Survey Timestamp",
     redcap_survey_identifier = "REDCap Survey Identifier",
-    form_status_complete = "REDCap Form Status"
+    form_status_complete = "REDCap Instrument Completed?"
   )
 
   expect_equal(data_labs, expected_data_labs)

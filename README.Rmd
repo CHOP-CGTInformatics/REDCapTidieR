@@ -70,3 +70,4 @@ This package was developed by the [Children's Hospital of Philadelphia](https://
 -   *Stephan Kadauke Start-up funds.* Stephan Kadauke, PI, CHOP, 2018-2024
 
 -   *CHOP-based GMP cell manufacturing (MFG) for CAR T clinical trials*. Stephan Grupp, PI; Stephan Kadauke, co-PI, CHOP, 2020-2022
+ 

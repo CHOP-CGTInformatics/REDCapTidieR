@@ -46,7 +46,7 @@ bind_tibbles <- function(supertbl,
   # Name variables
   my_supertbl <- supertbl
 
-  # Apply conditional loading for specific forms
+  # Apply conditional loading for specific instruments
   if (!is.null(tbls)) {
     my_supertbl <- my_supertbl %>%
       filter(.data$redcap_form_name %in% tbls)

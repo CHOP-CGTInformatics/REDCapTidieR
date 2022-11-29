@@ -45,7 +45,7 @@ clean_redcap <- function(
     FALSE
   }
 
-  ## Repeating Forms Logic ----
+  ## Repeating Instruments Logic ----
   if (has_repeating) {
     repeated_forms <- db_data %>%
       filter(!is.na(.data$redcap_repeat_instrument)) %>%
@@ -63,7 +63,7 @@ clean_redcap <- function(
     )
   }
 
-  ## Nonrepeating Forms Logic ----
+  ## Nonrepeating Instruments Logic ----
   nonrepeated_forms <- db_metadata %>%
     filter(!is.na(.data$form_name)) %>%
     pull(.data$form_name) %>%
@@ -143,7 +143,7 @@ distill_nonrepeat_table <- function(
   }
 
   # Below necessary to remove descriptive text fields
-  # and to add column to indicate that form is completed
+  # and to add column to indicate that instrument is completed
   my_fields <- db_data %>%
     select(all_of(my_fields),
            any_of(paste0(my_form, "_timestamp")),
@@ -204,7 +204,7 @@ distill_repeat_table <- function(
   }
 
   # Below necessary to remove descriptive text fields
-  # and to add column to indicate that form is completed
+  # and to add column to indicate that instrument is completed
   my_fields <- db_data %>%
     select(all_of(my_fields),
            any_of(paste0(my_form, "_timestamp")),

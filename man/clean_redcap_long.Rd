@@ -13,7 +13,7 @@ clean_redcap_long(db_data_long, db_metadata_long, linked_arms)
 \item{db_metadata_long}{The longitudinal REDCap metadata output defined by
 \code{REDCapR::redcap_metadata_read()$data}}
 
-\item{linked_arms}{Output of \code{link_arms}, linking forms to REDCap
+\item{linked_arms}{Output of \code{link_arms}, linking instruments to REDCap
 events/arms}
 }
 \value{

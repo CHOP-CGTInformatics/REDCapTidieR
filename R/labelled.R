@@ -97,9 +97,13 @@ make_labelled <- function(supertbl, format_labels = NULL) {
     redcap_repeat_instance = "REDCap Repeat Instance",
     redcap_event = "REDCap Event",
     redcap_arm = "REDCap Arm",
+    # TODO: `survey_timestamp` is not a predefined label but it constructed
+    # from [instrument_name]_timestamp. We can either a) change universally
+    # to "survey_timestamp" (which is what we do with `form_status_complete`)
+    # or else we need to change the below.
     survey_timestamp = "REDCap Survey Timestamp",
     redcap_survey_identifier = "REDCap Survey Identifier",
-    form_status_complete = "REDCap Form Status"
+    form_status_complete = "REDCap Instrument Completed?"
   )
 
   event_labs <- c(
