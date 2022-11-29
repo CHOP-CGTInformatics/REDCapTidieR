@@ -2,7 +2,7 @@
 % Please edit documentation in R/checks.R
 \name{check_forms_exist}
 \alias{check_forms_exist}
-\title{Check that all requested forms are in REDCap project metadata}
+\title{Check that all requested instruments are in REDCap project metadata}
 \usage{
 check_forms_exist(db_metadata, forms)
 }
@@ -10,14 +10,14 @@ check_forms_exist(db_metadata, forms)
 \item{db_metadata}{The metadata file read by
 \code{REDCapR::redcap_metadata_read()}}
 
-\item{forms}{The character vector of form names passed to
+\item{forms}{The character vector of instrument names passed to
 \code{import_redcap()}}
 }
 \value{
-An error message listing the requested forms that don't exist
+An error message listing the requested instruments that don't exist
 }
 \description{
-Provide an error message when any form names are passed to
+Provide an error message when any instrument names are passed to
 \code{import_redcap()} that do not exist in the project metadata.
 }
 \keyword{internal}

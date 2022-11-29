@@ -54,8 +54,9 @@ all instruments into your environment.
 ![Demonstration of using the `import_redcap` and `bind_tibbles`
 functions](man/figures/redcaptidier-demo.gif)
 
-Read the [Getting Started vignette](articles/REDCapTidieR.html) to learn
-more.
+Read the [Getting Started
+vignette](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/REDCapTidieR.html)
+to learn more.
 
 ## Collaboration
 

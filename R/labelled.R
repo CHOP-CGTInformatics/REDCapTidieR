@@ -99,7 +99,7 @@ make_labelled <- function(supertbl, format_labels = NULL) {
     redcap_arm = "REDCap Arm",
     redcap_survey_timestamp = "REDCap Survey Timestamp",
     redcap_survey_identifier = "REDCap Survey Identifier",
-    form_status_complete = "REDCap Form Status"
+    form_status_complete = "REDCap Instrument Completed?"
   )
 
   event_labs <- c(

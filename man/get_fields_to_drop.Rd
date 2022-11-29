@@ -11,7 +11,7 @@ get_fields_to_drop(db_metadata, form)
 \item{db_metadata}{metadata tibble created by
 \code{REDCapR::redcap_metadata_read}}
 
-\item{form}{the name of the form containing identifiers}
+\item{form}{the name of the instrument containing identifiers}
 }
 \value{
 A character vector of extra field names that can be used to filter the
@@ -24,6 +24,6 @@ that should be dropped from results of \code{import_redcap}
 \details{
 This function applies rules to determine which fields are included in the
 results of \code{REDCapR::redcap_read_oneshot} because the user didn't
-request the form containing identifiers
+request the instrument containing identifiers
 }
 \keyword{internal}

@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{link_arms}
 \alias{link_arms}
-\title{Link longitudinal REDCap forms with their events/arms}
+\title{Link longitudinal REDCap instruments with their events/arms}
 \usage{
 link_arms(redcap_uri, token)
 }
@@ -13,7 +13,7 @@ link_arms(redcap_uri, token)
 }
 \value{
 Returns a \code{tibble} of \code{redcap_event_name}s with list elements
-containing a vector of associated forms.
+containing a vector of associated instruments.
 }
 \description{
 For REDCap databases containing arms and events, it is necessary to determine

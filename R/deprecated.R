@@ -47,7 +47,7 @@ bind_tables <- function(.data,
   my_structures <- structure
   env_data <- .data
 
-  # Apply conditional loading for specific forms or structures
+  # Apply conditional loading for specific instruments or structures
   if (!is.null(my_tbls)) {
     env_data <- env_data %>%
       filter(.data$redcap_form_name %in% my_tbls)

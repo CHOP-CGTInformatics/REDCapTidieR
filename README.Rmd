@@ -53,7 +53,7 @@ Use `import_redcap()` together with `bind_tibbles()` to import data from all ins
 
 ![Demonstration of using the `import_redcap` and `bind_tibbles` functions](man/figures/redcaptidier-demo.gif)
 
-Read the [Getting Started vignette](articles/REDCapTidieR.html) to learn more.
+Read the [Getting Started vignette](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/REDCapTidieR.html) to learn more.
 
 ## Collaboration
 
@@ -70,3 +70,4 @@ This package was developed by the [Children's Hospital of Philadelphia](https://
 -   *Stephan Kadauke Start-up funds.* Stephan Kadauke, PI, CHOP, 2018-2024
 
 -   *CHOP-based GMP cell manufacturing (MFG) for CAR T clinical trials*. Stephan Grupp, PI; Stephan Kadauke, co-PI, CHOP, 2020-2022
+ 
