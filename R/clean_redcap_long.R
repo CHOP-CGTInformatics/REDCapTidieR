@@ -158,9 +158,13 @@ distill_nonrepeat_table_long <- function(
   my_fields <- db_data_long %>%
     select(all_of(my_fields),
            any_of(paste0(my_form, "_timestamp")),
-           any_of("redcap_survey_identifier"),
            paste0(my_form, "_complete")) %>%
     names()
+
+  # For forms containing surveys, also pull redcap_survey_identifier
+  if (paste0(my_form, "_timestamp") %in% my_fields) {
+    my_fields <- c(my_fields, "redcap_survey_identifier")
+  }
 
   # Setup data for loop redcap_arm linking
   db_data_long <- db_data_long %>%
@@ -185,6 +189,8 @@ distill_nonrepeat_table_long <- function(
     relocate(
       c("redcap_event", "redcap_arm"), .after = !!my_record_id
     ) %>%
+    rename("redcap_survey_timestamp" = any_of(paste0(my_form, "_timestamp"))) %>%
+    relocate(any_of("redcap_survey_timestamp"), .after = everything()) %>%
     rename("form_status_complete" = paste0(my_form, "_complete")) %>%
     relocate("form_status_complete", .after = everything())
 
@@ -246,9 +252,13 @@ distill_repeat_table_long <- function(
   my_fields <- db_data_long %>%
     select(all_of(my_fields),
            any_of(paste0(my_form, "_timestamp")),
-           any_of("redcap_survey_identifier"),
            paste0(my_form, "_complete")) %>%
     names()
+
+  # For forms containing surveys, also pull redcap_survey_identifier
+  if (paste0(my_form, "_timestamp") %in% my_fields) {
+    my_fields <- c(my_fields, "redcap_survey_identifier")
+  }
 
   # Setup data for loop redcap_arm linking
   db_data_long <- db_data_long %>%
@@ -279,6 +289,8 @@ distill_repeat_table_long <- function(
       "redcap_arm",
       .after = !!my_record_id
     ) %>%
+    rename("redcap_survey_timestamp" = any_of(paste0(my_form, "_timestamp"))) %>%
+    relocate(any_of("redcap_survey_timestamp"), .after = everything()) %>%
     rename("form_status_complete" = paste0(my_form, "_complete")) %>%
     relocate("form_status_complete", .after = everything())
 

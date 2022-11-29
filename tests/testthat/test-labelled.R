@@ -67,7 +67,7 @@ test_that("make_labelled applies all predefined labeles", {
     ~ redcap_repeat_instance,
     ~ redcap_event,
     ~ redcap_arm,
-    ~ survey_timestamp,
+    ~ redcap_survey_timestamp,
     ~ redcap_survey_identifier,
     ~ form_status_complete
   ))
@@ -149,7 +149,7 @@ test_that("make_labelled applies all predefined labeles", {
     redcap_repeat_instance = "REDCap Repeat Instance",
     redcap_event = "REDCap Event",
     redcap_arm = "REDCap Arm",
-    survey_timestamp = "REDCap Survey Timestamp",
+    redcap_survey_timestamp = "REDCap Survey Timestamp",
     redcap_survey_identifier = "REDCap Survey Identifier",
     form_status_complete = "REDCap Instrument Completed?"
   )
