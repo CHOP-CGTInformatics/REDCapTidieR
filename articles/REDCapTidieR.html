@@ -307,21 +307,21 @@ the variable labels of a tibble.</p>
 <span>  <span class="fu"><a href="../reference/bind_tibbles.html">bind_tibbles</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">labelled</span><span class="fu">::</span><span class="fu"><a href="http://larmarange.github.io/labelled/reference/look_for.html" class="external-link">look_for</a></span><span class="op">(</span><span class="va">heroes_information</span><span class="op">)</span></span>
-<span><span class="co">#&gt;  pos variable             label              col_type values    </span></span>
-<span><span class="co">#&gt;  1   record_id            Record ID          dbl                </span></span>
-<span><span class="co">#&gt;  2   name                 Hero name:         chr                </span></span>
-<span><span class="co">#&gt;  3   gender               Gender             chr                </span></span>
-<span><span class="co">#&gt;  4   eye_color            Eye color          chr                </span></span>
-<span><span class="co">#&gt;  5   race                 Race               chr                </span></span>
-<span><span class="co">#&gt;  6   hair_color           Hair color         chr                </span></span>
-<span><span class="co">#&gt;  7   height               Height             dbl                </span></span>
-<span><span class="co">#&gt;  8   weight               Weight             dbl                </span></span>
-<span><span class="co">#&gt;  9   publisher            Publisher          chr                </span></span>
-<span><span class="co">#&gt;  10  skin_color           Skin Color         chr                </span></span>
-<span><span class="co">#&gt;  11  alignment            Alignment          chr                </span></span>
-<span><span class="co">#&gt;  12  form_status_complete REDCap Form Status fct      Incomplete</span></span>
-<span><span class="co">#&gt;                                                       Unverified</span></span>
-<span><span class="co">#&gt;                                                       Complete</span></span></code></pre></div>
+<span><span class="co">#&gt;  pos variable             label                        col_type values    </span></span>
+<span><span class="co">#&gt;  1   record_id            Record ID                    dbl                </span></span>
+<span><span class="co">#&gt;  2   name                 Hero name:                   chr                </span></span>
+<span><span class="co">#&gt;  3   gender               Gender                       chr                </span></span>
+<span><span class="co">#&gt;  4   eye_color            Eye color                    chr                </span></span>
+<span><span class="co">#&gt;  5   race                 Race                         chr                </span></span>
+<span><span class="co">#&gt;  6   hair_color           Hair color                   chr                </span></span>
+<span><span class="co">#&gt;  7   height               Height                       dbl                </span></span>
+<span><span class="co">#&gt;  8   weight               Weight                       dbl                </span></span>
+<span><span class="co">#&gt;  9   publisher            Publisher                    chr                </span></span>
+<span><span class="co">#&gt;  10  skin_color           Skin Color                   chr                </span></span>
+<span><span class="co">#&gt;  11  alignment            Alignment                    chr                </span></span>
+<span><span class="co">#&gt;  12  form_status_complete REDCap Instrument Completed? fct      Incomplete</span></span>
+<span><span class="co">#&gt;                                                                 Unverified</span></span>
+<span><span class="co">#&gt;                                                                 Complete</span></span></code></pre></div>
 <p>Where did these labels come from? These labels are actually the
 REDCap <strong>field labels</strong> that prompt data entry in the
 REDCap instrument! REDCapTidieR places them into the
@@ -372,21 +372,21 @@ case with <code><a href="https://rdrr.io/r/base/chartr.html" class="external-lin
 <span>  <span class="fu"><a href="../reference/bind_tibbles.html">bind_tibbles</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">labelled</span><span class="fu">::</span><span class="fu"><a href="http://larmarange.github.io/labelled/reference/look_for.html" class="external-link">look_for</a></span><span class="op">(</span><span class="va">heroes_information</span><span class="op">)</span></span>
-<span><span class="co">#&gt;  pos variable             label              col_type values    </span></span>
-<span><span class="co">#&gt;  1   record_id            record id          dbl                </span></span>
-<span><span class="co">#&gt;  2   name                 hero name          chr                </span></span>
-<span><span class="co">#&gt;  3   gender               gender             chr                </span></span>
-<span><span class="co">#&gt;  4   eye_color            eye color          chr                </span></span>
-<span><span class="co">#&gt;  5   race                 race               chr                </span></span>
-<span><span class="co">#&gt;  6   hair_color           hair color         chr                </span></span>
-<span><span class="co">#&gt;  7   height               height             dbl                </span></span>
-<span><span class="co">#&gt;  8   weight               weight             dbl                </span></span>
-<span><span class="co">#&gt;  9   publisher            publisher          chr                </span></span>
-<span><span class="co">#&gt;  10  skin_color           skin color         chr                </span></span>
-<span><span class="co">#&gt;  11  alignment            alignment          chr                </span></span>
-<span><span class="co">#&gt;  12  form_status_complete redcap form status fct      Incomplete</span></span>
-<span><span class="co">#&gt;                                                       Unverified</span></span>
-<span><span class="co">#&gt;                                                       Complete</span></span></code></pre></div>
+<span><span class="co">#&gt;  pos variable             label                        col_type values    </span></span>
+<span><span class="co">#&gt;  1   record_id            record id                    dbl                </span></span>
+<span><span class="co">#&gt;  2   name                 hero name                    chr                </span></span>
+<span><span class="co">#&gt;  3   gender               gender                       chr                </span></span>
+<span><span class="co">#&gt;  4   eye_color            eye color                    chr                </span></span>
+<span><span class="co">#&gt;  5   race                 race                         chr                </span></span>
+<span><span class="co">#&gt;  6   hair_color           hair color                   chr                </span></span>
+<span><span class="co">#&gt;  7   height               height                       dbl                </span></span>
+<span><span class="co">#&gt;  8   weight               weight                       dbl                </span></span>
+<span><span class="co">#&gt;  9   publisher            publisher                    chr                </span></span>
+<span><span class="co">#&gt;  10  skin_color           skin color                   chr                </span></span>
+<span><span class="co">#&gt;  11  alignment            alignment                    chr                </span></span>
+<span><span class="co">#&gt;  12  form_status_complete redcap instrument completed? fct      Incomplete</span></span>
+<span><span class="co">#&gt;                                                                 Unverified</span></span>
+<span><span class="co">#&gt;                                                                 Complete</span></span></code></pre></div>
 </div>
   </div>
 
