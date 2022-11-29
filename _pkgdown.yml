@@ -23,7 +23,7 @@ reference:
   - import_redcap
 - title: "Extract Data Tibbles"
   desc: >
-    Use these functions to extract individual data tibbles from a supertibble.
+    Extract individual data tibbles from a supertibble.
   contents:
   - bind_tibbles
   - extract_tibble
