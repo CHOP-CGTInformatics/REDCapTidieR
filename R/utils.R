@@ -6,7 +6,7 @@
 #' branches from \code{var} for later use.
 #'
 #' @returns Two appended columns, \code{redcap_event} and \code{redcap_arm}
-#' to the end of \code{import_redcap} output \code{tibble}s.
+#' to the end of \code{read_redcap} output \code{tibble}s.
 #'
 #' @param db_data The REDCap database output defined by
 #' \code{REDCapR::redcap_read_oneshot()$data}

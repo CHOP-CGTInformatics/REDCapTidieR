@@ -52,17 +52,17 @@ Here is a screenshot of the REDCap Record Status Dashboard of this database. It 
 
 ## Importing data from REDCap
 
-To import data from REDCap, use the `import_redcap()` function. `import_redcap()` requires a REDCap database URI and a REDCap API token. *You need to have API access to the REDCap database to use REDCapTidieR. REDCapTidieR does not work with files exported from REDCap.* We use it here to import data from the Superheroes database. You can see that it returns a [tibble](https://tibble.tidyverse.org/) named `superheroes`. We use `rmarkdown::paged_table()` so you can explore this tibble.
+To import data from REDCap, use the `read_redcap()` function. `read_redcap()` requires a REDCap database URI and a REDCap API token. *You need to have API access to the REDCap database to use REDCapTidieR. REDCapTidieR does not work with files exported from REDCap.* We use it here to import data from the Superheroes database. You can see that it returns a [tibble](https://tibble.tidyverse.org/) named `superheroes`. We use `rmarkdown::paged_table()` so you can explore this tibble.
 
 ```{r}
 library(REDCapTidieR)
-superheroes <- import_redcap(redcap_uri, token)
+superheroes <- read_redcap(redcap_uri, token)
 
 superheroes |>
   rmarkdown::paged_table()
 ```
 
-You can see that the tibble that `import_redcap()` returned has only two rows. This may be surprising because you might expect more rows from a database with 734 superheroes. `import_redcap()` returns data in a special object that we call the **supertibble**. The supertibble contains, among other things, tibbles with the data and metadata derived from each instrument. We call these the **data tibbles** and **metadata tibbles**.
+You can see that the tibble that `read_redcap()` returned has only two rows. This may be surprising because you might expect more rows from a database with 734 superheroes. `read_redcap()` returns data in a special object that we call the **supertibble**. The supertibble contains, among other things, tibbles with the data and metadata derived from each instrument. We call these the **data tibbles** and **metadata tibbles**.
 
 **Each row of the supertibble corresponds to one REDCap instrument**. The `redcap_form_name` and `redcap_form_label` columns identify which instrument the row relates to. The `redcap_data` column contains the data tibbles. The `redcap_metadata` column contains the metadata tibbles. Additional columns contain useful information about the data tibble, such as row and column counts, size in memory, and the percentage of missing values in the data.
 

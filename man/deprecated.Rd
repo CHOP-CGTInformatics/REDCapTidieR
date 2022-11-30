@@ -26,7 +26,7 @@ extract_tables(.data, tbls = everything())
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
 
-Use \code{\link[=import_redcap]{import_redcap()}} instead of \code{read_redcap_tidy()}. Note that the
+Use \code{\link[=read_redcap]{read_redcap()}} instead of \code{read_redcap_tidy()}. Note that the
 \code{suppress_messages} argument was renamed to \code{suppress_redcapr_messages}.
 
 Use \code{\link[=bind_tibbles]{bind_tibbles()}} instead of \code{bind_tables()}. Note that the \code{.data}

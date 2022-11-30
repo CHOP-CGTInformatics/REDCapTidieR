@@ -11,13 +11,13 @@ check_forms_exist(db_metadata, forms)
 \code{REDCapR::redcap_metadata_read()}}
 
 \item{forms}{The character vector of instrument names passed to
-\code{import_redcap()}}
+\code{read_redcap()}}
 }
 \value{
 An error message listing the requested instruments that don't exist
 }
 \description{
 Provide an error message when any instrument names are passed to
-\code{import_redcap()} that do not exist in the project metadata.
+\code{read_redcap()} that do not exist in the project metadata.
 }
 \keyword{internal}
