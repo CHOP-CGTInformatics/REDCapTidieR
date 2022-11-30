@@ -90,87 +90,89 @@ also introduces several idiosyncratic terms.</p>
 <p>Below we provide find a rough mapping of REDCap concepts to their
 corresponding artifacts REDCapTidieR generates in the R environment,
 followed by a listing of definition of terms.</p>
-<table class="table">
+<table style="width:99%;" class="table">
 <colgroup>
-<col width="26%">
-<col width="73%">
+<col width="24%">
+<col width="69%">
+<col width="5%">
 </colgroup>
-<thead><tr class="header">
-<th align="center">REDCap</th>
-<th align="center">REDCapTidieR</th>
-</tr></thead>
 <tbody>
 <tr class="odd">
-<td align="center">
-<a href="#project">Project</a>, Database</td>
-<td align="center"><a href="#supertibble">Supertibble</a></td>
+<td rowspan="2">REDCap :===============================: <a href="#project">Project</a>, Database</td>
+<td rowspan="2">REDCapTidieR
+:=============================================================================================:
+<a href="#supertibble">Supertibble</a>
+</td>
+<td></td>
 </tr>
 <tr class="even">
-<td align="center">
+<td></td>
+</tr>
+<tr class="odd">
+<td>
 <a href="#instrument">Instrument</a>, Form</td>
-<td align="center">
+<td>
 <p>One <a href="#row">row</a> of the <a href="#supertibble">supertibble</a></p>
 <p>Data is in the <a href="#data-tibble">data tibble</a></p>
 </td>
+<td></td>
 </tr>
-<tr class="odd">
-<td align="center"><a href="#field">Field</a></td>
-<td align="center">
+<tr class="even">
+<td><a href="#field">Field</a></td>
+<td>
 <a href="#data-column">Data column</a> (a <a href="#column">column</a> of the <a href="#data-tibble">data
 tibble</a>)</td>
+<td></td>
 </tr>
-<tr class="even">
-<td align="center">
+<tr class="odd">
+<td>
 <a href="#field">Field</a> name</td>
-<td align="center">
+<td>
 <a href="#variable">Variable</a> name of a <a href="#data-column">data column</a>
 </td>
-</tr>
-<tr class="odd">
-<td align="center"><a href="#field-type">Field type</a></td>
-<td align="center">Data type of a <a href="#data-column">data
-column</a>
-</td>
+<td></td>
 </tr>
 <tr class="even">
-<td align="center"><a href="#field-label">Field label</a></td>
-<td align="center">
-<p><a href="#variable-label">Variable label</a> of a
-<a href="#data-column">data column</a></p>
+<td><a href="#field-type">Field type</a></td>
+<td>Data type of a <a href="#data-column">data column</a>
+</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><a href="#field-label">Field label</a></td>
+<td>
+<p><a href="#variable-label">Variable label</a> of a <a href="#data-column">data column</a></p>
 <p>(only present if <a href="#supertibble">supertibble</a> is <a href="#labelled">labelled</a>)</p>
 </td>
-</tr>
-<tr class="odd">
-<td align="center"><a href="#record">Record</a></td>
-<td align="center">
-<p>One or several <a href="#row">rows</a> of a <a href="#data-tibble">data tibble</a></p>
-<p>Record ID <a href="#columns">column</a> is the first column of a <a href="#data-tibble">data tibble</a></p>
-</td>
+<td></td>
 </tr>
 <tr class="even">
-<td align="center"><a href="#event">Event</a></td>
-<td align="center">
-<p><code>redcap_event</code> <a href="#column">column</a> of a <a href="#data-tibble">data
-tibble</a></p>
+<td><a href="#record">Record</a></td>
+<td colspan="2">One or several <a href="#row">rows</a> of a <a href="#data-tibble">data tibble</a> | | Record ID <a href="#column">column</a> is the first column of a <a href="#data-tibble">data tibble</a> |</td>
+</tr>
+<tr class="odd">
+<td><a href="#event">Event</a></td>
+<td>
+<p><code>redcap_event</code> <a href="#column">column</a> of a <a href="#data-tibble">data tibble</a></p>
 <p>(only present if the <a href="#project">project</a> is <a href="#longitudinal-project">longitudinal</a>)</p>
 </td>
-</tr>
-<tr class="odd">
-<td align="center"><a href="#arm">Arm</a></td>
-<td align="center">
-<p><code>redcap_arm</code> <a href="#column">column</a> of a <a href="#data-tibble">data
-tibble</a></p>
-<p>(only present if the <a href="#project">project</a> is <a href="#longitudinal">longitudinal</a> with multiple arms)</p>
-</td>
+<td></td>
 </tr>
 <tr class="even">
-<td align="center">
+<td><a href="#arm">Arm</a></td>
+<td colspan="2">
+<code>redcap_arm</code> <a href="#column">column</a> of
+a <a href="#data-tibble">data tibble</a> | | (only present if the <a href="#project">project</a> is <a href="#longitudinal-project">longitudinal</a> with multiple arms)</td>
+</tr>
+<tr class="odd">
+<td>
 <a href="#repeating">Repeat</a> instance</td>
-<td align="center">
-<p><code>redcap_repeat_instance</code> <a href="#column">column</a> of a <a href="#data-tibble">data
-tibble</a></p>
+<td>
+<p><code>redcap_repeat_instance</code> <a href="#column">column</a>
+of a <a href="#data-tibble">data tibble</a></p>
 <p>(only present if the <a href="#instrument">instrument</a> is <a href="#repeating">repeating</a>)</p>
 </td>
+<td></td>
 </tr>
 </tbody>
 </table>
@@ -246,13 +248,13 @@ has a more specific meaning.</p>
 <h3 id="data-column">Data column<a class="anchor" aria-label="anchor" href="#data-column"></a>
 </h3>
 <p>A <a href="#column">column</a> of the <a href="#data-tibble">data
-tibble</a> that is derived from data that were entered into the <a href="#fields">fields</a> of a REDCap <a href="#instrument">instrument</a>.</p>
+tibble</a> that is derived from data that were entered into the <a href="#field">fields</a> of a REDCap <a href="#instrument">instrument</a>.</p>
 </div>
 <div class="section level3">
 <h3 id="data-tibble">Data tibble<a class="anchor" aria-label="anchor" href="#data-tibble"></a>
 </h3>
 <p>A <a href="#tibble">tibble</a> that contains data that were entered
-into the <a href="#fields">fields</a> of a specific REDCap <a href="#instrument">instrument</a>. The <code>redcap_data</code> column
+into the <a href="#field">fields</a> of a specific REDCap <a href="#instrument">instrument</a>. The <code>redcap_data</code> column
 of the <a href="#supertibble">supertibble</a> contains the data tibbles
 of a <a href="#project">project</a>. The columns of the data tibble
 include <a href="#identifier-column">identifier columns</a> that jointly
@@ -492,9 +494,8 @@ also: <a href="#column">Column</a>.</p>
 <h3 id="structure">Structure<a class="anchor" aria-label="anchor" href="#structure"></a>
 </h3>
 <p>The structure of an <a href="#instrument">instrument</a> can be <a href="#repeating">repeating</a> or <a href="#nonrepeating">nonrepeating</a>. The <a href="#supertibble">supertibble</a> shows the instrument’s structure in
-the <code>structure</code> column. The structure of a <a href="#project">project</a> can be <a href="#classic-project">classic</a>, <a href="#longitudinal-project">longitudinal</a>, or longitudinal with <a href="#arms">arms</a>. The <a href="#granularity">granularity</a> of a
-<a href="#data-tibble">data tibble</a> depends on the structure of both
-the instrument and the project. See also: the section <a href="https://chop-cgtinformatics.github.io/REDCapTidieR/articles/diving_deeper.html#longitudinal-redcap-projects">Longitudinal
+the <code>structure</code> column. The structure of a <a href="#project">project</a> can be <a href="#classic-project">classic</a>, <a href="#longitudinal-project">longitudinal</a>, or longitudinal with <a href="#arm">arms</a>. The <a href="#granularity">granularity</a> of a <a href="#data-tibble">data tibble</a> depends on the structure of both the
+instrument and the project. See also: the section <a href="https://chop-cgtinformatics.github.io/REDCapTidieR/articles/diving_deeper.html#longitudinal-redcap-projects">Longitudinal
 REDCap projects</a> in the <a href="https://chop-cgtinformatics.github.io/REDCapTidieR/articles/diving_deeper.html">Diving
 Deeper vignette</a>.</p>
 </div>
@@ -544,7 +545,7 @@ However, if the <a href="#project">project</a> contains both <a href="#repeating
 key function of the REDCapTidieR package is to break down the <a href="#block-matrix">block matrix</a> by <a href="#instrument">instrument</a>. The resulting set of <a href="#data-tibble">data tibbles</a> is tidy because the granularity of
 each data tibble is consistent. This makes it easy to work with
 them.</p>
-<p>The second is the idea of <a href="https://cran.r-project.org/web/packages/tidyverse/vignettes/manifesto.html" class="external-link">Tidy
+<p>The second is the idea of <a href="https://tidyverse.tidyverse.org/articles/manifesto.html" class="external-link">Tidy
 Tools</a>, which is a set of design guidelines for the packages of the
 <a href="https://www.tidyverse.org/" class="external-link">Tidyverse</a>. Tidy tools should
 follow the following principles:</p>
