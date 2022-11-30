@@ -1,7 +1,5 @@
 ---
 title: "Glossary of REDCap and REDCapTidieR Terms"
-author: "Stephan Kadauke"
-date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Glossary of REDCap and REDCapTidieR Terms}
@@ -16,130 +14,183 @@ knitr::opts_chunk$set(
 )
 ```
 
-The REDCapTidieR package uses vocabulary that is standard for REDCap database architects but not necessarily well known to all R users. It also introduces a number of idiosyncratic terms which we will define here.
+The REDCapTidieR package uses vocabulary that is standard for REDCap database architects but not necessarily well known to all R users. It also introduces several idiosyncratic terms which we will define here.
 
 ### Arm
 
-A mechanism that allows one longitudinal project to have multiple different sequences of events defined.
+A group of [events](#event). Arms provide a mechanism that allows one [longitudinal project](#longitudinal-project) to have multiple different sequences of events defined.
 
 ### Block matrix
 
-A matrix that is constructed from multiple submatrices. In the context of REDCap, the block matrix is the rectangular data set that is returned by the REDCap API that contains data from all instruments.
+A rectangular data structure (matrix) that is constructed from multiple smaller rectangular data structures (blocks). In the context of REDCap, the block matrix is the rectangular data set that contains data from all instruments returned by the [REDCap API](#redcap-api).
 
 ### Column
 
-A vertical series of cells in a data frame or tibble. Synonym: variable.
+A vertical series of cells in a data frame or [tibble](#tibble). Synonym: [Variable](#variable). See also: [Row](#row).
 
 ### Composite primary key
 
-A primary key is a column in a table that is distinct in each row and serves to identify each row. A composite primary key is a primary key that consists of multiple columns that in combination are distinct in each row and serve to identify each row. Taken together, the identifier columns of the data tibble create a composite primary key. This makes it easy to join data tibbles together.
+A primary key is a [column](#column) in a table that is distinct in each [row](#row) and serves to identify each row. A composite primary key is a primary key that consists of multiple columns that in combination are distinct in each row and serve to identify each row. Taken together, the [identifier columns](#identifier-column) of the [data tibble](#data-tibble) form a composite primary key. This makes it easy to join data tibbles together.
 
 ### Choice
 
-An option or category defined in the context of a single-answer or multi-answer categorical type field in REDCap. You can define choices using the REDCap Field Editor. Choices have a **raw value** (a unique identifier - usually a serial number but this can be changed) and a **choice label** (a human readable description of the choice, which is displayed during data entry).
+An option or category defined in the context of a single-answer or multi-answer categorical [field type](#field-type) in REDCap. You can define choices using the REDCap Field Editor. Choices have a **raw value** (a unique identifier - usually a serial number but this can be changed) and a **choice label** (a human readable description of the choice, which is displayed during data entry).
 
-In the context of REDCapTidieR, choices come into play in two scenarios. Choice labels of single-answer type fields (`dropdown` and `radio`) are used to define the values of data columns derived from them. Raw values of the multi-answer `checkbox` field are used to construct the names of data columns derived from them. See also ...
+In the context of REDCapTidieR, choices come into play in two scenarios in during the construction of the [data tibble](#data-tibble). Choice labels of single-answer type fields (`dropdown` and `radio`) are used to define the values of data columns that are derived from those fields. Raw values of the multi-answer `checkbox` field are used to construct the names of data columns derived from them.
 
 ### Classic project
 
-Also known as a **traditional** project, this the simplest type of REDCap project. You can define one or multiple instruments (also called forms) for data entry. Both repeating and nonrepeating instruments are allowed. Nonrepeating instruments are completed only once for each record. Repeating instruments can be completed an arbitrary number of times for each record.
+Also known as a **traditional** project, this the simplest type of REDCap project. You can define one or multiple [instruments](#instrument) (also called forms) for data entry. Both repeating and nonrepeating instruments are allowed. Nonrepeating instruments are completed only once for each record. For nonrepeating instruments, one row of data in the [data tibble](#data-tibble) represents one [record](#record). Repeating instruments can be completed an arbitrary number of times for each record. For repeating instruments, one row of data in the data tibble represents one [repeat instance](#repeat-instance) of one record. See also: [Longitudinal project](#longitudinal-project).
 
 ### Database
 
-See: Project.
+See: [Project](#project).
 
 ### Data column
 
-A column of the data tibble that is derived from the fields of a REDCap instrument.
+A [column](#column) of the [data tibble](#data-tibble) that is derived from data that were entered into the [fields](#fields) of a REDCap [instrument](#instrument).
 
 ### Data tibble
 
-A tibble that contains data collected in a specific instrument. The supertibble collects data tibbles for all instruments in the `redcap_data` column. REDCapTidieR provides several functions to extract data tibbles from the supertibble.
+A [tibble](#tibble) that contains data that were entered into the [fields](#fields) of a specific REDCap [instrument](#instrument). The `redcap_data` column of the [supertibble](#supertibble) contains the data tibbles of a [project](#project). The columns of the data tibble include [identifier columns](#identifier-column) and [data columns](#data-column). REDCapTidieR provides several functions to extract data tibbles from the supertibble. See also: [Metadata tibble](#metadata-tibble).
 
 ### Data viewer
 
-A part of the RStudio IDE functionality that allows you to inspect data frames, tibbles, and some other data structures. It includes features to perform basic exploratory data analysis such as sorting, filtering, and searching. [The supertibble is designed to work well with the data viewer](REDCapTidieR.html#exploring-the-contents-of-the-supertibble).
+A part of the [RStudio IDE](https://posit.co/download/rstudio-desktop/) functionality that allows you to inspect data frames, [tibbles](#tibble), and some other data structures. It includes [features to perform basic exploratory data analysis](https://support.posit.co/hc/en-us/articles/205175388-Using-the-Data-Viewer-in-the-RStudio-IDE) such as sorting, filtering, and searching. [The supertibble is designed to work well with the data viewer](REDCapTidieR.html#exploring-the-contents-of-the-supertibble).
 
 ### Environment
 
-A fundamental data structure in R that allows binding a set of names to a set of objects. The **global environment** is the namespace in which you bind objects during interactive work.
+A fundamental data structure in R that allows binding a set of names to a set of objects. The **global environment** is the namespace in which you bind objects such as values and [tibbles](#tibble) during interactive work.
 
 ### Event
 
-A basic unit of a longitudinal project. Each event can be associated with one or multiple instruments.
+A basic unit of a [longitudinal project](#longitudinal-project). Each event can be associated with one or multiple [instruments](#instrument).
 
-Factor variable (can be ordered)
+### Factor variable 
+
+A data type in R for categorical data. By default, single-answer categorical REDCap [field types](#field-type) (`dropdown`, `radio`) are represented as factor variables in the [data tibble](#data-tibble).
 
 ### Field
 
-### Field editor
+A specific kind of attribute about an entity (e.g., age or height) being captured in REDCap. Fields can have a [label](#field-label) and must have a specific [field type](#field-type). The [data tibble](#data-tibble) contains the data entered into the fields of a REDCap [project](#project).
 
 ### Field label
 
+A piece of text that acts as the prompt for data entry in REDCap. If present, REDCapTidieR can reuse the field label as a [variable label](#variable-label).
+
 ### Field type
 
-### Form (form name, form label)
+The specific data type of the data that can be entered into a field.
+
+### Form
+
+See: [Instrument](#instrument). We prefer the term "instrument" because it has a more specific meaning than "form."
 
 ### Format helper
 
+A function provided by REDCapTidieR designed to help creating pretty [variable labels](#variable-label). See the [`format-helpers` reference page](https://chop-cgtinformatics.github.io/REDCapTidieR/reference/format-helpers.html).
+
 ### Granularity
+
+The level of detail that a specific [row](#row) in a [data tibble](#data-tibble) represents. This depends on the [structure](#structure) of the [project](#project) ([classic](#classic-project) vs. [longitudinal](#longitudinal-project) vs longitudinal with [arms](#arm)) and the structure of the [instrument](#instrument) ([nonrepeating](#nonrepeating) vs [repeating](#repeating)). For example, a data tibble containing data from a nonrepeating instrument in a longitudinal project with two arms has a granularity of one row per [event](#event) per arm. See also: the section [Longitudinal REDCap projects](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/diving_deeper.html#longitudinal-redcap-projects) in the [Diving Deeper vignette](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/diving_deeper.html).
 
 ### Identifier column
 
+A [column](#column) in the [data tibble](#data-tibble) that serves to partially identify the entity described by the column. The [record](#record) ID column is always present in the data tibble. Depending on the [structure](#structure) of the [project](#project) ([classic](#classic-project) vs. [longitudinal](#longitudinal-project) vs. longitudinal with [arms](#arm)) and the structure of the [instrument](#instrument) ([nonrepeating](#nonrepeating) vs [repeating](#repeating)) there may be additional identifier columns, including `redcap_event`, `redcap_arm`, and/or `redcap_repeat_instance`. Taken together, the set of identifier columns form a [composite primary key](#composite-primary-key). See also: the section [Longitudinal REDCap projects](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/diving_deeper.html#longitudinal-redcap-projects) in the [Diving Deeper vignette](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/diving_deeper.html).
+
 ### Import
+
+In the context of REDCapTidieR, this is the process of using the [REDCap API](#redcap-api) to query data from a REDCap [project](#project) and make it available inside the the R [environment](#environment). This is what the `import_redcap()` function accomplishes.
 
 ### Instrument
 
+Also called **form**. An electronic form created to capture data in REDCap. An instrument consists of one or more [fields](#field) into which data can be entered. In the [supertibble](#supertibble), each row corresponds to one instrument. The instrument's name and human-readable label are shown in the `redcap_form_name` and `redcap_form_label` columns of the supertibble, respectively. Data entered into an instrument appear in the [data tibble](#data-tibble) corresponding to that instrument.
+
 ### labelled
 
-### List
+The [labelled](https://larmarange.github.io/labelled/) R package provides functions to attach a human-readable description (a label) to a [variable](#variable) (a [variable label](#variable-label)). Labelled data can streamline data exploration and assist with the generation of a data dictionary. There are [multiple](https://jonocarroll.github.io/ggeasy/) [packages](https://www.danieldsjoberg.com/gtsummary/) [that](https://github.com/pcctc/croquet) [support](https://strengejacke.github.io/sjlabelled/index.html) labelled data. The `make_labelled()` function attaches variable labels to a [supertibble](#supertibble) and the [data tibbles](#data-tibble) and [metadata tibbles](#metadata-tibble) inside of it.
 
 ### List column
 
-### Logical variable
+A [list](https://r4ds.had.co.nz/vectors.html#lists) is a fundamental data type in R. A [tibble](#tibble) can contain [columns](#column) that are lists, and these columns are called [list columns](https://r4ds.hadley.nz/rectangling.html#list-columns). The [supertibble](#supertibble) uses list columns to store tibbles inside of it. For example, `redcap_data` is a list column that contains [data tibbles](#data-tibble), and `redcap_metadata` is a list column that contains [metadata tibbles](#metadata-tibble).
 
 ### Longitudinal project
 
-### Metadata
+A type of REDCap project that contains [events](#event) and optionally [arms](#arm). The same instrument can be associated with multiple events. This makes it possible to collect the same kind of data for the same record multiple times. See also: [Classic project](#classic-project).
 
 ### Metadata tibble
 
-### NA
+A [tibble](#tibble) that contains metadata about a specific REDCap [instrument](#instrument). The `redcap_metadata` column of the [supertibble](#supertibble) contains the metadata tibbles of a [project](#project). The rows of the metadata tibble represent [fields](#field) of the instrument. The columns represent attributes of those fields. For example, the `field_name`, `field_label`, and `field_type` columns show the field's name, a human-readable description (label), and its data type.
 
 ### Nonrepeating
 
-### Observational unit
+A [structure](#structure) of an [instrument](#instrument) that allows it to be filled out exactly once per [record](#record) in a [classic project](#classic-project) and once per record per [event](#event) (per [arm](#arm)) in a [longitudinal project](#longitudinal-project). See also: [Repeating](#repeating).
 
 ### Project
 
+Also called a **database**, a REDCap project is a self-contained collection of all the of data and metadata related to some data collection activity (for example, a specific research study). A project may be [classic](#classic-project) or [longitudinal](#longitudinal-project). A classic project contains [instruments](#instrument). A longitudinal project may additionally include [events](#event) and [arms](#arm). By default, `import_redcap()` [imports](#import) all of the data from a project.
+
 ### Record
 
-### REDCap API
+The set of information about a single entity (e.g., a study participant) for which data is being captured in REDCap. Each record is composed of a discrete data values organized into [fields](#field) that can be spread across multiple [instruments](#instrument), [events](#event), and/or [arms](#arm). Each record has a unique record ID. In the data tibble, the record ID is one of the [identifier columns](#identifier-column).
+
+### REDCap API 
+
+The application programming interface (API) of a REDCap instance allows external programs to connect, upload, and download data of a REDCap [project](#project). To access the REDCap API, a user must have appropriate access privileges, an API token, and the uniform resource identifier (URI) of the API endpoint (something like "https://my.institution.edu/redcap/api").
 
 ### REDCapR
 
+The [REDCapR](https://ouhscbbmc.github.io/REDCapR/index.html) R package provides functions to interact with the [REDCap API](#redcap-api). REDCapTidieR builds on REDCapR to [import](#import) data.
+
 ### Repeating
 
-### Repeat instance
+A [structure](#structure) of an [instrument](#instrument) that allows it to be filled out zero, one, or multiple times for each [record](#record). See also: [Nonrepeating](#nonrepeating).
 
 ### Row
 
-### Structure (instrument / project)
+A horizontal series of cells in a data frame or [tibble](#tibble). One row of a supertibble represents an instrument. One row of the [data tibble](#data-tibble) can represent different things, depending on the [granularity](#granularity) of the data. See also: [Column](#column).
+
+### Structure 
+
+The structure of an [instrument](#instrument) can be [repeating](#repeating) or [nonrepeating](#nonrepeating). The [supertibble](#supertibble) shows the instrument's structure in the `structure` column. The structure of a [project](#project) can be [classic](#classic-project), [longitudinal](#longitudinal-project), or longitudinal with [arms](#arms). The [granularity](#granularity) of a [data tibble](#data-tibble) depends on the structure of both the instrument and the project. See also: the section [Longitudinal REDCap projects](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/diving_deeper.html#longitudinal-redcap-projects) in the [Diving Deeper vignette](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/diving_deeper.html).
 
 ### Supertibble
 
+A special object that holds data and metadata from a REDCap [project](#project) returned by the `import_redcap()` function. Each [row](#row) of the supertibble corresponds to one [instrument](#instrument). The `redcap_form_name` and `redcap_form_label` [columns](#column) identify the instrument. The `redcap_data` and `redcap_metadata` contain the instrument's [data tibble](#data-tibble) and [metadata tibble](#metadata-tibble). Additional columns contain useful information about the data tibble, such as row and column counts, size in memory, and the percentage of missing values in the data.
+
 ### Survey
+
+A special kind of [instrument](#instrument) that can be completed by someone who is not a user on a REDCap [project](#project).
 
 ### Tibble
 
-### Tidy data
+A variant of the R data frame that makes data analysis in the [tidyverse](https://www.tidyverse.org/) a little easier. The data structures generated by REDCapTidieR are based on tibbles. See also: chapter on [Tibbles](https://r4ds.had.co.nz/tibbles.html) in [R for Data Science](https://r4ds.had.co.nz).
 
-### Tidyselect
+### Tidy
 
-### Token
+In the context of REDCapTidieR, the term "tidy" has two meanings.
 
-### URI
+The first comes from the idea of [Tidy Data](https://vita.had.co.nz/papers/tidy-data.pdf). A rectangular data structure is tidy if:
+
+1.  Each [variable](#variable) forms a [column](#column)
+2.  Each observation forms a [row](#row)
+3.  Each type of observational unit forms a table (i.e. the [granularity](#granularity) in a table is consistent)
+
+A data set that is not tidy is called **messy**. The block matrix is messy if the [project](#project) contains both [repeating](#repeating) and [nonrepeating](#nonrepeating) instruments, because then its granularity is inconsistent from row to row. A key function of the REDCapTidieR package is to break down the [block matrix](#block-matrix) by [instrument](#instrument). The resulting set of [data tibbles](#data-tibble) is tidy because the granularity of each data tibble is consistent. This makes it easy to work with them.
+
+The second comes from the idea of [Tidy Tools](https://cran.r-project.org/web/packages/tidyverse/vignettes/manifesto.html), which is a design guide for the packages of the [Tidyverse](https://www.tidyverse.org/). Tidy tools should follow the following principles:
+
+1.  Reuse existing data structures.
+2.  Compose simple functions with the pipe.
+3.  Embrace functional programming.
+4.  Design for humans.
+
+We strive to follow these principles in the design of the REDCapTidieR package.
 
 ### Variable
 
+A [column](#column) of a data frame or [tibble](#tibble). See also: [Column](#column).
+
 ### Variable label
+
+A human-readable description (label) attached to a [variable](#variable). See also: [labelled](#labelled).
