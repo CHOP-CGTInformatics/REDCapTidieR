@@ -1,138 +1,138 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/404.html</loc>
+    <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/404.html</loc>
   </url>
   <url>
-    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/CONDUCT.html</loc>
+    <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/CONDUCT.html</loc>
   </url>
   <url>
-    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/LICENSE-text.html</loc>
+    <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/LICENSE-text.html</loc>
   </url>
   <url>
-    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/LICENSE.html</loc>
+    <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/LICENSE.html</loc>
   </url>
   <url>
-    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/articles/REDCapTidieR.html</loc>
+    <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/articles/REDCapTidieR.html</loc>
   </url>
   <url>
-    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/articles/diving_deeper.html</loc>
+    <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/articles/diving_deeper.html</loc>
   </url>
   <url>
-    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/articles/glossary.html</loc>
+    <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/articles/glossary.html</loc>
   </url>
   <url>
-    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/articles/index.html</loc>
+    <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/articles/index.html</loc>
   </url>
   <url>
-    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/authors.html</loc>
+    <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/authors.html</loc>
   </url>
   <url>
-    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/index.html</loc>
+    <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/index.html</loc>
   </url>
   <url>
-    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/news/index.html</loc>
+    <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/news/index.html</loc>
   </url>
   <url>
-    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/pull_request_template.html</loc>
+    <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/pull_request_template.html</loc>
   </url>
   <url>
-    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/add_event_mapping.html</loc>
+    <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/add_event_mapping.html</loc>
   </url>
   <url>
-    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/add_metadata.html</loc>
+    <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/add_metadata.html</loc>
   </url>
   <url>
-    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/add_partial_keys.html</loc>
+    <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/add_partial_keys.html</loc>
   </url>
   <url>
-    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/bind_tibbles.html</loc>
+    <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/bind_tibbles.html</loc>
   </url>
   <url>
-    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/calc_metadata_stats.html</loc>
+    <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/calc_metadata_stats.html</loc>
   </url>
   <url>
-    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/check_forms_exist.html</loc>
+    <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/check_forms_exist.html</loc>
   </url>
   <url>
-    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/check_redcap_populated.html</loc>
+    <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/check_redcap_populated.html</loc>
   </url>
   <url>
-    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/check_repeat_and_nonrepeat.html</loc>
+    <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/check_repeat_and_nonrepeat.html</loc>
   </url>
   <url>
-    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/check_req_labelled_fields.html</loc>
+    <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/check_req_labelled_fields.html</loc>
   </url>
   <url>
-    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/check_req_labelled_metadata_fields.html</loc>
+    <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/check_req_labelled_metadata_fields.html</loc>
   </url>
   <url>
-    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/check_user_rights.html</loc>
+    <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/check_user_rights.html</loc>
   </url>
   <url>
-    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/clean_redcap.html</loc>
+    <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/clean_redcap.html</loc>
   </url>
   <url>
-    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/clean_redcap_long.html</loc>
+    <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/clean_redcap_long.html</loc>
   </url>
   <url>
-    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/deprecated.html</loc>
+    <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/deprecated.html</loc>
   </url>
   <url>
-    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/distill_nonrepeat_table.html</loc>
+    <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/distill_nonrepeat_table.html</loc>
   </url>
   <url>
-    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/distill_nonrepeat_table_long.html</loc>
+    <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/distill_nonrepeat_table_long.html</loc>
   </url>
   <url>
-    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/distill_repeat_table.html</loc>
+    <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/distill_repeat_table.html</loc>
   </url>
   <url>
-    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/distill_repeat_table_long.html</loc>
+    <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/distill_repeat_table_long.html</loc>
   </url>
   <url>
-    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/extract_tibble.html</loc>
+    <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/extract_tibble.html</loc>
   </url>
   <url>
-    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/extract_tibbles.html</loc>
+    <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/extract_tibbles.html</loc>
   </url>
   <url>
-    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/format-helpers.html</loc>
+    <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/format-helpers.html</loc>
   </url>
   <url>
-    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/get_fields_to_drop.html</loc>
+    <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/get_fields_to_drop.html</loc>
   </url>
   <url>
-    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/get_record_id_field.html</loc>
+    <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/get_record_id_field.html</loc>
   </url>
   <url>
-    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/import_redcap.html</loc>
+    <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/import_redcap.html</loc>
   </url>
   <url>
-    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/index.html</loc>
+    <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/index.html</loc>
   </url>
   <url>
-    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/link_arms.html</loc>
+    <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/link_arms.html</loc>
   </url>
   <url>
-    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/make_labelled.html</loc>
+    <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/make_labelled.html</loc>
   </url>
   <url>
-    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/multi_choice_to_labels.html</loc>
+    <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/multi_choice_to_labels.html</loc>
   </url>
   <url>
-    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/parse_labels.html</loc>
+    <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/parse_labels.html</loc>
   </url>
   <url>
-    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/resolve_formatter.html</loc>
+    <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/resolve_formatter.html</loc>
   </url>
   <url>
-    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/strip_html_field_embedding.html</loc>
+    <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/strip_html_field_embedding.html</loc>
   </url>
   <url>
-    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/update_data_col_names.html</loc>
+    <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/update_data_col_names.html</loc>
   </url>
   <url>
-    <loc>https://chop-cgtdataops.github.io/REDCapTidieR/reference/update_field_names.html</loc>
+    <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/update_field_names.html</loc>
   </url>
 </urlset>
