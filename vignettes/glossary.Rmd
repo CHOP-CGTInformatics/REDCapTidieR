@@ -39,7 +39,7 @@ Below we provide find a rough mapping of REDCap concepts to their corresponding 
 +---------------------------------+-----------------------------------------------------------------------------------------------+
 | [Record](#record)               | One or several [rows](#row) of a [data tibble](#data-tibble)                                  |
 |                                 |                                                                                               |
-|                                 | Record ID [column](#columns) is the first column of a [data tibble](#data-tibble)             |
+|                                 | Record ID [column](#column) is the first column of a [data tibble](#data-tibble)             |
 +---------------------------------+-----------------------------------------------------------------------------------------------+
 | [Event](#event)                 | `redcap_event` [column](#column) of a [data tibble](#data-tibble)                             |
 |                                 |                                                                                               |
@@ -47,7 +47,7 @@ Below we provide find a rough mapping of REDCap concepts to their corresponding 
 +---------------------------------+-----------------------------------------------------------------------------------------------+
 | [Arm](#arm)                     | `redcap_arm` [column](#column) of a [data tibble](#data-tibble)                               |
 |                                 |                                                                                               |
-|                                 | (only present if the [project](#project) is [longitudinal](#longitudinal) with multiple arms) |
+|                                 | (only present if the [project](#project) is [longitudinal](#longitudinal-project) with multiple arms) |
 +---------------------------------+-----------------------------------------------------------------------------------------------+
 | [Repeat](#repeating) instance   | `redcap_repeat_instance` [column](#column) of a [data tibble](#data-tibble)                   |
 |                                 |                                                                                               |
@@ -86,11 +86,11 @@ In the context of REDCap, this is the same as [project](#project). We prefer the
 
 ### Data column {#data-column}
 
-A [column](#column) of the [data tibble](#data-tibble) that is derived from data that were entered into the [fields](#fields) of a REDCap [instrument](#instrument).
+A [column](#column) of the [data tibble](#data-tibble) that is derived from data that were entered into the [fields](#field) of a REDCap [instrument](#instrument).
 
 ### Data tibble {#data-tibble}
 
-A [tibble](#tibble) that contains data that were entered into the [fields](#fields) of a specific REDCap [instrument](#instrument). The `redcap_data` column of the [supertibble](#supertibble) contains the data tibbles of a [project](#project). The columns of the data tibble include [identifier columns](#identifier-column) that jointly identify each row and [data columns](#data-column) that contain data that was entered into REDCap. REDCapTidieR provides several functions to extract data tibbles from the supertibble. See also: [Metadata tibble](#metadata-tibble).
+A [tibble](#tibble) that contains data that were entered into the [fields](#field) of a specific REDCap [instrument](#instrument). The `redcap_data` column of the [supertibble](#supertibble) contains the data tibbles of a [project](#project). The columns of the data tibble include [identifier columns](#identifier-column) that jointly identify each row and [data columns](#data-column) that contain data that was entered into REDCap. REDCapTidieR provides several functions to extract data tibbles from the supertibble. See also: [Metadata tibble](#metadata-tibble).
 
 ### Data viewer
 
@@ -198,7 +198,7 @@ A horizontal series of cells in a data frame or [tibble](#tibble). One row of a 
 
 ### Structure {#structure}
 
-The structure of an [instrument](#instrument) can be [repeating](#repeating) or [nonrepeating](#nonrepeating). The [supertibble](#supertibble) shows the instrument's structure in the `structure` column. The structure of a [project](#project) can be [classic](#classic-project), [longitudinal](#longitudinal-project), or longitudinal with [arms](#arms). The [granularity](#granularity) of a [data tibble](#data-tibble) depends on the structure of both the instrument and the project. See also: the section [Longitudinal REDCap projects](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/diving_deeper.html#longitudinal-redcap-projects) in the [Diving Deeper vignette](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/diving_deeper.html).
+The structure of an [instrument](#instrument) can be [repeating](#repeating) or [nonrepeating](#nonrepeating). The [supertibble](#supertibble) shows the instrument's structure in the `structure` column. The structure of a [project](#project) can be [classic](#classic-project), [longitudinal](#longitudinal-project), or longitudinal with [arms](#arm). The [granularity](#granularity) of a [data tibble](#data-tibble) depends on the structure of both the instrument and the project. See also: the section [Longitudinal REDCap projects](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/diving_deeper.html#longitudinal-redcap-projects) in the [Diving Deeper vignette](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/diving_deeper.html).
 
 ### Supertibble {#supertibble}
 
@@ -224,7 +224,7 @@ The first is the concept of [Tidy Data](https://vita.had.co.nz/papers/tidy-data.
 
 Data returned by the REDCap API (the "[block matrix](#block-matrix)") often satisfies the first two requirements of tidy data. However, if the [project](#project) contains both [repeating](#repeating) and [nonrepeating](#nonrepeating) instruments then the [granularity](#granularity) is inconsistent from row to row. A key function of the REDCapTidieR package is to break down the [block matrix](#block-matrix) by [instrument](#instrument). The resulting set of [data tibbles](#data-tibble) is tidy because the granularity of each data tibble is consistent. This makes it easy to work with them.
 
-The second is the idea of [Tidy Tools](https://cran.r-project.org/web/packages/tidyverse/vignettes/manifesto.html), which is a set of design guidelines for the packages of the [Tidyverse](https://www.tidyverse.org/). Tidy tools should follow the following principles:
+The second is the idea of [Tidy Tools](https://tidyverse.tidyverse.org/articles/manifesto.html), which is a set of design guidelines for the packages of the [Tidyverse](https://www.tidyverse.org/). Tidy tools should follow the following principles:
 
 1.  Reuse existing data structures.
 2.  Compose simple functions with the pipe.

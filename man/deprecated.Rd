@@ -3,6 +3,7 @@
 \name{deprecated}
 \alias{deprecated}
 \alias{read_redcap_tidy}
+\alias{import_redcap}
 \alias{bind_tables}
 \alias{extract_table}
 \alias{extract_tables}
@@ -17,6 +18,15 @@ read_redcap_tidy(
   suppress_messages = TRUE
 )
 
+import_redcap(
+  redcap_uri,
+  token,
+  raw_or_label = "label",
+  forms = NULL,
+  export_survey_fields = TRUE,
+  suppress_redcapr_messages = TRUE
+)
+
 bind_tables(.data, environment = global_env(), tbls = NULL, structure = NULL)
 
 extract_table(.data, tbl)
@@ -28,6 +38,10 @@ extract_tables(.data, tbls = everything())
 
 Use \code{\link[=read_redcap]{read_redcap()}} instead of \code{read_redcap_tidy()}. Note that the
 \code{suppress_messages} argument was renamed to \code{suppress_redcapr_messages}.
+
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+
+Use \code{\link[=read_redcap]{read_redcap()}} instead of \code{import_redcap()}.
 
 Use \code{\link[=bind_tibbles]{bind_tibbles()}} instead of \code{bind_tables()}. Note that the \code{.data}
 argument was renamed to \code{supertbl} and the \code{structure} argument was removed.

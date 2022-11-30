@@ -52,7 +52,7 @@ Use `read_redcap()` together with `bind_tibbles()` to import data from
 all instruments into your environment.
 
 ![Demonstration of using the `read_redcap` and `bind_tibbles`
-functions](man/figures/redcaptidier-demo.gif)
+functions](images/vignettes/redcaptidier-demo.gif)
 
 Read the [Getting Started
 vignette](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/REDCapTidieR.html)
