@@ -368,7 +368,7 @@ Deeper vignette</a>.</p>
 <h3 id="import">Import<a class="anchor" aria-label="anchor" href="#import"></a>
 </h3>
 <p>In the context of REDCapTidieR, this is the process of using the <a href="#redcap-api">REDCap API</a> to query data from a REDCap <a href="#project">project</a> to make it available inside the R <a href="#environment">environment</a>. You can use the
-<code><a href="../reference/import_redcap.html">import_redcap()</a></code> function to import data from a REDCap
+<code><a href="../reference/read_redcap.html">read_redcap()</a></code> function to import data from a REDCap
 project.</p>
 </div>
 <div class="section level3">
@@ -447,8 +447,8 @@ some data collection activity (for example, a specific research study).
 A project may be <a href="#classic-project">classic</a> or <a href="#longitudinal-project">longitudinal</a>. A classic project
 consists of <a href="#instrument">instruments</a> that contain <a href="#field">fields</a>. A longitudinal project may additionally
 include <a href="#event">events</a> and <a href="#arm">arms</a>. You can
-use <code><a href="../reference/import_redcap.html">import_redcap()</a></code> to <a href="#import">import</a> the
-data from a project.</p>
+use <code><a href="../reference/read_redcap.html">read_redcap()</a></code> to <a href="#import">import</a> the data
+from a project.</p>
 </div>
 <div class="section level3">
 <h3 id="record">Record<a class="anchor" aria-label="anchor" href="#record"></a>
@@ -503,9 +503,9 @@ Deeper vignette</a>.</p>
 </h3>
 <p>A special <a href="#tibble">tibble</a> that contains data and
 metadata of a REDCap <a href="#project">project</a> returned by the
-<code><a href="../reference/import_redcap.html">import_redcap()</a></code> function. Each <a href="#row">row</a> of
-the supertibble corresponds to one <a href="#instrument">instrument</a>.
-The <code>redcap_form_name</code> and <code>redcap_form_label</code> <a href="#column">columns</a> identify the instrument. The
+<code><a href="../reference/read_redcap.html">read_redcap()</a></code> function. Each <a href="#row">row</a> of the
+supertibble corresponds to one <a href="#instrument">instrument</a>. The
+<code>redcap_form_name</code> and <code>redcap_form_label</code> <a href="#column">columns</a> identify the instrument. The
 <code>redcap_data</code> and <code>redcap_metadata</code> contain the
 instrument’s <a href="#data-tibble">data tibble</a> and <a href="#metadata-tibble">metadata tibble</a>. Additional columns contain
 useful information about the data tibble, such as row and column counts,
