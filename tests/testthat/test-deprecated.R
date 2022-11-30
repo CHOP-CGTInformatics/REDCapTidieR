@@ -17,6 +17,20 @@ test_that("read_redcap_tidy and read_redcap produce the same output", {
   expect_identical(out_1, out_2)
 })
 
+test_that("import_redcap and read_redcap produce the same output", {
+
+  httptest::with_mock_api({
+    out_1 <-
+      read_redcap(redcap_uri, longitudinal_token)
+
+    out_2 <-
+      import_redcap(redcap_uri, longitudinal_token) %>%
+      suppressWarnings(classes = "lifecycle_warning_deprecated")
+  })
+
+  expect_identical(out_1, out_2)
+})
+
 test_that("bind_tables and bind_tibbles produce the same output", {
 
   redcaptidier_longitudintal_db <- readRDS(

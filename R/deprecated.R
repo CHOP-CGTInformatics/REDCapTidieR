@@ -29,6 +29,32 @@ read_redcap_tidy <- function(redcap_uri,
   )
 }
 
+#' @description `r lifecycle::badge("deprecated")`
+#'
+#' Use [read_redcap()] instead of `import_redcap()`.
+#'
+#' @export
+#' @importFrom lifecycle deprecate_warn
+#' @keywords internal
+#' @name deprecated
+import_redcap <- function(redcap_uri,
+                             token,
+                             raw_or_label = "label",
+                             forms = NULL,
+                             export_survey_fields = TRUE,
+                             suppress_redcapr_messages = TRUE) {
+  deprecate_warn("0.2.0", "import_redcap()", "read_redcap()", always = TRUE)
+
+  read_redcap(
+    redcap_uri = redcap_uri,
+    token = token,
+    raw_or_label = raw_or_label,
+    forms = forms,
+    export_survey_fields = export_survey_fields,
+    suppress_redcapr_messages = suppress_redcapr_messages
+  )
+}
+
 #' @description
 #'
 #' Use [bind_tibbles()] instead of `bind_tables()`. Note that the `.data`
