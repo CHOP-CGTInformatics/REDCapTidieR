@@ -46,7 +46,7 @@ You can install the development version of REDCapTidieR from
 devtools::install_github("CHOP-CGTInformatics/REDCapTidieR")
 ```
 
-## Getting Started
+## Usage
 
 Use `import_redcap()` together with `bind_tibbles()` to import data from
 all instruments into your environment.

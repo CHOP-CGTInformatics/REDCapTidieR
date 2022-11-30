@@ -1,5 +1,8 @@
 url: https://chop-cgtinformatics.github.io/REDCapTidieR/
 
+home:
+  title: Import REDCap databases into tidy tibbles
+
 navbar:
   structure:
     left:  [intro, glossary, reference, articles]
