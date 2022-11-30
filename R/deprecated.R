@@ -2,7 +2,7 @@
 #'
 #' @description `r lifecycle::badge("deprecated")`
 #'
-#' Use [import_redcap()] instead of `read_redcap_tidy()`. Note that the
+#' Use [read_redcap()] instead of `read_redcap_tidy()`. Note that the
 #' `suppress_messages` argument was renamed to `suppress_redcapr_messages`.
 #'
 #' @export
@@ -15,11 +15,11 @@ read_redcap_tidy <- function(redcap_uri,
                              forms = NULL,
                              export_survey_fields = TRUE,
                              suppress_messages = TRUE) {
-  deprecate_warn("0.2.0", "read_redcap_tidy()", "import_redcap()", always = TRUE)
+  deprecate_warn("0.2.0", "read_redcap_tidy()", "read_redcap()", always = TRUE)
 
   # suppress_messages is now suppress_redcapr_messages
 
-  import_redcap(
+  read_redcap(
     redcap_uri = redcap_uri,
     token = token,
     raw_or_label = raw_or_label,

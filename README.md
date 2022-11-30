@@ -48,10 +48,10 @@ devtools::install_github("CHOP-CGTInformatics/REDCapTidieR")
 
 ## Usage
 
-Use `import_redcap()` together with `bind_tibbles()` to import data from
+Use `read_redcap()` together with `bind_tibbles()` to import data from
 all instruments into your environment.
 
-![Demonstration of using the `import_redcap` and `bind_tibbles`
+![Demonstration of using the `read_redcap` and `bind_tibbles`
 functions](man/figures/redcaptidier-demo.gif)
 
 Read the [Getting Started

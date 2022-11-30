@@ -11,7 +11,7 @@
 #' package to query the REDCap API. The REDCap API returns a
 #' [block matrix](https://en.wikipedia.org/wiki/Block_matrix) that mashes
 #' data from all data collection instruments
-#' together. The `import_redcap()` function
+#' together. The `read_redcap()` function
 #' deconstructs the block matrix and splices the data into individual tibbles,
 #' where one tibble represents the data from one instrument.
 #'
@@ -55,7 +55,7 @@
 #' redcap_uri <- Sys.getenv("REDCAP_URI")
 #' token <- Sys.getenv("REDCAP_TOKEN")
 #'
-#' import_redcap(
+#' read_redcap(
 #'    redcap_uri,
 #'    token,
 #'    raw_or_label = "label"
@@ -64,7 +64,7 @@
 #'
 #' @export
 
-import_redcap <- function(redcap_uri,
+read_redcap <- function(redcap_uri,
                              token,
                              raw_or_label = "label",
                              forms = NULL,
@@ -227,7 +227,7 @@ import_redcap <- function(redcap_uri,
 
 #' @title
 #' Determine fields included in \code{REDCapR::redcap_read_oneshot} output
-#' that should be dropped from results of \code{import_redcap}
+#' that should be dropped from results of \code{read_redcap}
 #'
 #' @details
 #' This function applies rules to determine which fields are included in the
@@ -261,7 +261,7 @@ get_fields_to_drop <- function(db_metadata, form) {
   res <- setdiff(res, record_id_field)
 
   # Add form complete field which is not in metadata but should be removed from
-  # import_redcap output
+  # read_redcap output
 
   res <- c(res, paste0(form, "_complete"))
 
@@ -273,7 +273,7 @@ get_fields_to_drop <- function(db_metadata, form) {
 #'
 #' @param supertbl a supertibble object to supplement with metadata
 #' @param db_metadata a REDCap metadata tibble
-#' @inheritParams import_redcap
+#' @inheritParams read_redcap
 #'
 #' @details This function assumes that \code{db_metadata} has been processed to
 #' include a row for each option of each multiselection field, i.e. with

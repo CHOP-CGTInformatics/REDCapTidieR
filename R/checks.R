@@ -152,7 +152,7 @@ check_redcap_populated <- function(
 #'
 #' @description
 #' Provide an error message when any instrument names are passed to
-#' \code{import_redcap()} that do not exist in the project metadata.
+#' \code{read_redcap()} that do not exist in the project metadata.
 #'
 #' @return
 #' An error message listing the requested instruments that don't exist
@@ -162,7 +162,7 @@ check_redcap_populated <- function(
 #' @param db_metadata The metadata file read by
 #' \code{REDCapR::redcap_metadata_read()}
 #' @param forms The character vector of instrument names passed to
-#' \code{import_redcap()}
+#' \code{read_redcap()}
 #'
 #' @keywords internal
 check_forms_exist <- function(db_metadata, forms) {

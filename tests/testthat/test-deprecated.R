@@ -3,11 +3,11 @@
 # https://github.com/r-lib/testthat/issues/1270
 httptest::.mockPaths(test_path("fixtures"))
 
-test_that("read_redcap_tidy and import_redcap produce the same output", {
+test_that("read_redcap_tidy and read_redcap produce the same output", {
 
   httptest::with_mock_api({
     out_1 <-
-      import_redcap(redcap_uri, longitudinal_token)
+      read_redcap(redcap_uri, longitudinal_token)
 
     out_2 <-
       read_redcap_tidy(redcap_uri, longitudinal_token) %>%

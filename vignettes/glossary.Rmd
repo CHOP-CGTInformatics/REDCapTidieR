@@ -146,7 +146,7 @@ A [column](#column) in the [data tibble](#data-tibble) that serves to partially 
 
 ### Import {#import}
 
-In the context of REDCapTidieR, this is the process of using the [REDCap API](#redcap-api) to query data from a REDCap [project](#project) to make it available inside the R [environment](#environment). You can use the `import_redcap()` function to import data from a REDCap project.
+In the context of REDCapTidieR, this is the process of using the [REDCap API](#redcap-api) to query data from a REDCap [project](#project) to make it available inside the R [environment](#environment). You can use the `read_redcap()` function to import data from a REDCap project.
 
 ### Instrument {#instrument}
 
@@ -174,7 +174,7 @@ A [structure](#structure) of an [instrument](#instrument) that allows it to be f
 
 ### Project {#project}
 
-Also called a **database**, a REDCap project is a self-contained collection of all the of data and metadata related to some data collection activity (for example, a specific research study). A project may be [classic](#classic-project) or [longitudinal](#longitudinal-project). A classic project consists of [instruments](#instrument) that contain [fields](#field). A longitudinal project may additionally include [events](#event) and [arms](#arm). You can use `import_redcap()` to [import](#import) the data from a project.
+Also called a **database**, a REDCap project is a self-contained collection of all the of data and metadata related to some data collection activity (for example, a specific research study). A project may be [classic](#classic-project) or [longitudinal](#longitudinal-project). A classic project consists of [instruments](#instrument) that contain [fields](#field). A longitudinal project may additionally include [events](#event) and [arms](#arm). You can use `read_redcap()` to [import](#import) the data from a project.
 
 ### Record {#record}
 
@@ -202,7 +202,7 @@ The structure of an [instrument](#instrument) can be [repeating](#repeating) or 
 
 ### Supertibble {#supertibble}
 
-A special [tibble](#tibble) that contains data and metadata of a REDCap [project](#project) returned by the `import_redcap()` function. Each [row](#row) of the supertibble corresponds to one [instrument](#instrument). The `redcap_form_name` and `redcap_form_label` [columns](#column) identify the instrument. The `redcap_data` and `redcap_metadata` contain the instrument's [data tibble](#data-tibble) and [metadata tibble](#metadata-tibble). Additional columns contain useful information about the data tibble, such as row and column counts, size in memory, and the percentage of missing values in the data.
+A special [tibble](#tibble) that contains data and metadata of a REDCap [project](#project) returned by the `read_redcap()` function. Each [row](#row) of the supertibble corresponds to one [instrument](#instrument). The `redcap_form_name` and `redcap_form_label` [columns](#column) identify the instrument. The `redcap_data` and `redcap_metadata` contain the instrument's [data tibble](#data-tibble) and [metadata tibble](#metadata-tibble). Additional columns contain useful information about the data tibble, such as row and column counts, size in memory, and the percentage of missing values in the data.
 
 ### Survey
 
