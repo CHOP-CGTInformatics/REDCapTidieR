@@ -1,4 +1,4 @@
-url: https://chop-cgtdataops.github.io/REDCapTidieR/
+url: https://chop-cgtinformatics.github.io/REDCapTidieR/
 
 navbar:
   structure:
@@ -6,11 +6,14 @@ navbar:
     right: [search, github]
   components:
     intro:
-      text: Getting Started
+      text: Get Started
       href: articles/REDCapTidieR.html
     glossary:
       text: Glossary
       href: articles/glossary.html
+
+template:
+  bootstrap: 5
 
 search:
   exclude: ['news/index.html']
