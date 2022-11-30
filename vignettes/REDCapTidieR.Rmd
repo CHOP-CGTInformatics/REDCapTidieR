@@ -72,7 +72,7 @@ We designed the supertibble so you can explore it with the [RStudio Data Viewer]
 
 <center>
 
-![Data Viewer showing the `superheroes` supertibble](viewer-supertibble.gif){width=75%}
+![Data Viewer showing the `superheroes` supertibble](https://github.com/CHOP-CGTInformatics/REDCapTidieR/blob/main/images/vignettes/viewer-supertibble.gif){width=75%}
 
 </center>
 
@@ -80,7 +80,7 @@ You can drill down into individual tables in the `redcap_data` and `redcap_metad
 
 <center>
 
-![Data Viewer showing the `heroes_information` data tibble](viewer-heroes-information.gif){width=75%}
+![Data Viewer showing the `heroes_information` data tibble](https://github.com/CHOP-CGTInformatics/REDCapTidieR/blob/main/images/vignettes/viewer-heroes-information.gif){width=75%}
 
 </center>
 
@@ -88,7 +88,7 @@ In the `super_hero_powers` data tibble, each row represents a superpower of a sp
 
 <center>
 
-![Data Viewer showing the `super_hero_powers` data tibble](viewer-super-hero-powers.gif){width=75%}
+![Data Viewer showing the `super_hero_powers` data tibble](https://github.com/CHOP-CGTInformatics/REDCapTidieR/blob/main/images/vignettes/viewer-super-hero-powers.gif){width=75%}
 
 </center>
 
@@ -96,7 +96,7 @@ You can also explore the metadata tibbles in the `redcap_metadata` column to fin
 
 <center>
 
-![Data Viewer showing the `heroes_information` metadata tibble](viewer-metadata.gif){width=75%}
+![Data Viewer showing the `heroes_information` metadata tibble](https://github.com/CHOP-CGTInformatics/REDCapTidieR/blob/main/images/vignettes/viewer-metadata.gif){width=75%}
 
 </center>
 
@@ -110,7 +110,7 @@ The `bind_tibbles()` function takes a supertibble and binds its data tibbles dir
 
 <center>
 
-![Demonstration of the `bind_tibbles` function](bind-tibbles.gif){width=75%}
+![Demonstration of the `bind_tibbles` function](https://github.com/CHOP-CGTInformatics/REDCapTidieR/blob/main/images/vignettes/bind-tibbles.gif){width=75%}
 
 </center>
 
