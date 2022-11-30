@@ -27,7 +27,8 @@ Imports:
     stringr,
     tibble,
     tidyr,
-    tidyselect
+    tidyselect,
+    formattable
 Suggests: 
     covr,
     httptest,
