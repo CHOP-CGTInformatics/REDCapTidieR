@@ -18,41 +18,41 @@ The REDCapTidieR package uses vocabulary that is standard for REDCap database ar
 
 Below we provide find a rough mapping of REDCap concepts to their corresponding artifacts REDCapTidieR generates in the R environment, followed by a listing of definition of terms.
 
-+---------------------------------+-----------------------------------------------------------------------------------------------+
-| REDCap                          | REDCapTidieR                                                                                  |
-+:===============================:+:=============================================================================================:+
-| [Project](#project), Database   | [Supertibble](#supertibble)                                                                   |
-+---------------------------------+-----------------------------------------------------------------------------------------------+
-| [Instrument](#instrument), Form | One [row](#row) of the [supertibble](#supertibble)                                            |
-|                                 |                                                                                               |
-|                                 | Data is in the [data tibble](#data-tibble)                                                    |
-+---------------------------------+-----------------------------------------------------------------------------------------------+
-| [Field](#field)                 | [Data column](#data-column) (a [column](#column) of the [data tibble](#data-tibble))          |
-+---------------------------------+-----------------------------------------------------------------------------------------------+
-| [Field](#field) name            | [Variable](#variable) name of a [data column](#data-column)                                   |
-+---------------------------------+-----------------------------------------------------------------------------------------------+
-| [Field type](#field-type)       | Data type of a [data column](#data-column)                                                    |
-+---------------------------------+-----------------------------------------------------------------------------------------------+
-| [Field label](#field-label)     | [Variable label](#variable-label) of a [data column](#data-column)                            |
-|                                 |                                                                                               |
-|                                 | (only present if [supertibble](#supertibble) is [labelled](#labelled))                        |
-+---------------------------------+-----------------------------------------------------------------------------------------------+
-| [Record](#record)               | One or several [rows](#row) of a [data tibble](#data-tibble)                                  |
-|                                 |                                                                                               |
-|                                 | Record ID [column](#column) is the first column of a [data tibble](#data-tibble)             |
-+---------------------------------+-----------------------------------------------------------------------------------------------+
-| [Event](#event)                 | `redcap_event` [column](#column) of a [data tibble](#data-tibble)                             |
-|                                 |                                                                                               |
-|                                 | (only present if the [project](#project) is [longitudinal](#longitudinal-project))            |
-+---------------------------------+-----------------------------------------------------------------------------------------------+
-| [Arm](#arm)                     | `redcap_arm` [column](#column) of a [data tibble](#data-tibble)                               |
-|                                 |                                                                                               |
-|                                 | (only present if the [project](#project) is [longitudinal](#longitudinal-project) with multiple arms) |
-+---------------------------------+-----------------------------------------------------------------------------------------------+
-| [Repeat](#repeating) instance   | `redcap_repeat_instance` [column](#column) of a [data tibble](#data-tibble)                   |
-|                                 |                                                                                               |
-|                                 | (only present if the [instrument](#instrument) is [repeating](#repeating))                    |
-+---------------------------------+-----------------------------------------------------------------------------------------------+
++---------------------------------+----------------------------------------------------------------------------------------------------------+
+| REDCap                          | REDCapTidieR                                                                                             |
++:===============================:+:========================================================================================================:+
+| [Project](#project), Database   | [Supertibble](#supertibble)                                                                              |
++---------------------------------+----------------------------------------------------------------------------------------------------------+
+| [Instrument](#instrument), Form | One [row](#row) of the [supertibble](#supertibble)                                                       |
+|                                 |                                                                                                          |
+|                                 | Data is in the [data tibble](#data-tibble)                                                               |
++---------------------------------+----------------------------------------------------------------------------------------------------------+
+| [Field](#field)                 | [Data column](#data-column) (a [column](#column) of the [data tibble](#data-tibble))                     |
++---------------------------------+----------------------------------------------------------------------------------------------------------+
+| [Field](#field) name            | [Variable](#variable) name of a [data column](#data-column)                                              |
++---------------------------------+----------------------------------------------------------------------------------------------------------+
+| [Field type](#field-type)       | Data type of a [data column](#data-column)                                                               |
++---------------------------------+----------------------------------------------------------------------------------------------------------+
+| [Field label](#field-label)     | [Variable label](#variable-label) of a [data column](#data-column)                                       |
+|                                 |                                                                                                          |
+|                                 | (only present if [supertibble](#supertibble) is [labelled](#labelled))                                   |
++---------------------------------+----------------------------------------------------------------------------------------------------------+
+| [Record](#record)               | One or several [rows](#row) of a [data tibble](#data-tibble)                                             |
+|                                 |                                                                                                          |
+|                                 | Record ID [column](#column) is the first column of a [data tibble](#data-tibble)                         |
++---------------------------------+----------------------------------------------------------------------------------------------------------+
+| [Event](#event)                 | `redcap_event` [column](#column) of a [data tibble](#data-tibble)                                        |
+|                                 |                                                                                                          |
+|                                 | (only present if the [project](#project) is [longitudinal](#longitudinal-project))                       |
++---------------------------------+----------------------------------------------------------------------------------------------------------+
+| [Arm](#arm)                     | `redcap_arm` [column](#column) of a [data tibble](#data-tibble)                                          |
+|                                 |                                                                                                          |
+|                                 | (only present if the [project](#project) is [longitudinal](#longitudinal-project) with multiple arms)    |
++---------------------------------+----------------------------------------------------------------------------------------------------------+
+| [Repeat](#repeating) instance   | `redcap_repeat_instance` [column](#column) of a [data tibble](#data-tibble)                              |
+|                                 |                                                                                                          |
+|                                 | (only present if the [instrument](#instrument) is [repeating](#repeating))                               |
++---------------------------------+----------------------------------------------------------------------------------------------------------+
 
 ### Arm {#arm}
 
@@ -214,13 +214,13 @@ A variant of the R data frame that makes data analysis in the [tidyverse](https:
 
 ### Tidy
 
-The term "tidy" is part of this REDCapTidieR's name because it underlies two key ideas of the package.
+The term "tidy" is part of REDCapTidieR's name because it underlies two key ideas of the package.
 
 The first is the concept of [Tidy Data](https://vita.had.co.nz/papers/tidy-data.pdf). A rectangular data structure is tidy if:
 
 1.  Each [variable](#variable) forms a [column](#column)
 2.  Each observation forms a [row](#row)
-3.  Each type of observational unit forms a table (i.e. the [granularity](#granularity) in a table is consistent)
+3.  Each type of observational unit forms a table (i.e. the [granularity](#granularity) of rows in a table is consistent)
 
 Data returned by the REDCap API (the "[block matrix](#block-matrix)") often satisfies the first two requirements of tidy data. However, if the [project](#project) contains both [repeating](#repeating) and [nonrepeating](#nonrepeating) instruments then the [granularity](#granularity) is inconsistent from row to row. A key function of the REDCapTidieR package is to break down the [block matrix](#block-matrix) by [instrument](#instrument). The resulting set of [data tibbles](#data-tibble) is tidy because the granularity of each data tibble is consistent. This makes it easy to work with them.
 
