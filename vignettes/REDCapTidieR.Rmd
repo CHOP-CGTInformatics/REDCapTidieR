@@ -148,7 +148,7 @@ superheroes |>
 
 ### Memory considerations
 
-You might wonder if it's memory inefficient to have both the supertibble and the extracted tibbles in your environment. Because of R's [copy-on-modify behavior](https://adv-r.hadley.nz/names-values.html#copy-on-modify) this extracting data tibbles actually uses very little additional memory. Here is the size of the `superheroes` supertibble.
+You might wonder if it's memory efficient to have both the supertibble and the extracted tibbles in your environment. Because of R's [copy-on-modify behavior](https://adv-r.hadley.nz/names-values.html#copy-on-modify), extracted data tibbles actually use very little additional memory. Here is the size of the `superheroes` supertibble.
 
 ```{r}
 lobstr::obj_size(superheroes)
