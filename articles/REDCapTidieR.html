@@ -269,6 +269,35 @@ single data tibble.</p>
   </script>
 </div>
 </div>
+<div class="section level3">
+<h3 id="memory-considerations">Memory considerations<a class="anchor" aria-label="anchor" href="#memory-considerations"></a>
+</h3>
+<p>You might wonder if it’s memory inefficient to have both the
+supertibble and the extracted tibbles in your environment. Because of
+R’s copy-on-modify behavior this extracting data tibbles actually uses
+very little additional memory. Here is the size of the
+<code>superheroes</code> supertibble.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">lobstr</span><span class="fu">::</span><span class="fu"><a href="https://lobstr.r-lib.org/reference/obj_size.html" class="external-link">obj_size</a></span><span class="op">(</span><span class="va">superheroes</span><span class="op">)</span></span>
+<span><span class="co">#&gt; 313.50 kB</span></span></code></pre></div>
+<p>If we bind the data tibbles into the environment and then check the
+combined size of the supertibble <em>and</em> the two data tibbles we
+get the following:</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">superheroes</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/bind_tibbles.html">bind_tibbles</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">lobstr</span><span class="fu">::</span><span class="fu"><a href="https://lobstr.r-lib.org/reference/obj_size.html" class="external-link">obj_size</a></span><span class="op">(</span><span class="va">superheroes</span>, <span class="va">heroes_information</span>, <span class="va">super_hero_powers</span><span class="op">)</span></span>
+<span><span class="co">#&gt; 313.50 kB</span></span></code></pre></div>
+<p>The same is true if we use the <code><a href="../reference/extract_tibble.html">extract_tibble()</a></code> or
+<code><a href="../reference/extract_tibbles.html">extract_tibbles()</a></code> functions:</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">a</span> <span class="op">&lt;-</span> <span class="va">superheroes</span> <span class="op">|&gt;</span> <span class="fu"><a href="../reference/extract_tibble.html">extract_tibble</a></span><span class="op">(</span><span class="st">"heroes_information"</span><span class="op">)</span></span>
+<span><span class="va">b</span> <span class="op">&lt;-</span> <span class="va">superheroes</span> <span class="op">|&gt;</span> <span class="fu"><a href="../reference/extract_tibbles.html">extract_tibbles</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">lobstr</span><span class="fu">::</span><span class="fu"><a href="https://lobstr.r-lib.org/reference/obj_size.html" class="external-link">obj_size</a></span><span class="op">(</span><span class="va">superheroes</span>, <span class="va">a</span>, <span class="va">b</span><span class="op">)</span></span>
+<span><span class="co">#&gt; 313.69 kB</span></span></code></pre></div>
+</div>
 </div>
 <div class="section level2">
 <h2 id="adding-variable-labels-with-the-labelled-package">Adding variable labels with the labelled package<a class="anchor" aria-label="anchor" href="#adding-variable-labels-with-the-labelled-package"></a>
@@ -291,7 +320,7 @@ tibbles in the <code>redcap_data</code> and <code>redcap_metadata</code>
 columns of the supertibble.</p>
 <p>You can use the <code><a href="http://larmarange.github.io/labelled/reference/look_for.html" class="external-link">labelled::look_for()</a></code> function to explore
 the variable labels of a tibble.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">superheroes</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/make_labelled.html">make_labelled</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/bind_tibbles.html">bind_tibbles</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -328,7 +357,7 @@ Below you can see that the field labels of the REDCap instrument for
 remove that trailing <code>:</code>. The <code><a href="../reference/make_labelled.html">make_labelled()</a></code>
 function has a <code>format_labels</code> argument that you can use to
 preprocess labels before applying them to the variables.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">superheroes</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/make_labelled.html">make_labelled</a></span><span class="op">(</span>format_labels <span class="op">=</span> <span class="op">~</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">gsub</a></span><span class="op">(</span><span class="st">":"</span>, <span class="st">""</span>, <span class="va">.</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/bind_tibbles.html">bind_tibbles</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -339,7 +368,7 @@ preprocess labels before applying them to the variables.</p>
 <p>Removing trailing <code>:</code> characters is a fairly common
 operation, so REDCapTidieR provides a helper function that you can pass
 to the <code>format_labels</code> argument:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/format-helpers.html">fmt_strip_trailing_colon</a></span><span class="op">(</span><span class="st">"Hero name:"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "Hero name"</span></span></code></pre></div>
 <p>To find out about other helpers included with REDCapTidieR, see
@@ -352,7 +381,7 @@ these functions in the order they are supplied. In the following
 example, we remove the trailing colon with
 <code><a href="../reference/format-helpers.html">fmt_strip_trailing_colon()</a></code> and then make the labels lower
 case with <code><a href="https://rdrr.io/r/base/chartr.html" class="external-link">base::tolower()</a></code>.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">superheroes</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/make_labelled.html">make_labelled</a></span><span class="op">(</span></span>
 <span>    format_labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
