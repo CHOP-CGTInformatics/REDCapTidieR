@@ -274,9 +274,10 @@ single data tibble.</p>
 </h3>
 <p>You might wonder if it’s memory inefficient to have both the
 supertibble and the extracted tibbles in your environment. Because of
-R’s copy-on-modify behavior this extracting data tibbles actually uses
-very little additional memory. Here is the size of the
-<code>superheroes</code> supertibble.</p>
+R’s <a href="https://adv-r.hadley.nz/names-values.html#copy-on-modify" class="external-link">copy-on-modify
+behavior</a> this extracting data tibbles actually uses very little
+additional memory. Here is the size of the <code>superheroes</code>
+supertibble.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">lobstr</span><span class="fu">::</span><span class="fu"><a href="https://lobstr.r-lib.org/reference/obj_size.html" class="external-link">obj_size</a></span><span class="op">(</span><span class="va">superheroes</span><span class="op">)</span></span>
 <span><span class="co">#&gt; 313.50 kB</span></span></code></pre></div>
