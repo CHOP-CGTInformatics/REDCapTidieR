@@ -146,6 +146,32 @@ superheroes |>
   rmarkdown::paged_table()
 ```
 
+### Memory considerations
+
+You might wonder if it's memory inefficient to have both the supertibble and the extracted tibbles in your environment. Because of R's copy-on-modify behavior this extracting data tibbles actually uses very little additional memory. Here is the size of the `superheroes` supertibble.
+
+```{r}
+lobstr::obj_size(superheroes)
+```
+
+If we bind the data tibbles into the environment and then check the combined size of the supertibble *and* the two data tibbles we get the following:
+
+```{r}
+superheroes |>
+  bind_tibbles()
+
+lobstr::obj_size(superheroes, heroes_information, super_hero_powers)
+```
+
+The same is true if we use the `extract_tibble()` or `extract_tibbles()` functions:
+
+```{r}
+a <- superheroes |> extract_tibble("heroes_information")
+b <- superheroes |> extract_tibbles()
+
+lobstr::obj_size(superheroes, a, b)
+```
+
 ## Adding variable labels with the labelled package
 
 REDCapTidieR integrates with the [labelled](http://larmarange.github.io/labelled/) package to allow you to attach labels to variables in the supertibble. Variable labels can make data exploration easier. An increasing number of R packages support labelled data, including [ggplot](https://ggplot2.tidyverse.org/) (via [ggeasy](https://jonocarroll.github.io/ggeasy/)) and [gtsummary](https://www.danieldsjoberg.com/gtsummary/). The RStudio Data Viewer shows variable labels below variable names.
