@@ -46,7 +46,7 @@ Here is a screenshot of the REDCap Record Status Dashboard of this database. It 
 
 <center>
 
-![REDCap Record Status Dashboard for the Superhero database](record-status-dash.png)
+![REDCap Record Status Dashboard for the Superhero database](images/record-status-dash.png)
 
 </center>
 
@@ -72,7 +72,7 @@ We designed the supertibble so you can explore it with the [RStudio Data Viewer]
 
 <center>
 
-![Data Viewer showing the `superheroes` supertibble](https://raw.githubusercontent.com/CHOP-CGTInformatics/REDCapTidieR/main/images/vignettes/viewer-supertibble.gif){width=75%}
+![Data Viewer showing the `superheroes` supertibble](images/viewer-supertibble.gif){width=75%}
 
 </center>
 
@@ -80,7 +80,7 @@ You can drill down into individual tables in the `redcap_data` and `redcap_metad
 
 <center>
 
-![Data Viewer showing the `heroes_information` data tibble](https://raw.githubusercontent.com/CHOP-CGTInformatics/REDCapTidieR/main/images/vignettes/viewer-heroes-information.gif){width=75%}
+![Data Viewer showing the `heroes_information` data tibble](images/viewer-heroes-information.gif){width=75%}
 
 </center>
 
@@ -88,7 +88,7 @@ In the `super_hero_powers` data tibble, each row represents a superpower of a sp
 
 <center>
 
-![Data Viewer showing the `super_hero_powers` data tibble](https://raw.githubusercontent.com/CHOP-CGTInformatics/REDCapTidieR/main/images/vignettes/viewer-super-hero-powers.gif){width=75%}
+![Data Viewer showing the `super_hero_powers` data tibble](images/viewer-super-hero-powers.gif){width=75%}
 
 </center>
 
@@ -96,7 +96,7 @@ You can also explore the metadata tibbles in the `redcap_metadata` column to fin
 
 <center>
 
-![Data Viewer showing the `heroes_information` metadata tibble](https://raw.githubusercontent.com/CHOP-CGTInformatics/REDCapTidieR/main/images/vignettes/viewer-metadata.gif){width=75%}
+![Data Viewer showing the `heroes_information` metadata tibble](images/viewer-metadata.gif){width=75%}
 
 </center>
 
@@ -110,7 +110,7 @@ The `bind_tibbles()` function takes a supertibble and binds its data tibbles dir
 
 <center>
 
-![Demonstration of the `bind_tibbles` function](https://raw.githubusercontent.com/CHOP-CGTInformatics/REDCapTidieR/main/images/vignettes/bind-tibbles.gif){width=75%}
+![Demonstration of the `bind_tibbles` function](images/bind-tibbles.gif){width=75%}
 
 </center>
 
@@ -178,7 +178,7 @@ REDCapTidieR integrates with the [labelled](http://larmarange.github.io/labelled
 
 <center>
 
-![Data Viewer showing part of a labelled supertibble](labelled-supertibble.png){width=75%}
+![Data Viewer showing part of a labelled supertibble](images/labelled-supertibble.png){width=75%}
 
 </center>
 
@@ -198,7 +198,7 @@ Where did these labels come from? These labels are actually the REDCap **field l
 
 <center>
 
-![REDCap data entry view of the `heroes_information` instrument](heroes-information-redcap-form.png){width=75%}
+![REDCap data entry view of the `heroes_information` instrument](images/heroes-information-redcap-form.png){width=75%}
 
 </center>
 

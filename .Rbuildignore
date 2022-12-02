@@ -13,7 +13,6 @@
 ^Meta$
 ^cran-comments\.md$
 README.html$
-^images$
 
 utility/
 lastMiKTeXException/
