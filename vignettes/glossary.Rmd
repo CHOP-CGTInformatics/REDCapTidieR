@@ -74,7 +74,7 @@ A primary key is a [column](#column) in a table that is distinct in each [row](#
 
 An option or category defined in the context of a single-answer or multi-answer categorical [field type](#field-type) in REDCap. You can define choices using the REDCap Field Editor. Choices have a **raw value** (a unique identifier - usually a serial number but this can be changed) and a **choice label** (a human readable description of the choice, which is displayed during data entry).
 
-In the context of REDCapTidieR, choices come into play in two scenarios in during the construction of the [data tibble](#data-tibble). Choice labels of single-answer type [fields](#field) (dropdown and radio) are used to define the values of [data columns](#data-column) that are derived from those fields. Raw values of the multi-answer checkbox field are used to construct the names of data columns derived from them.
+In the context of REDCapTidieR, choices come into play in two scenarios during the construction of the [data tibble](#data-tibble). Choice labels of single-answer type [fields](#field) (dropdown and radio) are used to define the values of [data columns](#data-column) that are derived from those fields. Raw values of the multi-answer checkbox field are used to construct the names of data columns derived from them.
 
 ### Classic project {#classic-project}
 

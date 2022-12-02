@@ -20,15 +20,24 @@ status](https://www.r-pkg.org/badges/version/REDCapTidieR)](https://CRAN.R-proje
 coverage](https://codecov.io/gh/CHOP-CGTInformatics/REDCapTidieR/branch/main/graph/badge.svg)](https://app.codecov.io/gh/CHOP-CGTInformatics/REDCapTidieR?branch=main)
 <!-- badges: end -->
 
-The REDCapTidieR package provides an elegant way to import data from a
-[REDCap](https://www.project-redcap.org/) database into an R
-environment. It builds upon the
+The REDCapTidieR package provides an elegant way to
+[import](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/glossary.html#import)
+data from a [REDCap](https://www.project-redcap.org/)
+[project](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/glossary.html#project)
+into an R environment. It builds upon the
 [REDCapR](https://ouhscbbmc.github.io/REDCapR/) package to query the
-REDCap API and then transforms the returned data into a set of tidy
-tibbles.
+[REDCap
+API](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/glossary.html#redcap-api)
+and then transforms the returned data into a set of
+[tidy](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/glossary.html#tidy)
+[tibbles](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/glossary.html#tibble).
 
-REDCapTidieR is especially useful for dealing with complex databases
-that are longitudinal or include repeating instruments or both.
+REDCapTidieR is especially useful for dealing with complex REDCap
+projects that are
+[longitudinal](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/glossary.html#longitudinal-project)
+or include
+[repeating](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/glossary.html#repeating)
+instruments or both.
 
 ## Installation
 
@@ -52,7 +61,7 @@ Use `read_redcap()` together with `bind_tibbles()` to import data from
 all instruments into your environment.
 
 ![Demonstration of using the `read_redcap` and `bind_tibbles`
-functions](vignettes/images/redcaptidier-demo.gif)
+functions](man/figures/redcaptidier-demo.gif)
 
 Read the [Getting Started
 vignette](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/REDCapTidieR.html)

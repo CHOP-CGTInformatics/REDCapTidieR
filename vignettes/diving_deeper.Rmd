@@ -180,7 +180,7 @@ Fields of single-answer categorical type (`dropdown`, `radio`) are converted to 
 
 </center>
 
-The fact that all makes it possible to discover all of the different options for a specific field even if not all of those options are represented in the data. For example, even though we have only Grade 1 and 2 adverse events in the database, we can see that there are 5 possible grades.
+This makes it possible to discover all of the different options for a specific field even if not all of those options are represented in the data. For example, even though we have only Grade 1 and 2 adverse events in the database, we can see that there are 5 possible grades.
 
 ```{r}
 adverse_events$adverse_event_grade
