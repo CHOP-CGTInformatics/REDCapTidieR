@@ -31,7 +31,7 @@ knitr::opts_chunk$set(
 
 The REDCapTidieR package provides an elegant way to [import](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/glossary.html#import) data from a [REDCap](https://www.project-redcap.org/) [project](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/glossary.html#project) into an R environment. It builds upon the [REDCapR](https://ouhscbbmc.github.io/REDCapR/) package to query the [REDCap API](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/glossary.html#redcap-api) and then transforms the returned data into a set of [tidy](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/glossary.html#tidy) [tibbles](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/glossary.html#tibble).
 
-REDCapTidieR is especially useful for dealing with complex REDCap projects that are [longitudinal](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/glossary.html#longitudinal-project) or include [repeating](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/glossary.html#repeating) instruments or both.
+REDCapTidieR is especially useful for dealing with complex REDCap projects that are [longitudinal](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/glossary.html#longitudinal-project) or include [repeating](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/glossary.html#repeating) [instruments](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/glossary.html#instrument) or both.
 
 ## Installation
 
