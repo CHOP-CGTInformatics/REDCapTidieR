@@ -92,16 +92,16 @@ stated that importing records from complex REDCap projects via the
 REDCap API can be <em>ugly</em>. In this section we will describe what
 we mean by this in more precise language.</p>
 <p>The <code><a href="https://ouhscbbmc.github.io/REDCapR/reference/redcap_read_oneshot.html" class="external-link">REDCapR::redcap_read_oneshot()</a></code> function pulls data
-from a REDCap project via the REDCap API and provides it to the R
-environment without performing much processing. It returns a list with
-an element named <code>data</code> that contains all of the data of the
-project as a single data frame.</p>
+from a REDCap project via the <a href="glossary.html#redcap-api">REDCap
+API</a> and provides it to the R environment without performing much
+processing. It returns a list with an element named <code>data</code>
+that contains all of the data of the project as a single data frame.</p>
 <p>Below, we use this function to import data from the <a href="REDCapTidieR.html#case-study-the-superhero-database">Superhero
-REDCap database</a>, which contains a <strong>nonrepeating</strong>
-instrument <code>heroes_information</code> and a
-<strong>repeating</strong> instrument <code>super_hero_powers</code>. We
-use <code><a href="https://pkgs.rstudio.com/rmarkdown/reference/paged_table.html" class="external-link">rmarkdown::paged_table()</a></code> to allow you to explore this
-large data frame in the browser.</p>
+REDCap database</a>, which contains a <a href="glossary.html#nonrepeating"><strong>nonrepeating</strong></a>
+instrument <code>heroes_information</code> and a <a href="glossary.html#repeating"><strong>repeating</strong></a> instrument
+<code>super_hero_powers</code>. We use
+<code><a href="https://pkgs.rstudio.com/rmarkdown/reference/paged_table.html" class="external-link">rmarkdown::paged_table()</a></code> to allow you to explore this large
+data frame in the browser.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">superheroes_token</span> <span class="op">&lt;-</span> <span class="st">"123456789ABCDEF123456789ABCDEF04"</span></span>
 <span><span class="va">redcap_uri</span> <span class="op">&lt;-</span> <span class="st">"https://my.institution.edu/redcap/api/"</span></span></code></pre></div>
@@ -116,7 +116,7 @@ large data frame in the browser.</p>
   </script>
 </div>
 <p>This data structure is called a <a href="https://en.wikipedia.org/wiki/Block_matrix" class="external-link">block matrix</a>. It’s
-what happens when REDCap mashes the contents of a database that has both
+what happens when REDCap mashes the contents of a project that has both
 repeating and nonrepeating instruments into a single table.</p>
 <p>While it may seem a good idea to have everything in one data frame,
 there are significant downsides, including:</p>
@@ -125,17 +125,17 @@ there are significant downsides, including:</p>
 data set, there are 6,700 rows. Every transformation first requires
 whittling down a huge data set.</p></li>
 <li><p>There are a lot of <code>NA</code> values. Many of these
-<code>NA</code> values don’t represent data fields left blank in the
-database but instead are an artifact of how the table is
-generated.</p></li>
+<code>NA</code> values don’t represent <a href="glossary.html#field">fields</a> left blank during data entry but
+instead are an artifact of how the table is generated.</p></li>
 <li><p>Metadata that would be helpful is missing. For example, it’s not
 possible to determine which columns are associated with a specific
 instrument for nonrepeating instruments.</p></li>
-<li><p>The meaning of a row in the data set is inconsistent. Some rows
-represent observations on a per-record level (i.e. those derived from
-nonrepeating instruments) and others represent observations on a
-per-repeat-instance level (i.e. those derived from repeating
-instruments). This technically violates the definition of <a href="https://www.jstatsoft.org/article/view/v059i10" class="external-link">Tidy Data</a>
+<li><p>The meaning of a <a href="glossary.html#row">row</a> in the data
+set is inconsistent. Some rows represent observations on a per-record
+level (i.e. those derived from nonrepeating instruments) and others
+represent observations on a per-repeat-instance level (i.e. those
+derived from repeating instruments). This technically violates the
+definition of <a href="https://www.jstatsoft.org/article/view/v059i10" class="external-link">Tidy Data</a>
 because multiple types of observational units are stored in the same
 table.</p></li>
 </ul>
@@ -143,14 +143,13 @@ table.</p></li>
 <div class="section level2">
 <h2 id="structure-of-redcaptidier-data-tibbles">Structure of REDCapTidieR Data Tibbles<a class="anchor" aria-label="anchor" href="#structure-of-redcaptidier-data-tibbles"></a>
 </h2>
-<p>REDCapTidieR breaks the block matrix up into <strong>data
-tibbles</strong>, one for each instrument. REDCapTidieR then collects
-the data tibbles as a <strong>list column</strong> in the
-<strong>supertibble</strong>.</p>
-<p>These data tibbles are <strong>tidier</strong> than the block matrix
-because one instrument can only be repeating or nonrepeating, and
+<p>REDCapTidieR breaks the block matrix up into <a href="glossary.html#data-tibble"><strong>data tibbles</strong></a>, one
+for each instrument. REDCapTidieR then collects the data tibbles as a <a href="glossary.html#list-column"><strong>list column</strong></a> in the
+<a href="glossary.html#supertibble"><strong>supertibble</strong></a>.</p>
+<p>These data tibbles are <a href="glossary.html#tidy"><strong>tidier</strong></a> than the block
+matrix because one instrument can only be repeating or nonrepeating, and
 therefore each data tibble can only have one type of observational unit
-stored inside of it.</p>
+stored inside of it. Each data tibble has consistent <a href="glossary.html#granularity">granularity</a></p>
 <p>Let’s take a look at the data tibbles derived from the Superhero
 database and contrast with the block matrix. Consider
 <code>heroes_information</code>, which contains data from a
@@ -159,14 +158,14 @@ than the block matrix at 734 rows by 12 columns, and there are no
 <code>NA</code>s. The data tibble’s name <code>heroes_information</code>
 is descriptive. REDCapTidieR knows the names of all instruments because
 in addition to querying the project’s data it also queries the project’s
-metadata. Each entry has the same observational unit, one
+metadata. Each entry has the same granularity, one
 <strong>superhero</strong>, identified by its <code>record_id</code>. A
-number of data columns follow, starting with <code>name</code>,
-<code>gender</code>, <code>eye_color</code>, <code>race</code>, etc.
-These columns are in the same order as on the REDCap instrument. The
-last column of a REDCapTidieR data tibble is always
-<code>form_status_complete</code> which indicates whether the instrument
-has been marked as completed.</p>
+number of <a href="glossary.html#data-column">data columns</a> follow,
+starting with <code>name</code>, <code>gender</code>,
+<code>eye_color</code>, <code>race</code>, etc. These columns are in the
+same order as on the REDCap instrument. The last column of a
+REDCapTidieR data tibble is always <code>form_status_complete</code>
+which indicates whether the instrument has been marked as completed.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/CHOP-CGTInformatics/REDCapTidieR" class="external-link">REDCapTidieR</a></span><span class="op">)</span></span>
 <span></span>
@@ -183,15 +182,13 @@ has been marked as completed.</p>
 <p>Now consider the <code>super_hero_powers</code> table, which contains
 data from a <strong>repeating</strong> instrument. In addition to
 <code>record_id</code> there is a <code>redcap_repeat_instance</code>
-column. The observational unit, or granularity, of each row is one
-<strong>superpower per superhero</strong>, identified by its
-<code>record_id</code> and <code>redcap_repeat_instance</code>. Because
-these two columns uniquely identify a row in the data tibble, we call
-them <strong>identifier columns</strong>. In the REDCapTidieR
-supertibble, identifier columns always come first, followed by
-<strong>data columns</strong>. The last column is always
-<code>form_status_complete</code>. This column indicates whether the
-instrument has been marked off as completed.</p>
+column. The granularity of each row is one <strong>superpower per
+superhero</strong>, identified by its <code>record_id</code> and
+<code>redcap_repeat_instance</code>. Because these two columns uniquely
+identify a row in the data tibble, we call them <a href="glossary.html#identifier-column"><strong>identifier
+columns</strong></a>. In the REDCapTidieR supertibble, identifier
+columns always come first, followed by [<strong>data columns</strong>]
+and finally the <code>form_status_complete</code> column.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">super_hero_powers</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">rmarkdown</span><span class="fu">::</span><span class="fu"><a href="https://pkgs.rstudio.com/rmarkdown/reference/paged_table.html" class="external-link">paged_table</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
@@ -205,15 +202,14 @@ instrument has been marked off as completed.</p>
 <h2 id="longitudinal-redcap-projects">Longitudinal REDCap projects<a class="anchor" aria-label="anchor" href="#longitudinal-redcap-projects"></a>
 </h2>
 <p>REDCap databases support two main mechanisms to allow collecting the
-same data multiple times: <strong>repeating instruments</strong> and
-<strong>longitudinal projects</strong>.</p>
-<p>The <strong>granularity</strong> of each table (i.e. the
-observational unit that a single row represents) depends on the
-structure of the project (classic, longitudinal with one arm,
-longitudinal with multiple arms) as well as the structure of the
-instrument (repeating or nonrepeating). REDCapTidieR generates
-<strong>identifier columns</strong> according to the following
-table:</p>
+same data multiple times: <strong>repeating instruments</strong> and <a href="glossary.html#longitudinal-project"><strong>longitudinal
+projects</strong></a>.</p>
+<p>The <a href="glossary.html#granularity"><strong>granularity</strong></a> of
+each table (i.e. the observational unit that a single <a href="glossary.html#row">row</a> represents) depends on the <a href="glossary.html#structure">structure</a> of the <a href="glossary.html#project">project</a> (<a href="glossary.html#classic-project">classic</a>, <a href="glossary.html#longitudinal-project">longitudinal</a>, longitudinal
+with multiple <a href="glossary.html#arm">arms</a>) as well as the
+structure of the <a href="glossary.html#instrument">instrument</a> (<a href="glossary.html#repeating">repeating</a> or <a href="glossary.html#nonrepeating">nonrepeating</a>). REDCapTidieR
+generates <a href="glossary.html#identifier-column"><strong>identifier
+columns</strong></a> according to the following table:</p>
 <table style="width:98%;" class="table">
 <colgroup>
 <col width="17%">
@@ -255,9 +251,15 @@ table:</p>
 <blockquote>
 <p>Note: Taken in combination, the identifier columns of any
 REDCapTidieR tibble are guaranteed to be unique and not <code>NA</code>
-and can therefore be used as <strong>composite primary key</strong>.
-This makes it easy to join REDCapTidieR tibbles to each other!</p>
+and can therefore be used as <a href="glossary.html#composite-primary-key"><strong>composite primary
+key</strong></a>. This makes it easy to join REDCapTidieR tibbles to
+each other!</p>
 </blockquote>
+<p>By default, REDCap names the record ID field <code>record_id</code>,
+but this can be changed, and REDCapTidieR is smart enough to handle
+this. For example, if the record ID field was renamed to
+<code>subject_id</code> then the record ID column of each data tibble
+would be <code>subject_id</code>.</p>
 <p>Let’s look at a REDCap database you might use to capture data for a
 clinical trial. This is a longitudinal database that assesses some data
 (e.g. demographics) just once at enrollment, and other data
@@ -281,10 +283,10 @@ nonrepeating and three repeating instruments.</p>
   </script>
 </div>
 <p>The <code>demographics</code> instrument is nonrepeating. The
-granularity is one row per study subject per event, but since it is only
-designated for a single event, it is really one row per study subject.
-The <code>redcap_event</code> column identifies the name of the event
-with which the instrument is associated: <code>screening__enrollm</code>
+granularity is one row per study subject per <a href="glossary.html#event">event</a>, but since it is only designated
+for a single event, it is really one row per study subject. The
+<code>redcap_event</code> column identifies the name of the event with
+which the instrument is associated: <code>screening__enrollm</code>
 (Screening and Enrollment).</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">longitudinal</span> <span class="op">|&gt;</span></span>
@@ -337,9 +339,9 @@ scenario as well.</p>
 <p>REDCapTidieR does <em>not</em> allow you to have the same instrument
 designated both as a repeating and as a nonrepeating instrument in
 different events. It will throw an error if it detects this.</p>
-<p>At this time, REDCapTidieR does not support repeating events. Please
-submit a <a href="https://github.com/CHOP-CGTInformatics/REDCapTidieR/issues" class="external-link">feature
-request</a> if this is something you’re interested in!</p>
+<p>At this time, REDCapTidieR does not support repeating events. Feel
+free to submit a <a href="https://github.com/CHOP-CGTInformatics/REDCapTidieR/issues" class="external-link">feature
+request</a> if this is something you need!</p>
 <p>REDCapTidieR supports projects with multiple arms. If you have a
 project with multiple arms, there will be an additional column
 <code>redcap_arm</code> to identify the arm that the row is associated
@@ -349,38 +351,40 @@ with.</p>
 <h2 id="categorical-variables">Categorical variables<a class="anchor" aria-label="anchor" href="#categorical-variables"></a>
 </h2>
 <p>REDCapTidieR performs a number of opinionated transformations on
-categorical fields to streamline exploring and working with them.</p>
-<p>Fields that are of type <code>yesno</code> or <code>truefalse</code>
-are converted to <strong>logical</strong> variables.</p>
+categorical <a href="glossary.html#field">fields</a> to streamline
+exploring and working with them.</p>
+<p>Fields that are of <a href="glossary.html#field-type">type</a>
+<code>yesno</code> or <code>truefalse</code> are converted to
+<strong>logical</strong> <a href="glossary.html#variable">variables</a>.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">adverse_events</span><span class="op">$</span><span class="va">adverse_event_serious</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;  logi [1:5] FALSE FALSE FALSE FALSE FALSE</span></span></code></pre></div>
 <p>Fields of single-answer categorical type (<code>dropdown</code>,
-<code>radio</code>) are converted to <strong>factor</strong> variables
-by default. To understand how REDCapTidieR constructs this factor,
-consider the Field Editor for the <code>adverse_event_grade</code>
-variable which is a single-answer <code>radio</code> field. There are
-five choices for this field. Choices have <strong>raw values</strong>
-and <strong>choice labels</strong>, separated by a comma. Here, the raw
-values are <code>1</code>, <code>2</code>, <code>3</code>,
-<code>4</code>, and <code>5</code>, and their associated choice labels
-are <code>Grade 1</code>, <code>Grade 2</code>, <code>Grade 3</code>,
-<code>Grade 4</code>, and <code>Grade 5</code>. We find that choice
-labels are generally more useful and intuitive to work with than raw
-values. For this reason, REDCapTidieR derives the labels of the factor
-from the choice label. The order of the factor levels is the same as the
-order of choices in REDCap.</p>
+<code>radio</code>) are converted to <a href="glossary.html#factor"><strong>factor</strong></a> variables by
+default. To understand how REDCapTidieR constructs this factor, consider
+the Field Editor for the <code>adverse_event_grade</code> variable which
+is a single-answer <code>radio</code> field. There are five <a href="glossary.html#choice">choices</a> for this field. Choices have
+<strong>raw values</strong> and <strong>choice labels</strong>,
+separated by a comma. Here, the raw values are <code>1</code>,
+<code>2</code>, <code>3</code>, <code>4</code>, and <code>5</code>, and
+their associated choice labels are <code>Grade 1</code>,
+<code>Grade 2</code>, <code>Grade 3</code>, <code>Grade 4</code>, and
+<code>Grade 5</code>. We find that choice labels are generally more
+useful and intuitive to work with than raw values. For this reason,
+REDCapTidieR derives the labels of the factor from the choice label. The
+order of the factor levels is the same as the order of choices in
+REDCap.</p>
 <center>
 <div class="figure">
 <img src="images/field-editor-ae-grade.png" alt=""><p class="caption">REDCap field editor showing the choices of a
 single-answer field</p>
 </div>
 </center>
-<p>This makes it possible to discover all of the different options for a
-specific field even if not all of those options are represented in the
-data. For example, even though we have only Grade 1 and 2 adverse events
-in the database, we can see that there are 5 possible grades.</p>
+<p>This makes it possible to discover all of the different choices for a
+specific field even if not all of them are represented in the data. For
+example, even though we have only Grade 1 and 2 adverse events in the
+data, we can see that there are 5 possible grades.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">adverse_events</span><span class="op">$</span><span class="va">adverse_event_grade</span></span>
 <span><span class="co">#&gt; [1] Grade 2 Grade 1 Grade 1 Grade 2 Grade 1</span></span>
@@ -438,19 +442,14 @@ field:</p>
 <div class="section level2">
 <h2 id="surveys">Surveys<a class="anchor" aria-label="anchor" href="#surveys"></a>
 </h2>
-<p>Instruments that are used to generate REDCap Surveys generate
-additional data fields:</p>
+<p>Instruments that are used to generate REDCap <a href="glossary.html#survey">Surveys</a> generate additional <a href="glossary.html#data-column">data columns</a>:</p>
 <ul>
-<li><p><code>[instrument_name]_timestamp</code>: the time at which the
+<li><p><code>redcap_survey_timestamp</code>: the time at which the
 survey was competed</p></li>
 <li><p><code>redcap_survey_identifier</code>: the participant
 identifier. This will be <code>NA</code> if the Participant Identifier
 feature in REDCap is disabled.</p></li>
 </ul>
-<p>By default, <code><a href="../reference/read_redcap.html">read_redcap()</a></code> returns these fields if the
-instrument is used as a survey. For the <code>survey</code> instrument,
-we get <code>survey_timestamp</code> and
-<code>redcap_survey_identifier</code>.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">survey</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_redcap.html">read_redcap</a></span><span class="op">(</span><span class="va">redcap_uri</span>, <span class="va">survey_token</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/extract_tibble.html">extract_tibble</a></span><span class="op">(</span><span class="st">"survey"</span><span class="op">)</span></span>
@@ -475,23 +474,20 @@ we get <code>survey_timestamp</code> and
 <p>In summary, here are the rules by which REDCapTidieR constructs data
 tibbles:</p>
 <ol style="list-style-type: decimal">
-<li>One data tibble is built for each instrument.</li>
-<li>The first column is always the record ID column which is derived
-from the record ID field. By default, REDCap names the record ID field
-<code>record_id</code>, but this can be changed, and REDCapTidieR is
-smart enough to handle this. For example, if the record ID field was
-renamed to <code>subject_id</code> then the record ID column of each
-data tibble would be <code>subject_id</code>.</li>
-<li>Additional identifying columns may follow the record ID column,
-depending on the structure of the instrument and the structure of the
-project (see the table above).</li>
-<li>After the identifying columns, data columns appear in the same order
-as in the REDCap instrument. True/false type fields are converted to
-logical columns. Single-answer categorical fields are converted to
-factor columns. Multi-answer checkbox fields are expanded to a set of
-logical columns, one for each choice.</li>
-<li>If the instrument is used as a survey, the survey timestamp and
-survey identifier columns will appear next.</li>
+<li>One <a href="glossary.html#data-tibble">data tibble</a> is built for
+each <a href="glossary.html#instrument">instrument</a>.</li>
+<li>The first <a href="glossary.html#column">column</a> is always the <a href="glossary.html#record">record</a> ID column which is derived from
+the record ID <a href="glossary.html#field">field</a>.</li>
+<li>Additional <a href="glossary.html#identifier-column">identifier
+columns</a> may follow the record ID column, depending on the <a href="glossary.html#structure">structure</a> of the instrument and the
+structure of the <a href="glossary.html#project">project</a> (see the
+table above).</li>
+<li>After the identifier columns, <a href="glossary.html#data-column">data columns</a> appear in the same
+order as in the REDCap instrument. True/false <a href="glossary.html#field-type">type</a> fields are converted to logical
+columns. Single-answer categorical fields are converted to <a href="glossary.html#factor">factor</a> columns. Multi-answer checkbox
+fields are expanded to a set of logical columns, one for each <a href="glossary.html#choice">choice</a>.</li>
+<li>If the instrument is used as a <a href="glossary.html#survey">survey</a>, the survey timestamp and
+identifier columns will appear next.</li>
 <li>The final column is always <code>form_status_complete</code>.</li>
 </ol>
 </div>

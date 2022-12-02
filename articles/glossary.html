@@ -180,7 +180,8 @@ tibble</a></p>
 </h3>
 <p>A group of <a href="#event">events</a>. Arms provide a mechanism that
 allows one <a href="#longitudinal-project">longitudinal project</a> to
-have multiple different sequences of events defined.</p>
+have multiple different sequences of events defined.
+<a onclick="history.back()">↩︎</a></p>
 </div>
 <div class="section level3">
 <h3 id="block-matrix">Block matrix<a class="anchor" aria-label="anchor" href="#block-matrix"></a>
@@ -188,13 +189,13 @@ have multiple different sequences of events defined.</p>
 <p>A rectangular data structure (matrix) that is constructed from
 multiple smaller rectangular data structures (blocks). In the context of
 REDCap, the block matrix is the rectangular data set that contains data
-from all <a href="#instrument">instruments</a> returned by the <a href="#redcap-api">REDCap API</a>.</p>
+from all <a href="#instrument">instruments</a> returned by the <a href="#redcap-api">REDCap API</a>. <a onclick="history.back()">↩︎</a></p>
 </div>
 <div class="section level3">
 <h3 id="column">Column<a class="anchor" aria-label="anchor" href="#column"></a>
 </h3>
 <p>A vertical series of cells in a data frame or <a href="#tibble">tibble</a>. Synonym: <a href="#variable">Variable</a>.
-See also: <a href="#row">Row</a>.</p>
+See also: <a href="#row">Row</a>. <a onclick="history.back()">↩︎</a></p>
 </div>
 <div class="section level3">
 <h3 id="composite-primary-key">Composite primary key<a class="anchor" aria-label="anchor" href="#composite-primary-key"></a>
@@ -204,7 +205,8 @@ distinct in each <a href="#row">row</a> and serves to identify each row.
 A composite primary key is a primary key that consists of multiple
 columns that in combination are distinct in each row and serve to
 identify each row. Taken together, the <a href="#identifier-column">identifier columns</a> of the <a href="#data-tibble">data tibble</a> form a composite primary key. This
-makes it easy to join data tibbles together.</p>
+makes it easy to join data tibbles together.
+<a onclick="history.back()">↩︎</a></p>
 </div>
 <div class="section level3">
 <h3 id="choice">Choice<a class="anchor" aria-label="anchor" href="#choice"></a>
@@ -221,7 +223,8 @@ scenarios during the construction of the <a href="#data-tibble">data
 tibble</a>. Choice labels of single-answer type <a href="#field">fields</a> (dropdown and radio) are used to define the
 values of <a href="#data-column">data columns</a> that are derived from
 those fields. Raw values of the multi-answer checkbox field are used to
-construct the names of data columns derived from them.</p>
+construct the names of data columns derived from them.
+<a onclick="history.back()">↩︎</a></p>
 </div>
 <div class="section level3">
 <h3 id="classic-project">Classic project<a class="anchor" aria-label="anchor" href="#classic-project"></a>
@@ -235,19 +238,19 @@ tibble</a> represents one record. Repeating instruments can be completed
 an arbitrary number of times for each record. For repeating instruments,
 one row of data in the data tibble represents one repeat instance of one
 record. See also: <a href="#longitudinal-project">Longitudinal
-project</a>.</p>
+project</a>. <a onclick="history.back()">↩︎</a></p>
 </div>
 <div class="section level3">
 <h3 id="database">Database<a class="anchor" aria-label="anchor" href="#database"></a>
 </h3>
 <p>In the context of REDCap, this is the same as <a href="#project">project</a>. We prefer the term “project” because it is
-has a more specific meaning.</p>
+has a more specific meaning. <a onclick="history.back()">↩︎</a></p>
 </div>
 <div class="section level3">
 <h3 id="data-column">Data column<a class="anchor" aria-label="anchor" href="#data-column"></a>
 </h3>
 <p>A <a href="#column">column</a> of the <a href="#data-tibble">data
-tibble</a> that is derived from data that were entered into the <a href="#field">fields</a> of a REDCap <a href="#instrument">instrument</a>.</p>
+tibble</a> that is derived from data that were entered into the <a href="#field">fields</a> of a REDCap <a href="#instrument">instrument</a>. <a onclick="history.back()">↩︎</a></p>
 </div>
 <div class="section level3">
 <h3 id="data-tibble">Data tibble<a class="anchor" aria-label="anchor" href="#data-tibble"></a>
@@ -259,7 +262,8 @@ of a <a href="#project">project</a>. The columns of the data tibble
 include <a href="#identifier-column">identifier columns</a> that jointly
 identify each row and <a href="#data-column">data columns</a> that
 contain data that was entered into REDCap. REDCapTidieR provides several
-functions to extract data tibbles from the supertibble. See also: <a href="#metadata-tibble">Metadata tibble</a>.</p>
+functions to extract data tibbles from the supertibble. See also: <a href="#metadata-tibble">Metadata tibble</a>.
+<a onclick="history.back()">↩︎</a></p>
 </div>
 <div class="section level3">
 <h3 id="data-viewer">Data viewer<a class="anchor" aria-label="anchor" href="#data-viewer"></a>
@@ -269,7 +273,8 @@ functionality that allows you to inspect data frames, <a href="#tibble">tibbles<
 <a href="https://support.posit.co/hc/en-us/articles/205175388-Using-the-Data-Viewer-in-the-RStudio-IDE" class="external-link">features
 to perform basic exploratory data analysis</a> such as sorting,
 filtering, and searching. <a href="REDCapTidieR.html#exploring-the-contents-of-the-supertibble">The
-supertibble is designed to work well with the data viewer</a>.</p>
+supertibble is designed to work well with the data viewer</a>.
+<a onclick="history.back()">↩︎</a></p>
 </div>
 <div class="section level3">
 <h3 id="environment">Environment<a class="anchor" aria-label="anchor" href="#environment"></a>
@@ -278,20 +283,23 @@ supertibble is designed to work well with the data viewer</a>.</p>
 <strong>binding</strong> a set of names to a set of objects. The
 <strong>global environment</strong> is the namespace in which you bind
 objects such as values and <a href="#tibble">tibbles</a> during
-interactive work. The <code><a href="../reference/bind_tibbles.html">bind_tibbles()</a></code> function takes a <a href="#supertibble">supertibble</a> and binds its <a href="#data-tibble">data tibbles</a> to the global environment.</p>
+interactive work. The <code><a href="../reference/bind_tibbles.html">bind_tibbles()</a></code> function takes a <a href="#supertibble">supertibble</a> and binds its <a href="#data-tibble">data tibbles</a> to the global environment.
+<a onclick="history.back()">↩︎</a></p>
 </div>
 <div class="section level3">
 <h3 id="event">Event<a class="anchor" aria-label="anchor" href="#event"></a>
 </h3>
 <p>A part of a <a href="#longitudinal-project">longitudinal project</a>.
-Each event can be associated with one or multiple <a href="#instrument">instruments</a>.</p>
+Each event can be associated with one or multiple <a href="#instrument">instruments</a>.
+<a onclick="history.back()">↩︎</a></p>
 </div>
 <div class="section level3">
 <h3 id="factor-variable">Factor variable<a class="anchor" aria-label="anchor" href="#factor-variable"></a>
 </h3>
 <p>A data type in R for categorical data. By default, single-answer
 categorical REDCap <a href="#field-type">field types</a> (dropdown,
-radio) are represented as factor variables in the <a href="#data-tibble">data tibble</a>.</p>
+radio) are represented as factor variables in the <a href="#data-tibble">data tibble</a>.
+<a onclick="history.back()">↩︎</a></p>
 </div>
 <div class="section level3">
 <h3 id="field">Field<a class="anchor" aria-label="anchor" href="#field"></a>
@@ -301,13 +309,15 @@ captured in REDCap. <a href="#instrument">Instruments</a> are made up of
 fields. You can configure the fields of an instrument using the REDCap
 Field Editor. Fields have a <a href="#field-type">field type</a> and can
 have a descriptive <a href="#field-label">field label</a>. The <a href="#data-tibble">data tibble</a> contains the data entered into the
-fields of a REDCap <a href="#project">project</a>.</p>
+fields of a REDCap <a href="#project">project</a>.
+<a onclick="history.back()">↩︎</a></p>
 </div>
 <div class="section level3">
 <h3 id="field-label">Field label<a class="anchor" aria-label="anchor" href="#field-label"></a>
 </h3>
 <p>A piece of text that acts as the prompt for data entry in REDCap. The
-<code><a href="../reference/make_labelled.html">make_labelled()</a></code> function creates <a href="#variable-label">variable labels</a> based on the field label.</p>
+<code><a href="../reference/make_labelled.html">make_labelled()</a></code> function creates <a href="#variable-label">variable labels</a> based on the field label.
+<a onclick="history.back()">↩︎</a></p>
 </div>
 <div class="section level3">
 <h3 id="field-type">Field type<a class="anchor" aria-label="anchor" href="#field-type"></a>
@@ -322,14 +332,15 @@ used for logical data</p></li>
 <li><p><strong>dropdown</strong> and <strong>radio</strong>, which are
 used for single-answer categorical data</p></li>
 <li><p><strong>checkbox</strong>, which is used for multi-answer
-categorical data</p></li>
+categorical data <a onclick="history.back()">↩︎</a></p></li>
 </ul>
 </div>
 <div class="section level3">
 <h3 id="form">Form<a class="anchor" aria-label="anchor" href="#form"></a>
 </h3>
 <p>In the context of REDCap, this is the same as an <a href="#instrument">instrument</a>. We prefer the term “instrument”
-because it has a more specific meaning than “form.”</p>
+because it has a more specific meaning than “form.”
+<a onclick="history.back()">↩︎</a></p>
 </div>
 <div class="section level3">
 <h3 id="format-helper">Format helper<a class="anchor" aria-label="anchor" href="#format-helper"></a>
@@ -337,7 +348,7 @@ because it has a more specific meaning than “form.”</p>
 <p>A function provided by REDCapTidieR designed to help turning <a href="#field-label">field labels</a> of <a href="#data-column">data
 columns</a> into pretty <a href="#variable-label">variable labels</a>.
 See the <a href="https://chop-cgtinformatics.github.io/REDCapTidieR/reference/format-helpers.html"><code>format-helpers</code>
-reference page</a>.</p>
+reference page</a>. <a onclick="history.back()">↩︎</a></p>
 </div>
 <div class="section level3">
 <h3 id="granularity">Granularity<a class="anchor" aria-label="anchor" href="#granularity"></a>
@@ -348,7 +359,7 @@ data from a nonrepeating instrument in a longitudinal project with two
 arms has a granularity of one row per <a href="#record">record</a> per
 <a href="#event">event</a> per arm. See also: the section <a href="https://chop-cgtinformatics.github.io/REDCapTidieR/articles/diving_deeper.html#longitudinal-redcap-projects">Longitudinal
 REDCap projects</a> in the <a href="https://chop-cgtinformatics.github.io/REDCapTidieR/articles/diving_deeper.html">Diving
-Deeper vignette</a>.</p>
+Deeper vignette</a>. <a onclick="history.back()">↩︎</a></p>
 </div>
 <div class="section level3">
 <h3 id="identifier-column">Identifier column<a class="anchor" aria-label="anchor" href="#identifier-column"></a>
@@ -363,14 +374,23 @@ and/or <code>redcap_repeat_instance</code>. Taken together, the
 identifier columns form a <a href="#composite-primary-key">composite
 primary key</a>. See also: the section <a href="https://chop-cgtinformatics.github.io/REDCapTidieR/articles/diving_deeper.html#longitudinal-redcap-projects">Longitudinal
 REDCap projects</a> in the <a href="https://chop-cgtinformatics.github.io/REDCapTidieR/articles/diving_deeper.html">Diving
-Deeper vignette</a>.</p>
+Deeper vignette</a>. <a onclick="history.back()">↩︎</a></p>
 </div>
 <div class="section level3">
 <h3 id="import">Import<a class="anchor" aria-label="anchor" href="#import"></a>
 </h3>
-<p>In the context of REDCapTidieR, this is the process of using the <a href="#redcap-api">REDCap API</a> to query data from a REDCap <a href="#project">project</a> to make it available inside the R <a href="#environment">environment</a>. You can use the
-<code><a href="../reference/read_redcap.html">read_redcap()</a></code> function to import data from a REDCap
-project.</p>
+<p>In the context of REDCapTidieR, this is the process of using the <a href="#redcap-api">REDCap API</a> to query data from a REDCap <a href="#project">project</a> to make it available inside the R <a href="#environment">environment</a>. We use the term “import” in the
+sense described in <a href="https://r4ds.had.co.nz/introduction.html" class="external-link">R
+for Data Science</a> which is to “take data stored in a file, database,
+or web application programming interface (API), and load it into a data
+frame in R.” Of note, the term “import” is ambiguous. From the
+perspective of REDCap, “import” may mean writing external data into the
+database. To clarify the direction of the import, we have named the main
+function of REDCapTidieR <code><a href="../reference/read_redcap.html">read_redcap()</a></code> which is analogous
+to other import functions in the tidyverse such as
+<code>read_csv()</code>. You can use the <code><a href="../reference/read_redcap.html">read_redcap()</a></code>
+function to import data from a REDCap project.
+<a onclick="history.back()">↩︎</a></p>
 </div>
 <div class="section level3">
 <h3 id="instrument">Instrument<a class="anchor" aria-label="anchor" href="#instrument"></a>
@@ -382,7 +402,7 @@ instrument’s name and human-readable label are shown in the
 <code>redcap_form_name</code> and <code>redcap_form_label</code> columns
 of the supertibble, respectively. A <a href="#data-tibble">data
 tibble</a> contains all the data that was entered into a specific
-instrument.</p>
+instrument. <a onclick="history.back()">↩︎</a></p>
 </div>
 <div class="section level3">
 <h3 id="labelled">labelled<a class="anchor" aria-label="anchor" href="#labelled"></a>
@@ -397,7 +417,7 @@ There are <a href="https://jonocarroll.github.io/ggeasy/" class="external-link">
 <code><a href="../reference/make_labelled.html">make_labelled()</a></code> function attaches variable labels to the
 variables of a <a href="#supertibble">supertibble</a> and the variables
 of the <a href="#data-tibble">data tibbles</a> and <a href="#metadata-tibble">metadata tibbles</a> contained in that
-supertibble.</p>
+supertibble. <a onclick="history.back()">↩︎</a></p>
 </div>
 <div class="section level3">
 <h3 id="list-column">List column<a class="anchor" aria-label="anchor" href="#list-column"></a>
@@ -410,7 +430,8 @@ columns</a>. REDCapTidieR leverages list columns to store tibbles inside
 of the <a href="#supertibble">supertibble</a>. For example, the
 <code>redcap_data</code> column of the supertibble is a list column that
 contains <a href="#data-tibble">data tibbles</a>, and
-<code>redcap_metadata</code> is a list column that contains <a href="#metadata-tibble">metadata tibbles</a>.</p>
+<code>redcap_metadata</code> is a list column that contains <a href="#metadata-tibble">metadata tibbles</a>.
+<a onclick="history.back()">↩︎</a></p>
 </div>
 <div class="section level3">
 <h3 id="longitudinal-project">Longitudinal project<a class="anchor" aria-label="anchor" href="#longitudinal-project"></a>
@@ -418,7 +439,8 @@ contains <a href="#data-tibble">data tibbles</a>, and
 <p>A type of REDCap <a href="#project">project</a> that contains <a href="#event">events</a> and optionally <a href="#arm">arms</a>. One <a href="#instrument">instrument</a> can be associated with multiple
 events. This makes it possible to collect the same kind of data for the
 same <a href="#record">record</a> multiple times, which is useful for
-longitudinal research studies with multiple study visits. See also: <a href="#classic-project">Classic project</a>.</p>
+longitudinal research studies with multiple study visits. See also: <a href="#classic-project">Classic project</a>.
+<a onclick="history.back()">↩︎</a></p>
 </div>
 <div class="section level3">
 <h3 id="metadata-tibble">Metadata tibble<a class="anchor" aria-label="anchor" href="#metadata-tibble"></a>
@@ -431,13 +453,13 @@ represent <a href="#field">fields</a> of the instrument. The columns
 represent attributes of those fields. For example, the
 <code>field_name</code>, <code>field_label</code>, and
 <code>field_type</code> columns show the field’s name, a human-readable
-description (the <a href="#field-label">field label</a>), and its <a href="#field-type">field type</a>.</p>
+description (the <a href="#field-label">field label</a>), and its <a href="#field-type">field type</a>. <a onclick="history.back()">↩︎</a></p>
 </div>
 <div class="section level3">
 <h3 id="nonrepeating">Nonrepeating<a class="anchor" aria-label="anchor" href="#nonrepeating"></a>
 </h3>
 <p>A <a href="#structure">structure</a> of an <a href="#instrument">instrument</a> that allows it to be filled out
-exactly once per <a href="#record">record</a> in a <a href="#classic-project">classic project</a> and once per record per <a href="#event">event</a> (per <a href="#arm">arm</a>) in a <a href="#longitudinal-project">longitudinal project</a>. See also: <a href="#repeating">Repeating</a>.</p>
+exactly once per <a href="#record">record</a> in a <a href="#classic-project">classic project</a> and once per record per <a href="#event">event</a> (per <a href="#arm">arm</a>) in a <a href="#longitudinal-project">longitudinal project</a>. See also: <a href="#repeating">Repeating</a>. <a onclick="history.back()">↩︎</a></p>
 </div>
 <div class="section level3">
 <h3 id="project">Project<a class="anchor" aria-label="anchor" href="#project"></a>
@@ -449,7 +471,7 @@ A project may be <a href="#classic-project">classic</a> or <a href="#longitudina
 consists of <a href="#instrument">instruments</a> that contain <a href="#field">fields</a>. A longitudinal project may additionally
 include <a href="#event">events</a> and <a href="#arm">arms</a>. You can
 use <code><a href="../reference/read_redcap.html">read_redcap()</a></code> to <a href="#import">import</a> the data
-from a project.</p>
+from a project. <a onclick="history.back()">↩︎</a></p>
 </div>
 <div class="section level3">
 <h3 id="record">Record<a class="anchor" aria-label="anchor" href="#record"></a>
@@ -458,7 +480,8 @@ from a project.</p>
 participant) for which data is being captured in REDCap. Each record
 consists of a discrete data values organized into <a href="#field">fields</a> that can be spread across multiple <a href="#instrument">instruments</a>, <a href="#event">events</a>, and/or
 <a href="#arm">arms</a>. Each record has a unique record ID. In the <a href="#data-tibble">data tibble</a>, the record ID is always the first
-<a href="#column">column</a>. It is one of the <a href="#identifier-column">identifier columns</a>.</p>
+<a href="#column">column</a>. It is one of the <a href="#identifier-column">identifier columns</a>.
+<a onclick="history.back()">↩︎</a></p>
 </div>
 <div class="section level3">
 <h3 id="redcap-api">REDCap API<a class="anchor" aria-label="anchor" href="#redcap-api"></a>
@@ -467,27 +490,31 @@ consists of a discrete data values organized into <a href="#field">fields</a> th
 allows external programs to connect, upload, and download data of a
 REDCap <a href="#project">project</a>. To access the REDCap API, a user
 must have appropriate access privileges, an API token, and the uniform
-resource identifier (URI) of the API endpoint (something like “<a href="https://my.institution.edu/redcap/api" class="external-link uri">https://my.institution.edu/redcap/api</a>”).</p>
+resource identifier (URI) of the API endpoint (something like “<a href="https://my.institution.edu/redcap/api" class="external-link uri">https://my.institution.edu/redcap/api</a>”). The
+REDCapTidieR package uses <a href="#redcapr">REDCapR</a> to query the
+REDCap API. <a onclick="history.back()">↩︎</a></p>
 </div>
 <div class="section level3">
 <h3 id="redcapr">REDCapR<a class="anchor" aria-label="anchor" href="#redcapr"></a>
 </h3>
 <p>The <a href="https://ouhscbbmc.github.io/REDCapR/index.html" class="external-link">REDCapR</a> R
-package provides functions to interact with the <a href="#redcap-api">REDCap API</a>. REDCapTidieR builds on REDCapR to <a href="#import">import</a> data.</p>
+package provides functions to interact with the <a href="#redcap-api">REDCap API</a>. REDCapTidieR builds on REDCapR to <a href="#import">import</a> data. <a onclick="history.back()">↩︎</a></p>
 </div>
 <div class="section level3">
 <h3 id="repeating">Repeating<a class="anchor" aria-label="anchor" href="#repeating"></a>
 </h3>
 <p>A <a href="#structure">structure</a> of an <a href="#instrument">instrument</a> that allows it to be filled out zero,
 one, or multiple times for each <a href="#record">record</a>. See also:
-<a href="#nonrepeating">Nonrepeating</a>.</p>
+<a href="#nonrepeating">Nonrepeating</a>.
+<a onclick="history.back()">↩︎</a></p>
 </div>
 <div class="section level3">
 <h3 id="row">Row<a class="anchor" aria-label="anchor" href="#row"></a>
 </h3>
 <p>A horizontal series of cells in a data frame or <a href="#tibble">tibble</a>. One row of a <a href="#supertibble">supertibble</a> represents an <a href="#instrument">instrument</a>. One row of a <a href="#data-tibble">data tibble</a> can represent different things,
 depending on the <a href="#granularity">granularity</a> of the data. See
-also: <a href="#column">Column</a>.</p>
+also: <a href="#column">Column</a>.
+<a onclick="history.back()">↩︎</a></p>
 </div>
 <div class="section level3">
 <h3 id="structure">Structure<a class="anchor" aria-label="anchor" href="#structure"></a>
@@ -496,7 +523,7 @@ also: <a href="#column">Column</a>.</p>
 the <code>structure</code> column. The structure of a <a href="#project">project</a> can be <a href="#classic-project">classic</a>, <a href="#longitudinal-project">longitudinal</a>, or longitudinal with <a href="#arm">arms</a>. The <a href="#granularity">granularity</a> of a <a href="#data-tibble">data tibble</a> depends on the structure of both the
 instrument and the project. See also: the section <a href="https://chop-cgtinformatics.github.io/REDCapTidieR/articles/diving_deeper.html#longitudinal-redcap-projects">Longitudinal
 REDCap projects</a> in the <a href="https://chop-cgtinformatics.github.io/REDCapTidieR/articles/diving_deeper.html">Diving
-Deeper vignette</a>.</p>
+Deeper vignette</a>. <a onclick="history.back()">↩︎</a></p>
 </div>
 <div class="section level3">
 <h3 id="supertibble">Supertibble<a class="anchor" aria-label="anchor" href="#supertibble"></a>
@@ -509,20 +536,22 @@ supertibble corresponds to one <a href="#instrument">instrument</a>. The
 <code>redcap_data</code> and <code>redcap_metadata</code> contain the
 instrument’s <a href="#data-tibble">data tibble</a> and <a href="#metadata-tibble">metadata tibble</a>. Additional columns contain
 useful information about the data tibble, such as row and column counts,
-size in memory, and the percentage of missing values in the data.</p>
+size in memory, and the percentage of missing values in the data.
+<a onclick="history.back()">↩︎</a></p>
 </div>
 <div class="section level3">
 <h3 id="survey">Survey<a class="anchor" aria-label="anchor" href="#survey"></a>
 </h3>
 <p>A special kind of <a href="#instrument">instrument</a> that can be
-completed by someone who is not a user on a REDCap <a href="#project">project</a>.</p>
+completed by someone who is not a user on a REDCap <a href="#project">project</a>. <a onclick="history.back()">↩︎</a></p>
 </div>
 <div class="section level3">
 <h3 id="tibble">Tibble<a class="anchor" aria-label="anchor" href="#tibble"></a>
 </h3>
 <p>A variant of the R data frame that makes data analysis in the <a href="https://www.tidyverse.org/" class="external-link">tidyverse</a> a little easier. The
 data structures generated by REDCapTidieR are based on tibbles. See
-also: chapter on <a href="https://r4ds.had.co.nz/tibbles.html" class="external-link">Tibbles</a> in <a href="https://r4ds.had.co.nz" class="external-link">R for Data Science</a>.</p>
+also: chapter on <a href="https://r4ds.had.co.nz/tibbles.html" class="external-link">Tibbles</a> in <a href="https://r4ds.had.co.nz" class="external-link">R for Data Science</a>.
+<a onclick="history.back()">↩︎</a></p>
 </div>
 <div class="section level3">
 <h3 id="tidy">Tidy<a class="anchor" aria-label="anchor" href="#tidy"></a>
@@ -556,17 +585,18 @@ follow the following principles:</p>
 <li>Design for humans.</li>
 </ol>
 <p>We strive to follow these principles in the design of the
-REDCapTidieR package.</p>
+REDCapTidieR package. <a onclick="history.back()">↩︎</a></p>
 </div>
 <div class="section level3">
 <h3 id="variable">Variable<a class="anchor" aria-label="anchor" href="#variable"></a>
 </h3>
-<p>A <a href="#column">column</a> of a data frame or <a href="#tibble">tibble</a>. See also: <a href="#column">Column</a>.</p>
+<p>A <a href="#column">column</a> of a data frame or <a href="#tibble">tibble</a>. See also: <a href="#column">Column</a>.
+<a onclick="history.back()">↩︎</a></p>
 </div>
 <div class="section level3">
 <h3 id="variable-label">Variable label<a class="anchor" aria-label="anchor" href="#variable-label"></a>
 </h3>
-<p>A human-readable description (label) attached to a <a href="#variable">variable</a>. See also: <a href="#labelled">labelled</a>.</p>
+<p>A human-readable description (label) attached to a <a href="#variable">variable</a>. See also: <a href="#labelled">labelled</a>. <a onclick="history.back()">↩︎</a></p>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
