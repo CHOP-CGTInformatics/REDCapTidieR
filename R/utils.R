@@ -148,7 +148,7 @@ parse_labels <- function(string, return_vector = FALSE) {
   out <- strip_html_field_embedding(out)
 
   if (return_vector) {
-    if(all(is.na(out))) {
+    if (all(is.na(out))) {
       # handle no label case
       return(c(`NA` = NA_character_))
     }

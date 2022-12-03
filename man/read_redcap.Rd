@@ -43,12 +43,14 @@ contains the following columns:
 \item \code{redcap_form_label}, the label for the instrument
 \item \code{redcap_data}, a tibble with the data for the instrument
 \item \code{redcap_metadata}, a tibble of data dictionary entries for each field in the instrument
-\item \code{redcap_events}, a tibble with information about the arms and longitudinal events represented in the instrument. Only if the project has longitudinal events enabled
+\item \code{redcap_events}, a tibble with information about the arms and longitudinal events represented in the instrument.
+Only if the project has longitudinal events enabled
 \item \code{structure}, the instrument structure, either "repeating" or "nonrepeating"
 \item \code{data_rows}, the number of rows in the instrument's data tibble
 \item \code{data_cols}, the number of columns in the instrument's data tibble
 \item \code{data_size}, the size in memory of the instrument's data tibble computed by \code{lobstr::obj_size()}
-\item \code{data_na_pct}, the percentage of cells in the instrument's data columns that are \code{NA} excluding identifier and form completion columns
+\item \code{data_na_pct}, the percentage of cells in the instrument's data columns that are \code{NA} excluding identifier and
+form completion columns
 }
 }
 \description{

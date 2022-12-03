@@ -22,12 +22,14 @@
 #' * `redcap_form_label`, the label for the instrument
 #' * `redcap_data`, a tibble with the data for the instrument
 #' * `redcap_metadata`, a tibble of data dictionary entries for each field in the instrument
-#' * `redcap_events`, a tibble with information about the arms and longitudinal events represented in the instrument. Only if the project has longitudinal events enabled
+#' * `redcap_events`, a tibble with information about the arms and longitudinal events represented in the instrument.
+#'    Only if the project has longitudinal events enabled
 #' * `structure`, the instrument structure, either "repeating" or "nonrepeating"
 #' * `data_rows`, the number of rows in the instrument's data tibble
 #' * `data_cols`, the number of columns in the instrument's data tibble
 #' * `data_size`, the size in memory of the instrument's data tibble computed by `lobstr::obj_size()`
-#' * `data_na_pct`, the percentage of cells in the instrument's data columns that are `NA` excluding identifier and form completion columns
+#' * `data_na_pct`, the percentage of cells in the instrument's data columns that are `NA` excluding identifier and
+#'    form completion columns
 #'
 #' @importFrom REDCapR redcap_read_oneshot redcap_metadata_read
 #' @importFrom dplyr filter bind_rows %>% select slice

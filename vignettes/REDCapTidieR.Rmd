@@ -235,7 +235,7 @@ The `format_labels` argument will also accept multiple functions in a vector or 
 superheroes |>
   make_labelled(
     format_labels = c(
-      fmt_strip_trailing_colon, 
+      fmt_strip_trailing_colon,
       base::tolower)
   ) |>
   bind_tibbles()

@@ -25,7 +25,7 @@ check_user_rights <- function(
     db_metadata
 ) {
 
-  missing_db_metadata <- db_metadata %>%
+  missing_db_metadata <- db_metadata %>% # nolint: object_name_linter
     filter(!.data$field_name_updated %in% names(db_data)) %>%
     select("field_name_updated", "form_name") %>%
     group_by(.data$form_name) %>%
@@ -95,9 +95,9 @@ check_repeat_and_nonrepeat <- function(db_data) {
 
 
   # Step (3)
-  repeat_nonrepeat_error <- function(check_data, names) {
+  repeat_nonrepeat_error <- function(check_data, names) { # nolint: object_name_linter
 
-    rep <- gsub(pattern = "_repeatingcheck", replacement = "", x = names)
+    rep <- gsub(pattern = "_repeatingcheck", replacement = "", x = names) # nolint: object_name_linter
 
     if ("repeating" %in% check_data &&
         "nonrepeating" %in% check_data) {
@@ -108,8 +108,7 @@ check_repeat_and_nonrepeat <- function(db_data) {
   }
 
   purrr::map2(.x = check_data %>% select(ends_with("_repeatingcheck")),
-              .y = check_data %>% select(ends_with("_repeatingcheck")) %>%
-                names(),
+              .y = check_data %>% select(ends_with("_repeatingcheck")) %>% names(),
               .f = ~repeat_nonrepeat_error(.x, .y)
   )
 
@@ -226,7 +225,7 @@ check_req_labelled_fields <- function(supertbl) {
 #' @keywords internal
 check_req_labelled_metadata_fields <- function(supertbl) {
 
-  req_fields <- c("field_name", "field_label")
+  req_fields <- c("field_name", "field_label") # nolint: object_usage_linter
 
   # map over each metadata tibble and return list element with missing fields
   missing_fields <- supertbl$redcap_metadata %>%

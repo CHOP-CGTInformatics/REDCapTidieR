@@ -1,5 +1,6 @@
 # Load Sample REDCapTidieR Database Longitudinal Output
-redcaptidier_longitudintal_db <- readRDS(system.file("testdata/redcaptidier_longitudinal_db.RDS", package = "REDCapTidieR"))
+redcaptidier_longitudintal_db <-
+  readRDS(system.file("testdata/redcaptidier_longitudinal_db.RDS", package = "REDCapTidieR"))
 
 test_that("extract_tibbles works with a vector and tidyselect selectors", {
   # Test tidyselectors work

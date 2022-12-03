@@ -29,12 +29,12 @@ read_redcap(redcap_uri, longitudinal_token)
 
 # Ignore expected form_does_not_exist errors
 tryCatch(
-  form_does_not_exist = function(cnd) {},
+  form_does_not_exist = function(cnd) {}, # nolint: brace_linter
   read_redcap(redcap_uri, classic_token, forms = "fake-form")
 )
 
 tryCatch(
-  form_does_not_exist = function(cnd) {},
+  form_does_not_exist = function(cnd) {}, # nolint: brace_linter
   read_redcap(redcap_uri,
                    classic_token,
                    forms = c("fake-form", "repeated"))

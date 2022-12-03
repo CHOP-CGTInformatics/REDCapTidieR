@@ -99,7 +99,8 @@ test_that("distill_nonrepeat_table_long tibble contains expected columns for lon
   )
 })
 
-test_that("distill_nonrepeat_table_long tibble contains expected columns for longitudinal REDCap databases without arms", {
+test_that(paste("distill_nonrepeat_table_long tibble contains expected columns",
+                "for longitudinal REDCap databases without arms"), {
   ## Check longitudinal structure without arms ----
   out <- distill_nonrepeat_table_long(
     form_name = "nonrepeated",

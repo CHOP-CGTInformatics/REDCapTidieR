@@ -41,4 +41,3 @@ test_that("bind_tibbles works with forms specification", {
   expect_true(exists("repeated", envir = global_env()))
   rm(list = c("nonrepeated", "repeated"), envir = global_env())
 })
-

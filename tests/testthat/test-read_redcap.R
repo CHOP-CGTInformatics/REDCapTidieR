@@ -274,7 +274,7 @@ test_that("get_fields_to_drop handles checkboxes", {
 
   expect_setequal(
     res,
-    c("my_checkbox___1", "my_checkbox___-99", "my_form_complete" )
+    c("my_checkbox___1", "my_checkbox___-99", "my_form_complete")
   )
 })
 
