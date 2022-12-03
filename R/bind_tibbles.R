@@ -40,7 +40,7 @@
 #'
 #' @export
 
- bind_tibbles <- function(supertbl,
+bind_tibbles <- function(supertbl,
                          environment = global_env(),
                          tbls = NULL) {
   # Name variables
