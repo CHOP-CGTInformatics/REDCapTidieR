@@ -8,6 +8,8 @@ lintr::lint_package()
 # lintr::lint("R/redcap-metadata-coltypes.R")
 urlchecker::url_check(); urlchecker::url_update()
 
+styler::style_pkg()
+
 devtools::document()
 devtools::check_man() #Should return NULL
 # Dont use clean_vignettes, does not work with Mock APIs from httptest
