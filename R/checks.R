@@ -21,7 +21,7 @@
 #' @keywords internal
 
 check_user_rights <- function(db_data,
-                               db_metadata) {
+                              db_metadata) {
   missing_db_metadata <- db_metadata %>% # nolint: object_usage_linter
     filter(!.data$field_name_updated %in% names(db_data)) %>%
     select("field_name_updated", "form_name") %>%
