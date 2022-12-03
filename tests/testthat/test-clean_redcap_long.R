@@ -137,8 +137,7 @@ test_that(paste(
 
   # Check columns expected to be missing aren't included
   expect_false(
-    any(c("redcap_repeat_instrument", "redcap_repeat_instance", "redcap_arm") %in% names(out)
-    )
+    any(c("redcap_repeat_instrument", "redcap_repeat_instance", "redcap_arm") %in% names(out))
   )
 })
 

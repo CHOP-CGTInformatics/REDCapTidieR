@@ -171,7 +171,7 @@ read_redcap <- function(redcap_uri,
       db_data <- db_data %>%
         filter(
           .data$redcap_repeat_instrument %in% forms |
-          is.na(.data$redcap_repeat_instrument)
+            is.na(.data$redcap_repeat_instrument)
         )
 
       # Drop repeating fields if there are no remaining repeating instruments
