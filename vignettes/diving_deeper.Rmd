@@ -35,15 +35,6 @@ start_vignette("diving_deeper")
 
 ```
 
-```{css, echo = FALSE}
-@import url('https://fonts.googleapis.com/css2?family=Fira+Code&display=swap');
-
-code {
-  font-family: "Fira Code", Consolas, Monaco, 'Courier New', monospace;
-  font-size: 85%;
-}
-```
-
 ## The Block Matrix
 
 In the [Getting Started](REDCapTidieR.html) vignette, we stated that importing records from complex REDCap projects via the REDCap API can be *ugly*. In this section we will describe what we mean by this in more precise language.

@@ -17,6 +17,8 @@ navbar:
 
 template:
   bootstrap: 5
+  bslib:
+    code_font: {google: "Fira Code"}
 
 search:
   exclude: ['news/index.html']

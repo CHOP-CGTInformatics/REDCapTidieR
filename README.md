@@ -1,17 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-
 # REDCapTidieR
-
-<style type="text/css">
-@import url('https://fonts.googleapis.com/css2?family=Fira+Code&display=swap');
-
-code {
-  font-family: "Fira Code", Consolas, Monaco, 'Courier New', monospace;
-  font-size: 85%;
-}
-</style>
 
 <p align="center">
 
