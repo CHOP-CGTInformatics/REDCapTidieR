@@ -1,5 +1,9 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+
+
+# REDCapTidieR
+
 <style type="text/css">
 @import url('https://fonts.googleapis.com/css2?family=Fira+Code&display=swap');
 
@@ -8,8 +12,6 @@ code {
   font-size: 85%;
 }
 </style>
-
-# REDCapTidieR
 
 <p align="center">
 
