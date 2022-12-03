@@ -25,7 +25,7 @@ check_user_rights <- function(
     db_metadata
 ) {
 
-  missing_db_metadata <- db_metadata %>% # nolint: object_name_linter
+  missing_db_metadata <- db_metadata %>%
     filter(!.data$field_name_updated %in% names(db_data)) %>%
     select("field_name_updated", "form_name") %>%
     group_by(.data$form_name) %>%
