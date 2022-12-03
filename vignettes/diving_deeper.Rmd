@@ -1,6 +1,5 @@
 ---
 title: "Diving Deeper: Understanding REDCapTidieR Data Tibbles"
-output:
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Diving Deeper: Understanding REDCapTidieR Data Tibbles}
