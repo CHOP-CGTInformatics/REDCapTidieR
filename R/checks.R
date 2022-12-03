@@ -20,25 +20,23 @@
 #'
 #' @keywords internal
 
-check_user_rights <- function(
-    db_data,
-    db_metadata
-) {
-
-  missing_db_metadata <- db_metadata %>%
+check_user_rights <- function(db_data,
+                              db_metadata) {
+  missing_db_metadata <- db_metadata %>% # nolint: object_usage_linter
     filter(!.data$field_name_updated %in% names(db_data)) %>%
     select("field_name_updated", "form_name") %>%
     group_by(.data$form_name) %>%
     summarise(fields = list(.data$field_name_updated))
 
-    cli_warn(
-      c("Instrument name{?s} {missing_db_metadata$form_name} detected in metadata,
+  cli_warn(
+    c("Instrument name{?s} {missing_db_metadata$form_name} detected in metadata,
         but not found in the database export.",
-        "i" = "This can happen when the user privileges are not set to allow
+      "i" = "This can happen when the user privileges are not set to allow
         exporting certain instruments via the API. The following variable{?s}
-        are affected: {unlist(missing_db_metadata$fields)}"),
-      class = c("redcap_user_rights", "REDCapTidieR_cond")
-    )
+        are affected: {unlist(missing_db_metadata$fields)}"
+    ),
+    class = c("redcap_user_rights", "REDCapTidieR_cond")
+  )
 }
 
 #' @title
@@ -65,7 +63,6 @@ check_user_rights <- function(
 
 
 check_repeat_and_nonrepeat <- function(db_data) {
-
   # This check function looks for potential repeat/nonrepeat behavior using the
   # steps below:
   # 1) Define standard columns that don't need checking and remove those from
@@ -78,19 +75,23 @@ check_repeat_and_nonrepeat <- function(db_data) {
   #    "repeating" AND "nonrepeating" declarations, if so error out.
 
   # Step (1)
-  safe_cols <- c(names(db_data)[1], "redcap_event_name",
-                 "redcap_repeat_instrument", "redcap_repeat_instance")
+  safe_cols <- c(
+    names(db_data)[1], "redcap_event_name",
+    "redcap_repeat_instrument", "redcap_repeat_instance"
+  )
 
   # Step (2)
   check_data <- db_data %>%
     mutate(
-      across(.cols = -any_of(safe_cols),
-             .names = "{.col}_repeatingcheck",
-             .fns = ~case_when(
-               !is.na(.x) & !is.na(redcap_repeat_instrument) ~ "repeating",
-               !is.na(.x) & is.na(redcap_repeat_instrument) ~ "nonrepeating",
-               TRUE ~ NA_character_
-             ))
+      across(
+        .cols = -any_of(safe_cols),
+        .names = "{.col}_repeatingcheck",
+        .fns = ~ case_when(
+          !is.na(.x) & !is.na(redcap_repeat_instrument) ~ "repeating",
+          !is.na(.x) & is.na(redcap_repeat_instrument) ~ "nonrepeating",
+          TRUE ~ NA_character_
+        )
+      )
     )
 
 
@@ -100,18 +101,19 @@ check_repeat_and_nonrepeat <- function(db_data) {
     rep <- gsub(pattern = "_repeatingcheck", replacement = "", x = names) # nolint: object_name_linter
 
     if ("repeating" %in% check_data &&
-        "nonrepeating" %in% check_data) {
+      "nonrepeating" %in% check_data) {
       cli_abort(c("x" = "Instrument detected that has both repeating and
       nonrepeating instances defined in the project: {rep}"),
-                class = c("repeat_nonrepeat_instrument", "REDCapTidieR_cond"))
+        class = c("repeat_nonrepeat_instrument", "REDCapTidieR_cond")
+      )
     }
   }
 
-  purrr::map2(.x = check_data %>% select(ends_with("_repeatingcheck")),
-              .y = check_data %>% select(ends_with("_repeatingcheck")) %>% names(),
-              .f = ~repeat_nonrepeat_error(.x, .y)
+  purrr::map2(
+    .x = check_data %>% select(ends_with("_repeatingcheck")),
+    .y = check_data %>% select(ends_with("_repeatingcheck")) %>% names(),
+    .f = ~ repeat_nonrepeat_error(.x, .y)
   )
-
 }
 
 #' @title
@@ -132,9 +134,7 @@ check_repeat_and_nonrepeat <- function(db_data) {
 #'
 #' @keywords internal
 
-check_redcap_populated <- function(
-    db_data
-) {
+check_redcap_populated <- function(db_data) {
   if (ncol(db_data) == 0) {
     cli_abort(
       "The REDCap API did not return any data. This can happen when there are no
@@ -200,8 +200,10 @@ check_req_labelled_fields <- function(supertbl) {
   # If any are missing give an error message
   if (length(missing_fields) > 0) {
     cli_abort(
-      c("!" = "{.arg supertbl} must contain {.code {req_fields}}",
-        "x" = "You are missing {.code {missing_fields}}"),
+      c(
+        "!" = "{.arg supertbl} must contain {.code {req_fields}}",
+        "x" = "You are missing {.code {missing_fields}}"
+      ),
       class = c("missing_req_labelled_fields", "REDCapTidieR_cond"),
       # pass along the fields that were missing as metadata
       missing_fields = missing_fields
@@ -224,16 +226,14 @@ check_req_labelled_fields <- function(supertbl) {
 #'
 #' @keywords internal
 check_req_labelled_metadata_fields <- function(supertbl) {
-
   req_fields <- c("field_name", "field_label") # nolint: object_usage_linter
 
   # map over each metadata tibble and return list element with missing fields
   missing_fields <- supertbl$redcap_metadata %>%
-    map(~setdiff(req_fields, colnames(.)))
+    map(~ setdiff(req_fields, colnames(.)))
 
   # If any missing fields were found error
   if (length(unlist(missing_fields)) > 0) {
-
     # Build error message bullets of the form:
     # x: {form} is missing {missing fields}
     msg_data <- tibble(missing_fields = missing_fields)
@@ -271,5 +271,4 @@ check_req_labelled_metadata_fields <- function(supertbl) {
       class = c("missing_req_labelled_metadata_fields", "REDCapTidieR_cond")
     )
   }
-
 }
