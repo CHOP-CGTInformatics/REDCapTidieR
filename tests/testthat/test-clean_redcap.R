@@ -12,22 +12,25 @@ test_that("clean_redcap works", {
   db_metadata_classic <- db_metadata_classic %>%
     filter(.data$field_name_updated %in% names(db_data_classic))
 
-  out <- clean_redcap(db_data = db_data_classic,
-                      db_metadata = db_metadata_classic)
+  out <- clean_redcap(
+    db_data = db_data_classic,
+    db_metadata = db_metadata_classic
+  )
 
   # Check general structure
   expect_true(is_tibble(out))
   expect_true(all(c("repeating", "nonrepeating") %in% out$structure))
   expect_true(!is.null(out$redcap_data))
-
 })
 
 test_that("clean_redcap works with databases containing no repeating instruments", {
   db_metadata_classic_norepeat <- db_metadata_classic_norepeat %>%
     filter(.data$field_name_updated %in% names(db_data_classic_norepeat))
 
-  out <- clean_redcap(db_data = db_data_classic_norepeat,
-                      db_metadata = db_metadata_classic_norepeat)
+  out <- clean_redcap(
+    db_data = db_data_classic_norepeat,
+    db_metadata = db_metadata_classic_norepeat
+  )
 
   # Check general structure
   expect_true(is_tibble(out))
@@ -37,10 +40,11 @@ test_that("clean_redcap works with databases containing no repeating instruments
 })
 
 test_that("distill_nonrepeat_table tibble contains expected columns and data types for all REDCap field types", {
-
-  out <- distill_nonrepeat_table(form_name = "data_field_types",
-                                 db_data = db_data_classic,
-                                 db_metadata = db_metadata_classic)
+  out <- distill_nonrepeat_table(
+    form_name = "data_field_types",
+    db_data = db_data_classic,
+    db_metadata = db_metadata_classic
+  )
 
   # Check to ensure field names do not appear from other instruments
   # (See GH Issue #39 / PR #40)
@@ -100,13 +104,14 @@ test_that("distill_nonrepeat_table tibble contains expected columns and data typ
   expect_false(
     any(is.na(out$record_id))
   )
-
 })
 
 test_that("distill_repeat_table returns tables", {
-  out <- distill_repeat_table(form_name = "repeated",
-                              db_data = db_data_classic,
-                              db_metadata = db_metadata_classic)
+  out <- distill_repeat_table(
+    form_name = "repeated",
+    db_data = db_data_classic,
+    db_metadata = db_metadata_classic
+  )
 
   # Check general structure
   expect_true(is_tibble(out))
@@ -125,5 +130,4 @@ test_that("distill_repeat_table returns tables", {
   expect_false(
     any(is.na(c(out$record_id, out$redcap_repeat_instance)))
   )
-
 })

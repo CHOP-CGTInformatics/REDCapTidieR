@@ -32,7 +32,6 @@ if (dir.exists("diving_deeper")) {
 library(REDCapTidieR)
 
 start_vignette("diving_deeper")
-
 ```
 
 ```{css, echo = FALSE}

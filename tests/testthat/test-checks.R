@@ -7,7 +7,7 @@ test_that("check_user_rights works", {
   )
 
   test_metadata <- tibble::tribble(
-    ~field_name_updated,  ~form_name,
+    ~field_name_updated, ~form_name,
     "field_1",           "form_1",
     "field_2",           "form_2",
     "missing_field",     "missing_form",
@@ -24,22 +24,21 @@ test_that("check_user_rights works", {
   expect_warning(
     check_user_rights(test_data, test_metadata)
   )
-
 })
 
 test_that("check_repeat_and_nonrepeat works", {
   test_data_longitudinal <- tibble::tribble(
     ~record_id,  ~redcap_event_name, ~redcap_repeat_instrument, ~redcap_repeat_instance, ~combination_variable,
-    1,            "event_1",         NA,                        NA,                      "A",
-    2,            "event_2",         "combination",             1,                       "B",
-    3,            "event_3",         "combination",             2,                       "C"
+    1,           "event_1",          NA,                        NA,                      "A",
+    2,           "event_2",          "combination",             1,                       "B",
+    3,           "event_3",          "combination",             2,                       "C"
   )
 
   test_data_not_longitudinal <- tibble::tribble(
     ~new_record_id,  ~redcap_repeat_instrument, ~redcap_repeat_instance, ~combination_variable,
-    1,                NA,                        NA,                      "A",
-    2,                "combination",             1,                       "B",
-    3,                "combination",             2,                       "C"
+    1,               NA,                        NA,                      "A",
+    2,               "combination",             1,                       "B",
+    3,               "combination",             2,                       "C"
   )
 
   expect_error(check_repeat_and_nonrepeat(db_data = test_data_longitudinal))
@@ -47,7 +46,7 @@ test_that("check_repeat_and_nonrepeat works", {
 })
 
 test_that("check_redcap_populated works", {
-  test_data <- tibble::tribble()
+  test_data <- tibble()
 
   expect_error(check_redcap_populated(db_data = test_data), class = "redcap_unpopulated")
 })
@@ -63,13 +62,13 @@ test_that("check_forms_exist works", {
 test_that("check_req_labelled_fields works", {
   # Check data and metadata column errors
   supertbl_no_data <- tibble::tribble(
-    ~ redcap_metadata,
+    ~redcap_metadata,
     tibble(field_name = "x", field_label = "X Label"),
     tibble(field_name = "y", field_label = "Y Label")
   )
 
   supertbl_no_metadata <- tibble::tribble(
-    ~ redcap_data,
+    ~redcap_data,
     tibble(x = letters[1:3]),
     tibble(y = letters[1:3])
   )
@@ -86,13 +85,13 @@ test_that("check_req_labelled_fields works", {
 test_that("check_req_labelled_metadata_fields works", {
   # Check field_name and field_label within metadata
   supertbl_no_field_name <- tibble::tribble(
-    ~ redcap_data, ~ redcap_metadata,
+    ~redcap_data, ~redcap_metadata,
     tibble(x = letters[1:3]), tibble(field_label = "X Label"),
     tibble(y = letters[1:3]), tibble(field_label = "Y Label")
   )
 
   supertbl_no_field_label <- tibble::tribble(
-    ~ redcap_data, ~ redcap_metadata,
+    ~redcap_data, ~redcap_metadata,
     tibble(x = letters[1:3]), tibble(field_name = "x"),
     tibble(y = letters[1:3]), tibble(field_name = "y")
   )

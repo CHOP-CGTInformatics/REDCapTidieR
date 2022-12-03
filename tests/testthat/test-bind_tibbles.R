@@ -1,26 +1,28 @@
 # Load Sample Longitudinal Database
 redcaptidier_longitudintal_db <- readRDS(
   system.file(
-    "testdata/redcaptidier_longitudinal_db.RDS", package = "REDCapTidieR"
-    )
+    "testdata/redcaptidier_longitudinal_db.RDS",
+    package = "REDCapTidieR"
   )
+)
 
 test_that("bind_tibbles works with no specifications", {
-    redcaptidier_longitudintal_db %>%
-      bind_tibbles()
+  redcaptidier_longitudintal_db %>%
+    bind_tibbles()
 
-    expect_true(exists("nonrepeated", envir = global_env()))
-    expect_true(exists("nonrepeated2", envir = global_env()))
-    expect_true(exists("repeated", envir = global_env()))
-    expect_s3_class(nonrepeated, "data.frame")
-    expect_s3_class(nonrepeated2, "data.frame")
-    expect_s3_class(repeated, "data.frame")
-    rm(list = c("nonrepeated", "repeated", "nonrepeated2"),
-       envir = global_env())
+  expect_true(exists("nonrepeated", envir = global_env()))
+  expect_true(exists("nonrepeated2", envir = global_env()))
+  expect_true(exists("repeated", envir = global_env()))
+  expect_s3_class(nonrepeated, "data.frame")
+  expect_s3_class(nonrepeated2, "data.frame")
+  expect_s3_class(repeated, "data.frame")
+  rm(
+    list = c("nonrepeated", "repeated", "nonrepeated2"),
+    envir = global_env()
+  )
 })
 
 test_that("bind_tibbles works with environment specification", {
-
   sample_env <- new_environment()
 
   redcaptidier_longitudintal_db %>%
@@ -32,7 +34,6 @@ test_that("bind_tibbles works with environment specification", {
 })
 
 test_that("bind_tibbles works with forms specification", {
-
   redcaptidier_longitudintal_db %>%
     bind_tibbles(tbls = c("nonrepeated", "repeated"))
 

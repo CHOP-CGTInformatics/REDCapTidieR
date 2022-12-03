@@ -32,7 +32,7 @@
 #'
 #' @examples
 #' supertbl <- tibble::tribble(
-#'   ~ redcap_data, ~ redcap_metadata,
+#'   ~redcap_data, ~redcap_metadata,
 #'   tibble::tibble(x = letters[1:3]), tibble::tibble(field_name = "x", field_label = "X Label"),
 #'   tibble::tibble(y = letters[1:3]), tibble::tibble(field_name = "y", field_label = "Y Label")
 #' )
@@ -50,7 +50,6 @@
 #' }
 #' @export
 make_labelled <- function(supertbl, format_labels = NULL) {
-
   check_installed("labelled", reason = "to use `make_labelled()`")
 
   formatter <- resolve_formatter(format_labels) # nolint: object_usage_linter
@@ -198,7 +197,7 @@ make_labelled <- function(supertbl, format_labels = NULL) {
 #' fmt_strip_field_embedding("Label{another_field}")
 #'
 #' supertbl <- tibble::tribble(
-#'   ~ redcap_data, ~ redcap_metadata,
+#'   ~redcap_data, ~redcap_metadata,
 #'   tibble::tibble(x = letters[1:3]), tibble::tibble(field_name = "x", field_label = "X Label:")
 #' )
 #'
@@ -286,9 +285,10 @@ resolve_formatter <- function(format_labels, env = caller_env(n = 2)) {
 
   supported_classes <- c("NULL", "list", "function", "character") # nolint: object_usage_linter
   cli_abort(
-    c("!" = "{.arg format_labels} must be of class {.cls {supported_classes}}",
-      "x" = "{.arg format_labels} is {.cls {class(format_labels)}}"),
+    c(
+      "!" = "{.arg format_labels} must be of class {.cls {supported_classes}}",
+      "x" = "{.arg format_labels} is {.cls {class(format_labels)}}"
+    ),
     class = c("unresolved_formatter", "REDCapTidieR_cond")
   )
-
 }

@@ -30,8 +30,8 @@
 #' # Mock up a supertibble
 #' supertbl <- tibble::tribble(
 #'   ~redcap_form_name,    ~redcap_data,   ~structure,
-#'   "super_hero_powers",   list(),         "repeating",
-#'   "heroes_information",  list(),         "nonrepeating"
+#'   "super_hero_powers",  list(),         "repeating",
+#'   "heroes_information", list(),         "nonrepeating"
 #' )
 #'
 #' bind_tibbles(supertbl, my_env)
@@ -55,11 +55,14 @@ bind_tibbles <- function(supertbl,
   table_names <- my_supertbl$redcap_form_name
 
   # Map over table names and environment data to load into environment
-  map2(.x = table_names,
-       .y = my_supertbl$redcap_data,
-       .f = ~ env_poke(env = environment,
-                       nm = .x,
-                       value = .y)
+  map2(
+    .x = table_names,
+    .y = my_supertbl$redcap_data,
+    .f = ~ env_poke(
+      env = environment,
+      nm = .x,
+      value = .y
+    )
   )
   return(invisible(NULL))
 }

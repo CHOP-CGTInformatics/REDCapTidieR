@@ -36,7 +36,7 @@ column of the metadata tibble.
 }
 \examples{
 supertbl <- tibble::tribble(
-  ~ redcap_data, ~ redcap_metadata,
+  ~redcap_data, ~redcap_metadata,
   tibble::tibble(x = letters[1:3]), tibble::tibble(field_name = "x", field_label = "X Label"),
   tibble::tibble(y = letters[1:3]), tibble::tibble(field_name = "y", field_label = "Y Label")
 )

@@ -1,7 +1,7 @@
 
 test_that("make_labelled applies labels to all elements of supertibble", {
   supertbl <- tibble::tribble(
-    ~ redcap_data, ~ redcap_metadata, ~ redcap_events,
+    ~redcap_data, ~redcap_metadata, ~redcap_events,
     tibble(x = letters[1:3]), tibble(field_name = "x", field_label = "X Label"), tibble(redcap_event = "event_a"),
     tibble(y = letters[1:3]), tibble(field_name = "y", field_label = "Y Label"), tibble(redcap_event = "event_b")
   )
@@ -45,7 +45,6 @@ test_that("make_labelled applies labels to all elements of supertibble", {
 
   expect_equal(event_labs1, list(redcap_event = "Event Name"))
   expect_equal(event_labs2, list(redcap_event = "Event Name"))
-
 })
 
 test_that("make_labelled applies all predefined labeles", {
@@ -64,37 +63,37 @@ test_that("make_labelled applies all predefined labeles", {
   )
 
   supertbl$redcap_data <- list(tibble::tribble(
-    ~ redcap_repeat_instance,
-    ~ redcap_event,
-    ~ redcap_arm,
-    ~ redcap_survey_timestamp,
-    ~ redcap_survey_identifier,
-    ~ form_status_complete
+    ~redcap_repeat_instance,
+    ~redcap_event,
+    ~redcap_arm,
+    ~redcap_survey_timestamp,
+    ~redcap_survey_identifier,
+    ~form_status_complete
   ))
 
   supertbl$redcap_metadata <- list(tibble::tribble(
-    ~ field_name,
-    ~ field_label,
-    ~ field_type,
-    ~ section_header,
-    ~ field_note,
-    ~ text_validation_type_or_show_slider_number,
-    ~ text_validation_min,
-    ~ text_validation_max,
-    ~ identifier,
-    ~ branching_logic,
-    ~ required_field,
-    ~ custom_alignment,
-    ~ question_number,
-    ~ matrix_group_name,
-    ~ matrix_ranking,
-    ~ field_annotation
+    ~field_name,
+    ~field_label,
+    ~field_type,
+    ~section_header,
+    ~field_note,
+    ~text_validation_type_or_show_slider_number,
+    ~text_validation_min,
+    ~text_validation_max,
+    ~identifier,
+    ~branching_logic,
+    ~required_field,
+    ~custom_alignment,
+    ~question_number,
+    ~matrix_group_name,
+    ~matrix_ranking,
+    ~field_annotation
   ))
 
   supertbl$redcap_events <- list(tibble::tribble(
-    ~ redcap_event,
-    ~ redcap_arm,
-    ~ arm_name
+    ~redcap_event,
+    ~redcap_arm,
+    ~arm_name
   ))
 
   out <- make_labelled(supertbl)
@@ -167,12 +166,11 @@ test_that("make_labelled applies all predefined labeles", {
   )
 
   expect_equal(event_labs, expected_event_labs)
-
 })
 
 test_that("make_labelled handles supertibble with extra columns", {
   supertbl <- tibble::tribble(
-    ~ redcap_form_name, ~ redcap_data, ~ redcap_metadata, ~ extra_field,
+    ~redcap_form_name, ~redcap_data, ~redcap_metadata, ~extra_field,
     "form_1", tibble(x = letters[1:3]), tibble(field_name = "x", field_label = "X Label"), "extra"
   )
 
@@ -192,7 +190,7 @@ test_that("make_labelled handles supertibble with extra columns", {
 
 test_that("make_labelled handles redcap_metadata tibbles of different sizes ", {
   supertbl <- tibble::tribble(
-    ~ redcap_form_name, ~ redcap_data, ~ redcap_metadata,
+    ~redcap_form_name, ~redcap_data, ~redcap_metadata,
     "form_1", tibble(x = letters[1:3]), tibble(field_name = "x", field_label = "X Label"),
     "form_2", tibble(y = letters[1:3]), tibble(field_name = "y", field_label = "Y Label", some_extra_metadata = "123")
   )
@@ -215,12 +213,11 @@ test_that("make_labelled handles redcap_metadata tibbles of different sizes ", {
 
   expect_equal(metadata_labs1, base_metadata_labs)
   expect_equal(metadata_labs2, extra_metadata_labs)
-
 })
 
 test_that("make_labelled handles supertibbles with NULL redcap_events", {
   supertbl <- tibble::tribble(
-    ~ redcap_data, ~ redcap_metadata, ~ redcap_events,
+    ~redcap_data, ~redcap_metadata, ~redcap_events,
     tibble(x = letters[1:3]), tibble(field_name = "x", field_label = "X Label"), tibble(redcap_event = "event_a"),
     tibble(y = letters[1:3]), tibble(field_name = "y", field_label = "Y Label"), NULL
   )
@@ -232,24 +229,21 @@ test_that("make_labelled handles supertibbles with NULL redcap_events", {
 
   expect_false(is.null(event_labs1))
   expect_null(event_labs2)
-
 })
 
 test_that("format helpers work", {
-
   expect_equal(fmt_strip_whitespace("My   Label "), "My Label")
   expect_equal(fmt_strip_trailing_colon("My Label:"), "My Label")
   expect_equal(fmt_strip_trailing_punct("My Label-"), "My Label")
   expect_equal(fmt_strip_html("<b>My Label</b>"), "My Label")
   expect_equal(fmt_strip_field_embedding("My Label{abc}"), "My Label")
-
 })
 
 test_that("make_labelled accepts all valid input types to format_labels", {
   # This implicitly tests resolve_formatter
 
   supertbl <- tibble::tribble(
-    ~ redcap_data, ~ redcap_metadata,
+    ~redcap_data, ~redcap_metadata,
     tibble(x = letters[1:3]), tibble(field_name = "x", field_label = "X Label")
   )
 
@@ -275,14 +269,14 @@ test_that("make_labelled accepts all valid input types to format_labels", {
   expect_equal(labs, list(x = "x label"))
 
   # formula function
-  out <- make_labelled(supertbl, format_labels = ~paste0(., "!"))
+  out <- make_labelled(supertbl, format_labels = ~ paste0(., "!"))
 
   labs <- labelled::var_label(out$redcap_data[[1]])
 
   expect_equal(labs, list(x = "X Label!"))
 
   # list
-  out <- make_labelled(supertbl, format_labels = list(tolower, ~paste0(., "!")))
+  out <- make_labelled(supertbl, format_labels = list(tolower, ~ paste0(., "!")))
 
   labs <- labelled::var_label(out$redcap_data[[1]])
 

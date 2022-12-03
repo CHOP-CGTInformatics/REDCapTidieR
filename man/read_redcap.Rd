@@ -73,10 +73,10 @@ redcap_uri <- Sys.getenv("REDCAP_URI")
 token <- Sys.getenv("REDCAP_TOKEN")
 
 read_redcap(
-   redcap_uri,
-   token,
-   raw_or_label = "label"
- )
+  redcap_uri,
+  token,
+  raw_or_label = "label"
+)
 }
 
 }

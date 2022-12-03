@@ -17,10 +17,8 @@
 #'
 #' @keywords internal
 
-add_partial_keys <- function(
-    db_data,
-    var
-) {
+add_partial_keys <- function(db_data,
+                             var) {
   pattern <- "^(\\w+?)_arm_(\\d)$"
 
   db_data <- db_data %>%
@@ -51,11 +49,8 @@ add_partial_keys <- function(
 #'
 #' @keywords internal
 
-link_arms <- function(
-    redcap_uri,
-    token
-) {
-
+link_arms <- function(redcap_uri,
+                      token) {
   arms <- redcap_arm_export(redcap_uri, token, verbose = FALSE)$data %>%
     # match field name of redcap_event_instruments() output
     rename(arm_num = "arm_number")
@@ -98,11 +93,11 @@ link_arms <- function(
 #' @keywords internal
 
 parse_labels <- function(string, return_vector = FALSE) {
-
   # If string is empty/NA, throw a warning
   if (is.na(string)) {
     cli_warn("Empty string detected for a given multiple choice label.",
-             class = c("empty_parse_warning", "REDCapTidieR_cond"))
+      class = c("empty_parse_warning", "REDCapTidieR_cond")
+    )
   }
 
   out <- string %>%
@@ -166,8 +161,9 @@ parse_labels <- function(string, return_vector = FALSE) {
       ncol = 2,
       byrow = TRUE,
       dimnames = list(
-        c(),               # row names
-        c("raw", "label")) # column names
+        c(), # row names
+        c("raw", "label") # column names
+      )
     ) %>%
     as_tibble()
 
@@ -231,7 +227,6 @@ update_field_names <- function(db_metadata) {
 
       # If field_label or options_labels are missing don't label
       if (is.na(out$field_label[i]) || any(is.na(parsed_labs$label))) {
-
         clean_labs <- NA_character_
       } else {
         # Otherwise build labs
@@ -249,7 +244,6 @@ update_field_names <- function(db_metadata) {
           field_label_updated = clean_labs
         )
       )
-
     } else {
       # Otherwise carry through existing field name and label
       out$updated_metadata[i] <- list(
@@ -342,7 +336,6 @@ update_data_col_names <- function(db_data, db_metadata) {
 #' @keywords internal
 
 multi_choice_to_labels <- function(db_data, db_metadata) {
-
   # form_status_complete Column Handling ----
   # Must be done before the creation of form_status_complete
   # select columns that don't appear in field_name_updated and end with
@@ -354,20 +347,27 @@ multi_choice_to_labels <- function(db_data, db_metadata) {
   db_data <- db_data %>%
     mutate(
       # Change double output of raw data to character
-      across(.cols = all_of(form_status_cols),
-             .fns = ~as.character(.)),
+      across(
+        .cols = all_of(form_status_cols),
+        .fns = ~ as.character(.)
+      ),
       # Map constant values to raw values
-      across(.cols = all_of(form_status_cols),
-             .fns = ~case_when(. == "0" ~ "Incomplete",
-                               . == "1" ~ "Unverified",
-                               . == "2" ~ "Complete")),
+      across(
+        .cols = all_of(form_status_cols),
+        .fns = ~ case_when(
+          . == "0" ~ "Incomplete",
+          . == "1" ~ "Unverified",
+          . == "2" ~ "Complete"
+        )
+      ),
       # Convert to factor
       # Map constant values to raw values
-      across(.cols = all_of(form_status_cols),
-             .fns = ~factor(., levels = c(
-               "Incomplete", "Unverified", "Complete"
-             )
-             )
+      across(
+        .cols = all_of(form_status_cols),
+        .fns = ~ factor(
+          .,
+          levels = c("Incomplete", "Unverified", "Complete")
+        )
       )
     )
 
@@ -382,13 +382,11 @@ multi_choice_to_labels <- function(db_data, db_metadata) {
     mutate(across(.cols = all_of(logical_cols), as.logical))
 
   for (i in seq_len(nrow(db_metadata))) {
-
     # Extract metadata field name and database corresponding column name
     field_name <- db_metadata$field_name_updated[i]
 
     # dropdown and radio datatype handling ----
     if (db_metadata$field_type[i] %in% c("dropdown", "radio")) {
-
       # Check for empty selection strings indicating missing data or incorrect
       # data field attribute types in REDCap
       if (is.na(db_metadata$select_choices_or_calculations[i])) {

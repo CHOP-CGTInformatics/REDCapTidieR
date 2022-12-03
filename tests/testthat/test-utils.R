@@ -10,9 +10,9 @@ db_metadata_classic <- readRDS(system.file("testdata/db_metadata_classic.RDS", p
 test_that("update_data_field_names works", {
   test_data <- tibble::tribble(
     ~`checkbox____99`,   ~`checkbox____98`,
-    0,                    1,
-    1,                    0,
-    1,                    0
+    0,                   1,
+    1,                   0,
+    1,                   0
   )
 
   test_meta <- tibble::tribble(
@@ -22,28 +22,39 @@ test_that("update_data_field_names works", {
     "test_column"
   )
 
-  out <- update_data_col_names(db_data = test_data,
-                               db_metadata = test_meta)
+  out <- update_data_col_names(
+    db_data = test_data,
+    db_metadata = test_meta
+  )
 
   expect_true(all(c("checkbox___-99", "checkbox___-98") %in% names(out)))
 })
 
 test_that("multi_choice_to_labels works", {
-
-  db_data_classic <- update_data_col_names(db_data_classic,
-                                           db_metadata_classic)
+  db_data_classic <- update_data_col_names(
+    db_data_classic,
+    db_metadata_classic
+  )
 
   # Expect warning on error variable where a radio button is created for a
   # descriptive text field
-  expect_warning(multi_choice_to_labels(db_data = db_data_classic,
-                                        db_metadata = db_metadata_classic) %>%
-                   suppressWarnings(classes = "empty_parse_warning"),
-                 class = "field_missing_categories")
+  expect_warning(
+    multi_choice_to_labels(
+      db_data = db_data_classic,
+      db_metadata = db_metadata_classic
+    ) %>%
+      suppressWarnings(classes = "empty_parse_warning"),
+    class = "field_missing_categories"
+  )
 
-  out <- multi_choice_to_labels(db_data = db_data_classic,
-                                db_metadata = db_metadata_classic) %>%
-    suppressWarnings(classes = c("empty_parse_warning",
-                                 "field_missing_categories"))
+  out <- multi_choice_to_labels(
+    db_data = db_data_classic,
+    db_metadata = db_metadata_classic
+  ) %>%
+    suppressWarnings(classes = c(
+      "empty_parse_warning",
+      "field_missing_categories"
+    ))
 
   # Test general structure
   expect_true(is.data.frame(out))
@@ -65,7 +76,6 @@ test_that("multi_choice_to_labels works", {
 })
 
 test_that("parse_labels works", {
-
   # Note: implicitly testing strip_html_field_embedding() by checking that
   # parse_labels successfully stipes html tags and field embedding logic
   valid_string <- "choice_1, one | choice_2, two {abc} | choice_3, <b>three</b>"
@@ -89,12 +99,18 @@ test_that("parse_labels works", {
     parse_labels(valid_string, return_vector = TRUE),
     valid_vector_output
   )
-  expect_error(parse_labels(invalid_string_1),
-               class = "comma_parse_error")
-  expect_error(parse_labels(invalid_string_2),
-               class = "matrix_parse_error")
-  expect_warning(parse_labels(warning_string_1),
-                 class = "empty_parse_warning")
+  expect_error(
+    parse_labels(invalid_string_1),
+    class = "comma_parse_error"
+  )
+  expect_error(
+    parse_labels(invalid_string_2),
+    class = "matrix_parse_error"
+  )
+  expect_warning(
+    parse_labels(warning_string_1),
+    class = "empty_parse_warning"
+  )
 })
 
 test_that("link_arms works", {
@@ -112,20 +128,20 @@ test_that("link_arms works", {
   # all arms are represented in output (test redcap has 2 arms)
   n_unique_arms <- length(unique(out$arm_num))
   expect_equal(n_unique_arms, 2)
-
 })
 
 test_that("update_field_names works", {
-
+  # nolint start: line_length_linter
   test_meta <- tibble::tribble(
-    ~field_name,   ~form_name, ~field_type, ~field_label, ~select_choices_or_calculations,
-    "record_id",   NA_character_,  "text", NA_character_, NA_character_,
-    "checkbox", "my_form", "checkbox", "Field Label", "1, 1 | -99, <b>Unknown</b> {embedded logic}",
-    "checkbox_no_label", "my_form", "checkbox", NA_character_, "1, 1",
-    "checkbox_w_colon", "my_form", "checkbox", "Field Label:", "1, 1",
-    "checkbox_no_opts", "my_form", "checkbox", "Field Label:", NA_character_,
-    "field", "my_form",  "text", "<b>Field Label</b> {embedded logic}", NA_character_
+    ~field_name,         ~form_name,    ~field_type, ~field_label,                          ~select_choices_or_calculations,
+    "record_id",         NA_character_, "text",      NA_character_,                         NA_character_,
+    "checkbox",          "my_form",     "checkbox",  "Field Label",                         "1, 1 | -99, <b>Unknown</b> {embedded logic}",
+    "checkbox_no_label", "my_form",     "checkbox",  NA_character_,                         "1, 1",
+    "checkbox_w_colon",  "my_form",     "checkbox",  "Field Label:",                        "1, 1",
+    "checkbox_no_opts",  "my_form",     "checkbox",  "Field Label:",                        NA_character_,
+    "field",             "my_form",     "text",      "<b>Field Label</b> {embedded logic}", NA_character_
   )
+  # nolint end: line_length_linter
 
   out <- update_field_names(test_meta) %>%
     suppressWarnings(classes = "empty_parse_warning")
@@ -143,8 +159,10 @@ test_that("update_field_names works", {
 
   expect_equal(
     field_name_updated,
-    c("checkbox___1", "checkbox___-99", "checkbox_no_label___1",
-      "checkbox_w_colon___1", "checkbox_no_opts___NA", "field")
+    c(
+      "checkbox___1", "checkbox___-99", "checkbox_no_label___1",
+      "checkbox_w_colon___1", "checkbox_no_opts___NA", "field"
+    )
   )
 
   # Check field_label was correctly updated in place
@@ -156,17 +174,18 @@ test_that("update_field_names works", {
 
   expect_equal(
     field_label,
-    c("Field Label: 1", "Field Label: Unknown", NA_character_,
-      "Field Label: 1", NA_character_, "Field Label")
+    c(
+      "Field Label: 1", "Field Label: Unknown", NA_character_,
+      "Field Label: 1", NA_character_, "Field Label"
+    )
   )
-
 })
 
 test_that("update_field_names handles metadata without checkbox fields", {
   test_meta <- tibble::tribble(
-    ~field_name,   ~form_name, ~field_type, ~field_label, ~select_choices_or_calculations,
-    "record_id",   NA_character_,  "text", NA_character_, NA_character_,
-    "my_radio",   NA_character_,  "radio", "xyz", "abc"
+    ~field_name, ~form_name,    ~field_type, ~field_label,  ~select_choices_or_calculations,
+    "record_id", NA_character_, "text",      NA_character_, NA_character_,
+    "my_radio",  NA_character_, "radio",     "xyz",         "abc"
   )
 
   out <- update_field_names(test_meta)
@@ -178,6 +197,4 @@ test_that("update_field_names handles metadata without checkbox fields", {
   # field_label is unchanged
 
   expect_equal(out$field_label, test_meta$field_label)
-
-
 })

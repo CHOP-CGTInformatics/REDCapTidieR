@@ -58,25 +58,26 @@
 #' token <- Sys.getenv("REDCAP_TOKEN")
 #'
 #' read_redcap(
-#'    redcap_uri,
-#'    token,
-#'    raw_or_label = "label"
-#'  )
+#'   redcap_uri,
+#'   token,
+#'   raw_or_label = "label"
+#' )
 #' }
 #'
 #' @export
 
 read_redcap <- function(redcap_uri,
-                             token,
-                             raw_or_label = "label",
-                             forms = NULL,
-                             export_survey_fields = TRUE,
-                             suppress_redcapr_messages = TRUE) {
-
+                        token,
+                        raw_or_label = "label",
+                        forms = NULL,
+                        export_survey_fields = TRUE,
+                        suppress_redcapr_messages = TRUE) {
   # Load REDCap Metadata ----
-  db_metadata <- redcap_metadata_read(redcap_uri = redcap_uri,
-                                      token = token,
-                                      verbose = FALSE)$data %>%
+  db_metadata <- redcap_metadata_read(
+    redcap_uri = redcap_uri,
+    token = token,
+    verbose = FALSE
+  )$data %>%
     filter(.data$field_type != "descriptive")
 
   # Cache unedited db_metadata to reduce dependencies on the order of edits
@@ -137,11 +138,13 @@ read_redcap <- function(redcap_uri,
 
   # Load REDCap Dataset output ----
 
-  db_data <- redcap_read_oneshot(redcap_uri = redcap_uri,
-                                 token = token,
-                                 forms = forms_for_api_call,
-                                 export_survey_fields = export_survey_fields,
-                                 verbose = FALSE)$data
+  db_data <- redcap_read_oneshot(
+    redcap_uri = redcap_uri,
+    token = token,
+    forms = forms_for_api_call,
+    export_survey_fields = export_survey_fields,
+    verbose = FALSE
+  )$data
 
   # Check that results were returned
   check_redcap_populated(db_data)
@@ -166,8 +169,10 @@ read_redcap <- function(redcap_uri,
     # Drop repeating instrument rows that may be associated with extra instrument
     if ("redcap_repeat_instrument" %in% colnames(db_data)) {
       db_data <- db_data %>%
-        filter(.data$redcap_repeat_instrument %in% forms |
-                 is.na(.data$redcap_repeat_instrument))
+        filter(
+          .data$redcap_repeat_instrument %in% forms |
+          is.na(.data$redcap_repeat_instrument)
+        )
 
       # Drop repeating fields if there are no remaining repeating instruments
       if (all(is.na(db_data$redcap_repeat_instrument))) {
@@ -203,12 +208,16 @@ read_redcap <- function(redcap_uri,
   if (is_longitudinal) {
     linked_arms <- link_arms(redcap_uri = redcap_uri, token = token)
 
-    out <- clean_redcap_long(db_data_long = db_data,
-                             db_metadata_long = db_metadata,
-                             linked_arms = linked_arms)
+    out <- clean_redcap_long(
+      db_data_long = db_data,
+      db_metadata_long = db_metadata,
+      linked_arms = linked_arms
+    )
   } else {
-    out <- clean_redcap(db_data = db_data,
-                        db_metadata = db_metadata)
+    out <- clean_redcap(
+      db_data = db_data,
+      db_metadata = db_metadata
+    )
   }
 
   # Augment with metadata ----
@@ -221,8 +230,10 @@ read_redcap <- function(redcap_uri,
   out %>%
     dplyr::slice(
       order(
-        factor(.data$redcap_form_name,
-               levels = form_name_order)
+        factor(
+          .data$redcap_form_name,
+          levels = form_name_order
+        )
       )
     )
 }
@@ -298,7 +309,6 @@ get_fields_to_drop <- function(db_metadata, form) {
 #' @keywords internal
 
 add_metadata <- function(supertbl, db_metadata, redcap_uri, token) {
-
   # Get instrument labels ----
   instrument_labs <- redcap_instruments(
     redcap_uri,
@@ -343,8 +353,10 @@ add_metadata <- function(supertbl, db_metadata, redcap_uri, token) {
   res <- supertbl %>%
     left_join(instrument_labs, by = "redcap_form_name") %>%
     left_join(metadata, by = "redcap_form_name") %>%
-    relocate("redcap_form_name", "redcap_form_label", "redcap_data",
-             "redcap_metadata", "structure")
+    relocate(
+      "redcap_form_name", "redcap_form_label", "redcap_data",
+      "redcap_metadata", "structure"
+    )
 
   # Add summary stats ----
   res %>%
@@ -408,7 +420,6 @@ add_event_mapping <- function(supertbl, linked_arms) {
 #' @keywords internal
 #'
 calc_metadata_stats <- function(data) {
-
   excluded_fields <- c(
     get_record_id_field(data),
     "redcap_repeat_instance", "redcap_event",

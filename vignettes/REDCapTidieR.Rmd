@@ -215,7 +215,7 @@ The label for `name` doesn't look quite right. Let's remove that trailing `:`. T
 
 ```{r}
 superheroes |>
-  make_labelled(format_labels = ~gsub(":", "", .)) |>
+  make_labelled(format_labels = ~ gsub(":", "", .)) |>
   bind_tibbles()
 
 labelled::look_for(heroes_information, "hero")
@@ -236,7 +236,8 @@ superheroes |>
   make_labelled(
     format_labels = c(
       fmt_strip_trailing_colon,
-      base::tolower)
+      base::tolower
+    )
   ) |>
   bind_tibbles()
 

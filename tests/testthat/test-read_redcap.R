@@ -7,7 +7,6 @@ httptest::.mockPaths(test_path("fixtures"))
 `%notin%` <- Negate(`%in%`)
 
 test_that("read_redcap works for a classic database with a nonrepeating instrument", {
-
   # Define partial key columns that should be in a nonrepeating table
   # from a classic database
   expected_present_cols <- c("record_id")
@@ -18,8 +17,10 @@ test_that("read_redcap works for a classic database with a nonrepeating instrume
     out <-
       read_redcap(redcap_uri, classic_token) %>%
       # suppress expected warning
-      suppressWarnings(classes = c("field_missing_categories",
-                                   "empty_parse_warning")) %>%
+      suppressWarnings(classes = c(
+        "field_missing_categories",
+        "empty_parse_warning"
+      )) %>%
       filter(redcap_form_name == "nonrepeated") %>%
       select(redcap_data) %>%
       pluck(1, 1)
@@ -32,11 +33,9 @@ test_that("read_redcap works for a classic database with a nonrepeating instrume
   expect_false(
     any(expected_absent_cols %in% names(out))
   )
-
 })
 
 test_that("read_redcap works for a classic database with a repeating instrument", {
-
   # Define partial key columns that should be in a repeating table
   # from a classic database
   expected_present_cols <- c("record_id", "redcap_repeat_instance")
@@ -47,8 +46,10 @@ test_that("read_redcap works for a classic database with a repeating instrument"
     out <-
       read_redcap(redcap_uri, classic_token) %>%
       # suppress expected warning
-      suppressWarnings(classes = c("field_missing_categories",
-                                   "empty_parse_warning")) %>%
+      suppressWarnings(classes = c(
+        "field_missing_categories",
+        "empty_parse_warning"
+      )) %>%
       filter(redcap_form_name == "repeated") %>%
       select(redcap_data) %>%
       pluck(1, 1)
@@ -61,42 +62,45 @@ test_that("read_redcap works for a classic database with a repeating instrument"
   expect_false(
     any(expected_absent_cols %in% names(out))
   )
-
 })
 
 test_that("read_redcap returns checkbox fields", {
-
   # Pull a nonrepeating table from a classic database
   httptest::with_mock_api({
     out <-
       read_redcap(redcap_uri, classic_token) %>%
       # suppress expected warning
-      suppressWarnings(classes = c("field_missing_categories",
-                                   "empty_parse_warning")) %>%
+      suppressWarnings(classes = c(
+        "field_missing_categories",
+        "empty_parse_warning"
+      )) %>%
       filter(redcap_form_name == "data_field_types") %>%
       select(redcap_data) %>%
       pluck(1, 1)
   })
 
   expect_true("checkbox_multiple___1" %in% names(out))
-
 })
 
 test_that("supplying forms is equivalent to post-hoc filtering for a classic database", {
-
   # Explicitly testing form that doesn't contain identifiers
   httptest::with_mock_api({
     filtered_by_api <-
       read_redcap(redcap_uri,
-                    classic_token,
-                    forms = "repeated")
+        classic_token,
+        forms = "repeated"
+      )
 
     filtered_locally <-
-      read_redcap(redcap_uri,
-                    classic_token) %>%
+      read_redcap(
+        redcap_uri,
+        classic_token
+      ) %>%
       # suppress expected warning
-      suppressWarnings(classes = c("field_missing_categories",
-                                   "empty_parse_warning")) %>%
+      suppressWarnings(classes = c(
+        "field_missing_categories",
+        "empty_parse_warning"
+      )) %>%
       filter(redcap_form_name == "repeated")
   })
 
@@ -106,17 +110,19 @@ test_that("supplying forms is equivalent to post-hoc filtering for a classic dat
 })
 
 test_that("supplying forms is equivalent to post-hoc filtering for a longitudinal database", {
-
   # Explicitly testing form that doesn't contain identifiers
   httptest::with_mock_api({
     filtered_by_api <-
       read_redcap(redcap_uri,
-                    longitudinal_token,
-                    forms = "repeated")
+        longitudinal_token,
+        forms = "repeated"
+      )
 
     filtered_locally <-
-      read_redcap(redcap_uri,
-                    longitudinal_token) %>%
+      read_redcap(
+        redcap_uri,
+        longitudinal_token
+      ) %>%
       filter(redcap_form_name == "repeated")
   })
 
@@ -126,17 +132,19 @@ test_that("supplying forms is equivalent to post-hoc filtering for a longitudina
 })
 
 test_that("supplying forms is equivalent to post-hoc filtering for a database with a repeating first instrument", {
-
   # Explicitly testing form that doesn't contain identifiers
   httptest::with_mock_api({
     filtered_by_api <-
       read_redcap(redcap_uri,
-                    repeat_first_instrument_token,
-                    forms = "form_2")
+        repeat_first_instrument_token,
+        forms = "form_2"
+      )
 
     filtered_locally <-
-      read_redcap(redcap_uri,
-                    repeat_first_instrument_token) %>%
+      read_redcap(
+        redcap_uri,
+        repeat_first_instrument_token
+      ) %>%
       filter(redcap_form_name == "form_2")
   })
 
@@ -146,7 +154,6 @@ test_that("supplying forms is equivalent to post-hoc filtering for a database wi
 })
 
 test_that("read_redcap works for a longitudinal, single arm database with a nonrepeating instrument", {
-
   # Define partial key columns that should be in a nonrepeating table
   # from a longitudinal, single arm database
   expected_present_cols <- c("record_id", "redcap_event")
@@ -168,11 +175,9 @@ test_that("read_redcap works for a longitudinal, single arm database with a nonr
   expect_false(
     any(expected_absent_cols %in% names(out))
   )
-
 })
 
 test_that("read_redcap works for a longitudinal, single arm database with a repeating instrument", {
-
   # Define partial key columns that should be in a repeating table
   # from a longitudinal, single arm database
   expected_present_cols <- c("record_id", "redcap_repeat_instance", "redcap_event")
@@ -194,11 +199,9 @@ test_that("read_redcap works for a longitudinal, single arm database with a repe
   expect_false(
     any(expected_absent_cols %in% names(out))
   )
-
 })
 
 test_that("read_redcap works for a longitudinal, multi-arm database with a nonrepeating instrument", {
-
   # Define partial key columns that should be in a nonrepeating table
   # from a longitudinal, multi-arm database
   expected_present_cols <- c("record_id", "redcap_event", "redcap_arm")
@@ -220,11 +223,9 @@ test_that("read_redcap works for a longitudinal, multi-arm database with a nonre
   expect_false(
     any(expected_absent_cols %in% names(out))
   )
-
 })
 
 test_that("read_redcap works for a longitudinal, multi-arm database with a repeating instrument", {
-
   # Define partial key columns that should be in a repeating table
   # from a longitudinal, multi-arm database
   expected_present_cols <- c("record_id", "redcap_repeat_instance", "redcap_event", "redcap_arm")
@@ -241,14 +242,14 @@ test_that("read_redcap works for a longitudinal, multi-arm database with a repea
   expect_true(
     all(expected_present_cols %in% names(out))
   )
-
 })
 
 test_that("errors when non-existent form is supplied alone", {
   httptest::with_mock_api({
     read_redcap(redcap_uri,
-                  classic_token,
-                  forms = "fake-form") %>%
+      classic_token,
+      forms = "fake-form"
+    ) %>%
       expect_error(class = "form_does_not_exist")
   })
 })
@@ -256,8 +257,9 @@ test_that("errors when non-existent form is supplied alone", {
 test_that("errors when non-existent form is supplied with existing forms", {
   httptest::with_mock_api({
     read_redcap(redcap_uri,
-                  classic_token,
-                  forms = c("fake-form", "repeated")) %>%
+      classic_token,
+      forms = c("fake-form", "repeated")
+    ) %>%
       expect_error(class = "form_does_not_exist")
   })
 })
@@ -265,9 +267,9 @@ test_that("errors when non-existent form is supplied with existing forms", {
 test_that("get_fields_to_drop handles checkboxes", {
   # Example metadata
   test_meta <- tibble::tribble(
-    ~field_name,   ~form_name, ~field_type, ~select_choices_or_calculations, ~field_label,
-    "record_id",   "my_form",  "text",      NA_character_, NA_character_,
-    "my_checkbox", "my_form",  "checkbox",  "1, 1 | -99, Unknown", NA_character_
+    ~field_name, ~form_name, ~field_type, ~select_choices_or_calculations, ~field_label,
+    "record_id", "my_form", "text", NA_character_, NA_character_,
+    "my_checkbox", "my_form", "checkbox", "1, 1 | -99, Unknown", NA_character_
   )
 
   res <- get_fields_to_drop(test_meta, "my_form")
@@ -318,7 +320,7 @@ test_that("read_redcap returns metadata", {
   ## map over rows of supertibble and extract fields in metadata from each
   ## instrument
   fields_in_metadata <- out$redcap_metadata %>%
-    map(~.[["field_name"]])
+    map(~ .[["field_name"]])
 
   ## map over rows of supertibble and extract fields in data from each
   ## instrument
@@ -329,14 +331,15 @@ test_that("read_redcap returns metadata", {
 
   ## make sure metadata fields match data fields for each instrument
   expect_equal(fields_in_metadata, fields_in_data)
-
 })
 
 test_that("read_redcap suppresses events metadata for non-longitudinal database", {
   httptest::with_mock_api({
     out <- read_redcap(redcap_uri, classic_token) %>%
-      suppressWarnings(classes = c("field_missing_categories",
-                                   "empty_parse_warning"))
+      suppressWarnings(classes = c(
+        "field_missing_categories",
+        "empty_parse_warning"
+      ))
   })
 
   expect_false("redcap_events" %in% names(out))
@@ -345,14 +348,17 @@ test_that("read_redcap suppresses events metadata for non-longitudinal database"
 test_that("read_redcap preserves form_name order mirroring original REDCapR metadata order", {
   httptest::with_mock_api({
     expected_order <- REDCapR::redcap_metadata_read(redcap_uri,
-                                                    classic_token,
-                                                    verbose = FALSE)$data %>%
+      classic_token,
+      verbose = FALSE
+    )$data %>%
       pull(form_name) %>%
       unique()
 
     out <- read_redcap(redcap_uri, classic_token) %>%
-      suppressWarnings(classes = c("field_missing_categories",
-                                   "empty_parse_warning"))
+      suppressWarnings(classes = c(
+        "field_missing_categories",
+        "empty_parse_warning"
+      ))
   })
 
   expect_equal(expected_order, out$redcap_form_name)
@@ -361,10 +367,13 @@ test_that("read_redcap preserves form_name order mirroring original REDCapR meta
 test_that("read_redcap returns expected survey fields", {
   httptest::with_mock_api({
     out <- read_redcap(redcap_uri,
-                         classic_token,
-                         export_survey_fields = TRUE) %>%
-      suppressWarnings(classes = c("field_missing_categories",
-                                   "empty_parse_warning"))
+      classic_token,
+      export_survey_fields = TRUE
+    ) %>%
+      suppressWarnings(classes = c(
+        "field_missing_categories",
+        "empty_parse_warning"
+      ))
   })
 
   survey_data <- out$redcap_data[out$redcap_form_name == "survey"][[1]]

@@ -56,7 +56,7 @@ fmt_strip_html("<b>Bold Label</b>")
 fmt_strip_field_embedding("Label{another_field}")
 
 supertbl <- tibble::tribble(
-  ~ redcap_data, ~ redcap_metadata,
+  ~redcap_data, ~redcap_metadata,
   tibble::tibble(x = letters[1:3]), tibble::tibble(field_name = "x", field_label = "X Label:")
 )
 
