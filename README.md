@@ -1,5 +1,13 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+<style type="text/css">
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code&display=swap');
+
+code {
+  font-family: "Fira Code", Consolas, Monaco, 'Courier New', monospace;
+  font-size: 85%;
+}
+</style>
 
 # REDCapTidieR
 
@@ -37,7 +45,8 @@ projects that are
 [longitudinal](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/glossary.html#longitudinal-project)
 or include
 [repeating](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/glossary.html#repeating)
-instruments or both.
+[instruments](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/glossary.html#instrument)
+or both.
 
 ## Installation
 

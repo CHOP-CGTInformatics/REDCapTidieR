@@ -1,5 +1,6 @@
 ---
 title: "Diving Deeper: Understanding REDCapTidieR Data Tibbles"
+output:
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Diving Deeper: Understanding REDCapTidieR Data Tibbles}
@@ -33,6 +34,15 @@ library(REDCapTidieR)
 
 start_vignette("diving_deeper")
 
+```
+
+```{css, echo = FALSE}
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code&display=swap');
+
+code {
+  font-family: "Fira Code", Consolas, Monaco, 'Courier New', monospace;
+  font-size: 85%;
+}
 ```
 
 ## The Block Matrix

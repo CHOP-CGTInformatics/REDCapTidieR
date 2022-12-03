@@ -16,6 +16,15 @@ knitr::opts_chunk$set(
 )
 ```
 
+```{css, echo = FALSE}
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code&display=swap');
+
+code {
+  font-family: "Fira Code", Consolas, Monaco, 'Courier New', monospace;
+  font-size: 85%;
+}
+```
+
 ```{r, include=FALSE}
 library(httptest)
 

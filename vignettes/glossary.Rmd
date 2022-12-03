@@ -14,6 +14,15 @@ knitr::opts_chunk$set(
 )
 ```
 
+```{css, echo = FALSE}
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code&display=swap');
+
+code {
+  font-family: "Fira Code", Consolas, Monaco, 'Courier New', monospace;
+  font-size: 85%;
+}
+```
+
 The REDCapTidieR package uses vocabulary that is standard for REDCap database architects but not necessarily well known to all R users. It also introduces several idiosyncratic terms.
 
 Below we provide find a rough mapping of REDCap concepts to their corresponding artifacts REDCapTidieR generates in the R environment, followed by a listing of definition of terms.
