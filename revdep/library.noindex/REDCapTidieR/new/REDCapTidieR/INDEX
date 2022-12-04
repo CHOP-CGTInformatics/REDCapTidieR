@@ -1,8 +1,0 @@
-bind_tables             Extract tibbles from a REDCapTidieR supertibble
-                        and bind it to an environment
-extract_table           Extract a single tibble from a REDCapTidieR
-                        supertibble
-extract_tables          Extract one or more tibbles from a REDCapTidieR
-                        supertibble
-read_redcap_tidy        Extract a REDCap database into a tidy
-                        supertibble
