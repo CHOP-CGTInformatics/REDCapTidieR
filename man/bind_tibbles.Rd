@@ -34,8 +34,8 @@ ls(my_env)
 # Mock up a supertibble
 supertbl <- tibble::tribble(
   ~redcap_form_name,    ~redcap_data,   ~structure,
-  "super_hero_powers",   list(),         "repeating",
-  "heroes_information",  list(),         "nonrepeating"
+  "super_hero_powers",  list(),         "repeating",
+  "heroes_information", list(),         "nonrepeating"
 )
 
 bind_tibbles(supertbl, my_env)

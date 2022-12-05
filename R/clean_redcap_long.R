@@ -26,12 +26,9 @@
 #'
 #' @keywords internal
 
-clean_redcap_long <- function(
-    db_data_long,
-    db_metadata_long,
-    linked_arms
-) {
-
+clean_redcap_long <- function(db_data_long,
+                              db_metadata_long,
+                              linked_arms) {
   # Repeating Instrument Check ----
   # Check if database supplied contains any repeating instruments to map onto
   # `redcap_repeat_*` variables
@@ -61,10 +58,12 @@ clean_redcap_long <- function(
       redcap_form_name = repeated_forms,
       redcap_data = map(
         .data$redcap_form_name,
-        ~ distill_repeat_table_long(.x,
-                                    db_data_long,
-                                    db_metadata_long,
-                                    linked_arms)
+        ~ distill_repeat_table_long(
+          .x,
+          db_data_long,
+          db_metadata_long,
+          linked_arms
+        )
       ),
       structure = "repeating"
     )
@@ -77,18 +76,22 @@ clean_redcap_long <- function(
     unique()
 
   if (has_repeating) {
-    nonrepeated_forms <- setdiff(nonrepeated_forms,
-                                 repeated_forms)
+    nonrepeated_forms <- setdiff(
+      nonrepeated_forms,
+      repeated_forms
+    )
   }
 
   nonrepeated_forms_tibble <- tibble(
     redcap_form_name = nonrepeated_forms,
     redcap_data = map(
       .data$redcap_form_name,
-      ~ distill_nonrepeat_table_long(.x,
-                                     db_data_long,
-                                     db_metadata_long,
-                                     linked_arms)
+      ~ distill_nonrepeat_table_long(
+        .x,
+        db_data_long,
+        db_metadata_long,
+        linked_arms
+      )
     ),
     structure = "nonrepeating"
   )
@@ -127,12 +130,10 @@ clean_redcap_long <- function(
 #'
 #' @keywords internal
 
-distill_nonrepeat_table_long <- function(
-    form_name,
-    db_data_long,
-    db_metadata_long,
-    linked_arms
-) {
+distill_nonrepeat_table_long <- function(form_name,
+                                         db_data_long,
+                                         db_metadata_long,
+                                         linked_arms) {
   # Repeating Instrument Check ----
   # Check if database supplied contains any repeating instruments to map onto
   # `redcap_repeat_*` variables
@@ -156,9 +157,11 @@ distill_nonrepeat_table_long <- function(
   # Below necessary to remove descriptive text fields
   # and to add column to indicate that instrument is completed
   my_fields <- db_data_long %>%
-    select(all_of(my_fields),
-           any_of(paste0(my_form, "_timestamp")),
-           paste0(my_form, "_complete")) %>%
+    select(
+      all_of(my_fields),
+      any_of(paste0(my_form, "_timestamp")),
+      paste0(my_form, "_complete")
+    ) %>%
     names()
 
   # For forms containing surveys, also pull redcap_survey_identifier
@@ -187,7 +190,8 @@ distill_nonrepeat_table_long <- function(
   out <- db_data_long %>%
     select(all_of(my_fields), "redcap_event", "redcap_arm") %>%
     relocate(
-      c("redcap_event", "redcap_arm"), .after = !!my_record_id
+      c("redcap_event", "redcap_arm"),
+      .after = !!my_record_id
     ) %>%
     rename("redcap_survey_timestamp" = any_of(paste0(my_form, "_timestamp"))) %>%
     relocate(any_of("redcap_survey_timestamp"), .after = everything()) %>%
@@ -230,12 +234,10 @@ distill_nonrepeat_table_long <- function(
 #' @importFrom rlang .data
 #' @keywords internal
 
-distill_repeat_table_long <- function(
-    form_name,
-    db_data_long,
-    db_metadata_long,
-    linked_arms
-) {
+distill_repeat_table_long <- function(form_name,
+                                      db_data_long,
+                                      db_metadata_long,
+                                      linked_arms) {
   my_record_id <- names(db_data_long)[1]
   my_form <- form_name
 
@@ -250,9 +252,11 @@ distill_repeat_table_long <- function(
   # Below necessary to remove descriptive text fields
   # and to add column to indicate that instrument is completed
   my_fields <- db_data_long %>%
-    select(all_of(my_fields),
-           any_of(paste0(my_form, "_timestamp")),
-           paste0(my_form, "_complete")) %>%
+    select(
+      all_of(my_fields),
+      any_of(paste0(my_form, "_timestamp")),
+      paste0(my_form, "_complete")
+    ) %>%
     names()
 
   # For forms containing surveys, also pull redcap_survey_identifier

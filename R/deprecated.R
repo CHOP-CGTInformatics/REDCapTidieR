@@ -38,11 +38,11 @@ read_redcap_tidy <- function(redcap_uri,
 #' @keywords internal
 #' @name deprecated
 import_redcap <- function(redcap_uri,
-                             token,
-                             raw_or_label = "label",
-                             forms = NULL,
-                             export_survey_fields = TRUE,
-                             suppress_redcapr_messages = TRUE) {
+                          token,
+                          raw_or_label = "label",
+                          forms = NULL,
+                          export_survey_fields = TRUE,
+                          suppress_redcapr_messages = TRUE) {
   deprecate_warn("0.2.0", "import_redcap()", "read_redcap()", always = TRUE)
 
   read_redcap(
@@ -88,11 +88,14 @@ bind_tables <- function(.data,
     pull(.data$redcap_form_name)
 
   # Map over table names and environment data to load into environment
-  map2(.x = table_names,
-       .y = env_data$redcap_data,
-       .f = ~ env_poke(env = environment,
-                       nm = .x,
-                       value = .y)
+  map2(
+    .x = table_names,
+    .y = env_data$redcap_data,
+    .f = ~ env_poke(
+      env = environment,
+      nm = .x,
+      value = .y
+    )
   )
   return(invisible(NULL))
 }
@@ -120,7 +123,6 @@ extract_table <- function(.data,
 #' @rdname deprecated
 extract_tables <- function(.data,
                            tbls = everything()) {
-
   deprecate_warn("0.2.0", "extract_tables()", "extract_tibbles()", always = TRUE)
 
   extract_tibbles(supertbl = .data, tbls = tbls)

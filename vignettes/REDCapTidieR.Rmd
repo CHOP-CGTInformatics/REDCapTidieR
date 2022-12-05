@@ -206,7 +206,7 @@ The label for `name` doesn't look quite right. Let's remove that trailing `:`. T
 
 ```{r}
 superheroes |>
-  make_labelled(format_labels = ~gsub(":", "", .)) |>
+  make_labelled(format_labels = ~ gsub(":", "", .)) |>
   bind_tibbles()
 
 labelled::look_for(heroes_information, "hero")
@@ -226,8 +226,9 @@ The `format_labels` argument will also accept multiple functions in a vector or 
 superheroes |>
   make_labelled(
     format_labels = c(
-      fmt_strip_trailing_colon, 
-      base::tolower)
+      fmt_strip_trailing_colon,
+      base::tolower
+    )
   ) |>
   bind_tibbles()
 

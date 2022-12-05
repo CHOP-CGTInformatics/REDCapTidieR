@@ -6,7 +6,7 @@ get_fake_credentials <- function(credentials) {
     system.file("misc/fake_credentials.csv", package = "REDCapTidieR"),
     col_types = "cc"
   ) %>%
-    dplyr::filter(name %in% credentials)
+    dplyr::filter(.data$name %in% credentials)
 
   res <- rep("", length(credentials))
   names(res) <- credentials

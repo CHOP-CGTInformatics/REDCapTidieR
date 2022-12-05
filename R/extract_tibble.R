@@ -22,8 +22,8 @@
 #' # Mock up a supertibble
 #' sample_data <- tibble::tribble(
 #'   ~redcap_form_name,    ~redcap_data,   ~structure,
-#'   "super_hero_powers",   list(),         "repeating",
-#'   "heroes_information",  list(),         "nonrepeating"
+#'   "super_hero_powers",  list(),         "repeating",
+#'   "heroes_information", list(),         "nonrepeating"
 #' )
 #'
 #' extract_tibble(sample_data, "heroes_information")
@@ -73,9 +73,9 @@ extract_tibble <- function(supertbl,
 #' @examples
 #' # Mock up a supertibble
 #' sample_data <- tibble::tribble(
-#'    ~redcap_form_name,    ~redcap_data, ~structure,
-#'    "super_hero_powers",   list(),       "repeating",
-#'    "heroes_information",  list(),       "nonrepeating"
+#'   ~redcap_form_name,    ~redcap_data, ~structure,
+#'   "super_hero_powers",  list(),       "repeating",
+#'   "heroes_information", list(),       "nonrepeating"
 #' )
 #'
 #' # Extract all data tibbles
@@ -88,18 +88,19 @@ extract_tibble <- function(supertbl,
 
 extract_tibbles <- function(supertbl,
                             tbls = everything()) {
-
   # Extract specified table ----
   # Pass tbls as an expression for enquosure
   tbls <- enquo(tbls)
 
   out <- supertbl %>%
     select("redcap_form_name", "redcap_data") %>%
-    pivot_wider(names_from = "redcap_form_name",
-                values_from = "redcap_data")
+    pivot_wider(
+      names_from = "redcap_form_name",
+      values_from = "redcap_data"
+    )
 
   out <- out[eval_select(tbls, data = out)]
 
   out %>%
-    map(.f = ~pluck(.)[[1]])
+    map(.f = ~ pluck(.)[[1]])
 }

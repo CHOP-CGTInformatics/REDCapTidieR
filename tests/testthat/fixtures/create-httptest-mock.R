@@ -14,12 +14,14 @@ start_capturing(path = testthat::test_path("fixtures"))
 read_redcap(redcap_uri, classic_token)
 
 read_redcap(redcap_uri,
-                 classic_token,
-                 forms = "repeated")
+  classic_token,
+  forms = "repeated"
+)
 
 read_redcap(redcap_uri,
-                 classic_token,
-                 export_survey_fields = TRUE)
+  classic_token,
+  export_survey_fields = TRUE
+)
 
 read_redcap(redcap_uri, longitudinal_token, forms = "repeated")
 
@@ -29,15 +31,16 @@ read_redcap(redcap_uri, longitudinal_token)
 
 # Ignore expected form_does_not_exist errors
 tryCatch(
-  form_does_not_exist = function(cnd) {},
+  form_does_not_exist = function(cnd) {}, # nolint: brace_linter
   read_redcap(redcap_uri, classic_token, forms = "fake-form")
 )
 
 tryCatch(
-  form_does_not_exist = function(cnd) {},
+  form_does_not_exist = function(cnd) {}, # nolint: brace_linter
   read_redcap(redcap_uri,
-                   classic_token,
-                   forms = c("fake-form", "repeated"))
+    classic_token,
+    forms = c("fake-form", "repeated")
+  )
 )
 
 read_redcap(redcap_uri, repeat_first_instrument_token)
