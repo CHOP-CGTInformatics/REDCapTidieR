@@ -121,12 +121,14 @@ contains the following columns:</p><ul><li><p><code>redcap_form_name</code>, the
 <li><p><code>redcap_form_label</code>, the label for the instrument</p></li>
 <li><p><code>redcap_data</code>, a tibble with the data for the instrument</p></li>
 <li><p><code>redcap_metadata</code>, a tibble of data dictionary entries for each field in the instrument</p></li>
-<li><p><code>redcap_events</code>, a tibble with information about the arms and longitudinal events represented in the instrument. Only if the project has longitudinal events enabled</p></li>
+<li><p><code>redcap_events</code>, a tibble with information about the arms and longitudinal events represented in the instrument.
+Only if the project has longitudinal events enabled</p></li>
 <li><p><code>structure</code>, the instrument structure, either "repeating" or "nonrepeating"</p></li>
 <li><p><code>data_rows</code>, the number of rows in the instrument's data tibble</p></li>
 <li><p><code>data_cols</code>, the number of columns in the instrument's data tibble</p></li>
 <li><p><code>data_size</code>, the size in memory of the instrument's data tibble computed by <code><a href="https://lobstr.r-lib.org/reference/obj_size.html" class="external-link">lobstr::obj_size()</a></code></p></li>
-<li><p><code>data_na_pct</code>, the percentage of cells in the instrument's data columns that are <code>NA</code> excluding identifier and form completion columns</p></li>
+<li><p><code>data_na_pct</code>, the percentage of cells in the instrument's data columns that are <code>NA</code> excluding identifier and
+form completion columns</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -146,10 +148,10 @@ where one tibble represents the data from one instrument.</p>
 <span class="r-in"><span><span class="va">token</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"REDCAP_TOKEN"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">read_redcap</span><span class="op">(</span></span></span>
-<span class="r-in"><span>   <span class="va">redcap_uri</span>,</span></span>
-<span class="r-in"><span>   <span class="va">token</span>,</span></span>
-<span class="r-in"><span>   raw_or_label <span class="op">=</span> <span class="st">"label"</span></span></span>
-<span class="r-in"><span> <span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="va">redcap_uri</span>,</span></span>
+<span class="r-in"><span>  <span class="va">token</span>,</span></span>
+<span class="r-in"><span>  raw_or_label <span class="op">=</span> <span class="st">"label"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

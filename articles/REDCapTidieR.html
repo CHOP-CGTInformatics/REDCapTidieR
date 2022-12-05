@@ -364,7 +364,7 @@ function has a <code>format_labels</code> argument that you can use to
 preprocess labels before applying them to the variables.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">superheroes</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="../reference/make_labelled.html">make_labelled</a></span><span class="op">(</span>format_labels <span class="op">=</span> <span class="op">~</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">gsub</a></span><span class="op">(</span><span class="st">":"</span>, <span class="st">""</span>, <span class="va">.</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/make_labelled.html">make_labelled</a></span><span class="op">(</span>format_labels <span class="op">=</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">gsub</a></span><span class="op">(</span><span class="st">":"</span>, <span class="st">""</span>, <span class="va">.</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/bind_tibbles.html">bind_tibbles</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">labelled</span><span class="fu">::</span><span class="fu"><a href="http://larmarange.github.io/labelled/reference/look_for.html" class="external-link">look_for</a></span><span class="op">(</span><span class="va">heroes_information</span>, <span class="st">"hero"</span><span class="op">)</span></span>
@@ -390,8 +390,9 @@ case with <code><a href="https://rdrr.io/r/base/chartr.html" class="external-lin
 <code class="sourceCode R"><span><span class="va">superheroes</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/make_labelled.html">make_labelled</a></span><span class="op">(</span></span>
 <span>    format_labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span>      <span class="va">fmt_strip_trailing_colon</span>, </span>
-<span>      <span class="fu">base</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/r/base/chartr.html" class="external-link">tolower</a></span><span class="op">)</span></span>
+<span>      <span class="va">fmt_strip_trailing_colon</span>,</span>
+<span>      <span class="fu">base</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/r/base/chartr.html" class="external-link">tolower</a></span></span>
+<span>    <span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/bind_tibbles.html">bind_tibbles</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
