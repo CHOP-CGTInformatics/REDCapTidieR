@@ -1,3 +1,13 @@
+# REDCapTidieR 0.1.3
+
+Version 0.1.3 (Released 2022-10-03)
+==========================================================
+
+### Documentation Updates
+
+* Fixed a bug where `clean_redcap` may not correctly assign variables across instruments to their appropriate tables in cases of similar prefixes
+* Minor changes applied to documentation, including`README` and `DESCRIPTION` files
+
 # REDCapTidieR 0.1.2
 
 Version 0.1.2 (Released 2022-09-20)
