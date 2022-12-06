@@ -8,6 +8,12 @@
 
 ### New Features
 
+* Function name changes:
+  * `read_redcap_tidy` is now `read_redcap`
+  * `extract_table` is now `extract_tibble`
+  * `extract_tables` is now `extract_tibbles`
+  * `bind_table` is now `bind_tibbles`
+    * All old functions are still supported and deliver a deprecation warning
 * Instrument/form-level metadata included in supertibble output:
   * `redcap_form_label`: The instrument’s human-readable label
   * `redcap_metadata`: REDCap metadata associated with the instrument (derived from `REDCapR::redcap_metadata_read`)
@@ -16,7 +22,7 @@
   * `data_size`: Size of the redcap_data tibble in memory
   * `data_na_pct`: The percentage of missing data in the corresponding redcap_data
 * New `make_labelled()` function allowing for descriptive labelling application to variables via the [`labelled`](https://larmarange.github.io/labelled/) package
-* New arguments available for `read_redcap_tidy` capabilities:
+* New arguments available for `read_redcap` capabilities:
   * `forms`: Allows for `forms` specification during API calls instead of defaulting to full database downloads
   * `export_survey_fields`: Allows for export of `[instrument_name]_timestamp` and `redcap_survey_identifier` fields related to survey-enabled REDCap databases (`TRUE` by default)
 
