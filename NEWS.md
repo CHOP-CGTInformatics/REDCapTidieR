@@ -13,25 +13,26 @@
   * `extract_table()` is now `extract_tibble()`
   * `extract_tables()` is now `extract_tibbles()`
   * `bind_table()` is now `bind_tibbles()`
-    * All old functions are still supported and deliver a deprecation warning
+    * All old functions are still supported and throw a deprecation warning
 * Instrument/form-level metadata included in supertibble output:
   * `redcap_form_label`: The instrument’s human-readable label
   * `redcap_metadata`: REDCap metadata associated with the instrument (derived from `REDCapR::redcap_metadata_read()`)
   * `redcap_events`: Events and arms associated with this instrument (for longitudinal projects only)
   * `data_rows`, `data_cols`: Row and column counts of `redcap_data`
-  * `data_size`: Size of the redcap_data tibble in memory
-  * `data_na_pct`: The percentage of missing data in the corresponding redcap_data
-* New `make_labelled()` function allowing for descriptive labelling application to variables via the [`labelled`](https://larmarange.github.io/labelled/) package
+  * `data_size`: Size of the `redcap_data` tibble in memory
+  * `data_na_pct`: The percentage of missing data in the `redcap_data` tibble
+* New `make_labelled()` function that attaches variable labels using the [labelled](https://larmarange.github.io/labelled/) package
 * New arguments available `read_redcap()`:
-  * `forms`: Allows importing specific instruments instead of the whole project
-  * `export_survey_fields`: Allows for export of `redcap_survey_timestamp` and `redcap_survey_identifier` fields related to survey-enabled REDCap databases (`TRUE` by default)
+  * `forms`: Allows reading specific instruments instead of the whole project
+  * `export_survey_fields`: Allows for export of `redcap_survey_timestamp` and `redcap_survey_identifier` columns from survey-enabled REDCap instruments (`TRUE` by default)
 
 ### Performance Improvements and Enhancements
 
 * Improved execution time by >2.5X by optimizing internal functions `check_repeat_and_nonrepeat()`, `distill_*_table_long()`, and `multi_choice_to_labels()`
-* All warnings and error messages are now produced using `cli`
-* Tests and vignettes now use `httptest` to mock and cache REDCap API calls
-* Replaced deprecated `.data` pronoun in `tidyselect` expressions
+* New informative warning and error messages, now rendered using the [cli](https://cli.r-lib.org/) package
+* Tests and vignettes now use [httptest](https://enpiar.com/r/httptest/) to mock and cache REDCap API calls
+* Implemented GitHub Actions link check 
+* Replaced deprecated `.data` pronoun in tidyselect expressions
 
 ### Bug Fixes
 
