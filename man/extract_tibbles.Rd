@@ -28,9 +28,9 @@ or \code{dplyr::ends_with()} is supported.
 \examples{
 # Mock up a supertibble
 sample_data <- tibble::tribble(
-   ~redcap_form_name,    ~redcap_data, ~structure,
-   "super_hero_powers",  list(),       "repeating",
-   "heroes_information", list(),       "nonrepeating"
+  ~redcap_form_name,    ~redcap_data, ~structure,
+  "super_hero_powers",  list(),       "repeating",
+  "heroes_information", list(),       "nonrepeating"
 )
 
 # Extract all data tibbles
