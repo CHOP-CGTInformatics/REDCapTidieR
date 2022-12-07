@@ -1,10 +1,12 @@
+# REDCapTidieR 0.2.0
+
 # Release History
 
 * [CRAN Archive of Older Versions](https://cran.r-project.org/src/contrib/Archive/REDCapTidieR/)
 * [Current and Previous GitHub Issues](https://github.com/CHOP-CGTInformatics/REDCapTidieR/issues)
 * [Current `REDCapTidieR` Documentation](https://chop-cgtinformatics.github.io/REDCapTidieR/)
 
-# Upcoming Changes in v0.2.0
+# Changes in v0.2.0
 
 ### New Features
 
