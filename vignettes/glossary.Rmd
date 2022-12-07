@@ -94,7 +94,7 @@ A [tibble](#tibble) that contains data that were entered into the [fields](#fiel
 
 ### Data viewer {#data-viewer}
 
-A part of the [RStudio IDE](https://posit.co/download/rstudio-desktop/) functionality that allows you to inspect data frames, [tibbles](#tibble), and some other data structures. It includes [features to perform basic exploratory data analysis](https://support.posit.co/hc/en-us/articles/205175388-Using-the-Data-Viewer-in-the-RStudio-IDE) such as sorting, filtering, and searching. [The supertibble is designed to work well with the data viewer](REDCapTidieR.html#exploring-the-contents-of-the-supertibble). <a onclick="history.back()">↩︎</a>
+A part of the [RStudio IDE](https://posit.co/download/rstudio-desktop/) functionality that allows you to inspect data frames, [tibbles](#tibble), and some other data structures. It includes [features to perform basic exploratory data analysis](https://docs.posit.co/ide/user/ide/guide/data/data-viewer.html) such as sorting, filtering, and searching. [The supertibble is designed to work well with the data viewer](REDCapTidieR.html#exploring-the-contents-of-the-supertibble). <a onclick="history.back()">↩︎</a>
 
 ### Environment {#environment}
 
@@ -183,7 +183,7 @@ The set of information about a single entity (e.g., a study participant) for whi
 
 ### REDCap API {#redcap-api}
 
-The application programming interface (API) of a REDCap instance allows external programs to connect, upload, and download data of a REDCap [project](#project). To access the REDCap API, a user must have appropriate access privileges, an API token, and the uniform resource identifier (URI) of the API endpoint (something like "https://my.institution.edu/redcap/api"). The REDCapTidieR package uses [REDCapR](#redcapr) to query the REDCap API. <a onclick="history.back()">↩︎</a>
+The application programming interface (API) of a REDCap instance allows external programs to connect, upload, and download data of a REDCap [project](#project). To access the REDCap API, a user must have appropriate access privileges, an API token, and the uniform resource identifier (URI) of the API endpoint (something like "my.institution.edu/redcap/api"). The REDCapTidieR package uses [REDCapR](#redcapr) to query the REDCap API. <a onclick="history.back()">↩︎</a>
 
 ### REDCapR {#redcapr}
 

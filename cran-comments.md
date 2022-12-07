@@ -25,7 +25,7 @@ This submission includes new features, optimizations, and bug fixes.
     1. [Ubuntu Linux 20.04 LTS, R-release, GCC](https://builder.r-hub.io/status/REDCapTidieR_0.2.0.tar.gz-932c3202df5b4211a955f748db9dbf1e)
     2. [Fedora Linux, R-devel, clang, gfortran](https://builder.r-hub.io/status/REDCapTidieR_0.2.0.tar.gz-c148085a1ba742b19e279224c95ad66f)
     3. [Windows Server](https://builder.r-hub.io/status/REDCapTidieR_0.2.0.tar.gz-6cd17af23de241e7a9513e0edde9833d)
-3.  [win-builder](https://win-builder.r-project.org/5zESRl46k2fS/), development version.
+3.  [win-builder](https://win-builder.r-project.org/yYmcoKudUN1U/), development version.
 4.  [GiHub Actions](https://github.com/CHOP-CGTInformatics/REDCapTidieR/actions), Ubuntu 20.04 LTS
 
 ## R CMD check results:

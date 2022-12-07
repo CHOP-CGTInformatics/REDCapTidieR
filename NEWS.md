@@ -1,12 +1,5 @@
-# REDCapTidieR 0.2.0
-
-# Release History
-
-* [CRAN Archive of Older Versions](https://cran.r-project.org/src/contrib/Archive/REDCapTidieR/)
-* [Current and Previous GitHub Issues](https://github.com/CHOP-CGTInformatics/REDCapTidieR/issues)
-* [Current `REDCapTidieR` Documentation](https://chop-cgtinformatics.github.io/REDCapTidieR/)
-
-# Changes in v0.2.0
+Version 0.2.0
+==========================================================
 
 ### New Features
 
@@ -42,8 +35,6 @@
 * Order of instruments in the supertibble is now the same as the order of instruments in REDCap
 * Fixed an issue in which `extract_*()` functions under some circumstances returned `NULL` instead of the expected tibbles
 
-# REDCapTidieR 0.1.3
-
 Version 0.1.3 (Released 2022-10-03)
 ==========================================================
 
@@ -51,8 +42,6 @@ Version 0.1.3 (Released 2022-10-03)
 
 * Fixed a bug where `clean_redcap()` may not correctly assign variables across instruments to their appropriate tables in cases of similar prefixes
 * Minor changes applied to documentation, including`README` and `DESCRIPTION` files
-
-# REDCapTidieR 0.1.2
 
 Version 0.1.2 (Released 2022-09-20)
 ==========================================================
@@ -64,8 +53,6 @@ Version 0.1.2 (Released 2022-09-20)
 * Fix quotations in `@examples` tags for `bind_tables` and `extract_table`
 * Update `pkgdown` site
 
-# REDCapTidieR 0.1.1
-
 Version 0.1.1 (Released 2022-09-19)
 ==========================================================
 
@@ -74,8 +61,6 @@ Version 0.1.1 (Released 2022-09-19)
 * Addresses feedback received from CRAN
 * `DESCRIPTION` file fixes for spell check notes
 * `roxygen2` examples updated
-
-# REDCapTidieR 0.1.0
 
 Version 0.1 (Released 2022-09-15)
 ==========================================================
