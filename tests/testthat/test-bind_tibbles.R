@@ -42,3 +42,9 @@ test_that("bind_tibbles works with forms specification", {
   expect_true(exists("repeated", envir = global_env()))
   rm(list = c("nonrepeated", "repeated"), envir = global_env())
 })
+
+test_that("bind_tibbles errors with bad inputs", {
+  expect_error(bind_tibbles(123), class = "arg_not_df")
+  expect_error(bind_tibbles(tibble(), environment = "abc"), class = "arg_not_env")
+  expect_error(bind_tibbles(tibble(), tbls = 123), class = "arg_not_character")
+})

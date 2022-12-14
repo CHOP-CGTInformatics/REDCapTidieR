@@ -272,3 +272,99 @@ check_req_labelled_metadata_fields <- function(supertbl) {
     )
   }
 }
+
+#' @title
+#' Check that an argument is a dataframe (or tibble)
+#'
+#' @importFrom checkmate check_data_frame
+#' @importFrom cli cli_abort
+#' @importFrom rlang caller_arg
+#'
+#' @param x An object to check
+#' @param arg The name of the argument to include in an error message. Captured
+#' by `rlang::caller_arg()` by default
+#' @param ... additional arguments passed on to checkmate
+#'
+#' @return
+#' `TRUE` if `x` is a dataframe. An error message otherwise
+#'
+#' @keywords internal
+check_arg_is_dataframe <- function(x, ..., arg = caller_arg(x)) {
+  out <- check_data_frame(x, ...)
+
+  if (isTRUE(out)) {
+    return(TRUE)
+  }
+
+  cli_abort(
+    message = c(
+      "!" = "{.arg {arg}} must be a {.cls {c('tbl', 'data.frame')}}",
+      "x" = "{.arg {arg}} is {.cls {class(x)}}"
+    ),
+    class = c("arg_not_df", "REDCapTidieR_cond")
+  )
+}
+
+#' @title
+#' Check that an argument is an environment
+#'
+#' @importFrom checkmate check_environment
+#' @importFrom cli cli_abort
+#' @importFrom rlang caller_arg
+#'
+#' @param x An object to check
+#' @param arg The name of the argument to include in an error message. Captured
+#' by `rlang::caller_arg()` by default
+#' @param ... additional arguments passed on to checkmate
+#'
+#' @return
+#' `TRUE` if `x` is an environment. An error message otherwise
+#'
+#' @keywords internal
+check_arg_is_env <- function(x, ..., arg = caller_arg(x)) {
+  out <- check_environment(x, ...)
+
+  if (isTRUE(out)) {
+    return(TRUE)
+  }
+
+  cli_abort(
+    message = c(
+      "!" = "{.arg {arg}} must be an {.cls environment}",
+      "x" = "{.arg {arg}} is {.cls {class(x)}}"
+    ),
+    class = c("arg_not_env", "REDCapTidieR_cond")
+  )
+}
+
+#' @title
+#' Check that an argument is character
+#'
+#' @importFrom checkmate check_character
+#' @importFrom cli cli_abort
+#' @importFrom rlang caller_arg
+#'
+#' @param x An object to check
+#' @param arg The name of the argument to include in an error message. Captured
+#' by `rlang::caller_arg()` by default
+#' @param ... additional arguments passed on to checkmate
+#'
+#' @return
+#' `TRUE` if `x` is a character vector. An error message otherwise
+#'
+#' @keywords internal
+check_arg_is_character <- function(x, ..., arg = caller_arg(x)) {
+  out <- check_character(x, ...)
+
+  if (isTRUE(out)) {
+    return(TRUE)
+  }
+
+  cli_abort(
+    message = c(
+      "!" = "{.arg {arg}} must be {.cls character}",
+      "x" = "{.arg {arg}} is {.cls {class(x)}}"
+    ),
+    class = c("arg_not_character", "REDCapTidieR_cond")
+  )
+}

@@ -43,6 +43,10 @@
 bind_tibbles <- function(supertbl,
                          environment = global_env(),
                          tbls = NULL) {
+  check_arg_is_dataframe(supertbl)
+  check_arg_is_env(environment)
+  check_arg_is_character(tbls, null.ok = TRUE)
+
   # Name variables
   my_supertbl <- supertbl
 

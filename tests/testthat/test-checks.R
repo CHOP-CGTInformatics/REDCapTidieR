@@ -104,3 +104,19 @@ test_that("check_req_labelled_metadata_fields works", {
   check_req_labelled_metadata_fields(supertbl_no_field_label) %>%
     expect_error(class = "missing_req_labelled_metadata_fields")
 })
+
+test_that("checkmate wrappers work", {
+  # df/tibble
+  expect_error(check_arg_is_dataframe(123), class = "arg_not_df")
+  expect_true(check_arg_is_dataframe(data.frame()))
+  expect_true(check_arg_is_dataframe(tibble()))
+
+  # environment
+  expect_error(check_arg_is_env(123), class = "arg_not_env")
+  expect_true(check_arg_is_env(new.env()))
+
+  # character
+  expect_error(check_arg_is_character(123), class = "arg_not_character")
+  expect_true(check_arg_is_character("abc"))
+
+})
