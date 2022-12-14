@@ -32,8 +32,9 @@
 
 extract_tibble <- function(supertbl,
                            tbl) {
-  # Check tbl is valid ----
-  assert_character(tbl)
+  # Check args ----
+  check_arg_is_dataframe(supertbl)
+  check_arg_is_character(tbl)
 
   if (length(tbl) > 1) {
     cli_abort("Only one table may be supplied.")
@@ -88,6 +89,8 @@ extract_tibble <- function(supertbl,
 
 extract_tibbles <- function(supertbl,
                             tbls = everything()) {
+  check_arg_is_dataframe(supertbl)
+
   # Extract specified table ----
   # Pass tbls as an expression for enquosure
   tbls <- enquo(tbls)
