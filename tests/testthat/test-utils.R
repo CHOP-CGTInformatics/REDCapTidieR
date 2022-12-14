@@ -77,7 +77,7 @@ test_that("multi_choice_to_labels works", {
 
 test_that("parse_labels works", {
   # Note: implicitly testing strip_html_field_embedding() by checking that
-  # parse_labels successfully stipes html tags and field embedding logic
+  # parse_labels successfully stips html tags and field embedding logic
   valid_string <- "choice_1, one | choice_2, two {abc} | choice_3, <b>three</b>"
   valid_tibble_output <- tibble::tribble(
     ~raw,       ~label,
@@ -111,6 +111,10 @@ test_that("parse_labels works", {
     parse_labels(warning_string_1),
     class = "empty_parse_warning"
   )
+
+  # Check that parse_labels can account for splits where no white space exists
+  valid_string_no_ws <- "choice_1, one|choice_2, two {abc}|choice_3, <b>three</b>"
+  expect_equal(parse_labels(valid_string_no_ws), valid_tibble_output)
 })
 
 test_that("link_arms works", {
