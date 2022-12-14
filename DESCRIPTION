@@ -9,8 +9,8 @@ Authors@R: c(
   )
 Description: Convert 'REDCap' exports into tidy tables for easy handling of 'REDCap' repeat instruments and event arms.
 License: MIT + file LICENSE
-URL: https://github.com/CHOP-CGTInformatics/REDCapTidieR,
-    https://chop-cgtinformatics.github.io/REDCapTidieR/
+URL: https://chop-cgtinformatics.github.io/REDCapTidieR/,
+    https://github.com/CHOP-CGTInformatics/REDCapTidieR
 BugReports: https://github.com/CHOP-CGTInformatics/REDCapTidieR/issues
 Depends: 
     R (>= 3.5.0)
