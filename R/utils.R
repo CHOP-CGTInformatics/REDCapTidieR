@@ -54,11 +54,7 @@ add_partial_keys <- function(db_data,
 link_arms <- function(redcap_uri,
                       token,
                       suppress_redcapr_messages = TRUE) {
-  arms <- redcap_arm_export(redcap_uri, token, verbose = if (suppress_redcapr_messages) {
-    FALSE
-  } else {
-    TRUE
-  })$data %>%
+  arms <- redcap_arm_export(redcap_uri, token, verbose = !suppress_redcapr_messages)$data %>%
     # match field name of redcap_event_instruments() output
     rename(arm_num = "arm_number")
 
@@ -66,11 +62,7 @@ link_arms <- function(redcap_uri,
     redcap_uri = redcap_uri,
     token = token,
     arms = NULL, # get all arms
-    verbose = if (suppress_redcapr_messages) {
-      FALSE
-    } else {
-      TRUE
-    }
+    verbose = !suppress_redcapr_messages
   )$data
 
   left_join(db_event_instruments, arms, by = "arm_num")
