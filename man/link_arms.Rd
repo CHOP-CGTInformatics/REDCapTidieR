@@ -4,12 +4,15 @@
 \alias{link_arms}
 \title{Link longitudinal REDCap instruments with their events/arms}
 \usage{
-link_arms(redcap_uri, token)
+link_arms(redcap_uri, token, suppress_redcapr_messages)
 }
 \arguments{
 \item{redcap_uri}{The REDCap URI}
 
 \item{token}{The REDCap API token}
+
+\item{suppress_redcapr_messages}{A logical to control whether to suppress messages
+from REDCapR API calls. Default \code{TRUE}.}
 }
 \value{
 Returns a \code{tibble} of \code{redcap_event_name}s with list elements

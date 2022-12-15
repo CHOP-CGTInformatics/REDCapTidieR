@@ -4,7 +4,13 @@
 \alias{add_metadata}
 \title{Supplement a supertibble with additional metadata fields}
 \usage{
-add_metadata(supertbl, db_metadata, redcap_uri, token)
+add_metadata(
+  supertbl,
+  db_metadata,
+  redcap_uri,
+  token,
+  suppress_redcapr_messages
+)
 }
 \arguments{
 \item{supertbl}{a supertibble object to supplement with metadata}
@@ -17,6 +23,9 @@ URI/URL of the REDCap server (e.g.,
 
 \item{token}{The user-specific string that serves as the password for a
 project. Required.}
+
+\item{suppress_redcapr_messages}{A logical to control whether to suppress messages
+from REDCapR API calls. Default \code{TRUE}.}
 }
 \value{
 The original supertibble with additional fields:

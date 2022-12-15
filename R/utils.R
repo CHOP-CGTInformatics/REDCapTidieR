@@ -43,6 +43,8 @@ add_partial_keys <- function(db_data,
 #'
 #' @param redcap_uri The REDCap URI
 #' @param token The REDCap API token
+#' @param suppress_redcapr_messages A logical to control whether to suppress messages
+#' from REDCapR API calls. Default `TRUE`.
 #'
 #' @importFrom dplyr rename left_join
 #' @importFrom REDCapR redcap_event_instruments redcap_arm_export
@@ -50,8 +52,9 @@ add_partial_keys <- function(db_data,
 #' @keywords internal
 
 link_arms <- function(redcap_uri,
-                      token) {
-  arms <- redcap_arm_export(redcap_uri, token, verbose = FALSE)$data %>%
+                      token,
+                      suppress_redcapr_messages) {
+  arms <- redcap_arm_export(redcap_uri, token, verbose = if(suppress_redcapr_messages){FALSE}else{TRUE})$data %>%
     # match field name of redcap_event_instruments() output
     rename(arm_num = "arm_number")
 
@@ -59,7 +62,7 @@ link_arms <- function(redcap_uri,
     redcap_uri = redcap_uri,
     token = token,
     arms = NULL, # get all arms
-    verbose = FALSE
+    verbose = if(suppress_redcapr_messages){FALSE}else{TRUE}
   )$data
 
   left_join(db_event_instruments, arms, by = "arm_num")
