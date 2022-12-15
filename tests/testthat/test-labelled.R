@@ -286,3 +286,11 @@ test_that("make_labelled accepts all valid input types to format_labels", {
   make_labelled(supertbl, format_labels = 1) %>%
     expect_error(class = "unresolved_formatter")
 })
+
+test_that("make_labelled errors with bad inputs", {
+  # Input to format_labels is tested above
+
+  expect_error(make_labelled(123), class = "arg_not_df")
+})
+
+

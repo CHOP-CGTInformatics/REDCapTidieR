@@ -54,7 +54,7 @@ make_labelled <- function(supertbl, format_labels = NULL) {
 
   formatter <- resolve_formatter(format_labels) # nolint: object_usage_linter
 
-  assert_data_frame(supertbl)
+  check_arg_is_dataframe(supertbl)
   check_req_labelled_fields(supertbl)
   check_req_labelled_metadata_fields(supertbl)
 

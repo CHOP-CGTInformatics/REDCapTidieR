@@ -387,3 +387,12 @@ test_that("read_redcap returns expected survey fields", {
 
   checkmate::expect_class(survey_data$redcap_survey_timestamp, c("POSIXct", "POSIXt"))
 })
+
+test_that("read_redcap errors with bad inputs", {
+  expect_error(read_redcap(123, redcap_uri), class = "arg_not_character")
+  expect_error(read_redcap(classic_token, 123), class = "arg_not_character")
+  expect_error(read_redcap(classic_token, redcap_uri, raw_or_label = "bad option"), class = "arg_choices")
+  expect_error(read_redcap(classic_token, redcap_uri, forms = 123), class = "arg_not_character")
+  expect_error(read_redcap(classic_token, redcap_uri, export_survey_fields = 123), class = "arg_not_logical")
+  expect_error(read_redcap(classic_token, redcap_uri, suppress_redcapr_messages = 123), class = "arg_not_logical")
+})

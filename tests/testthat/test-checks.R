@@ -119,4 +119,12 @@ test_that("checkmate wrappers work", {
   expect_error(check_arg_is_character(123), class = "arg_not_character")
   expect_true(check_arg_is_character("abc"))
 
+  # logical
+  expect_error(check_arg_is_logical(123), class = "arg_not_logical")
+  expect_true(check_arg_is_logical(TRUE))
+
+  # choices
+  expect_error(check_arg_choices(123, choices = letters[1:3]), class = "arg_choices")
+  expect_true(check_arg_choices("a", choices = letters[1:3]))
+
 })

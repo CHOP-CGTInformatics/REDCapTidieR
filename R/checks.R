@@ -368,3 +368,67 @@ check_arg_is_character <- function(x, ..., arg = caller_arg(x)) {
     class = c("arg_not_character", "REDCapTidieR_cond")
   )
 }
+
+#' @title
+#' Check that an argument is logical
+#'
+#' @importFrom checkmate check_logical
+#' @importFrom cli cli_abort
+#' @importFrom rlang caller_arg
+#'
+#' @param x An object to check
+#' @param arg The name of the argument to include in an error message. Captured
+#' by `rlang::caller_arg()` by default
+#' @param ... additional arguments passed on to checkmate
+#'
+#' @return
+#' `TRUE` if `x` is a logical vector. An error message otherwise
+#'
+#' @keywords internal
+check_arg_is_logical <- function(x, ..., arg = caller_arg(x)) {
+  out <- check_logical(x, ...)
+
+  if (isTRUE(out)) {
+    return(TRUE)
+  }
+
+  cli_abort(
+    message = c(
+      "!" = "{.arg {arg}} must be {.cls logical}",
+      "x" = "{.arg {arg}} is {.cls {class(x)}}"
+    ),
+    class = c("arg_not_logical", "REDCapTidieR_cond")
+  )
+}
+
+#' @title
+#' Check that an argument is XXXXXX
+#'
+#' @importFrom checkmate check_choice
+#' @importFrom cli cli_abort
+#' @importFrom rlang caller_arg
+#'
+#' @param x An object to check
+#' @param arg The name of the argument to include in an error message. Captured
+#' by `rlang::caller_arg()` by default
+#' @param ... additional arguments passed on to checkmate
+#'
+#' @return
+#' `TRUE` if `x` is XXXXX vector. An error message otherwise
+#'
+#' @keywords internal
+check_arg_choices <- function(x, ..., arg = caller_arg(x)) {
+  out <- check_choice(x, ...)
+
+  if (isTRUE(out)) {
+    return(TRUE)
+  }
+
+  cli_abort(
+    message = c(
+      "!" = "{.arg {arg}} must be {.cls logical}",
+      "x" = "{.arg {arg}} is {.cls {class(x)}}"
+    ),
+    class = c("arg_choices", "REDCapTidieR_cond")
+  )
+}

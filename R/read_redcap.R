@@ -72,6 +72,14 @@ read_redcap <- function(redcap_uri,
                         forms = NULL,
                         export_survey_fields = TRUE,
                         suppress_redcapr_messages = TRUE) {
+
+  check_arg_is_character(redcap_uri, len = 1)
+  check_arg_is_character(token, len = 1)
+  check_arg_choices(raw_or_label, choices = c("label", "raw"))
+  check_arg_is_character(forms, null.ok = TRUE)
+  check_arg_is_logical(export_survey_fields, len = 1)
+  check_arg_is_logical(suppress_redcapr_messages, len = 1)
+
   # Load REDCap Metadata ----
   db_metadata <- redcap_metadata_read(
     redcap_uri = redcap_uri,
