@@ -391,25 +391,44 @@ test_that("read_redcap returns expected survey fields", {
 test_that("read_redcap errors with bad inputs", {
   # Checking for type and length constraints where relevant
 
-  # token
-  expect_error(read_redcap(123, redcap_uri), class = "check_character")
-  expect_error(read_redcap(letters[1:3], redcap_uri), class = "check_character")
 
   # redcap uri
-  expect_error(read_redcap(classic_token, 123), class = "check_character")
-  expect_error(read_redcap(classic_token, letters[1:3]), class = "check_character")
+  expect_error(read_redcap(123, classic_token), class = "check_character")
+  expect_error(read_redcap(letters[1:3], classic_token), class = "check_character")
+
+  # token
+  expect_error(read_redcap(redcap_uri, 123), class = "check_character")
+  expect_error(read_redcap(redcap_uri, letters[1:3]), class = "check_character")
 
   # raw_or_label
-  expect_error(read_redcap(classic_token, redcap_uri, raw_or_label = "bad option"), class = "check_choice")
+  expect_error(
+    read_redcap(redcap_uri, classic_token, raw_or_label = "bad option"),
+    class = "check_choice"
+  )
 
   # forms
-  expect_error(read_redcap(classic_token, redcap_uri, forms = 123), class = "check_character")
+  expect_error(
+    read_redcap(redcap_uri, classic_token, forms = 123),
+    class = "check_character"
+  )
 
   # export_survey_fields
-  expect_error(read_redcap(classic_token, redcap_uri, export_survey_fields = 123), class = "check_logical")
-  expect_error(read_redcap(classic_token, redcap_uri, export_survey_fields = c(TRUE, TRUE)), class = "check_logical")
+  expect_error(
+    read_redcap(redcap_uri, classic_token, export_survey_fields = 123),
+    class = "check_logical"
+  )
+  expect_error(
+    read_redcap(redcap_uri, classic_token, export_survey_fields = c(TRUE, TRUE)),
+    class = "check_logical"
+  )
 
   # suppress_redcapr_messages
-  expect_error(read_redcap(classic_token, redcap_uri, suppress_redcapr_messages = 123), class = "check_logical")
-  expect_error(read_redcap(classic_token, redcap_uri, suppress_redcapr_messages = c(TRUE, TRUE)), class = "check_logical")
+  expect_error(
+    read_redcap(redcap_uri, classic_token, suppress_redcapr_messages = 123),
+    class = "check_logical"
+  )
+  expect_error(
+    read_redcap(redcap_uri, classic_token, suppress_redcapr_messages = c(TRUE, TRUE)),
+    class = "check_logical"
+  )
 })
