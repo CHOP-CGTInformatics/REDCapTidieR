@@ -44,7 +44,7 @@ test_that("bind_tibbles works with forms specification", {
 })
 
 test_that("bind_tibbles errors with bad inputs", {
-  expect_error(bind_tibbles(123), class = "arg_not_df")
-  expect_error(bind_tibbles(tibble(), environment = "abc"), class = "arg_not_env")
-  expect_error(bind_tibbles(tibble(), tbls = 123), class = "arg_not_character")
+  expect_error(bind_tibbles(123), class = "check_data_frame")
+  expect_error(bind_tibbles(tibble(), environment = "abc"), class = "check_environment")
+  expect_error(bind_tibbles(tibble(), tbls = 123), class = "check_character")
 })

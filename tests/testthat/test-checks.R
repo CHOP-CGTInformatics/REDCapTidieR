@@ -107,24 +107,24 @@ test_that("check_req_labelled_metadata_fields works", {
 
 test_that("checkmate wrappers work", {
   # df/tibble
-  expect_error(check_arg_is_dataframe(123), class = "arg_not_df")
+  expect_error(check_arg_is_dataframe(123), class = "check_data_frame")
   expect_true(check_arg_is_dataframe(data.frame()))
   expect_true(check_arg_is_dataframe(tibble()))
 
   # environment
-  expect_error(check_arg_is_env(123), class = "arg_not_env")
+  expect_error(check_arg_is_env(123), class = "check_environment")
   expect_true(check_arg_is_env(new.env()))
 
   # character
-  expect_error(check_arg_is_character(123), class = "arg_not_character")
+  expect_error(check_arg_is_character(123), class = "check_character")
   expect_true(check_arg_is_character("abc"))
 
   # logical
-  expect_error(check_arg_is_logical(123), class = "arg_not_logical")
+  expect_error(check_arg_is_logical(123), class = "check_logical")
   expect_true(check_arg_is_logical(TRUE))
 
   # choices
-  expect_error(check_arg_choices(123, choices = letters[1:3]), class = "arg_choices")
+  expect_error(check_arg_choices(123, choices = letters[1:3]), class = "check_choice")
   expect_true(check_arg_choices("a", choices = letters[1:3]))
 
 })

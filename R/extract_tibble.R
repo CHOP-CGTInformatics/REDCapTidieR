@@ -34,11 +34,7 @@ extract_tibble <- function(supertbl,
                            tbl) {
   # Check args ----
   check_arg_is_dataframe(supertbl)
-  check_arg_is_character(tbl)
-
-  if (length(tbl) > 1) {
-    cli_abort("Only one table may be supplied.")
-  }
+  check_arg_is_character(tbl, len = 1)
 
   # Extract specified table ----
   out <- extract_tibbles(supertbl, tbls = all_of(tbl))[[1]]

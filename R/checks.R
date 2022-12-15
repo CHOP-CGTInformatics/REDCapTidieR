@@ -273,162 +273,64 @@ check_req_labelled_metadata_fields <- function(supertbl) {
   }
 }
 
+
 #' @title
-#' Check that an argument is a dataframe (or tibble)
+#' Check an argument with checkmate
 #'
+#' @importFrom cli cli_abort
+#' @importFrom rlang caller_arg
+#'
+#' @param x An object to check
+#' @param arg The name of the argument to include in an error message. Captured
+#' by `rlang::caller_arg()` by default
+#' @param ... additional arguments passed on to checkmate
+#'
+#' @return
+#' `TRUE` if `x` passes the checkmate check. An error otherwise with the name of
+#' the checkmate function as a `class`
+#'
+#' @name checkmate
+#' @keywords internal
+NULL
+
+# Function factory to wrap checkmate functions
+#' @importFrom rlang caller_arg
+#' @importFrom cli cli_abort
+#' @noRd
+wrap_checkmate <- function(f, f_name = caller_arg(f)) {
+  function(x, ..., arg = caller_arg(x)) {
+    out <- f(x, ...)
+
+    if (isTRUE(out)) {
+      return(TRUE)
+    }
+
+    cli_abort(
+      message = c(
+        "x" = "{.arg {arg}} is invalid",
+        "!" = "{out}"
+      ),
+      class = c(f_name, "REDCapTidieR_cond")
+    )
+  }
+}
+
+#' @rdname checkmate
 #' @importFrom checkmate check_data_frame
-#' @importFrom cli cli_abort
-#' @importFrom rlang caller_arg
-#'
-#' @param x An object to check
-#' @param arg The name of the argument to include in an error message. Captured
-#' by `rlang::caller_arg()` by default
-#' @param ... additional arguments passed on to checkmate
-#'
-#' @return
-#' `TRUE` if `x` is a dataframe. An error message otherwise
-#'
-#' @keywords internal
-check_arg_is_dataframe <- function(x, ..., arg = caller_arg(x)) {
-  out <- check_data_frame(x, ...)
+check_arg_is_dataframe <- wrap_checkmate(check_data_frame)
 
-  if (isTRUE(out)) {
-    return(TRUE)
-  }
-
-  cli_abort(
-    message = c(
-      "!" = "{.arg {arg}} must be a {.cls {c('tbl', 'data.frame')}}",
-      "x" = "{.arg {arg}} is {.cls {class(x)}}"
-    ),
-    class = c("arg_not_df", "REDCapTidieR_cond")
-  )
-}
-
-#' @title
-#' Check that an argument is an environment
-#'
+#' @rdname checkmate
 #' @importFrom checkmate check_environment
-#' @importFrom cli cli_abort
-#' @importFrom rlang caller_arg
-#'
-#' @param x An object to check
-#' @param arg The name of the argument to include in an error message. Captured
-#' by `rlang::caller_arg()` by default
-#' @param ... additional arguments passed on to checkmate
-#'
-#' @return
-#' `TRUE` if `x` is an environment. An error message otherwise
-#'
-#' @keywords internal
-check_arg_is_env <- function(x, ..., arg = caller_arg(x)) {
-  out <- check_environment(x, ...)
+check_arg_is_env <- wrap_checkmate(check_environment)
 
-  if (isTRUE(out)) {
-    return(TRUE)
-  }
-
-  cli_abort(
-    message = c(
-      "!" = "{.arg {arg}} must be an {.cls environment}",
-      "x" = "{.arg {arg}} is {.cls {class(x)}}"
-    ),
-    class = c("arg_not_env", "REDCapTidieR_cond")
-  )
-}
-
-#' @title
-#' Check that an argument is character
-#'
+#' @rdname checkmate
 #' @importFrom checkmate check_character
-#' @importFrom cli cli_abort
-#' @importFrom rlang caller_arg
-#'
-#' @param x An object to check
-#' @param arg The name of the argument to include in an error message. Captured
-#' by `rlang::caller_arg()` by default
-#' @param ... additional arguments passed on to checkmate
-#'
-#' @return
-#' `TRUE` if `x` is a character vector. An error message otherwise
-#'
-#' @keywords internal
-check_arg_is_character <- function(x, ..., arg = caller_arg(x)) {
-  out <- check_character(x, ...)
+check_arg_is_character <- wrap_checkmate(check_character)
 
-  if (isTRUE(out)) {
-    return(TRUE)
-  }
-
-  cli_abort(
-    message = c(
-      "!" = "{.arg {arg}} must be {.cls character}",
-      "x" = "{.arg {arg}} is {.cls {class(x)}}"
-    ),
-    class = c("arg_not_character", "REDCapTidieR_cond")
-  )
-}
-
-#' @title
-#' Check that an argument is logical
-#'
+#' @rdname checkmate
 #' @importFrom checkmate check_logical
-#' @importFrom cli cli_abort
-#' @importFrom rlang caller_arg
-#'
-#' @param x An object to check
-#' @param arg The name of the argument to include in an error message. Captured
-#' by `rlang::caller_arg()` by default
-#' @param ... additional arguments passed on to checkmate
-#'
-#' @return
-#' `TRUE` if `x` is a logical vector. An error message otherwise
-#'
-#' @keywords internal
-check_arg_is_logical <- function(x, ..., arg = caller_arg(x)) {
-  out <- check_logical(x, ...)
+check_arg_is_logical <- wrap_checkmate(check_logical)
 
-  if (isTRUE(out)) {
-    return(TRUE)
-  }
-
-  cli_abort(
-    message = c(
-      "!" = "{.arg {arg}} must be {.cls logical}",
-      "x" = "{.arg {arg}} is {.cls {class(x)}}"
-    ),
-    class = c("arg_not_logical", "REDCapTidieR_cond")
-  )
-}
-
-#' @title
-#' Check that an argument is XXXXXX
-#'
+#' @rdname checkmate
 #' @importFrom checkmate check_choice
-#' @importFrom cli cli_abort
-#' @importFrom rlang caller_arg
-#'
-#' @param x An object to check
-#' @param arg The name of the argument to include in an error message. Captured
-#' by `rlang::caller_arg()` by default
-#' @param ... additional arguments passed on to checkmate
-#'
-#' @return
-#' `TRUE` if `x` is XXXXX vector. An error message otherwise
-#'
-#' @keywords internal
-check_arg_choices <- function(x, ..., arg = caller_arg(x)) {
-  out <- check_choice(x, ...)
-
-  if (isTRUE(out)) {
-    return(TRUE)
-  }
-
-  cli_abort(
-    message = c(
-      "!" = "{.arg {arg}} must be {.cls logical}",
-      "x" = "{.arg {arg}} is {.cls {class(x)}}"
-    ),
-    class = c("arg_choices", "REDCapTidieR_cond")
-  )
-}
+check_arg_choices <- wrap_checkmate(check_choice)
