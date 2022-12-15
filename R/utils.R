@@ -54,7 +54,11 @@ add_partial_keys <- function(db_data,
 link_arms <- function(redcap_uri,
                       token,
                       suppress_redcapr_messages = TRUE) {
-  arms <- redcap_arm_export(redcap_uri, token, verbose = if(suppress_redcapr_messages){FALSE}else{TRUE})$data %>%
+  arms <- redcap_arm_export(redcap_uri, token, verbose = if (suppress_redcapr_messages) {
+    FALSE
+  } else {
+    TRUE
+  })$data %>%
     # match field name of redcap_event_instruments() output
     rename(arm_num = "arm_number")
 
@@ -62,7 +66,11 @@ link_arms <- function(redcap_uri,
     redcap_uri = redcap_uri,
     token = token,
     arms = NULL, # get all arms
-    verbose = if(suppress_redcapr_messages){FALSE}else{TRUE}
+    verbose = if (suppress_redcapr_messages) {
+      FALSE
+    } else {
+      TRUE
+    }
   )$data
 
   left_join(db_event_instruments, arms, by = "arm_num")
@@ -99,7 +107,7 @@ parse_labels <- function(string, return_vector = FALSE) {
   # If string is empty/NA, throw a warning
   if (is.na(string)) {
     cli_warn("Empty string detected for a given multiple choice label.",
-      class = c("empty_parse_warning", "REDCapTidieR_cond")
+             class = c("empty_parse_warning", "REDCapTidieR_cond")
     )
   }
 

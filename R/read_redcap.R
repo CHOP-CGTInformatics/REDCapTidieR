@@ -76,7 +76,11 @@ read_redcap <- function(redcap_uri,
   db_metadata <- redcap_metadata_read(
     redcap_uri = redcap_uri,
     token = token,
-    verbose = if(suppress_redcapr_messages){FALSE}else{TRUE}
+    verbose = if (suppress_redcapr_messages) {
+      FALSE
+    } else {
+      TRUE
+    }
   )$data %>%
     filter(.data$field_type != "descriptive")
 
@@ -143,7 +147,11 @@ read_redcap <- function(redcap_uri,
     token = token,
     forms = forms_for_api_call,
     export_survey_fields = export_survey_fields,
-    verbose = if(suppress_redcapr_messages){FALSE}else{TRUE}
+    verbose = if (suppress_redcapr_messages) {
+      FALSE
+    } else {
+      TRUE
+    }
   )$data
 
   # Check that results were returned
@@ -316,7 +324,11 @@ add_metadata <- function(supertbl, db_metadata, redcap_uri, token, suppress_redc
   instrument_labs <- redcap_instruments(
     redcap_uri,
     token,
-    verbose = if(suppress_redcapr_messages){FALSE}else{TRUE}
+    verbose = if (suppress_redcapr_messages) {
+      FALSE
+    } else {
+      TRUE
+    }
   )$data %>%
     rename(
       redcap_form_label = "instrument_label",
