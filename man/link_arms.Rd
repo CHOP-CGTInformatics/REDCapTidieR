@@ -4,7 +4,7 @@
 \alias{link_arms}
 \title{Link longitudinal REDCap instruments with their events/arms}
 \usage{
-link_arms(redcap_uri, token, suppress_redcapr_messages)
+link_arms(redcap_uri, token, suppress_redcapr_messages = TRUE)
 }
 \arguments{
 \item{redcap_uri}{The REDCap URI}
