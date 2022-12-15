@@ -101,7 +101,8 @@ parse_labels <- function(string, return_vector = FALSE) {
   }
 
   out <- string %>%
-    strsplit(" \\| ") # Split by "|"
+    strsplit("\\|") %>%  # Split by "|"
+    lapply(trimws) # Trim trailing and leading whitespace in list elements
 
   # Check there is a comma in all | delimited strsplit elements
   if (!all(grepl(",", out[[1]]))) {
