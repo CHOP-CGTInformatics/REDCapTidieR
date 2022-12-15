@@ -106,7 +106,7 @@ test_that("check_req_labelled_metadata_fields works", {
 })
 
 test_that("checkmate wrappers work", {
-  # df/tibble
+  # tibble or dataframe
   expect_error(check_arg_is_dataframe(123), class = "check_data_frame")
   expect_true(check_arg_is_dataframe(data.frame()))
   expect_true(check_arg_is_dataframe(tibble()))

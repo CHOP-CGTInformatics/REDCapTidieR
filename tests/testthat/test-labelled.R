@@ -292,5 +292,3 @@ test_that("make_labelled errors with bad inputs", {
 
   expect_error(make_labelled(123), class = "check_data_frame")
 })
-
-
