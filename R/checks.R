@@ -189,44 +189,6 @@ check_forms_exist <- function(db_metadata, forms, call = caller_env()) {
 }
 
 #' @title
-#' Check that a supertibble contains \code{redcap_data} and
-#' \code{redcap_metadata} fields
-#'
-#' @description
-#' Provide an error message when a tibble is missing \code{redcap_data} or
-#' \code{redcap_metadata}
-#'
-#' @importFrom cli cli_abort
-#' @importFrom rlang caller_env
-#'
-#' @param supertbl a supertibble
-#' @param call the calling environment to use in the error message
-#'
-#' @return
-#' An error message indicating that the required columns are missing
-#'
-#' @keywords internal
-check_req_labelled_fields <- function(supertbl, call = caller_env()) {
-  # Check for presence of req fields
-  req_fields <- c("redcap_data", "redcap_metadata")
-  missing_fields <- setdiff(req_fields, colnames(supertbl))
-
-  # If any are missing give an error message
-  if (length(missing_fields) > 0) {
-    cli_abort(
-      c(
-        "!" = "{.arg supertbl} must contain {.code {req_fields}}",
-        "x" = "You are missing {.code {missing_fields}}"
-      ),
-      class = c("missing_req_labelled_fields", "REDCapTidieR_cond"),
-      call = call,
-      # pass along the fields that were missing as metadata
-      missing_fields = missing_fields
-    )
-  }
-}
-
-#' @title
 #' Check that all metadata tibbles within a supertibble contain
 #' \code{field_name} and \code{field_label} columns
 #'
@@ -302,7 +264,10 @@ check_req_labelled_metadata_fields <- function(supertbl, call = caller_env()) {
 #' @param arg The name of the argument to include in an error message. Captured
 #' by `rlang::caller_arg()` by default
 #' @param call the calling environment to use in the error message
+#' @param req_cols required fields for `check_arg_is_supertbl()`
 #' @param ... additional arguments passed on to checkmate
+#' @param info additional lines to add to the error message in `cli_bullets()`
+#' format
 #'
 #' @return
 #' `TRUE` if `x` passes the checkmate check. An error otherwise with the name of
@@ -319,7 +284,7 @@ NULL
 wrap_checkmate <- function(f) {
   error_class <- caller_arg(f)
 
-  function(x, ..., arg = caller_arg(x), call = caller_env()) {
+  function(x, ..., arg = caller_arg(x), call = caller_env(), info = NULL) {
     out <- f(x, ...)
 
     if (isTRUE(out)) {
@@ -328,8 +293,9 @@ wrap_checkmate <- function(f) {
 
     cli_abort(
       message = c(
-        "x" = "{.arg {arg}} is invalid",
-        "!" = "{out}"
+        "x" = "You've supplied an invalid value to {.arg {arg}}",
+        "!" = "{out}",
+        info
       ),
       class = c(error_class, "REDCapTidieR_cond"),
       call = call
@@ -340,6 +306,53 @@ wrap_checkmate <- function(f) {
 #' @rdname checkmate
 #' @importFrom checkmate check_data_frame
 check_arg_is_dataframe <- wrap_checkmate(check_data_frame)
+
+#' @rdname checkmate
+#' @importFrom cli cli_abort
+#' @importFrom rlang caller_env caller_arg is_bare_list
+#' @importFrom purrr map_lgl
+check_arg_is_supertbl <- function(x,
+                                  req_cols = c("redcap_data", "redcap_metadata"),
+                                  arg = caller_arg(x),
+                                  call = caller_env(),
+                                  info = NULL) {
+  check_arg_is_dataframe(x, arg = arg, call = call, info = info)
+
+  missing_cols <- setdiff(req_cols, colnames(x))
+
+  # If any are missing give an error message
+  if (length(missing_cols) > 0) {
+    cli_abort(
+      message = c(
+        "x" = "You've supplied an invalid value to {.arg {arg}}",
+        "!" = "Must contain columns {.code {req_cols}}",
+        "!" = "You are missing {.code {missing_cols}}",
+        info
+      ),
+      class = c("missing_req_cols", "REDCapTidieR_cond"),
+      call = call,
+      missing_cols = missing_cols
+    )
+  }
+
+  non_list_cols <- map_lgl(x[req_cols], ~!is_bare_list(.))
+  non_list_cols <- req_cols[non_list_cols]
+
+  if (length(non_list_cols) > 0) {
+    cli_abort(
+      message = c(
+        "x" = "You've supplied an invalid value to {.arg {arg}}",
+        "!" = "{.code {non_list_cols}} must be of type 'list'",
+        info
+      ),
+      class = c("missing_req_list_cols", "REDCapTidieR_cond"),
+      call = call,
+      non_list_cols = non_list_cols
+    )
+  }
+
+  return(TRUE)
+}
 
 #' @rdname checkmate
 #' @importFrom checkmate check_environment

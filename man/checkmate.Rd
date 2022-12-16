@@ -3,21 +3,54 @@
 \name{checkmate}
 \alias{checkmate}
 \alias{check_arg_is_dataframe}
+\alias{check_arg_is_supertbl}
 \alias{check_arg_is_env}
 \alias{check_arg_is_character}
 \alias{check_arg_is_logical}
 \alias{check_arg_choices}
 \title{Check an argument with checkmate}
 \usage{
-check_arg_is_dataframe(x, ..., arg = caller_arg(x), call = caller_env())
+check_arg_is_dataframe(
+  x,
+  ...,
+  arg = caller_arg(x),
+  call = caller_env(),
+  info = NULL
+)
 
-check_arg_is_env(x, ..., arg = caller_arg(x), call = caller_env())
+check_arg_is_supertbl(
+  x,
+  req_cols = c("redcap_data", "redcap_metadata"),
+  arg = caller_arg(x),
+  call = caller_env(),
+  info = NULL
+)
 
-check_arg_is_character(x, ..., arg = caller_arg(x), call = caller_env())
+check_arg_is_env(x, ..., arg = caller_arg(x), call = caller_env(), info = NULL)
 
-check_arg_is_logical(x, ..., arg = caller_arg(x), call = caller_env())
+check_arg_is_character(
+  x,
+  ...,
+  arg = caller_arg(x),
+  call = caller_env(),
+  info = NULL
+)
 
-check_arg_choices(x, ..., arg = caller_arg(x), call = caller_env())
+check_arg_is_logical(
+  x,
+  ...,
+  arg = caller_arg(x),
+  call = caller_env(),
+  info = NULL
+)
+
+check_arg_choices(
+  x,
+  ...,
+  arg = caller_arg(x),
+  call = caller_env(),
+  info = NULL
+)
 }
 \arguments{
 \item{x}{An object to check}
@@ -28,6 +61,11 @@ check_arg_choices(x, ..., arg = caller_arg(x), call = caller_env())
 by \code{rlang::caller_arg()} by default}
 
 \item{call}{the calling environment to use in the error message}
+
+\item{info}{additional lines to add to the error message in \code{cli_bullets()}
+format}
+
+\item{req_cols}{required fields for \code{check_arg_is_supertbl()}}
 }
 \value{
 \code{TRUE} if \code{x} passes the checkmate check. An error otherwise with the name of

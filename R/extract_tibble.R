@@ -32,8 +32,8 @@
 extract_tibble <- function(supertbl,
                            tbl) {
   # Check args ----
-  check_arg_is_dataframe(supertbl)
-  check_arg_is_character(tbl, len = 1)
+  check_arg_is_supertbl(supertbl, req_cols = "redcap_data")
+  check_arg_is_character(tbl, len = 1, any.missing = FALSE)
 
   # Extract specified table ----
   out <- extract_tibbles(supertbl, tbls = all_of(tbl))[[1]]
@@ -84,7 +84,7 @@ extract_tibble <- function(supertbl,
 
 extract_tibbles <- function(supertbl,
                             tbls = everything()) {
-  check_arg_is_dataframe(supertbl)
+  check_arg_is_supertbl(supertbl, req_cols = "redcap_data")
 
   # Extract specified table ----
   # Pass tbls as an expression for enquosure

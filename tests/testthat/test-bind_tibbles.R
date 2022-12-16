@@ -44,7 +44,9 @@ test_that("bind_tibbles works with forms specification", {
 })
 
 test_that("bind_tibbles errors with bad inputs", {
+  supertbl <- tibble(redcap_data = list())
+
   expect_error(bind_tibbles(123), class = "check_data_frame")
-  expect_error(bind_tibbles(tibble(), environment = "abc"), class = "check_environment")
-  expect_error(bind_tibbles(tibble(), tbls = 123), class = "check_character")
+  expect_error(bind_tibbles(supertbl, environment = "abc"), class = "check_environment")
+  expect_error(bind_tibbles(supertbl, tbls = 123), class = "check_character")
 })

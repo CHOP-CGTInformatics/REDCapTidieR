@@ -291,4 +291,10 @@ test_that("make_labelled errors with bad inputs", {
   # Input to format_labels is tested above
 
   expect_error(make_labelled(123), class = "check_data_frame")
+
+  missing_col_supertbl <- tibble(redcap_data = list())
+  missing_list_col_supertbl <- tibble(redcap_data = list(), redcap_metadata = 123)
+
+  expect_error(make_labelled(missing_col_supertbl), class = "missing_req_cols")
+  expect_error(make_labelled(missing_list_col_supertbl), class = "missing_req_list_cols")
 })
