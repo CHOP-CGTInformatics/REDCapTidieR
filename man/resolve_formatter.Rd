@@ -4,7 +4,7 @@
 \alias{resolve_formatter}
 \title{Convert user input into label formatting function}
 \usage{
-resolve_formatter(format_labels, env = caller_env(n = 2))
+resolve_formatter(format_labels, env = caller_env(n = 2), call = caller_env())
 }
 \arguments{
 \item{format_labels}{argument passed to \code{make_labelled}}
@@ -13,6 +13,8 @@ resolve_formatter(format_labels, env = caller_env(n = 2))
 \code{format_labels} contains character elements. The default,
 \code{caller_env(n = 2)}, uses the environment from which the user called
 \code{make_labelled()}}
+
+\item{call}{the calling environment to use in the error message}
 }
 \value{
 a function

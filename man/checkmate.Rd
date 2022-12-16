@@ -9,15 +9,15 @@
 \alias{check_arg_choices}
 \title{Check an argument with checkmate}
 \usage{
-check_arg_is_dataframe(x, ..., arg = caller_arg(x))
+check_arg_is_dataframe(x, ..., arg = caller_arg(x), call = caller_env())
 
-check_arg_is_env(x, ..., arg = caller_arg(x))
+check_arg_is_env(x, ..., arg = caller_arg(x), call = caller_env())
 
-check_arg_is_character(x, ..., arg = caller_arg(x))
+check_arg_is_character(x, ..., arg = caller_arg(x), call = caller_env())
 
-check_arg_is_logical(x, ..., arg = caller_arg(x))
+check_arg_is_logical(x, ..., arg = caller_arg(x), call = caller_env())
 
-check_arg_choices(x, ..., arg = caller_arg(x))
+check_arg_choices(x, ..., arg = caller_arg(x), call = caller_env())
 }
 \arguments{
 \item{x}{An object to check}
@@ -26,6 +26,8 @@ check_arg_choices(x, ..., arg = caller_arg(x))
 
 \item{arg}{The name of the argument to include in an error message. Captured
 by \code{rlang::caller_arg()} by default}
+
+\item{call}{the calling environment to use in the error message}
 }
 \value{
 \code{TRUE} if \code{x} passes the checkmate check. An error otherwise with the name of

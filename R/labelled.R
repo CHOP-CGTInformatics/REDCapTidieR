@@ -251,6 +251,7 @@ fmt_strip_field_embedding <- function(x) {
 #' \code{format_labels} contains character elements. The default,
 #' \code{caller_env(n = 2)}, uses the environment from which the user called
 #' \code{make_labelled()}
+#' @param call the calling environment to use in the error message
 #'
 #' @importFrom purrr map compose
 #' @importFrom rlang !!! as_closure caller_env is_bare_formula
@@ -260,7 +261,7 @@ fmt_strip_field_embedding <- function(x) {
 #'
 #' @keywords internal
 #'
-resolve_formatter <- function(format_labels, env = caller_env(n = 2)) {
+resolve_formatter <- function(format_labels, env = caller_env(n = 2), call = caller_env()) {
   if (is.null(format_labels)) {
     # If NULL pass labels through unchanged
     return(identity)
@@ -289,6 +290,7 @@ resolve_formatter <- function(format_labels, env = caller_env(n = 2)) {
       "!" = "{.arg format_labels} must be of class {.cls {supported_classes}}",
       "x" = "{.arg format_labels} is {.cls {class(format_labels)}}"
     ),
-    class = c("unresolved_formatter", "REDCapTidieR_cond")
+    class = c("unresolved_formatter", "REDCapTidieR_cond"),
+    call = call
   )
 }

@@ -391,7 +391,6 @@ test_that("read_redcap returns expected survey fields", {
 test_that("read_redcap errors with bad inputs", {
   # Checking for type and length constraints where relevant
 
-
   # redcap uri
   expect_error(read_redcap(123, classic_token), class = "check_character")
   expect_error(read_redcap(letters[1:3], classic_token), class = "check_character")

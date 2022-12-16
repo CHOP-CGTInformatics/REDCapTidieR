@@ -15,7 +15,6 @@
 #' @param tbl The `redcap_form_name` of the data tibble to extract. Required.
 #'
 #' @importFrom checkmate assert_character
-#' @importFrom cli cli_abort
 #' @importFrom tidyselect all_of
 #'
 #' @examples

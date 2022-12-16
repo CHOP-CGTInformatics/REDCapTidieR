@@ -5,10 +5,12 @@
 \title{Check that a supertibble contains \code{redcap_data} and
 \code{redcap_metadata} fields}
 \usage{
-check_req_labelled_fields(supertbl)
+check_req_labelled_fields(supertbl, call = caller_env())
 }
 \arguments{
 \item{supertbl}{a supertibble}
+
+\item{call}{the calling environment to use in the error message}
 }
 \value{
 An error message indicating that the required columns are missing
