@@ -76,7 +76,7 @@ read_redcap <- function(redcap_uri,
   db_metadata <- redcap_metadata_read(
     redcap_uri = redcap_uri,
     token = token,
-    verbose = FALSE
+    verbose = !suppress_redcapr_messages
   )$data %>%
     filter(.data$field_type != "descriptive")
 
@@ -143,7 +143,7 @@ read_redcap <- function(redcap_uri,
     token = token,
     forms = forms_for_api_call,
     export_survey_fields = export_survey_fields,
-    verbose = FALSE
+    verbose = !suppress_redcapr_messages
   )$data
 
   # Check that results were returned
@@ -206,7 +206,8 @@ read_redcap <- function(redcap_uri,
   }
 
   if (is_longitudinal) {
-    linked_arms <- link_arms(redcap_uri = redcap_uri, token = token)
+    linked_arms <- link_arms(redcap_uri = redcap_uri, token = token,
+                             suppress_redcapr_messages = suppress_redcapr_messages)
 
     out <- clean_redcap_long(
       db_data_long = db_data,
@@ -221,7 +222,7 @@ read_redcap <- function(redcap_uri,
   }
 
   # Augment with metadata ----
-  out <- add_metadata(out, db_metadata, redcap_uri, token)
+  out <- add_metadata(out, db_metadata, redcap_uri, token, suppress_redcapr_messages)
 
   if (is_longitudinal) {
     out <- add_event_mapping(out, linked_arms)
@@ -286,6 +287,8 @@ get_fields_to_drop <- function(db_metadata, form) {
 #'
 #' @param supertbl a supertibble object to supplement with metadata
 #' @param db_metadata a REDCap metadata tibble
+#' @param suppress_redcapr_messages A logical to control whether to suppress messages
+#' from REDCapR API calls. Default `TRUE`.
 #' @inheritParams read_redcap
 #'
 #' @details This function assumes that \code{db_metadata} has been processed to
@@ -308,12 +311,12 @@ get_fields_to_drop <- function(db_metadata, form) {
 #'
 #' @keywords internal
 
-add_metadata <- function(supertbl, db_metadata, redcap_uri, token) {
+add_metadata <- function(supertbl, db_metadata, redcap_uri, token, suppress_redcapr_messages) {
   # Get instrument labels ----
   instrument_labs <- redcap_instruments(
     redcap_uri,
     token,
-    verbose = FALSE
+    verbose = !suppress_redcapr_messages
   )$data %>%
     rename(
       redcap_form_label = "instrument_label",
