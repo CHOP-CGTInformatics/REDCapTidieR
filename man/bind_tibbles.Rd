@@ -26,6 +26,7 @@ and bind its data tibbles (i.e. the tibbles in the \code{redcap_data} column) to
 an environment. The default is the global environment.
 }
 \examples{
+\dontrun{
 # Create an empty environment
 my_env <- new.env()
 
@@ -41,5 +42,5 @@ supertbl <- tibble::tribble(
 bind_tibbles(supertbl, my_env)
 
 ls(my_env)
-
+}
 }

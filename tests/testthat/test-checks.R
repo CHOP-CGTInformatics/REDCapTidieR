@@ -82,18 +82,18 @@ test_that("check_req_labelled_metadata_fields works", {
 })
 
 test_that("checkmate wrappers work", {
-  # tibble or dataframe
-  expect_error(check_arg_is_dataframe(123), class = "check_data_frame")
-  expect_true(check_arg_is_dataframe(data.frame()))
-  expect_true(check_arg_is_dataframe(tibble()))
 
   # supertbl
+  expect_error(check_arg_is_supertbl(123), class = "check_supertbl")
 
-  expect_error(check_arg_is_supertbl(123), class = "check_data_frame")
+  missing_col_supertbl <- tibble(redcap_data = list()) %>%
+    as_supertbl()
 
-  missing_col_supertbl <- tibble(redcap_data = list())
-  missing_list_col_supertbl <- tibble(redcap_data = list(), redcap_metadata = 123)
-  good_supertbl <- tibble(redcap_data = list(), redcap_metadata = list())
+  missing_list_col_supertbl <- tibble(redcap_data = list(), redcap_metadata = 123) %>%
+    as_supertbl()
+
+  good_supertbl <- tibble(redcap_data = list(), redcap_metadata = list()) %>%
+    as_supertbl()
 
   expect_error(check_arg_is_supertbl(missing_col_supertbl), class = "missing_req_cols")
   expect_error(check_arg_is_supertbl(missing_list_col_supertbl), class = "missing_req_list_cols")

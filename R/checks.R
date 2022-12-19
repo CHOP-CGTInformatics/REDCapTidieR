@@ -266,8 +266,6 @@ check_req_labelled_metadata_fields <- function(supertbl, call = caller_env()) {
 #' @param call the calling environment to use in the error message
 #' @param req_cols required fields for `check_arg_is_supertbl()`
 #' @param ... additional arguments passed on to checkmate
-#' @param info additional lines to add to the error message in `cli_bullets()`
-#' format
 #'
 #' @return
 #' `TRUE` if `x` passes the checkmate check. An error otherwise with the name of
@@ -284,7 +282,7 @@ NULL
 wrap_checkmate <- function(f) {
   error_class <- caller_arg(f)
 
-  function(x, ..., arg = caller_arg(x), call = caller_env(), info = NULL) {
+  function(x, ..., arg = caller_arg(x), call = caller_env()) {
     out <- f(x, ...)
 
     if (isTRUE(out)) {
@@ -294,8 +292,7 @@ wrap_checkmate <- function(f) {
     cli_abort(
       message = c(
         "x" = "You've supplied an invalid value to {.arg {arg}}",
-        "!" = "{out}",
-        info
+        "!" = "{out}"
       ),
       class = c(error_class, "REDCapTidieR_cond"),
       call = call
@@ -304,19 +301,30 @@ wrap_checkmate <- function(f) {
 }
 
 #' @rdname checkmate
-#' @importFrom checkmate check_data_frame
-check_arg_is_dataframe <- wrap_checkmate(check_data_frame)
-
-#' @rdname checkmate
 #' @importFrom cli cli_abort
 #' @importFrom rlang caller_env caller_arg is_bare_list
 #' @importFrom purrr map_lgl
 check_arg_is_supertbl <- function(x,
                                   req_cols = c("redcap_data", "redcap_metadata"),
                                   arg = caller_arg(x),
-                                  call = caller_env(),
-                                  info = NULL) {
-  check_arg_is_dataframe(x, arg = arg, call = call, info = info)
+                                  call = caller_env()) {
+
+  # shared data for all messages
+  msg_x <- "You've supplied an invalid value to {.arg {arg}}"
+  msg_info <- "{.arg {arg}} must be a {.pkg REDCapTidieR} supertibble, generated using {.code read_redcap()}"
+  msg_class <- c("check_supertbl", "REDCapTidieR_cond")
+
+  if (!inherits(x, "redcaptidier_supertbl")) {
+    cli_abort(
+      message = c(
+        "x" = msg_x,
+        "!" = "Must be of class {.cls redcaptidier_supertbl}",
+        "i" = msg_info
+      ),
+      class = msg_class,
+      call = call
+    )
+  }
 
   missing_cols <- setdiff(req_cols, colnames(x))
 
@@ -324,12 +332,11 @@ check_arg_is_supertbl <- function(x,
   if (length(missing_cols) > 0) {
     cli_abort(
       message = c(
-        "x" = "You've supplied an invalid value to {.arg {arg}}",
-        "!" = "Must contain columns {.code {req_cols}}",
-        "!" = "You are missing {.code {missing_cols}}",
-        info
+        "x" = msg_x,
+        "!" = "Must contain {.code {paste0(arg, '$', missing_cols)}}",
+        "i" = msg_info
       ),
-      class = c("missing_req_cols", "REDCapTidieR_cond"),
+      class = c("missing_req_cols", msg_class),
       call = call,
       missing_cols = missing_cols
     )
@@ -341,11 +348,11 @@ check_arg_is_supertbl <- function(x,
   if (length(non_list_cols) > 0) {
     cli_abort(
       message = c(
-        "x" = "You've supplied an invalid value to {.arg {arg}}",
-        "!" = "{.code {non_list_cols}} must be of type 'list'",
-        info
+        "x" = msg_x,
+        "!" = "{.code {paste0(arg, '$', non_list_cols)}} must be of type 'list'",
+        "i" = msg_info
       ),
-      class = c("missing_req_list_cols", "REDCapTidieR_cond"),
+      class = c("missing_req_list_cols", msg_class),
       call = call,
       non_list_cols = non_list_cols
     )
@@ -374,10 +381,9 @@ check_arg_choices <- wrap_checkmate(check_choice)
 #' @importFrom REDCapR sanitize_token
 check_arg_is_valid_token <- function(x,
                                      arg = caller_arg(x),
-                                     call = caller_env(),
-                                     info = NULL) {
+                                     call = caller_env()) {
   check_arg_is_character(x, len = 1, any.missing = FALSE,
-                         arg = arg, call = call, info = info)
+                         arg = arg, call = call)
 
   sanitize_token(x)
 

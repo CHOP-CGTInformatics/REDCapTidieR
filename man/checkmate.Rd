@@ -2,7 +2,6 @@
 % Please edit documentation in R/checks.R
 \name{checkmate}
 \alias{checkmate}
-\alias{check_arg_is_dataframe}
 \alias{check_arg_is_supertbl}
 \alias{check_arg_is_env}
 \alias{check_arg_is_character}
@@ -11,69 +10,34 @@
 \alias{check_arg_is_valid_token}
 \title{Check an argument with checkmate}
 \usage{
-check_arg_is_dataframe(
-  x,
-  ...,
-  arg = caller_arg(x),
-  call = caller_env(),
-  info = NULL
-)
-
 check_arg_is_supertbl(
   x,
   req_cols = c("redcap_data", "redcap_metadata"),
   arg = caller_arg(x),
-  call = caller_env(),
-  info = NULL
+  call = caller_env()
 )
 
-check_arg_is_env(x, ..., arg = caller_arg(x), call = caller_env(), info = NULL)
+check_arg_is_env(x, ..., arg = caller_arg(x), call = caller_env())
 
-check_arg_is_character(
-  x,
-  ...,
-  arg = caller_arg(x),
-  call = caller_env(),
-  info = NULL
-)
+check_arg_is_character(x, ..., arg = caller_arg(x), call = caller_env())
 
-check_arg_is_logical(
-  x,
-  ...,
-  arg = caller_arg(x),
-  call = caller_env(),
-  info = NULL
-)
+check_arg_is_logical(x, ..., arg = caller_arg(x), call = caller_env())
 
-check_arg_choices(
-  x,
-  ...,
-  arg = caller_arg(x),
-  call = caller_env(),
-  info = NULL
-)
+check_arg_choices(x, ..., arg = caller_arg(x), call = caller_env())
 
-check_arg_is_valid_token(
-  x,
-  arg = caller_arg(x),
-  call = caller_env(),
-  info = NULL
-)
+check_arg_is_valid_token(x, arg = caller_arg(x), call = caller_env())
 }
 \arguments{
 \item{x}{An object to check}
 
-\item{...}{additional arguments passed on to checkmate}
+\item{req_cols}{required fields for \code{check_arg_is_supertbl()}}
 
 \item{arg}{The name of the argument to include in an error message. Captured
 by \code{rlang::caller_arg()} by default}
 
 \item{call}{the calling environment to use in the error message}
 
-\item{info}{additional lines to add to the error message in \code{cli_bullets()}
-format}
-
-\item{req_cols}{required fields for \code{check_arg_is_supertbl()}}
+\item{...}{additional arguments passed on to checkmate}
 }
 \value{
 \code{TRUE} if \code{x} passes the checkmate check. An error otherwise with the name of

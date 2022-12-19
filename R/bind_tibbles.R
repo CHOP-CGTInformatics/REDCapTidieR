@@ -22,6 +22,7 @@
 #' @importFrom purrr map2 pluck
 #'
 #' @examples
+#' \dontrun{
 #' # Create an empty environment
 #' my_env <- new.env()
 #'
@@ -37,7 +38,7 @@
 #' bind_tibbles(supertbl, my_env)
 #'
 #' ls(my_env)
-#'
+#'}
 #' @export
 
 bind_tibbles <- function(supertbl,

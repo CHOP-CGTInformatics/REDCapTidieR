@@ -435,3 +435,11 @@ test_that("read_redcap errors with bad inputs", {
     class = "check_logical"
   )
 })
+
+test_that("read_redcap returns S3 object", {
+  httptest::with_mock_api({
+    out <- read_redcap(redcap_uri, longitudinal_token)
+  })
+
+  expect_s3_class(out, "redcaptidier_supertbl")
+})

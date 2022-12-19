@@ -235,7 +235,7 @@ read_redcap <- function(redcap_uri,
     out <- add_event_mapping(out, linked_arms)
   }
 
-  out %>%
+  out <- out %>%
     dplyr::slice(
       order(
         factor(
@@ -244,6 +244,8 @@ read_redcap <- function(redcap_uri,
         )
       )
     )
+
+  as_supertbl(out)
 }
 
 #' @title
@@ -445,4 +447,19 @@ calc_metadata_stats <- function(data) {
     data_size = obj_size(data),
     data_na_pct = percent(na_pct, digits = 2, format = "fg")
   )
+}
+
+#' @title
+#' Add supertbl S3 class
+#'
+#' @param x an object to class
+#'
+#' @return
+#' The object with `redcaptidier_supertbl` S3 class
+#'
+#' @keywords internal
+#'
+as_supertbl <- function(x) {
+  class(x) <- c("redcaptidier_supertbl", class(x))
+  x
 }
