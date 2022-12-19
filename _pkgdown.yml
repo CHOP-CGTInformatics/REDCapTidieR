@@ -42,3 +42,6 @@ reference:
   contents:
   - make_labelled
   - format-helpers
+- title: "Data"
+  contents:
+  - superheroes_supertbl

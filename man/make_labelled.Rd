@@ -35,15 +35,11 @@ The variable labels for the data tibbles are derived from the \code{field_label}
 column of the metadata tibble.
 }
 \examples{
-supertbl <- tibble::tribble(
-  ~redcap_data, ~redcap_metadata,
-  tibble::tibble(x = letters[1:3]), tibble::tibble(field_name = "x", field_label = "X Label"),
-  tibble::tibble(y = letters[1:3]), tibble::tibble(field_name = "y", field_label = "Y Label")
-)
+superheroes_supertbl
 
-make_labelled(supertbl)
+make_labelled(superheroes_supertbl)
 
-make_labelled(supertbl, format_labels = tolower)
+make_labelled(superheroes_supertbl, format_labels = tolower)
 
 \dontrun{
 redcap_uri <- Sys.getenv("REDCAP_URI")

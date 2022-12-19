@@ -31,15 +31,11 @@
 #' A labelled supertibble.
 #'
 #' @examples
-#' supertbl <- tibble::tribble(
-#'   ~redcap_data, ~redcap_metadata,
-#'   tibble::tibble(x = letters[1:3]), tibble::tibble(field_name = "x", field_label = "X Label"),
-#'   tibble::tibble(y = letters[1:3]), tibble::tibble(field_name = "y", field_label = "Y Label")
-#' )
+#' superheroes_supertbl
 #'
-#' make_labelled(supertbl)
+#' make_labelled(superheroes_supertbl)
 #'
-#' make_labelled(supertbl, format_labels = tolower)
+#' make_labelled(superheroes_supertbl, format_labels = tolower)
 #'
 #' \dontrun{
 #' redcap_uri <- Sys.getenv("REDCAP_URI")
@@ -195,12 +191,9 @@ make_labelled <- function(supertbl, format_labels = NULL) {
 #'
 #' fmt_strip_field_embedding("Label{another_field}")
 #'
-#' supertbl <- tibble::tribble(
-#'   ~redcap_data, ~redcap_metadata,
-#'   tibble::tibble(x = letters[1:3]), tibble::tibble(field_name = "x", field_label = "X Label:")
-#' )
+#' superheroes_supertbl
 #'
-#' make_labelled(supertbl, format_labels = fmt_strip_trailing_colon)
+#' make_labelled(superheroes_supertbl, format_labels = fmt_strip_trailing_colon)
 #'
 #' @name format-helpers
 NULL

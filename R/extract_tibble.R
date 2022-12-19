@@ -18,14 +18,9 @@
 #' @importFrom tidyselect all_of
 #'
 #' @examples
-#' # Mock up a supertibble
-#' sample_data <- tibble::tribble(
-#'   ~redcap_form_name,    ~redcap_data,   ~structure,
-#'   "super_hero_powers",  list(),         "repeating",
-#'   "heroes_information", list(),         "nonrepeating"
-#' )
+#' superheroes_supertbl
 #'
-#' extract_tibble(sample_data, "heroes_information")
+#' extract_tibble(superheroes_supertbl, "heroes_information")
 #'
 #' @export
 
@@ -67,18 +62,13 @@ extract_tibble <- function(supertbl,
 #' @importFrom purrr map pluck
 #'
 #' @examples
-#' # Mock up a supertibble
-#' sample_data <- tibble::tribble(
-#'   ~redcap_form_name,    ~redcap_data, ~structure,
-#'   "super_hero_powers",  list(),       "repeating",
-#'   "heroes_information", list(),       "nonrepeating"
-#' )
+#' superheroes_supertbl
 #'
 #' # Extract all data tibbles
-#' extract_tibbles(sample_data)
+#' extract_tibbles(superheroes_supertbl)
 #'
 #' # Only extract data tibbles starting with "heroes"
-#' extract_tibbles(sample_data, starts_with("heroes"))
+#' extract_tibbles(superheroes_supertbl, starts_with("heroes"))
 #'
 #' @export
 

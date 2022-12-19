@@ -26,17 +26,12 @@ tidyselect helper functions such as \code{dplyr::starts_with()}
 or \code{dplyr::ends_with()} is supported.
 }
 \examples{
-# Mock up a supertibble
-sample_data <- tibble::tribble(
-  ~redcap_form_name,    ~redcap_data, ~structure,
-  "super_hero_powers",  list(),       "repeating",
-  "heroes_information", list(),       "nonrepeating"
-)
+superheroes_supertbl
 
 # Extract all data tibbles
-extract_tibbles(sample_data)
+extract_tibbles(superheroes_supertbl)
 
 # Only extract data tibbles starting with "heroes"
-extract_tibbles(sample_data, starts_with("heroes"))
+extract_tibbles(superheroes_supertbl, starts_with("heroes"))
 
 }
