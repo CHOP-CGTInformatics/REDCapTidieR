@@ -74,7 +74,7 @@ read_redcap <- function(redcap_uri,
                         suppress_redcapr_messages = TRUE) {
 
   check_arg_is_character(redcap_uri, len = 1, any.missing = FALSE)
-  check_arg_is_character(token, len = 1, any.missing = FALSE)
+  check_arg_is_valid_token(token)
   check_arg_choices(raw_or_label, choices = c("label", "raw"))
   check_arg_is_character(forms, min.len = 1, null.ok = TRUE, any.missing = FALSE)
   check_arg_is_logical(export_survey_fields, len = 1, any.missing = FALSE)

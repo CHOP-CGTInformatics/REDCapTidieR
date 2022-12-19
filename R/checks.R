@@ -369,3 +369,17 @@ check_arg_is_logical <- wrap_checkmate(check_logical)
 #' @rdname checkmate
 #' @importFrom checkmate check_choice
 check_arg_choices <- wrap_checkmate(check_choice)
+
+#' @rdname checkmate
+#' @importFrom REDCapR sanitize_token
+check_arg_is_valid_token <- function(x,
+                                     arg = caller_arg(x),
+                                     call = caller_env(),
+                                     info = NULL) {
+  check_arg_is_character(x, len = 1, any.missing = FALSE,
+                         arg = arg, call = call, info = info)
+
+  sanitize_token(x)
+
+  return(TRUE)
+}

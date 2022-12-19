@@ -8,6 +8,7 @@
 \alias{check_arg_is_character}
 \alias{check_arg_is_logical}
 \alias{check_arg_choices}
+\alias{check_arg_is_valid_token}
 \title{Check an argument with checkmate}
 \usage{
 check_arg_is_dataframe(
@@ -47,6 +48,13 @@ check_arg_is_logical(
 check_arg_choices(
   x,
   ...,
+  arg = caller_arg(x),
+  call = caller_env(),
+  info = NULL
+)
+
+check_arg_is_valid_token(
+  x,
   arg = caller_arg(x),
   call = caller_env(),
   info = NULL

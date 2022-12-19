@@ -115,4 +115,10 @@ test_that("checkmate wrappers work", {
   expect_error(check_arg_choices(123, choices = letters[1:3]), class = "check_choice")
   expect_true(check_arg_choices("a", choices = letters[1:3]))
 
+  # token
+  expect_error(check_arg_is_valid_token(123), class = "check_character")
+  expect_error(check_arg_is_valid_token(letters[1:3]), class = "check_character")
+  expect_error(check_arg_is_valid_token("abc"), regexp = "The token is not a valid 32-character hexademical value.")
+  expect_true(check_arg_is_valid_token("123456789ABCDEF123456789ABCDEF01"))
+
 })

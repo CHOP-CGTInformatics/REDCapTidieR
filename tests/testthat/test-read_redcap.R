@@ -398,6 +398,10 @@ test_that("read_redcap errors with bad inputs", {
   # token
   expect_error(read_redcap(redcap_uri, 123), class = "check_character")
   expect_error(read_redcap(redcap_uri, letters[1:3]), class = "check_character")
+  expect_error(
+    read_redcap(redcap_uri, "abc"),
+    regexp = "The token is not a valid 32-character hexademical value."
+  )
 
   # raw_or_label
   expect_error(
