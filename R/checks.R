@@ -291,7 +291,7 @@ wrap_checkmate <- function(f) {
 
     cli_abort(
       message = c(
-        "x" = "You've supplied an invalid value to {.arg {arg}}",
+        "x" = "You've supplied {.code {format_error_val(x)}} for {.arg {arg}} which is not a valid value",
         "!" = "{out}"
       ),
       class = c(error_class, "REDCapTidieR_cond"),
@@ -310,7 +310,7 @@ check_arg_is_supertbl <- function(x,
                                   call = caller_env()) {
 
   # shared data for all messages
-  msg_x <- "You've supplied an invalid value to {.arg {arg}}"
+  msg_x <- "You've supplied {.code {format_error_val(x)}} for {.arg {arg}} which is not a valid value"
   msg_info <- "{.arg {arg}} must be a {.pkg REDCapTidieR} supertibble, generated using {.code read_redcap()}"
   msg_class <- c("check_supertbl", "REDCapTidieR_cond")
 
@@ -388,4 +388,26 @@ check_arg_is_valid_token <- function(x,
   sanitize_token(x)
 
   return(TRUE)
+}
+
+#' @title
+#' Format value for error message
+#'
+#' @param x value to format
+#'
+#' @return
+#' If x is atomic, x with cli formatting to truncate to 5 values. Otherwise,
+#' a string summarizing x produced by as_label
+#'
+#' @importFrom rlang as_label is_atomic
+#' @importFrom cli cli_vec
+#'
+#' @keywords internal
+format_error_val <- function(x) {
+  if (is_atomic(x)) {
+    out <- cli_vec(x, style = list("vec-trunc" = 5, "vec-last" = ", "))
+  } else {
+    out <- as_label(x)
+  }
+  out
 }
