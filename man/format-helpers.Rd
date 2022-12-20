@@ -55,11 +55,8 @@ fmt_strip_html("<b>Bold Label</b>")
 
 fmt_strip_field_embedding("Label{another_field}")
 
-supertbl <- tibble::tribble(
-  ~redcap_data, ~redcap_metadata,
-  tibble::tibble(x = letters[1:3]), tibble::tibble(field_name = "x", field_label = "X Label:")
-)
+superheroes_supertbl
 
-make_labelled(supertbl, format_labels = fmt_strip_trailing_colon)
+make_labelled(superheroes_supertbl, format_labels = fmt_strip_trailing_colon)
 
 }

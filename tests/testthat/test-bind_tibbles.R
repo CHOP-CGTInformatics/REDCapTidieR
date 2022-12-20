@@ -42,3 +42,12 @@ test_that("bind_tibbles works with forms specification", {
   expect_true(exists("repeated", envir = global_env()))
   rm(list = c("nonrepeated", "repeated"), envir = global_env())
 })
+
+test_that("bind_tibbles errors with bad inputs", {
+  supertbl <- tibble(redcap_data = list()) %>%
+    as_supertbl()
+
+  expect_error(bind_tibbles(123), class = "check_supertbl")
+  expect_error(bind_tibbles(supertbl, environment = "abc"), class = "check_environment")
+  expect_error(bind_tibbles(supertbl, tbls = 123), class = "check_character")
+})

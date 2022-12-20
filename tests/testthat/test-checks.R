@@ -58,30 +58,6 @@ test_that("check_forms_exist works", {
   expect_error(check_forms_exist(metadata, forms), regexp = "e and f")
 })
 
-
-test_that("check_req_labelled_fields works", {
-  # Check data and metadata column errors
-  supertbl_no_data <- tibble::tribble(
-    ~redcap_metadata,
-    tibble(field_name = "x", field_label = "X Label"),
-    tibble(field_name = "y", field_label = "Y Label")
-  )
-
-  supertbl_no_metadata <- tibble::tribble(
-    ~redcap_data,
-    tibble(x = letters[1:3]),
-    tibble(y = letters[1:3])
-  )
-
-  ## Errors when data is missing
-  check_req_labelled_fields(supertbl_no_data) %>%
-    expect_error(class = "missing_req_labelled_fields")
-
-  ## Errors when metadata is missing
-  check_req_labelled_fields(supertbl_no_metadata) %>%
-    expect_error(class = "missing_req_labelled_fields")
-})
-
 test_that("check_req_labelled_metadata_fields works", {
   # Check field_name and field_label within metadata
   supertbl_no_field_name <- tibble::tribble(
@@ -103,4 +79,46 @@ test_that("check_req_labelled_metadata_fields works", {
   ## Errors when field_label is missing
   check_req_labelled_metadata_fields(supertbl_no_field_label) %>%
     expect_error(class = "missing_req_labelled_metadata_fields")
+})
+
+test_that("checkmate wrappers work", {
+
+  # supertbl
+  expect_error(check_arg_is_supertbl(123), class = "check_supertbl")
+
+  missing_col_supertbl <- tibble(redcap_data = list()) %>%
+    as_supertbl()
+
+  missing_list_col_supertbl <- tibble(redcap_data = list(), redcap_metadata = 123) %>%
+    as_supertbl()
+
+  good_supertbl <- tibble(redcap_data = list(), redcap_metadata = list()) %>%
+    as_supertbl()
+
+  expect_error(check_arg_is_supertbl(missing_col_supertbl), class = "missing_req_cols")
+  expect_error(check_arg_is_supertbl(missing_list_col_supertbl), class = "missing_req_list_cols")
+  expect_true(check_arg_is_supertbl(good_supertbl))
+
+  # environment
+  expect_error(check_arg_is_env(123), class = "check_environment")
+  expect_true(check_arg_is_env(new.env()))
+
+  # character
+  expect_error(check_arg_is_character(123), class = "check_character")
+  expect_true(check_arg_is_character("abc"))
+
+  # logical
+  expect_error(check_arg_is_logical(123), class = "check_logical")
+  expect_true(check_arg_is_logical(TRUE))
+
+  # choices
+  expect_error(check_arg_choices(123, choices = letters[1:3]), class = "check_choice")
+  expect_true(check_arg_choices("a", choices = letters[1:3]))
+
+  # token
+  expect_error(check_arg_is_valid_token(123), class = "check_character")
+  expect_error(check_arg_is_valid_token(letters[1:3]), class = "check_character")
+  expect_error(check_arg_is_valid_token("abc"), regexp = "The token is not a valid 32-character hexademical value.")
+  expect_true(check_arg_is_valid_token("123456789ABCDEF123456789ABCDEF01"))
+
 })

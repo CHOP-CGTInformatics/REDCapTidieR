@@ -15,29 +15,20 @@
 #' @param tbl The `redcap_form_name` of the data tibble to extract. Required.
 #'
 #' @importFrom checkmate assert_character
-#' @importFrom cli cli_abort
 #' @importFrom tidyselect all_of
 #'
 #' @examples
-#' # Mock up a supertibble
-#' sample_data <- tibble::tribble(
-#'   ~redcap_form_name,    ~redcap_data,   ~structure,
-#'   "super_hero_powers",  list(),         "repeating",
-#'   "heroes_information", list(),         "nonrepeating"
-#' )
+#' superheroes_supertbl
 #'
-#' extract_tibble(sample_data, "heroes_information")
+#' extract_tibble(superheroes_supertbl, "heroes_information")
 #'
 #' @export
 
 extract_tibble <- function(supertbl,
                            tbl) {
-  # Check tbl is valid ----
-  assert_character(tbl)
-
-  if (length(tbl) > 1) {
-    cli_abort("Only one table may be supplied.")
-  }
+  # Check args ----
+  check_arg_is_supertbl(supertbl, req_cols = "redcap_data")
+  check_arg_is_character(tbl, len = 1, any.missing = FALSE)
 
   # Extract specified table ----
   out <- extract_tibbles(supertbl, tbls = all_of(tbl))[[1]]
@@ -71,23 +62,20 @@ extract_tibble <- function(supertbl,
 #' @importFrom purrr map pluck
 #'
 #' @examples
-#' # Mock up a supertibble
-#' sample_data <- tibble::tribble(
-#'   ~redcap_form_name,    ~redcap_data, ~structure,
-#'   "super_hero_powers",  list(),       "repeating",
-#'   "heroes_information", list(),       "nonrepeating"
-#' )
+#' superheroes_supertbl
 #'
 #' # Extract all data tibbles
-#' extract_tibbles(sample_data)
+#' extract_tibbles(superheroes_supertbl)
 #'
 #' # Only extract data tibbles starting with "heroes"
-#' extract_tibbles(sample_data, starts_with("heroes"))
+#' extract_tibbles(superheroes_supertbl, starts_with("heroes"))
 #'
 #' @export
 
 extract_tibbles <- function(supertbl,
                             tbls = everything()) {
+  check_arg_is_supertbl(supertbl, req_cols = "redcap_data")
+
   # Extract specified table ----
   # Pass tbls as an expression for enquosure
   tbls <- enquo(tbls)

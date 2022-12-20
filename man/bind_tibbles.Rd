@@ -26,20 +26,16 @@ and bind its data tibbles (i.e. the tibbles in the \code{redcap_data} column) to
 an environment. The default is the global environment.
 }
 \examples{
+\dontrun{
 # Create an empty environment
 my_env <- new.env()
 
 ls(my_env)
 
-# Mock up a supertibble
-supertbl <- tibble::tribble(
-  ~redcap_form_name,    ~redcap_data,   ~structure,
-  "super_hero_powers",  list(),         "repeating",
-  "heroes_information", list(),         "nonrepeating"
-)
+superheroes_supertbl
 
-bind_tibbles(supertbl, my_env)
+bind_tibbles(superheroes_supertbl, my_env)
 
 ls(my_env)
-
+}
 }

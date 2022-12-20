@@ -387,3 +387,59 @@ test_that("read_redcap returns expected survey fields", {
 
   checkmate::expect_class(survey_data$redcap_survey_timestamp, c("POSIXct", "POSIXt"))
 })
+
+test_that("read_redcap errors with bad inputs", {
+  # Checking for type and length constraints where relevant
+
+  # redcap uri
+  expect_error(read_redcap(123, classic_token), class = "check_character")
+  expect_error(read_redcap(letters[1:3], classic_token), class = "check_character")
+
+  # token
+  expect_error(read_redcap(redcap_uri, 123), class = "check_character")
+  expect_error(read_redcap(redcap_uri, letters[1:3]), class = "check_character")
+  expect_error(
+    read_redcap(redcap_uri, "abc"),
+    regexp = "The token is not a valid 32-character hexademical value."
+  )
+
+  # raw_or_label
+  expect_error(
+    read_redcap(redcap_uri, classic_token, raw_or_label = "bad option"),
+    class = "check_choice"
+  )
+
+  # forms
+  expect_error(
+    read_redcap(redcap_uri, classic_token, forms = 123),
+    class = "check_character"
+  )
+
+  # export_survey_fields
+  expect_error(
+    read_redcap(redcap_uri, classic_token, export_survey_fields = 123),
+    class = "check_logical"
+  )
+  expect_error(
+    read_redcap(redcap_uri, classic_token, export_survey_fields = c(TRUE, TRUE)),
+    class = "check_logical"
+  )
+
+  # suppress_redcapr_messages
+  expect_error(
+    read_redcap(redcap_uri, classic_token, suppress_redcapr_messages = 123),
+    class = "check_logical"
+  )
+  expect_error(
+    read_redcap(redcap_uri, classic_token, suppress_redcapr_messages = c(TRUE, TRUE)),
+    class = "check_logical"
+  )
+})
+
+test_that("read_redcap returns S3 object", {
+  httptest::with_mock_api({
+    out <- read_redcap(redcap_uri, longitudinal_token)
+  })
+
+  expect_s3_class(out, "redcap_supertbl")
+})

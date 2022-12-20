@@ -4,7 +4,7 @@
 \alias{check_forms_exist}
 \title{Check that all requested instruments are in REDCap project metadata}
 \usage{
-check_forms_exist(db_metadata, forms)
+check_forms_exist(db_metadata, forms, call = caller_env())
 }
 \arguments{
 \item{db_metadata}{The metadata file read by
@@ -12,6 +12,8 @@ check_forms_exist(db_metadata, forms)
 
 \item{forms}{The character vector of instrument names passed to
 \code{read_redcap()}}
+
+\item{call}{the calling environment to use in the error message}
 }
 \value{
 An error message listing the requested instruments that don't exist

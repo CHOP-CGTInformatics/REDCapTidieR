@@ -23,13 +23,8 @@ This function makes it easy to extract a single instrument's data from a
 REDCapTidieR supertibble.
 }
 \examples{
-# Mock up a supertibble
-sample_data <- tibble::tribble(
-  ~redcap_form_name,    ~redcap_data,   ~structure,
-  "super_hero_powers",  list(),         "repeating",
-  "heroes_information", list(),         "nonrepeating"
-)
+superheroes_supertbl
 
-extract_tibble(sample_data, "heroes_information")
+extract_tibble(superheroes_supertbl, "heroes_information")
 
 }

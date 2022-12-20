@@ -72,6 +72,14 @@ read_redcap <- function(redcap_uri,
                         forms = NULL,
                         export_survey_fields = TRUE,
                         suppress_redcapr_messages = TRUE) {
+
+  check_arg_is_character(redcap_uri, len = 1, any.missing = FALSE)
+  check_arg_is_valid_token(token)
+  check_arg_choices(raw_or_label, choices = c("label", "raw"))
+  check_arg_is_character(forms, min.len = 1, null.ok = TRUE, any.missing = FALSE)
+  check_arg_is_logical(export_survey_fields, len = 1, any.missing = FALSE)
+  check_arg_is_logical(suppress_redcapr_messages, len = 1, any.missing = FALSE)
+
   # Load REDCap Metadata ----
   db_metadata <- redcap_metadata_read(
     redcap_uri = redcap_uri,
@@ -228,7 +236,7 @@ read_redcap <- function(redcap_uri,
     out <- add_event_mapping(out, linked_arms)
   }
 
-  out %>%
+  out <- out %>%
     dplyr::slice(
       order(
         factor(
@@ -237,6 +245,8 @@ read_redcap <- function(redcap_uri,
         )
       )
     )
+
+  as_supertbl(out)
 }
 
 #' @title
@@ -440,4 +450,19 @@ calc_metadata_stats <- function(data) {
     data_size = obj_size(data),
     data_na_pct = percent(na_pct, digits = 2, format = "fg")
   )
+}
+
+#' @title
+#' Add supertbl S3 class
+#'
+#' @param x an object to class
+#'
+#' @return
+#' The object with `redcaptidier_supertbl` S3 class
+#'
+#' @keywords internal
+#'
+as_supertbl <- function(x) {
+  class(x) <- c("redcap_supertbl", class(x))
+  x
 }

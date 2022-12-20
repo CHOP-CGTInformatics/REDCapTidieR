@@ -5,10 +5,12 @@
 \title{Check that all metadata tibbles within a supertibble contain
 \code{field_name} and \code{field_label} columns}
 \usage{
-check_req_labelled_metadata_fields(supertbl)
+check_req_labelled_metadata_fields(supertbl, call = caller_env())
 }
 \arguments{
 \item{supertbl}{a supertibble containing a \code{redcap_metadata} column}
+
+\item{call}{the calling environment to use in the error message}
 }
 \value{
 an error message alerting that instrument metadata is incomplete

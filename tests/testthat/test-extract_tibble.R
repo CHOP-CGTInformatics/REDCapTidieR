@@ -43,10 +43,20 @@ test_that("extract_tibbles works with a vector and tidyselect selectors", {
   )
   expect_error(redcaptidier_longitudintal_db %>%
     extract_tibbles(tbls = c("repeated", "fake_instrument_name")))
+
+  expect_error(extract_tibbles(123), class = "check_supertbl")
+
 })
 
 test_that("extract_tibble works", {
   expect_error(extract_tibble(redcaptidier_longitudintal_db, "fake_instrument_name"))
+  expect_error(extract_tibble(123, "my_tibble"), class = "check_supertbl")
+
+  supertbl <- tibble(redcap_data = list()) %>%
+    as_supertbl()
+
+  expect_error(extract_tibble(supertbl, tbl = 123), class = "check_character")
+  expect_error(extract_tibble(supertbl, tbl = letters[1:3]), class = "check_character")
 
   expected_out <- redcaptidier_longitudintal_db$redcap_data[[1]]
   expect_equal(

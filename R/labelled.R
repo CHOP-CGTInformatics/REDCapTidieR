@@ -31,15 +31,11 @@
 #' A labelled supertibble.
 #'
 #' @examples
-#' supertbl <- tibble::tribble(
-#'   ~redcap_data, ~redcap_metadata,
-#'   tibble::tibble(x = letters[1:3]), tibble::tibble(field_name = "x", field_label = "X Label"),
-#'   tibble::tibble(y = letters[1:3]), tibble::tibble(field_name = "y", field_label = "Y Label")
-#' )
+#' superheroes_supertbl
 #'
-#' make_labelled(supertbl)
+#' make_labelled(superheroes_supertbl)
 #'
-#' make_labelled(supertbl, format_labels = tolower)
+#' make_labelled(superheroes_supertbl, format_labels = tolower)
 #'
 #' \dontrun{
 #' redcap_uri <- Sys.getenv("REDCAP_URI")
@@ -54,8 +50,7 @@ make_labelled <- function(supertbl, format_labels = NULL) {
 
   formatter <- resolve_formatter(format_labels) # nolint: object_usage_linter
 
-  assert_data_frame(supertbl)
-  check_req_labelled_fields(supertbl)
+  check_arg_is_supertbl(supertbl)
   check_req_labelled_metadata_fields(supertbl)
 
   # Derive labels ----
@@ -196,12 +191,9 @@ make_labelled <- function(supertbl, format_labels = NULL) {
 #'
 #' fmt_strip_field_embedding("Label{another_field}")
 #'
-#' supertbl <- tibble::tribble(
-#'   ~redcap_data, ~redcap_metadata,
-#'   tibble::tibble(x = letters[1:3]), tibble::tibble(field_name = "x", field_label = "X Label:")
-#' )
+#' superheroes_supertbl
 #'
-#' make_labelled(supertbl, format_labels = fmt_strip_trailing_colon)
+#' make_labelled(superheroes_supertbl, format_labels = fmt_strip_trailing_colon)
 #'
 #' @name format-helpers
 NULL
@@ -251,6 +243,7 @@ fmt_strip_field_embedding <- function(x) {
 #' \code{format_labels} contains character elements. The default,
 #' \code{caller_env(n = 2)}, uses the environment from which the user called
 #' \code{make_labelled()}
+#' @param call the calling environment to use in the error message
 #'
 #' @importFrom purrr map compose
 #' @importFrom rlang !!! as_closure caller_env is_bare_formula
@@ -260,7 +253,7 @@ fmt_strip_field_embedding <- function(x) {
 #'
 #' @keywords internal
 #'
-resolve_formatter <- function(format_labels, env = caller_env(n = 2)) {
+resolve_formatter <- function(format_labels, env = caller_env(n = 2), call = caller_env()) {
   if (is.null(format_labels)) {
     # If NULL pass labels through unchanged
     return(identity)
@@ -289,6 +282,7 @@ resolve_formatter <- function(format_labels, env = caller_env(n = 2)) {
       "!" = "{.arg format_labels} must be of class {.cls {supported_classes}}",
       "x" = "{.arg format_labels} is {.cls {class(format_labels)}}"
     ),
-    class = c("unresolved_formatter", "REDCapTidieR_cond")
+    class = c("unresolved_formatter", "REDCapTidieR_cond"),
+    call = call
   )
 }

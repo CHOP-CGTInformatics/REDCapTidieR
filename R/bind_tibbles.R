@@ -22,27 +22,27 @@
 #' @importFrom purrr map2 pluck
 #'
 #' @examples
+#' \dontrun{
 #' # Create an empty environment
 #' my_env <- new.env()
 #'
 #' ls(my_env)
 #'
-#' # Mock up a supertibble
-#' supertbl <- tibble::tribble(
-#'   ~redcap_form_name,    ~redcap_data,   ~structure,
-#'   "super_hero_powers",  list(),         "repeating",
-#'   "heroes_information", list(),         "nonrepeating"
-#' )
+#' superheroes_supertbl
 #'
-#' bind_tibbles(supertbl, my_env)
+#' bind_tibbles(superheroes_supertbl, my_env)
 #'
 #' ls(my_env)
-#'
+#'}
 #' @export
 
 bind_tibbles <- function(supertbl,
                          environment = global_env(),
                          tbls = NULL) {
+  check_arg_is_supertbl(supertbl, req_cols = "redcap_data")
+  check_arg_is_env(environment)
+  check_arg_is_character(tbls, null.ok = TRUE, any.missing = FALSE, min.len = 1)
+
   # Name variables
   my_supertbl <- supertbl
 
