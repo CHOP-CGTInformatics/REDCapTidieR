@@ -314,11 +314,11 @@ check_arg_is_supertbl <- function(x,
   msg_info <- "{.arg {arg}} must be a {.pkg REDCapTidieR} supertibble, generated using {.code read_redcap()}"
   msg_class <- c("check_supertbl", "REDCapTidieR_cond")
 
-  if (!inherits(x, "redcaptidier_supertbl")) {
+  if (!inherits(x, "redcap_supertbl")) {
     cli_abort(
       message = c(
         "x" = msg_x,
-        "!" = "Must be of class {.cls redcaptidier_supertbl}",
+        "!" = "Must be of class {.cls redcap_supertbl}",
         "i" = msg_info
       ),
       class = msg_class,

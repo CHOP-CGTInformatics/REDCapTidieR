@@ -460,6 +460,6 @@ calc_metadata_stats <- function(data) {
 #' @keywords internal
 #'
 as_supertbl <- function(x) {
-  class(x) <- c("redcaptidier_supertbl", class(x))
+  class(x) <- c("redcap_supertbl", class(x))
   x
 }

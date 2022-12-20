@@ -441,5 +441,5 @@ test_that("read_redcap returns S3 object", {
     out <- read_redcap(redcap_uri, longitudinal_token)
   })
 
-  expect_s3_class(out, "redcaptidier_supertbl")
+  expect_s3_class(out, "redcap_supertbl")
 })

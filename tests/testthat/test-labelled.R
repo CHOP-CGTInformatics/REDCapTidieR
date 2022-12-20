@@ -307,3 +307,9 @@ test_that("make_labelled errors with bad inputs", {
   expect_error(make_labelled(missing_col_supertbl), class = "missing_req_cols")
   expect_error(make_labelled(missing_list_col_supertbl), class = "missing_req_list_cols")
 })
+
+test_that("make_labelled preserves S3 class", {
+  out <- make_labelled(superheroes_supertbl)
+
+  expect_s3_class(out, "redcap_supertbl")
+})
