@@ -67,13 +67,17 @@ field_name and field_label columns"><!-- mathjax --><script src="https://cdnjs.c
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">check_req_labelled_metadata_fields</span><span class="op">(</span><span class="va">supertbl</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">check_req_labelled_metadata_fields</span><span class="op">(</span><span class="va">supertbl</span>, call <span class="op">=</span> <span class="fu">caller_env</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>supertbl</dt>
 <dd><p>a supertibble containing a <code>redcap_metadata</code> column</p></dd>
+
+
+<dt>call</dt>
+<dd><p>the calling environment to use in the error message</p></dd>
 
 </dl></div>
     <div class="section level2">

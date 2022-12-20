@@ -61,7 +61,7 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">resolve_formatter</span><span class="op">(</span><span class="va">format_labels</span>, env <span class="op">=</span> <span class="fu">caller_env</span><span class="op">(</span>n <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">resolve_formatter</span><span class="op">(</span><span class="va">format_labels</span>, env <span class="op">=</span> <span class="fu">caller_env</span><span class="op">(</span>n <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>, call <span class="op">=</span> <span class="fu">caller_env</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -75,6 +75,10 @@
 <code>format_labels</code> contains character elements. The default,
 <code>caller_env(n = 2)</code>, uses the environment from which the user called
 <code><a href="make_labelled.html">make_labelled()</a></code></p></dd>
+
+
+<dt>call</dt>
+<dd><p>the calling environment to use in the error message</p></dd>
 
 </dl></div>
     <div class="section level2">

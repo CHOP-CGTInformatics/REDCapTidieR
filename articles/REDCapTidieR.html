@@ -281,7 +281,7 @@ memory. To demonstrate this, here we check the size of the
 <code>superheroes</code> supertibble:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">lobstr</span><span class="fu">::</span><span class="fu"><a href="https://lobstr.r-lib.org/reference/obj_size.html" class="external-link">obj_size</a></span><span class="op">(</span><span class="va">superheroes</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 313.50 kB</span></span></code></pre></div>
+<span><span class="co">#&gt; 313.57 kB</span></span></code></pre></div>
 <p>If we bind the data tibbles into the environment and then check the
 combined size of the supertibble <em>and</em> the two data tibbles we
 get the following:</p>
@@ -290,7 +290,7 @@ get the following:</p>
 <span>  <span class="fu"><a href="../reference/bind_tibbles.html">bind_tibbles</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">lobstr</span><span class="fu">::</span><span class="fu"><a href="https://lobstr.r-lib.org/reference/obj_size.html" class="external-link">obj_size</a></span><span class="op">(</span><span class="va">superheroes</span>, <span class="va">heroes_information</span>, <span class="va">super_hero_powers</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 313.50 kB</span></span></code></pre></div>
+<span><span class="co">#&gt; 313.57 kB</span></span></code></pre></div>
 <p>The same is true if we use the <code><a href="../reference/extract_tibble.html">extract_tibble()</a></code> or
 <code><a href="../reference/extract_tibbles.html">extract_tibbles()</a></code> functions:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
@@ -298,7 +298,7 @@ get the following:</p>
 <span><span class="va">b</span> <span class="op">&lt;-</span> <span class="va">superheroes</span> <span class="op">|&gt;</span> <span class="fu"><a href="../reference/extract_tibbles.html">extract_tibbles</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">lobstr</span><span class="fu">::</span><span class="fu"><a href="https://lobstr.r-lib.org/reference/obj_size.html" class="external-link">obj_size</a></span><span class="op">(</span><span class="va">superheroes</span>, <span class="va">a</span>, <span class="va">b</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 313.69 kB</span></span></code></pre></div>
+<span><span class="co">#&gt; 313.75 kB</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
