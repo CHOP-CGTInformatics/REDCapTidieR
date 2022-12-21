@@ -19,7 +19,7 @@
 
 check_valid_api_token <- function(db_metadata,
                                   call = caller_env()) {
-  if (db_metadata$success == FALSE & db_metadata$status_code == 403) {
+  if (db_metadata$success == FALSE && db_metadata$status_code == 403) {
     cli_abort(
       c("x" = "The REDCapR metadata export operation was not successful.",
         "i" = "An API token was provided that either does not have the correct
