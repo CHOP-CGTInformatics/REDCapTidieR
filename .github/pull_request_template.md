@@ -26,6 +26,7 @@ Before submitting this PR, please check and verify below that the submission mee
 - [ ] Issues linked to the PR using [GitHub's list of keywords](https://docs.github.com/en/issues/tracking-your-work-with-issues/linking-a-pull-request-to-an-issue)
 - [ ] The appropriate reviewer is assigned to the PR
 - [ ] The appropriate developers are assigned to the PR
+- [ ] Pre-release package version incremented using `usethis::use_dev_version()`
 
 # Code Review
 This section to be used by the reviewer and developers during Code Review after PR submission
