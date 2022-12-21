@@ -85,7 +85,11 @@ read_redcap <- function(redcap_uri,
     redcap_uri = redcap_uri,
     token = token,
     verbose = !suppress_redcapr_messages
-  )$data %>%
+  )
+
+  check_valid_api_token(db_metadata)
+
+  db_metadata <- db_metadata$data %>%
     filter(.data$field_type != "descriptive")
 
   # Cache unedited db_metadata to reduce dependencies on the order of edits
