@@ -1,31 +1,3 @@
-test_that("check_valid_api_token works", {
-  valid_redcapr_metadata <- list(
-    data = data.frame(),
-    success = TRUE,
-    status_code = 200,
-    outcome_message = "",
-    forms_collapsed = "",
-    fields_collapsed = "",
-    elapsed_seconds = 0.1,
-    raw_text = ""
-  )
-
-  invalid_redcapr_metadata <- list(
-    data = data.frame(),
-    success = FALSE,
-    status_code = 403,
-    outcome_message = "",
-    forms_collapsed = "",
-    fields_collapsed = "",
-    elapsed_seconds = 0.1,
-    raw_text = ""
-  )
-
-  expect_null(check_valid_api_token(valid_redcapr_metadata))
-  expect_error(check_valid_api_token(invalid_redcapr_metadata),
-               class = "redcap_invalid_api")
-})
-
 test_that("check_user_rights works", {
   test_data <- tibble::tribble(
     ~field_1,  ~field_2,

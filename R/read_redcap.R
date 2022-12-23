@@ -34,7 +34,8 @@
 #' @importFrom REDCapR redcap_read_oneshot redcap_metadata_read
 #' @importFrom dplyr filter bind_rows %>% select slice
 #' @importFrom tidyselect any_of
-#' @importFrom rlang .data
+#' @importFrom rlang .data try_fetch
+#' @importFrom cli cli_abort
 #'
 #' @param redcap_uri The
 #' URI/URL of the REDCap server (e.g.,
@@ -81,13 +82,31 @@ read_redcap <- function(redcap_uri,
   check_arg_is_logical(suppress_redcapr_messages, len = 1, any.missing = FALSE)
 
   # Load REDCap Metadata ----
-  db_metadata <- redcap_metadata_read(
-    redcap_uri = redcap_uri,
-    token = token,
-    verbose = !suppress_redcapr_messages
-  )
+  # Capture unexpected metadata API call errors
+  try_fetch(
+    {
+      db_metadata <- redcap_metadata_read(
+        redcap_uri = redcap_uri,
+        token = token,
+        verbose = !suppress_redcapr_messages
+      )
 
-  check_valid_api_token(db_metadata)
+      if (db_metadata$success == FALSE) {
+        abort(
+          message = "The REDCapR metadata export operation was not successful.",
+          class = c("redcapr_api_call_success_false", "REDCapTidieR_cond")
+        )
+      }
+    },
+    error = function(cnd){
+      cli_abort(
+        c("x" = "{cnd$message}",
+          "!" = "An unexpected error occured in {.code read_redcap_oneshot}. Consider submitting a {.href [bug report](https://github.com/CHOP-CGTInformatics/REDCapTidieR/issues)}."),
+        call = caller_env(),
+        parent = cnd
+      )
+    }
+  )
 
   db_metadata <- db_metadata$data %>%
     filter(.data$field_type != "descriptive")
