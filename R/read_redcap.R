@@ -339,10 +339,9 @@ add_metadata <- function(supertbl, db_metadata, redcap_uri, token, suppress_redc
 
   # Process metadata ----
   db_metadata <- db_metadata %>%
-    # At this stage select_choices_or_calculations has been unpacked into
-    # field_name_updated so we can drop it. Likewise, field_name has a subset
-    # of info from field_name_updated
-    select(!c("field_name", "select_choices_or_calculations")) %>%
+    # remove field_name since it has been unpacked into field_name_updated
+    # via update_field_names()
+    select(!"field_name") %>%
     rename(
       field_name = "field_name_updated",
       redcap_form_name = "form_name"
