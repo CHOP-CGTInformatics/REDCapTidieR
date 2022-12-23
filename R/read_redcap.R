@@ -34,7 +34,7 @@
 #' @importFrom REDCapR redcap_read_oneshot redcap_metadata_read
 #' @importFrom dplyr filter bind_rows %>% select slice
 #' @importFrom tidyselect any_of
-#' @importFrom rlang .data try_fetch
+#' @importFrom rlang .data try_fetch abort
 #' @importFrom cli cli_abort
 #'
 #' @param redcap_uri The
