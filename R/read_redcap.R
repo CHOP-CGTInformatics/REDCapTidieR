@@ -98,10 +98,11 @@ read_redcap <- function(redcap_uri,
         )
       }
     },
-    error = function(cnd){
+    error = function(cnd) {
       cli_abort(
         c("x" = "{cnd$message}",
-          "!" = "An unexpected error occured in {.code read_redcap_oneshot}. Consider submitting a {.href [bug report](https://github.com/CHOP-CGTInformatics/REDCapTidieR/issues)}."),
+          "!" = "An unexpected error occured in {.code read_redcap_oneshot}. Consider submitting a
+          {.href [bug report](https://github.com/CHOP-CGTInformatics/REDCapTidieR/issues)}."),
         call = caller_env(),
         parent = cnd
       )
