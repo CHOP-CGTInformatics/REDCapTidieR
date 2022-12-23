@@ -34,7 +34,7 @@
 #' @importFrom REDCapR redcap_read_oneshot redcap_metadata_read
 #' @importFrom dplyr filter bind_rows %>% select slice
 #' @importFrom tidyselect any_of
-#' @importFrom rlang .data try_fetch abort
+#' @importFrom rlang .data try_fetch abort current_call
 #' @importFrom cli cli_abort
 #'
 #' @param redcap_uri The
@@ -85,31 +85,63 @@ read_redcap <- function(redcap_uri,
   # Capture unexpected metadata API call errors
   try_fetch(
     {
-      db_metadata <- redcap_metadata_read(
+      call <- current_call()
+
+      out <- redcap_metadata_read(
         redcap_uri = redcap_uri,
         token = token,
         verbose = !suppress_redcapr_messages
       )
 
-      if (db_metadata$success == FALSE) {
+      # Throw an error if the API calling function finished successfully
+      # but the API call itself was not successful
+      if (out$success == FALSE) {
         abort(
-          message = "The REDCapR metadata export operation was not successful.",
           class = c("redcapr_api_call_success_false", "REDCapTidieR_cond")
         )
       }
     },
     error = function(cnd) {
+      error_message <- c("x" = "The REDCapR metadata export operation was not successful.")
+      # Show original error?
+      parent <- NULL
+
+      if (exists("out") && out$status_code == 403) {
+        error_info <- c(
+          "!" = "You supplied an API token that either does not have the correct privileges or is incorrectly formed.",
+          "i" = "API token: `{token}`"
+        )
+      } else if (exists("out") && out$status_code == 405) {
+        error_info <- c(
+          "!" = "The URL returned the HTTP error code 405 (Method not allowed).",
+          "i" = "The most likely reason is that the provided URI is incorrect.",
+          "i" = "URI: `{redcap_uri}`"
+        )
+      } else if (cnd$message %>% str_detect("Could not resolve host")) {
+        error_info <- c(
+          "!" = "Could not resolve the hostname.",
+          "i" = "The most likely reason for this to happen is that the provided URI is incorrect.",
+          "i" = "URI: `{redcap_uri}`"
+        )
+      } else {
+        error_info <- c(
+          "!" = "An unexpected error occured in {.code read_redcap_oneshot}.",
+          "i" = "Consider submitting a {.href [bug report](https://github.com/CHOP-CGTInformatics/REDCapTidieR/issues)}."
+        )
+        parent <- cnd
+      }
+
+      error_message <- c(error_message, error_info)
+
       cli_abort(
-        c("x" = "{cnd$message}",
-          "!" = "An unexpected error occured in {.code read_redcap_oneshot}. Consider submitting a
-          {.href [bug report](https://github.com/CHOP-CGTInformatics/REDCapTidieR/issues)}."),
-        call = caller_env(),
-        parent = cnd
+        error_message,
+        call = call,
+        parent = parent
       )
     }
   )
 
-  db_metadata <- db_metadata$data %>%
+  db_metadata <- out$data %>%
     filter(.data$field_type != "descriptive")
 
   # Cache unedited db_metadata to reduce dependencies on the order of edits
