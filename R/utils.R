@@ -99,12 +99,12 @@ parse_labels <- function(string, return_vector = FALSE) {
   # If string is empty/NA, throw a warning
   if (is.na(string)) {
     cli_warn("Empty string detected for a given multiple choice label.",
-             class = c("empty_parse_warning", "REDCapTidieR_cond")
+      class = c("empty_parse_warning", "REDCapTidieR_cond")
     )
   }
 
   out <- string %>%
-    strsplit("\\|") %>%  # Split by "|"
+    strsplit("\\|") %>% # Split by "|"
     lapply(trimws) # Trim trailing and leading whitespace in list elements
 
   # Check there is a comma in all | delimited strsplit elements

@@ -73,8 +73,8 @@ read_redcap <- function(redcap_uri,
                         forms = NULL,
                         export_survey_fields = TRUE,
                         suppress_redcapr_messages = TRUE) {
-
   check_arg_is_character(redcap_uri, len = 1, any.missing = FALSE)
+  check_arg_is_character(token, len = 1, any.missing = FALSE)
   check_arg_is_valid_token(token)
   check_arg_choices(raw_or_label, choices = c("label", "raw"))
   check_arg_is_character(forms, min.len = 1, null.ok = TRUE, any.missing = FALSE)
@@ -103,32 +103,39 @@ read_redcap <- function(redcap_uri,
     },
     error = function(cnd) {
       error_message <- c("x" = "The REDCapR metadata export operation was not successful.")
+
       # Show original error?
       parent <- NULL
+
+      error_class <- c("metadata_api_call_failed", "REDCapTidieR_cond")
 
       if (exists("out") && out$status_code == 403) {
         error_info <- c(
           "!" = "You supplied an API token that either does not have the correct privileges or is incorrectly formed.",
           "i" = "API token: `{token}`"
         )
+        error_class <- c("api_token_rejected", error_class)
       } else if (exists("out") && out$status_code == 405) {
         error_info <- c(
-          "!" = "The URL returned the HTTP error code 405 (Method not allowed).",
+          "!" = "The URL returned the HTTP error code 405 (POST Method not allowed).",
           "i" = "The most likely reason is that the provided URI is incorrect.",
           "i" = "URI: `{redcap_uri}`"
         )
+        error_class <- c("cannot_post", error_class)
       } else if (cnd$message %>% str_detect("Could not resolve host")) {
         error_info <- c(
           "!" = "Could not resolve the hostname.",
           "i" = "The most likely reason for this to happen is that the provided URI is incorrect.",
           "i" = "URI: `{redcap_uri}`"
         )
+        error_class <- c("cannot_resolve_host", error_class)
       } else {
         error_info <- c(
           "!" = "An unexpected error occured in {.code read_redcap_oneshot}.",
           "i" = "Consider submitting a {.href [bug report](https://github.com/CHOP-CGTInformatics/REDCapTidieR/issues)}."
         )
         parent <- cnd
+        error_class <- c("unexpected_error", error_class)
       }
 
       error_message <- c(error_message, error_info)
@@ -136,7 +143,8 @@ read_redcap <- function(redcap_uri,
       cli_abort(
         error_message,
         call = call,
-        parent = parent
+        parent = parent,
+        class = error_class
       )
     }
   )
@@ -270,8 +278,10 @@ read_redcap <- function(redcap_uri,
   }
 
   if (is_longitudinal) {
-    linked_arms <- link_arms(redcap_uri = redcap_uri, token = token,
-                             suppress_redcapr_messages = suppress_redcapr_messages)
+    linked_arms <- link_arms(
+      redcap_uri = redcap_uri, token = token,
+      suppress_redcapr_messages = suppress_redcapr_messages
+    )
 
     out <- clean_redcap_long(
       db_data_long = db_data,

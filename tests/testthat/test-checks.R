@@ -80,7 +80,6 @@ test_that("check_req_labelled_metadata_fields works", {
 })
 
 test_that("checkmate wrappers work", {
-
   # supertbl
   expect_error(check_arg_is_supertbl(123), class = "check_supertbl")
 
@@ -118,5 +117,4 @@ test_that("checkmate wrappers work", {
   expect_error(check_arg_is_valid_token(letters[1:3]), class = "check_character")
   expect_error(check_arg_is_valid_token("abc"), regexp = "The token is not a valid 32-character hexademical value.")
   expect_true(check_arg_is_valid_token("123456789ABCDEF123456789ABCDEF01"))
-
 })

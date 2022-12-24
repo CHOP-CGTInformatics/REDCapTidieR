@@ -4,8 +4,16 @@ options(rlang_backtrace_on_error_report = "none")
 
 # read_redcap
 
-classic_token <- "123456789ABCDEF123456789ABCDEF01"
-redcap_uri <- "www.google.com"
+classic_token <- Sys.getenv("REDCAPTIDIER_CLASSIC_API")
+redcap_uri <- Sys.getenv("REDCAP_URI")
+
+## args missing
+
+# read_redcap()
+
+# read_redcap(redcap_uri)
+
+# read_redcap(token = classic_token)
 
 ## redcap_uri
 
@@ -13,11 +21,23 @@ read_redcap(123, classic_token)
 
 read_redcap(letters[1:3], classic_token)
 
+read_redcap("https://www.google.com", classic_token)
+
+read_redcap("https://www.google.comm", classic_token)
+
 ## token
 
 read_redcap(redcap_uri, 123)
 
 read_redcap(redcap_uri, letters[1:3])
+
+read_redcap(redcap_uri, "CC0CE44238EF65C5DA26A55DD749AF7")
+
+read_redcap(redcap_uri, "CC0CE44238EF65C5DA26A55DD749AF7A")
+
+read_redcap(redcap_uri, "")
+
+read_redcap(redcap_uri)
 
 ## raw_or_label
 
