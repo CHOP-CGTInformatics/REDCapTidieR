@@ -31,13 +31,11 @@ read_redcap(redcap_uri, 123)
 
 read_redcap(redcap_uri, letters[1:3])
 
-read_redcap(redcap_uri, "CC0CE44238EF65C5DA26A55DD749AF7")
-
-read_redcap(redcap_uri, "CC0CE44238EF65C5DA26A55DD749AF7A")
-
 read_redcap(redcap_uri, "")
 
-read_redcap(redcap_uri)
+read_redcap(redcap_uri, "CC0CE44238EF65C5DA26A55DD749AF7") # 31 hex characters
+
+read_redcap(redcap_uri, "CC0CE44238EF65C5DA26A55DD749AF7A") # will be rejected by server
 
 ## raw_or_label
 

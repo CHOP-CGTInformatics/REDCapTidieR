@@ -391,16 +391,28 @@ test_that("read_redcap returns expected survey fields", {
 test_that("read_redcap errors with bad inputs", {
   # Checking for type and length constraints where relevant
 
+  # args missing
+
+  ## TODO
+
   # redcap uri
   expect_error(read_redcap(123, classic_token), class = "check_character")
   expect_error(read_redcap(letters[1:3], classic_token), class = "check_character")
+  expect_error(read_redcap("https://www.google.com", classic_token), class = "cannot_post")
+  expect_error(read_redcap("https://www.google.comm", classic_token), class = "cannot_resolve_host")
 
   # token
   expect_error(read_redcap(redcap_uri, 123), class = "check_character")
   expect_error(read_redcap(redcap_uri, letters[1:3]), class = "check_character")
+  expect_error(read_redcap(redcap_uri, "abc"), class = "invalid_token")
+  expect_error(read_redcap(redcap_uri, ""), class = "invalid_token")
   expect_error(
-    read_redcap(redcap_uri, "abc"),
-    regexp = "The token is not a valid 32-character hexademical value."
+    read_redcap(redcap_uri, "CC0CE44238EF65C5DA26A55DD749AF7"), # 31 hex characters
+    class = "invalid_token"
+  )
+  expect_error(
+    read_redcap(redcap_uri, "CC0CE44238EF65C5DA26A55DD749AF7A"), # will be rejected
+    class = "api_token_rejected"
   )
 
   # raw_or_label

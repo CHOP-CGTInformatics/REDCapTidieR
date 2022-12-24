@@ -29,7 +29,7 @@ read_redcap(redcap_uri, longitudinal_noarms_token)
 
 read_redcap(redcap_uri, longitudinal_token)
 
-# Ignore expected form_does_not_exist errors
+# Ignore expected errors
 tryCatch(
   form_does_not_exist = function(cnd) {}, # nolint: brace_linter
   read_redcap(redcap_uri, classic_token, forms = "fake-form")
@@ -40,6 +40,14 @@ tryCatch(
   read_redcap(redcap_uri,
     classic_token,
     forms = c("fake-form", "repeated")
+  )
+)
+
+tryCatch(
+  api_token_rejected = function(cnd) {}, # nolint: brace_linter
+  read_redcap(
+    redcap_uri,
+    "CC0CE44238EF65C5DA26A55DD749AF7A" # will be rejected by server
   )
 )
 
