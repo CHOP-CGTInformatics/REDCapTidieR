@@ -118,21 +118,21 @@ read_redcap <- function(redcap_uri,
       } else if (exists("out") && out$status_code == 405) {
         error_info <- c(
           "!" = "The URL returned the HTTP error code 405 (POST Method not allowed).",
-          "i" = "The most likely reason is that the provided URI is incorrect.",
+          "i" = "The most likely reason is that the provided URI does not point to a REDCap API endpoint.",
           "i" = "URI: `{redcap_uri}`"
         )
         error_class <- c("cannot_post", error_class)
       } else if (cnd$message %>% str_detect("Could not resolve host")) {
         error_info <- c(
           "!" = "Could not resolve the hostname.",
-          "i" = "The most likely reason for this to happen is that the provided URI is incorrect.",
+          "i" = "The most likely reason is that the provided URI is incorrect.",
           "i" = "URI: `{redcap_uri}`"
         )
         error_class <- c("cannot_resolve_host", error_class)
       } else {
         error_info <- c(
           "!" = "An unexpected error occured in {.code read_redcap_oneshot}.",
-          "i" = "Consider submitting a {.href [bug report](https://github.com/CHOP-CGTInformatics/REDCapTidieR/issues)}."
+          "i" = "Please consider submitting a bug report here: {.href https://github.com/CHOP-CGTInformatics/REDCapTidieR/issues}." # nolint: line_length_linter
         )
         parent <- cnd
         error_class <- c("unexpected_error", error_class)

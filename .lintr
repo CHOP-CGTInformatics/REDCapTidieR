@@ -1,4 +1,8 @@
 linters: linters_with_defaults(
-    line_length_linter(120),
-    object_length_linter(45)
+    line_length_linter = line_length_linter(120),
+    object_length_linter = object_length_linter(45),
+    cyclocomp_linter = NULL
+  )
+exclusions: list(
+    "tests/testthat/fixtures"
   )
