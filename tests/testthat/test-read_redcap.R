@@ -410,10 +410,12 @@ test_that("read_redcap errors with bad inputs", {
     read_redcap(redcap_uri, "CC0CE44238EF65C5DA26A55DD749AF7"), # 31 hex characters
     class = "invalid_token"
   )
-  expect_error(
-    read_redcap(redcap_uri, "CC0CE44238EF65C5DA26A55DD749AF7A"), # will be rejected
-    class = "api_token_rejected"
-  )
+  httptest::with_mock_api({
+    expect_error(
+      read_redcap(redcap_uri, "CC0CE44238EF65C5DA26A55DD749AF7A"), # will be rejected
+      class = "api_token_rejected"
+    )
+  })
 
   # raw_or_label
   expect_error(
