@@ -87,7 +87,7 @@ read_redcap <- function(redcap_uri,
     {
       call <- current_call()
 
-      out <- redcap_metadata_read(
+      db_metadata <- redcap_metadata_read(
         redcap_uri = redcap_uri,
         token = token,
         verbose = !suppress_redcapr_messages
@@ -95,43 +95,48 @@ read_redcap <- function(redcap_uri,
 
       # Throw an error if the API calling function finished successfully
       # but the API call itself was not successful
-      if (out$success == FALSE) {
+      if (db_metadata$success == FALSE) {
         abort(
-          class = c("redcapr_api_call_success_false", "REDCapTidieR_cond")
+          class = c("redcapr_api_call_success_false"),
+          status_code = db_metadata$status_code
         )
       }
     },
     error = function(cnd) {
       error_message <- c("x" = "The REDCapR metadata export operation was not successful.")
 
-      # Show original error?
+      # Show original error? (Only do this for unexpected errors)
       parent <- NULL
 
-      error_class <- c("metadata_api_call_failed", "REDCapTidieR_cond")
+      error_class <- union(cnd$class, c("metadata_api_call_failed", "REDCapTidieR_cond"))
 
-      if (exists("out") && out$status_code == 403) {
+      success_false <- "redcapr_api_call_success_false" %in% class(cnd)
+
+      if (success_false && cnd$status_code == 403) {
         error_info <- c(
-          "!" = "You supplied an API token that either does not have the correct privileges or is incorrectly formed.",
+          "!" = "The URL returned the HTTP error code 403 (Forbidden).",
+          "i" = "Are you sure this is the correct API token?",
           "i" = "API token: `{token}`"
         )
         error_class <- c("api_token_rejected", error_class)
-      } else if (exists("out") && out$status_code == 405) {
+      } else if (success_false && cnd$status_code == 405) {
         error_info <- c(
           "!" = "The URL returned the HTTP error code 405 (POST Method not allowed).",
-          "i" = "The most likely reason is that the provided URI does not point to a REDCap API endpoint.",
+          "i" = "Are you sure the URI points to an active REDCap API endpoint?",
           "i" = "URI: `{redcap_uri}`"
         )
         error_class <- c("cannot_post", error_class)
       } else if (cnd$message %>% str_detect("Could not resolve host")) {
         error_info <- c(
           "!" = "Could not resolve the hostname.",
-          "i" = "The most likely reason is that the provided URI is incorrect.",
+          "i" = "Is there a typo in the URI?",
           "i" = "URI: `{redcap_uri}`"
         )
         error_class <- c("cannot_resolve_host", error_class)
       } else {
         error_info <- c(
-          "!" = "An unexpected error occured in {.code read_redcap_oneshot}.",
+          "!" = "An unexpected error occured in {.code read_redcap}.",
+          "i" = "This means that you probably discovered a bug!",
           "i" = "Please consider submitting a bug report here: {.href https://github.com/CHOP-CGTInformatics/REDCapTidieR/issues}." # nolint: line_length_linter
         )
         parent <- cnd
@@ -149,7 +154,7 @@ read_redcap <- function(redcap_uri,
     }
   )
 
-  db_metadata <- out$data %>%
+  db_metadata <- db_metadata$data %>%
     filter(.data$field_type != "descriptive")
 
   # Cache unedited db_metadata to reduce dependencies on the order of edits

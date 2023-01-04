@@ -378,6 +378,8 @@ check_arg_choices <- wrap_checkmate(check_choice)
 
 #' @rdname checkmate
 #' @importFrom REDCapR sanitize_token
+#' @importFrom cli cli_abort
+#' @importFrom rlang caller_arg caller_env try_fetch
 check_arg_is_valid_token <- function(x,
                                      arg = caller_arg(x),
                                      call = caller_env()) {
