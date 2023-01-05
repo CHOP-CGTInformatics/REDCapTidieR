@@ -45,7 +45,6 @@ test_that("extract_tibbles works with a vector and tidyselect selectors", {
     extract_tibbles(tbls = c("repeated", "fake_instrument_name")))
 
   expect_error(extract_tibbles(123), class = "check_supertbl")
-
 })
 
 test_that("extract_tibble works", {

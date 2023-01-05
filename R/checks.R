@@ -308,7 +308,6 @@ check_arg_is_supertbl <- function(x,
                                   req_cols = c("redcap_data", "redcap_metadata"),
                                   arg = caller_arg(x),
                                   call = caller_env()) {
-
   # shared data for all messages
   msg_x <- "You've supplied {.code {format_error_val(x)}} for {.arg {arg}} which is not a valid value"
   msg_info <- "{.arg {arg}} must be a {.pkg REDCapTidieR} supertibble, generated using {.code read_redcap()}"
@@ -342,7 +341,7 @@ check_arg_is_supertbl <- function(x,
     )
   }
 
-  non_list_cols <- map_lgl(x[req_cols], ~!is_bare_list(.))
+  non_list_cols <- map_lgl(x[req_cols], ~ !is_bare_list(.))
   non_list_cols <- req_cols[non_list_cols]
 
   if (length(non_list_cols) > 0) {
@@ -379,13 +378,24 @@ check_arg_choices <- wrap_checkmate(check_choice)
 
 #' @rdname checkmate
 #' @importFrom REDCapR sanitize_token
+#' @importFrom cli cli_abort
+#' @importFrom rlang caller_arg caller_env try_fetch
 check_arg_is_valid_token <- function(x,
                                      arg = caller_arg(x),
                                      call = caller_env()) {
-  check_arg_is_character(x, len = 1, any.missing = FALSE,
-                         arg = arg, call = call)
-
-  sanitize_token(x)
+  try_fetch(
+    sanitize_token(x),
+    error = function(cnd) {
+      cli_abort(
+        message = c(
+          "x" = "{cnd$message}",
+          "i" = "API token: `{x}`"
+        ),
+        class = c("invalid_token", "REDCapTidieR_cond"),
+        call = call
+      )
+    }
+  )
 
   return(TRUE)
 }

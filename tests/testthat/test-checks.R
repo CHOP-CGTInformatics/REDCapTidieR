@@ -1,5 +1,3 @@
-# Load Sample Databases ----
-
 test_that("check_user_rights works", {
   test_data <- tibble::tribble(
     ~field_1,  ~field_2,
@@ -82,7 +80,6 @@ test_that("check_req_labelled_metadata_fields works", {
 })
 
 test_that("checkmate wrappers work", {
-
   # supertbl
   expect_error(check_arg_is_supertbl(123), class = "check_supertbl")
 
@@ -116,9 +113,6 @@ test_that("checkmate wrappers work", {
   expect_true(check_arg_choices("a", choices = letters[1:3]))
 
   # token
-  expect_error(check_arg_is_valid_token(123), class = "check_character")
-  expect_error(check_arg_is_valid_token(letters[1:3]), class = "check_character")
-  expect_error(check_arg_is_valid_token("abc"), regexp = "The token is not a valid 32-character hexademical value.")
+  expect_error(check_arg_is_valid_token("abc"), class = "invalid_token")
   expect_true(check_arg_is_valid_token("123456789ABCDEF123456789ABCDEF01"))
-
 })

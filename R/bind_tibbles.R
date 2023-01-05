@@ -33,7 +33,7 @@
 #' bind_tibbles(superheroes_supertbl, my_env)
 #'
 #' ls(my_env)
-#'}
+#' }
 #' @export
 
 bind_tibbles <- function(supertbl,
