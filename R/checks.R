@@ -255,6 +255,40 @@ check_req_labelled_metadata_fields <- function(supertbl, call = caller_env()) {
 
 
 #' @title
+#' Check that parsed labels are not duplicated
+#'
+#' @importFrom cli cli_warn qty
+#' @importFrom rlang caller_env
+#'
+#' @param parsed_labs a vector of parsed labels produced by `parse_labels()`
+#' @param field_name the name of the field associated with the labels to use in the warning message
+#' @param call the calling environment to use in the error message. The parent of calling environment
+#' by default because this check usually occurs 2 frames below the relevant context for the user
+#'
+#' @return
+#' a warning message alerting specifying the duplicate labels and REDCap field affected
+#'
+#' @keywords internal
+check_parsed_labels <- function(parsed_labs, field_name, call = caller_env(n = 2)) {
+  if (any(duplicated(parsed_labs))) {
+    dups <- parsed_labs[duplicated(parsed_labs)]
+
+    msg <- c(
+      "!" = "Multiple values are mapped to the {qty(dups)} label{?s} {.code {dups}} in field {.code {field_name}}",
+      "i" = "Consider making the labels for {.code {field_name}} unique in your REDCap project"
+    )
+
+    cli_warn(
+      msg,
+      class = c("duplicate_labels", "REDCapTidieR_cond"),
+      call = call,
+      field = field_name,
+      duplicated_labels = dups
+    )
+  }
+}
+
+#' @title
 #' Check an argument with checkmate
 #'
 #' @importFrom cli cli_abort

@@ -411,12 +411,14 @@ multi_choice_to_labels <- function(db_data, db_metadata) {
         return_vector = TRUE
       )
 
+      check_parsed_labels(parse_labels_output, field_name)
+
       # Replace values from db_data$(field_name) with label values from
       # parse_labels key
       db_data[[field_name]] <- db_data[[field_name]] %>%
         as.character() %>%
         recode(!!!parse_labels_output) %>%
-        factor(levels = parse_labels_output)
+        factor(levels = unique(parse_labels_output))
     }
   }
   db_data

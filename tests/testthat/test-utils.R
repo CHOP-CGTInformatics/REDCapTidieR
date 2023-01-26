@@ -36,16 +36,16 @@ test_that("multi_choice_to_labels works", {
     db_metadata_classic
   )
 
-  # Expect warning on error variable where a radio button is created for a
-  # descriptive text field
-  expect_warning(
-    multi_choice_to_labels(
-      db_data = db_data_classic,
-      db_metadata = db_metadata_classic
-    ) %>%
-      suppressWarnings(classes = "empty_parse_warning"),
-    class = "field_missing_categories"
-  )
+  # Expect warning on misconfigured variables
+  multi_choice_to_labels(
+    db_data = db_data_classic,
+    db_metadata = db_metadata_classic
+  ) %>%
+    # radio button is created for a descriptive text field
+    expect_warning(class = "empty_parse_warning") %>%
+    expect_warning(class = "field_missing_categories") %>%
+    # radio button with duplicate labels
+    expect_warning(class = "duplicate_labels")
 
   out <- multi_choice_to_labels(
     db_data = db_data_classic,
@@ -53,7 +53,8 @@ test_that("multi_choice_to_labels works", {
   ) %>%
     suppressWarnings(classes = c(
       "empty_parse_warning",
-      "field_missing_categories"
+      "field_missing_categories",
+      "duplicate_labels"
     ))
 
   # Test general structure

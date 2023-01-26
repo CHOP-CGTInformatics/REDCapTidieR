@@ -79,6 +79,17 @@ test_that("check_req_labelled_metadata_fields works", {
     expect_error(class = "missing_req_labelled_metadata_fields")
 })
 
+test_that("check_parsed_labels works", {
+  check_parsed_labels(letters[1:2], "field_name") %>%
+    expect_no_warning()
+
+  cnd <- check_parsed_labels(rep("a", 2), "field_name") %>%
+    rlang::catch_cnd(classes = "duplicate_labels")
+
+  expect_equal(cnd$field, "field_name")
+  expect_equal(cnd$duplicated_labels, "a")
+})
+
 test_that("checkmate wrappers work", {
   # supertbl
   expect_error(check_arg_is_supertbl(123), class = "check_supertbl")
