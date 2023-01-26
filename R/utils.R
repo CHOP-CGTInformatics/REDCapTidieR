@@ -462,3 +462,97 @@ strip_html_field_embedding <- function(x) {
     str_trim() %>%
     str_squish()
 }
+
+#' @title
+#' abc
+#'
+#' @param expr an expression
+#' @param call a call
+#'
+#' @importFrom rlang caller_env enquo try_fetch eval_tidy get_env
+#' @importFrom stringr str_detect
+#' @importFrom cli cli_abort
+#'
+#' @return
+#' xyz
+#'
+#' @keywords internal
+#'
+try_redcapr <- function(expr, call = caller_env()) {
+
+  quo <- enquo(expr)
+
+  # List to store components of error so we can look them up unambiguously
+  error <- list()
+
+  # URI and token we want are in the env associated with expr
+  env <- get_env(quo)
+  error$redcap_uri <- env$redcap_uri
+  error$token <- env$token
+
+  # Defaults for other error components
+  error$message <- c("x" = "The REDCapR metadata export operation was not successful.")
+  error$class <- "REDCapTidieR_cond"
+  error$info <- c(
+    "!" = "An unexpected error occured.",
+    "i" = "This means that you probably discovered a bug!",
+    "i" = "Please consider submitting a bug report here: {.href https://github.com/CHOP-CGTInformatics/REDCapTidieR/issues}." # nolint: line_length_linter
+  )
+  error$call <- call
+
+  # Try to evaluate expr and handle REDCapR errors
+  out <- try_fetch(
+    eval_tidy(quo),
+    error = function(cnd) {
+      if (str_detect(cnd$message, "Could not resolve host")) {
+        error$info <- c(
+          "!" = "Could not resolve the hostname.",
+          "i" = "Is there a typo in the URI?",
+          "i" = "URI: `{error$redcap_uri}`"
+        )
+        error$class <- c("cannot_resolve_host", error$class)
+      } else {
+        error$parent <- cnd
+        error$class <- c("unexpected_error", error$class)
+      }
+      cli_abort(
+        c(error$message, error$info),
+        call = error$call,
+        parent = error$parent,
+        class = error$class
+      )
+    }
+  )
+
+  # Handle cases where the API call itself was not successful
+  if (out$success == FALSE) {
+    error$class <- c("redcapr_api_call_success_false", error$class)
+
+    if (out$status_code == 403) {
+      error$info <- c(
+        "!" = "The URL returned the HTTP error code 403 (Forbidden).",
+        "i" = "Are you sure this is the correct API token?",
+        "i" = "API token: `{error$token}`"
+      )
+      error$class <- c("api_token_rejected", error$class)
+    } else if (out$status_code == 405) {
+      error$info <- c(
+        "!" = "The URL returned the HTTP error code 405 (POST Method not allowed).",
+        "i" = "Are you sure the URI points to an active REDCap API endpoint?",
+        "i" = "URI: `{error$redcap_uri}`"
+      )
+      error$class <- c("cannot_post", error$class)
+    } else {
+      error$class <- c("unexpected_error", error$class)
+    }
+    cli_abort(
+      c(error$message, error$info),
+      call = error$call,
+      parent = error$parent,
+      class = error$class
+    )
+  }
+
+  # If we made it here return the data
+  out$data
+}
