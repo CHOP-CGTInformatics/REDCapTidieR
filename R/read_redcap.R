@@ -84,11 +84,11 @@ read_redcap <- function(redcap_uri,
   # Load REDCap Metadata ----
   # Capture unexpected metadata API call errors
   db_metadata <- try_redcapr({
-      redcap_metadata_read(
-        redcap_uri = redcap_uri,
-        token = token,
-        verbose = !suppress_redcapr_messages
-      )
+    redcap_metadata_read(
+      redcap_uri = redcap_uri,
+      token = token,
+      verbose = !suppress_redcapr_messages
+    )
   })
 
   db_metadata <- db_metadata %>%

@@ -479,7 +479,6 @@ strip_html_field_embedding <- function(x) {
 #' @keywords internal
 #'
 try_redcapr <- function(expr, call = caller_env()) {
-
   quo <- enquo(expr)
 
   # List to store components of error so we can look them up unambiguously
