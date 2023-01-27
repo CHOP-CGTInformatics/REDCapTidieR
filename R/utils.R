@@ -464,17 +464,17 @@ strip_html_field_embedding <- function(x) {
 }
 
 #' @title
-#' abc
+#' Make a `REDCapR` API call with custom error handling
 #'
-#' @param expr an expression
-#' @param call a call
+#' @param expr an expression making a `REDCapR` API call
+#' @param call the calling environment to use in the warning message
 #'
 #' @importFrom rlang caller_env enquo try_fetch eval_tidy get_env
 #' @importFrom stringr str_detect
 #' @importFrom cli cli_abort
 #'
 #' @return
-#' xyz
+#' If successful, the `data` element of the `REDCapR` result. Otherwise an error
 #'
 #' @keywords internal
 #'
