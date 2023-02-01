@@ -87,15 +87,16 @@ link_arms <- function(redcap_uri,
 #' @param string A \code{db_metadata$select_choices_or_calculations} field
 #' pre-filtered for checkbox \code{field_type}
 #' @param return_vector logical for whether to return result as a vector
+#' @param return_stripped_text_flag logical for whether to return a flag indicating whether or not
+#' text was stripped from labels
 #'
 #' @importFrom stringi stri_split_fixed
 #' @importFrom tibble as_tibble is_tibble
-#' @importFrom rlang .data
 #' @importFrom cli cli_abort cli_warn
 #'
 #' @keywords internal
 
-parse_labels <- function(string, return_vector = FALSE) {
+parse_labels <- function(string, return_vector = FALSE, return_stripped_text_flag = FALSE) {
   # If string is empty/NA, throw a warning
   if (is.na(string)) {
     cli_warn("Empty string detected for a given multiple choice label.",
@@ -144,23 +145,12 @@ parse_labels <- function(string, return_vector = FALSE) {
   }
 
   # strip html and field embedding
-  out <- strip_html_field_embedding(out)
+  out_stripped <- strip_html_field_embedding(out)
 
-  if (return_vector) {
-    if (all(is.na(out))) {
-      # handle no label case
-      return(c(`NA` = NA_character_))
-    }
+  # Record whether we actually changed any labels to report if return_stripped_text_flag is TRUE
+  stripped_text_flag <- any(out_stripped != out, na.rm = TRUE)
 
-    # labels are odd numbered locations in out
-    res <- out[seq_along(out) %% 2 == 0]
-    # raw are event numbered
-    names(res) <- out[seq_along(out) %% 2 == 1]
-
-    return(res)
-  }
-
-  out <- out %>%
+  out <- out_stripped %>%
     matrix(
       ncol = 2,
       byrow = TRUE,
@@ -168,8 +158,25 @@ parse_labels <- function(string, return_vector = FALSE) {
         c(), # row names
         c("raw", "label") # column names
       )
-    ) %>%
-    as_tibble()
+    )
+
+  if (return_vector) {
+    if (all(is.na(out))) {
+      # handle no label case
+      out <- c(`NA` = NA_character_)
+    } else {
+      tmp <- out
+      out <- tmp[, "label"]
+      names(out) <- tmp[, "raw"]
+    }
+  } else {
+    out <- as_tibble(out)
+  }
+
+  # If stripped_text_flag was requested return a list with output and flag
+  if (return_stripped_text_flag) {
+    return(list(out, stripped_text_flag))
+  }
 
   out
 }
@@ -408,10 +415,19 @@ multi_choice_to_labels <- function(db_data, db_metadata) {
       # Retrieve parse_labels key for given field_name
       parse_labels_output <- parse_labels(
         db_metadata$select_choices_or_calculations[i],
-        return_vector = TRUE
+        return_vector = TRUE,
+        return_stripped_text_flag = TRUE
       )
 
-      check_parsed_labels(parse_labels_output, field_name)
+      # parse_labels returns list with output and flag since we set return_stripped_text_flag so unpack those
+      stripped_text_flag <- parse_labels_output[[2]]
+      parse_labels_output <- parse_labels_output[[1]]
+
+      check_parsed_labels_duplicates(
+        parse_labels_output,
+        field_name,
+        warn_stripped_text = stripped_text_flag
+      )
 
       # Replace values from db_data$(field_name) with label values from
       # parse_labels key

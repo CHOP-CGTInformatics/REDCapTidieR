@@ -269,14 +269,26 @@ check_req_labelled_metadata_fields <- function(supertbl, call = caller_env()) {
 #' a warning message alerting specifying the duplicate labels and REDCap field affected
 #'
 #' @keywords internal
-check_parsed_labels <- function(parsed_labs, field_name, call = caller_env(n = 2)) {
-  if (any(duplicated(parsed_labs))) {
-    dups <- parsed_labs[duplicated(parsed_labs)]
+check_parsed_labels_duplicates <- function(parsed_labels_output,
+                                           field_name,
+                                           warn_stripped_text = FALSE,
+                                           call = caller_env(n = 2)) {
+  if (any(duplicated(parsed_labels_output))) {
+    dups <- parsed_labels_output[duplicated(parsed_labels_output)]
 
     msg <- c(
       "!" = "Multiple values are mapped to the {qty(dups)} label{?s} {.code {dups}} in field {.code {field_name}}",
       "i" = "Consider making the labels for {.code {field_name}} unique in your REDCap project"
     )
+
+    # Add additional info if we stripped text from the labels
+    if (warn_stripped_text) {
+      msg <- c(
+        msg[1],
+        c("i" = "This may happen if the label only contains HTML"),
+        msg[2]
+      )
+    }
 
     cli_warn(
       msg,
