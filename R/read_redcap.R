@@ -152,13 +152,15 @@ read_redcap <- function(redcap_uri,
 
   # Load REDCap Dataset output ----
 
-  db_data <- redcap_read_oneshot(
-    redcap_uri = redcap_uri,
-    token = token,
-    forms = forms_for_api_call,
-    export_survey_fields = export_survey_fields,
-    verbose = !suppress_redcapr_messages
-  )$data
+  db_data <- try_redcapr({
+    redcap_read_oneshot(
+      redcap_uri = redcap_uri,
+      token = token,
+      forms = forms_for_api_call,
+      export_survey_fields = export_survey_fields,
+      verbose = !suppress_redcapr_messages
+    )
+  })
 
   # Check that results were returned
   check_redcap_populated(db_data)
@@ -324,18 +326,23 @@ get_fields_to_drop <- function(db_metadata, form) {
 #' bind_rows filter
 #' @importFrom tidyr nest unnest_wider complete fill
 #' @importFrom tidyselect everything
-#' @importFrom rlang .data
+#' @importFrom rlang .data caller_env
 #' @importFrom purrr map
 #'
 #' @keywords internal
 
 add_metadata <- function(supertbl, db_metadata, redcap_uri, token, suppress_redcapr_messages) {
   # Get instrument labels ----
-  instrument_labs <- redcap_instruments(
-    redcap_uri,
-    token,
-    verbose = !suppress_redcapr_messages
-  )$data %>%
+  instrument_labs <- try_redcapr(
+    {
+      redcap_instruments(
+        redcap_uri,
+        token,
+        verbose = !suppress_redcapr_messages
+      )
+    },
+    call = caller_env()
+  ) %>%
     rename(
       redcap_form_label = "instrument_label",
       redcap_form_name = "instrument_name"

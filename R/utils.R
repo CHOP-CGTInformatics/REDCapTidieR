@@ -48,22 +48,33 @@ add_partial_keys <- function(db_data,
 #'
 #' @importFrom dplyr rename left_join
 #' @importFrom REDCapR redcap_event_instruments redcap_arm_export
+#' @importFrom rlang caller_env
 #'
 #' @keywords internal
 
 link_arms <- function(redcap_uri,
                       token,
                       suppress_redcapr_messages = TRUE) {
-  arms <- redcap_arm_export(redcap_uri, token, verbose = !suppress_redcapr_messages)$data %>%
+  arms <- try_redcapr(
+    {
+      redcap_arm_export(redcap_uri, token, verbose = !suppress_redcapr_messages)
+    },
+    call = caller_env()
+  ) %>%
     # match field name of redcap_event_instruments() output
     rename(arm_num = "arm_number")
 
-  db_event_instruments <- redcap_event_instruments(
-    redcap_uri = redcap_uri,
-    token = token,
-    arms = NULL, # get all arms
-    verbose = !suppress_redcapr_messages
-  )$data
+  db_event_instruments <- try_redcapr(
+    {
+      redcap_event_instruments(
+        redcap_uri = redcap_uri,
+        token = token,
+        arms = NULL, # get all arms
+        verbose = !suppress_redcapr_messages
+      )
+    },
+    call = caller_env()
+  )
 
   left_join(db_event_instruments, arms, by = "arm_num")
 }
@@ -490,7 +501,7 @@ try_redcapr <- function(expr, call = caller_env()) {
   error$token <- env$token
 
   # Defaults for other error components
-  error$message <- c("x" = "The REDCapR metadata export operation was not successful.")
+  error$message <- c("x" = "The {.pkg REDCapR} export operation was not successful.")
   error$class <- "REDCapTidieR_cond"
   error$info <- c(
     "!" = "An unexpected error occured.",
@@ -548,7 +559,9 @@ try_redcapr <- function(expr, call = caller_env()) {
       c(error$message, error$info),
       call = error$call,
       parent = error$parent,
-      class = error$class
+      class = error$class,
+      redcapr_status_code = out$status_code,
+      redcapr_outcome_message = out$outcome_message
     )
   }
 

@@ -202,3 +202,26 @@ test_that("update_field_names handles metadata without checkbox fields", {
 
   expect_equal(out$field_label, test_meta$field_label)
 })
+
+test_that("try_redcapr works", {
+  # Passes along data when success is TRUE
+  try_redcapr(list(success = TRUE, data = "some_data")) %>%
+    expect_equal("some_data")
+
+  # Throws expected errors for internal REDCapR errors
+  try_redcapr(stop()) %>%
+    expect_error(class = "unexpected_error")
+
+  # Throws expected errors when REDCapR returns success = FALSE
+  try_redcapr(stop("Could not resolve host")) %>%
+    expect_error(class = "cannot_resolve_host")
+
+  try_redcapr(list(success = FALSE, status_code = 403)) %>%
+    expect_error(class = "api_token_rejected")
+
+  try_redcapr(list(success = FALSE, status_code = 405)) %>%
+    expect_error(class = "cannot_post")
+
+  try_redcapr(list(success = FALSE, status_code = "")) %>%
+    expect_error(class = "unexpected_error")
+})
