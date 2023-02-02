@@ -269,35 +269,61 @@ check_req_labelled_metadata_fields <- function(supertbl, call = caller_env()) {
 #' a warning message alerting specifying the duplicate labels and REDCap field affected
 #'
 #' @keywords internal
-check_parsed_labels_duplicates <- function(parsed_labels_output,
-                                           field_name,
-                                           warn_stripped_text = FALSE,
-                                           call = caller_env(n = 2)) {
-  if (any(duplicated(parsed_labels_output))) {
+check_parsed_labels <- function(parsed_labels_output,
+                                field_name,
+                                warn_stripped_text = FALSE,
+                                call = caller_env(n = 2)) {
+  # Are any labels ""
+  blank_labs <- any(parsed_labels_output == "", na.rm = TRUE)
+  # Are any labels duplicated
+  dup_labs <- any(duplicated(parsed_labels_output), na.rm = TRUE)
+
+  # If neither early return
+  if (!blank_labs && !dup_labs) {
+    return(NULL)
+  }
+
+  # Only issue duplicate label warning if not issuing blank label warning
+  if (blank_labs) {
+    vals <- names(parsed_labels_output[parsed_labels_output == ""])
+
+    msg <- c(
+      "!" = "The {qty(vals)} value{?s} {.code {vals}} in field {.code {field_name}} are mapped to a blank label `''`"
+    )
+
+    msg_info <- c(
+      "i" = "Consider providing labels or setting `raw_or_label = 'raw'`"
+    )
+
+    class <- "blank_labels"
+  } else {
     dups <- parsed_labels_output[duplicated(parsed_labels_output)]
 
     msg <- c(
-      "!" = "Multiple values are mapped to the {qty(dups)} label{?s} {.code {dups}} in field {.code {field_name}}",
+      "!" = "Multiple values are mapped to the {qty(dups)} label{?s} {.code {dups}} in field {.code {field_name}}"
+    )
+
+    msg_info <- c(
       "i" = "Consider making the labels for {.code {field_name}} unique in your REDCap project"
     )
 
-    # Add additional info if we stripped text from the labels
-    if (warn_stripped_text) {
-      msg <- c(
-        msg[1],
-        c("i" = "This may happen if the label only contains HTML"),
-        msg[2]
-      )
-    }
+    class <- "duplicate_labels"
+  }
 
-    cli_warn(
-      msg,
-      class = c("duplicate_labels", "REDCapTidieR_cond"),
-      call = call,
-      field = field_name,
-      duplicated_labels = dups
+  # Add additional info if we stripped text from the labels
+  if (warn_stripped_text) {
+    msg_info <- c(
+      c("i" = "This may happen if the label only contains HTML"),
+      msg_info
     )
   }
+
+  cli_warn(
+    c(msg, msg_info),
+    class = c(class, "REDCapTidieR_cond"),
+    call = call,
+    field = field_name
+  )
 }
 
 #' @title

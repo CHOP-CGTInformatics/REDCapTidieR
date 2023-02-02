@@ -423,7 +423,7 @@ multi_choice_to_labels <- function(db_data, db_metadata) {
       stripped_text_flag <- parse_labels_output[[2]]
       parse_labels_output <- parse_labels_output[[1]]
 
-      check_parsed_labels_duplicates(
+      check_parsed_labels(
         parse_labels_output,
         field_name,
         warn_stripped_text = stripped_text_flag
