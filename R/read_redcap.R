@@ -83,78 +83,15 @@ read_redcap <- function(redcap_uri,
 
   # Load REDCap Metadata ----
   # Capture unexpected metadata API call errors
-  try_fetch(
-    {
-      call <- current_call()
+  db_metadata <- try_redcapr({
+    redcap_metadata_read(
+      redcap_uri = redcap_uri,
+      token = token,
+      verbose = !suppress_redcapr_messages
+    )
+  })
 
-      db_metadata <- redcap_metadata_read(
-        redcap_uri = redcap_uri,
-        token = token,
-        verbose = !suppress_redcapr_messages
-      )
-
-      # Throw an error if the API calling function finished successfully
-      # but the API call itself was not successful
-      if (db_metadata$success == FALSE) {
-        abort(
-          class = c("redcapr_api_call_success_false"),
-          status_code = db_metadata$status_code
-        )
-      }
-    },
-    error = function(cnd) {
-      error_message <- c("x" = "The REDCapR metadata export operation was not successful.")
-
-      # Show original error? (Only do this for unexpected errors)
-      parent <- NULL
-
-      error_class <- union(cnd$class, c("metadata_api_call_failed", "REDCapTidieR_cond"))
-
-      success_false <- "redcapr_api_call_success_false" %in% class(cnd)
-
-      if (success_false && cnd$status_code == 403) {
-        error_info <- c(
-          "!" = "The URL returned the HTTP error code 403 (Forbidden).",
-          "i" = "Are you sure this is the correct API token?",
-          "i" = "API token: `{token}`"
-        )
-        error_class <- c("api_token_rejected", error_class)
-      } else if (success_false && cnd$status_code == 405) {
-        error_info <- c(
-          "!" = "The URL returned the HTTP error code 405 (POST Method not allowed).",
-          "i" = "Are you sure the URI points to an active REDCap API endpoint?",
-          "i" = "URI: `{redcap_uri}`"
-        )
-        error_class <- c("cannot_post", error_class)
-      } else if (cnd$message %>% str_detect("Could not resolve host")) {
-        error_info <- c(
-          "!" = "Could not resolve the hostname.",
-          "i" = "Is there a typo in the URI?",
-          "i" = "URI: `{redcap_uri}`"
-        )
-        error_class <- c("cannot_resolve_host", error_class)
-      } else {
-        error_info <- c(
-          "!" = "An unexpected error occured in {.code read_redcap}.",
-          "i" = "This means that you probably discovered a bug!",
-          "i" = "Please consider submitting a bug report here: {.href https://github.com/CHOP-CGTInformatics/REDCapTidieR/issues}." # nolint: line_length_linter
-        )
-        parent <- cnd
-        error_class <- c("unexpected_error", error_class)
-      }
-
-      error_message <- c(error_message, error_info)
-
-      cli_abort(
-        error_message,
-        call = call,
-        parent = parent,
-        class = error_class
-      )
-    }
-  )
-
-  db_metadata <- db_metadata$data %>%
+  db_metadata <- db_metadata %>%
     filter(.data$field_type != "descriptive")
 
   # Cache unedited db_metadata to reduce dependencies on the order of edits
@@ -215,13 +152,15 @@ read_redcap <- function(redcap_uri,
 
   # Load REDCap Dataset output ----
 
-  db_data <- redcap_read_oneshot(
-    redcap_uri = redcap_uri,
-    token = token,
-    forms = forms_for_api_call,
-    export_survey_fields = export_survey_fields,
-    verbose = !suppress_redcapr_messages
-  )$data
+  db_data <- try_redcapr({
+    redcap_read_oneshot(
+      redcap_uri = redcap_uri,
+      token = token,
+      forms = forms_for_api_call,
+      export_survey_fields = export_survey_fields,
+      verbose = !suppress_redcapr_messages
+    )
+  })
 
   # Check that results were returned
   check_redcap_populated(db_data)
@@ -387,18 +326,23 @@ get_fields_to_drop <- function(db_metadata, form) {
 #' bind_rows filter
 #' @importFrom tidyr nest unnest_wider complete fill
 #' @importFrom tidyselect everything
-#' @importFrom rlang .data
+#' @importFrom rlang .data caller_env
 #' @importFrom purrr map
 #'
 #' @keywords internal
 
 add_metadata <- function(supertbl, db_metadata, redcap_uri, token, suppress_redcapr_messages) {
   # Get instrument labels ----
-  instrument_labs <- redcap_instruments(
-    redcap_uri,
-    token,
-    verbose = !suppress_redcapr_messages
-  )$data %>%
+  instrument_labs <- try_redcapr(
+    {
+      redcap_instruments(
+        redcap_uri,
+        token,
+        verbose = !suppress_redcapr_messages
+      )
+    },
+    call = caller_env()
+  ) %>%
     rename(
       redcap_form_label = "instrument_label",
       redcap_form_name = "instrument_name"
