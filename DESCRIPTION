@@ -34,6 +34,7 @@ Suggests:
     httptest,
     knitr,
     labelled,
+    lintr,
     readr,
     rmarkdown,
     testthat (>= 3.0.0)
