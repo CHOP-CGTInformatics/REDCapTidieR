@@ -285,7 +285,7 @@ check_parsed_labels <- function(parsed_labels_output,
 
   # Only issue duplicate label warning if not issuing blank label warning
   if (blank_labs) {
-    vals <- names(parsed_labels_output[parsed_labels_output == ""])
+    vals <- names(parsed_labels_output[parsed_labels_output == ""]) # nolint: object_usage_linter
 
     msg <- c(
       "!" = "The {qty(vals)} value{?s} {.code {vals}} in field {.code {field_name}} are mapped to a blank label `''`"
@@ -297,7 +297,7 @@ check_parsed_labels <- function(parsed_labels_output,
 
     class <- "blank_labels"
   } else {
-    dups <- parsed_labels_output[duplicated(parsed_labels_output)]
+    dups <- parsed_labels_output[duplicated(parsed_labels_output)] # nolint: object_usage_linter
 
     msg <- c(
       "!" = "Multiple values are mapped to the {qty(dups)} label{?s} {.code {dups}} in field {.code {field_name}}"

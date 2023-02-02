@@ -88,7 +88,7 @@ test_that("check_parsed_labels works", {
 
   expect_equal(cnd$field, "field_name")
 
-  cnd <- check_parsed_labels("", "field_name") %>%
+  cnd <- check_parsed_labels(c(a = ""), "field_name") %>%
     rlang::catch_cnd(classes = "blank_labels")
 
   expect_equal(cnd$field, "field_name")
