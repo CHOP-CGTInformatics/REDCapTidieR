@@ -67,7 +67,7 @@ and returns a tidy <code>tibble</code>.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">parse_labels</span><span class="op">(</span><span class="va">string</span>, return_vector <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">parse_labels</span><span class="op">(</span><span class="va">string</span>, return_vector <span class="op">=</span> <span class="cn">FALSE</span>, return_stripped_text_flag <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -79,6 +79,11 @@ pre-filtered for checkbox <code>field_type</code></p></dd>
 
 <dt>return_vector</dt>
 <dd><p>logical for whether to return result as a vector</p></dd>
+
+
+<dt>return_stripped_text_flag</dt>
+<dd><p>logical for whether to return a flag indicating whether or not
+text was stripped from labels</p></dd>
 
 </dl></div>
     <div class="section level2">
