@@ -49,7 +49,7 @@ check_user_rights <- function(db_data,
   missing_db_metadata <- db_metadata %>%
     select("field_name_updated", "form_name") %>%
     group_by(.data$form_name) %>%
-    filter(!all(.data$field_name_updated %in% db_fields)) |>
+    filter(!all(.data$field_name_updated %in% db_fields)) %>%
     summarise(
       # record if all fields missing for custom warning message
       all_fields_missing = !any(.data$field_name_updated %in% db_fields),
@@ -61,11 +61,11 @@ check_user_rights <- function(db_data,
     missing_db_metadata,
     .f = function(form_name, missing_fields, all_fields_missing) {
       if (all_fields_missing) {
-        cli_text("Instrument {.code {form_name}} returned no data and will be removed from the output.") |>
+        cli_text("Instrument {.code {form_name}} returned no data and will be removed from the output.") %>%
           cli_fmt(collapse = TRUE, strip_newline = TRUE)
       } else {
         cli_text("Instrument {.code {form_name}} is missing {qty(missing_fields)} field{?s}
-                 {.code {missing_fields}}.") |>
+                 {.code {missing_fields}}.") %>%
           cli_fmt(collapse = TRUE, strip_newline = TRUE)
       }
     })
