@@ -1,11 +1,17 @@
 test_that("check_user_rights works", {
   test_data <- tibble::tribble(
-    ~field_1,  ~field_2,
-    "1",       "2"
+    ~record_id, ~field_1,  ~field_2,
+    1,          "1",       "2"
+  )
+
+  test_data_empty <- tibble::tribble(
+    ~record_id,
+    1
   )
 
   test_metadata <- tibble::tribble(
     ~field_name_updated, ~form_name,
+    "record_id",         NA_character_,
     "field_1",           "form_1",
     "field_2",           "form_2",
     "missing_field",     "missing_form",
@@ -13,14 +19,14 @@ test_that("check_user_rights works", {
     "missing_field_3",   "missing_form2"
   )
 
-  readable_metadata <- tibble::tribble(
-    ~field_name_updated,  ~form_name,
-    "field 1",            "form_1",
-    "missing_field",      "missing_form"
+  expect_warning(
+    check_user_rights(test_data, test_metadata),
+    class = "partial_data_access"
   )
 
-  expect_warning(
-    check_user_rights(test_data, test_metadata)
+  expect_error(
+    check_user_rights(test_data_empty, test_metadata),
+    class = "no_data_access"
   )
 })
 

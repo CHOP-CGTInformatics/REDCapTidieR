@@ -9,7 +9,8 @@ function(response) {
     "REDCAPTIDIER_REPEAT_FIRST_INSTRUMENT_API",
     "REDCAPTIDIER_DEEP_DIVE_VIGNETTE_API",
     "SUPERHEROES_REDCAP_API",
-    "REDCAP_URI"
+    "REDCAP_URI",
+    "REDCAPTIDIER_RESTRICTED_ACCESS_API"
   )
 
   real_creds <- Sys.getenv(credentials)
