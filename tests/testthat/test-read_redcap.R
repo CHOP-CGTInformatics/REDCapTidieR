@@ -19,7 +19,8 @@ test_that("read_redcap works for a classic database with a nonrepeating instrume
       # suppress expected warning
       suppressWarnings(classes = c(
         "field_missing_categories",
-        "empty_parse_warning"
+        "empty_parse_warning",
+        "duplicate_labels"
       )) %>%
       filter(redcap_form_name == "nonrepeated") %>%
       select(redcap_data) %>%
@@ -48,7 +49,8 @@ test_that("read_redcap works for a classic database with a repeating instrument"
       # suppress expected warning
       suppressWarnings(classes = c(
         "field_missing_categories",
-        "empty_parse_warning"
+        "empty_parse_warning",
+        "duplicate_labels"
       )) %>%
       filter(redcap_form_name == "repeated") %>%
       select(redcap_data) %>%
@@ -72,7 +74,8 @@ test_that("read_redcap returns checkbox fields", {
       # suppress expected warning
       suppressWarnings(classes = c(
         "field_missing_categories",
-        "empty_parse_warning"
+        "empty_parse_warning",
+        "duplicate_labels"
       )) %>%
       filter(redcap_form_name == "data_field_types") %>%
       select(redcap_data) %>%
@@ -99,7 +102,8 @@ test_that("supplying forms is equivalent to post-hoc filtering for a classic dat
       # suppress expected warning
       suppressWarnings(classes = c(
         "field_missing_categories",
-        "empty_parse_warning"
+        "empty_parse_warning",
+        "duplicate_labels"
       )) %>%
       filter(redcap_form_name == "repeated")
   })
@@ -338,7 +342,8 @@ test_that("read_redcap suppresses events metadata for non-longitudinal database"
     out <- read_redcap(redcap_uri, classic_token) %>%
       suppressWarnings(classes = c(
         "field_missing_categories",
-        "empty_parse_warning"
+        "empty_parse_warning",
+        "duplicate_labels"
       ))
   })
 
@@ -357,7 +362,8 @@ test_that("read_redcap preserves form_name order mirroring original REDCapR meta
     out <- read_redcap(redcap_uri, classic_token) %>%
       suppressWarnings(classes = c(
         "field_missing_categories",
-        "empty_parse_warning"
+        "empty_parse_warning",
+        "duplicate_labels"
       ))
   })
 
@@ -372,7 +378,8 @@ test_that("read_redcap returns expected survey fields", {
     ) %>%
       suppressWarnings(classes = c(
         "field_missing_categories",
-        "empty_parse_warning"
+        "empty_parse_warning",
+        "duplicate_labels"
       ))
   })
 

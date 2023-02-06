@@ -4,13 +4,16 @@
 \alias{parse_labels}
 \title{Parse labels from REDCap metadata into usable formats}
 \usage{
-parse_labels(string, return_vector = FALSE)
+parse_labels(string, return_vector = FALSE, return_stripped_text_flag = FALSE)
 }
 \arguments{
 \item{string}{A \code{db_metadata$select_choices_or_calculations} field
 pre-filtered for checkbox \code{field_type}}
 
 \item{return_vector}{logical for whether to return result as a vector}
+
+\item{return_stripped_text_flag}{logical for whether to return a flag indicating whether or not
+text was stripped from labels}
 }
 \value{
 A tidy \code{tibble} from a matrix giving raw and label outputs to
