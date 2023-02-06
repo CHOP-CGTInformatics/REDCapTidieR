@@ -36,16 +36,16 @@ test_that("multi_choice_to_labels works", {
     db_metadata_classic
   )
 
-  # Expect warning on error variable where a radio button is created for a
-  # descriptive text field
-  expect_warning(
-    multi_choice_to_labels(
-      db_data = db_data_classic,
-      db_metadata = db_metadata_classic
-    ) %>%
-      suppressWarnings(classes = "empty_parse_warning"),
-    class = "field_missing_categories"
-  )
+  # Expect warning on misconfigured variables
+  multi_choice_to_labels(
+    db_data = db_data_classic,
+    db_metadata = db_metadata_classic
+  ) %>%
+    # radio button is created for a descriptive text field
+    expect_warning(class = "empty_parse_warning") %>%
+    expect_warning(class = "field_missing_categories") %>%
+    # radio button with duplicate labels
+    expect_warning(class = "duplicate_labels")
 
   out <- multi_choice_to_labels(
     db_data = db_data_classic,
@@ -53,7 +53,8 @@ test_that("multi_choice_to_labels works", {
   ) %>%
     suppressWarnings(classes = c(
       "empty_parse_warning",
-      "field_missing_categories"
+      "field_missing_categories",
+      "duplicate_labels"
     ))
 
   # Test general structure
@@ -115,6 +116,38 @@ test_that("parse_labels works", {
   # Check that parse_labels can account for splits where no white space exists
   valid_string_no_ws <- "choice_1, one|choice_2, two {abc}|choice_3, <b>three</b>"
   expect_equal(parse_labels(valid_string_no_ws), valid_tibble_output)
+
+  # Check that return_stripped_text_flag works
+
+  ## When html/embedding was stripped
+  expect_equal(
+    parse_labels(valid_string, return_stripped_text_flag = TRUE),
+    list(valid_tibble_output, TRUE)
+  )
+
+  expect_equal(
+    parse_labels(valid_string, return_vector = TRUE, return_stripped_text_flag = TRUE),
+    list(valid_vector_output, TRUE)
+  )
+
+  ## When nothing was stripped
+  valid_string_no_html <- "choice_1, one | choice_2, two | choice_3, three"
+
+  expect_equal(
+    parse_labels(valid_string_no_html, return_stripped_text_flag = TRUE),
+    list(valid_tibble_output, FALSE)
+  )
+
+  expect_equal(
+    parse_labels(valid_string_no_html, return_vector = TRUE, return_stripped_text_flag = TRUE),
+    list(valid_vector_output, FALSE)
+  )
+
+  ## Flag returns FALSE when there were no labels
+  parse_labels(warning_string_1, return_stripped_text_flag = TRUE) |>
+    suppressWarnings(classes = "empty_parse_warning") |>
+    purrr::pluck(2) |>
+    expect_equal(FALSE)
 })
 
 test_that("link_arms works", {
