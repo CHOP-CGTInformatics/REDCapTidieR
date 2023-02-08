@@ -464,3 +464,25 @@ test_that("read_redcap returns S3 object", {
 
   expect_s3_class(out, "redcap_supertbl")
 })
+
+test_that("read_redcap handles access restrictions", {
+  # Warns due to partial data access
+  httptest::with_mock_api({
+    read_redcap(redcap_uri, restricted_access_token) %>%
+      expect_warning(class = "partial_data_access")
+  })
+
+  httptest::with_mock_api({
+    out <- read_redcap(redcap_uri, restricted_access_token) %>%
+      suppressWarnings(classes = "redcap_user_rights")
+  })
+
+  # Response has expected instruments
+  expect_equal(out$redcap_form_name, c("full_access", "remove_phi_access", "deidentify_phi_access"))
+
+  # Errors if only instruments with no access were requested
+  httptest::with_mock_api({
+    read_redcap(redcap_uri, restricted_access_token, forms = "no_access") %>%
+      expect_error(class = "no_data_access")
+  })
+})
