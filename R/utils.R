@@ -510,65 +510,53 @@ strip_html_field_embedding <- function(x) {
 try_redcapr <- function(expr, call = caller_env()) {
   quo <- enquo(expr)
 
-  # List to store components of error so we can look them up unambiguously
-  error <- list()
+  # List to store components of errors/warnings so we can look them up unambiguously
+  condition <- list()
 
   # URI and token we want are in the env associated with expr
   env <- get_env(quo)
-  error$redcap_uri <- env$redcap_uri
-  error$token <- env$token
+  condition$redcap_uri <- env$redcap_uri
+  condition$token <- env$token
 
   # Defaults for other error components
-  error$message <- c("x" = "The {.pkg REDCapR} export operation was not successful.")
-  error$class <- "REDCapTidieR_cond"
-  error$info <- c(
+  condition$message <- c("x" = "The {.pkg REDCapR} export operation was not successful.")
+  condition$class <- "REDCapTidieR_cond"
+  condition$info <- c(
     "!" = "An unexpected error occured.",
     "i" = "This means that you probably discovered a bug!",
     "i" = "Please consider submitting a bug report here: {.href https://github.com/CHOP-CGTInformatics/REDCapTidieR/issues}." # nolint: line_length_linter
   )
-  error$call <- call
-
-  # List to store components of warning so we can look them up unambiguously
-  warning <- list()
-
-  # URI and token we want are in the env associated with expr
-  warning$redcap_uri <- env$redcap_uri
-  warning$token <- env$token
-
-  # Defaults for other error components
-  warning$message <- c("!" = "One of the {.pkg REDCapR} operations produced a warning. See below for details.")
-  warning$class <- "REDCapTidieR_cond"
-  warning$call <- call
+  condition$call <- call
 
   # Try to evaluate expr and handle REDCapR errors
   out <- try_fetch(
     eval_tidy(quo),
     error = function(cnd) {
       if (str_detect(cnd$message, "Could not resolve host")) {
-        error$info <- c(
+        condition$info <- c(
           "!" = "Could not resolve the hostname.",
           "i" = "Is there a typo in the URI?",
-          "i" = "URI: `{error$redcap_uri}`"
+          "i" = "URI: `{condition$redcap_uri}`"
         )
-        error$class <- c("cannot_resolve_host", error$class)
+        condition$class <- c("cannot_resolve_host", condition$class)
       } else {
-        error$parent <- cnd
-        error$class <- c("unexpected_error", error$class)
+        condition$parent <- cnd
+        condition$class <- c("unexpected_error", condition$class)
       }
       cli_abort(
-        c(error$message, error$info),
-        call = error$call,
-        parent = error$parent,
-        class = error$class
+        c(condition$message, condition$info),
+        call = condition$call,
+        parent = condition$parent,
+        class = condition$class
       )
     },
     warning = function(cnd) {
 
       cli_warn(
-        warning$message,
-        call = warning$call,
+        message = c("!" = "One of the {.pkg REDCapR} operations produced a warning. See below for details."),
+        call = condition$call,
         parent = cnd,
-        class = c("unexpected_warning", warning$class)
+        class = c("unexpected_warning", condition$class)
       )
 
       # Muffle warning default since we provide our own
@@ -581,30 +569,30 @@ try_redcapr <- function(expr, call = caller_env()) {
 
   # Handle cases where the API call itself was not successful
   if (out$success == FALSE) {
-    error$class <- c("redcapr_api_call_success_false", error$class)
+    condition$class <- c("redcapr_api_call_success_false", condition$class)
 
     if (out$status_code == 403) {
-      error$info <- c(
+      condition$info <- c(
         "!" = "The URL returned the HTTP error code 403 (Forbidden).",
         "i" = "Are you sure this is the correct API token?",
-        "i" = "API token: `{error$token}`"
+        "i" = "API token: `{condition$token}`"
       )
-      error$class <- c("api_token_rejected", error$class)
+      condition$class <- c("api_token_rejected", condition$class)
     } else if (out$status_code == 405) {
-      error$info <- c(
+      condition$info <- c(
         "!" = "The URL returned the HTTP error code 405 (POST Method not allowed).",
         "i" = "Are you sure the URI points to an active REDCap API endpoint?",
-        "i" = "URI: `{error$redcap_uri}`"
+        "i" = "URI: `{condition$redcap_uri}`"
       )
-      error$class <- c("cannot_post", error$class)
+      condition$class <- c("cannot_post", condition$class)
     } else {
-      error$class <- c("unexpected_error", error$class)
+      condition$class <- c("unexpected_error", condition$class)
     }
     cli_abort(
-      c(error$message, error$info),
-      call = error$call,
-      parent = error$parent,
-      class = error$class,
+      c(condition$message, condition$info),
+      call = condition$call,
+      parent = condition$parent,
+      class = condition$class,
       redcapr_status_code = out$status_code,
       redcapr_outcome_message = out$outcome_message
     )
