@@ -111,7 +111,7 @@ parse_labels <- function(string, return_vector = FALSE, return_stripped_text_fla
   # If string is empty/NA, throw a warning
   if (is.na(string)) {
     cli_warn("Empty string detected for a given multiple choice label.",
-      class = c("empty_parse_warning", "REDCapTidieR_cond")
+             class = c("empty_parse_warning", "REDCapTidieR_cond")
     )
   }
 
@@ -498,9 +498,9 @@ strip_html_field_embedding <- function(x) {
 #' @param expr an expression making a `REDCapR` API call
 #' @param call the calling environment to use in the warning message
 #'
-#' @importFrom rlang caller_env enquo try_fetch eval_tidy get_env
+#' @importFrom rlang caller_env enquo try_fetch eval_tidy get_env zap cnd_muffle
 #' @importFrom stringr str_detect
-#' @importFrom cli cli_abort
+#' @importFrom cli cli_abort cli_warn
 #'
 #' @return
 #' If successful, the `data` element of the `REDCapR` result. Otherwise an error
@@ -528,6 +528,18 @@ try_redcapr <- function(expr, call = caller_env()) {
   )
   error$call <- call
 
+  # List to store components of warning so we can look them up unambiguously
+  warning <- list()
+
+  # URI and token we want are in the env associated with expr
+  warning$redcap_uri <- env$redcap_uri
+  warning$token <- env$token
+
+  # Defaults for other error components
+  warning$message <- c("!" = "The {.pkg REDCapR} export operation produced an unexpected warning.")
+  warning$class <- "REDCapTidieR_cond"
+  warning$call <- call
+
   # Try to evaluate expr and handle REDCapR errors
   out <- try_fetch(
     eval_tidy(quo),
@@ -549,6 +561,21 @@ try_redcapr <- function(expr, call = caller_env()) {
         parent = error$parent,
         class = error$class
       )
+    },
+    warning = function(cnd) {
+
+      cli_warn(
+        warning$message,
+        call = warning$call,
+        parent = cnd,
+        class = c("unexpected_warning", warning$class)
+      )
+
+      # Muffle warning default since we provide our own
+      cnd_muffle(cnd)
+
+      # zap to return object
+      zap()
     }
   )
 
