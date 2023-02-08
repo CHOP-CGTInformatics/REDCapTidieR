@@ -536,7 +536,7 @@ try_redcapr <- function(expr, call = caller_env()) {
   warning$token <- env$token
 
   # Defaults for other error components
-  warning$message <- c("!" = "The {.pkg REDCapR} export operation produced an unexpected warning.")
+  warning$message <- c("!" = "One of the {.pkg REDCapR} operations produced a warning. See below for details.")
   warning$class <- "REDCapTidieR_cond"
   warning$call <- call
 
