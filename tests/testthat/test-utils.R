@@ -257,4 +257,7 @@ test_that("try_redcapr works", {
 
   try_redcapr(list(success = FALSE, status_code = "")) %>%
     expect_error(class = "unexpected_error")
+
+  try_redcapr(list(success = TRUE, data = as.numeric("A"))) %>%
+    expect_warning(class = "unexpected_warning")
 })
