@@ -24,7 +24,7 @@
 #' A `tibble` with 5,966 rows and 4 columns:
 #' \describe{
 #'   \item{record_id}{REDCap record ID}
-#'   \item{redcap_repeat_instance}{REDCap repeat instance}
+#'   \item{redcap_form_instance}{REDCap repeat instance}
 #'   \item{power}{Super power}
 #'   \item{form_status_complete}{REDCap instrument completed?}
 #' }

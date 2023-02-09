@@ -33,7 +33,7 @@ clean_redcap_long <- function(db_data_long,
   # Check if database supplied contains any repeating instruments to map onto
   # `redcap_repeat_*` variables
 
-  has_repeating <- if ("redcap_repeat_instance" %in% names(db_data_long)) {
+  has_repeat_forms <- if ("redcap_repeat_instance" %in% names(db_data_long)) {
     TRUE
   } else {
     FALSE
@@ -43,12 +43,12 @@ clean_redcap_long <- function(db_data_long,
   assert_data_frame(db_data_long)
   assert_data_frame(db_metadata_long)
 
-  if (has_repeating) {
-    check_repeat_and_nonrepeat(db_data_long)
+  if (has_repeat_forms) {
+    # check_repeat_and_nonrepeat(db_data_long)
   }
 
   ## Repeating Instruments Logic ----
-  if (has_repeating) {
+  if (has_repeat_forms) {
     repeated_forms <- db_data_long %>%
       filter(!is.na(.data$redcap_repeat_instrument)) %>%
       pull(.data$redcap_repeat_instrument) %>%
@@ -75,7 +75,7 @@ clean_redcap_long <- function(db_data_long,
     pull(.data$form_name) %>%
     unique()
 
-  if (has_repeating) {
+  if (has_repeat_forms) {
     nonrepeated_forms <- setdiff(
       nonrepeated_forms,
       repeated_forms
@@ -96,7 +96,7 @@ clean_redcap_long <- function(db_data_long,
     structure = "nonrepeating"
   )
 
-  if (has_repeating) {
+  if (has_repeat_forms) {
     rbind(repeated_forms_tibble, nonrepeated_forms_tibble)
   } else {
     nonrepeated_forms_tibble
@@ -137,11 +137,7 @@ distill_nonrepeat_table_long <- function(form_name,
   # Repeating Instrument Check ----
   # Check if database supplied contains any repeating instruments to map onto
   # `redcap_repeat_*` variables
-  has_repeating <- if ("redcap_repeat_instance" %in% names(db_data_long)) {
-    TRUE
-  } else {
-    FALSE
-  }
+  has_repeat_forms <- "redcap_form_instance" %in% names(db_data_long)
 
   my_record_id <- names(db_data_long)[1]
   my_form <- form_name
@@ -171,11 +167,11 @@ distill_nonrepeat_table_long <- function(form_name,
 
   # Setup data for loop redcap_arm linking
   db_data_long <- db_data_long %>%
-    add_partial_keys(.data$redcap_event_name)
+    add_partial_keys(var = .data$redcap_event_name)
 
-  if (has_repeating) {
+  if("redcap_form_instance" %in% names(db_data_long)){
     db_data_long <- db_data_long %>%
-      filter(is.na(.data$redcap_repeat_instance))
+      filter(is.na(.data$redcap_form_instance))
   }
 
   # Find events associated with instrument
@@ -188,9 +184,9 @@ distill_nonrepeat_table_long <- function(form_name,
 
   # Final aesthetic cleanup
   out <- db_data_long %>%
-    select(all_of(my_fields), "redcap_event", "redcap_arm") %>%
+    select(all_of(my_fields), any_of(c("redcap_event", "redcap_arm", "redcap_form_instance", "redcap_event_instance"))) %>%
     relocate(
-      c("redcap_event", "redcap_arm"),
+      any_of(c("redcap_event", "redcap_arm", "redcap_form_instance", "redcap_event_instance")),
       .after = !!my_record_id
     ) %>%
     rename("redcap_survey_timestamp" = any_of(paste0(my_form, "_timestamp"))) %>%
@@ -202,6 +198,22 @@ distill_nonrepeat_table_long <- function(form_name,
   if (!any(linked_arms$unique_event_name %>% str_detect("arm_2"))) {
     out <- out %>%
       select(-"redcap_arm")
+  }
+
+  # Remove redcap_form_instance arm if necessary
+  if ("redcap_form_instance" %in% names(out)) {
+    if (all(is.na(out$redcap_form_instance))) {
+      out <- out %>%
+        select(-"redcap_form_instance")
+    }
+  }
+
+  # Remove redcap_event_instance if necessary
+  if ("redcap_event_instance" %in% names(out)) {
+    if (all(is.na(out$redcap_event_instance))) {
+      out <- out %>%
+        select(-"redcap_event_instance")
+    }
   }
 
   out %>%
@@ -266,9 +278,9 @@ distill_repeat_table_long <- function(form_name,
 
   # Setup data for loop redcap_arm linking
   db_data_long <- db_data_long %>%
-    add_partial_keys(.data$redcap_event_name) %>%
+    add_partial_keys(var = .data$redcap_event_name) %>%
     filter(
-      !is.na(.data$redcap_repeat_instance) &
+      !is.na(.data$redcap_form_instance) &
         .data$redcap_repeat_instrument == my_form
     )
 
@@ -285,12 +297,10 @@ distill_repeat_table_long <- function(form_name,
     filter(.data$redcap_repeat_instrument == my_form) %>%
     select(
       all_of(my_fields),
-      "redcap_repeat_instance", "redcap_event", "redcap_arm"
+      any_of(c("redcap_event", "redcap_arm", "redcap_form_instance", "redcap_event_instance")),
     ) %>%
     relocate(
-      "redcap_repeat_instance",
-      "redcap_event",
-      "redcap_arm",
+      any_of(c("redcap_event", "redcap_arm", "redcap_form_instance", "redcap_event_instance")),
       .after = !!my_record_id
     ) %>%
     rename("redcap_survey_timestamp" = any_of(paste0(my_form, "_timestamp"))) %>%
@@ -302,6 +312,22 @@ distill_repeat_table_long <- function(form_name,
   if (!any(linked_arms$unique_event_name %>% str_detect("arm_2"))) {
     out <- out %>%
       select(-"redcap_arm")
+  }
+
+  # Remove redcap_form_instance arm if necessary
+  if ("redcap_form_instance" %in% names(out)) {
+    if (all(is.na(out$redcap_form_instance))) {
+      out <- out %>%
+        select(-"redcap_form_instance")
+    }
+  }
+
+  # Remove redcap_event_instance if necessary
+  if ("redcap_event_instance" %in% names(out)) {
+    if (all(is.na(out$redcap_event_instance))) {
+      out <- out %>%
+        select(-"redcap_event_instance")
+    }
   }
 
   out %>%

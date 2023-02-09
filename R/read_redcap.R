@@ -193,7 +193,7 @@ read_redcap <- function(redcap_uri,
       # Drop repeating fields if there are no remaining repeating instruments
       if (all(is.na(db_data$redcap_repeat_instrument))) {
         db_data <- db_data %>%
-          select(-"redcap_repeat_instrument", -"redcap_repeat_instance")
+          select(-"redcap_repeat_instrument", -"redcap_form_instance")
       }
     }
   }
@@ -449,7 +449,7 @@ add_event_mapping <- function(supertbl, linked_arms) {
 calc_metadata_stats <- function(data) {
   excluded_fields <- c(
     get_record_id_field(data),
-    "redcap_repeat_instance", "redcap_event",
+    "redcap_form_instance", "redcap_event",
     "redcap_arm", "form_status_complete"
   )
 

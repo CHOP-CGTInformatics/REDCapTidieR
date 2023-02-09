@@ -36,14 +36,10 @@ clean_redcap <- function(db_data,
   # Check if database supplied contains any repeating instruments to map onto `
   # redcap_repeat_*` variables
 
-  has_repeating <- if ("redcap_repeat_instance" %in% names(db_data)) {
-    TRUE
-  } else {
-    FALSE
-  }
+  has_repeat_forms <- "redcap_repeat_instance" %in% names(db_data)
 
   ## Repeating Instruments Logic ----
-  if (has_repeating) {
+  if (has_repeat_forms) {
     repeated_forms <- db_data %>%
       filter(!is.na(.data$redcap_repeat_instrument)) %>%
       pull(.data$redcap_repeat_instrument) %>%
@@ -68,7 +64,7 @@ clean_redcap <- function(db_data,
     pull(.data$form_name) %>%
     unique()
 
-  if (has_repeating) {
+  if (has_repeat_forms) {
     nonrepeated_forms <- setdiff(
       nonrepeated_forms,
       repeated_forms
@@ -88,7 +84,7 @@ clean_redcap <- function(db_data,
     structure = "nonrepeating"
   )
 
-  if (has_repeating) {
+  if (has_repeat_forms) {
     rbind(repeated_forms_tibble, nonrepeated_forms_tibble)
   } else {
     nonrepeated_forms_tibble
@@ -125,11 +121,7 @@ distill_nonrepeat_table <- function(form_name,
   # Repeating Instrument Check ----
   # Check if database supplied contains any repeating instruments to map onto
   # `redcap_repeat_*` variables
-  has_repeating <- if ("redcap_repeat_instance" %in% names(db_data)) {
-    TRUE
-  } else {
-    FALSE
-  }
+  has_repeat_forms <- "redcap_form_instance" %in% names(db_data)
 
   my_record_id <- names(db_data)[1]
   my_form <- form_name
@@ -157,18 +149,30 @@ distill_nonrepeat_table <- function(form_name,
     my_fields <- c(my_fields, "redcap_survey_identifier")
   }
 
-  if (has_repeating) {
+  if("redcap_repeat_instance" %in% names(db_data)){
     db_data <- db_data %>%
       filter(is.na(.data$redcap_repeat_instance))
   }
 
-  db_data %>%
-    select(all_of(my_fields)) %>%
+  out <- db_data %>%
+    add_partial_keys() %>%
+    select(all_of(my_fields), any_of(c("redcap_event", "redcap_arm", "redcap_form_instance", "redcap_event_instance"))) %>%
+    relocate(any_of(c("redcap_event", "redcap_arm", "redcap_form_instance", "redcap_event_instance")), .after = my_record_id) %>%
     rename("redcap_survey_timestamp" = any_of(paste0(my_form, "_timestamp"))) %>%
     relocate(any_of("redcap_survey_timestamp"), .after = everything()) %>%
     rename("form_status_complete" = paste0(my_form, "_complete")) %>%
     relocate("form_status_complete", .after = everything()) %>%
     tibble()
+
+  # Remove redcap_form_instance if necessary
+  if ("redcap_form_instance" %in% names(out)){
+    if (all(is.na(out$redcap_form_instance))){
+      out <- out %>%
+        select(-"redcap_form_instance")
+    }
+  }
+
+  out
 }
 
 #' @title
@@ -225,12 +229,13 @@ distill_repeat_table <- function(form_name,
   }
 
   db_data %>%
+    add_partial_keys() %>%
     filter(
-      !is.na(.data$redcap_repeat_instance) &
+      !is.na(.data$redcap_form_instance) &
         .data$redcap_repeat_instrument == my_form
     ) %>%
-    select(all_of(my_fields), "redcap_repeat_instance") %>%
-    relocate("redcap_repeat_instance", .after = all_of(my_record_id)) %>%
+    select(all_of(my_fields), "redcap_form_instance") %>%
+    relocate("redcap_form_instance", .after = all_of(my_record_id)) %>%
     rename("redcap_survey_timestamp" = any_of(paste0(my_form, "_timestamp"))) %>%
     relocate(any_of("redcap_survey_timestamp"), .after = everything()) %>%
     rename("form_status_complete" = paste0(my_form, "_complete")) %>%

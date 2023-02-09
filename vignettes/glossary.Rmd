@@ -49,7 +49,7 @@ Below we provide find a rough mapping of REDCap concepts to their corresponding 
 |                                 |                                                                                                          |
 |                                 | (only present if the [project](#project) is [longitudinal](#longitudinal-project) with multiple arms)    |
 +---------------------------------+----------------------------------------------------------------------------------------------------------+
-| [Repeat](#repeating) instance   | `redcap_repeat_instance` [column](#column) of a [data tibble](#data-tibble)                              |
+| [Repeat](#repeating) instance   | `redcap_form_instance` [column](#column) of a [data tibble](#data-tibble)                              |
 |                                 |                                                                                                          |
 |                                 | (only present if the [instrument](#instrument) is [repeating](#repeating))                               |
 +---------------------------------+----------------------------------------------------------------------------------------------------------+
@@ -143,7 +143,7 @@ The level of detail that a specific [row](#row) in a [data tibble](#data-tibble)
 
 ### Identifier column {#identifier-column}
 
-A [column](#column) in the [data tibble](#data-tibble) that serves to partially identify the entity described in a [row](#row). The [record](#record) ID column is always present in the data tibble. Depending on the [structure](#structure) of the [project](#project) ([classic](#classic-project) vs. [longitudinal](#longitudinal-project) vs. longitudinal with [arms](#arm)) and the structure of the [instrument](#instrument) ([nonrepeating](#nonrepeating) vs [repeating](#repeating)) there may be additional identifier columns, including `redcap_event`, `redcap_arm`, and/or `redcap_repeat_instance`. Taken together, the identifier columns form a [composite primary key](#composite-primary-key). See also: the section [Longitudinal REDCap projects](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/diving_deeper.html#longitudinal-redcap-projects) in the [Diving Deeper vignette](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/diving_deeper.html). <a onclick="history.back()">↩︎</a>
+A [column](#column) in the [data tibble](#data-tibble) that serves to partially identify the entity described in a [row](#row). The [record](#record) ID column is always present in the data tibble. Depending on the [structure](#structure) of the [project](#project) ([classic](#classic-project) vs. [longitudinal](#longitudinal-project) vs. longitudinal with [arms](#arm)) and the structure of the [instrument](#instrument) ([nonrepeating](#nonrepeating) vs [repeating](#repeating)) there may be additional identifier columns, including `redcap_event`, `redcap_arm`, and/or `redcap_form_instance`. Taken together, the identifier columns form a [composite primary key](#composite-primary-key). See also: the section [Longitudinal REDCap projects](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/diving_deeper.html#longitudinal-redcap-projects) in the [Diving Deeper vignette](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/diving_deeper.html). <a onclick="history.back()">↩︎</a>
 
 ### Import {#import}
 

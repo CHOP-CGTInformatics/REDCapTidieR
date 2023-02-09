@@ -101,7 +101,7 @@ test_that("distill_nonrepeat_table_long tibble contains expected columns for lon
 
   # Check columns expected to be missing aren't included
   expect_false(
-    any(c("redcap_repeat_instrument", "redcap_repeat_instance") %in% names(out))
+    any(c("redcap_repeat_instrument", "redcap_form_instance") %in% names(out))
   )
 })
 
@@ -137,7 +137,7 @@ test_that(paste(
 
   # Check columns expected to be missing aren't included
   expect_false(
-    any(c("redcap_repeat_instrument", "redcap_repeat_instance", "redcap_arm") %in% names(out))
+    any(c("redcap_repeat_instrument", "redcap_form_instance", "redcap_arm") %in% names(out))
   )
 })
 
@@ -161,7 +161,7 @@ test_that("distill_repeat_table_long returns tables for REDCap dbs with arms", {
   # Check for expected longitudinal arms columns
   expect_true(
     all(
-      c("redcap_repeat_instance", "redcap_event", "redcap_arm") %in% names(out)
+      c("redcap_form_instance", "redcap_event", "redcap_arm") %in% names(out)
     )
   )
 
@@ -195,7 +195,7 @@ test_that("distill_repeat_table_long no arms returns tables  for REDCap dbs with
 
   # Check for expected longitudinal no arms columns
   expect_true(
-    all(c("redcap_repeat_instance", "redcap_event") %in% names(out))
+    all(c("redcap_form_instance", "redcap_event") %in% names(out))
   )
 
   # Check partial keys are filled out
