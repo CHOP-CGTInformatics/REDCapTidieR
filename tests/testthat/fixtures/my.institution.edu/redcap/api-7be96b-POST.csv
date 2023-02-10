@@ -1,4 +1,4 @@
-record_id,redcap_repeat_instrument,redcap_form_instance,redcap_survey_identifier,nonrepeat_1,nonrepeat_2,nonrepeated_complete,repeat_1,repeat_2,repeated_complete
+record_id,redcap_repeat_instrument,redcap_repeat_instance,redcap_survey_identifier,nonrepeat_1,nonrepeat_2,nonrepeated_complete,repeat_1,repeat_2,repeated_complete
 1,,,,1,2,0,,,
 1,repeated,1,,,,,1,2,0
 1,repeated,2,,,,,3,4,0
