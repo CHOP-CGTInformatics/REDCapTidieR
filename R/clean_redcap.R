@@ -84,7 +84,7 @@ clean_redcap <- function(db_data,
     structure = "nonrepeating"
   )
 
-  if (has_repeat_forms) {
+  if ("redcap_repeat_instance" %in% names(db_data)) {
     rbind(repeated_forms_tibble, nonrepeated_forms_tibble)
   } else {
     nonrepeated_forms_tibble
@@ -121,7 +121,7 @@ distill_nonrepeat_table <- function(form_name,
   # Repeating Instrument Check ----
   # Check if database supplied contains any repeating instruments to map onto
   # `redcap_repeat_*` variables
-  has_repeat_forms <- "redcap_form_instance" %in% names(db_data)
+  has_repeat_forms <- "redcap_repeat_instance" %in% names(db_data)
 
   my_record_id <- names(db_data)[1]
   my_form <- form_name

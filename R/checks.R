@@ -126,7 +126,7 @@ check_repeat_and_nonrepeat <- function(db_data, call = caller_env()) {
   # Step (1)
   safe_cols <- c(
     names(db_data)[1], "redcap_event_name",
-    "redcap_repeat_instrument", "redcap_form_instance"
+    "redcap_repeat_instrument", "redcap_repeat_instance"
   )
 
   # Step (2)
