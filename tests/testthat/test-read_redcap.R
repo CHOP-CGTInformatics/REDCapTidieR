@@ -486,3 +486,42 @@ test_that("read_redcap handles access restrictions", {
       expect_error(class = "no_data_access")
   })
 })
+
+test_that("read_redcap returns expected vals from repeating events databases", {
+  # Warns due to partial data access
+  httptest::with_mock_api({
+    out <- read_redcap(redcap_uri, repeat_events_token)
+  })
+
+  nonrepeat_out <- out %>%
+    filter(redcap_form_name == "nr_instrument") %>%
+    select(redcap_data) %>%
+    pluck(1,1)
+
+  repeat_out <- out %>%
+    filter(redcap_form_name == "r_instrument") %>%
+    select(redcap_data) %>%
+    pluck(1,1)
+
+  expected_nonrepeat_cols <- c(
+    "record_id",
+    "redcap_event",
+    "redcap_event_instance",
+    "form_status_complete"
+  )
+
+  expected_repeat_cols <- c(
+    "record_id",
+    "redcap_event",
+    "redcap_form_instance",
+    "form_status_complete"
+  )
+
+  expect_true(all(expected_nonrepeat_cols %in% names(nonrepeat_out)))
+  expect_s3_class(nonrepeat_out, "data.frame")
+  expect_true(nrow(nonrepeat_out) > 0)
+
+  expect_true(all(expected_repeat_cols %in% names(repeat_out)))
+  expect_s3_class(repeat_out, "data.frame")
+  expect_true(nrow(repeat_out) > 0)
+})
