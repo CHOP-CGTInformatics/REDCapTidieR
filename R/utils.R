@@ -55,6 +55,7 @@ add_partial_keys <- function(db_data,
 #' A dataframe.
 #'
 #' @importFrom dplyr rename_with mutate case_when pull relocate
+#' @importFrom tidyselect matches
 #'
 #' @keywords internal
 
