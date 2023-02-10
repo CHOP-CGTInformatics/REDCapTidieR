@@ -82,7 +82,7 @@ create_repeat_instance_vars <- function(db_data) {
         repeat_events_check = case_when(is.na(redcap_repeat_instrument) & !is.na(redcap_form_instance) ~ TRUE,
                                         TRUE ~ FALSE)
       ) %>%
-      pull(repeat_events_check) %>%
+      pull(repeat_events_check) %>% #nolint: object_usage_linter
       unique() %>%
       any()
   } else {
@@ -95,7 +95,7 @@ create_repeat_instance_vars <- function(db_data) {
       mutate(
         # create event column first
         redcap_event_instance = case_when(
-          is.na(redcap_repeat_instrument) &  !is.na(redcap_form_instance) ~
+          is.na(redcap_repeat_instrument) &  !is.na(redcap_form_instance) ~ #nolint: object_usage_linter
             redcap_form_instance,
           TRUE ~ NA),
         # then remove event values from form column
@@ -103,7 +103,7 @@ create_repeat_instance_vars <- function(db_data) {
           is.na(redcap_repeat_instrument) & !is.na(redcap_form_instance) ~ NA,
           TRUE ~ redcap_form_instance)
       ) %>%
-      relocate(redcap_event_instance, .after = redcap_form_instance)
+      relocate(redcap_event_instance, .after = redcap_form_instance) #nolint: object_usage_linter
   }
 
   # return

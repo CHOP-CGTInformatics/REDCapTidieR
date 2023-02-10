@@ -169,7 +169,7 @@ distill_nonrepeat_table_long <- function(form_name,
   db_data_long <- db_data_long %>%
     add_partial_keys(var = .data$redcap_event_name)
 
-  if("redcap_form_instance" %in% names(db_data_long)){
+  if (has_repeat_forms) {
     db_data_long <- db_data_long %>%
       filter(is.na(.data$redcap_form_instance))
   }
@@ -184,7 +184,8 @@ distill_nonrepeat_table_long <- function(form_name,
 
   # Final aesthetic cleanup
   out <- db_data_long %>%
-    select(all_of(my_fields), any_of(c("redcap_event", "redcap_arm", "redcap_form_instance", "redcap_event_instance"))) %>%
+    select(all_of(my_fields),
+           any_of(c("redcap_event", "redcap_arm", "redcap_form_instance", "redcap_event_instance"))) %>%
     relocate(
       any_of(c("redcap_event", "redcap_arm", "redcap_form_instance", "redcap_event_instance")),
       .after = !!my_record_id
