@@ -32,21 +32,29 @@ test_that("check_user_rights works", {
 
 test_that("check_repeat_and_nonrepeat works", {
   test_data_longitudinal <- tibble::tribble(
-    ~record_id,  ~redcap_event_name, ~redcap_repeat_instrument, ~redcap_form_instance, ~combination_variable,
+    ~record_id,  ~redcap_event_name, ~redcap_repeat_instrument, ~redcap_repeat_instance, ~combination_variable,
     1,           "event_1",          NA,                        NA,                      "A",
     2,           "event_2",          "combination",             1,                       "B",
     3,           "event_3",          "combination",             2,                       "C"
   )
 
   test_data_not_longitudinal <- tibble::tribble(
-    ~new_record_id,  ~redcap_repeat_instrument, ~redcap_form_instance, ~combination_variable,
+    ~new_record_id,  ~redcap_repeat_instrument, ~redcap_repeat_instance, ~combination_variable,
     1,               NA,                        NA,                      "A",
     2,               "combination",             1,                       "B",
     3,               "combination",             2,                       "C"
   )
 
+  test_repeating_event <- tibble::tribble(
+    ~record_id,  ~redcap_repeat_instrument, ~redcap_repeat_instance, ~combination_variable,
+    1,               NA,                        NA,                      "A",
+    1,               NA,                        1,                       "B",
+    2,               "combination",             2,                       NA
+  )
+
   expect_error(check_repeat_and_nonrepeat(db_data = test_data_longitudinal))
   expect_error(check_repeat_and_nonrepeat(db_data = test_data_not_longitudinal))
+  expect_no_error(check_repeat_and_nonrepeat(db_data = test_repeating_event))
 })
 
 test_that("check_redcap_populated works", {
