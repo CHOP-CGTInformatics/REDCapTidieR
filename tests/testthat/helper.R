@@ -29,4 +29,3 @@ repeat_first_instrument_token <- get_fake_credentials("REDCAPTIDIER_REPEAT_FIRST
 restricted_access_token <- get_fake_credentials("REDCAPTIDIER_RESTRICTED_ACCESS_API")
 repeat_events_token <- Sys.getenv("REDCAPTIDIER_REPEATING_EVENT_API")
 redcap_uri <- get_fake_credentials("REDCAP_URI")
-

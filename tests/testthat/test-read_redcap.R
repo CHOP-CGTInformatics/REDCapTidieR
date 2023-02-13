@@ -496,12 +496,12 @@ test_that("read_redcap returns expected vals from repeating events databases", {
   nonrepeat_out <- out %>%
     filter(redcap_form_name == "nr_instrument") %>%
     select(redcap_data) %>%
-    pluck(1,1)
+    pluck(1, 1)
 
   repeat_out <- out %>%
     filter(redcap_form_name == "r_instrument") %>%
     select(redcap_data) %>%
-    pluck(1,1)
+    pluck(1, 1)
 
   expected_nonrepeat_cols <- c(
     "record_id",

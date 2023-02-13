@@ -104,7 +104,7 @@ create_repeat_instance_vars <- function(db_data) {
           is.na(redcap_repeat_instrument) & !is.na(redcap_form_instance) ~ NA,
           TRUE ~ redcap_form_instance)
       ) %>%
-      relocate(.data$redcap_event_instance, .after = .data$redcap_form_instance) #nolint: object_usage_linter
+      relocate("redcap_event_instance", .after = "redcap_form_instance") #nolint: object_usage_linter
   }
 
   # return
