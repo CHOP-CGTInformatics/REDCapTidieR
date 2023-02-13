@@ -161,7 +161,7 @@ distill_nonrepeat_table <- function(form_name,
     ) %>%
     relocate(
       any_of(c("redcap_event", "redcap_arm", "redcap_form_instance", "redcap_event_instance")),
-      .after = my_record_id) %>%
+      .after = all_of(my_record_id)) %>%
     rename("redcap_survey_timestamp" = any_of(paste0(my_form, "_timestamp"))) %>%
     relocate(any_of("redcap_survey_timestamp"), .after = everything()) %>%
     rename("form_status_complete" = paste0(my_form, "_complete")) %>%
@@ -239,7 +239,7 @@ distill_repeat_table <- function(form_name,
         .data$redcap_repeat_instrument == my_form
     ) %>%
     select(all_of(my_fields), "redcap_form_instance") %>%
-    relocate("redcap_form_instance", .after = my_record_id) %>%
+    relocate("redcap_form_instance", .after = all_of(my_record_id)) %>%
     rename("redcap_survey_timestamp" = any_of(paste0(my_form, "_timestamp"))) %>%
     relocate(any_of("redcap_survey_timestamp"), .after = everything()) %>%
     rename("form_status_complete" = paste0(my_form, "_complete")) %>%
