@@ -84,7 +84,7 @@ clean_redcap <- function(db_data,
     structure = "nonrepeating"
   )
 
-  if ("redcap_repeat_instance" %in% names(db_data)) {
+  if (has_repeat_forms) {
     rbind(repeated_forms_tibble, nonrepeated_forms_tibble)
   } else {
     nonrepeated_forms_tibble
@@ -149,7 +149,7 @@ distill_nonrepeat_table <- function(form_name,
     my_fields <- c(my_fields, "redcap_survey_identifier")
   }
 
-  if ("redcap_repeat_instance" %in% names(db_data)) {
+  if (has_repeat_forms) {
     db_data <- db_data %>%
       filter(is.na(.data$redcap_repeat_instance))
   }
