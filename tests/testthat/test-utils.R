@@ -91,8 +91,6 @@ test_that("parse_labels works", {
 
   invalid_string_1 <- "raw, label | that has | pipes but no other | commas"
 
-  invalid_string_2 <- "raw, label | structure, | with odd, matrix dimensions"
-
   warning_string_1 <- NA_character_
 
   expect_equal(parse_labels(valid_string), valid_tibble_output)
@@ -104,18 +102,20 @@ test_that("parse_labels works", {
     parse_labels(invalid_string_1),
     class = "comma_parse_error"
   )
-  expect_error(
-    parse_labels(invalid_string_2),
-    class = "matrix_parse_error"
-  )
   expect_warning(
     parse_labels(warning_string_1),
     class = "empty_parse_warning"
   )
 
   # Check that parse_labels can account for splits where no white space exists
-  valid_string_no_ws <- "choice_1, one|choice_2, two {abc}|choice_3, <b>three</b>"
-  expect_equal(parse_labels(valid_string_no_ws), valid_tibble_output)
+
+  ## between pipes
+  valid_string_no_ws1 <- "choice_1, one|choice_2, two {abc}|choice_3, <b>three</b>"
+  expect_equal(parse_labels(valid_string_no_ws1), valid_tibble_output)
+
+  ## between commas
+  valid_string_no_ws2 <- "choice_1,one|choice_2,two {abc}|choice_3,<b>three</b>"
+  expect_equal(parse_labels(valid_string_no_ws2), valid_tibble_output)
 
   # Check that return_stripped_text_flag works
 

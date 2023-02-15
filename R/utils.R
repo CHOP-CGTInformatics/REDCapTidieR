@@ -217,7 +217,8 @@ parse_labels <- function(string, return_vector = FALSE, return_stripped_text_fla
   # split on the _first_ comma in each element
   out <- out %>%
     unlist() %>%
-    stri_split_fixed(pattern = ", ", n = 2) %>% # Split by first ","
+    stri_split_fixed(pattern = ",", n = 2) %>% # Split by first ","
+    lapply(trimws) %>%
     unlist()
 
   # Check if vector is even for matrix creation. If not, then fail.
