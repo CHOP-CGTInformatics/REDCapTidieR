@@ -488,7 +488,6 @@ test_that("read_redcap handles access restrictions", {
 })
 
 test_that("read_redcap returns expected vals from repeating events databases", {
-  # Warns due to partial data access
   httptest::with_mock_api({
     out <- read_redcap(redcap_uri, repeat_events_token)
   })
@@ -518,10 +517,10 @@ test_that("read_redcap returns expected vals from repeating events databases", {
   )
 
   expect_true(all(expected_nonrepeat_cols %in% names(nonrepeat_out)))
-  expect_s3_class(nonrepeat_out, "data.frame")
+  expect_s3_class(nonrepeat_out, "tbl")
   expect_true(nrow(nonrepeat_out) > 0)
 
   expect_true(all(expected_repeat_cols %in% names(repeat_out)))
-  expect_s3_class(repeat_out, "data.frame")
+  expect_s3_class(repeat_out, "tbl")
   expect_true(nrow(repeat_out) > 0)
 })
