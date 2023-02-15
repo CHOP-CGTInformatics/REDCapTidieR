@@ -157,7 +157,7 @@ distill_nonrepeat_table <- function(form_name,
   out <- db_data %>%
     add_partial_keys() %>%
     select(
-      all_of(my_fields), any_of(c("redcap_event", "redcap_arm", "redcap_form_instance", "redcap_event_instance"))
+      all_of(my_fields), any_of(c("redcap_form_instance"))
     ) %>%
     relocate(
       any_of(c("redcap_event", "redcap_arm", "redcap_form_instance", "redcap_event_instance")),

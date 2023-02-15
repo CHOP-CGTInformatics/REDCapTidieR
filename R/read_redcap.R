@@ -449,7 +449,7 @@ add_event_mapping <- function(supertbl, linked_arms) {
 calc_metadata_stats <- function(data) {
   excluded_fields <- c(
     get_record_id_field(data),
-    "redcap_form_instance", "redcap_event",
+    "redcap_form_instance", "redcap_event_instance", "redcap_event",
     "redcap_arm", "form_status_complete"
   )
 
