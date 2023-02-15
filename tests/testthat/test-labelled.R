@@ -67,6 +67,7 @@ test_that("make_labelled applies all predefined labeles", {
 
   supertbl$redcap_data <- list(tibble::tribble(
     ~redcap_form_instance,
+    ~redcap_event_instance,
     ~redcap_event,
     ~redcap_arm,
     ~redcap_survey_timestamp,
@@ -148,7 +149,8 @@ test_that("make_labelled applies all predefined labeles", {
   data_labs <- labelled::var_label(out$redcap_data[[1]])
 
   expected_data_labs <- list(
-    redcap_form_instance = "REDCap Repeat Instance",
+    redcap_form_instance = "REDCap Form Instance",
+    redcap_event_instance = "REDCap Event Instance",
     redcap_event = "REDCap Event",
     redcap_arm = "REDCap Arm",
     redcap_survey_timestamp = "REDCap Survey Timestamp",

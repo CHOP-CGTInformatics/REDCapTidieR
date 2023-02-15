@@ -88,7 +88,8 @@ make_labelled <- function(supertbl, format_labels = NULL) {
 
   ## Set some predefined labels for data fields that aren't in the metadata
   data_labs <- c( # nolint: object_usage_linter
-    redcap_form_instance = "REDCap Repeat Instance",
+    redcap_form_instance = "REDCap Form Instance",
+    redcap_event_instance = "REDCap Event Instance",
     redcap_event = "REDCap Event",
     redcap_arm = "REDCap Arm",
     redcap_survey_timestamp = "REDCap Survey Timestamp",
