@@ -54,8 +54,7 @@ add_partial_keys <- function(db_data,
 #' @return
 #' A dataframe.
 #'
-#' @importFrom dplyr rename_with mutate case_when pull relocate
-#' @importFrom tidyselect matches
+#' @importFrom dplyr rename mutate case_when pull relocate
 #'
 #' @keywords internal
 
@@ -68,9 +67,7 @@ create_repeat_instance_vars <- function(db_data) {
   has_repeat_forms <- "redcap_repeat_instance" %in% names(db_data)
 
   if (has_repeat_forms) {
-    out <- db_data %>%
-      rename_with(~"redcap_form_instance",
-                  .cols = matches("redcap_repeat_instance"))
+    out <- rename(db_data, redcap_form_instance = "redcap_repeat_instance")
   }
 
   # Detect if repeat events exist
@@ -78,14 +75,9 @@ create_repeat_instance_vars <- function(db_data) {
   #   NA vals in "redcap_repeat_instrument"
   #   `has_repeat_forms` will always be TRUE for events to exist
   if (has_repeat_forms) {
-    has_repeat_events <- out %>%
-      mutate(
-        repeat_events_check = case_when(is.na(redcap_repeat_instrument) & !is.na(redcap_form_instance) ~ TRUE,
-                                        TRUE ~ FALSE)
-      ) %>%
-      pull(.data$repeat_events_check) %>% #nolint: object_usage_linter
-      unique() %>%
-      any()
+    has_repeat_events <- any(
+      is.na(out$redcap_repeat_instrument) & !is.na(out$redcap_form_instance)
+    )
   } else {
     has_repeat_events <- FALSE
   }
