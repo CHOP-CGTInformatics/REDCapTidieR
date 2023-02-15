@@ -64,7 +64,7 @@ create_repeat_instance_vars <- function(db_data) {
 
   # Detect if repeat forms exist
 
-  has_repeat_forms <- "redcap_repeat_instance" %in% names(db_data)
+  has_repeat_forms <- db_has_repeat_forms(db_data)
 
   if (has_repeat_forms) {
     out <- rename(db_data, redcap_form_instance = "redcap_repeat_instance")
@@ -674,4 +674,22 @@ try_redcapr <- function(expr, call = caller_env()) {
 
   # If we made it here return the data
   out$data
+}
+
+
+#' @title
+#' Check whether a REDCap database has repeat forms
+#'
+#' @description
+#' Simple utlity function checking for the existence of repeat forms in a REDCap
+#' database.
+#'
+#' @returns A boolean.
+#'
+#' @param db_data A REDCap dataframe.
+#'
+#' @keywords internal
+
+db_has_repeat_forms <- function(db_data) {
+  "redcap_repeat_instance" %in% names(db_data)
 }
