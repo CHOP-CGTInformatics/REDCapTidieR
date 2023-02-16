@@ -45,8 +45,18 @@ test_that("check_repeat_and_nonrepeat works", {
     3,               "combination",             2,                       "C"
   )
 
-  expect_error(check_repeat_and_nonrepeat(db_data = test_data_longitudinal))
-  expect_error(check_repeat_and_nonrepeat(db_data = test_data_not_longitudinal))
+  test_repeating_event <- tibble::tribble(
+    ~record_id,  ~redcap_repeat_instrument, ~redcap_repeat_instance, ~combination_variable,
+    1,               NA,                        NA,                      "A",
+    1,               NA,                        1,                       "B",
+    2,               "combination",             2,                       NA
+  )
+
+  expect_error(check_repeat_and_nonrepeat(db_data = test_data_longitudinal),
+               class = "repeat_nonrepeat_instrument")
+  expect_error(check_repeat_and_nonrepeat(db_data = test_data_not_longitudinal),
+               class = "repeat_nonrepeat_instrument")
+  expect_no_error(check_repeat_and_nonrepeat(db_data = test_repeating_event))
 })
 
 test_that("check_redcap_populated works", {

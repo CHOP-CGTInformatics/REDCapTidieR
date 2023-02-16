@@ -261,3 +261,67 @@ test_that("try_redcapr works", {
   try_redcapr(list(success = TRUE, data = as.numeric("A"))) %>%
     expect_warning(class = "unexpected_warning")
 })
+
+test_that("add_partial_keys works", {
+  test_data <- tibble::tribble(
+    ~record_id, ~redcap_event_name, ~redcap_repeat_instrument, ~redcap_repeat_instance,
+    1,           "nr_event_arm_1",   NA,                        NA,
+    1,           "nr_event_arm_1",   "r_instrument",            1,
+    3,           "nr_event_arm_1",   "r_instrument",            1,
+    4,           "r_event_arm_1",    NA,                        1
+  )
+
+  out <- test_data %>%
+    add_partial_keys(var = .data$redcap_event_name)
+
+  expected_cols <- c(
+    "record_id",
+    "redcap_event_name",
+    "redcap_repeat_instrument",
+    "redcap_form_instance",
+    "redcap_event_instance",
+    "redcap_event",
+    "redcap_arm"
+  )
+
+  expect_true(all(expected_cols %in% names(out)))
+  expect_s3_class(out, "data.frame")
+  expect_true(nrow(out) > 0)
+})
+
+test_that("create_repeat_instance_vars works", {
+  repeat_events <- tibble::tribble(
+    ~record_id, ~redcap_event, ~redcap_arm, ~redcap_repeat_instrument, ~redcap_repeat_instance,
+    1,           "nr_event",    1,            NA,                        NA,
+    1,           "nr_event",    1,            "r_instrument",            1,
+    3,           "nr_event",    1,            "r_instrument",            1,
+    4,           "r_event",     1,            NA,                        1
+  )
+
+  no_repeat_events <- tibble::tribble(
+    ~record_id, ~redcap_event, ~redcap_arm, ~redcap_repeat_instrument, ~redcap_repeat_instance,
+    1,           "nr_event",    1,            NA,                        NA,
+    1,           "nr_event",    1,            "r_instrument",            1,
+    3,           "nr_event",    1,            "r_instrument",            1
+  )
+
+  expected_cols <- c(
+    "record_id",
+    "redcap_event",
+    "redcap_arm",
+    "redcap_repeat_instrument",
+    "redcap_form_instance",
+    "redcap_event_instance"
+  )
+
+  repeat_out <- create_repeat_instance_vars(repeat_events)
+  nonrepeat_out <- create_repeat_instance_vars(no_repeat_events)
+
+  expect_true(all(expected_cols %in% names(repeat_out)))
+  expect_s3_class(repeat_out, "data.frame")
+  expect_true(nrow(repeat_out) > 0)
+
+  expect_true(all(expected_cols[1:5] %in% names(nonrepeat_out)))
+  expect_s3_class(nonrepeat_out, "data.frame")
+  expect_true(nrow(nonrepeat_out) > 0)
+})

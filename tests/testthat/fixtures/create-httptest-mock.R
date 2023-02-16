@@ -7,6 +7,7 @@ longitudinal_token <- Sys.getenv("REDCAPTIDIER_LONGITUDINAL_API")
 longitudinal_noarms_token <- Sys.getenv("REDCAPTIDIER_LONGITUDINAL_NOARMS_API")
 repeat_first_instrument_token <- Sys.getenv("REDCAPTIDIER_REPEAT_FIRST_INSTRUMENT_API")
 restricted_access_token <- Sys.getenv("REDCAPTIDIER_RESTRICTED_ACCESS_API")
+repeat_events_token <- Sys.getenv("REDCAPTIDIER_REPEATING_EVENT_API")
 redcap_uri <- Sys.getenv("REDCAP_URI")
 
 # Create mocks -----------
@@ -61,5 +62,7 @@ tryCatch(
   no_data_access = function(cnd) {}, # nolint: brace_linter
   read_redcap(redcap_uri, restricted_access_token, forms = "no_access")
 )
+
+read_redcap(redcap_uri, repeat_events_token)
 
 stop_capturing()

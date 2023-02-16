@@ -10,7 +10,7 @@ test_that("read_redcap works for a classic database with a nonrepeating instrume
   # Define partial key columns that should be in a nonrepeating table
   # from a classic database
   expected_present_cols <- c("record_id")
-  expected_absent_cols <- c("redcap_repeat_instance", "redcap_event", "redcap_arm")
+  expected_absent_cols <- c("redcap_form_instance", "redcap_event", "redcap_arm")
 
   # Pull a nonrepeating table from a classic database
   httptest::with_mock_api({
@@ -39,7 +39,7 @@ test_that("read_redcap works for a classic database with a nonrepeating instrume
 test_that("read_redcap works for a classic database with a repeating instrument", {
   # Define partial key columns that should be in a repeating table
   # from a classic database
-  expected_present_cols <- c("record_id", "redcap_repeat_instance")
+  expected_present_cols <- c("record_id", "redcap_form_instance")
   expected_absent_cols <- c("redcap_event", "redcap_arm")
 
   # Pull a repeating table from a classic database
@@ -161,7 +161,7 @@ test_that("read_redcap works for a longitudinal, single arm database with a nonr
   # Define partial key columns that should be in a nonrepeating table
   # from a longitudinal, single arm database
   expected_present_cols <- c("record_id", "redcap_event")
-  expected_absent_cols <- c("redcap_repeat_instance", "redcap_arm")
+  expected_absent_cols <- c("redcap_form_instance", "redcap_arm")
 
   # Pull a nonrepeating table from a longitudinal, single arm database
   httptest::with_mock_api({
@@ -184,7 +184,7 @@ test_that("read_redcap works for a longitudinal, single arm database with a nonr
 test_that("read_redcap works for a longitudinal, single arm database with a repeating instrument", {
   # Define partial key columns that should be in a repeating table
   # from a longitudinal, single arm database
-  expected_present_cols <- c("record_id", "redcap_repeat_instance", "redcap_event")
+  expected_present_cols <- c("record_id", "redcap_form_instance", "redcap_event")
   expected_absent_cols <- c("redcap_arm")
 
   # Pull a repeating table from a longitudinal, single arm database
@@ -209,7 +209,7 @@ test_that("read_redcap works for a longitudinal, multi-arm database with a nonre
   # Define partial key columns that should be in a nonrepeating table
   # from a longitudinal, multi-arm database
   expected_present_cols <- c("record_id", "redcap_event", "redcap_arm")
-  expected_absent_cols <- c("redcap_repeat_instance")
+  expected_absent_cols <- c("redcap_form_instance")
 
   # Pull a nonrepeating table from a longitudinal, multi arm database
   httptest::with_mock_api({
@@ -232,7 +232,7 @@ test_that("read_redcap works for a longitudinal, multi-arm database with a nonre
 test_that("read_redcap works for a longitudinal, multi-arm database with a repeating instrument", {
   # Define partial key columns that should be in a repeating table
   # from a longitudinal, multi-arm database
-  expected_present_cols <- c("record_id", "redcap_repeat_instance", "redcap_event", "redcap_arm")
+  expected_present_cols <- c("record_id", "redcap_form_instance", "redcap_event", "redcap_arm")
 
   # Pull a repeating table from a longitudinal, multi arm database
   httptest::with_mock_api({
@@ -317,7 +317,7 @@ test_that("read_redcap returns metadata", {
 
   ## Some fields we know won't be in the metadata
   exclude_fields <- c(
-    "redcap_repeat_instance", "redcap_event",
+    "redcap_form_instance", "redcap_event",
     "redcap_arm", "form_status_complete"
   )
 
@@ -485,4 +485,42 @@ test_that("read_redcap handles access restrictions", {
     read_redcap(redcap_uri, restricted_access_token, forms = "no_access") %>%
       expect_error(class = "no_data_access")
   })
+})
+
+test_that("read_redcap returns expected vals from repeating events databases", {
+  httptest::with_mock_api({
+    out <- read_redcap(redcap_uri, repeat_events_token)
+  })
+
+  nonrepeat_out <- out %>%
+    filter(redcap_form_name == "nr_instrument") %>%
+    select(redcap_data) %>%
+    pluck(1, 1)
+
+  repeat_out <- out %>%
+    filter(redcap_form_name == "r_instrument") %>%
+    select(redcap_data) %>%
+    pluck(1, 1)
+
+  expected_nonrepeat_cols <- c(
+    "record_id",
+    "redcap_event",
+    "redcap_event_instance",
+    "form_status_complete"
+  )
+
+  expected_repeat_cols <- c(
+    "record_id",
+    "redcap_event",
+    "redcap_form_instance",
+    "form_status_complete"
+  )
+
+  expect_true(all(expected_nonrepeat_cols %in% names(nonrepeat_out)))
+  expect_s3_class(nonrepeat_out, "tbl")
+  expect_true(nrow(nonrepeat_out) > 0)
+
+  expect_true(all(expected_repeat_cols %in% names(repeat_out)))
+  expect_s3_class(repeat_out, "tbl")
+  expect_true(nrow(repeat_out) > 0)
 })

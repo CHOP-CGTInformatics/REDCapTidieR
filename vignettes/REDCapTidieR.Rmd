@@ -84,7 +84,7 @@ You can drill down into individual tables in the `redcap_data` and `redcap_metad
 
 </center>
 
-In the `super_hero_powers` data tibble, each row represents a superpower of a specific hero. Each row is identified by the combination of `record_id` and `redcap_repeat_instance`. This difference in [granularity](glossary.html#granularity) is because in REDCap `super_hero_powers` was designated to be a [**repeating**](glossary.html#repeating) instrument whereas `heroes_information` was designated as a [**nonrepeating**](glossary.html#nonrepeating) instrument.
+In the `super_hero_powers` data tibble, each row represents a superpower of a specific hero. Each row is identified by the combination of `record_id` and `redcap_form_instance`. This difference in [granularity](glossary.html#granularity) is because in REDCap `super_hero_powers` was designated to be a [**repeating**](glossary.html#repeating) instrument whereas `heroes_information` was designated as a [**nonrepeating**](glossary.html#nonrepeating) instrument.
 
 <center>
 

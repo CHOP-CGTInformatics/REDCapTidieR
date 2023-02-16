@@ -84,7 +84,7 @@ heroes_information |>
   rmarkdown::paged_table()
 ```
 
-Now consider the `super_hero_powers` table, which contains data from a **repeating** instrument. In addition to `record_id` there is a `redcap_repeat_instance` column. The granularity of each row is one **superpower per superhero**, identified by its `record_id` and `redcap_repeat_instance`. Because these two columns uniquely identify a row in the data tibble, we call them [**identifier columns**](glossary.html#identifier-column). In the REDCapTidieR supertibble, identifier columns always come first, followed by [**data columns**] and finally the `form_status_complete` column.
+Now consider the `super_hero_powers` table, which contains data from a **repeating** instrument. In addition to `record_id` there is a `redcap_form_instance` column. The granularity of each row is one **superpower per superhero**, identified by its `record_id` and `redcap_form_instance`. Because these two columns uniquely identify a row in the data tibble, we call them [**identifier columns**](glossary.html#identifier-column). In the REDCapTidieR supertibble, identifier columns always come first, followed by [**data columns**] and finally the `form_status_complete` column.
 
 ```{r}
 super_hero_powers |>
@@ -105,7 +105,7 @@ The [**granularity**](glossary.html#granularity) of each table (i.e. the observa
 |                  |                          |                             | `redcap_arm`                |
 +------------------+--------------------------+-----------------------------+-----------------------------+
 | **Repeating**    | `record_id` +\           | `record_id` +\              | `record_id` +\              |
-|                  | `redcap_repeat_instance` | `redcap_repeat_instance` +\ | `redcap_repeat_instance` +\ |
+|                  | `redcap_form_instance` | `redcap_form_instance` +\ | `redcap_form_instance` +\ |
 |                  |                          | `redcap_event`              | `redcap_event` +\           |
 |                  |                          |                             | `redcap_arm`                |
 +------------------+--------------------------+-----------------------------+-----------------------------+
