@@ -2,25 +2,13 @@
 # uri here
 # See https://enpiar.com/r/httptest/articles/redacting.html#setting-a-package-level-redactor
 function(response) {
-  credentials <- c(
-    "REDCAPTIDIER_CLASSIC_API",
-    "REDCAPTIDIER_LONGITUDINAL_API",
-    "REDCAPTIDIER_LONGITUDINAL_NOARMS_API",
-    "REDCAPTIDIER_REPEAT_FIRST_INSTRUMENT_API",
-    "REDCAPTIDIER_DEEP_DIVE_VIGNETTE_API",
-    "SUPERHEROES_REDCAP_API",
-    "REDCAP_URI",
-    "REDCAPTIDIER_RESTRICTED_ACCESS_API",
-    "REDCAPTIDIER_REPEATING_EVENT_API"
-  )
-
-  real_creds <- Sys.getenv(credentials)
-  fake_creds <- get_fake_credentials(credentials)
+  real_creds <- get_credentials()
+  fake_creds <- get_credentials(fake = TRUE)
 
   # Replace each token with a fake token
   purrr::reduce(
-    credentials,
-    .f = ~gsub_response(.x, real_creds[.y], fake_creds[.y]),
+    names(fake_creds),
+    .f = ~gsub_response(.x, real_creds[[.y]], fake_creds[[.y]]),
     .init = response
   )
 }

@@ -152,7 +152,7 @@ test_that("parse_labels works", {
 
 test_that("link_arms works", {
   httptest::with_mock_api({
-    out <- link_arms(redcap_uri, longitudinal_token)
+    out <- link_arms(creds$REDCAP_URI, creds$REDCAPTIDIER_LONGITUDINAL_API)
   })
 
   # output is a tibble

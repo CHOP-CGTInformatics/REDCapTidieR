@@ -1,4 +1,4 @@
-record_id,redcap_repeat_instrument,redcap_form_instance,name,gender,eye_color,race,hair_color,height,weight,publisher,skin_color,alignment,heroes_information_complete,power,super_hero_powers_complete
+record_id,redcap_repeat_instrument,redcap_repeat_instance,name,gender,eye_color,race,hair_color,height,weight,publisher,skin_color,alignment,heroes_information_complete,power,super_hero_powers_complete
 0,,,A-Bomb,Male,yellow,Human,"No Hair",203,441,"Marvel Comics",-,good,0,,
 0,super_hero_powers,1,,,,,,,,,,,,"Accelerated Healing",0
 0,super_hero_powers,2,,,,,,,,,,,,Durability,0
