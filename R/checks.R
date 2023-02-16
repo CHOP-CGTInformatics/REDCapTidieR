@@ -102,9 +102,7 @@ check_user_rights <- function(db_data,
 #' \code{REDCapR::redcap_read_oneshot()$data}
 #' @param call the calling environment to use in the error message
 #'
-#' @importFrom dplyr %>% select mutate case_when
-#' @importFrom purrr map2
-#' @importFrom tidyselect any_of
+#' @importFrom dplyr %>% filter
 #' @importFrom cli cli_abort
 #' @importFrom rlang caller_env
 #'
@@ -112,58 +110,56 @@ check_user_rights <- function(db_data,
 
 
 check_repeat_and_nonrepeat <- function(db_data, call = caller_env()) {
-  # This check function looks for potential repeat/nonrepeat behavior using the
-  # steps below:
-  # 1) Define standard columns that don't need checking and remove those from
-  #    analysis (i.e. "safe columns").
-  # 2) Create a dummy column for each remaining column and use case_when to
-  #    to assign whether the column demonstrates repeating, nonrepeating, or
-  #    indeterminate behavior per row. Indeterminate would be the case for
-  #    data not yet filled out.
-  # 3) Use a mapping function to determine if any dummy columns contain both
-  #    "repeating" AND "nonrepeating" declarations, if so error out.
 
-  # Step (1)
+  # Identify columns to check for repeat/nonrepeat behavior
   safe_cols <- c(
     names(db_data)[1], "redcap_event_name",
     "redcap_repeat_instrument", "redcap_repeat_instance"
   )
 
-  # Step (2)
-  check_data <- db_data %>%
-    mutate(
-      across(
-        .cols = -any_of(safe_cols),
-        .names = "{.col}_repeatingcheck",
-        .fns = ~ case_when(
-          !is.na(.x) & !is.na(redcap_repeat_instrument) ~ "repeating",
-          !is.na(.x) & is.na(redcap_repeat_instrument) ~ "nonrepeating",
-          TRUE ~ NA_character_
-        )
-      )
-    )
+  check_cols <- setdiff(names(db_data), safe_cols)
 
+  # Set up check_data function that looks for repeating and nonrepeating
+  # behavior in a given column and returns a boolean
+  check_data <- function(db_data, check_col) {
 
-  # Step (3)
-  repeat_nonrepeat_error <- function(check_data, names) { # nolint: object_name_linter
+    # Repeating Check
+    rep <- any(!is.na(db_data[{{check_col}}]) &
+          !is.na(db_data["redcap_repeat_instrument"]))
 
-    rep <- gsub(pattern = "_repeatingcheck", replacement = "", x = names) # nolint: object_name_linter
+    # Nonrepeating Check
+    nonrep <- any(!is.na(db_data[{{check_col}}]) &
+          is.na(db_data["redcap_repeat_instrument"]))
 
-    if ("repeating" %in% check_data &&
-      "nonrepeating" %in% check_data) {
-      cli_abort(c("x" = "Instrument detected that has both repeating and
-      nonrepeating instances defined in the project: {rep}"),
-        class = c("repeat_nonrepeat_instrument", "REDCapTidieR_cond"),
-        call = call
-      )
-    }
+    rep & nonrep
   }
 
-  purrr::map2(
-    .x = check_data %>% select(ends_with("_repeatingcheck")),
-    .y = check_data %>% select(ends_with("_repeatingcheck")) %>% names(),
-    .f = ~ repeat_nonrepeat_error(.x, .y)
-  )
+  # Create a simple dataframe, loop through check columns and append
+  # dataframe with column being checked and the output of check_data
+  out <- data.frame()
+  for (i in seq_along(check_cols)) {
+
+    rep_and_nonrep <- db_data %>%
+      check_data(check_col = check_cols[i])
+
+    field <- check_cols[i]
+
+    out <- rbind(out, data.frame(field, rep_and_nonrep))
+    out
+  }
+
+  # Filter for violations
+  out <- out %>%
+    filter(rep_and_nonrep)
+
+  # Produce error message if violations detected
+  if (nrow(out) > 0) {
+    cli_abort(c("x" = "Instrument{?s} detected that ha{?s/ve} both repeating and
+      nonrepeating instances defined in the project: {out$field}"),
+              class = c("repeat_nonrepeat_instrument", "REDCapTidieR_cond"),
+              call = call
+    )
+  }
 }
 
 #' @title
