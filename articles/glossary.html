@@ -27,7 +27,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">REDCapTidieR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0.9002</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0.9003</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -169,8 +169,8 @@ arms)</p>
 <td align="center">
 <a href="#repeating">Repeat</a> instance</td>
 <td align="center">
-<p><code>redcap_repeat_instance</code> <a href="#column">column</a> of a <a href="#data-tibble">data
-tibble</a></p>
+<p><code>redcap_form_instance</code> <a href="#column">column</a> of a <a href="#data-tibble">data tibble</a>
+|</p>
 <p>(only present if the <a href="#instrument">instrument</a> is <a href="#repeating">repeating</a>)</p>
 </td>
 </tr>
@@ -371,9 +371,9 @@ tibble</a> that serves to partially identify the entity described in a
 always present in the data tibble. Depending on the <a href="#structure">structure</a> of the <a href="#project">project</a>
 (<a href="#classic-project">classic</a> vs. <a href="#longitudinal-project">longitudinal</a> vs. longitudinal with <a href="#arm">arms</a>) and the structure of the <a href="#instrument">instrument</a> (<a href="#nonrepeating">nonrepeating</a> vs <a href="#repeating">repeating</a>) there may be additional identifier
 columns, including <code>redcap_event</code>, <code>redcap_arm</code>,
-and/or <code>redcap_repeat_instance</code>. Taken together, the
-identifier columns form a <a href="#composite-primary-key">composite
-primary key</a>. See also: the section <a href="https://chop-cgtinformatics.github.io/REDCapTidieR/articles/diving_deeper.html#longitudinal-redcap-projects">Longitudinal
+and/or <code>redcap_form_instance</code>. Taken together, the identifier
+columns form a <a href="#composite-primary-key">composite primary
+key</a>. See also: the section <a href="https://chop-cgtinformatics.github.io/REDCapTidieR/articles/diving_deeper.html#longitudinal-redcap-projects">Longitudinal
 REDCap projects</a> in the <a href="https://chop-cgtinformatics.github.io/REDCapTidieR/articles/diving_deeper.html">Diving
 Deeper vignette</a>. <a onclick="history.back()">↩︎</a></p>
 </div>

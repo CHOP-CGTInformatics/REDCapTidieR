@@ -82,6 +82,12 @@
     <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/clean_redcap_long.html</loc>
   </url>
   <url>
+    <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/create_repeat_instance_vars.html</loc>
+  </url>
+  <url>
+    <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/db_has_repeat_forms.html</loc>
+  </url>
+  <url>
     <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/deprecated.html</loc>
   </url>
   <url>
