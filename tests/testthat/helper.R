@@ -11,7 +11,7 @@ get_credentials <- function(credentials = NULL, fake = FALSE) {
 
   if (!is.null(credentials)) {
     if (!all(credentials %in% creds$name)) {
-      missing_creds <- setdiff(credentials, creds$name)
+      missing_creds <- setdiff(credentials, creds$name) # nolint: object_usage_linter
       cli::cli_abort(c(
         "x" = "{.code {missing_creds}} {?is/are} missing from {.path inst/misc/fake_credentials.csv}"
       ))
