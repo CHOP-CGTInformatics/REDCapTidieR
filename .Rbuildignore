@@ -33,3 +33,4 @@ inst/testdata/create_test_data.R
 ^pkgdown$
 ^LICENSE\.md$
 ^CRAN-SUBMISSION$
+^updating-mocks\.md$

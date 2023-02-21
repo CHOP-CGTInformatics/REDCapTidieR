@@ -6,10 +6,10 @@ httptest::.mockPaths(test_path("fixtures"))
 test_that("read_redcap_tidy and read_redcap produce the same output", {
   httptest::with_mock_api({
     out_1 <-
-      read_redcap(redcap_uri, longitudinal_token)
+      read_redcap(creds$REDCAP_URI, creds$REDCAPTIDIER_LONGITUDINAL_API)
 
     out_2 <-
-      read_redcap_tidy(redcap_uri, longitudinal_token) %>%
+      read_redcap_tidy(creds$REDCAP_URI, creds$REDCAPTIDIER_LONGITUDINAL_API) %>%
       suppressWarnings(classes = "lifecycle_warning_deprecated")
   })
 
@@ -19,10 +19,10 @@ test_that("read_redcap_tidy and read_redcap produce the same output", {
 test_that("import_redcap and read_redcap produce the same output", {
   httptest::with_mock_api({
     out_1 <-
-      read_redcap(redcap_uri, longitudinal_token)
+      read_redcap(creds$REDCAP_URI, creds$REDCAPTIDIER_LONGITUDINAL_API)
 
     out_2 <-
-      import_redcap(redcap_uri, longitudinal_token) %>%
+      import_redcap(creds$REDCAP_URI, creds$REDCAPTIDIER_LONGITUDINAL_API) %>%
       suppressWarnings(classes = "lifecycle_warning_deprecated")
   })
 

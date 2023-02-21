@@ -1,46 +1,44 @@
 # Create mocks for tests in test-read_redcap.R
 
+devtools::load_all()
 library(httptest)
 
-classic_token <- Sys.getenv("REDCAPTIDIER_CLASSIC_API")
-longitudinal_token <- Sys.getenv("REDCAPTIDIER_LONGITUDINAL_API")
-longitudinal_noarms_token <- Sys.getenv("REDCAPTIDIER_LONGITUDINAL_NOARMS_API")
-repeat_first_instrument_token <- Sys.getenv("REDCAPTIDIER_REPEAT_FIRST_INSTRUMENT_API")
-restricted_access_token <- Sys.getenv("REDCAPTIDIER_RESTRICTED_ACCESS_API")
-repeat_events_token <- Sys.getenv("REDCAPTIDIER_REPEATING_EVENT_API")
-redcap_uri <- Sys.getenv("REDCAP_URI")
+# Delete existing mocks
+unlink(testthat::test_path("fixtures/my.institution.edu"), recursive = TRUE)
+
+creds <- get_credentials()
 
 # Create mocks -----------
 start_capturing(path = testthat::test_path("fixtures"))
 
-read_redcap(redcap_uri, classic_token)
+read_redcap(creds$REDCAP_URI, creds$REDCAPTIDIER_CLASSIC_API)
 
-read_redcap(redcap_uri,
-  classic_token,
+read_redcap(creds$REDCAP_URI,
+  creds$REDCAPTIDIER_CLASSIC_API,
   forms = "repeated"
 )
 
-read_redcap(redcap_uri,
-  classic_token,
+read_redcap(creds$REDCAP_URI,
+  creds$REDCAPTIDIER_CLASSIC_API,
   export_survey_fields = TRUE
 )
 
-read_redcap(redcap_uri, longitudinal_token, forms = "repeated")
+read_redcap(creds$REDCAP_URI, creds$REDCAPTIDIER_LONGITUDINAL_API, forms = "repeated")
 
-read_redcap(redcap_uri, longitudinal_noarms_token)
+read_redcap(creds$REDCAP_URI, creds$REDCAPTIDIER_LONGITUDINAL_NOARMS_API)
 
-read_redcap(redcap_uri, longitudinal_token)
+read_redcap(creds$REDCAP_URI, creds$REDCAPTIDIER_LONGITUDINAL_API)
 
 # Ignore expected errors
 tryCatch(
   form_does_not_exist = function(cnd) {}, # nolint: brace_linter
-  read_redcap(redcap_uri, classic_token, forms = "fake-form")
+  read_redcap(creds$REDCAP_URI, creds$REDCAPTIDIER_CLASSIC_API, forms = "fake-form")
 )
 
 tryCatch(
   form_does_not_exist = function(cnd) {}, # nolint: brace_linter
-  read_redcap(redcap_uri,
-    classic_token,
+  read_redcap(creds$REDCAP_URI,
+    creds$REDCAPTIDIER_CLASSIC_API,
     forms = c("fake-form", "repeated")
   )
 )
@@ -48,21 +46,21 @@ tryCatch(
 tryCatch(
   api_token_rejected = function(cnd) {}, # nolint: brace_linter
   read_redcap(
-    redcap_uri,
+    creds$REDCAP_URI,
     "CC0CE44238EF65C5DA26A55DD749AF7A" # will be rejected by server
   )
 )
 
-read_redcap(redcap_uri, repeat_first_instrument_token)
-read_redcap(redcap_uri, repeat_first_instrument_token, forms = "form_2")
+read_redcap(creds$REDCAP_URI, creds$REDCAPTIDIER_REPEAT_FIRST_INSTRUMENT_API)
+read_redcap(creds$REDCAP_URI, creds$REDCAPTIDIER_REPEAT_FIRST_INSTRUMENT_API, forms = "form_2")
 
-read_redcap(redcap_uri, restricted_access_token)
+read_redcap(creds$REDCAP_URI, creds$REDCAPTIDIER_RESTRICTED_ACCESS_API)
 
 tryCatch(
   no_data_access = function(cnd) {}, # nolint: brace_linter
-  read_redcap(redcap_uri, restricted_access_token, forms = "no_access")
+  read_redcap(creds$REDCAP_URI, creds$REDCAPTIDIER_RESTRICTED_ACCESS_API, forms = "no_access")
 )
 
-read_redcap(redcap_uri, repeat_events_token)
+read_redcap(creds$REDCAP_URI, creds$REDCAPTIDIER_REPEATING_EVENT_API)
 
 stop_capturing()
