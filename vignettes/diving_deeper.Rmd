@@ -29,7 +29,7 @@ creds <- REDCapTidieR:::get_credentials(
 
 redcap_uri <- creds$REDCAP_URI
 superheroes_token <- creds$SUPERHEROES_REDCAP_API
-longitudinal_token <-creds$REDCAPTIDIER_DEEP_DIVE_VIGNETTE_API
+longitudinal_token <- creds$REDCAPTIDIER_DEEP_DIVE_VIGNETTE_API
 survey_token <- creds$REDCAPTIDIER_CLASSIC_API
 
 start_vignette("diving_deeper")
