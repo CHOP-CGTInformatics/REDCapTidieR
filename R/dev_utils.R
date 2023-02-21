@@ -1,7 +1,13 @@
-# This code is sourced when httptest::start_vignette() is called. See
-# https://enpiar.com/r/httptest/articles/vignettes.html#advanced-topics
-
-# Credential getter function from testthat/helper.R
+#' Retrieve credentials for creating or using mocks
+#'
+#' @param credentials names of credentials to retrieve. By default all credentials in
+#' `inst/misc/fake_credentials.csv` are retrieved
+#' @param fake logical. Should fake credentials be retrieved? By default `FALSE`
+#'
+#' @return
+#' A named list of credentials from with `Sys.getenv()` if `fake = FALSE`
+#' or from `inst/misc/fake_credentials.csv` if `fake = TRUE`
+#' @keywords internal
 get_credentials <- function(credentials = NULL, fake = FALSE) {
   creds <- readr::read_csv(
     system.file("misc/fake_credentials.csv", package = "REDCapTidieR"),
@@ -16,7 +22,7 @@ get_credentials <- function(credentials = NULL, fake = FALSE) {
       ))
     }
 
-    creds <- creds[creds$name == credentials, ]
+    creds <- creds[creds$name %in% credentials, ]
   }
 
   res <- rep("", nrow(creds))

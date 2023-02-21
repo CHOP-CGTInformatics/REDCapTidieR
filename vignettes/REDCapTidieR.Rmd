@@ -18,18 +18,14 @@ knitr::opts_chunk$set(
 
 ```{r, include=FALSE}
 library(httptest)
-
-if (dir.exists("REDCapTidieR")) {
-  # Make sure these match inst/misc/fake_credentials.csv
-  redcap_uri <- "https://my.institution.edu/redcap/api/"
-  token <- "123456789ABCDEF123456789ABCDEF04"
-} else {
-  redcap_uri <- Sys.getenv("REDCAP_URI")
-  token <- Sys.getenv("SUPERHEROES_REDCAP_API")
-}
-
-# Make sure REDCapTidieR is attached so start_vignette() can find start-vignette.R
+# Make sure REDCapTidieR is loaded so httptest can find redact.R
 library(REDCapTidieR)
+
+# Use fake credentials if mocks exist, otherwise use real credentials to create mocks
+fake <- dir.exists("REDCapTidieR")
+
+redcap_uri <- REDCapTidieR:::get_credentials("REDCAP_URI", fake = fake)[[1]]
+token <- REDCapTidieR:::get_credentials("SUPERHEROES_REDCAP_API", fake = fake)[[1]]
 
 start_vignette("REDCapTidieR")
 ```

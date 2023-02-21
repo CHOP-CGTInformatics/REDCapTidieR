@@ -2,8 +2,8 @@
 # uri here
 # See https://enpiar.com/r/httptest/articles/redacting.html#setting-a-package-level-redactor
 function(response) {
-  real_creds <- get_credentials()
-  fake_creds <- get_credentials(fake = TRUE)
+  real_creds <- REDCapTidieR:::get_credentials()
+  fake_creds <- REDCapTidieR:::get_credentials(fake = TRUE)
 
   # Replace each token with a fake token
   purrr::reduce(
