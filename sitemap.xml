@@ -115,6 +115,9 @@
     <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/format_error_val.html</loc>
   </url>
   <url>
+    <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/get_credentials.html</loc>
+  </url>
+  <url>
     <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/get_fields_to_drop.html</loc>
   </url>
   <url>
@@ -155,5 +158,8 @@
   </url>
   <url>
     <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/update_field_names.html</loc>
+  </url>
+  <url>
+    <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/updating-mocks.html</loc>
   </url>
 </urlset>
