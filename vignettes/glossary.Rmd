@@ -18,41 +18,45 @@ The REDCapTidieR package uses vocabulary that is standard for REDCap database ar
 
 Below we provide find a rough mapping of REDCap concepts to their corresponding artifacts REDCapTidieR generates in the R environment, followed by a listing of definition of terms.
 
-+---------------------------------+----------------------------------------------------------------------------------------------------------+
-| REDCap                          | REDCapTidieR                                                                                             |
-+:===============================:+:========================================================================================================:+
-| [Project](#project), Database   | [Supertibble](#supertibble)                                                                              |
-+---------------------------------+----------------------------------------------------------------------------------------------------------+
-| [Instrument](#instrument), Form | One [row](#row) of the [supertibble](#supertibble)                                                       |
-|                                 |                                                                                                          |
-|                                 | Data is in the [data tibble](#data-tibble)                                                               |
-+---------------------------------+----------------------------------------------------------------------------------------------------------+
-| [Field](#field)                 | [Data column](#data-column) (a [column](#column) of the [data tibble](#data-tibble))                     |
-+---------------------------------+----------------------------------------------------------------------------------------------------------+
-| [Field](#field) name            | [Variable](#variable) name of a [data column](#data-column)                                              |
-+---------------------------------+----------------------------------------------------------------------------------------------------------+
-| [Field type](#field-type)       | Data type of a [data column](#data-column)                                                               |
-+---------------------------------+----------------------------------------------------------------------------------------------------------+
-| [Field label](#field-label)     | [Variable label](#variable-label) of a [data column](#data-column)                                       |
-|                                 |                                                                                                          |
-|                                 | (only present if [supertibble](#supertibble) is [labelled](#labelled))                                   |
-+---------------------------------+----------------------------------------------------------------------------------------------------------+
-| [Record](#record)               | One or several [rows](#row) of a [data tibble](#data-tibble)                                             |
-|                                 |                                                                                                          |
-|                                 | Record ID [column](#column) is the first column of a [data tibble](#data-tibble)                         |
-+---------------------------------+----------------------------------------------------------------------------------------------------------+
-| [Event](#event)                 | `redcap_event` [column](#column) of a [data tibble](#data-tibble)                                        |
-|                                 |                                                                                                          |
-|                                 | (only present if the [project](#project) is [longitudinal](#longitudinal-project))                       |
-+---------------------------------+----------------------------------------------------------------------------------------------------------+
-| [Arm](#arm)                     | `redcap_arm` [column](#column) of a [data tibble](#data-tibble)                                          |
-|                                 |                                                                                                          |
-|                                 | (only present if the [project](#project) is [longitudinal](#longitudinal-project) with multiple arms)    |
-+---------------------------------+----------------------------------------------------------------------------------------------------------+
-| [Repeat](#repeating) instance   | `redcap_form_instance` [column](#column) of a [data tibble](#data-tibble)                              |
-|                                 |                                                                                                          |
-|                                 | (only present if the [instrument](#instrument) is [repeating](#repeating))                               |
-+---------------------------------+----------------------------------------------------------------------------------------------------------+
++--------------------------------------------+----------------------------------------------------------------------------------------------------------+
+| REDCap                                     | REDCapTidieR                                                                                             |
++:==========================================:+:========================================================================================================:+
+| [Project](#project), Database              | [Supertibble](#supertibble)                                                                              |
++--------------------------------------------+----------------------------------------------------------------------------------------------------------+
+| [Instrument](#instrument), Form            | One [row](#row) of the [supertibble](#supertibble)                                                       |
+|                                            |                                                                                                          |
+|                                            | Data is in the [data tibble](#data-tibble)                                                               |
++--------------------------------------------+----------------------------------------------------------------------------------------------------------+
+| [Field](#field)                            | [Data column](#data-column) (a [column](#column) of the [data tibble](#data-tibble))                     |
++--------------------------------------------+----------------------------------------------------------------------------------------------------------+
+| [Field](#field) name                       | [Variable](#variable) name of a [data column](#data-column)                                              |
++--------------------------------------------+----------------------------------------------------------------------------------------------------------+
+| [Field type](#field-type)                  | Data type of a [data column](#data-column)                                                               |
++--------------------------------------------+----------------------------------------------------------------------------------------------------------+
+| [Field label](#field-label)                | [Variable label](#variable-label) of a [data column](#data-column)                                       |
+|                                            |                                                                                                          |
+|                                            | (only present if [supertibble](#supertibble) is [labelled](#labelled))                                   |
++--------------------------------------------+----------------------------------------------------------------------------------------------------------+
+| [Record](#record)                          | One or several [rows](#row) of a [data tibble](#data-tibble)                                             |
+|                                            |                                                                                                          |
+|                                            | Record ID [column](#column) is the first column of a [data tibble](#data-tibble)                         |
++--------------------------------------------+----------------------------------------------------------------------------------------------------------+
+| [Event](#event)                            | `redcap_event` [column](#column) of a [data tibble](#data-tibble)                                        |
+|                                            |                                                                                                          |
+|                                            | (only present if the [project](#project) is [longitudinal](#longitudinal-project))                       |
++--------------------------------------------+----------------------------------------------------------------------------------------------------------+
+| [Arm](#arm)                                | `redcap_arm` [column](#column) of a [data tibble](#data-tibble)                                          |
+|                                            |                                                                                                          |
+|                                            | (only present if the [project](#project) is [longitudinal](#longitudinal-project) with multiple arms)    |
++--------------------------------------------+----------------------------------------------------------------------------------------------------------+
+| [Repeat Instrument](#repeating-instrument) | `redcap_form_instance` [column](#column) of a [data tibble](#data-tibble)                                |
+|                                            |                                                                                                          |
+|                                            | (only present if the [instrument](#instrument) is [repeating](#repeating-instrument))                    |
++--------------------------------------------+----------------------------------------------------------------------------------------------------------+
+| [Repeat Event](#repeating-event)           | `redcap_event_instance` [column](#column) of a [data tibble](#data-tibble)                               |
+|                                            |                                                                                                          |
+|                                            | (only present if the [instrument](#instrument) is associated with a [repeating event](#repeating-event)) |
++--------------------------------------------+----------------------------------------------------------------------------------------------------------+
 
 ### Arm {#arm}
 
@@ -78,7 +82,7 @@ In the context of REDCapTidieR, choices come into play in two scenarios during t
 
 ### Classic project {#classic-project}
 
-Also known as a **traditional** project, this the simplest type of REDCap [project](#project). You can define one or multiple [instruments](#instrument) (also called forms) for data entry. Both [repeating](#repeating) and [nonrepeating](#nonrepeating) instruments are allowed. Nonrepeating instruments are completed only once for each [record](#record). For nonrepeating instruments, one [row](#row) of data in the [data tibble](#data-tibble) represents one record. Repeating instruments can be completed an arbitrary number of times for each record. For repeating instruments, one row of data in the data tibble represents one repeat instance of one record. See also: [Longitudinal project](#longitudinal-project). <a onclick="history.back()">↩︎</a>
+Also known as a **traditional** project, this the simplest type of REDCap [project](#project). You can define one or multiple [instruments](#instrument) (also called forms) for data entry. Both [repeating](#repeating-instrument) and [nonrepeating](#repeating-instrument) instruments are allowed. Nonrepeating instruments are completed only once for each [record](#record). For nonrepeating instruments, one [row](#row) of data in the [data tibble](#data-tibble) represents one record. Repeating instruments can be completed an arbitrary number of times for each record. For repeating instruments, one row of data in the data tibble represents one repeat instance of one record. See also: [Longitudinal project](#longitudinal-project). <a onclick="history.back()">↩︎</a>
 
 ### Database
 
@@ -102,7 +106,7 @@ A fundamental data structure in R that allows **binding** a set of names to a se
 
 ### Event {#event}
 
-A part of a [longitudinal project](#longitudinal-project). Each event can be associated with one or multiple [instruments](#instrument). <a onclick="history.back()">↩︎</a>
+A part of a [longitudinal project](#longitudinal-project). Each event can be associated with one or multiple [instruments](#instrument) and may be either [repeating](#repeating-event) or [nonrepeating](#nonrepeating-event). <a onclick="history.back()">↩︎</a>
 
 ### Factor variable
 
@@ -139,11 +143,11 @@ A function provided by REDCapTidieR designed to help turning [field labels](#fie
 
 ### Granularity {#granularity}
 
-The level of detail that a specific [row](#row) in a [data tibble](#data-tibble) represents. This depends on the [structure](#structure) of the [project](#project) ([classic](#classic-project) vs. [longitudinal](#longitudinal-project) vs longitudinal with [arms](#arm)) and the structure of the [instrument](#instrument) ([nonrepeating](#nonrepeating) vs [repeating](#repeating)). For example, a data tibble containing data from a nonrepeating instrument in a longitudinal project with two arms has a granularity of one row per [record](#record) per [event](#event) per arm. See also: the section [Longitudinal REDCap projects](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/diving_deeper.html#longitudinal-redcap-projects) in the [Diving Deeper vignette](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/diving_deeper.html). <a onclick="history.back()">↩︎</a>
+The level of detail that a specific [row](#row) in a [data tibble](#data-tibble) represents. This depends on the [structure](#structure) of the [project](#project) ([classic](#classic-project) vs. [longitudinal](#longitudinal-project) vs longitudinal with [arms](#arm)) and the structure of the [instrument](#instrument) ([nonrepeating](#nonrepeating-instrument) vs [repeating](#repeating-instrument)). For example, a data tibble containing data from a nonrepeating instrument in a longitudinal project with two arms has a granularity of one row per [record](#record) per [event](#event) per arm. See also: the section [Longitudinal REDCap projects](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/diving_deeper.html#longitudinal-redcap-projects) in the [Diving Deeper vignette](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/diving_deeper.html). <a onclick="history.back()">↩︎</a>
 
 ### Identifier column {#identifier-column}
 
-A [column](#column) in the [data tibble](#data-tibble) that serves to partially identify the entity described in a [row](#row). The [record](#record) ID column is always present in the data tibble. Depending on the [structure](#structure) of the [project](#project) ([classic](#classic-project) vs. [longitudinal](#longitudinal-project) vs. longitudinal with [arms](#arm)) and the structure of the [instrument](#instrument) ([nonrepeating](#nonrepeating) vs [repeating](#repeating)) there may be additional identifier columns, including `redcap_event`, `redcap_arm`, and/or `redcap_form_instance`. Taken together, the identifier columns form a [composite primary key](#composite-primary-key). See also: the section [Longitudinal REDCap projects](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/diving_deeper.html#longitudinal-redcap-projects) in the [Diving Deeper vignette](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/diving_deeper.html). <a onclick="history.back()">↩︎</a>
+A [column](#column) in the [data tibble](#data-tibble) that serves to partially identify the entity described in a [row](#row). The [record](#record) ID column is always present in the data tibble. Depending on the [structure](#structure) of the [project](#project) ([classic](#classic-project) vs. [longitudinal](#longitudinal-project) vs. longitudinal with [arms](#arm)) and the structure of the [instrument](#instrument) ([nonrepeating](#nonrepeating-instrument) vs [repeating](#repeating-instrument)) there may be additional identifier columns, including `redcap_event`, `redcap_arm`, `redcap_form_instance`, and `redcap_event_instance`. Taken together, the identifier columns form a [composite primary key](#composite-primary-key). See also: the section [Longitudinal REDCap projects](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/diving_deeper.html#longitudinal-redcap-projects) in the [Diving Deeper vignette](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/diving_deeper.html). <a onclick="history.back()">↩︎</a>
 
 ### Import {#import}
 
@@ -169,9 +173,13 @@ A type of REDCap [project](#project) that contains [events](#event) and optional
 
 A [tibble](#tibble) that contains metadata about a specific REDCap [instrument](#instrument). The `redcap_metadata` [column](#column) of the [supertibble](#supertibble) contains the metadata tibbles of a [project](#project). The rows of the metadata tibble represent [fields](#field) of the instrument. The columns represent attributes of those fields. For example, the `field_name`, `field_label`, and `field_type` columns show the field's name, a human-readable description (the [field label](#field-label)), and its [field type](#field-type). <a onclick="history.back()">↩︎</a>
 
-### Nonrepeating {#nonrepeating}
+### Nonrepeating Event {#nonrepeating-event}
 
-A [structure](#structure) of an [instrument](#instrument) that allows it to be filled out exactly once per [record](#record) in a [classic project](#classic-project) and once per record per [event](#event) (per [arm](#arm)) in a [longitudinal project](#longitudinal-project). See also: [Repeating](#repeating). <a onclick="history.back()">↩︎</a>
+An [event](#event) whose associated [instruments](#instrument) can be filled out exactly once per record per event (per [arm](#arm)). See also: [Repeating Event](#repeating-event). <a onclick="history.back()">↩︎</a>
+
+### Nonrepeating Instrument {#nonrepeating-instrument}
+
+An [instrument](#instrument) that can be filled out exactly once per [record](#record) in a [classic project](#classic-project) and once per record per [event](#event) instance (per [arm](#arm)) in a [longitudinal project](#longitudinal-project). These instruments have a [structure](#structure) of nonrepeating. See also: [Repeating Instrument](#repeating-instrument). <a onclick="history.back()">↩︎</a>
 
 ### Project {#project}
 
@@ -189,9 +197,13 @@ The application programming interface (API) of a REDCap instance allows external
 
 The [REDCapR](https://ouhscbbmc.github.io/REDCapR/index.html) R package provides functions to interact with the [REDCap API](#redcap-api). REDCapTidieR builds on REDCapR to [import](#import) data. <a onclick="history.back()">↩︎</a>
 
-### Repeating {#repeating}
+### Repeating Event {#repeating-event}
 
-A [structure](#structure) of an [instrument](#instrument) that allows it to be filled out zero, one, or multiple times for each [record](#record). See also: [Nonrepeating](#nonrepeating). <a onclick="history.back()">↩︎</a>
+An [event](#event) whose associated [instruments](#instrument) can be filled out zero, one, or multiple times per record per event (per [arm](#arm)). When an event is repeating each instance of the event contains a new set of responses to each instrument.  See also: [Nonrepeating Event](#nonrepeating-event). <a onclick="history.back()">↩︎</>
+
+### Repeating Instrument {#repeating-instrument}
+
+An [instrument](#instrument) that can be filled out zero, one, or multiple times per [record](#record) in a [classic project](#classic-project) and per record per [event](#event) (per [arm](#arm)) in a [longitudinal project](#longitudinal-project). These instruments have a [structure](#structure) of repeating. See also: [Nonrepeating Instrument](#nonrepeating-instrument). <a onclick="history.back()">↩︎</a>
 
 ### Row {#row}
 
@@ -199,7 +211,7 @@ A horizontal series of cells in a data frame or [tibble](#tibble). One row of a 
 
 ### Structure {#structure}
 
-The structure of an [instrument](#instrument) can be [repeating](#repeating) or [nonrepeating](#nonrepeating). The [supertibble](#supertibble) shows the instrument's structure in the `structure` column. The structure of a [project](#project) can be [classic](#classic-project), [longitudinal](#longitudinal-project), or longitudinal with [arms](#arm). The [granularity](#granularity) of a [data tibble](#data-tibble) depends on the structure of both the instrument and the project. See also: the section [Longitudinal REDCap projects](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/diving_deeper.html#longitudinal-redcap-projects) in the [Diving Deeper vignette](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/diving_deeper.html). <a onclick="history.back()">↩︎</a>
+The structure of an [instrument](#instrument) can be [repeating](#repeating-instrument) or [nonrepeating](#nonrepeating-instrument). The [supertibble](#supertibble) shows the instrument's structure in the `structure` column. The structure of a [project](#project) can be [classic](#classic-project), [longitudinal](#longitudinal-project), or longitudinal with [arms](#arm). The [granularity](#granularity) of a [data tibble](#data-tibble) depends on the structure of both the instrument and the project. See also: the section [Longitudinal REDCap projects](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/diving_deeper.html#longitudinal-redcap-projects) in the [Diving Deeper vignette](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/diving_deeper.html). <a onclick="history.back()">↩︎</a>
 
 ### Supertibble {#supertibble}
 
@@ -223,7 +235,7 @@ The first is the concept of [Tidy Data](https://vita.had.co.nz/papers/tidy-data.
 2.  Each observation forms a [row](#row)
 3.  Each type of observational unit forms a table (i.e. the [granularity](#granularity) of rows in a table is consistent)
 
-Data returned by the REDCap API (the "[block matrix](#block-matrix)") often satisfies the first two requirements of tidy data. However, if the [project](#project) contains both [repeating](#repeating) and [nonrepeating](#nonrepeating) instruments then the [granularity](#granularity) is inconsistent from row to row. A key function of the REDCapTidieR package is to break down the [block matrix](#block-matrix) by [instrument](#instrument). The resulting set of [data tibbles](#data-tibble) is tidy because the granularity of each data tibble is consistent. This makes it easy to work with them.
+Data returned by the REDCap API (the "[block matrix](#block-matrix)") often satisfies the first two requirements of tidy data. However, if the [project](#project) contains both [repeating](#repeating-instrument) and [nonrepeating](#nonrepeating-instrument) instruments then the [granularity](#granularity) is inconsistent from row to row. A key function of the REDCapTidieR package is to break down the [block matrix](#block-matrix) by [instrument](#instrument). The resulting set of [data tibbles](#data-tibble) is tidy because the granularity of each data tibble is consistent. This makes it easy to work with them.
 
 The second is the idea of [Tidy Tools](https://tidyverse.tidyverse.org/articles/manifesto.html), which is a set of design guidelines for the packages of the [Tidyverse](https://www.tidyverse.org/). Tidy tools should follow the following principles:
 
