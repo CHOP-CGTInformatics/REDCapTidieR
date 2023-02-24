@@ -82,21 +82,24 @@ create_repeat_instance_vars <- function(db_data) {
     has_repeat_events <- FALSE
   }
 
-
   if (has_repeat_events) {
-    out <- out %>%
-      mutate(
-        # create event column first
-        redcap_event_instance = case_when(
-          is.na(redcap_repeat_instrument) &  !is.na(redcap_form_instance) ~ #nolint: object_usage_linter
-            redcap_form_instance,
-          TRUE ~ NA),
-        # then remove event values from form column
-        redcap_form_instance = case_when(
-          is.na(redcap_repeat_instrument) & !is.na(redcap_form_instance) ~ NA,
-          TRUE ~ redcap_form_instance)
-      ) %>%
-      relocate("redcap_event_instance", .after = "redcap_form_instance") #nolint: object_usage_linter
+    out$redcap_event_instance <- ifelse(
+      is.na(out$redcap_repeat_instrument) &
+        !is.na(out$redcap_form_instance),
+      out$redcap_form_instance,
+      NA
+    )
+
+    out$redcap_form_instance <- ifelse(
+      is.na(out$redcap_repeat_instrument) &
+        !is.na(out$redcap_form_instance),
+      NA,
+      out$redcap_form_instance
+    )
+
+    out <- relocate(out,
+                    "redcap_event_instance",
+                    .after = "redcap_form_instance")
   }
 
   # return
