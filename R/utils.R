@@ -195,17 +195,19 @@ parse_labels <- function(string, return_vector = FALSE, return_stripped_text_fla
     strsplit("\\|") %>% # Split by "|"
     lapply(trimws) # Trim trailing and leading whitespace in list elements
 
+  parse_err_msg <- c(
+    "x" = "Cannot parse the `select_choices_or_calculations` field from REDCap metadata.",
+    "i" = "This may happen if there is a missing comma or pipe character `|` inside the label.",
+    "i" = "`select_choices_or_calculations`: {string}"
+  )
+  parse_err_class <- c("label_parse_error", "REDCapTidieR_cond")
+
   # Check there is a comma in all | delimited strsplit elements
   if (!all(grepl(",", out[[1]]))) {
     # If this is a misattributed data field or blank, throw warning in
     # multi_choice_to_labels
     if (length(out[[1]]) > 1 && !all(is.na(out[[1]]))) {
-      cli_abort(
-        "Cannot parse the select_choices_or_calculations field from
-        REDCap metadata. This may happen if there is a comma separator missing
-        inside the label: {string}",
-        class = c("label_parse_error", "comma_parse_error", "REDCapTidieR_cond")
-      )
+      cli_abort(parse_err_msg, class = parse_err_class)
     }
   }
 
@@ -221,14 +223,7 @@ parse_labels <- function(string, return_vector = FALSE, return_stripped_text_fla
     # If this is a misattributed data field or blank, throw warning in
     # multi_choice_to_labels
     if (length(out) > 1 && !all(is.na(out))) {
-      cli_abort(
-        "Cannot parse the select_choices_or_calculations field from
-        REDCap metadata. This may happen if there is a pipe character
-        `|` inside the label: {string}",
-        class = c(
-          "label_parse_error", "matrix_parse_error", "REDCapTidieR_cond"
-        )
-      )
+      cli_abort(parse_err_msg, class = parse_err_class)
     }
   }
 
