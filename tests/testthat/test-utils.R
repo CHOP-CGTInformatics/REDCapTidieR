@@ -90,6 +90,7 @@ test_that("parse_labels works", {
   names(valid_vector_output) <- c("choice_1", "choice_2", "choice_3")
 
   invalid_string_1 <- "raw, label | that has | pipes but no other | commas"
+  invalid_string_2 <- "raw, la|bel with pipe"
 
   warning_string_1 <- NA_character_
 
@@ -100,7 +101,11 @@ test_that("parse_labels works", {
   )
   expect_error(
     parse_labels(invalid_string_1),
-    class = "comma_parse_error"
+    class = "label_parse_error"
+  )
+  expect_error(
+    parse_labels(invalid_string_2),
+    class = "label_parse_error"
   )
   expect_warning(
     parse_labels(warning_string_1),
