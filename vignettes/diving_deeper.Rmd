@@ -41,7 +41,7 @@ In the [Getting Started](REDCapTidieR.html) vignette, we stated that importing r
 
 The `REDCapR::redcap_read_oneshot()` function pulls data from a REDCap project via the [REDCap API](glossary.html#redcap-api) and provides it to the R environment without performing much processing. It returns a list with an element named `data` that contains all of the data of the project as a single data frame.
 
-Below, we use this function to import data from the [Superhero REDCap database](REDCapTidieR.html#case-study-the-superhero-database), which contains a [**nonrepeating**](glossary.html#nonrepeating) instrument `heroes_information` and a [**repeating**](glossary.html#repeating) instrument `super_hero_powers`. We use `rmarkdown::paged_table()` to allow you to explore this large data frame in the browser.
+Below, we use this function to import data from the [Superhero REDCap database](REDCapTidieR.html#case-study-the-superhero-database), which contains a [**nonrepeating**](glossary.html#nonrepeating-instrument) instrument `heroes_information` and a [**repeating**](glossary.html#repeating-instrument) instrument `super_hero_powers`. We use `rmarkdown::paged_table()` to allow you to explore this large data frame in the browser.
 
 ``` r
 superheroes_token <- "123456789ABCDEF123456789ABCDEF04"
@@ -96,22 +96,29 @@ super_hero_powers |>
 
 REDCap databases support two main mechanisms to allow collecting the same data multiple times: **repeating instruments** and [**longitudinal projects**](glossary.html#longitudinal-project).
 
-The [**granularity**](glossary.html#granularity) of each table (i.e. the observational unit that a single [row](glossary.html#row) represents) depends on the [structure](glossary.html#structure) of the [project](glossary.html#project) ([classic](glossary.html#classic-project), [longitudinal](glossary.html#longitudinal-project), longitudinal with multiple [arms](glossary.html#arm)) as well as the structure of the [instrument](glossary.html#instrument) ([repeating](glossary.html#repeating) or [nonrepeating](glossary.html#nonrepeating)). REDCapTidieR generates [**identifier columns**](glossary.html#identifier-column) according to the following table:
+The [**granularity**](glossary.html#granularity) of each table (i.e. the observational unit that a single [row](glossary.html#row) represents) depends on the [structure](glossary.html#structure) of the [project](glossary.html#project) ([classic](glossary.html#classic-project), [longitudinal](glossary.html#longitudinal-project), longitudinal with multiple [arms](glossary.html#arm)), the structure of the [instrument](glossary.html#instrument) ([repeating](glossary.html#repeating-instrument) or [nonrepeating](glossary.html#nonrepeating-instrument)), and for longitudinal projects the structure of the [event](glossary.html#event) ([repeating](glossary.html#repeating-event) or [nonrepeating](glossary.html#nonrepeating-event)). REDCapTidieR generates [**identifier columns**](glossary.html#identifier-column) according to the following table:
 
-+------------------+--------------------------+-----------------------------+-----------------------------+
-|                  | **Classic**              | **Longitudinal, one arm**   | **Longitudinal, multi-arm** |
-+==================+:=========================+:============================+:============================+
-| **Nonrepeating** | `record_id`              | `record_id` +\              | `record_id` +\              |
-|                  |                          | `redcap_event`              | `redcap_event` +\           |
-|                  |                          |                             | `redcap_arm`                |
-+------------------+--------------------------+-----------------------------+-----------------------------+
-| **Repeating**    | `record_id` +\           | `record_id` +\              | `record_id` +\              |
-|                  | `redcap_form_instance` | `redcap_form_instance` +\ | `redcap_form_instance` +\ |
-|                  |                          | `redcap_event`              | `redcap_event` +\           |
-|                  |                          |                             | `redcap_arm`                |
-+------------------+--------------------------+-----------------------------+-----------------------------+
++--------------------------+---------------------+--------------------------+-----------------------------+-----------------------------+
+| **Instrument Structure** | **Event Structure** | **Classic**              | **Longitudinal, one arm**   | **Longitudinal, multi-arm** |
++==========================+:====================+:=========================+:============================+:============================+
+| **Nonrepeating**         |  **Nonrepeating**   | `record_id`              | `record_id` +\              | `record_id` +\              |
+|                          |                     |                          | `redcap_event`              | `redcap_event` +\           |
+|                          |                     |                          |                             | `redcap_arm`                |
++--------------------------+---------------------+--------------------------+-----------------------------+-----------------------------+
+| **Repeating**            |  **Nonrepeating**   | `record_id` +\           | `record_id` +\              | `record_id` +\              |
+|                          |                     | `redcap_form_instance`   | `redcap_form_instance` +\   | `redcap_form_instance` +\   |
+|                          |                     |                          | `redcap_event`              | `redcap_event` +\           |
+|                          |                     |                          |                             | `redcap_arm`                |
++--------------------------+---------------------+--------------------------+-----------------------------+-----------------------------+
+| **Nonrepeating**         |  **Repeating**      | N/A                      | `record_id` +\              | `record_id` +\              |
+|                          |                     |                          | `redcap_event_instance` +\  | `redcap_event_instance` +\  |
+|                          |                     |                          | `redcap_event`              | `redcap_event` +\           |
+|                          |                     |                          |                             | `redcap_arm`                |
++--------------------------+---------------------+--------------------------+-----------------------------+-----------------------------+
+| **Repeating**            |  **Repeating**      |                                  Not Supported                                       |
++--------------------------+---------------------+--------------------------+-----------------------------+-----------------------------+
 
-> Note: Taken in combination, the identifier columns of any REDCapTidieR tibble are guaranteed to be unique and not `NA` and can therefore be used as [**composite primary key**](glossary.html#composite-primary-key). This makes it easy to join REDCapTidieR tibbles to each other!
+> Note: Taken in combination, the identifier columns of any REDCapTidieR tibble are guaranteed to be unique and can therefore be used as [**composite primary key**](glossary.html#composite-primary-key). This makes it easy to join REDCapTidieR tibbles to each other!
 
 By default, REDCap names the record ID field `record_id`, but this can be changed, and REDCapTidieR is smart enough to handle this. For example, if the record ID field was renamed to `subject_id` then the record ID column of each data tibble would be `subject_id`.
 
@@ -148,7 +155,7 @@ chemistry |>
   rmarkdown::paged_table()
 ```
 
-The `adverse_events` is **repeating**. Since adverse events aren't tied to specific study visits, and a patient can have any number of different adverse events at any time, it makes sense to designate this instrument to a single special event `adverse_event`, which is what we've done here. The granularity of this table is one row per study subject per repeat instance per event. However since it is only designated for a single event, it is really one row per study subject per repeat instance. The first subject has three adverse events listed, and the second subject has two.
+The `adverse_events` instrument is **repeating**. Since adverse events aren't tied to specific study visits, and a patient can have any number of different adverse events at any time, it makes sense to designate this instrument to a single special event `adverse_event`, which is what we've done here. The granularity of this table is one row per study subject per repeat instance per event. However since it is only designated for a single event, it is really one row per study subject per repeat instance. The first subject has three adverse events listed, and the second subject has two.
 
 ```{r}
 adverse_events |>
@@ -159,7 +166,19 @@ It is possible to have a repeating instrument designated to multiple events, how
 
 REDCapTidieR does *not* allow you to have the same instrument designated both as a repeating and as a nonrepeating instrument in different events. It will throw an error if it detects this.
 
-At this time, REDCapTidieR does not support repeating events. Feel free to submit a [feature request](https://github.com/CHOP-CGTInformatics/REDCapTidieR/issues) if this is something you need!
+The `unscheduled` **event** is **repeating**. Like adverse events, unscheduled visits aren't tied to any specific study visit, and a patient can have any number. However, while all data for an adverse event can be captured in one instrument, unscheduled visits have multiple components which we'd like to isolate in separate instruments. Two components of an unscheduled visit are `physical_exam` and `hematology`. The granularity of these tables is one row per study subject per event per event instance. The subject had two unscheduled visits. `redcap_event_instance` allows us to match `physical_exam` and `hematology` responses which occurred on the same unscheduled visit.
+
+```{r, results='hold'}
+physical_exam |>
+  dplyr::filter(redcap_event == "unscheduled") |>
+  rmarkdown::paged_table()
+
+hematology |>
+  dplyr::filter(redcap_event == "unscheduled") |>
+  rmarkdown::paged_table()
+```
+
+Note that both `physical_exam` and `hematology` are **nonrepeating** instruments. REDCapTidieR **only** allows nonrepeating instruments to occur in repeating events.
 
 REDCapTidieR supports projects with multiple arms. If you have a project with multiple arms, there will be an additional column `redcap_arm` to identify the arm that the row is associated with.
 
