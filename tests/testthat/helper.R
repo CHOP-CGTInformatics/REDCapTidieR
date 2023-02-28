@@ -1,3 +1,3 @@
 # httptest setup ----
 
-creds <- get_credentials(fake = TRUE)
+creds <- REDCapTidieR:::get_credentials(fake = TRUE)

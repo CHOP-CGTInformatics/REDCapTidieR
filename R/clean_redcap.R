@@ -36,7 +36,7 @@ clean_redcap <- function(db_data,
   # Check if database supplied contains any repeating instruments to map onto `
   # redcap_repeat_*` variables
 
-  has_repeat_forms <- db_has_repeat_forms(db_data)
+  has_repeat_forms <- db_has_repeat_forms(db_data) # nolint: object_usage_linter
 
   ## Repeating Instruments Logic ----
   if (has_repeat_forms) {
@@ -121,7 +121,7 @@ distill_nonrepeat_table <- function(form_name,
   # Repeating Instrument Check ----
   # Check if database supplied contains any repeating instruments to map onto
   # `redcap_repeat_*` variables
-  has_repeat_forms <- db_has_repeat_forms(db_data)
+  has_repeat_forms <- db_has_repeat_forms(db_data) # nolint: object_usage_linter
 
   my_record_id <- names(db_data)[1]
   my_form <- form_name
@@ -161,7 +161,8 @@ distill_nonrepeat_table <- function(form_name,
     ) %>%
     relocate(
       any_of(c("redcap_event", "redcap_arm", "redcap_form_instance", "redcap_event_instance")),
-      .after = all_of(my_record_id)) %>%
+      .after = all_of(my_record_id)
+    ) %>%
     rename("redcap_survey_timestamp" = any_of(paste0(my_form, "_timestamp"))) %>%
     relocate(any_of("redcap_survey_timestamp"), .after = everything()) %>%
     rename("form_status_complete" = paste0(my_form, "_complete")) %>%

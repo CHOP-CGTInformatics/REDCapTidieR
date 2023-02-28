@@ -68,7 +68,8 @@ check_user_rights <- function(db_data,
                  {.code {missing_fields}}.") %>%
           cli_fmt(collapse = TRUE, strip_newline = TRUE)
       }
-    })
+    }
+  )
 
   names(msg) <- rep("!", length(msg))
 
@@ -110,7 +111,6 @@ check_user_rights <- function(db_data,
 
 
 check_repeat_and_nonrepeat <- function(db_data, call = caller_env()) {
-
   # Identify columns to check for repeat/nonrepeat behavior
   safe_cols <- c(
     names(db_data)[1], "redcap_event_name",
@@ -122,14 +122,13 @@ check_repeat_and_nonrepeat <- function(db_data, call = caller_env()) {
   # Set up check_data function that looks for repeating and nonrepeating
   # behavior in a given column and returns a boolean
   check_data <- function(db_data, check_col) {
-
     # Repeating Check
-    rep <- any(!is.na(db_data[{{check_col}}]) &
-          !is.na(db_data["redcap_repeat_instrument"]))
+    rep <- any(!is.na(db_data[{{ check_col }}]) &
+      !is.na(db_data["redcap_repeat_instrument"]))
 
     # Nonrepeating Check
-    nonrep <- any(!is.na(db_data[{{check_col}}]) &
-          is.na(db_data["redcap_repeat_instrument"]))
+    nonrep <- any(!is.na(db_data[{{ check_col }}]) &
+      is.na(db_data["redcap_repeat_instrument"]))
 
     rep & nonrep
   }
@@ -138,7 +137,6 @@ check_repeat_and_nonrepeat <- function(db_data, call = caller_env()) {
   # dataframe with column being checked and the output of check_data
   out <- data.frame()
   for (i in seq_along(check_cols)) {
-
     rep_and_nonrep <- db_data %>%
       check_data(check_col = check_cols[i])
 
@@ -156,8 +154,8 @@ check_repeat_and_nonrepeat <- function(db_data, call = caller_env()) {
   if (nrow(out) > 0) {
     cli_abort(c("x" = "Instrument{?s} detected that ha{?s/ve} both repeating and
       nonrepeating instances defined in the project: {out$field}"),
-              class = c("repeat_nonrepeat_instrument", "REDCapTidieR_cond"),
-              call = call
+      class = c("repeat_nonrepeat_instrument", "REDCapTidieR_cond"),
+      call = call
     )
   }
 }

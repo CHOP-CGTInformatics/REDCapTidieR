@@ -13,7 +13,7 @@ db_has_repeat_forms(db_data)
 A boolean.
 }
 \description{
-Simple utlity function checking for the existence of repeat forms in a REDCap
+Simple utility function checking for the existence of repeat forms in a REDCap
 database.
 }
 \keyword{internal}

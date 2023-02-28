@@ -1,4 +1,3 @@
-
 test_that("make_labelled applies labels to all elements of supertibble", {
   supertbl <- tibble::tribble(
     ~redcap_data, ~redcap_metadata, ~redcap_events,

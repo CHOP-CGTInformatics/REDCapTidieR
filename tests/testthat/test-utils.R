@@ -270,10 +270,10 @@ test_that("try_redcapr works", {
 test_that("add_partial_keys works", {
   test_data <- tibble::tribble(
     ~record_id, ~redcap_event_name, ~redcap_repeat_instrument, ~redcap_repeat_instance,
-    1,           "nr_event_arm_1",   NA,                        NA,
-    1,           "nr_event_arm_1",   "r_instrument",            1,
-    3,           "nr_event_arm_1",   "r_instrument",            1,
-    4,           "r_event_arm_1",    NA,                        1
+    1, "nr_event_arm_1", NA, NA,
+    1, "nr_event_arm_1", "r_instrument", 1,
+    3, "nr_event_arm_1", "r_instrument", 1,
+    4, "r_event_arm_1", NA, 1
   )
 
   out <- test_data %>%
@@ -297,17 +297,17 @@ test_that("add_partial_keys works", {
 test_that("create_repeat_instance_vars works", {
   repeat_events <- tibble::tribble(
     ~record_id, ~redcap_event, ~redcap_arm, ~redcap_repeat_instrument, ~redcap_repeat_instance,
-    1,           "nr_event",    1,            NA,                        NA,
-    1,           "nr_event",    1,            "r_instrument",            1,
-    3,           "nr_event",    1,            "r_instrument",            1,
-    4,           "r_event",     1,            NA,                        1
+    1, "nr_event", 1, NA, NA,
+    1, "nr_event", 1, "r_instrument", 1,
+    3, "nr_event", 1, "r_instrument", 1,
+    4, "r_event", 1, NA, 1
   )
 
   no_repeat_events <- tibble::tribble(
     ~record_id, ~redcap_event, ~redcap_arm, ~redcap_repeat_instrument, ~redcap_repeat_instance,
-    1,           "nr_event",    1,            NA,                        NA,
-    1,           "nr_event",    1,            "r_instrument",            1,
-    3,           "nr_event",    1,            "r_instrument",            1
+    1, "nr_event", 1, NA, NA,
+    1, "nr_event", 1, "r_instrument", 1,
+    3, "nr_event", 1, "r_instrument", 1
   )
 
   expected_cols <- c(

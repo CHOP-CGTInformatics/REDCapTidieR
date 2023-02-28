@@ -46,16 +46,18 @@ test_that("check_repeat_and_nonrepeat works", {
   )
 
   test_repeating_event <- tibble::tribble(
-    ~record_id,  ~redcap_repeat_instrument, ~redcap_repeat_instance, ~combination_variable,
-    1,               NA,                        NA,                      "A",
-    1,               NA,                        1,                       "B",
-    2,               "combination",             2,                       NA
+    ~record_id, ~redcap_repeat_instrument, ~redcap_repeat_instance, ~combination_variable,
+    1, NA, NA, "A",
+    1, NA, 1, "B",
+    2, "combination", 2, NA
   )
 
   expect_error(check_repeat_and_nonrepeat(db_data = test_data_longitudinal),
-               class = "repeat_nonrepeat_instrument")
+    class = "repeat_nonrepeat_instrument"
+  )
   expect_error(check_repeat_and_nonrepeat(db_data = test_data_not_longitudinal),
-               class = "repeat_nonrepeat_instrument")
+    class = "repeat_nonrepeat_instrument"
+  )
   expect_no_error(check_repeat_and_nonrepeat(db_data = test_repeating_event))
 })
 
@@ -108,7 +110,6 @@ test_that("check_parsed_labels works", {
     rlang::catch_cnd(classes = "blank_labels")
 
   expect_equal(cnd$field, "field_name")
-
 })
 
 test_that("checkmate wrappers work", {

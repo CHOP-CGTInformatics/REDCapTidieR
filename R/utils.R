@@ -20,7 +20,6 @@
 
 add_partial_keys <- function(db_data,
                              var = NULL) {
-
   if (!is.null(enexpr(var))) {
     pattern <- "^(\\w+?)_arm_(\\d)$"
 
@@ -59,7 +58,6 @@ add_partial_keys <- function(db_data,
 #' @keywords internal
 
 create_repeat_instance_vars <- function(db_data) {
-
   out <- db_data
 
   # Detect if repeat forms exist
@@ -98,8 +96,9 @@ create_repeat_instance_vars <- function(db_data) {
     )
 
     out <- relocate(out,
-                    "redcap_event_instance",
-                    .after = "redcap_form_instance")
+      "redcap_event_instance",
+      .after = "redcap_form_instance"
+    )
   }
 
   # return
@@ -187,7 +186,7 @@ parse_labels <- function(string, return_vector = FALSE, return_stripped_text_fla
   # If string is empty/NA, throw a warning
   if (is.na(string)) {
     cli_warn("Empty string detected for a given multiple choice label.",
-             class = c("empty_parse_warning", "REDCapTidieR_cond")
+      class = c("empty_parse_warning", "REDCapTidieR_cond")
     )
   }
 
@@ -623,7 +622,6 @@ try_redcapr <- function(expr, call = caller_env()) {
       )
     },
     warning = function(cnd) {
-
       cli_warn(
         message = c("!" = "One of the {.pkg REDCapR} operations produced a warning. See below for details."),
         call = condition$call,
@@ -679,7 +677,7 @@ try_redcapr <- function(expr, call = caller_env()) {
 #' Check whether a REDCap database has repeat forms
 #'
 #' @description
-#' Simple utlity function checking for the existence of repeat forms in a REDCap
+#' Simple utility function checking for the existence of repeat forms in a REDCap
 #' database.
 #'
 #' @returns A boolean.
