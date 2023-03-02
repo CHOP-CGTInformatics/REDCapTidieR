@@ -96,7 +96,7 @@ super_hero_powers |>
 
 REDCap databases support two main mechanisms to allow collecting the same data multiple times: **repeating instruments** and [**longitudinal projects**](glossary.html#longitudinal-project).
 
-The [**granularity**](glossary.html#granularity) of each table (i.e. the observational unit that a single [row](glossary.html#row) represents) depends on the [structure](glossary.html#structure) of the [project](glossary.html#project) ([classic](glossary.html#classic-project), [longitudinal](glossary.html#longitudinal-project), longitudinal with multiple [arms](glossary.html#arm)), the structure of the [instrument](glossary.html#instrument) ([repeating](glossary.html#repeating-instrument) or [nonrepeating](glossary.html#nonrepeating-instrument)), and for longitudinal projects the structure of the [event](glossary.html#event) ([repeating](glossary.html#repeating-event) or [nonrepeating](glossary.html#nonrepeating-event)). REDCapTidieR generates [**identifier columns**](glossary.html#identifier-column) according to the following table:
+The [**granularity**](glossary.html#granularity) of each table (i.e. the observational unit that a single [row](glossary.html#row) represents) depends on the [structure](glossary.html#structure) of the [project](glossary.html#project) ([classic](glossary.html#classic-project), [longitudinal](glossary.html#longitudinal-project), longitudinal with multiple [arms](glossary.html#arm)), the structure of the [instrument](glossary.html#instrument) ([repeating](glossary.html#repeating-instrument) or [nonrepeating](glossary.html#nonrepeating-instrument)), and, for longitudinal projects, the structure of the [event](glossary.html#event) ([repeating](glossary.html#repeating-event) or [nonrepeating](glossary.html#nonrepeating-event)). REDCapTidieR generates [**identifier columns**](glossary.html#identifier-column) according to the following table:
 
 +--------------------------+---------------------+--------------------------+-----------------------------+-----------------------------+
 | **Instrument Structure** | **Event Structure** | **Classic**              | **Longitudinal, one arm**   | **Longitudinal, multi-arm** |
@@ -115,7 +115,7 @@ The [**granularity**](glossary.html#granularity) of each table (i.e. the observa
 |                          |                     |                          | `redcap_event`              | `redcap_event` +\           |
 |                          |                     |                          |                             | `redcap_arm`                |
 +--------------------------+---------------------+--------------------------+-----------------------------+-----------------------------+
-| **Repeating**            |  **Repeating**      |                                  Not Supported                                       |
+| **Repeating**            |  **Repeating**      | Not Supported            | Not Supported               | Not Supported               |
 +--------------------------+---------------------+--------------------------+-----------------------------+-----------------------------+
 
 > Note: Taken in combination, the identifier columns of any REDCapTidieR tibble are guaranteed to be unique and can therefore be used as [**composite primary key**](glossary.html#composite-primary-key). This makes it easy to join REDCapTidieR tibbles to each other!
@@ -178,7 +178,7 @@ hematology |>
   rmarkdown::paged_table()
 ```
 
-Note that both `physical_exam` and `hematology` are **nonrepeating** instruments. REDCapTidieR **only** allows nonrepeating instruments to occur in repeating events.
+Note that both `physical_exam` and `hematology` are **nonrepeating** instruments. REDCapTidieR **only** allows nonrepeating instruments to occur in repeating events. It will throw an error if it detects a repeating instrument associated with a repeating event.
 
 REDCapTidieR supports projects with multiple arms. If you have a project with multiple arms, there will be an additional column `redcap_arm` to identify the arm that the row is associated with.
 
