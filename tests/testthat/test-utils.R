@@ -330,3 +330,37 @@ test_that("create_repeat_instance_vars works", {
   expect_s3_class(nonrepeat_out, "data.frame")
   expect_true(nrow(nonrepeat_out) > 0)
 })
+
+test_that("remove_empty_rows works", {
+
+  my_record_id <- "record_id"
+
+  complete_out <- tibble::tribble(
+    ~record_id, ~redcap_event, ~redcap_event_instance, ~data, ~form_status_complete,
+    1,           "event1",      1,                      "A",   "Complete",
+    1,           "event2",      2,                      "B",   "Incomplete",
+    2,           "event1",      1,                      "C",   "Complete",
+  )
+
+  complete_out %>%
+    remove_empty_rows(my_record_id) %>%
+    expect_equal(complete_out)
+
+  empty_out <- tibble::tribble(
+    ~record_id, ~redcap_event, ~redcap_event_instance, ~data, ~form_status_complete,
+    1,           "event1",      1,                      "A",   "Complete",
+    1,           "event2",      2,                      NA,   "Incomplete",
+    2,           "event1",      1,                      "C",   "Complete",
+  )
+
+  expected_out <- tibble::tribble(
+    ~record_id, ~redcap_event, ~redcap_event_instance, ~data, ~form_status_complete,
+    1,           "event1",      1,                      "A",   "Complete",
+    2,           "event1",      1,                      "C",   "Complete",
+  )
+
+  empty_out %>%
+    remove_empty_rows(my_record_id) %>%
+    expect_equal(expected_out)
+
+})

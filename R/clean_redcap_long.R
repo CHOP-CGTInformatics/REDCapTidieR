@@ -19,7 +19,7 @@
 #' \code{form_name} and \code{structure} column details.
 #'
 #' @importFrom checkmate assert_data_frame
-#' @importFrom dplyr filter pull
+#' @importFrom dplyr filter pull if_any
 #' @importFrom purrr map
 #' @importFrom tibble tibble
 #' @importFrom rlang .data
@@ -194,7 +194,8 @@ distill_nonrepeat_table_long <- function(form_name,
     rename("redcap_survey_timestamp" = any_of(paste0(my_form, "_timestamp"))) %>%
     relocate(any_of("redcap_survey_timestamp"), .after = everything()) %>%
     rename("form_status_complete" = paste0(my_form, "_complete")) %>%
-    relocate("form_status_complete", .after = everything())
+    relocate("form_status_complete", .after = everything()) %>%
+    remove_empty_rows(my_record_id)
 
   # Remove arms column if necessary
   if (!any(linked_arms$unique_event_name %>% str_detect("arm_2"))) {
@@ -241,7 +242,7 @@ distill_nonrepeat_table_long <- function(form_name,
 #' @param linked_arms Output of \code{link_arms}, linking instruments to REDCap
 #' events/arms
 #'
-#' @importFrom dplyr filter pull select relocate rename
+#' @importFrom dplyr filter pull select relocate rename if_any
 #' @importFrom tidyselect all_of everything any_of
 #' @importFrom tibble tibble
 #' @importFrom stringr str_detect
@@ -313,7 +314,8 @@ distill_repeat_table_long <- function(form_name,
     rename("redcap_survey_timestamp" = any_of(paste0(my_form, "_timestamp"))) %>%
     relocate(any_of("redcap_survey_timestamp"), .after = everything()) %>%
     rename("form_status_complete" = paste0(my_form, "_complete")) %>%
-    relocate("form_status_complete", .after = everything())
+    relocate("form_status_complete", .after = everything()) %>%
+    remove_empty_rows(my_record_id)
 
   # Remove arms column if necessary
   if (!any(linked_arms$unique_event_name %>% str_detect("arm_2"))) {

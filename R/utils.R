@@ -689,3 +689,41 @@ try_redcapr <- function(expr, call = caller_env()) {
 db_has_repeat_forms <- function(db_data) {
   "redcap_repeat_instance" %in% names(db_data)
 }
+
+#' @title
+#' Remove rows with empty data
+#'
+#' @description
+#' Check for empty rows in columns that aren't necessary for composite key
+#' specification. This occurs when a form is filled out in an event, but other
+#' forms are not. Regardless of a form's status, all forms in an event are
+#' included in the output so long as any form in the event contains data.
+#'
+#' This only applies to longitudinal REDCap databases containing events.
+#'
+#' @returns A dataframe.
+#'
+#' @param data A REDCap dataframe from a longitudinal database,
+#' pre-processed within a `distill_*` function.
+#' @param my_record_id The record ID defined in the project.
+#'
+#' @importFrom dplyr filter if_any
+#'
+#' @keywords internal
+
+remove_empty_rows <- function(data, my_record_id){
+  # Define standard columns that do not impact anlaysis
+  standard_cols <- c(my_record_id,
+                     "redcap_event",
+                     "redcap_arm",
+                     "redcap_form_instance",
+                     "redcap_event_instance",
+                     "form_status_complete")
+
+  # Subset columns that do impact analysis
+  check_empty_cols <- names(data)[!names(data) %in% standard_cols]
+
+  # Filter for rows where specified columns have any non-NA data
+  data %>%
+    filter(if_any(check_empty_cols, ~!is.na(.)))
+}
