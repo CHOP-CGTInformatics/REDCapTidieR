@@ -711,7 +711,7 @@ db_has_repeat_forms <- function(db_data) {
 #'
 #' @keywords internal
 
-remove_empty_rows <- function(data, my_record_id){
+remove_empty_rows <- function(data, my_record_id) {
   # Define standard columns that do not impact anlaysis
   standard_cols <- c(my_record_id,
                      "redcap_event",
