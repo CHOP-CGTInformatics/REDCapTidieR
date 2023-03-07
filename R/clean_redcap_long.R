@@ -19,7 +19,7 @@
 #' \code{form_name} and \code{structure} column details.
 #'
 #' @importFrom checkmate assert_data_frame
-#' @importFrom dplyr filter pull if_any
+#' @importFrom dplyr filter pull
 #' @importFrom purrr map
 #' @importFrom tibble tibble
 #' @importFrom rlang .data
@@ -242,7 +242,7 @@ distill_nonrepeat_table_long <- function(form_name,
 #' @param linked_arms Output of \code{link_arms}, linking instruments to REDCap
 #' events/arms
 #'
-#' @importFrom dplyr filter pull select relocate rename if_any
+#' @importFrom dplyr filter pull select relocate rename
 #' @importFrom tidyselect all_of everything any_of
 #' @importFrom tibble tibble
 #' @importFrom stringr str_detect

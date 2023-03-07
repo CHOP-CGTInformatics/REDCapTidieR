@@ -96,8 +96,8 @@ create_repeat_instance_vars <- function(db_data) {
     )
 
     out <- relocate(out,
-      "redcap_event_instance",
-      .after = "redcap_form_instance"
+                    "redcap_event_instance",
+                    .after = "redcap_form_instance"
     )
   }
 
@@ -186,7 +186,7 @@ parse_labels <- function(string, return_vector = FALSE, return_stripped_text_fla
   # If string is empty/NA, throw a warning
   if (is.na(string)) {
     cli_warn("Empty string detected for a given multiple choice label.",
-      class = c("empty_parse_warning", "REDCapTidieR_cond")
+             class = c("empty_parse_warning", "REDCapTidieR_cond")
     )
   }
 
@@ -694,9 +694,9 @@ db_has_repeat_forms <- function(db_data) {
 #' Remove rows with empty data
 #'
 #' @description
-#' Check for empty rows in columns that aren't necessary for composite key
-#' specification. This occurs when a form is filled out in an event, but other
-#' forms are not. Regardless of a form's status, all forms in an event are
+#' Remove rows that are empty in all associated data columns (those derived from
+#' fields in REDCap). This occurs when a form is filled out in an event, but
+#' other forms are not. Regardless of a form's status, all forms in an event are
 #' included in the output so long as any form in the event contains data.
 #'
 #' This only applies to longitudinal REDCap databases containing events.
@@ -712,18 +712,20 @@ db_has_repeat_forms <- function(db_data) {
 #' @keywords internal
 
 remove_empty_rows <- function(data, my_record_id) {
-  # Define standard columns that do not impact anlaysis
-  standard_cols <- c(my_record_id,
-                     "redcap_event",
-                     "redcap_arm",
-                     "redcap_form_instance",
-                     "redcap_event_instance",
-                     "form_status_complete")
+  # Define non-data columns that do not impact analysis
+  nondata_cols <- c(my_record_id,
+                    "redcap_event",
+                    "redcap_arm",
+                    "redcap_survey_timestamp",
+                    "redcap_survey_identifier",
+                    "redcap_form_instance",
+                    "redcap_event_instance",
+                    "form_status_complete")
 
   # Subset columns that do impact analysis
-  check_empty_cols <- names(data)[!names(data) %in% standard_cols]
+  data_cols <- names(data)[!names(data) %in% nondata_cols]
 
   # Filter for rows where specified columns have any non-NA data
   data %>%
-    filter(if_any(check_empty_cols, ~!is.na(.)))
+    filter(if_any(data_cols, ~!is.na(.)))
 }
