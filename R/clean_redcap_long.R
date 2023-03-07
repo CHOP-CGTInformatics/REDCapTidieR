@@ -194,7 +194,8 @@ distill_nonrepeat_table_long <- function(form_name,
     rename("redcap_survey_timestamp" = any_of(paste0(my_form, "_timestamp"))) %>%
     relocate(any_of("redcap_survey_timestamp"), .after = everything()) %>%
     rename("form_status_complete" = paste0(my_form, "_complete")) %>%
-    relocate("form_status_complete", .after = everything())
+    relocate("form_status_complete", .after = everything()) %>%
+    remove_empty_rows(my_record_id)
 
   # Remove arms column if necessary
   if (!any(linked_arms$unique_event_name %>% str_detect("arm_2"))) {
@@ -313,7 +314,8 @@ distill_repeat_table_long <- function(form_name,
     rename("redcap_survey_timestamp" = any_of(paste0(my_form, "_timestamp"))) %>%
     relocate(any_of("redcap_survey_timestamp"), .after = everything()) %>%
     rename("form_status_complete" = paste0(my_form, "_complete")) %>%
-    relocate("form_status_complete", .after = everything())
+    relocate("form_status_complete", .after = everything()) %>%
+    remove_empty_rows(my_record_id)
 
   # Remove arms column if necessary
   if (!any(linked_arms$unique_event_name %>% str_detect("arm_2"))) {

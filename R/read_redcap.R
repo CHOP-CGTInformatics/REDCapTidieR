@@ -191,7 +191,8 @@ read_redcap <- function(redcap_uri,
         )
 
       # Drop repeating fields if there are no remaining repeating instruments
-      if (all(is.na(db_data$redcap_repeat_instrument))) {
+      # or repeat instances
+      if (all(is.na(db_data$redcap_repeat_instrument) & is.na(db_data$redcap_repeat_instance))) {
         db_data <- db_data %>%
           select(-"redcap_repeat_instrument", -"redcap_repeat_instance")
       }
