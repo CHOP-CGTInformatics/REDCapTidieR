@@ -142,6 +142,9 @@
     <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/read_redcap.html</loc>
   </url>
   <url>
+    <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/remove_empty_rows.html</loc>
+  </url>
+  <url>
     <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/resolve_formatter.html</loc>
   </url>
   <url>
