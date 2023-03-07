@@ -1,5 +1,33 @@
 # REDCapTidieR (development version)
 
+Version 0.3.0 (Released 2023-XX-XX)
+==========================================================
+
+## New Features
+
+* `read_redcap()` now supports projects with repeating events which introduced a **breaking change** to data tibble column names
+  * `redcap_repeat_instance` is now `redcap_form_instance`
+  * `redcap_event_instance` has been added to denote repeating events
+
+## Performance Improvements and Enhancements
+
+* Improved error message suite:
+  * Helpful error message provided for various conditions related to REDCap API calls
+  * Helpful error messages added for checks across all exported functions
+  * Unexpected error messages provided with direction to submitting bug reports
+    * Improved error messages for label parsing
+  * Added `select_choices_and_calculations` exported by the REDCap API to `redcap_metadata` tibble
+* Improved process for adding/updating `httptest` mocks
+
+## Bug Fixes
+
+* Fixed a bug where the `suppress_redcapr_messages` argument for `read_redcap()` was not working appropriately
+* Fixed a bug where `read_redcap()` would fail when `select_choices_and_calculations` was missing whitespace after commas (discovered by @camcaan)
+* Fixed a bug where `read_redcap()` would fail for projects with a multiple choice field having duplicate values with the same label
+  * Added a warning when REDCapTidieR detects this
+* Fixed a bug where empty rows would appear in data tibbles in longitudinal REDCap exports for events containing a mix of empty and filled forms
+* Fixed a bug where the `forms` specification in `read_redcap()` may lead to incorrect removal of data for databases with repeating events
+
 Version 0.2.0 (Released 2022-12-07)
 ==========================================================
 
