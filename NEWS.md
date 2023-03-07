@@ -25,6 +25,8 @@ Version 0.3.0 (Released 2023-XX-XX)
 * Fixed a bug where `read_redcap()` would fail when `select_choices_and_calculations` was missing whitespace after commas (discovered by @camcaan)
 * Fixed a bug where `read_redcap()` would fail for projects with a multiple choice field having duplicate values with the same label
   * Added a warning when REDCapTidieR detects this
+* Fixed a bug where empty rows would appear in data tibbles in logitudinal REDCap exports for events containing a mix of empty and filled forms
+* Fixed a bug where the `forms` specification in `read_redcap()` may lead to incorrect removal of data for databases with repeating events
 
 Version 0.2.0 (Released 2022-12-07)
 ==========================================================
