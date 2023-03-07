@@ -93,8 +93,8 @@ corresponding artifacts REDCapTidieR generates in the R environment,
 followed by a listing of definition of terms.</p>
 <table class="table">
 <colgroup>
-<col width="24%">
-<col width="75%">
+<col width="29%">
+<col width="70%">
 </colgroup>
 <thead><tr class="header">
 <th align="center">REDCap</th>
@@ -166,12 +166,22 @@ arms)</p>
 </td>
 </tr>
 <tr class="even">
+<td align="center"><a href="#repeating-instrument">Repeat
+Instrument</a></td>
 <td align="center">
-<a href="#repeating">Repeat</a> instance</td>
+<p><code>redcap_form_instance</code> <a href="#column">column</a> of a <a href="#data-tibble">data
+tibble</a></p>
+<p>(only present if the <a href="#instrument">instrument</a> is <a href="#repeating-instrument">repeating</a>)</p>
+</td>
+</tr>
+<tr class="odd">
+<td align="center"><a href="#repeating-event">Repeat Event</a></td>
 <td align="center">
-<p><code>redcap_form_instance</code> <a href="#column">column</a> of a <a href="#data-tibble">data tibble</a>
-|</p>
-<p>(only present if the <a href="#instrument">instrument</a> is <a href="#repeating">repeating</a>)</p>
+<p><code>redcap_event_instance</code> <a href="#column">column</a> of a <a href="#data-tibble">data
+tibble</a></p>
+<p>(only present if the <a href="#instrument">instrument</a> is
+associated with a <a href="#repeating-event">repeating
+event</a>)</p>
 </td>
 </tr>
 </tbody>
@@ -233,7 +243,7 @@ construct the names of data columns derived from them.
 <p>Also known as a <strong>traditional</strong> project, this the
 simplest type of REDCap <a href="#project">project</a>. You can define
 one or multiple <a href="#instrument">instruments</a> (also called
-forms) for data entry. Both <a href="#repeating">repeating</a> and <a href="#nonrepeating">nonrepeating</a> instruments are allowed.
+forms) for data entry. Both <a href="#repeating-instrument">repeating</a> and <a href="#repeating-instrument">nonrepeating</a> instruments are allowed.
 Nonrepeating instruments are completed only once for each <a href="#record">record</a>. For nonrepeating instruments, one <a href="#row">row</a> of data in the <a href="#data-tibble">data
 tibble</a> represents one record. Repeating instruments can be completed
 an arbitrary number of times for each record. For repeating instruments,
@@ -291,7 +301,7 @@ interactive work. The <code><a href="../reference/bind_tibbles.html">bind_tibble
 <h3 id="event">Event<a class="anchor" aria-label="anchor" href="#event"></a>
 </h3>
 <p>A part of a <a href="#longitudinal-project">longitudinal project</a>.
-Each event can be associated with one or multiple <a href="#instrument">instruments</a>.
+Each event can be associated with one or multiple <a href="#instrument">instruments</a> and may be either <a href="#repeating-event">repeating</a> or <a href="#nonrepeating-event">nonrepeating</a>.
 <a onclick="history.back()">↩︎</a></p>
 </div>
 <div class="section level3">
@@ -355,10 +365,11 @@ reference page</a>. <a onclick="history.back()">↩︎</a></p>
 <h3 id="granularity">Granularity<a class="anchor" aria-label="anchor" href="#granularity"></a>
 </h3>
 <p>The level of detail that a specific <a href="#row">row</a> in a <a href="#data-tibble">data tibble</a> represents. This depends on the <a href="#structure">structure</a> of the <a href="#project">project</a>
-(<a href="#classic-project">classic</a> vs. <a href="#longitudinal-project">longitudinal</a> vs longitudinal with <a href="#arm">arms</a>) and the structure of the <a href="#instrument">instrument</a> (<a href="#nonrepeating">nonrepeating</a> vs <a href="#repeating">repeating</a>). For example, a data tibble containing
-data from a nonrepeating instrument in a longitudinal project with two
-arms has a granularity of one row per <a href="#record">record</a> per
-<a href="#event">event</a> per arm. See also: the section <a href="https://chop-cgtinformatics.github.io/REDCapTidieR/articles/diving_deeper.html#longitudinal-redcap-projects">Longitudinal
+(<a href="#classic-project">classic</a> vs. <a href="#longitudinal-project">longitudinal</a> vs. longitudinal with <a href="#arm">arms</a>), the structure of the <a href="#instrument">instrument</a> (<a href="#repeating-instrument">repeating</a> vs. <a href="#nonrepeating-instrument">nonrepeating</a>), and, for longitudinal
+projects, the structure of the <a href="#event">event</a> (<a href="#repeating-event">repeating</a> vs. <a href="#nonrepeating-event">nonrepeating</a>). For example, a data tibble
+containing data from a nonrepeating instrument in a longitudinal project
+with two arms has a granularity of one row per <a href="#record">record</a> per <a href="#event">event</a> per arm. See
+also: the section <a href="https://chop-cgtinformatics.github.io/REDCapTidieR/articles/diving_deeper.html#longitudinal-redcap-projects">Longitudinal
 REDCap projects</a> in the <a href="https://chop-cgtinformatics.github.io/REDCapTidieR/articles/diving_deeper.html">Diving
 Deeper vignette</a>. <a onclick="history.back()">↩︎</a></p>
 </div>
@@ -369,9 +380,10 @@ Deeper vignette</a>. <a onclick="history.back()">↩︎</a></p>
 tibble</a> that serves to partially identify the entity described in a
 <a href="#row">row</a>. The <a href="#record">record</a> ID column is
 always present in the data tibble. Depending on the <a href="#structure">structure</a> of the <a href="#project">project</a>
-(<a href="#classic-project">classic</a> vs. <a href="#longitudinal-project">longitudinal</a> vs. longitudinal with <a href="#arm">arms</a>) and the structure of the <a href="#instrument">instrument</a> (<a href="#nonrepeating">nonrepeating</a> vs <a href="#repeating">repeating</a>) there may be additional identifier
-columns, including <code>redcap_event</code>, <code>redcap_arm</code>,
-and/or <code>redcap_form_instance</code>. Taken together, the identifier
+(<a href="#classic-project">classic</a> vs. <a href="#longitudinal-project">longitudinal</a> vs. longitudinal with <a href="#arm">arms</a>), the structure of the <a href="#instrument">instrument</a> (<a href="#nonrepeating-instrument">nonrepeating</a> vs <a href="#repeating-instrument">repeating</a>), and the structure of the <a href="#event">event</a> (<a href="#repeating-event">repeating</a> vs. <a href="#nonrepeating-event">nonrepeating</a>) there may be additional
+identifier columns, including <code>redcap_event</code>,
+<code>redcap_arm</code>, <code>redcap_form_instance</code>, and
+<code>redcap_event_instance</code>. Taken together, the identifier
 columns form a <a href="#composite-primary-key">composite primary
 key</a>. See also: the section <a href="https://chop-cgtinformatics.github.io/REDCapTidieR/articles/diving_deeper.html#longitudinal-redcap-projects">Longitudinal
 REDCap projects</a> in the <a href="https://chop-cgtinformatics.github.io/REDCapTidieR/articles/diving_deeper.html">Diving
@@ -457,10 +469,19 @@ represent attributes of those fields. For example, the
 description (the <a href="#field-label">field label</a>), and its <a href="#field-type">field type</a>. <a onclick="history.back()">↩︎</a></p>
 </div>
 <div class="section level3">
-<h3 id="nonrepeating">Nonrepeating<a class="anchor" aria-label="anchor" href="#nonrepeating"></a>
+<h3 id="nonrepeating-event">Nonrepeating Event<a class="anchor" aria-label="anchor" href="#nonrepeating-event"></a>
 </h3>
-<p>A <a href="#structure">structure</a> of an <a href="#instrument">instrument</a> that allows it to be filled out
-exactly once per <a href="#record">record</a> in a <a href="#classic-project">classic project</a> and once per record per <a href="#event">event</a> (per <a href="#arm">arm</a>) in a <a href="#longitudinal-project">longitudinal project</a>. See also: <a href="#repeating">Repeating</a>. <a onclick="history.back()">↩︎</a></p>
+<p>An <a href="#event">event</a> whose associated <a href="#instrument">instruments</a> can be filled out exactly once per
+record per event (per <a href="#arm">arm</a>). See also: <a href="#repeating-event">Repeating Event</a>.
+<a onclick="history.back()">↩︎</a></p>
+</div>
+<div class="section level3">
+<h3 id="nonrepeating-instrument">Nonrepeating Instrument<a class="anchor" aria-label="anchor" href="#nonrepeating-instrument"></a>
+</h3>
+<p>An <a href="#instrument">instrument</a> that can be filled out
+exactly once per <a href="#record">record</a> in a <a href="#classic-project">classic project</a> and once per record per <a href="#event">event</a> instance (per <a href="#arm">arm</a>) in a <a href="#longitudinal-project">longitudinal project</a>. These instruments
+have a <a href="#structure">structure</a> of nonrepeating. See also: <a href="#repeating-instrument">Repeating Instrument</a>.
+<a onclick="history.back()">↩︎</a></p>
 </div>
 <div class="section level3">
 <h3 id="project">Project<a class="anchor" aria-label="anchor" href="#project"></a>
@@ -502,11 +523,22 @@ resource identifier (URI) of the API endpoint (something like
 package provides functions to interact with the <a href="#redcap-api">REDCap API</a>. REDCapTidieR builds on REDCapR to <a href="#import">import</a> data. <a onclick="history.back()">↩︎</a></p>
 </div>
 <div class="section level3">
-<h3 id="repeating">Repeating<a class="anchor" aria-label="anchor" href="#repeating"></a>
+<h3 id="repeating-event">Repeating Event<a class="anchor" aria-label="anchor" href="#repeating-event"></a>
 </h3>
-<p>A <a href="#structure">structure</a> of an <a href="#instrument">instrument</a> that allows it to be filled out zero,
-one, or multiple times for each <a href="#record">record</a>. See also:
-<a href="#nonrepeating">Nonrepeating</a>.
+<p>An <a href="#event">event</a> whose associated <a href="#instrument">instruments</a> can be filled out zero, one, or
+multiple times per record per event (per <a href="#arm">arm</a>). When
+an event is repeating each instance of the event contains a new set of
+responses to each instrument. REDCapTidieR only supports <a href="#nonrepeating-instrument">nonrepeating instruments</a> in
+repeating events. See also: <a href="#nonrepeating-event">Nonrepeating
+Event</a>. <a onclick="history.back()">↩︎&lt;/&gt;</a></p>
+</div>
+<div class="section level3">
+<h3 id="repeating-instrument">Repeating Instrument<a class="anchor" aria-label="anchor" href="#repeating-instrument"></a>
+</h3>
+<p>An <a href="#instrument">instrument</a> that can be filled out zero,
+one, or multiple times per <a href="#record">record</a> in a <a href="#classic-project">classic project</a> and per record per <a href="#event">event</a> (per <a href="#arm">arm</a>) in a <a href="#longitudinal-project">longitudinal project</a>. These instruments
+have a <a href="#structure">structure</a> of repeating. REDCapTidieR
+only supports repeating instruments in <a href="#nonrepeating-event">nonrepeating events</a>. See also: <a href="#nonrepeating-instrument">Nonrepeating Instrument</a>.
 <a onclick="history.back()">↩︎</a></p>
 </div>
 <div class="section level3">
@@ -520,9 +552,12 @@ also: <a href="#column">Column</a>.
 <div class="section level3">
 <h3 id="structure">Structure<a class="anchor" aria-label="anchor" href="#structure"></a>
 </h3>
-<p>The structure of an <a href="#instrument">instrument</a> can be <a href="#repeating">repeating</a> or <a href="#nonrepeating">nonrepeating</a>. The <a href="#supertibble">supertibble</a> shows the instrument’s structure in
-the <code>structure</code> column. The structure of a <a href="#project">project</a> can be <a href="#classic-project">classic</a>, <a href="#longitudinal-project">longitudinal</a>, or longitudinal with <a href="#arm">arms</a>. The <a href="#granularity">granularity</a> of a <a href="#data-tibble">data tibble</a> depends on the structure of both the
-instrument and the project. See also: the section <a href="https://chop-cgtinformatics.github.io/REDCapTidieR/articles/diving_deeper.html#longitudinal-redcap-projects">Longitudinal
+<p>The structure of an <a href="#instrument">instrument</a> can be <a href="#repeating-instrument">repeating</a> or <a href="#nonrepeating-instrument">nonrepeating</a>. The <a href="#supertibble">supertibble</a> shows the instrument’s structure in
+the <code>structure</code> column. The structure of a <a href="#project">project</a> can be <a href="#classic-project">classic</a>, <a href="#longitudinal-project">longitudinal</a>, or longitudinal with <a href="#arm">arms</a>. The structure of an <a href="#event">event</a> can
+be <a href="#repeating-event">repeating</a> or <a href="#nonrepeating-event">nonrepeating</a>. The <a href="#granularity">granularity</a> of a <a href="#data-tibble">data
+tibble</a> depends on the structure of all three: the instrument, the
+project, and the events associated with the instrument. See also: the
+section <a href="https://chop-cgtinformatics.github.io/REDCapTidieR/articles/diving_deeper.html#longitudinal-redcap-projects">Longitudinal
 REDCap projects</a> in the <a href="https://chop-cgtinformatics.github.io/REDCapTidieR/articles/diving_deeper.html">Diving
 Deeper vignette</a>. <a onclick="history.back()">↩︎</a></p>
 </div>
@@ -571,7 +606,7 @@ consistent)</li>
 </ol>
 <p>Data returned by the REDCap API (the “<a href="#block-matrix">block
 matrix</a>”) often satisfies the first two requirements of tidy data.
-However, if the <a href="#project">project</a> contains both <a href="#repeating">repeating</a> and <a href="#nonrepeating">nonrepeating</a> instruments then the <a href="#granularity">granularity</a> is inconsistent from row to row. A
+However, if the <a href="#project">project</a> contains both <a href="#repeating-instrument">repeating</a> and <a href="#nonrepeating-instrument">nonrepeating</a> instruments then the <a href="#granularity">granularity</a> is inconsistent from row to row. A
 key function of the REDCapTidieR package is to break down the <a href="#block-matrix">block matrix</a> by <a href="#instrument">instrument</a>. The resulting set of <a href="#data-tibble">data tibbles</a> is tidy because the granularity of
 each data tibble is consistent. This makes it easy to work with
 them.</p>

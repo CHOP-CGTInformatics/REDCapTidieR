@@ -98,9 +98,9 @@ API</a> and provides it to the R environment without performing much
 processing. It returns a list with an element named <code>data</code>
 that contains all of the data of the project as a single data frame.</p>
 <p>Below, we use this function to import data from the <a href="REDCapTidieR.html#case-study-the-superhero-database">Superhero
-REDCap database</a>, which contains a <a href="glossary.html#nonrepeating"><strong>nonrepeating</strong></a>
-instrument <code>heroes_information</code> and a <a href="glossary.html#repeating"><strong>repeating</strong></a> instrument
-<code>super_hero_powers</code>. We use
+REDCap database</a>, which contains a <a href="glossary.html#nonrepeating-instrument"><strong>nonrepeating</strong></a>
+instrument <code>heroes_information</code> and a <a href="glossary.html#repeating-instrument"><strong>repeating</strong></a>
+instrument <code>super_hero_powers</code>. We use
 <code><a href="https://pkgs.rstudio.com/rmarkdown/reference/paged_table.html" class="external-link">rmarkdown::paged_table()</a></code> to allow you to explore this large
 data frame in the browser.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
@@ -207,19 +207,22 @@ same data multiple times: <strong>repeating instruments</strong> and <a href="gl
 projects</strong></a>.</p>
 <p>The <a href="glossary.html#granularity"><strong>granularity</strong></a> of
 each table (i.e. the observational unit that a single <a href="glossary.html#row">row</a> represents) depends on the <a href="glossary.html#structure">structure</a> of the <a href="glossary.html#project">project</a> (<a href="glossary.html#classic-project">classic</a>, <a href="glossary.html#longitudinal-project">longitudinal</a>, longitudinal
-with multiple <a href="glossary.html#arm">arms</a>) as well as the
-structure of the <a href="glossary.html#instrument">instrument</a> (<a href="glossary.html#repeating">repeating</a> or <a href="glossary.html#nonrepeating">nonrepeating</a>). REDCapTidieR
+with multiple <a href="glossary.html#arm">arms</a>), the structure of
+the <a href="glossary.html#instrument">instrument</a> (<a href="glossary.html#repeating-instrument">repeating</a> or <a href="glossary.html#nonrepeating-instrument">nonrepeating</a>), and, for
+longitudinal projects, the structure of the <a href="glossary.html#event">event</a> (<a href="glossary.html#repeating-event">repeating</a> or <a href="glossary.html#nonrepeating-event">nonrepeating</a>). REDCapTidieR
 generates <a href="glossary.html#identifier-column"><strong>identifier
 columns</strong></a> according to the following table:</p>
 <table style="width:98%;" class="table">
 <colgroup>
-<col width="17%">
-<col width="25%">
-<col width="27%">
-<col width="27%">
+<col width="19%">
+<col width="15%">
+<col width="19%">
+<col width="21%">
+<col width="21%">
 </colgroup>
 <thead><tr class="header">
-<th></th>
+<th><strong>Instrument Structure</strong></th>
+<th align="left"><strong>Event Structure</strong></th>
 <th align="left"><strong>Classic</strong></th>
 <th align="left"><strong>Longitudinal, one arm</strong></th>
 <th align="left"><strong>Longitudinal, multi-arm</strong></th>
@@ -227,6 +230,7 @@ columns</strong></a> according to the following table:</p>
 <tbody>
 <tr class="odd">
 <td><strong>Nonrepeating</strong></td>
+<td align="left"><strong>Nonrepeating</strong></td>
 <td align="left"><code>record_id</code></td>
 <td align="left">
 <code>record_id</code> +<br><code>redcap_event</code>
@@ -237,22 +241,43 @@ columns</strong></a> according to the following table:</p>
 </tr>
 <tr class="even">
 <td><strong>Repeating</strong></td>
-<td colspan="3" align="left">
-<code>record_id</code> +  |
-<code>record_id</code> +  | <code>record_id</code> +<br><code>redcap_form_instance</code> | <code>redcap_form_instance</code>
-+ | <code>redcap_form_instance</code> + | | <code>redcap_event</code> |
-<code>redcap_event</code> +<br>
-| | <code>redcap_arm</code>
+<td align="left"><strong>Nonrepeating</strong></td>
+<td align="left">
+<code>record_id</code> +<br><code>redcap_form_instance</code>
 </td>
+<td align="left">
+<code>record_id</code> +<br><code>redcap_form_instance</code> +<br><code>redcap_event</code>
+</td>
+<td align="left">
+<code>record_id</code> +<br><code>redcap_form_instance</code> +<br><code>redcap_event</code> +<br><code>redcap_arm</code>
+</td>
+</tr>
+<tr class="odd">
+<td><strong>Nonrepeating</strong></td>
+<td align="left"><strong>Repeating</strong></td>
+<td align="left">N/A</td>
+<td align="left">
+<code>record_id</code> +<br><code>redcap_event_instance</code> +<br><code>redcap_event</code>
+</td>
+<td align="left">
+<code>record_id</code> +<br><code>redcap_event_instance</code> +<br><code>redcap_event</code> +<br><code>redcap_arm</code>
+</td>
+</tr>
+<tr class="even">
+<td><strong>Repeating</strong></td>
+<td align="left"><strong>Repeating</strong></td>
+<td align="left">Not Supported</td>
+<td align="left">Not Supported</td>
+<td align="left">Not Supported</td>
 </tr>
 </tbody>
 </table>
 <blockquote>
 <p>Note: Taken in combination, the identifier columns of any
-REDCapTidieR tibble are guaranteed to be unique and not <code>NA</code>
-and can therefore be used as <a href="glossary.html#composite-primary-key"><strong>composite primary
-key</strong></a>. This makes it easy to join REDCapTidieR tibbles to
-each other!</p>
+REDCapTidieR tibble are guaranteed to be unique and can therefore be
+used as <a href="glossary.html#composite-primary-key"><strong>composite
+primary key</strong></a>. This makes it easy to join REDCapTidieR
+tibbles to each other!</p>
 </blockquote>
 <p>By default, REDCap names the record ID field <code>record_id</code>,
 but this can be changed, and REDCapTidieR is smart enough to handle
@@ -314,16 +339,16 @@ combination of <code>subject_id</code> and
 {"columns":[{"label":["subject_id"],"name":[1],"type":["chr"],"align":["left"]},{"label":["redcap_event"],"name":[2],"type":["chr"],"align":["left"]},{"label":["chem_performed_date"],"name":[3],"type":["date"],"align":["right"]},{"label":["chem_sodium_mmoll"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["chem_potassium_mmoll"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["chem_bun_mgdl"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["chem_creatinine_mgdl"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["chem_glucose_mgdl"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["chem_calcium_mgdl"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["chem_protein_gdl"],"name":[10],"type":["dbl"],"align":["right"]},{"label":["chem_albumin_gdl"],"name":[11],"type":["dbl"],"align":["right"]},{"label":["chem_phosphatase_ul"],"name":[12],"type":["dbl"],"align":["right"]},{"label":["chem_alt_ul"],"name":[13],"type":["dbl"],"align":["right"]},{"label":["chem_ast_ul"],"name":[14],"type":["dbl"],"align":["right"]},{"label":["form_status_complete"],"name":[15],"type":["fct"],"align":["left"]}],"data":[{"1":"001-123-001","2":"screening__enrollm","3":"2022-11-02","4":"130","5":"6.0","6":"15","7":"0.03","8":"130","9":"10.0","10":"4.0","11":"6.0","12":"60","13":"450","14":"350","15":"Complete"},{"1":"001-123-001","2":"preinfusion","3":"2022-11-17","4":"130","5":"7.0","6":"15","7":"3.00","8":"150","9":"12.0","10":"5.0","11":"7.0","12":"120","13":"488","14":"324","15":"Complete"},{"1":"001-123-001","2":"infusion","3":"2022-11-14","4":"110","5":"3.0","6":"2","7":"0.00","8":"50","9":"6.0","10":"4.0","11":"2.0","12":"10","13":"3","14":"10","15":"Complete"},{"1":"001-123-001","2":"1_day_followup","3":"2022-11-15","4":"110","5":"3.0","6":"3","7":"0.06","8":"75","9":"7.0","10":"6.6","11":"2.9","12":"15","13":"34","14":"45","15":"Complete"},{"1":"001-123-002","2":"screening__enrollm","3":"2022-11-04","4":"135","5":"6.0","6":"15","7":"0.06","8":"96","9":"10.4","10":"6.9","11":"8.0","12":"130","13":"550","14":"310","15":"Complete"},{"1":"001-123-002","2":"preinfusion","3":"2022-11-08","4":"110","5":"45.0","6":"3","7":"2.00","8":"100","9":"12.0","10":"8.0","11":"8.0","12":"150","13":"46","14":"37","15":"Complete"},{"1":"001-123-002","2":"infusion","3":"2022-11-16","4":"130","5":"4.1","6":"3","7":"0.03","8":"110","9":"8.9","10":"4.0","11":"2.9","12":"130","13":"550","14":"324","15":"Complete"},{"1":"001-123-003","2":"screening__enrollm","3":"2022-11-09","4":"140","5":"6.0","6":"28","7":"0.07","8":"110","9":"11.0","10":"8.0","11":"7.0","12":"45","13":"350","14":"110","15":"Complete"},{"1":"001-123-003","2":"preinfusion","3":"2022-11-15","4":"139","5":"5.0","6":"2","7":"0.20","8":"80","9":"9.4","10":"5.6","11":"7.0","12":"60","13":"550","14":"350","15":"Complete"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
-<p>The <code>adverse_events</code> is <strong>repeating</strong>. Since
-adverse events aren’t tied to specific study visits, and a patient can
-have any number of different adverse events at any time, it makes sense
-to designate this instrument to a single special event
-<code>adverse_event</code>, which is what we’ve done here. The
-granularity of this table is one row per study subject per repeat
-instance per event. However since it is only designated for a single
-event, it is really one row per study subject per repeat instance. The
-first subject has three adverse events listed, and the second subject
-has two.</p>
+<p>The <code>adverse_events</code> instrument is
+<strong>repeating</strong>. Since adverse events aren’t tied to specific
+study visits, and a patient can have any number of different adverse
+events at any time, it makes sense to designate this instrument to a
+single special event <code>adverse_event</code>, which is what we’ve
+done here. The granularity of this table is one row per study subject
+per repeat instance per event. However since it is only designated for a
+single event, it is really one row per study subject per repeat
+instance. The first subject has three adverse events listed, and the
+second subject has two.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">adverse_events</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">rmarkdown</span><span class="fu">::</span><span class="fu"><a href="https://pkgs.rstudio.com/rmarkdown/reference/paged_table.html" class="external-link">paged_table</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
@@ -338,9 +363,41 @@ scenario as well.</p>
 <p>REDCapTidieR does <em>not</em> allow you to have the same instrument
 designated both as a repeating and as a nonrepeating instrument in
 different events. It will throw an error if it detects this.</p>
-<p>At this time, REDCapTidieR does not support repeating events. Feel
-free to submit a <a href="https://github.com/CHOP-CGTInformatics/REDCapTidieR/issues" class="external-link">feature
-request</a> if this is something you need!</p>
+<p>The <code>unscheduled</code> <strong>event</strong> is
+<strong>repeating</strong>. Like adverse events, unscheduled visits
+aren’t tied to any specific study visit, and a patient can have any
+number. However, while all data for an adverse event can be captured in
+one instrument, unscheduled visits have multiple components which we’d
+like to isolate in separate instruments. Two components of an
+unscheduled visit are <code>physical_exam</code> and
+<code>hematology</code>. The granularity of these tables is one row per
+study subject per event per event instance. The subject had two
+unscheduled visits. <code>redcap_event_instance</code> allows us to
+match <code>physical_exam</code> and <code>hematology</code> responses
+which occurred on the same unscheduled visit.</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">physical_exam</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">redcap_event</span> <span class="op">==</span> <span class="st">"unscheduled"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">rmarkdown</span><span class="fu">::</span><span class="fu"><a href="https://pkgs.rstudio.com/rmarkdown/reference/paged_table.html" class="external-link">paged_table</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">hematology</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">redcap_event</span> <span class="op">==</span> <span class="st">"unscheduled"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">rmarkdown</span><span class="fu">::</span><span class="fu"><a href="https://pkgs.rstudio.com/rmarkdown/reference/paged_table.html" class="external-link">paged_table</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["subject_id"],"name":[1],"type":["chr"],"align":["left"]},{"label":["redcap_event"],"name":[2],"type":["chr"],"align":["left"]},{"label":["redcap_event_instance"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["physical_capture"],"name":[4],"type":["lgl"],"align":["right"]},{"label":["physical_capture_infusion_sql"],"name":[5],"type":["lgl"],"align":["right"]},{"label":["physical_capture_visit"],"name":[6],"type":["fct"],"align":["left"]},{"label":["physical_performed"],"name":[7],"type":["lgl"],"align":["right"]},{"label":["physical_performed_date"],"name":[8],"type":["date"],"align":["right"]},{"label":["physical_performance_scale"],"name":[9],"type":["fct"],"align":["left"]},{"label":["physical_performance_score"],"name":[10],"type":["fct"],"align":["left"]},{"label":["physical_findings"],"name":[11],"type":["lgl"],"align":["right"]},{"label":["physical_findings_specify"],"name":[12],"type":["lgl"],"align":["right"]},{"label":["form_status_complete"],"name":[13],"type":["fct"],"align":["left"]}],"data":[{"1":"001-123-001","2":"unscheduled","3":"1","4":"FALSE","5":"NA","6":"NA","7":"TRUE","8":"2022-12-01","9":"Karnofsky Scale","10":"50","11":"FALSE","12":"NA","13":"Complete"},{"1":"001-123-001","2":"unscheduled","3":"2","4":"FALSE","5":"NA","6":"NA","7":"TRUE","8":"2022-12-15","9":"Karnofsky Scale","10":"80","11":"FALSE","12":"NA","13":"Complete"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["subject_id"],"name":[1],"type":["chr"],"align":["left"]},{"label":["redcap_event"],"name":[2],"type":["chr"],"align":["left"]},{"label":["redcap_event_instance"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["hemat_capture"],"name":[4],"type":["lgl"],"align":["right"]},{"label":["hemat_capture_infusion_sql"],"name":[5],"type":["lgl"],"align":["right"]},{"label":["hemat_capture_visit"],"name":[6],"type":["fct"],"align":["left"]},{"label":["hemat_performed"],"name":[7],"type":["lgl"],"align":["right"]},{"label":["hemat_performed_specify"],"name":[8],"type":["lgl"],"align":["right"]},{"label":["hemat_performed_date"],"name":[9],"type":["date"],"align":["right"]},{"label":["hemat_laboratory"],"name":[10],"type":["fct"],"align":["left"]},{"label":["hemat_laboratory_specify"],"name":[11],"type":["lgl"],"align":["right"]},{"label":["hemat_wbc_avail"],"name":[12],"type":["lgl"],"align":["right"]},{"label":["hemat_wbc_ct"],"name":[13],"type":["dbl"],"align":["right"]},{"label":["hemat_wbc_clinical_signif"],"name":[14],"type":["fct"],"align":["left"]},{"label":["hemat_rbc_avail"],"name":[15],"type":["lgl"],"align":["right"]},{"label":["hemat_rbc_ct"],"name":[16],"type":["dbl"],"align":["right"]},{"label":["hemat_rbc_clinical_signif"],"name":[17],"type":["fct"],"align":["left"]},{"label":["hemat_hgb_avail"],"name":[18],"type":["lgl"],"align":["right"]},{"label":["hemat_hgb_gdl"],"name":[19],"type":["dbl"],"align":["right"]},{"label":["hemat_hgb_clinical_signif"],"name":[20],"type":["fct"],"align":["left"]},{"label":["hemat_hct_avail"],"name":[21],"type":["lgl"],"align":["right"]},{"label":["hemat_hct_pct"],"name":[22],"type":["dbl"],"align":["right"]},{"label":["hemat_hct_clinical_signif"],"name":[23],"type":["fct"],"align":["left"]},{"label":["hemat_plt_avail"],"name":[24],"type":["lgl"],"align":["right"]},{"label":["hemat_plt_ct"],"name":[25],"type":["dbl"],"align":["right"]},{"label":["hemat_plt_clinical_signif"],"name":[26],"type":["fct"],"align":["left"]},{"label":["hemat_anc_avail"],"name":[27],"type":["lgl"],"align":["right"]},{"label":["hemat_anc_ct"],"name":[28],"type":["dbl"],"align":["right"]},{"label":["hemat_anc_clinical_signif"],"name":[29],"type":["fct"],"align":["left"]},{"label":["hemat_alc_avail"],"name":[30],"type":["lgl"],"align":["right"]},{"label":["hemat_alc_ct"],"name":[31],"type":["lgl"],"align":["right"]},{"label":["hemat_alc_clinical_signif"],"name":[32],"type":["fct"],"align":["left"]},{"label":["hemat_amc_avail"],"name":[33],"type":["lgl"],"align":["right"]},{"label":["hemat_amc_ct"],"name":[34],"type":["lgl"],"align":["right"]},{"label":["hemat_amc_clinical_signif"],"name":[35],"type":["fct"],"align":["left"]},{"label":["hemat_aec_avail"],"name":[36],"type":["lgl"],"align":["right"]},{"label":["hemat_aec_ct"],"name":[37],"type":["lgl"],"align":["right"]},{"label":["hemat_aec_clinical_signif"],"name":[38],"type":["fct"],"align":["left"]},{"label":["hemat_abc_avail"],"name":[39],"type":["lgl"],"align":["right"]},{"label":["hemat_abc_ct"],"name":[40],"type":["lgl"],"align":["right"]},{"label":["hemat_abc_clinical_signif"],"name":[41],"type":["fct"],"align":["left"]},{"label":["hemat_blasts_avail"],"name":[42],"type":["lgl"],"align":["right"]},{"label":["hemat_blasts_pct"],"name":[43],"type":["lgl"],"align":["right"]},{"label":["hemat_blasts_clinical_signif"],"name":[44],"type":["fct"],"align":["left"]},{"label":["form_status_complete"],"name":[45],"type":["fct"],"align":["left"]}],"data":[{"1":"001-123-001","2":"unscheduled","3":"1","4":"FALSE","5":"NA","6":"NA","7":"TRUE","8":"NA","9":"2022-12-01","10":"Children's Hospital of Philadelphia","11":"NA","12":"TRUE","13":"10","14":"Normal","15":"TRUE","16":"5","17":"Normal","18":"NA","19":"NA","20":"NA","21":"NA","22":"NA","23":"NA","24":"NA","25":"NA","26":"NA","27":"NA","28":"NA","29":"NA","30":"NA","31":"NA","32":"NA","33":"NA","34":"NA","35":"NA","36":"NA","37":"NA","38":"NA","39":"NA","40":"NA","41":"NA","42":"NA","43":"NA","44":"NA","45":"Complete"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>Note that both <code>physical_exam</code> and <code>hematology</code>
+are <strong>nonrepeating</strong> instruments. REDCapTidieR
+<strong>only</strong> allows nonrepeating instruments to occur in
+repeating events. It will throw an error if it detects a repeating
+instrument associated with a repeating event.</p>
 <p>REDCapTidieR supports projects with multiple arms. If you have a
 project with multiple arms, there will be an additional column
 <code>redcap_arm</code> to identify the arm that the row is associated
@@ -355,7 +412,7 @@ exploring and working with them.</p>
 <p>Fields that are of <a href="glossary.html#field-type">type</a>
 <code>yesno</code> or <code>truefalse</code> are converted to
 <strong>logical</strong> <a href="glossary.html#variable">variables</a>.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">adverse_events</span><span class="op">$</span><span class="va">adverse_event_serious</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;  logi [1:5] FALSE FALSE FALSE FALSE FALSE</span></span></code></pre></div>
@@ -384,7 +441,7 @@ single-answer field</p>
 specific field even if not all of them are represented in the data. For
 example, even though we have only Grade 1 and 2 adverse events in the
 data, we can see that there are 5 possible grades.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">adverse_events</span><span class="op">$</span><span class="va">adverse_event_grade</span></span>
 <span><span class="co">#&gt; [1] Grade 2 Grade 1 Grade 1 Grade 2 Grade 1</span></span>
 <span><span class="co">#&gt; Levels: Grade 1 Grade 2 Grade 3 Grade 4 Grade 5</span></span></code></pre></div>
@@ -393,7 +450,7 @@ choice field has intrinsically ordered choices, those choices are
 usually presented in the proper order. Since REDCapTidieR preserves the
 order of choices from REDCap, you can convert intrinsically ordered
 variables to ordered factors.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ae_grade</span> <span class="op">&lt;-</span> <span class="va">adverse_events</span><span class="op">$</span><span class="va">adverse_event_grade</span></span>
 <span></span>
 <span><span class="va">ae_grade</span> <span class="op">|&gt;</span></span>
@@ -423,7 +480,7 @@ the field, followed by three underscores, followed by the raw value of
 the choice defined in REDCap. Here are the variables REDCapTidieR
 generates from the <code>adverse_event_relationship_other</code>
 field:</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">adverse_events</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">starts_with</a></span><span class="op">(</span><span class="st">"adverse_event_relationship_other___"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -449,7 +506,7 @@ survey was competed</p></li>
 identifier. This will be <code>NA</code> if the Participant Identifier
 feature in REDCap is disabled.</p></li>
 </ul>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">survey</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_redcap.html">read_redcap</a></span><span class="op">(</span><span class="va">redcap_uri</span>, <span class="va">survey_token</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/extract_tibble.html">extract_tibble</a></span><span class="op">(</span><span class="st">"survey"</span><span class="op">)</span></span>
 <span></span>

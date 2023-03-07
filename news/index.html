@@ -58,6 +58,42 @@
 <h2 class="pkg-version" data-toc-text="development version" id="redcaptidier-development-version">REDCapTidieR (development version)<a class="anchor" aria-label="anchor" href="#redcaptidier-development-version"></a></h2>
 </div>
     <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.3.0" id="version-030-released-2023-xx-xx">Version 0.3.0 (Released 2023-XX-XX)<a class="anchor" aria-label="anchor" href="#version-030-released-2023-xx-xx"></a></h2>
+<div class="section level3">
+<h3 id="new-features-0-3-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-3-0"></a></h3>
+<ul><li>
+<code><a href="../reference/read_redcap.html">read_redcap()</a></code> now supports projects with repeating events which introduced a <strong>breaking change</strong> to data tibble column names
+<ul><li>
+<code>redcap_repeat_instance</code> is now <code>redcap_form_instance</code>
+</li>
+<li>
+<code>redcap_event_instance</code> has been added to denote repeating events</li>
+</ul></li>
+</ul></div>
+<div class="section level3">
+<h3 id="performance-improvements-and-enhancements-0-3-0">Performance Improvements and Enhancements<a class="anchor" aria-label="anchor" href="#performance-improvements-and-enhancements-0-3-0"></a></h3>
+<ul><li>Improved error message suite:
+<ul><li>Helpful error message provided for various conditions related to REDCap API calls</li>
+<li>Helpful error messages added for checks across all exported functions</li>
+<li>Unexpected error messages provided with direction to submitting bug reports
+<ul><li>Improved error messages for label parsing</li>
+</ul></li>
+<li>Added <code>select_choices_and_calculations</code> exported by the REDCap API to <code>redcap_metadata</code> tibble</li>
+</ul></li>
+<li>Improved process for adding/updating <code>httptest</code> mocks</li>
+</ul></div>
+<div class="section level3">
+<h3 id="bug-fixes-0-3-0">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-3-0"></a></h3>
+<ul><li>Fixed a bug where the <code>suppress_redcapr_messages</code> argument for <code><a href="../reference/read_redcap.html">read_redcap()</a></code> was not working appropriately</li>
+<li>Fixed a bug where <code><a href="../reference/read_redcap.html">read_redcap()</a></code> would fail when <code>select_choices_and_calculations</code> was missing whitespace after commas (discovered by <a href="https://github.com/camcaan" class="external-link">@camcaan</a>)</li>
+<li>Fixed a bug where <code><a href="../reference/read_redcap.html">read_redcap()</a></code> would fail for projects with a multiple choice field having duplicate values with the same label
+<ul><li>Added a warning when REDCapTidieR detects this</li>
+</ul></li>
+<li>Fixed a bug where empty rows would appear in data tibbles in longitudinal REDCap exports for events containing a mix of empty and filled forms</li>
+<li>Fixed a bug where the <code>forms</code> specification in <code><a href="../reference/read_redcap.html">read_redcap()</a></code> may lead to incorrect removal of data for databases with repeating events</li>
+</ul></div>
+</div>
+    <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.2.0" id="version-020-released-2022-12-07">Version 0.2.0 (Released 2022-12-07)<a class="anchor" aria-label="anchor" href="#version-020-released-2022-12-07"></a></h2><p class="text-muted">CRAN release: 2022-12-07</p>
 <div class="section level4">
 <h4 id="new-features-0-2-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-2-0"></a></h4>
