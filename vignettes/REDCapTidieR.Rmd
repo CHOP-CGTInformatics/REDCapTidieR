@@ -36,7 +36,7 @@ The REDCapTidieR package aims to make the life of analysts who deal with complex
 
 ## Case Study: The Superhero Database
 
-Let's look at a REDCap database that has information about some 734 superheroes, derived from the [Superhero Database](https://www.superherodb.com/).
+Let's look at a REDCap project that has information about some 734 superheroes, derived from the [Superhero Database](https://www.superherodb.com/).
 
 Here is a screenshot of the REDCap Record Status Dashboard of this database. It has two instruments, **Heroes Information** which captures "demographic" data about each individual superhero such as their name, gender, and alignment (good or evil), and **Super Hero Powers** which captures each one of the superpowers that a specific superhero possesses.
 
@@ -80,7 +80,7 @@ You can drill down into individual tables in the `redcap_data` and `redcap_metad
 
 </center>
 
-In the `super_hero_powers` data tibble, each row represents a superpower of a specific hero. Each row is identified by the combination of `record_id` and `redcap_form_instance`. This difference in [granularity](glossary.html#granularity) is because in REDCap `super_hero_powers` was designated to be a [**repeating**](glossary.html#repeating) instrument whereas `heroes_information` was designated as a [**nonrepeating**](glossary.html#nonrepeating) instrument.
+In the `super_hero_powers` data tibble, each row represents a superpower of a specific hero. Each row is identified by the combination of `record_id` and `redcap_form_instance`. This difference in [granularity](glossary.html#granularity) is because `super_hero_powers` is a [**repeating**](glossary.html#repeating) instrument whereas `heroes_information` is a [**nonrepeating**](glossary.html#nonrepeating) instrument.
 
 <center>
 
@@ -170,7 +170,7 @@ lobstr::obj_size(superheroes, a, b)
 
 ## Adding variable labels with the labelled package
 
-REDCapTidieR integrates with the [labelled](glossary.html#labelled) package to allow you to attach labels to variables in the supertibble. Variable labels can make data exploration easier. An increasing number of R packages support labelled data, including [ggplot](https://ggplot2.tidyverse.org/) (via [ggeasy](https://jonocarroll.github.io/ggeasy/)) and [gtsummary](https://www.danieldsjoberg.com/gtsummary/). The RStudio Data Viewer shows variable labels below variable names.
+REDCapTidieR integrates with the [labelled](glossary.html#labelled) package to allow you to attach labels to variables in the supertibble. Variable labels can make data exploration easier. An increasing number of R packages support labelled data, including [ggplot2](https://ggplot2.tidyverse.org/) (via [ggeasy](https://jonocarroll.github.io/ggeasy/)) and [gtsummary](https://www.danieldsjoberg.com/gtsummary/). The RStudio Data Viewer shows variable labels below variable names.
 
 <center>
 
@@ -198,7 +198,7 @@ Where did these labels come from? These labels are actually the REDCap [**field 
 
 </center>
 
-The label for `name` doesn't look quite right. Let's remove that trailing `:`. The `make_labelled()` function has a `format_labels` argument that you can use to preprocess labels before applying them to the variables.
+Note that the label for `name` has a trailing colon `:`. This won't look good as a variable label so let's remove it. The `make_labelled()` function has a `format_labels` argument that you can use to preprocess labels before applying them to variables.
 
 ```{r}
 superheroes |>
@@ -208,7 +208,7 @@ superheroes |>
 labelled::look_for(heroes_information, "hero")
 ```
 
-Removing trailing `:` characters is a fairly common operation, so REDCapTidieR provides a [format helper function](glossary.html#format-helper) that you can pass to the `format_labels` argument:
+Removing trailing `:` characters from a field label is a fairly common operation, so REDCapTidieR provides a [format helper function](glossary.html#format-helper) that you can pass to the `format_labels` argument:
 
 ```{r}
 fmt_strip_trailing_colon("Hero name:")
@@ -216,7 +216,7 @@ fmt_strip_trailing_colon("Hero name:")
 
 To find out about other helpers included with REDCapTidieR, see `` ?`format-helpers` ``.
 
-The `format_labels` argument will also accept multiple functions in a vector or list. You can use any function that takes a character vector and returns a modified character vector. `make_labelled()` will process the variable labels using these functions in the order they are supplied. In the following example, we remove the trailing colon with `fmt_strip_trailing_colon()` and then make the labels lower case with `base::tolower()`.
+The `format_labels` argument will also accept multiple functions in a vector or list. You can pass any function that takes a character vector and returns a modified character vector to `format_labels`. `make_labelled()` will process the variable labels in the order that these functions are supplied. In the following example, we remove the trailing colon with `fmt_strip_trailing_colon()` and then make the labels lower case with `base::tolower()`.
 
 ```{r}
 superheroes |>
