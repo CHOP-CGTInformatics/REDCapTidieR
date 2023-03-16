@@ -5,7 +5,6 @@ options(device = deviceType) #https://support.rstudio.org/help/discussions/probl
 spelling::spell_check_package()
 # spelling::update_wordlist()
 lintr::lint_package()
-# lintr::lint("R/redcap-metadata-coltypes.R")
 urlchecker::url_check(); urlchecker::url_update()
 
 styler::style_pkg()
@@ -35,19 +34,13 @@ gp
 devtools::document()
 pkgdown::clean_site()
 pkgdown::build_site()
-# system("R CMD Rd2pdf --no-preview --force --output=./documentation-peek.pdf ." )
 
 devtools::run_examples(); #dev.off() #This overwrites the NAMESPACE file too
-# devtools::run_examples(, "redcap_read.Rd")
 # pkgload::load_all()
 test_results_checked <- devtools::test()
-# test_results_checked <- devtools::test(filter = "read-batch-simple")
-# test_results_checked <- devtools::test(filter = "^metadata-coltypes")
-# withr::local_envvar(ONLYREADTESTS = "true")
-# test_results_checked <- devtools::test(filter = "write-batch")
 
-# testthat::test_dir("./tests/")
-# test_results_not_checked <- testthat::test_dir("./tests/manual/")
+# Test Sample REDCap Databases - This takes a while
+source("utility/test_creds.R")
 
 # devtools::check(force_suggests = FALSE)
 devtools::check(cran=TRUE)
