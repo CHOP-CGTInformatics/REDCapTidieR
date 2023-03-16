@@ -45,5 +45,13 @@ microbenchmark_fx <- function(redcap_uri, token, name, times = 1){
 
 microbenchmark_results <- purrr::map2(creds$redcap_uri, creds$token, ~microbenchmark_fx(.x, .y, "name", 1))
 
-microbenchmark_results
-saveRDS(microbenchmark_results, paste0("utility/microbenchmark_results.RDS"))
+out <- tibble::tibble()
+
+for (i in seq_along(microbenchmark_results)) {
+  out <- rbind(out, summary(microbenchmark_results[[i]]))
+}
+
+out %>%
+  select(-expr) %>%
+  mutate(across(tidyselect::everything(), ~round(., digits = 2))) %>%
+  readr::write_csv("utility/microbenchmark_results.csv")
