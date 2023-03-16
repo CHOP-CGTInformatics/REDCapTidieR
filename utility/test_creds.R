@@ -46,4 +46,4 @@ microbenchmark_fx <- function(redcap_uri, token, name, times = 1){
 microbenchmark_results <- purrr::map2(creds$redcap_uri, creds$token, ~microbenchmark_fx(.x, .y, "name", 1))
 
 microbenchmark_results
-saveRDS(microbenchmark_results, paste0("utility/microbenchmark_results-", Sys.Date(), ".RDS"))
+saveRDS(microbenchmark_results, paste0("utility/microbenchmark_results.RDS"))
