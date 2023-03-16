@@ -41,7 +41,7 @@ In the [Getting Started](REDCapTidieR.html) vignette, we stated that importing r
 
 The `REDCapR::redcap_read_oneshot()` function pulls data from a REDCap project via the [REDCap API](glossary.html#redcap-api) and provides it to the R environment without performing much processing. It returns a list with an element named `data` that contains all of the data of the project as a single data frame.
 
-Below, we use this function to import data from the [Superhero REDCap database](REDCapTidieR.html#case-study-the-superhero-database), which contains a [**nonrepeating**](glossary.html#nonrepeating-instrument) instrument `heroes_information` and a [**repeating**](glossary.html#repeating-instrument) instrument `super_hero_powers`. We use `rmarkdown::paged_table()` to allow you to explore this large data frame in the browser.
+Below, we use this function to import data from the [Superhero REDCap database](REDCapTidieR.html#case-study-the-superhero-database), which contains a [**nonrepeating instrument**](glossary.html#nonrepeating-instrument) `heroes_information` and a [**repeating instrument**](glossary.html#repeating-instrument) `super_hero_powers`. We use `rmarkdown::paged_table()` to allow you to explore this large data frame in the browser.
 
 ``` r
 superheroes_token <- "123456789ABCDEF123456789ABCDEF04"
@@ -69,11 +69,11 @@ While it may seem a good idea to have everything in one data frame, there are si
 
 ## Structure of REDCapTidieR Data Tibbles
 
-REDCapTidieR breaks the block matrix up into [**data tibbles**](glossary.html#data-tibble), one for each instrument. REDCapTidieR then collects the data tibbles as a [**list column**](glossary.html#list-column) in the [**supertibble**](glossary.html#supertibble).
+REDCapTidieR breaks the block matrix up into [**data tibbles**](glossary.html#data-tibble), one for each instrument. REDCapTidieR then collects the data tibbles as a [**list column**](glossary.html#list-column) in a special object we call the [**supertibble**](glossary.html#supertibble).
 
-These data tibbles are [**tidier**](glossary.html#tidy) than the block matrix because one instrument can only be repeating or nonrepeating, and therefore each data tibble can only have one type of observational unit stored inside of it. Each data tibble has consistent [granularity](glossary.html#granularity)
+These data tibbles are [**tidier**](glossary.html#tidy) than the block matrix because one instrument can only be repeating or nonrepeating, and therefore each data tibble can only have one type of observational unit stored inside of it. Each data tibble has consistent [granularity](glossary.html#granularity).
 
-Let's take a look at the data tibbles derived from the Superhero database and contrast with the block matrix. Consider `heroes_information`, which contains data from a **nonrepeating** instrument. This tibble is much smaller than the block matrix at 734 rows by 12 columns, and there are no `NA`s. The data tibble's name `heroes_information` is descriptive. REDCapTidieR knows the names of all instruments because in addition to querying the project's data it also queries the project's metadata. Each entry has the same granularity, one **superhero**, identified by its `record_id`. A number of [data columns](glossary.html#data-column) follow, starting with `name`, `gender`, `eye_color`, `race`, etc. These columns are in the same order as on the REDCap instrument. The last column of a REDCapTidieR data tibble is always `form_status_complete` which indicates whether the instrument has been marked as completed.
+Let's take a look at the data tibbles derived from the Superhero database and contrast them with the block matrix. Consider `heroes_information`, which contains data from a **nonrepeating** instrument. This tibble is much smaller than the block matrix at 734 rows by 12 columns, and there are no `NA`s. The data tibble's name `heroes_information` is descriptive. REDCapTidieR knows the names of all instruments because in addition to querying the project's data it also queries the project's metadata which describes, among other things, the names of REDCap instruments. Each entry has the same granularity, one **superhero**, identified by its `record_id`. A number of [data columns](glossary.html#data-column) follow, starting with `name`, `gender`, `eye_color`, `race`, etc. These columns are in the same order as on the REDCap instrument. The last column of a REDCapTidieR data tibble is always `form_status_complete` which indicates whether the instrument has been marked as completed.
 
 ```{r}
 library(REDCapTidieR)
@@ -94,9 +94,11 @@ super_hero_powers |>
 
 ## Longitudinal REDCap projects
 
-REDCap databases support two main mechanisms to allow collecting the same data multiple times: **repeating instruments** and [**longitudinal projects**](glossary.html#longitudinal-project).
+REDCap supports two main mechanisms to allow collecting the same data multiple times: [**repeating instruments**](glossary.html#repeating-instrument) and [**longitudinal projects**](glossary.html#longitudinal-project). In addition, a longitudinal project may have [**arms**](glossary.html#arm) and/or [**repeating events**](glossary.html#repeating-event).
 
-The [**granularity**](glossary.html#granularity) of each table (i.e. the observational unit that a single [row](glossary.html#row) represents) depends on the [structure](glossary.html#structure) of the [project](glossary.html#project) ([classic](glossary.html#classic-project), [longitudinal](glossary.html#longitudinal-project), longitudinal with multiple [arms](glossary.html#arm)), the structure of the [instrument](glossary.html#instrument) ([repeating](glossary.html#repeating-instrument) or [nonrepeating](glossary.html#nonrepeating-instrument)), and, for longitudinal projects, the structure of the [event](glossary.html#event) ([repeating](glossary.html#repeating-event) or [nonrepeating](glossary.html#nonrepeating-event)). REDCapTidieR generates [**identifier columns**](glossary.html#identifier-column) according to the following table:
+The [**granularity**](glossary.html#granularity) of each table (i.e. the observational unit that a single [row](glossary.html#row) represents) depends on the [structure](glossary.html#structure) of the [project](glossary.html#project) ([classic](glossary.html#classic-project), [longitudinal](glossary.html#longitudinal-project), longitudinal with multiple [arms](glossary.html#arm)), the structure of the [instrument](glossary.html#instrument) ([repeating](glossary.html#repeating-instrument) or [nonrepeating](glossary.html#nonrepeating-instrument)), and, for longitudinal projects, the structure of the [event](glossary.html#event) ([repeating](glossary.html#repeating-event) or [nonrepeating](glossary.html#nonrepeating-event)). Note that REDCap does not support repeating instruments inside a repeating event. REDCapTidieR generates [**identifier columns**](glossary.html#identifier-column) according to the following table:
+
+<p style="100vw;">
 
 +--------------------------+---------------------+--------------------------+-----------------------------+-----------------------------+
 | **Instrument Structure** | **Event Structure** | **Classic**              | **Longitudinal, one arm**   | **Longitudinal, multi-arm** |
@@ -118,9 +120,11 @@ The [**granularity**](glossary.html#granularity) of each table (i.e. the observa
 | **Repeating**            |  **Repeating**      | Not Supported            | Not Supported               | Not Supported               |
 +--------------------------+---------------------+--------------------------+-----------------------------+-----------------------------+
 
-> Note: Taken in combination, the identifier columns of any REDCapTidieR tibble are guaranteed to be unique and can therefore be used as [**composite primary key**](glossary.html#composite-primary-key). This makes it easy to join REDCapTidieR tibbles to each other!
+</p>
 
-By default, REDCap names the record ID field `record_id`, but this can be changed, and REDCapTidieR is smart enough to handle this. For example, if the record ID field was renamed to `subject_id` then the record ID column of each data tibble would be `subject_id`.
+> Note: Taken in combination, the identifier columns of any REDCapTidieR tibble are guaranteed to be **unique** and can therefore be used as [**composite primary key**](glossary.html#composite-primary-key). This makes it easy to join REDCapTidieR tibbles to one another!
+
+By default, REDCap names the record ID field `record_id`, but this can be changed inside the REDCap project, and REDCapTidieR is smart enough to handle this. For example, if the record ID field was renamed to `subject_id` then the record ID column of each data tibble would be `subject_id`. Whatever its name, the record ID column is always the first identifier column and is always the first column of a REDCapTidieR data tibble. Additional columns are generated in the order shown in the table above.
 
 Let's look at a REDCap database you might use to capture data for a clinical trial. This is a longitudinal database that assesses some data (e.g. demographics) just once at enrollment, and other data (e.g. physical exam or labs) multiple times at pre-defined study visits. We use `dplyr::select()` here to highlight instrument names and whether or not each instrument is repeating. This database has six nonrepeating and three repeating instruments.
 
@@ -166,7 +170,7 @@ It is possible to have a repeating instrument designated to multiple events, how
 
 REDCapTidieR does *not* allow you to have the same instrument designated both as a repeating and as a nonrepeating instrument in different events. It will throw an error if it detects this.
 
-The `unscheduled` **event** is **repeating**. Like adverse events, unscheduled visits aren't tied to any specific study visit, and a patient can have any number. However, while all data for an adverse event can be captured in one instrument, unscheduled visits have multiple components which we'd like to isolate in separate instruments. Two components of an unscheduled visit are `physical_exam` and `hematology`. The granularity of these tables is one row per study subject per event per event instance. The subject had two unscheduled visits. `redcap_event_instance` allows us to match `physical_exam` and `hematology` responses which occurred on the same unscheduled visit.
+The `unscheduled` **event** is a **repeating event**. Like adverse events, unscheduled visits aren't tied to a pre-determined study visit, and a patient could have zero, one, or multiple unscheduled visits. On the other hand, you might want to record the same kinds of data for an unscheduled visit as for a pre-determined regular visit and collect data in the same instruments, for example `physical_exam` and `hematology`. The granularity of these tables is one row per study subject per event per *event instance*. The subject had two unscheduled visits. `redcap_event_instance` allows us to match `physical_exam` and `hematology` responses which occurred on the same unscheduled visit.
 
 ```{r, results='hold'}
 physical_exam |>
@@ -178,13 +182,13 @@ hematology |>
   rmarkdown::paged_table()
 ```
 
-Note that both `physical_exam` and `hematology` are **nonrepeating** instruments. REDCapTidieR **only** allows nonrepeating instruments to occur in repeating events. It will throw an error if it detects a repeating instrument associated with a repeating event.
+Note that REDCapTidieR allows for an instrument to be associated with both repeating and nonrepeating events at the same time. In this case, the the `redcap_event_instance` column will be `NA` in rows that correspond with data captured as part of a nonrepeating event.
 
 REDCapTidieR supports projects with multiple arms. If you have a project with multiple arms, there will be an additional column `redcap_arm` to identify the arm that the row is associated with.
 
 ## Categorical variables
 
-REDCapTidieR performs a number of opinionated transformations on categorical [fields](glossary.html#field) to streamline exploring and working with them.
+REDCapTidieR performs a number of opinionated transformations on categorical [fields](glossary.html#field) to streamline exploring them and working with them.
 
 Fields that are of [type](glossary.html#field-type) `yesno` or `truefalse` are converted to **logical** [variables](glossary.html#variable).
 
@@ -193,7 +197,9 @@ adverse_events$adverse_event_serious |>
   dplyr::glimpse()
 ```
 
-Fields of single-answer categorical type (`dropdown`, `radio`) are converted to [**factor**](glossary.html#factor) variables by default. To understand how REDCapTidieR constructs this factor, consider the Field Editor for the `adverse_event_grade` variable which is a single-answer `radio` field. There are five [choices](glossary.html#choice) for this field. Choices have **raw values** and **choice labels**, separated by a comma. Here, the raw values are `1`, `2`, `3`, `4`, and `5`, and their associated choice labels are `Grade 1`, `Grade 2`, `Grade 3`, `Grade 4`, and `Grade 5`. We find that choice labels are generally more useful and intuitive to work with than raw values. For this reason, REDCapTidieR derives the labels of the factor from the choice label. The order of the factor levels is the same as the order of choices in REDCap.
+Fields of single-answer categorical type (`dropdown`, `radio`) are converted to [**factor**](glossary.html#factor) variables by default. REDCapTidieR constructs this factor in such a way that the all possible [choices](glossary.html#choice) defined in REDCap are represented as factor levels, and that the order of the factor levels is the same as the order of choices in REDCap.
+
+Consider the Field Editor for the `adverse_event_grade` variable which is a single-answer `radio` field. There are five choices for this field. Choices have **raw values** and **choice labels**, separated by a comma. Here, the raw values are `1`, `2`, `3`, `4`, and `5`, and their associated choice labels are `Grade 1`, `Grade 2`, `Grade 3`, `Grade 4`, and `Grade 5`. 
 
 <center>
 
@@ -201,7 +207,7 @@ Fields of single-answer categorical type (`dropdown`, `radio`) are converted to 
 
 </center>
 
-This makes it possible to discover all of the different choices for a specific field even if not all of them are represented in the data. For example, even though we have only Grade 1 and 2 adverse events in the data, we can see that there are 5 possible grades.
+REDCapTidieR preserves all the possible choices as levels even if not all of them are represented in the data. This makes it possible to discover all of the different choices. For example, even though we have only Grade 1 and 2 adverse events in the data, we can see that there are 5 possible grades.
 
 ```{r}
 adverse_events$adverse_event_grade
@@ -216,7 +222,9 @@ ae_grade |>
   factor(ordered = TRUE, levels = levels(ae_grade))
 ```
 
-Fields of the multi-answer `checkbox` type are expanded so that **each choice** is represented as **one logical variable**. Consider the `adverse_event_relationship_other` field. This field has eight choices, and their raw values (i.e. the part before the comma) are `apheresis`, `ld_chemo`, `soc_treatment`, `underlying_disease`, `other_research_proc`, `con_meds`, and `other`.
+Fields of the multi-answer `checkbox` type are treated in a special way. REDCapTidieR *expands* these fields into multiple columns. Each of these derived columns represents one **choice** and is coded as a **logical variable**. 
+
+Consider the `adverse_event_relationship_other` field. This field has eight choices, and their raw values (i.e. the part before the comma) are `apheresis`, `ld_chemo`, `soc_treatment`, `underlying_disease`, `other_research_proc`, `con_meds`, and `other`.
 
 <center>
 
@@ -224,7 +232,9 @@ Fields of the multi-answer `checkbox` type are expanded so that **each choice** 
 
 </center>
 
-We recommend that for multi-answer `checkbox` fields you make the raw value a human readable word as we do in the above example, and not serial number which is with REDCap will provide by default. REDCapTidieR will construct the name of each variable from the name of the field, followed by three underscores, followed by the raw value of the choice defined in REDCap. Here are the variables REDCapTidieR generates from the `adverse_event_relationship_other` field:
+> We recommend that for multi-answer `checkbox` fields you make the raw value a human readable word as we do in the above example.
+
+REDCapTidieR will construct the name of each variable from the name of the field, followed by three underscores, followed by the **raw** value of the choice defined in REDCap. Here are the variables REDCapTidieR generates from the `adverse_event_relationship_other` field:
 
 ```{r}
 adverse_events |>
@@ -234,11 +244,13 @@ adverse_events |>
 
 ## Surveys
 
-Instruments that are used to generate REDCap [Surveys](glossary.html#survey) generate additional [data columns](glossary.html#data-column):
+Instruments that are used to generate REDCap [surveys](glossary.html#survey) generate additional [data columns](glossary.html#data-column):
 
 -   `redcap_survey_timestamp`: the time at which the survey was competed
 
 -   `redcap_survey_identifier`: the participant identifier. This will be `NA` if the Participant Identifier feature in REDCap is disabled.
+
+These columns are placed after all of the other data columns and prior to the `form_status_complete` column.
 
 ```{r, warning = FALSE}
 survey <- read_redcap(redcap_uri, survey_token) |>

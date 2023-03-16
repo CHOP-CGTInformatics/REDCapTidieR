@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 
 The REDCapTidieR package uses vocabulary that is standard for REDCap database architects but not necessarily well known to all R users. It also introduces several idiosyncratic terms.
 
-Below we provide find a rough mapping of REDCap concepts to their corresponding artifacts REDCapTidieR generates in the R environment, followed by a listing of definition of terms.
+Below we provide a rough mapping of REDCap concepts to their corresponding artifacts in REDCapTidieR. This is followed by a listing of term definitions.
 
 +--------------------------------------------+----------------------------------------------------------------------------------------------------------+
 | REDCap                                     | REDCapTidieR                                                                                             |
@@ -60,11 +60,11 @@ Below we provide find a rough mapping of REDCap concepts to their corresponding 
 
 ### Arm {#arm}
 
-A group of [events](#event). Arms provide a mechanism that allows one [longitudinal project](#longitudinal-project) to have multiple different sequences of events defined. <a onclick="history.back()">↩︎</a>
+An ordered group of [events](#event). Arms provide a mechanism that allows one [longitudinal project](#longitudinal-project) to have multiple different sequences of events defined. <a onclick="history.back()">↩︎</a>
 
 ### Block matrix {#block-matrix}
 
-A rectangular data structure (matrix) that is constructed from multiple smaller rectangular data structures (blocks). In the context of REDCap, the block matrix is the rectangular data set that contains data from all [instruments](#instrument) returned by the [REDCap API](#redcap-api). <a onclick="history.back()">↩︎</a>
+A rectangular data structure (matrix) that is constructed from multiple smaller rectangular data structures (blocks). In the context of REDCap, the block matrix is the rectangular data set that contains data from multiple [instruments](#instrument) returned by the [REDCap API](#redcap-api). <a onclick="history.back()">↩︎</a>
 
 ### Column {#column}
 
@@ -139,7 +139,7 @@ In the context of REDCap, this is the same as an [instrument](#instrument). We p
 
 ### Format helper {#format-helper}
 
-A function provided by REDCapTidieR designed to help turning [field labels](#field-label) of [data columns](#data-column) into pretty [variable labels](#variable-label). See the [`format-helpers` reference page](https://chop-cgtinformatics.github.io/REDCapTidieR/reference/format-helpers.html). <a onclick="history.back()">↩︎</a>
+A function provided by REDCapTidieR designed to help turning [field labels](#field-label) of [data columns](#data-column) into pretty [variable labels](#variable-label). See [`format-helpers`](https://chop-cgtinformatics.github.io/REDCapTidieR/reference/format-helpers.html). <a onclick="history.back()">↩︎</a>
 
 ### Granularity {#granularity}
 
@@ -155,7 +155,7 @@ In the context of REDCapTidieR, this is the process of using the [REDCap API](#r
 
 ### Instrument {#instrument}
 
-Also called **form**. An electronic data entry form in REDCap. An instrument consists of one or more [fields](#field). In the [supertibble](#supertibble), each [row](#row) corresponds to one instrument. The instrument's name and human-readable label are shown in the `redcap_form_name` and `redcap_form_label` columns of the supertibble, respectively. A [data tibble](#data-tibble) contains all the data that was entered into a specific instrument. <a onclick="history.back()">↩︎</a>
+Also called **form**. An electronic data entry form in REDCap. An instrument contains [fields](#field) into which data can be entered. In the [supertibble](#supertibble), each [row](#row) corresponds to one instrument. The instrument's name and human-readable label are shown in the `redcap_form_name` and `redcap_form_label` columns of the supertibble, respectively. A [data tibble](#data-tibble) contains all the data that was entered into a specific instrument. <a onclick="history.back()">↩︎</a>
 
 ### labelled {#labelled}
 
@@ -175,11 +175,11 @@ A [tibble](#tibble) that contains metadata about a specific REDCap [instrument](
 
 ### Nonrepeating Event {#nonrepeating-event}
 
-An [event](#event) whose associated [instruments](#instrument) can be filled out exactly once per record per event (per [arm](#arm)). See also: [Repeating Event](#repeating-event). <a onclick="history.back()">↩︎</a>
+An [event](#event) whose associated [instruments](#instrument) can be filled out exactly once per record per event (and per [arm](#arm), if applicable). See also: [Repeating Event](#repeating-event). <a onclick="history.back()">↩︎</a>
 
 ### Nonrepeating Instrument {#nonrepeating-instrument}
 
-An [instrument](#instrument) that can be filled out exactly once per [record](#record) in a [classic project](#classic-project) and once per record per [event](#event) instance (per [arm](#arm)) in a [longitudinal project](#longitudinal-project). These instruments have a [structure](#structure) of nonrepeating. See also: [Repeating Instrument](#repeating-instrument). <a onclick="history.back()">↩︎</a>
+An [instrument](#instrument) that can be filled out exactly once per [record](#record) in a [classic project](#classic-project) and once per record per [event](#event) instance (and per [arm](#arm), if applicable) in a [longitudinal project](#longitudinal-project). See also: [Repeating Instrument](#repeating-instrument). <a onclick="history.back()">↩︎</a>
 
 ### Project {#project}
 
@@ -187,23 +187,23 @@ Also called a **database**, a REDCap project is a self-contained collection of a
 
 ### Record {#record}
 
-The set of information about a single entity (e.g., a study participant) for which data is being captured in REDCap. Each record consists of a discrete data values organized into [fields](#field) that can be spread across multiple [instruments](#instrument), [events](#event), and/or [arms](#arm). Each record has a unique record ID. In the [data tibble](#data-tibble), the record ID is always the first [column](#column). It is one of the [identifier columns](#identifier-column). <a onclick="history.back()">↩︎</a>
+The set of information about a single entity (e.g., a study participant) for which data is being captured in a specific REDCap [project](#project). Each record consists of a discrete data values organized into [fields](#field) that can be spread across multiple [instruments](#instrument), [events](#event), and/or [arms](#arm). Each record has a unique record ID. In the [data tibble](#data-tibble), the record ID is always the first [column](#column). The record ID column is one of the [identifier columns](#identifier-column). <a onclick="history.back()">↩︎</a>
 
 ### REDCap API {#redcap-api}
 
-The application programming interface (API) of a REDCap instance allows external programs to connect, upload, and download data of a REDCap [project](#project). To access the REDCap API, a user must have appropriate access privileges, an API token, and the uniform resource identifier (URI) of the API endpoint (something like "my.institution.edu/redcap/api"). The REDCapTidieR package uses [REDCapR](#redcapr) to query the REDCap API. <a onclick="history.back()">↩︎</a>
+The application programming interface (API) of a REDCap instance allows external programs to connect, upload, and download data. To access the REDCap API, a user must have appropriate access privileges, an API token, and the uniform resource identifier (URI) of the API endpoint (something like "my.institution.edu/redcap/api"). The REDCapTidieR package uses [REDCapR](#redcapr) to query the REDCap API. <a onclick="history.back()">↩︎</a>
 
 ### REDCapR {#redcapr}
 
-The [REDCapR](https://ouhscbbmc.github.io/REDCapR/index.html) R package provides functions to interact with the [REDCap API](#redcap-api). REDCapTidieR builds on REDCapR to [import](#import) data. <a onclick="history.back()">↩︎</a>
+The [REDCapR](https://ouhscbbmc.github.io/REDCapR/index.html) R package provides functions to interact with the [REDCap API](#redcap-api). REDCapTidieR builds on REDCapR to [import](#import) data into R. <a onclick="history.back()">↩︎</a>
 
 ### Repeating Event {#repeating-event}
 
-An [event](#event) whose associated [instruments](#instrument) can be filled out zero, one, or multiple times per record per event (per [arm](#arm)). When an event is repeating each instance of the event contains a new set of responses to each instrument. REDCapTidieR only supports [nonrepeating instruments](#nonrepeating-instrument) in repeating events. See also: [Nonrepeating Event](#nonrepeating-event). <a onclick="history.back()">↩︎</>
+An [event](#event) whose associated [instruments](#instrument) can be filled out zero, one, or multiple times per record per event (and per [arm](#arm), if applicable). Note: REDCap does not allow [repeating instruments](#repeating-instrument) inside repeating events. See also: [Nonrepeating Event](#nonrepeating-event). <a onclick="history.back()">↩︎</a>
 
 ### Repeating Instrument {#repeating-instrument}
 
-An [instrument](#instrument) that can be filled out zero, one, or multiple times per [record](#record) in a [classic project](#classic-project) and per record per [event](#event) (per [arm](#arm)) in a [longitudinal project](#longitudinal-project). These instruments have a [structure](#structure) of repeating. REDCapTidieR only supports repeating instruments in [nonrepeating events](#nonrepeating-event). See also: [Nonrepeating Instrument](#nonrepeating-instrument). <a onclick="history.back()">↩︎</a>
+An [instrument](#instrument) that can be filled out zero, one, or multiple times per [record](#record) in a [classic project](#classic-project) and zero, one, or multiple times per record per [event](#event) (and per [arm](#arm), if applicable) in a [longitudinal project](#longitudinal-project). Note: REDCap does not allow repeating instruments inside [repeating events](#repeating-event). See also: [Nonrepeating Instrument](#nonrepeating-instrument). <a onclick="history.back()">↩︎</a>
 
 ### Row {#row}
 
@@ -211,7 +211,7 @@ A horizontal series of cells in a data frame or [tibble](#tibble). One row of a 
 
 ### Structure {#structure}
 
-The structure of an [instrument](#instrument) can be [repeating](#repeating-instrument) or [nonrepeating](#nonrepeating-instrument). The [supertibble](#supertibble) shows the instrument's structure in the `structure` column. The structure of a [project](#project) can be [classic](#classic-project), [longitudinal](#longitudinal-project), or longitudinal with [arms](#arm). The structure of an [event](#event) can be [repeating](#repeating-event) or [nonrepeating](#nonrepeating-event). The [granularity](#granularity) of a [data tibble](#data-tibble) depends on the structure of all three: the instrument, the project, and the events associated with the instrument. See also: the section [Longitudinal REDCap projects](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/diving_deeper.html#longitudinal-redcap-projects) in the [Diving Deeper vignette](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/diving_deeper.html). <a onclick="history.back()">↩︎</a>
+The structure of an [instrument](#instrument) can be [repeating](#repeating-instrument) or [nonrepeating](#nonrepeating-instrument). The [supertibble](#supertibble) shows the instrument's structure in the `structure` column. The structure of a [project](#project) can be [classic](#classic-project), [longitudinal](#longitudinal-project), or longitudinal with [arms](#arm). The structure of an [event](#event) can be [repeating](#repeating-event) or [nonrepeating](#nonrepeating-event). The [granularity](#granularity) of a [data tibble](#data-tibble) depends on the structure of all three: the instrument, the project, and the events associated with the instrument. Note: REDCap does not allow repeating instruments inside a repeating event. See also: the section [Longitudinal REDCap projects](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/diving_deeper.html#longitudinal-redcap-projects) in the [Diving Deeper vignette](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/diving_deeper.html). <a onclick="history.back()">↩︎</a>
 
 ### Supertibble {#supertibble}
 
@@ -235,7 +235,7 @@ The first is the concept of [Tidy Data](https://vita.had.co.nz/papers/tidy-data.
 2.  Each observation forms a [row](#row)
 3.  Each type of observational unit forms a table (i.e. the [granularity](#granularity) of rows in a table is consistent)
 
-Data returned by the REDCap API (the "[block matrix](#block-matrix)") often satisfies the first two requirements of tidy data. However, if the [project](#project) contains both [repeating](#repeating-instrument) and [nonrepeating](#nonrepeating-instrument) instruments then the [granularity](#granularity) is inconsistent from row to row. A key function of the REDCapTidieR package is to break down the [block matrix](#block-matrix) by [instrument](#instrument). The resulting set of [data tibbles](#data-tibble) is tidy because the granularity of each data tibble is consistent. This makes it easy to work with them.
+Data returned by the REDCap API (the "[block matrix](#block-matrix)") often satisfies the first two requirements of tidy data. However, if the [project](#project) contains both [repeating](#repeating-instrument) and [nonrepeating](#nonrepeating-instrument) instruments and/or events then the [granularity](#granularity) is inconsistent from row to row. A key function of the REDCapTidieR package is to break down the [block matrix](#block-matrix) by [instrument](#instrument). The resulting set of [data tibbles](#data-tibble) tends to be *tidier* than the block matrix, because the granularity within each individual data tibble is consistent. This makes it easy to work with them.
 
 The second is the idea of [Tidy Tools](https://tidyverse.tidyverse.org/articles/manifesto.html), which is a set of design guidelines for the packages of the [Tidyverse](https://www.tidyverse.org/). Tidy tools should follow the following principles:
 
