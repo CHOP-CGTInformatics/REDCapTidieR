@@ -88,9 +88,9 @@
 <p>The REDCapTidieR package uses vocabulary that is standard for REDCap
 database architects but not necessarily well known to all R users. It
 also introduces several idiosyncratic terms.</p>
-<p>Below we provide find a rough mapping of REDCap concepts to their
-corresponding artifacts REDCapTidieR generates in the R environment,
-followed by a listing of definition of terms.</p>
+<p>Below we provide a rough mapping of REDCap concepts to their
+corresponding artifacts in REDCapTidieR. This is followed by a listing
+of term definitions.</p>
 <table class="table">
 <colgroup>
 <col width="29%">
@@ -189,9 +189,9 @@ event</a>)</p>
 <div class="section level3">
 <h3 id="arm">Arm<a class="anchor" aria-label="anchor" href="#arm"></a>
 </h3>
-<p>A group of <a href="#event">events</a>. Arms provide a mechanism that
-allows one <a href="#longitudinal-project">longitudinal project</a> to
-have multiple different sequences of events defined.
+<p>An ordered group of <a href="#event">events</a>. Arms provide a
+mechanism that allows one <a href="#longitudinal-project">longitudinal
+project</a> to have multiple different sequences of events defined.
 <a onclick="history.back()">↩︎</a></p>
 </div>
 <div class="section level3">
@@ -200,7 +200,7 @@ have multiple different sequences of events defined.
 <p>A rectangular data structure (matrix) that is constructed from
 multiple smaller rectangular data structures (blocks). In the context of
 REDCap, the block matrix is the rectangular data set that contains data
-from all <a href="#instrument">instruments</a> returned by the <a href="#redcap-api">REDCap API</a>. <a onclick="history.back()">↩︎</a></p>
+from multiple <a href="#instrument">instruments</a> returned by the <a href="#redcap-api">REDCap API</a>. <a onclick="history.back()">↩︎</a></p>
 </div>
 <div class="section level3">
 <h3 id="column">Column<a class="anchor" aria-label="anchor" href="#column"></a>
@@ -358,8 +358,8 @@ because it has a more specific meaning than “form.”
 </h3>
 <p>A function provided by REDCapTidieR designed to help turning <a href="#field-label">field labels</a> of <a href="#data-column">data
 columns</a> into pretty <a href="#variable-label">variable labels</a>.
-See the <a href="https://chop-cgtinformatics.github.io/REDCapTidieR/reference/format-helpers.html"><code>format-helpers</code>
-reference page</a>. <a onclick="history.back()">↩︎</a></p>
+See <a href="https://chop-cgtinformatics.github.io/REDCapTidieR/reference/format-helpers.html"><code>format-helpers</code></a>.
+<a onclick="history.back()">↩︎</a></p>
 </div>
 <div class="section level3">
 <h3 id="granularity">Granularity<a class="anchor" aria-label="anchor" href="#granularity"></a>
@@ -409,9 +409,10 @@ function to import data from a REDCap project.
 <h3 id="instrument">Instrument<a class="anchor" aria-label="anchor" href="#instrument"></a>
 </h3>
 <p>Also called <strong>form</strong>. An electronic data entry form in
-REDCap. An instrument consists of one or more <a href="#field">fields</a>. In the <a href="#supertibble">supertibble</a>,
-each <a href="#row">row</a> corresponds to one instrument. The
-instrument’s name and human-readable label are shown in the
+REDCap. An instrument contains <a href="#field">fields</a> into which
+data can be entered. In the <a href="#supertibble">supertibble</a>, each
+<a href="#row">row</a> corresponds to one instrument. The instrument’s
+name and human-readable label are shown in the
 <code>redcap_form_name</code> and <code>redcap_form_label</code> columns
 of the supertibble, respectively. A <a href="#data-tibble">data
 tibble</a> contains all the data that was entered into a specific
@@ -472,16 +473,18 @@ description (the <a href="#field-label">field label</a>), and its <a href="#fiel
 <h3 id="nonrepeating-event">Nonrepeating Event<a class="anchor" aria-label="anchor" href="#nonrepeating-event"></a>
 </h3>
 <p>An <a href="#event">event</a> whose associated <a href="#instrument">instruments</a> can be filled out exactly once per
-record per event (per <a href="#arm">arm</a>). See also: <a href="#repeating-event">Repeating Event</a>.
+record per event (and per <a href="#arm">arm</a>, if applicable). See
+also: <a href="#repeating-event">Repeating Event</a>.
 <a onclick="history.back()">↩︎</a></p>
 </div>
 <div class="section level3">
 <h3 id="nonrepeating-instrument">Nonrepeating Instrument<a class="anchor" aria-label="anchor" href="#nonrepeating-instrument"></a>
 </h3>
 <p>An <a href="#instrument">instrument</a> that can be filled out
-exactly once per <a href="#record">record</a> in a <a href="#classic-project">classic project</a> and once per record per <a href="#event">event</a> instance (per <a href="#arm">arm</a>) in a <a href="#longitudinal-project">longitudinal project</a>. These instruments
-have a <a href="#structure">structure</a> of nonrepeating. See also: <a href="#repeating-instrument">Repeating Instrument</a>.
-<a onclick="history.back()">↩︎</a></p>
+exactly once per <a href="#record">record</a> in a <a href="#classic-project">classic project</a> and once per record per <a href="#event">event</a> instance (and per <a href="#arm">arm</a>, if
+applicable) in a <a href="#longitudinal-project">longitudinal
+project</a>. See also: <a href="#repeating-instrument">Repeating
+Instrument</a>. <a onclick="history.back()">↩︎</a></p>
 </div>
 <div class="section level3">
 <h3 id="project">Project<a class="anchor" aria-label="anchor" href="#project"></a>
@@ -499,46 +502,48 @@ from a project. <a onclick="history.back()">↩︎</a></p>
 <h3 id="record">Record<a class="anchor" aria-label="anchor" href="#record"></a>
 </h3>
 <p>The set of information about a single entity (e.g., a study
-participant) for which data is being captured in REDCap. Each record
-consists of a discrete data values organized into <a href="#field">fields</a> that can be spread across multiple <a href="#instrument">instruments</a>, <a href="#event">events</a>, and/or
-<a href="#arm">arms</a>. Each record has a unique record ID. In the <a href="#data-tibble">data tibble</a>, the record ID is always the first
-<a href="#column">column</a>. It is one of the <a href="#identifier-column">identifier columns</a>.
-<a onclick="history.back()">↩︎</a></p>
+participant) for which data is being captured in a specific REDCap <a href="#project">project</a>. Each record consists of a discrete data
+values organized into <a href="#field">fields</a> that can be spread
+across multiple <a href="#instrument">instruments</a>, <a href="#event">events</a>, and/or <a href="#arm">arms</a>. Each record
+has a unique record ID. In the <a href="#data-tibble">data tibble</a>,
+the record ID is always the first <a href="#column">column</a>. The
+record ID column is one of the <a href="#identifier-column">identifier
+columns</a>. <a onclick="history.back()">↩︎</a></p>
 </div>
 <div class="section level3">
 <h3 id="redcap-api">REDCap API<a class="anchor" aria-label="anchor" href="#redcap-api"></a>
 </h3>
 <p>The application programming interface (API) of a REDCap instance
-allows external programs to connect, upload, and download data of a
-REDCap <a href="#project">project</a>. To access the REDCap API, a user
-must have appropriate access privileges, an API token, and the uniform
-resource identifier (URI) of the API endpoint (something like
-“my.institution.edu/redcap/api”). The REDCapTidieR package uses <a href="#redcapr">REDCapR</a> to query the REDCap API.
-<a onclick="history.back()">↩︎</a></p>
+allows external programs to connect, upload, and download data. To
+access the REDCap API, a user must have appropriate access privileges,
+an API token, and the uniform resource identifier (URI) of the API
+endpoint (something like “my.institution.edu/redcap/api”). The
+REDCapTidieR package uses <a href="#redcapr">REDCapR</a> to query the
+REDCap API. <a onclick="history.back()">↩︎</a></p>
 </div>
 <div class="section level3">
 <h3 id="redcapr">REDCapR<a class="anchor" aria-label="anchor" href="#redcapr"></a>
 </h3>
 <p>The <a href="https://ouhscbbmc.github.io/REDCapR/index.html" class="external-link">REDCapR</a> R
-package provides functions to interact with the <a href="#redcap-api">REDCap API</a>. REDCapTidieR builds on REDCapR to <a href="#import">import</a> data. <a onclick="history.back()">↩︎</a></p>
+package provides functions to interact with the <a href="#redcap-api">REDCap API</a>. REDCapTidieR builds on REDCapR to <a href="#import">import</a> data into R.
+<a onclick="history.back()">↩︎</a></p>
 </div>
 <div class="section level3">
 <h3 id="repeating-event">Repeating Event<a class="anchor" aria-label="anchor" href="#repeating-event"></a>
 </h3>
 <p>An <a href="#event">event</a> whose associated <a href="#instrument">instruments</a> can be filled out zero, one, or
-multiple times per record per event (per <a href="#arm">arm</a>). When
-an event is repeating each instance of the event contains a new set of
-responses to each instrument. REDCapTidieR only supports <a href="#nonrepeating-instrument">nonrepeating instruments</a> in
-repeating events. See also: <a href="#nonrepeating-event">Nonrepeating
-Event</a>. <a onclick="history.back()">↩︎&lt;/&gt;</a></p>
+multiple times per record per event (and per <a href="#arm">arm</a>, if
+applicable). Note: REDCap does not allow <a href="#repeating-instrument">repeating instruments</a> inside repeating
+events. See also: <a href="#nonrepeating-event">Nonrepeating Event</a>.
+<a onclick="history.back()">↩︎</a></p>
 </div>
 <div class="section level3">
 <h3 id="repeating-instrument">Repeating Instrument<a class="anchor" aria-label="anchor" href="#repeating-instrument"></a>
 </h3>
 <p>An <a href="#instrument">instrument</a> that can be filled out zero,
-one, or multiple times per <a href="#record">record</a> in a <a href="#classic-project">classic project</a> and per record per <a href="#event">event</a> (per <a href="#arm">arm</a>) in a <a href="#longitudinal-project">longitudinal project</a>. These instruments
-have a <a href="#structure">structure</a> of repeating. REDCapTidieR
-only supports repeating instruments in <a href="#nonrepeating-event">nonrepeating events</a>. See also: <a href="#nonrepeating-instrument">Nonrepeating Instrument</a>.
+one, or multiple times per <a href="#record">record</a> in a <a href="#classic-project">classic project</a> and zero, one, or multiple
+times per record per <a href="#event">event</a> (and per <a href="#arm">arm</a>, if applicable) in a <a href="#longitudinal-project">longitudinal project</a>. Note: REDCap does
+not allow repeating instruments inside <a href="#repeating-event">repeating events</a>. See also: <a href="#nonrepeating-instrument">Nonrepeating Instrument</a>.
 <a onclick="history.back()">↩︎</a></p>
 </div>
 <div class="section level3">
@@ -556,8 +561,9 @@ also: <a href="#column">Column</a>.
 the <code>structure</code> column. The structure of a <a href="#project">project</a> can be <a href="#classic-project">classic</a>, <a href="#longitudinal-project">longitudinal</a>, or longitudinal with <a href="#arm">arms</a>. The structure of an <a href="#event">event</a> can
 be <a href="#repeating-event">repeating</a> or <a href="#nonrepeating-event">nonrepeating</a>. The <a href="#granularity">granularity</a> of a <a href="#data-tibble">data
 tibble</a> depends on the structure of all three: the instrument, the
-project, and the events associated with the instrument. See also: the
-section <a href="https://chop-cgtinformatics.github.io/REDCapTidieR/articles/diving_deeper.html#longitudinal-redcap-projects">Longitudinal
+project, and the events associated with the instrument. Note: REDCap
+does not allow repeating instruments inside a repeating event. See also:
+the section <a href="https://chop-cgtinformatics.github.io/REDCapTidieR/articles/diving_deeper.html#longitudinal-redcap-projects">Longitudinal
 REDCap projects</a> in the <a href="https://chop-cgtinformatics.github.io/REDCapTidieR/articles/diving_deeper.html">Diving
 Deeper vignette</a>. <a onclick="history.back()">↩︎</a></p>
 </div>
@@ -606,10 +612,12 @@ consistent)</li>
 </ol>
 <p>Data returned by the REDCap API (the “<a href="#block-matrix">block
 matrix</a>”) often satisfies the first two requirements of tidy data.
-However, if the <a href="#project">project</a> contains both <a href="#repeating-instrument">repeating</a> and <a href="#nonrepeating-instrument">nonrepeating</a> instruments then the <a href="#granularity">granularity</a> is inconsistent from row to row. A
-key function of the REDCapTidieR package is to break down the <a href="#block-matrix">block matrix</a> by <a href="#instrument">instrument</a>. The resulting set of <a href="#data-tibble">data tibbles</a> is tidy because the granularity of
-each data tibble is consistent. This makes it easy to work with
-them.</p>
+However, if the <a href="#project">project</a> contains both <a href="#repeating-instrument">repeating</a> and <a href="#nonrepeating-instrument">nonrepeating</a> instruments and/or
+events then the <a href="#granularity">granularity</a> is inconsistent
+from row to row. A key function of the REDCapTidieR package is to break
+down the <a href="#block-matrix">block matrix</a> by <a href="#instrument">instrument</a>. The resulting set of <a href="#data-tibble">data tibbles</a> tends to be <em>tidier</em> than
+the block matrix, because the granularity within each individual data
+tibble is consistent. This makes it easy to work with them.</p>
 <p>The second is the idea of <a href="https://tidyverse.tidyverse.org/articles/manifesto.html" class="external-link">Tidy
 Tools</a>, which is a set of design guidelines for the packages of the
 <a href="https://www.tidyverse.org/" class="external-link">Tidyverse</a>. Tidy tools should

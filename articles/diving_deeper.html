@@ -98,9 +98,9 @@ API</a> and provides it to the R environment without performing much
 processing. It returns a list with an element named <code>data</code>
 that contains all of the data of the project as a single data frame.</p>
 <p>Below, we use this function to import data from the <a href="REDCapTidieR.html#case-study-the-superhero-database">Superhero
-REDCap database</a>, which contains a <a href="glossary.html#nonrepeating-instrument"><strong>nonrepeating</strong></a>
-instrument <code>heroes_information</code> and a <a href="glossary.html#repeating-instrument"><strong>repeating</strong></a>
-instrument <code>super_hero_powers</code>. We use
+REDCap database</a>, which contains a <a href="glossary.html#nonrepeating-instrument"><strong>nonrepeating
+instrument</strong></a> <code>heroes_information</code> and a <a href="glossary.html#repeating-instrument"><strong>repeating
+instrument</strong></a> <code>super_hero_powers</code>. We use
 <code><a href="https://pkgs.rstudio.com/rmarkdown/reference/paged_table.html" class="external-link">rmarkdown::paged_table()</a></code> to allow you to explore this large
 data frame in the browser.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
@@ -145,21 +145,22 @@ table.</p></li>
 <h2 id="structure-of-redcaptidier-data-tibbles">Structure of REDCapTidieR Data Tibbles<a class="anchor" aria-label="anchor" href="#structure-of-redcaptidier-data-tibbles"></a>
 </h2>
 <p>REDCapTidieR breaks the block matrix up into <a href="glossary.html#data-tibble"><strong>data tibbles</strong></a>, one
-for each instrument. REDCapTidieR then collects the data tibbles as a <a href="glossary.html#list-column"><strong>list column</strong></a> in the
-<a href="glossary.html#supertibble"><strong>supertibble</strong></a>.</p>
+for each instrument. REDCapTidieR then collects the data tibbles as a <a href="glossary.html#list-column"><strong>list column</strong></a> in a
+special object we call the <a href="glossary.html#supertibble"><strong>supertibble</strong></a>.</p>
 <p>These data tibbles are <a href="glossary.html#tidy"><strong>tidier</strong></a> than the block
 matrix because one instrument can only be repeating or nonrepeating, and
 therefore each data tibble can only have one type of observational unit
-stored inside of it. Each data tibble has consistent <a href="glossary.html#granularity">granularity</a></p>
+stored inside of it. Each data tibble has consistent <a href="glossary.html#granularity">granularity</a>.</p>
 <p>Let’s take a look at the data tibbles derived from the Superhero
-database and contrast with the block matrix. Consider
+database and contrast them with the block matrix. Consider
 <code>heroes_information</code>, which contains data from a
 <strong>nonrepeating</strong> instrument. This tibble is much smaller
 than the block matrix at 734 rows by 12 columns, and there are no
 <code>NA</code>s. The data tibble’s name <code>heroes_information</code>
 is descriptive. REDCapTidieR knows the names of all instruments because
 in addition to querying the project’s data it also queries the project’s
-metadata. Each entry has the same granularity, one
+metadata which describes, among other things, the names of REDCap
+instruments. Each entry has the same granularity, one
 <strong>superhero</strong>, identified by its <code>record_id</code>. A
 number of <a href="glossary.html#data-column">data columns</a> follow,
 starting with <code>name</code>, <code>gender</code>,
@@ -202,16 +203,21 @@ and finally the <code>form_status_complete</code> column.</p>
 <div class="section level2">
 <h2 id="longitudinal-redcap-projects">Longitudinal REDCap projects<a class="anchor" aria-label="anchor" href="#longitudinal-redcap-projects"></a>
 </h2>
-<p>REDCap databases support two main mechanisms to allow collecting the
-same data multiple times: <strong>repeating instruments</strong> and <a href="glossary.html#longitudinal-project"><strong>longitudinal
-projects</strong></a>.</p>
+<p>REDCap supports two main mechanisms to allow collecting the same data
+multiple times: <a href="glossary.html#repeating-instrument"><strong>repeating
+instruments</strong></a> and <a href="glossary.html#longitudinal-project"><strong>longitudinal
+projects</strong></a>. In addition, a longitudinal project may have <a href="glossary.html#arm"><strong>arms</strong></a> and/or <a href="glossary.html#repeating-event"><strong>repeating
+events</strong></a>.</p>
 <p>The <a href="glossary.html#granularity"><strong>granularity</strong></a> of
 each table (i.e. the observational unit that a single <a href="glossary.html#row">row</a> represents) depends on the <a href="glossary.html#structure">structure</a> of the <a href="glossary.html#project">project</a> (<a href="glossary.html#classic-project">classic</a>, <a href="glossary.html#longitudinal-project">longitudinal</a>, longitudinal
 with multiple <a href="glossary.html#arm">arms</a>), the structure of
 the <a href="glossary.html#instrument">instrument</a> (<a href="glossary.html#repeating-instrument">repeating</a> or <a href="glossary.html#nonrepeating-instrument">nonrepeating</a>), and, for
-longitudinal projects, the structure of the <a href="glossary.html#event">event</a> (<a href="glossary.html#repeating-event">repeating</a> or <a href="glossary.html#nonrepeating-event">nonrepeating</a>). REDCapTidieR
-generates <a href="glossary.html#identifier-column"><strong>identifier
+longitudinal projects, the structure of the <a href="glossary.html#event">event</a> (<a href="glossary.html#repeating-event">repeating</a> or <a href="glossary.html#nonrepeating-event">nonrepeating</a>). Note that
+REDCap does not support repeating instruments inside a repeating event.
+REDCapTidieR generates <a href="glossary.html#identifier-column"><strong>identifier
 columns</strong></a> according to the following table:</p>
+<p style="100vw;">
+</p>
 <table style="width:98%;" class="table">
 <colgroup>
 <col width="19%">
@@ -274,16 +280,19 @@ columns</strong></a> according to the following table:</p>
 </table>
 <blockquote>
 <p>Note: Taken in combination, the identifier columns of any
-REDCapTidieR tibble are guaranteed to be unique and can therefore be
-used as <a href="glossary.html#composite-primary-key"><strong>composite
-primary key</strong></a>. This makes it easy to join REDCapTidieR
-tibbles to each other!</p>
+REDCapTidieR tibble are guaranteed to be <strong>unique</strong> and can
+therefore be used as <a href="glossary.html#composite-primary-key"><strong>composite primary
+key</strong></a>. This makes it easy to join REDCapTidieR tibbles to one
+another!</p>
 </blockquote>
 <p>By default, REDCap names the record ID field <code>record_id</code>,
-but this can be changed, and REDCapTidieR is smart enough to handle
-this. For example, if the record ID field was renamed to
-<code>subject_id</code> then the record ID column of each data tibble
-would be <code>subject_id</code>.</p>
+but this can be changed inside the REDCap project, and REDCapTidieR is
+smart enough to handle this. For example, if the record ID field was
+renamed to <code>subject_id</code> then the record ID column of each
+data tibble would be <code>subject_id</code>. Whatever its name, the
+record ID column is always the first identifier column and is always the
+first column of a REDCapTidieR data tibble. Additional columns are
+generated in the order shown in the table above.</p>
 <p>Let’s look at a REDCap database you might use to capture data for a
 clinical trial. This is a longitudinal database that assesses some data
 (e.g. demographics) just once at enrollment, and other data
@@ -363,15 +372,15 @@ scenario as well.</p>
 <p>REDCapTidieR does <em>not</em> allow you to have the same instrument
 designated both as a repeating and as a nonrepeating instrument in
 different events. It will throw an error if it detects this.</p>
-<p>The <code>unscheduled</code> <strong>event</strong> is
-<strong>repeating</strong>. Like adverse events, unscheduled visits
-aren’t tied to any specific study visit, and a patient can have any
-number. However, while all data for an adverse event can be captured in
-one instrument, unscheduled visits have multiple components which we’d
-like to isolate in separate instruments. Two components of an
-unscheduled visit are <code>physical_exam</code> and
+<p>The <code>unscheduled</code> <strong>event</strong> is a
+<strong>repeating event</strong>. Like adverse events, unscheduled
+visits aren’t tied to a pre-determined study visit, and a patient could
+have zero, one, or multiple unscheduled visits. On the other hand, you
+might want to record the same kinds of data for an unscheduled visit as
+for a pre-determined regular visit and collect data in the same
+instruments, for example <code>physical_exam</code> and
 <code>hematology</code>. The granularity of these tables is one row per
-study subject per event per event instance. The subject had two
+study subject per event per <em>event instance</em>. The subject had two
 unscheduled visits. <code>redcap_event_instance</code> allows us to
 match <code>physical_exam</code> and <code>hematology</code> responses
 which occurred on the same unscheduled visit.</p>
@@ -393,11 +402,11 @@ which occurred on the same unscheduled visit.</p>
 {"columns":[{"label":["subject_id"],"name":[1],"type":["chr"],"align":["left"]},{"label":["redcap_event"],"name":[2],"type":["chr"],"align":["left"]},{"label":["redcap_event_instance"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["hemat_capture"],"name":[4],"type":["lgl"],"align":["right"]},{"label":["hemat_capture_infusion_sql"],"name":[5],"type":["lgl"],"align":["right"]},{"label":["hemat_capture_visit"],"name":[6],"type":["fct"],"align":["left"]},{"label":["hemat_performed"],"name":[7],"type":["lgl"],"align":["right"]},{"label":["hemat_performed_specify"],"name":[8],"type":["lgl"],"align":["right"]},{"label":["hemat_performed_date"],"name":[9],"type":["date"],"align":["right"]},{"label":["hemat_laboratory"],"name":[10],"type":["fct"],"align":["left"]},{"label":["hemat_laboratory_specify"],"name":[11],"type":["lgl"],"align":["right"]},{"label":["hemat_wbc_avail"],"name":[12],"type":["lgl"],"align":["right"]},{"label":["hemat_wbc_ct"],"name":[13],"type":["dbl"],"align":["right"]},{"label":["hemat_wbc_clinical_signif"],"name":[14],"type":["fct"],"align":["left"]},{"label":["hemat_rbc_avail"],"name":[15],"type":["lgl"],"align":["right"]},{"label":["hemat_rbc_ct"],"name":[16],"type":["dbl"],"align":["right"]},{"label":["hemat_rbc_clinical_signif"],"name":[17],"type":["fct"],"align":["left"]},{"label":["hemat_hgb_avail"],"name":[18],"type":["lgl"],"align":["right"]},{"label":["hemat_hgb_gdl"],"name":[19],"type":["dbl"],"align":["right"]},{"label":["hemat_hgb_clinical_signif"],"name":[20],"type":["fct"],"align":["left"]},{"label":["hemat_hct_avail"],"name":[21],"type":["lgl"],"align":["right"]},{"label":["hemat_hct_pct"],"name":[22],"type":["dbl"],"align":["right"]},{"label":["hemat_hct_clinical_signif"],"name":[23],"type":["fct"],"align":["left"]},{"label":["hemat_plt_avail"],"name":[24],"type":["lgl"],"align":["right"]},{"label":["hemat_plt_ct"],"name":[25],"type":["dbl"],"align":["right"]},{"label":["hemat_plt_clinical_signif"],"name":[26],"type":["fct"],"align":["left"]},{"label":["hemat_anc_avail"],"name":[27],"type":["lgl"],"align":["right"]},{"label":["hemat_anc_ct"],"name":[28],"type":["dbl"],"align":["right"]},{"label":["hemat_anc_clinical_signif"],"name":[29],"type":["fct"],"align":["left"]},{"label":["hemat_alc_avail"],"name":[30],"type":["lgl"],"align":["right"]},{"label":["hemat_alc_ct"],"name":[31],"type":["lgl"],"align":["right"]},{"label":["hemat_alc_clinical_signif"],"name":[32],"type":["fct"],"align":["left"]},{"label":["hemat_amc_avail"],"name":[33],"type":["lgl"],"align":["right"]},{"label":["hemat_amc_ct"],"name":[34],"type":["lgl"],"align":["right"]},{"label":["hemat_amc_clinical_signif"],"name":[35],"type":["fct"],"align":["left"]},{"label":["hemat_aec_avail"],"name":[36],"type":["lgl"],"align":["right"]},{"label":["hemat_aec_ct"],"name":[37],"type":["lgl"],"align":["right"]},{"label":["hemat_aec_clinical_signif"],"name":[38],"type":["fct"],"align":["left"]},{"label":["hemat_abc_avail"],"name":[39],"type":["lgl"],"align":["right"]},{"label":["hemat_abc_ct"],"name":[40],"type":["lgl"],"align":["right"]},{"label":["hemat_abc_clinical_signif"],"name":[41],"type":["fct"],"align":["left"]},{"label":["hemat_blasts_avail"],"name":[42],"type":["lgl"],"align":["right"]},{"label":["hemat_blasts_pct"],"name":[43],"type":["lgl"],"align":["right"]},{"label":["hemat_blasts_clinical_signif"],"name":[44],"type":["fct"],"align":["left"]},{"label":["form_status_complete"],"name":[45],"type":["fct"],"align":["left"]}],"data":[{"1":"001-123-001","2":"unscheduled","3":"1","4":"FALSE","5":"NA","6":"NA","7":"TRUE","8":"NA","9":"2022-12-01","10":"Children's Hospital of Philadelphia","11":"NA","12":"TRUE","13":"10","14":"Normal","15":"TRUE","16":"5","17":"Normal","18":"NA","19":"NA","20":"NA","21":"NA","22":"NA","23":"NA","24":"NA","25":"NA","26":"NA","27":"NA","28":"NA","29":"NA","30":"NA","31":"NA","32":"NA","33":"NA","34":"NA","35":"NA","36":"NA","37":"NA","38":"NA","39":"NA","40":"NA","41":"NA","42":"NA","43":"NA","44":"NA","45":"Complete"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
-<p>Note that both <code>physical_exam</code> and <code>hematology</code>
-are <strong>nonrepeating</strong> instruments. REDCapTidieR
-<strong>only</strong> allows nonrepeating instruments to occur in
-repeating events. It will throw an error if it detects a repeating
-instrument associated with a repeating event.</p>
+<p>Note that REDCapTidieR allows for an instrument to be associated with
+both repeating and nonrepeating events at the same time. In this case,
+the the <code>redcap_event_instance</code> column will be
+<code>NA</code> in rows that correspond with data captured as part of a
+nonrepeating event.</p>
 <p>REDCapTidieR supports projects with multiple arms. If you have a
 project with multiple arms, there will be an additional column
 <code>redcap_arm</code> to identify the arm that the row is associated
@@ -408,7 +417,7 @@ with.</p>
 </h2>
 <p>REDCapTidieR performs a number of opinionated transformations on
 categorical <a href="glossary.html#field">fields</a> to streamline
-exploring and working with them.</p>
+exploring them and working with them.</p>
 <p>Fields that are of <a href="glossary.html#field-type">type</a>
 <code>yesno</code> or <code>truefalse</code> are converted to
 <strong>logical</strong> <a href="glossary.html#variable">variables</a>.</p>
@@ -418,29 +427,29 @@ exploring and working with them.</p>
 <span><span class="co">#&gt;  logi [1:5] FALSE FALSE FALSE FALSE FALSE</span></span></code></pre></div>
 <p>Fields of single-answer categorical type (<code>dropdown</code>,
 <code>radio</code>) are converted to <a href="glossary.html#factor"><strong>factor</strong></a> variables by
-default. To understand how REDCapTidieR constructs this factor, consider
-the Field Editor for the <code>adverse_event_grade</code> variable which
-is a single-answer <code>radio</code> field. There are five <a href="glossary.html#choice">choices</a> for this field. Choices have
-<strong>raw values</strong> and <strong>choice labels</strong>,
-separated by a comma. Here, the raw values are <code>1</code>,
-<code>2</code>, <code>3</code>, <code>4</code>, and <code>5</code>, and
-their associated choice labels are <code>Grade 1</code>,
-<code>Grade 2</code>, <code>Grade 3</code>, <code>Grade 4</code>, and
-<code>Grade 5</code>. We find that choice labels are generally more
-useful and intuitive to work with than raw values. For this reason,
-REDCapTidieR derives the labels of the factor from the choice label. The
-order of the factor levels is the same as the order of choices in
-REDCap.</p>
+default. REDCapTidieR constructs this factor in such a way that the all
+possible <a href="glossary.html#choice">choices</a> defined in REDCap
+are represented as factor levels, and that the order of the factor
+levels is the same as the order of choices in REDCap.</p>
+<p>Consider the Field Editor for the <code>adverse_event_grade</code>
+variable which is a single-answer <code>radio</code> field. There are
+five choices for this field. Choices have <strong>raw values</strong>
+and <strong>choice labels</strong>, separated by a comma. Here, the raw
+values are <code>1</code>, <code>2</code>, <code>3</code>,
+<code>4</code>, and <code>5</code>, and their associated choice labels
+are <code>Grade 1</code>, <code>Grade 2</code>, <code>Grade 3</code>,
+<code>Grade 4</code>, and <code>Grade 5</code>.</p>
 <center>
 <div class="figure">
 <img src="images/field-editor-ae-grade.png" alt=""><p class="caption">REDCap field editor showing the choices of a
 single-answer field</p>
 </div>
 </center>
-<p>This makes it possible to discover all of the different choices for a
-specific field even if not all of them are represented in the data. For
-example, even though we have only Grade 1 and 2 adverse events in the
-data, we can see that there are 5 possible grades.</p>
+<p>REDCapTidieR preserves all the possible choices as levels even if not
+all of them are represented in the data. This makes it possible to
+discover all of the different choices. For example, even though we have
+only Grade 1 and 2 adverse events in the data, we can see that there are
+5 possible grades.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">adverse_events</span><span class="op">$</span><span class="va">adverse_event_grade</span></span>
 <span><span class="co">#&gt; [1] Grade 2 Grade 1 Grade 1 Grade 2 Grade 1</span></span>
@@ -457,12 +466,14 @@ variables to ordered factors.</p>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span>ordered <span class="op">=</span> <span class="cn">TRUE</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/levels.html" class="external-link">levels</a></span><span class="op">(</span><span class="va">ae_grade</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] Grade 2 Grade 1 Grade 1 Grade 2 Grade 1</span></span>
 <span><span class="co">#&gt; Levels: Grade 1 &lt; Grade 2 &lt; Grade 3 &lt; Grade 4 &lt; Grade 5</span></span></code></pre></div>
-<p>Fields of the multi-answer <code>checkbox</code> type are expanded so
-that <strong>each choice</strong> is represented as <strong>one logical
-variable</strong>. Consider the
-<code>adverse_event_relationship_other</code> field. This field has
-eight choices, and their raw values (i.e. the part before the comma) are
-<code>apheresis</code>, <code>ld_chemo</code>,
+<p>Fields of the multi-answer <code>checkbox</code> type are treated in
+a special way. REDCapTidieR <em>expands</em> these fields into multiple
+columns. Each of these derived columns represents one
+<strong>choice</strong> and is coded as a <strong>logical
+variable</strong>.</p>
+<p>Consider the <code>adverse_event_relationship_other</code> field.
+This field has eight choices, and their raw values (i.e. the part before
+the comma) are <code>apheresis</code>, <code>ld_chemo</code>,
 <code>soc_treatment</code>, <code>underlying_disease</code>,
 <code>other_research_proc</code>, <code>con_meds</code>, and
 <code>other</code>.</p>
@@ -472,14 +483,16 @@ eight choices, and their raw values (i.e. the part before the comma) are
 multi-answer field</p>
 </div>
 </center>
+<blockquote>
 <p>We recommend that for multi-answer <code>checkbox</code> fields you
-make the raw value a human readable word as we do in the above example,
-and not serial number which is with REDCap will provide by default.
-REDCapTidieR will construct the name of each variable from the name of
-the field, followed by three underscores, followed by the raw value of
-the choice defined in REDCap. Here are the variables REDCapTidieR
-generates from the <code>adverse_event_relationship_other</code>
-field:</p>
+make the raw value a human readable word as we do in the above
+example.</p>
+</blockquote>
+<p>REDCapTidieR will construct the name of each variable from the name
+of the field, followed by three underscores, followed by the
+<strong>raw</strong> value of the choice defined in REDCap. Here are the
+variables REDCapTidieR generates from the
+<code>adverse_event_relationship_other</code> field:</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">adverse_events</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">starts_with</a></span><span class="op">(</span><span class="st">"adverse_event_relationship_other___"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -498,7 +511,7 @@ field:</p>
 <div class="section level2">
 <h2 id="surveys">Surveys<a class="anchor" aria-label="anchor" href="#surveys"></a>
 </h2>
-<p>Instruments that are used to generate REDCap <a href="glossary.html#survey">Surveys</a> generate additional <a href="glossary.html#data-column">data columns</a>:</p>
+<p>Instruments that are used to generate REDCap <a href="glossary.html#survey">surveys</a> generate additional <a href="glossary.html#data-column">data columns</a>:</p>
 <ul>
 <li><p><code>redcap_survey_timestamp</code>: the time at which the
 survey was competed</p></li>
@@ -506,6 +519,8 @@ survey was competed</p></li>
 identifier. This will be <code>NA</code> if the Participant Identifier
 feature in REDCap is disabled.</p></li>
 </ul>
+<p>These columns are placed after all of the other data columns and
+prior to the <code>form_status_complete</code> column.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">survey</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_redcap.html">read_redcap</a></span><span class="op">(</span><span class="va">redcap_uri</span>, <span class="va">survey_token</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/extract_tibble.html">extract_tibble</a></span><span class="op">(</span><span class="st">"survey"</span><span class="op">)</span></span>
