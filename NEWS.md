@@ -1,6 +1,6 @@
 # REDCapTidieR (development version)
 
-Version 0.3.0 (Released 2023-XX-XX)
+Version 0.3.0 (Released 2023-03-17)
 ==========================================================
 
 ## New Features

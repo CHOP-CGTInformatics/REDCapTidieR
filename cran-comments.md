@@ -6,26 +6,20 @@ This submission includes new features, optimizations, and bug fixes.
 
 ### New Features
 
-* Function name changes:
-  * `read_redcap_tidy()` is now `read_redcap()`
-  * `extract_table()` is now `extract_tibble()`
-  * `extract_tables()` is now `extract_tibbles()`
-  * `bind_table()` is now `bind_tibbles()`
-    * All old functions are still supported and throw a deprecation warning
-* The `read_redcap()` output now includes additional metadata
-* New `make_labelled()` function allows attaching variable labels via the [labelled](https://larmarange.github.io/labelled/) package
-* New arguments available `read_redcap()`:
-  * `forms`
-  * `export_survey_fields`
+* `read_redcap()` now supports projects with repeating events which introduced a **breaking change** to data tibble column names
+  * `redcap_repeat_instance` is now `redcap_form_instance`
+  * `redcap_event_instance` has been added to denote repeating events
+* Improved error message suite
+* Bug fixes
 
 ## Test environments
 
 1. Local macOS Catalina 10.15.7, R 4.2.0
 2. R-hub
-    1. [Ubuntu Linux 20.04 LTS, R-release, GCC](https://builder.r-hub.io/status/REDCapTidieR_0.2.0.tar.gz-932c3202df5b4211a955f748db9dbf1e)
-    2. [Fedora Linux, R-devel, clang, gfortran](https://builder.r-hub.io/status/REDCapTidieR_0.2.0.tar.gz-c148085a1ba742b19e279224c95ad66f)
-    3. [Windows Server](https://builder.r-hub.io/status/REDCapTidieR_0.2.0.tar.gz-6cd17af23de241e7a9513e0edde9833d)
-3.  [win-builder](https://win-builder.r-project.org/yYmcoKudUN1U/), development version.
+    1. [Ubuntu Linux 20.04.1 LTS, R-release, GCC](https://builder.r-hub.io/status/REDCapTidieR_0.2.0.9007.tar.gz-255c83ab7c984ea1ac3a15d94df5a18d)
+    2. [Fedora Linux, R-devel, clang, gfortran](https://builder.r-hub.io/status/REDCapTidieR_0.2.0.9007.tar.gz-f0bdca096aaf486a9dc2bbec144939cf)
+    3. [Windows Server](https://builder.r-hub.io/status/REDCapTidieR_0.2.0.9007.tar.gz-5a2dbb2e642d4af59fb4271c4dc657e8)
+3.  [win-builder](https://win-builder.r-project.org/fekdXtl4cd7K/), development version.
 4.  [GiHub Actions](https://github.com/CHOP-CGTInformatics/REDCapTidieR/actions), Ubuntu 20.04 LTS
 
 ## R CMD check results:
@@ -37,6 +31,14 @@ This submission includes new features, optimizations, and bug fixes.
 ```
 * checking HTML version of manual ... NOTE
 Skipping checking HTML validation: no command 'tidy' found
+```
+
+- A NOTE is generated in R-hub Windows (Server 2022, R-devel 64-bit), a similar issue appears to arise in the `REDCapR` package and appears to be related to the R-hub test environment.
+
+```
+* checking for detritus in the temp directory ... NOTE
+Found the following files/directories:
+  'lastMiKTeXException'
 ```
 
 ## Downstream Dependencies:

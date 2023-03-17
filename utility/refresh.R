@@ -49,8 +49,8 @@ devtools::check( # Equivalent of R-hub
   remote    = TRUE,
   incoming  = TRUE
 )
-devtools::check_rhub(email="richardshanna91@gmail.com")
-# devtools::check_win_devel(email = "") # CRAN submission policies encourage the development version
+# devtools::check_rhub(email="richardshanna91@gmail.com")
+# devtools::check_win_devel(email = "richardshanna91@gmail.com") # CRAN submission policies encourage the development version
 # Note: Must be off of VPN
 revdepcheck::revdep_check(num_workers = 4)
 # devtools::release(check=FALSE) #Careful, the last question ultimately uploads it to CRAN, where you can't delete/reverse your decision.
