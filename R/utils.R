@@ -708,6 +708,7 @@ db_has_repeat_forms <- function(db_data) {
 #' @param my_record_id The record ID defined in the project.
 #'
 #' @importFrom dplyr filter if_any
+#' @importFrom tidyselect all_of
 #'
 #' @keywords internal
 
@@ -727,5 +728,5 @@ remove_empty_rows <- function(data, my_record_id) {
 
   # Filter for rows where specified columns have any non-NA data
   data %>%
-    filter(if_any(data_cols, ~!is.na(.)))
+    filter(if_any(all_of(data_cols), ~!is.na(.)))
 }
