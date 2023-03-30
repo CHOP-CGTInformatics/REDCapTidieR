@@ -63,4 +63,6 @@ tryCatch(
 
 read_redcap(creds$REDCAP_URI, creds$REDCAPTIDIER_REPEATING_EVENT_API)
 
+read_redcap(creds$REDCAP_URI, creds$REDCAPTIDIER_LARGE_SPARSE_API)
+
 stop_capturing()
