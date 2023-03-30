@@ -52,6 +52,9 @@
 #' survey identifier and timestamp fields if available. Default is `TRUE`.
 #' @param suppress_redcapr_messages A logical to control whether to suppress messages
 #' from REDCapR API calls. Default `TRUE`.
+#' @param guess_max A positive [base::numeric] value
+#' passed to [readr::read_csv()] that specifies the maximum number of records to
+#' use for guessing column types. Default `Inf`.
 #'
 #' @examples
 #' \dontrun{
@@ -72,7 +75,8 @@ read_redcap <- function(redcap_uri,
                         raw_or_label = "label",
                         forms = NULL,
                         export_survey_fields = TRUE,
-                        suppress_redcapr_messages = TRUE) {
+                        suppress_redcapr_messages = TRUE,
+                        guess_max = Inf) {
   check_arg_is_character(redcap_uri, len = 1, any.missing = FALSE)
   check_arg_is_character(token, len = 1, any.missing = FALSE)
   check_arg_is_valid_token(token)
@@ -158,7 +162,8 @@ read_redcap <- function(redcap_uri,
       token = token,
       forms = forms_for_api_call,
       export_survey_fields = export_survey_fields,
-      verbose = !suppress_redcapr_messages
+      verbose = !suppress_redcapr_messages,
+      guess_max = guess_max
     )
   })
 
