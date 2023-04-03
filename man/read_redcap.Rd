@@ -10,7 +10,8 @@ read_redcap(
   raw_or_label = "label",
   forms = NULL,
   export_survey_fields = TRUE,
-  suppress_redcapr_messages = TRUE
+  suppress_redcapr_messages = TRUE,
+  include_skimr_metadata = TRUE
 )
 }
 \arguments{
@@ -34,6 +35,8 @@ survey identifier and timestamp fields if available. Default is \code{TRUE}.}
 
 \item{suppress_redcapr_messages}{A logical to control whether to suppress messages
 from REDCapR API calls. Default \code{TRUE}.}
+
+\item{include_skimr_metadata}{TBD}
 }
 \value{
 A \code{tibble} in which each row represents a REDCap instrument. It

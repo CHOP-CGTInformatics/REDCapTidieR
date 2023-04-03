@@ -52,6 +52,7 @@
 #' survey identifier and timestamp fields if available. Default is `TRUE`.
 #' @param suppress_redcapr_messages A logical to control whether to suppress messages
 #' from REDCapR API calls. Default `TRUE`.
+#' @param include_skimr_metadata TBD
 #'
 #' @examples
 #' \dontrun{
@@ -72,7 +73,8 @@ read_redcap <- function(redcap_uri,
                         raw_or_label = "label",
                         forms = NULL,
                         export_survey_fields = TRUE,
-                        suppress_redcapr_messages = TRUE) {
+                        suppress_redcapr_messages = TRUE,
+                        include_skimr_metadata = TRUE) {
   check_arg_is_character(redcap_uri, len = 1, any.missing = FALSE)
   check_arg_is_character(token, len = 1, any.missing = FALSE)
   check_arg_is_valid_token(token)
@@ -241,7 +243,7 @@ read_redcap <- function(redcap_uri,
   }
 
   # Augment with metadata ----
-  out <- add_metadata(out, db_metadata, redcap_uri, token, suppress_redcapr_messages)
+  out <- add_metadata(out, db_metadata, redcap_uri, token, suppress_redcapr_messages, include_skimr_metadata)
 
   if (is_longitudinal) {
     out <- add_event_mapping(out, linked_arms)
@@ -332,7 +334,7 @@ get_fields_to_drop <- function(db_metadata, form) {
 #'
 #' @keywords internal
 
-add_metadata <- function(supertbl, db_metadata, redcap_uri, token, suppress_redcapr_messages) {
+add_metadata <- function(supertbl, db_metadata, redcap_uri, token, suppress_redcapr_messages, include_skimr_metadata) {
   # Get instrument labels ----
   instrument_labs <- try_redcapr(
     {
@@ -385,6 +387,12 @@ add_metadata <- function(supertbl, db_metadata, redcap_uri, token, suppress_redc
       "redcap_form_name", "redcap_form_label", "redcap_data",
       "redcap_metadata", "structure"
     )
+
+  # Add skimr Metadata ----
+  if (include_skimr_metadata){
+    res <- res %>%
+      add_skimr_metadata()
+  }
 
   # Add summary stats ----
   res %>%
@@ -481,3 +489,48 @@ as_supertbl <- function(x) {
   class(x) <- c("redcap_supertbl", class(x))
   x
 }
+
+#' @title
+#' Add `skimr` metrics to supertibble metadata
+#'
+#' @description
+#' Utility function to support adding `skimr` metrics to supertibble metadata
+#' rows.
+#'
+#' @param supertbl a supertibble object
+#'
+#' @importFrom skimr skim
+#' @importFrom dplyr left_join select
+#' @importFrom tidyselect any_of
+#' @importFrom purrr map2
+#'
+#' @return
+#' A supertibble object
+#'
+#' @keywords internal
+
+add_skimr_metadata <- function(supertbl){
+
+  skim_data <- function(redcap_data, redcap_metadata) {
+    excluded_fields <- c(
+      get_record_id_field(redcap_data),
+      "redcap_form_instance", "redcap_event_instance", "redcap_event",
+      "redcap_arm", "form_status_complete"
+    )
+
+    skimmed_data <- redcap_data %>%
+      select(!any_of(excluded_fields)) %>%
+      skim()
+
+    redcap_metadata %>%
+      left_join(
+        skimmed_data,
+        by = c(field_name = "skim_variable")
+      )
+  }
+
+  supertbl$redcap_metadata <- map2(.x = supertbl$redcap_data, .y = supertbl$redcap_metadata, .f = skim_data)
+
+  supertbl
+}
+
