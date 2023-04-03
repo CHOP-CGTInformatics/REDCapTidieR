@@ -54,7 +54,7 @@
 #' from REDCapR API calls. Default `TRUE`.
 #' @param guess_max A positive [base::numeric] value
 #' passed to [readr::read_csv()] that specifies the maximum number of records to
-#' use for guessing column types. Default `Inf`.
+#' use for guessing column types. Default `.Machine$integer.max`.
 #'
 #' @examples
 #' \dontrun{
@@ -76,7 +76,7 @@ read_redcap <- function(redcap_uri,
                         forms = NULL,
                         export_survey_fields = TRUE,
                         suppress_redcapr_messages = TRUE,
-                        guess_max = Inf) {
+                        guess_max = .Machine$integer.max) {
   check_arg_is_character(redcap_uri, len = 1, any.missing = FALSE)
   check_arg_is_character(token, len = 1, any.missing = FALSE)
   check_arg_is_valid_token(token)

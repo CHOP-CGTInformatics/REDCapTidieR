@@ -534,6 +534,10 @@ test_that("read_redcap works for a large sparse database", {
     "numeric",
     "logical",
     "numeric",
+    "logical",
+    "Date",
+    "factor",
+    "factor",
     "character",
     "factor"
   )
@@ -541,6 +545,10 @@ test_that("read_redcap works for a large sparse database", {
   names(expected_col_types) <- c("record_id",
                                  "empty_int_column",
                                  "partial_empty_int_column",
+                                 "empty_date_column",
+                                 "partial_empty_date_column",
+                                 "empty_factor_column",
+                                 "partial_empty_factor_column",
                                  "data_type_switch",
                                  "form_status_complete")
 

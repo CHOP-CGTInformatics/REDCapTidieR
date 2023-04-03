@@ -11,7 +11,7 @@ read_redcap(
   forms = NULL,
   export_survey_fields = TRUE,
   suppress_redcapr_messages = TRUE,
-  guess_max = Inf
+  guess_max = .Machine$integer.max
 )
 }
 \arguments{
@@ -38,7 +38,7 @@ from REDCapR API calls. Default \code{TRUE}.}
 
 \item{guess_max}{A positive \link[base:numeric]{base::numeric} value
 passed to \code{\link[readr:read_delim]{readr::read_csv()}} that specifies the maximum number of records to
-use for guessing column types. Default \code{Inf}.}
+use for guessing column types. Default \code{.Machine$integer.max}.}
 }
 \value{
 A \code{tibble} in which each row represents a REDCap instrument. It
