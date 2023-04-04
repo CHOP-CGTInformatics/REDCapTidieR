@@ -524,3 +524,29 @@ test_that("read_redcap returns expected vals from repeating events databases", {
   expect_s3_class(repeat_out, "tbl")
   expect_true(nrow(repeat_out) > 0)
 })
+
+test_that("read_redcap metadata contains skimr metrics"{
+  httptest::with_mock_api({
+    out <-
+      read_redcap(creds$REDCAP_URI, creds$REDCAPTIDIER_CLASSIC_API) %>%
+      # suppress expected warning
+      suppressWarnings(classes = c(
+        "field_missing_categories",
+        "empty_parse_warning",
+        "duplicate_labels"
+      ))
+  })
+
+  # Check for existence of common skimr metric columns in all
+  expected_cols <- c(
+    "skim_type",
+    "n_missing",
+    "complete_rate"
+  )
+
+  redcap_metadata_names <- lapply(out$redcap_metadata, names)
+
+  out <- purrr::map(redcap_metadata_names, \(x) all(expected_cols %in% x))
+
+  expect_true(all(unlist(out)))
+})
