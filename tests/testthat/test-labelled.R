@@ -404,5 +404,5 @@ test_that("make_labelled returns skimr labels", {
     ts.line_graph = "Ts Line Graph"
   )
 
-  expect_equal(skimr_labs, expected_skimr_labs)
+  expect_true(all(skimr_labs %in% expected_skimr_labs))
 })

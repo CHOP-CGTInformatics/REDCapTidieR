@@ -28,7 +28,8 @@ Imports:
     tibble,
     tidyr,
     tidyselect,
-    formattable
+    formattable,
+    skimr
 Suggests: 
     covr,
     httptest,

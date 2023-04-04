@@ -525,7 +525,7 @@ test_that("read_redcap returns expected vals from repeating events databases", {
   expect_true(nrow(repeat_out) > 0)
 })
 
-test_that("read_redcap metadata contains skimr metrics"{
+test_that("read_redcap metadata contains skimr metrics", {
   httptest::with_mock_api({
     out <-
       read_redcap(creds$REDCAP_URI, creds$REDCAPTIDIER_CLASSIC_API) %>%

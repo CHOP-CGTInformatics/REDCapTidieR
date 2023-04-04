@@ -308,6 +308,7 @@ resolve_formatter <- function(format_labels, env = caller_env(n = 2), call = cal
 #' @importFrom stringr str_replace str_to_title
 #' @importFrom skimr get_default_skimmer_names
 #' @importFrom purrr imap_chr
+#' @importFrom stats setNames
 #'
 #' @return A character vector
 #'
