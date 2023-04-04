@@ -319,10 +319,10 @@ test_that("make_labelled returns skimr labels", {
   # Create a tibble with all possible skimr data columns and empty values
   supertbl_skimr_meta <- skimr::get_default_skimmer_names()
   supertbl_skimr_meta <- setNames(
-    unlist(all_skimr_names, use.names=F),
-    rep(names(all_skimr_names), lengths(all_skimr_names))
+    unlist(supertbl_skimr_meta, use.names=F),
+    rep(names(supertbl_skimr_meta), lengths(supertbl_skimr_meta))
   )
-  supertbl_skimr_meta <- imap_chr(all_skimr_names, \(x, idx) paste0(idx, ".", x)) %>%
+  supertbl_skimr_meta <- imap_chr(supertbl_skimr_meta, \(x, idx) paste0(idx, ".", x)) %>%
     tibble::as_tibble() %>%
     dplyr::rename("name" = value) %>%
     dplyr::mutate(value = NA) %>%
