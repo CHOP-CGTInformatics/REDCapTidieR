@@ -314,3 +314,95 @@ test_that("make_labelled preserves S3 class", {
 
   expect_s3_class(out, "redcap_supertbl")
 })
+
+test_that("make_labelled returns skimr labels", {
+  # Create a tibble with all possible skimr data columns and empty values
+  supertbl_skimr_meta <- skimr::get_default_skimmer_names()
+  supertbl_skimr_meta <- setNames(
+    unlist(all_skimr_names, use.names=F),
+    rep(names(all_skimr_names), lengths(all_skimr_names))
+  )
+  supertbl_skimr_meta <- imap_chr(all_skimr_names, \(x, idx) paste0(idx, ".", x)) %>%
+    tibble::as_tibble() %>%
+    dplyr::rename("name" = value) %>%
+    dplyr::mutate(value = NA) %>%
+    tidyr::pivot_wider()
+
+  # Add skimr metadata to a sample supertbl
+  supertbl <- tibble::tribble(
+    ~redcap_data, ~redcap_metadata, ~redcap_events,
+    tibble(x = letters[1:3]), tibble(field_name = "x", field_label = "X Label", supertbl_skimr_meta), tibble(redcap_event = "event_a")
+  ) %>%
+    as_supertbl()
+
+  # Create expectations
+  out <- make_labelled(supertbl)
+
+  skimr_labs <- labelled::var_label(out$redcap_metadata[[1]])
+
+  expected_skimr_labs <- list(
+    field_name = "Variable / Field Name",
+    field_label = "Field Label",
+    AsIs.n_unique = "Asis N Unique",
+    AsIs.min_length = "Asis Min Length",
+    AsIs.max_length = "Asis Max Length",
+    character.min = "Character Min",
+    character.max = "Character Max",
+    character.empty = "Character Empty",
+    character.n_unique = "Character N Unique",
+    character.whitespace = "Character Whitespace",
+    complex.mean = "Complex Mean",
+    Date.min = "Date Min",
+    Date.max = "Date Max",
+    Date.median = "Date Median",
+    Date.n_unique = "Date N Unique",
+    difftime.min = "Difftime Min",
+    difftime.max = "Difftime Max",
+    difftime.median = "Difftime Median",
+    difftime.n_unique = "Difftime N Unique",
+    factor.ordered = "Factor Ordered",
+    factor.n_unique = "Factor N Unique",
+    factor.top_counts = "Factor Top Counts",
+    haven_labelled.mean = "Haven Labelled Mean",
+    haven_labelled.sd = "Haven Labelled Sd",
+    haven_labelled.p0 = "Haven Labelled P0",
+    haven_labelled.p25 = "Haven Labelled P25",
+    haven_labelled.p50 = "Haven Labelled P50",
+    haven_labelled.p75 = "Haven Labelled P75",
+    haven_labelled.p100 = "Haven Labelled P100",
+    haven_labelled.hist = "Haven Labelled Hist",
+    list.n_unique = "List N Unique",
+    list.min_length = "List Min Length",
+    list.max_length = "List Max Length",
+    logical.mean = "Logical Mean",
+    logical.count = "Logical Count",
+    numeric.mean = "Numeric Mean",
+    numeric.sd = "Numeric Sd",
+    numeric.p0 = "Numeric P0",
+    numeric.p25 = "Numeric P25",
+    numeric.p50 = "Numeric P50",
+    numeric.p75 = "Numeric P75",
+    numeric.p100 = "Numeric P100",
+    numeric.hist = "Numeric Hist",
+    POSIXct.min = "Posixct Min",
+    POSIXct.max = "Posixct Max",
+    POSIXct.median = "Posixct Median",
+    POSIXct.n_unique = "Posixct N Unique",
+    Timespan.min = "Timespan Min",
+    Timespan.max = "Timespan Max",
+    Timespan.median = "Timespan Median",
+    Timespan.n_unique = "Timespan N Unique",
+    ts.start = "Ts Start",
+    ts.end = "Ts End",
+    ts.frequency = "Ts Frequency",
+    ts.deltat = "Ts Deltat",
+    ts.mean = "Ts Mean",
+    ts.sd = "Ts Sd",
+    ts.min = "Ts Min",
+    ts.max = "Ts Max",
+    ts.median = "Ts Median",
+    ts.line_graph = "Ts Line Graph"
+  )
+
+  expect_equal(skimr_labs, expected_skimr_labs)
+})
