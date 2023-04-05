@@ -42,6 +42,11 @@ reference:
   contents:
   - make_labelled
   - format-helpers
+- title: "Add Helpful Metadata Metrics"
+  desc: >
+    Add skimr metrics to metadata list elements of a supertibble.
+  contents:
+  - add_skimr_metadata
 - title: "Data"
   contents:
   - superheroes_supertbl
