@@ -52,7 +52,8 @@
 #' survey identifier and timestamp fields if available. Default is `TRUE`.
 #' @param suppress_redcapr_messages A logical to control whether to suppress messages
 #' from REDCapR API calls. Default `TRUE`.
-#' @param include_skimr_metadata TBD
+#' @param include_skimr_metadata Include `skimr` metadata metrics in
+#' `redcap_metadata` supertibble output. Default `TRUE`.
 #'
 #' @examples
 #' \dontrun{
