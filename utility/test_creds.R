@@ -28,6 +28,7 @@ redcaptidier_creds <- tibble::tribble(
   Sys.getenv("REDCAP_URI"), Sys.getenv("REDCAPTIDIER_REPEAT_FIRST_INSTRUMENT_API"), "repeat first instrument",
   Sys.getenv("REDCAP_URI"), Sys.getenv("REDCAPTIDIER_REPEATING_EVENT_API"), "repeat event",
   Sys.getenv("REDCAP_URI"), Sys.getenv("REDCAPTIDIER_RESTRICTED_ACCESS_API"), "restricted access",
+  Sys.getenv("REDCAP_URI"), Sys.getenv("REDCAPTIDIER_LARGE_SPARSE_API"), "large sparse db",
   Sys.getenv("REDCAP_URI"), Sys.getenv("PRODIGY_REDCAP_API"), "prodigy db",
   Sys.getenv("REDCAP_URI"), Sys.getenv("CART_COMP_REDCAP_API"), "cart comprehensive db",
   Sys.getenv("REDCAP_URI"), Sys.getenv("BMT_OUTCOMES_REDCAP_API"), "bmt outcomes db"

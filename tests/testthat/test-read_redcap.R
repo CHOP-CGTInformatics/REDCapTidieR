@@ -574,3 +574,47 @@ test_that("read_redcap metadata contains skimr metrics", {
 
   expect_true(!all(unlist(out_no_skimr)))
 })
+          
+test_that("read_redcap works for a large sparse database", {
+  httptest::with_mock_api({
+    out <- read_redcap(creds$REDCAP_URI, creds$REDCAPTIDIER_LARGE_SPARSE_API)
+  })
+
+  expected_col_types <- c(
+    "numeric",
+    "logical",
+    "numeric",
+    "logical",
+    "Date",
+    "factor",
+    "factor",
+    "character",
+    "factor"
+  )
+
+  names(expected_col_types) <- c("record_id",
+                                 "empty_int_column",
+                                 "partial_empty_int_column",
+                                 "empty_date_column",
+                                 "partial_empty_date_column",
+                                 "empty_factor_column",
+                                 "partial_empty_factor_column",
+                                 "data_type_switch",
+                                 "form_status_complete")
+
+  out %>%
+    extract_tibble("form_1") %>%
+    sapply(class) %>%
+    expect_equal(expected_col_types)
+
+  httptest::with_mock_api({
+    out_low_max <- read_redcap(creds$REDCAP_URI,
+                               creds$REDCAPTIDIER_LARGE_SPARSE_API,
+                               guess_max = 500)
+  })
+
+  out_low_max %>%
+    extract_tibble("form_1") %>%
+    sapply(class) %>%
+    expect_equal(expected_col_types)
+})

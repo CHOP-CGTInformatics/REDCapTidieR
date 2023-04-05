@@ -54,6 +54,9 @@
 #' from REDCapR API calls. Default `TRUE`.
 #' @param include_skimr_metadata Include `skimr` metadata metrics in
 #' `redcap_metadata` supertibble output. Default `TRUE`.
+#' @param guess_max A positive [base::numeric] value
+#' passed to [readr::read_csv()] that specifies the maximum number of records to
+#' use for guessing column types. Default `.Machine$integer.max`.
 #'
 #' @examples
 #' \dontrun{
@@ -75,7 +78,8 @@ read_redcap <- function(redcap_uri,
                         forms = NULL,
                         export_survey_fields = TRUE,
                         suppress_redcapr_messages = TRUE,
-                        include_skimr_metadata = TRUE) {
+                        include_skimr_metadata = TRUE,
+                        guess_max = .Machine$integer.max) {
   check_arg_is_character(redcap_uri, len = 1, any.missing = FALSE)
   check_arg_is_character(token, len = 1, any.missing = FALSE)
   check_arg_is_valid_token(token)
@@ -161,7 +165,8 @@ read_redcap <- function(redcap_uri,
       token = token,
       forms = forms_for_api_call,
       export_survey_fields = export_survey_fields,
-      verbose = !suppress_redcapr_messages
+      verbose = !suppress_redcapr_messages,
+      guess_max = guess_max
     )
   })
 
