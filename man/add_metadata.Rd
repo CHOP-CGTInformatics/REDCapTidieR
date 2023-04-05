@@ -9,8 +9,7 @@ add_metadata(
   db_metadata,
   redcap_uri,
   token,
-  suppress_redcapr_messages,
-  include_skimr_metadata
+  suppress_redcapr_messages
 )
 }
 \arguments{
@@ -27,9 +26,6 @@ project. Required.}
 
 \item{suppress_redcapr_messages}{A logical to control whether to suppress messages
 from REDCapR API calls. Default \code{TRUE}.}
-
-\item{include_skimr_metadata}{Include \code{skimr} metadata metrics in
-\code{redcap_metadata} supertibble output. Default \code{TRUE}.}
 }
 \value{
 The original supertibble with additional fields:

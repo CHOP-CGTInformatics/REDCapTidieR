@@ -121,17 +121,14 @@ make_labelled <- function(supertbl, format_labels = NULL) {
   out <- supertbl
 
   # Label cols of each metadata tibble
+  metadata_labs <- c(metadata_labs, skimr_labs)
+
   out$redcap_metadata <- map(
     out$redcap_metadata,
     .f = safe_set_variable_labels,
     labs = metadata_labs
   )
 
-  out$redcap_metadata <- map(
-    out$redcap_metadata,
-    .f = safe_set_variable_labels,
-    labs = skimr_labs
-  )
   # Label cols of each data tibble
 
   out$redcap_data <- map2(

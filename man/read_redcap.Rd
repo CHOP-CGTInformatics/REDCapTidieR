@@ -11,7 +11,6 @@ read_redcap(
   forms = NULL,
   export_survey_fields = TRUE,
   suppress_redcapr_messages = TRUE,
-  include_skimr_metadata = TRUE,
   guess_max = .Machine$integer.max
 )
 }
@@ -36,9 +35,6 @@ survey identifier and timestamp fields if available. Default is \code{TRUE}.}
 
 \item{suppress_redcapr_messages}{A logical to control whether to suppress messages
 from REDCapR API calls. Default \code{TRUE}.}
-
-\item{include_skimr_metadata}{Include \code{skimr} metadata metrics in
-\code{redcap_metadata} supertibble output. Default \code{TRUE}.}
 
 \item{guess_max}{A positive \link[base:numeric]{base::numeric} value
 passed to \code{\link[readr:read_delim]{readr::read_csv()}} that specifies the maximum number of records to
