@@ -574,7 +574,7 @@ test_that("read_redcap metadata contains skimr metrics", {
 
   expect_true(!all(unlist(out_no_skimr)))
 })
-          
+
 test_that("read_redcap works for a large sparse database", {
   httptest::with_mock_api({
     out <- read_redcap(creds$REDCAP_URI, creds$REDCAPTIDIER_LARGE_SPARSE_API)
