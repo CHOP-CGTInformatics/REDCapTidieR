@@ -537,16 +537,40 @@ test_that("read_redcap metadata contains skimr metrics", {
       ))
   })
 
-  # Check for existence of common skimr metric columns in all
+  # Define common skimr metric column names
   expected_cols <- c(
     "skim_type",
     "n_missing",
     "complete_rate"
   )
 
+  # Get all redcap_metadata names in list form
   redcap_metadata_names <- lapply(out$redcap_metadata, names)
 
+  # Check if expected cols exist in all redcap_metadata_names
   out <- purrr::map(redcap_metadata_names, \(x) all(expected_cols %in% x))
 
   expect_true(all(unlist(out)))
+
+  # Check that if FALSE, no skimr columns appear
+  httptest::with_mock_api({
+    out_no_skimr <-
+      read_redcap(creds$REDCAP_URI,
+                  creds$REDCAPTIDIER_CLASSIC_API,
+                  include_skimr_metadata = FALSE) %>%
+      # suppress expected warning
+      suppressWarnings(classes = c(
+        "field_missing_categories",
+        "empty_parse_warning",
+        "duplicate_labels"
+      ))
+  })
+
+  # Get all redcap_metadata names in list form
+  redcap_metadata_names <- lapply(out_no_skimr$redcap_metadata, names)
+
+  # Check if expected cols exist in all redcap_metadata_names
+  out_no_skimr <- purrr::map(redcap_metadata_names, \(x) all(expected_cols %in% x))
+
+  expect_true(!all(unlist(out_no_skimr)))
 })
