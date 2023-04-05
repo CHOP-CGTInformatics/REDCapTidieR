@@ -319,7 +319,7 @@ test_that("make_labelled returns expected skimr labels", {
   # Create a tibble with all possible skimr data columns
   skimr_names <- skimr::get_default_skimmer_names()
   skimr_names <- stats::setNames(
-    unlist(skimr_names, use.names=F),
+    unlist(skimr_names, use.names = FALSE),
     rep(names(skimr_names), lengths(skimr_names))
   )
 
@@ -332,7 +332,9 @@ test_that("make_labelled returns expected skimr labels", {
   # Add skimr metadata to a sample supertbl
   supertbl <- tibble::tribble(
     ~redcap_data, ~redcap_metadata, ~redcap_events,
-    tibble(x = letters[1:3]), tibble(field_name = "x", field_label = "X Label", supertbl_skimr_meta), tibble(redcap_event = "event_a")
+    tibble(x = letters[1:3]),
+    tibble(field_name = "x", field_label = "X Label", supertbl_skimr_meta),
+    tibble(redcap_event = "event_a")
   ) %>%
     as_supertbl()
 

@@ -314,10 +314,10 @@ resolve_formatter <- function(format_labels, env = caller_env(n = 2), call = cal
 #'
 #' @keywords internal
 #'
-make_skimr_labs <- function(){
+make_skimr_labs <- function() {
   all_skimr_names <- get_default_skimmer_names()
   all_skimr_names <- setNames(
-    unlist(all_skimr_names, use.names=F),
+    unlist(all_skimr_names, use.names = FALSE),
     rep(names(all_skimr_names), lengths(all_skimr_names))
   )
 

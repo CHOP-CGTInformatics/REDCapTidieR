@@ -390,7 +390,7 @@ add_metadata <- function(supertbl, db_metadata, redcap_uri, token, suppress_redc
     )
 
   # Add skimr Metadata ----
-  if (include_skimr_metadata){
+  if (include_skimr_metadata) {
     res <- res %>%
       add_skimr_metadata()
   }
@@ -510,7 +510,7 @@ as_supertbl <- function(x) {
 #'
 #' @keywords internal
 
-add_skimr_metadata <- function(supertbl){
+add_skimr_metadata <- function(supertbl) {
 
   skim_data <- function(redcap_data, redcap_metadata) {
     excluded_fields <- c(
@@ -534,4 +534,3 @@ add_skimr_metadata <- function(supertbl){
 
   supertbl
 }
-
