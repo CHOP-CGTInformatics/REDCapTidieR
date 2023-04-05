@@ -8,7 +8,16 @@ function(response) {
   # Replace each token with a fake token
   purrr::reduce(
     names(fake_creds),
-    .f = ~gsub_response(.x, real_creds[[.y]], fake_creds[[.y]]),
+    .f = function(x, y) {
+      real <- real_creds[[y]]
+      fake <- fake_creds[[y]]
+      # If real credential not found don't replace anything
+      # Need this to ensure gsub_response doesn't fail in this case
+      if (real == "") {
+        return(x)
+      }
+      gsub_response(x, real, fake)
+    },
     .init = response
   )
 }
