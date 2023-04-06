@@ -12,7 +12,6 @@
 #'
 #' @param supertbl a supertibble generated using `read_redcap()`
 #'
-#' @importFrom skimr skim
 #' @importFrom dplyr left_join select
 #' @importFrom tidyselect any_of
 #' @importFrom purrr map2
@@ -36,6 +35,7 @@
 #' @export
 
 add_skimr_metadata <- function(supertbl) {
+  check_installed("skimr", reason = "to use `add_skimr_metadata()`")
 
   skim_data <- function(redcap_data, redcap_metadata) {
     excluded_fields <- c(
@@ -46,7 +46,7 @@ add_skimr_metadata <- function(supertbl) {
 
     skimmed_data <- redcap_data %>%
       select(!any_of(excluded_fields)) %>%
-      skim()
+      skimr::skim()
 
     redcap_metadata %>%
       left_join(

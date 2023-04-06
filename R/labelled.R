@@ -303,7 +303,6 @@ resolve_formatter <- function(format_labels, env = caller_env(n = 2), call = cal
 #' character vector for use in `make_lablled`
 #'
 #' @importFrom stringr str_replace str_to_title
-#' @importFrom skimr get_default_skimmer_names
 #' @importFrom purrr imap_chr
 #' @importFrom stats setNames
 #'
@@ -312,7 +311,7 @@ resolve_formatter <- function(format_labels, env = caller_env(n = 2), call = cal
 #' @keywords internal
 #'
 make_skimr_labs <- function() {
-  all_skimr_names <- get_default_skimmer_names()
+  all_skimr_names <- skimr::get_default_skimmer_names()
   all_skimr_names <- setNames(
     unlist(all_skimr_names, use.names = FALSE),
     rep(names(all_skimr_names), lengths(all_skimr_names))

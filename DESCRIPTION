@@ -28,8 +28,7 @@ Imports:
     tibble,
     tidyr,
     tidyselect,
-    formattable,
-    skimr
+    formattable
 Suggests: 
     covr,
     httptest,
@@ -38,6 +37,7 @@ Suggests:
     lintr,
     readr,
     rmarkdown,
+    skimr,
     testthat (>= 3.0.0)
 VignetteBuilder: knitr
 Config/testthat/edition: 3
