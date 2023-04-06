@@ -46,6 +46,9 @@
     <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/add_partial_keys.html</loc>
   </url>
   <url>
+    <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/add_skimr_metadata.html</loc>
+  </url>
+  <url>
     <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/as_supertbl.html</loc>
   </url>
   <url>
@@ -131,6 +134,9 @@
   </url>
   <url>
     <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/make_labelled.html</loc>
+  </url>
+  <url>
+    <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/make_skimr_labs.html</loc>
   </url>
   <url>
     <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/multi_choice_to_labels.html</loc>
