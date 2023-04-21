@@ -36,6 +36,8 @@ test_that("write_supertibble_xlsx works", {
 
       expect_equal(tibble::tibble(sheet_1), redcap_data_a)
       expect_equal(tibble::tibble(sheet_2), redcap_data_b)
+
+      unlink(paste0(tempdir(), "supertbl_wb.xlsx"))
     }
   )
 
@@ -61,6 +63,8 @@ test_that("write_supertibble_xlsx works", {
 
       expect_equal(tibble::tibble(sheet_1), labelled_sheet_1)
       expect_equal(tibble::tibble(sheet_2), labelled_sheet_2)
+
+      unlink(paste0(tempdir(), "labelled_supertbl_wb.xlsx"))
     }
   )
 })
