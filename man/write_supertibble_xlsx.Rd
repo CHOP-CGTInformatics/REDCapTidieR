@@ -9,8 +9,8 @@ write_supertibble_xlsx(
   labelled = FALSE,
   labelled_sheets = FALSE,
   file,
-  include_supertibble = TRUE,
-  include_metadata = TRUE,
+  incl_supertbl = TRUE,
+  incl_meta = TRUE,
   tableStyle = "TableStyleLight10"
 )
 }
@@ -25,10 +25,10 @@ instead of raw values. Default \code{FALSE}.}
 
 \item{file}{A character string naming an xlsx file}
 
-\item{include_supertibble}{Include a sheet capturing the supertibble output.
+\item{incl_supertbl}{Include a sheet capturing the supertibble output.
 Default \code{TRUE}.}
 
-\item{include_metadata}{Include a sheet capturing the combined output of the
+\item{incl_meta}{Include a sheet capturing the combined output of the
 supertibble \code{redcap_metadata}. Default \code{TRUE}.}
 
 \item{tableStyle}{Any excel table style name or "none" (see "formatting"

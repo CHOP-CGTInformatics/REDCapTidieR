@@ -4,7 +4,13 @@
 \alias{add_labelled_xlsx_features}
 \title{Add labelled features to write_supertibble_xlsx}
 \usage{
-add_labelled_xlsx_features(supertbl, wb, sheet_vals)
+add_labelled_xlsx_features(
+  supertbl,
+  wb,
+  sheet_vals,
+  incl_supertbl = TRUE,
+  incl_meta = TRUE
+)
 }
 \arguments{
 \item{supertbl}{a supertibble generated using \code{read_redcap()}}
@@ -13,6 +19,12 @@ add_labelled_xlsx_features(supertbl, wb, sheet_vals)
 
 \item{sheet_vals}{Helper argument passed from \code{write_supertibble_xlsx} to
 determine and assign sheet values.}
+
+\item{incl_supertbl}{Include a sheet capturing the supertibble output.
+Default \code{TRUE}.}
+
+\item{incl_meta}{Include a sheet capturing the combined output of the
+supertibble \code{redcap_metadata}. Default \code{TRUE}.}
 }
 \description{
 Helper function to support \code{labelled} aesthetics to XLSX supertibble output
