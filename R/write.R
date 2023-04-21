@@ -18,6 +18,7 @@
 #' vignette in \link[openxlsx]{writeDataTable}). Default "TableStyleLight10".
 #'
 #' @importFrom purrr map map2
+#' @importFrom stringr str_trunc
 #'
 #' @return
 #' A workbook object
@@ -46,13 +47,18 @@ write_supertibble_xlsx <- function(supertbl,
   # Initialize Workbook object ----
   wb <- openxlsx::createWorkbook()
 
+  # Create Sheet Names ----
   # Assign sheet values based on use of labels
+  # Enforce max length of 31 per Excel restrictions
   sheet_vals <- if (labelled_sheets) {
     supertbl$redcap_form_label
   } else {
     supertbl$redcap_form_name
   }
 
+  sheet_vals <- str_trunc(sheet_vals, width = 31)
+
+  # Construct default supertibble and metadata sheets ----
   if (incl_supertbl) {
     openxlsx::addWorksheet(wb, sheetName = "supertibble")
     openxlsx::writeDataTable(wb, sheet = "supertibble",
@@ -78,13 +84,13 @@ write_supertibble_xlsx <- function(supertbl,
                              tableStyle = tableStyle)
   }
 
-  # Write all redcap_form_name to sheets
+  # Write all redcap_form_name to sheets ----
   map(
     sheet_vals,
     \(x) openxlsx::addWorksheet(wb, sheetName = x)
   )
 
-  # Write all redcap_data to sheets
+  # Write all redcap_data to sheets ----
   map2(
     supertbl$redcap_data,
     sheet_vals,
