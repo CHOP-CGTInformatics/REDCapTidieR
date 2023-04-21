@@ -32,8 +32,8 @@
 write_supertibble_xlsx <- function(supertbl,
                                    labelled = FALSE,
                                    file,
-                                   tableStyle = "TableStyleLight10"
-){
+                                   tableStyle = "TableStyleLight10" #nolint: object_name_linter
+) {
 
   # Initialize Workbook object
   wb <- openxlsx::createWorkbook()
@@ -44,12 +44,12 @@ write_supertibble_xlsx <- function(supertbl,
   # Write all redcap_data to sheets
   map2(supertbl$redcap_data,
        supertbl$redcap_form_name,
-       \(x,y) openxlsx::writeDataTable(wb, sheet = y, x = x,
-                                       startRow = ifelse(labelled, 2, 1),
-                                       tableStyle = tableStyle))
+       \(x, y) openxlsx::writeDataTable(wb, sheet = y, x = x,
+                                        startRow = ifelse(labelled, 2, 1),
+                                        tableStyle = tableStyle))
 
   # Add labelled features ----
-  if (labelled){
+  if (labelled) {
     add_labelled_xlsx_features(supertbl, wb)
   }
 
@@ -70,15 +70,16 @@ write_supertibble_xlsx <- function(supertbl,
 #'
 #' @keywords internal
 
-add_labelled_xlsx_features <- function(supertbl, wb){
+add_labelled_xlsx_features <- function(supertbl, wb) {
   # heading 1: Excel's "Explanatory Text" format
   label_header_style <- openxlsx::createStyle(fontColour = "#7F7F7F",
                                               textDecoration = "italic",
-                                              wrapText = TRUE )
+                                              wrapText = TRUE)
 
   # Generate variable labels off of labelled dictionary objects
   generate_dictionaries <- function(x) {
-    labelled::generate_dictionary(x) %>% dplyr::select("variable", "label") %>%
+    labelled::generate_dictionary(x) %>%
+      dplyr::select("variable", "label") %>%
       pivot_wider(
         names_from = "variable",
         values_from = "label"
@@ -96,7 +97,7 @@ add_labelled_xlsx_features <- function(supertbl, wb){
     openxlsx::addStyle(wb,
                        sheet = supertbl$redcap_form_name[i],
                        rows = 1,
-                       cols = 1:length(var_labels[[i]]),
+                       cols = seq_along(var_labels[[i]]),
                        style = label_header_style)
   }
 }

@@ -29,7 +29,7 @@ test_that("write_supertibble_xlsx works", {
     as_supertbl()
 
   withr::with_dir(
-    tempdir(),{
+    tempdir(), {
       write_supertibble_xlsx(supertbl, file = paste0(tempdir(), "supertbl_wb.xlsx"))
       sheet_1 <- openxlsx::read.xlsx(xlsxFile = paste0(tempdir(), "supertbl_wb.xlsx"), sheet = 1)
       sheet_2 <- openxlsx::read.xlsx(xlsxFile = paste0(tempdir(), "supertbl_wb.xlsx"), sheet = 2)
@@ -54,7 +54,7 @@ test_that("write_supertibble_xlsx works", {
   )
 
   withr::with_dir(
-    tempdir(),{
+    tempdir(), {
       write_supertibble_xlsx(labelled_supertbl, labelled = TRUE, file = paste0(tempdir(), "labelled_supertbl_wb.xlsx"))
       sheet_1 <- openxlsx::read.xlsx(xlsxFile = paste0(tempdir(), "labelled_supertbl_wb.xlsx"), sheet = 1)
       sheet_2 <- openxlsx::read.xlsx(xlsxFile = paste0(tempdir(), "labelled_supertbl_wb.xlsx"), sheet = 2)
