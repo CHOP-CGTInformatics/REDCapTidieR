@@ -7,7 +7,13 @@
 #' @param supertbl a supertibble generated using `read_redcap()`
 #' @param labelled Whether or not to include labelled outputs, default `FALSE`.
 #' Requires use of `make_labelled()`.
+#' @param labelled_sheets Whether or not to include labels in the XLSX sheets
+#' instead of raw values. Default `FALSE`.
 #' @param file A character string naming an xlsx file
+#' @param include_supertibble Include a sheet capturing the supertibble output.
+#' Default `TRUE`.
+#' @param include_metadata Include a sheet capturing the combined output of the
+#' supertibble `redcap_metadata`. Default `TRUE`.
 #' @param tableStyle Any excel table style name or "none" (see "formatting"
 #' vignette in \link[openxlsx]{writeDataTable}). Default "TableStyleLight10".
 #'
@@ -31,26 +37,36 @@
 
 write_supertibble_xlsx <- function(supertbl,
                                    labelled = FALSE,
+                                   labelled_sheets = FALSE,
                                    file,
+                                   include_supertibble = TRUE,
+                                   include_metadata = TRUE,
                                    tableStyle = "TableStyleLight10" #nolint: object_name_linter
 ) {
-
-  # Initialize Workbook object
+  # Initialize Workbook object ----
   wb <- openxlsx::createWorkbook()
 
+  # Assign sheet values based on use of labels
+  sheet_vals <- if (labelled_sheets) {supertbl$redcap_form_label} else {supertbl$redcap_form_name}
+
   # Write all redcap_form_name to sheets
-  map(supertbl$redcap_form_name, \(x) openxlsx::addWorksheet(wb, sheetName = x))
+  map(
+    sheet_vals,
+    \(x) openxlsx::addWorksheet(wb, sheetName = x)
+  )
 
   # Write all redcap_data to sheets
-  map2(supertbl$redcap_data,
-       supertbl$redcap_form_name,
-       \(x, y) openxlsx::writeDataTable(wb, sheet = y, x = x,
-                                        startRow = ifelse(labelled, 2, 1),
-                                        tableStyle = tableStyle))
+  map2(
+    supertbl$redcap_data,
+    sheet_vals,
+    \(x, y) openxlsx::writeDataTable(wb, sheet = y, x = x,
+                                     startRow = ifelse(labelled, 2, 1),
+                                     tableStyle = tableStyle)
+  )
 
   # Add labelled features ----
   if (labelled) {
-    add_labelled_xlsx_features(supertbl, wb)
+    add_labelled_xlsx_features(supertbl, wb, sheet_vals)
   }
 
   # Export workbook object
@@ -64,13 +80,15 @@ write_supertibble_xlsx <- function(supertbl,
 #'
 #' @param supertbl a supertibble generated using `read_redcap()`
 #' @param wb An `openxlsx` workbook object
+#' @param sheet_vals Helper argument passed from `write_supertibble_xlsx` to
+#' determine and assign sheet values.
 #'
 #' @importFrom purrr map
 #' @importFrom tidyr pivot_wider
 #'
 #' @keywords internal
 
-add_labelled_xlsx_features <- function(supertbl, wb) {
+add_labelled_xlsx_features <- function(supertbl, wb, sheet_vals) {
   # heading 1: Excel's "Explanatory Text" format
   label_header_style <- openxlsx::createStyle(fontColour = "#7F7F7F",
                                               textDecoration = "italic",
@@ -90,12 +108,12 @@ add_labelled_xlsx_features <- function(supertbl, wb) {
 
   for (i in seq_along(supertbl$redcap_form_name)) {
     openxlsx::writeData(wb = wb,
-                        sheet = supertbl$redcap_form_name[i],
+                        sheet = sheet_vals[i],
                         x = var_labels[[i]], colNames = FALSE)
 
     # add style to labels
     openxlsx::addStyle(wb,
-                       sheet = supertbl$redcap_form_name[i],
+                       sheet = sheet_vals[i],
                        rows = 1,
                        cols = seq_along(var_labels[[i]]),
                        style = label_header_style)

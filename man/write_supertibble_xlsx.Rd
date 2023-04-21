@@ -7,7 +7,10 @@
 write_supertibble_xlsx(
   supertbl,
   labelled = FALSE,
+  labelled_sheets = FALSE,
   file,
+  include_supertibble = TRUE,
+  include_metadata = TRUE,
   tableStyle = "TableStyleLight10"
 )
 }
@@ -17,7 +20,16 @@ write_supertibble_xlsx(
 \item{labelled}{Whether or not to include labelled outputs, default \code{FALSE}.
 Requires use of \code{make_labelled()}.}
 
+\item{labelled_sheets}{Whether or not to include labels in the XLSX sheets
+instead of raw values. Default \code{FALSE}.}
+
 \item{file}{A character string naming an xlsx file}
+
+\item{include_supertibble}{Include a sheet capturing the supertibble output.
+Default \code{TRUE}.}
+
+\item{include_metadata}{Include a sheet capturing the combined output of the
+supertibble \code{redcap_metadata}. Default \code{TRUE}.}
 
 \item{tableStyle}{Any excel table style name or "none" (see "formatting"
 vignette in \link[openxlsx]{writeDataTable}). Default "TableStyleLight10".}

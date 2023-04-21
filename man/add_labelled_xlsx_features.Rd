@@ -4,12 +4,15 @@
 \alias{add_labelled_xlsx_features}
 \title{Add labelled features to write_supertibble_xlsx}
 \usage{
-add_labelled_xlsx_features(supertbl, wb)
+add_labelled_xlsx_features(supertbl, wb, sheet_vals)
 }
 \arguments{
 \item{supertbl}{a supertibble generated using \code{read_redcap()}}
 
 \item{wb}{An \code{openxlsx} workbook object}
+
+\item{sheet_vals}{Helper argument passed from \code{write_supertibble_xlsx} to
+determine and assign sheet values.}
 }
 \description{
 Helper function to support \code{labelled} aesthetics to XLSX supertibble output
