@@ -113,4 +113,37 @@ test_that("write_supertibble_xlsx has expected supertibble and metadata outputs"
     }
   )
 
+  expected_supertibble_labels <- c(
+    "REDCap Instrument Name",
+    "REDCap Instrument Description",
+    "Data",
+    "Metadata"
+  )
+
+  expected_meta_labels <- c(
+    "Variable / Field Name",
+    "Field Label"
+  )
+
+  withr::with_dir(
+    tempdir(), {
+      write_supertibble_xlsx(supertbl %>% make_labelled(),
+                             labelled = TRUE,
+                             file = paste0(tempdir(), "default_labelled_supertbl_wb.xlsx"),
+                             incl_supertbl = TRUE,
+                             incl_meta = TRUE)
+      sheet_1 <- openxlsx::read.xlsx(xlsxFile = paste0(tempdir(), "default_labelled_supertbl_wb.xlsx"),
+                                     sheet = 1,
+                                     sep.names = " ")
+      sheet_2 <- openxlsx::read.xlsx(xlsxFile = paste0(tempdir(), "default_labelled_supertbl_wb.xlsx"),
+                                     sheet = 2,
+                                     sep.names = " ")
+
+      expect_setequal(names(sheet_1), expected_supertibble_labels)
+      expect_setequal(names(sheet_2), expected_meta_labels)
+
+      unlink(paste0(tempdir(), "default_labelled_supertbl_wb.xlsx"))
+    }
+  )
+
 })

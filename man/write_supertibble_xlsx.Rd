@@ -15,7 +15,7 @@ write_supertibble_xlsx(
 )
 }
 \arguments{
-\item{supertbl}{a supertibble generated using \code{read_redcap()}}
+\item{supertbl}{A supertibble generated using \code{read_redcap()}}
 
 \item{labelled}{Whether or not to include labelled outputs, default \code{FALSE}.
 Requires use of \code{make_labelled()}.}

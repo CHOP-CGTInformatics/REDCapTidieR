@@ -47,7 +47,11 @@ write_supertibble_xlsx <- function(supertbl,
   wb <- openxlsx::createWorkbook()
 
   # Assign sheet values based on use of labels
-  sheet_vals <- if (labelled_sheets) {supertbl$redcap_form_label} else {supertbl$redcap_form_name}
+  sheet_vals <- if (labelled_sheets) {
+    supertbl$redcap_form_label
+  } else {
+    supertbl$redcap_form_name
+  }
 
   if (incl_supertbl) {
     openxlsx::addWorksheet(wb, sheetName = "supertibble")
@@ -61,11 +65,11 @@ write_supertibble_xlsx <- function(supertbl,
 
   if (incl_meta) {
     supertbl_meta <- supertbl %>%
-      select(redcap_metadata) %>%
-      tidyr::unnest(cols = redcap_metadata) %>% # record ID gets duplicated
+      select("redcap_metadata") %>% #nolint: object_usage_linter
+      tidyr::unnest(cols = "redcap_metadata") %>% # record ID gets duplicated
       # since no other fields are allowed to be duplicated in REDCap,
       # can use filtering here for removal of duplicated record ID fields
-      filter(!duplicated(field_name))
+      filter(!duplicated(.data$field_name))
 
     openxlsx::addWorksheet(wb, sheetName = "supertibble_metadata")
     openxlsx::writeDataTable(wb, sheet = "supertibble_metadata",
@@ -141,8 +145,9 @@ add_labelled_xlsx_features <- function(supertbl,
   # Add supertbl labels ----
   if (incl_supertbl) {
     supertbl_labels <- supertbl %>%
-      select(redcap_form_name, redcap_form_label) %>%
-      pivot_wider(names_from = redcap_form_name, values_from = redcap_form_label)
+      labelled::lookfor() %>%
+      select(.data$variable, .data$label) %>%
+      pivot_wider(names_from = "variable", values_from = "label")
 
     openxlsx::writeData(wb = wb,
                         sheet = "supertibble",
@@ -156,12 +161,12 @@ add_labelled_xlsx_features <- function(supertbl,
   }
 
   # Add supertbl_meta labels ----
-  if (incl_meta){
+  if (incl_meta) {
     supertbl_meta_labels <- supertbl %>%
-      select(redcap_metadata) %>%
-      pluck(1,1) %>%
+      select("redcap_metadata") %>%
+      pluck(1, 1) %>%
       labelled::lookfor() %>%
-      select(variable, label) %>%
+      select(.data$variable, .data$label) %>%
       pivot_wider(names_from = "variable", values_from = "label")
 
     openxlsx::writeData(wb = wb,
