@@ -9,7 +9,8 @@ add_labelled_xlsx_features(
   wb,
   sheet_vals,
   incl_supertbl = TRUE,
-  incl_meta = TRUE
+  incl_meta = TRUE,
+  supertbl_toc
 )
 }
 \arguments{
@@ -25,6 +26,9 @@ Default \code{TRUE}.}
 
 \item{incl_meta}{Include a sheet capturing the combined output of the
 supertibble \code{redcap_metadata}. Default \code{TRUE}.}
+
+\item{supertbl_toc}{The table of contents supertibble defined in the parent
+function.}
 }
 \description{
 Helper function to support \code{labelled} aesthetics to XLSX supertibble output
