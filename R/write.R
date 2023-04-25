@@ -41,13 +41,13 @@
 #' @export
 
 write_redcap_xlsx <- function(supertbl,
-                                   labelled = FALSE,
-                                   use_labels_for_sheet_names = TRUE,
-                                   file,
-                                   include_toc_from_supertbl = TRUE,
-                                   include_metadata = TRUE,
-                                   table_style = "tableStyleLight8",
-                                   set_col_widths = "auto"
+                              labelled = FALSE,
+                              use_labels_for_sheet_names = TRUE,
+                              file,
+                              include_toc_from_supertbl = TRUE,
+                              include_metadata = TRUE,
+                              table_style = "tableStyleLight8",
+                              set_col_widths = "auto"
 ) {
   # Initialize Workbook object ----
   wb <- openxlsx2::wb_workbook()
@@ -69,43 +69,7 @@ write_redcap_xlsx <- function(supertbl,
 
   # Construct default supertibble sheet ----
   if (include_toc_from_supertbl) {
-    supertbl_toc <- supertbl %>%
-      # Remove list elements
-      select(-any_of(c("redcap_data", "redcap_metadata", "redcap_events"))) %>%
-      # Necessary to avoid "Number stored as text" Excel dialogue warnings
-      mutate(across(any_of("data_na_pct"), as.character))
-
-    # Re-establish lost label(s) by referencing original labels and indexing
-    # Generalized for future proofing
-    labelled::var_label(supertbl_toc) <- labelled::var_label(supertbl)[names(labelled::var_label(supertbl_toc))]
-
-    wb$add_worksheet(sheet = "supertibble")
-    wb$add_data_table(sheet = "supertibble",
-                      x = supertbl_toc,
-                      startRow = ifelse(labelled, 2, 1),
-                      tableStyle = table_style)
-    wb$set_col_widths(sheet = "supertibble",
-                      cols = seq_along(supertbl_toc),
-                      widths = set_col_widths)
-  }
-
-  # Construct default metadata sheet ----
-  if (include_metadata) {
-    supertbl_meta <- supertbl %>%
-      select("redcap_metadata") %>% #nolint: object_usage_linter
-      tidyr::unnest(cols = "redcap_metadata") %>% # record ID gets duplicated.
-      # Since no other fields are allowed to be duplicated in REDCap,
-      # can use filtering here for removal of duplicated record ID fields
-      filter(!duplicated(.data$field_name))
-
-    wb$add_worksheet(sheet = "supertibble_metadata")
-    wb$add_data_table(sheet = "supertibble_metadata",
-                      x = supertbl_meta,
-                      startRow = ifelse(labelled, 2, 1),
-                      tableStyle = table_style)
-    wb$set_col_widths(sheet = "supertibble_metadata",
-                      cols = seq_along(supertbl_meta),
-                      widths = set_col_widths)
+    supertbl_toc <- add_supertbl_toc(wb, supertbl, include_metadata, labelled, table_style, set_col_widths)
   }
 
   # Write all redcap_form_name to sheets ----
@@ -132,19 +96,31 @@ write_redcap_xlsx <- function(supertbl,
                               tableStyle = table_style)
   )
 
+  # Construct default metadata sheet ----
+  if (include_metadata) {
+    add_metadata_sheet(supertbl, wb, labelled, table_style, set_col_widths)
+  }
+
   # Apply additional aesthetics ----
   # Apply standard colwidth
   map2(
     supertbl$redcap_data,
     sheet_vals,
     \(x, y) wb$set_col_widths(sheet = y,
-                             cols = seq_len(ncol(x)),
-                             widths = set_col_widths)
+                              cols = seq_len(ncol(x)),
+                              widths = set_col_widths)
   )
 
   # Add labelled features ----
   if (labelled) {
-    add_labelled_xlsx_features(supertbl, wb, sheet_vals, include_toc_from_supertbl, include_metadata, supertbl_toc)
+    add_labelled_xlsx_features(
+      supertbl,
+      wb,
+      sheet_vals,
+      include_toc_from_supertbl,
+      include_metadata,
+      supertbl_toc
+    )
   }
 
   # Export workbook object ----
@@ -165,7 +141,7 @@ write_redcap_xlsx <- function(supertbl,
 #' @param include_metadata Include a sheet capturing the combined output of the
 #' supertibble `redcap_metadata`. Default `TRUE`.
 #' @param supertbl_toc The table of contents supertibble defined in the parent
-#' function.
+#' function. Default `NULL`.
 #'
 #' @importFrom purrr map pluck
 #' @importFrom tidyr pivot_wider
@@ -178,7 +154,7 @@ add_labelled_xlsx_features <- function(supertbl,
                                        sheet_vals,
                                        include_toc_from_supertbl = TRUE,
                                        include_metadata = TRUE,
-                                       supertbl_toc) {
+                                       supertbl_toc = NULL) {
 
   # Generate variable labels off of labelled dictionary objects ----
   generate_dictionaries <- function(x) {
@@ -197,7 +173,7 @@ add_labelled_xlsx_features <- function(supertbl,
       select(.data$variable, .data$label) %>%
       pivot_wider(names_from = "variable", values_from = "label")
 
-    wb$add_data(sheet = "supertibble",
+    wb$add_data(sheet = "Table of Contents",
                 x = supertbl_labels, colNames = FALSE)
   }
 
@@ -210,7 +186,7 @@ add_labelled_xlsx_features <- function(supertbl,
       select(.data$variable, .data$label) %>%
       pivot_wider(names_from = "variable", values_from = "label")
 
-    wb$add_data(sheet = "supertibble_metadata",
+    wb$add_data(sheet = "REDCap Metadata",
                 x = supertbl_meta_labels, colNames = FALSE)
   }
 
@@ -234,4 +210,112 @@ add_labelled_xlsx_features <- function(supertbl,
                 color = openxlsx2::wb_color(hex = "7F7F7F"),
                 italic = "1")
   }
+}
+
+#' @title Add the supertbl table of contents sheet
+#'
+#' @description
+#' Internal helper function. Adds appropriate elements to wb object. Returns
+#' a dataframe.
+#'
+#' @param supertbl a supertibble generated using `read_redcap()`
+#' @param wb An `openxlsx2` workbook object
+#' @param include_metadata Include a sheet capturing the combined output of the
+#' supertibble `redcap_metadata`. Default `TRUE`.
+#' @param labelled Whether or not to include labelled outputs, default `FALSE`.
+#' Requires use of `make_labelled()`.
+#' @param table_style Any excel table style name or "none" (see "formatting"
+#' vignette in \link[openxlsx2]{wb_add_data_table}). Default "tableStyleLight8".
+#' @param set_col_widths Width to set columns across the workbook. Default
+#' "auto", otherwise a numeric value. Standard Excel is 8.43.
+#'
+#' @importFrom dplyr select mutate row_number across
+#' @importFrom tidyselect any_of
+#'
+#' @returns A dataframe
+#'
+#' @keywords internal
+
+add_supertbl_toc <- function(wb,
+                             supertbl,
+                             include_metadata,
+                             labelled,
+                             table_style,
+                             set_col_widths) {
+  supertbl_toc <- supertbl %>%
+    # Remove list elements
+    select(-any_of(c("redcap_data", "redcap_metadata", "redcap_events"))) %>%
+    # Necessary to avoid "Number stored as text" Excel dialogue warnings
+    mutate(across(any_of("data_na_pct"), as.character))
+
+  # Conditionally Add metadata default to TOC
+  if (include_metadata) {
+    supertbl_toc[nrow(supertbl_toc) + 1, 1] <- "REDCap Metadata"
+  }
+
+  # Re-establish lost label(s) by referencing original labels and indexing
+  # Generalized for future proofing
+  labelled::var_label(supertbl_toc) <- labelled::var_label(supertbl)[names(labelled::var_label(supertbl_toc))]
+
+  # Add custom Sheet # column and label
+  supertbl_toc <- supertbl_toc %>%
+    mutate(`Sheet #` = row_number())
+
+  # Assign label
+  if (labelled) {
+    labelled::var_label(supertbl_toc)$`Sheet #` <- "Sheet #"
+  }
+
+  # Create wb objects
+  wb$add_worksheet(sheet = "Table of Contents")
+  wb$add_data_table(sheet = "Table of Contents",
+                    x = supertbl_toc,
+                    startRow = ifelse(labelled, 2, 1),
+                    tableStyle = table_style)
+  wb$set_col_widths(sheet = "Table of Contents",
+                    cols = seq_along(supertbl_toc),
+                    widths = set_col_widths)
+
+  # Return TOC object as dataframe
+  supertbl_toc
+}
+
+#' @title Add the metadata sheet
+#'
+#' @description
+#' Internal helper function. Adds appropriate elements to wb object. Returns
+#' a dataframe.
+#'
+#' @param supertbl a supertibble generated using `read_redcap()`
+#' @param wb An `openxlsx2` workbook object
+#' @param labelled Whether or not to include labelled outputs, default `FALSE`.
+#' Requires use of `make_labelled()`.
+#' @param table_style Any excel table style name or "none" (see "formatting"
+#' vignette in \link[openxlsx2]{wb_add_data_table}). Default "tableStyleLight8".
+#' @param set_col_widths Width to set columns across the workbook. Default
+#' "auto", otherwise a numeric value. Standard Excel is 8.43.
+#'
+#' @importFrom dplyr select filter
+#' @importFrom tidyr unnest
+#'
+#' @returns A dataframe
+#'
+#' @keywords internal
+
+add_metadata_sheet <- function(supertbl, wb, labelled, table_style, set_col_widths) {
+  supertbl_meta <- supertbl %>%
+    select("redcap_metadata") %>% #nolint: object_usage_linter
+    unnest(cols = "redcap_metadata") %>% # record ID gets duplicated.
+    # Since no other fields are allowed to be duplicated in REDCap,
+    # can use filtering here for removal of duplicated record ID fields
+    filter(!duplicated(.data$field_name))
+
+  wb$add_worksheet(sheet = "REDCap Metadata")
+  wb$add_data_table(sheet = "REDCap Metadata",
+                    x = supertbl_meta,
+                    startRow = ifelse(labelled, 2, 1),
+                    tableStyle = table_style)
+  wb$set_col_widths(sheet = "REDCap Metadata",
+                    cols = seq_along(supertbl_meta),
+                    widths = set_col_widths)
 }
