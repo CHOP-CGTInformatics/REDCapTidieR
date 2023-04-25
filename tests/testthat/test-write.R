@@ -153,3 +153,22 @@ test_that("write_redcap_xlsx has expected supertibble and metadata outputs", {
   )
 
 })
+
+test_that("write_redcap_xlsx checks work", {
+
+  withr::with_dir(
+    tempdir(), {
+      supertbl %>%
+        write_redcap_xlsx(labelled = TRUE, file = paste0(tempdir(), "temp.xlsx")) %>%
+        expect_error()
+
+      supertbl %>%
+        make_labelled() %>%
+        write_redcap_xlsx(labelled = TRUE, file = paste0(tempdir(), "temp.xlsx")) %>%
+        expect_no_error()
+
+      unlink(paste0(tempdir(), "temp.xlsx"))
+    }
+  )
+
+})

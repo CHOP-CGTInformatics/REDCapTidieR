@@ -5,7 +5,7 @@
 #' exists in a separate sheet.
 #'
 #' @param supertbl A supertibble generated using `read_redcap()`
-#' @param labelled Whether or not to include labelled outputs, default `FALSE`.
+#' @param labelled Whether or not to include labelled outputs, default `NULL`.
 #' Requires use of `make_labelled()`.
 #' @param use_labels_for_sheet_names Whether or not to include labels in the XLSX sheets
 #' instead of raw values. Default `TRUE`.
@@ -21,8 +21,7 @@
 #'
 #' @importFrom purrr map map2
 #' @importFrom stringr str_trunc str_replace_all str_squish
-#' @importFrom tidyselect any_of
-#' @importFrom dplyr select mutate across
+#' @importFrom dplyr select pull
 #'
 #' @return
 #' A workbook object
@@ -41,7 +40,7 @@
 #' @export
 
 write_redcap_xlsx <- function(supertbl,
-                              labelled = FALSE,
+                              labelled = NULL,
                               use_labels_for_sheet_names = TRUE,
                               file,
                               include_toc_from_supertbl = TRUE,
@@ -49,6 +48,9 @@ write_redcap_xlsx <- function(supertbl,
                               table_style = "tableStyleLight8",
                               set_col_widths = "auto"
 ) {
+  # Enforce checks ----
+  labelled <- check_labelled(supertbl, labelled)
+
   # Initialize Workbook object ----
   wb <- openxlsx2::wb_workbook()
 
@@ -318,4 +320,45 @@ add_metadata_sheet <- function(supertbl, wb, labelled, table_style, set_col_widt
   wb$set_col_widths(sheet = "REDCap Metadata",
                     cols = seq_along(supertbl_meta),
                     widths = set_col_widths)
+}
+
+#' @title Check if labelled
+#'
+#' @description
+#' Checks if a supplied supertibble is labelled and throws an error if it is not
+#' but `labelled` is set to `TRUE`
+#'
+#' @param supertbl a supertibble generated using `read_redcap()`
+#' @param labelled Whether or not to include labelled outputs, default `FALSE`.
+#' Requires use of `make_labelled()`.
+#' @param call the calling environment to use in the warning message
+#'
+#' @importFrom cli cli_abort
+#' @importFrom rlang caller_env
+#'
+#' @returns A boolean
+#'
+#' @keywords internal
+
+check_labelled <- function(supertbl, labelled, call = caller_env()) {
+  # Check if labelled, if all look_for labels are NA then not labelled
+  label_vec <- supertbl %>%
+    labelled::look_for() %>%
+    pull(.data$label) %>%
+    is.na()
+
+  is_labelled <- all(label_vec == FALSE)
+  labelled <- ifelse(is.null(labelled), is_labelled, labelled)
+
+  if (!is_labelled && labelled == TRUE) {
+    cli_abort(
+      message = c(
+        "x" = "{.arg labelled} declared TRUE, but no labels detected.",
+        "i" = "Was {.fun REDCapTidieR::make_labelled() used first?}"
+      ),
+      call = call
+    )
+  }
+
+  labelled
 }

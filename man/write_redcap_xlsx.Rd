@@ -6,7 +6,7 @@
 \usage{
 write_redcap_xlsx(
   supertbl,
-  labelled = FALSE,
+  labelled = NULL,
   use_labels_for_sheet_names = TRUE,
   file,
   include_toc_from_supertbl = TRUE,
@@ -18,7 +18,7 @@ write_redcap_xlsx(
 \arguments{
 \item{supertbl}{A supertibble generated using \code{read_redcap()}}
 
-\item{labelled}{Whether or not to include labelled outputs, default \code{FALSE}.
+\item{labelled}{Whether or not to include labelled outputs, default \code{NULL}.
 Requires use of \code{make_labelled()}.}
 
 \item{use_labels_for_sheet_names}{Whether or not to include labels in the XLSX sheets
