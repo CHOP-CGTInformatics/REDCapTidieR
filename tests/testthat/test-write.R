@@ -37,10 +37,10 @@ test_that("write_supertibble_xlsx without labels works", {
       sheet_1 <- openxlsx2::read_xlsx(xlsxFile = paste0(tempdir(), "supertbl_wb.xlsx"), sheet = 1, startRow = 1)
       # For some reason, read_xlsx resets row names and starts at 2, likely due
       # to reading the column names as a row
-      rownames(sheet_1) <- seq(nrow(sheet_1))
+      rownames(sheet_1) <- seq_len(nrow(sheet_1))
 
       sheet_2 <- openxlsx2::read_xlsx(xlsxFile = paste0(tempdir(), "supertbl_wb.xlsx"), sheet = 2)
-      rownames(sheet_2) <- seq(nrow(sheet_2))
+      rownames(sheet_2) <- seq_len(nrow(sheet_2))
 
       # Ignore attr applied by openxlsx2 read_xlsx
       expect_equal(tibble::tibble(sheet_1), redcap_data_a, ignore_attr = TRUE)
