@@ -11,7 +11,7 @@ write_supertibble_xlsx(
   file,
   incl_supertbl = TRUE,
   incl_meta = TRUE,
-  tableStyle = "TableStyleLight10"
+  tableStyle = "TableStyleLight8"
 )
 }
 \arguments{
@@ -32,7 +32,7 @@ Default \code{TRUE}.}
 supertibble \code{redcap_metadata}. Default \code{TRUE}.}
 
 \item{tableStyle}{Any excel table style name or "none" (see "formatting"
-vignette in \link[openxlsx]{writeDataTable}). Default "TableStyleLight10".}
+vignette in \link[openxlsx2]{wb_add_data_table}). Default "TableStyleLight8".}
 }
 \value{
 A workbook object

@@ -16,7 +16,7 @@ add_labelled_xlsx_features(
 \arguments{
 \item{supertbl}{a supertibble generated using \code{read_redcap()}}
 
-\item{wb}{An \code{openxlsx} workbook object}
+\item{wb}{An \code{openxlsx2} workbook object}
 
 \item{sheet_vals}{Helper argument passed from \code{write_supertibble_xlsx} to
 determine and assign sheet values.}

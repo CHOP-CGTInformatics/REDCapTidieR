@@ -15,11 +15,12 @@
 #' @param incl_meta Include a sheet capturing the combined output of the
 #' supertibble `redcap_metadata`. Default `TRUE`.
 #' @param tableStyle Any excel table style name or "none" (see "formatting"
-#' vignette in \link[openxlsx]{writeDataTable}). Default "TableStyleLight10".
+#' vignette in \link[openxlsx2]{wb_add_data_table}). Default "TableStyleLight8".
 #'
 #' @importFrom purrr map map2
 #' @importFrom stringr str_trunc str_replace_all str_squish
 #' @importFrom tidyselect any_of
+#' @importFrom dplyr select mutate across
 #'
 #' @return
 #' A workbook object
@@ -38,12 +39,12 @@
 #' @export
 
 write_supertibble_xlsx <- function(supertbl,
-                                   labelled = FALSE,
-                                   labelled_sheets = FALSE,
-                                   file,
-                                   incl_supertbl = TRUE,
-                                   incl_meta = TRUE,
-                                   tableStyle = "TableStyleLight10" #nolint: object_name_linter
+                                    labelled = FALSE,
+                                    labelled_sheets = FALSE,
+                                    file,
+                                    incl_supertbl = TRUE,
+                                    incl_meta = TRUE,
+                                    tableStyle = "TableStyleLight8" #nolint: object_name_linter
 ) {
   # Initialize Workbook object ----
   wb <- openxlsx2::wb_workbook()
@@ -69,10 +70,11 @@ write_supertibble_xlsx <- function(supertbl,
       # Remove list elements
       select(-any_of(c("redcap_data", "redcap_metadata", "redcap_events"))) %>%
       # Necessary to avoid "Number stored as text" Excel dialogue warnings
-      mutate(data_na_pct = as.character(data_na_pct))
+      mutate(across(any_of("data_na_pct"), as.character))
 
-    # Re-establish lost label
-    var_label(supertbl_toc$data_na_pct) <- var_label(supertbl$data_na_pct)
+    # Re-establish lost label(s) by referencing original labels and indexing
+    # Generalized for future proofing
+    labelled::var_label(supertbl_toc) <- labelled::var_label(supertbl)[names(labelled::var_label(supertbl_toc))]
 
     wb$add_worksheet(sheet = "supertibble")
     wb$add_data_table(sheet = "supertibble",
@@ -84,8 +86,8 @@ write_supertibble_xlsx <- function(supertbl,
   if (incl_meta) {
     supertbl_meta <- supertbl %>%
       select("redcap_metadata") %>% #nolint: object_usage_linter
-      tidyr::unnest(cols = "redcap_metadata") %>% # record ID gets duplicated
-      # since no other fields are allowed to be duplicated in REDCap,
+      tidyr::unnest(cols = "redcap_metadata") %>% # record ID gets duplicated.
+      # Since no other fields are allowed to be duplicated in REDCap,
       # can use filtering here for removal of duplicated record ID fields
       filter(!duplicated(.data$field_name))
 
@@ -106,9 +108,9 @@ write_supertibble_xlsx <- function(supertbl,
   # Account for special case when a dataframe may have zero rows
   # This causes an error on opening the Excel file.
   # Instead, apply a row of auto-determined NA types.
-  for (i in seq(nrow(supertbl))) {
+  for (i in seq_len(nrow(supertbl))) {
     if (nrow(supertbl$redcap_data[[i]]) == 0) {
-      supertbl$redcap_data[[i]] <- supertbl$redcap_data[[i]][1,]
+      supertbl$redcap_data[[i]] <- supertbl$redcap_data[[i]][1, ]
     }
   }
 
@@ -135,7 +137,7 @@ write_supertibble_xlsx <- function(supertbl,
 #' Helper function to support `labelled` aesthetics to XLSX supertibble output
 #'
 #' @param supertbl a supertibble generated using `read_redcap()`
-#' @param wb An `openxlsx` workbook object
+#' @param wb An `openxlsx2` workbook object
 #' @param sheet_vals Helper argument passed from `write_supertibble_xlsx` to
 #' determine and assign sheet values.
 #' @param incl_supertbl Include a sheet capturing the supertibble output.
@@ -157,10 +159,6 @@ add_labelled_xlsx_features <- function(supertbl,
                                        incl_supertbl = TRUE,
                                        incl_meta = TRUE,
                                        supertbl_toc) {
-  # Define label header style ----
-  label_header_style <- openxlsx::createStyle(fontColour = "#7F7F7F",
-                                              textDecoration = "italic",
-                                              wrapText = TRUE)
 
   # Generate variable labels off of labelled dictionary objects ----
   generate_dictionaries <- function(x) {
@@ -181,12 +179,6 @@ add_labelled_xlsx_features <- function(supertbl,
 
     wb$add_data(sheet = "supertibble",
                 x = supertbl_labels, colNames = FALSE)
-
-    # openxlsx::addStyle(wb,
-    #                    sheet = "supertibble",
-    #                    rows = 1,
-    #                    cols = seq_along(supertbl_labels),
-    #                    style = label_header_style)
   }
 
   # Add supertbl_meta labels ----
@@ -200,12 +192,6 @@ add_labelled_xlsx_features <- function(supertbl,
 
     wb$add_data(sheet = "supertibble_metadata",
                 x = supertbl_meta_labels, colNames = FALSE)
-
-    # openxlsx::addStyle(wb,
-    #                    sheet = "supertibble_metadata",
-    #                    rows = 1,
-    #                    cols = seq_along(supertbl_meta_labels),
-    #                    style = label_header_style)
   }
 
   # Define redcap_data variable labels
@@ -215,18 +201,10 @@ add_labelled_xlsx_features <- function(supertbl,
     wb$add_data(
       sheet = sheet_vals[i],
       x = var_labels[[i]], colNames = FALSE)
-
-    # add style to labels
-    # openxlsx::addStyle(wb,
-    #                    sheet = sheet_vals[i],
-    #                    rows = 1,
-    #                    cols = seq_along(var_labels[[i]]),
-    #                    style = label_header_style)
-
   }
 
-  for (i in seq(nrow(wb$tables))) {
-    dims <- gsub('[0-9]+', '1', wb$tables$tab_ref[i])
+  for (i in seq_len(nrow(wb$tables))) {
+    dims <- gsub("[0-9]+", "1", wb$tables$tab_ref[i])
 
     wb$add_cell_style(sheet = i,
                       dims = dims,

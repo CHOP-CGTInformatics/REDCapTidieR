@@ -34,11 +34,17 @@ test_that("write_supertibble_xlsx without labels works", {
                              file = paste0(tempdir(), "supertbl_wb.xlsx"),
                              incl_meta = FALSE,
                              incl_supertbl = FALSE)
-      sheet_1 <- openxlsx::read.xlsx(xlsxFile = paste0(tempdir(), "supertbl_wb.xlsx"), sheet = 1)
-      sheet_2 <- openxlsx::read.xlsx(xlsxFile = paste0(tempdir(), "supertbl_wb.xlsx"), sheet = 2)
+      sheet_1 <- openxlsx2::read_xlsx(xlsxFile = paste0(tempdir(), "supertbl_wb.xlsx"), sheet = 1, startRow = 1)
+      # For some reason, read_xlsx resets row names and starts at 2, likely due
+      # to reading the column names as a row
+      rownames(sheet_1) <- seq(nrow(sheet_1))
 
-      expect_equal(tibble::tibble(sheet_1), redcap_data_a)
-      expect_equal(tibble::tibble(sheet_2), redcap_data_b)
+      sheet_2 <- openxlsx2::read_xlsx(xlsxFile = paste0(tempdir(), "supertbl_wb.xlsx"), sheet = 2)
+      rownames(sheet_2) <- seq(nrow(sheet_2))
+
+      # Ignore attr applied by openxlsx2 read_xlsx
+      expect_equal(tibble::tibble(sheet_1), redcap_data_a, ignore_attr = TRUE)
+      expect_equal(tibble::tibble(sheet_2), redcap_data_b, ignore_attr = TRUE)
 
       unlink(paste0(tempdir(), "supertbl_wb.xlsx"))
     }
@@ -68,11 +74,11 @@ test_that("write_supertibble_xlsx with labels works", {
                              file = paste0(tempdir(), "labelled_supertbl_wb.xlsx"),
                              incl_supertbl = FALSE,
                              incl_meta = FALSE)
-      sheet_1 <- openxlsx::read.xlsx(xlsxFile = paste0(tempdir(), "labelled_supertbl_wb.xlsx"), sheet = 1)
-      sheet_2 <- openxlsx::read.xlsx(xlsxFile = paste0(tempdir(), "labelled_supertbl_wb.xlsx"), sheet = 2)
+      sheet_1 <- openxlsx2::read_xlsx(xlsxFile = paste0(tempdir(), "labelled_supertbl_wb.xlsx"), sheet = 1)
+      sheet_2 <- openxlsx2::read_xlsx(xlsxFile = paste0(tempdir(), "labelled_supertbl_wb.xlsx"), sheet = 2)
 
-      expect_equal(tibble::tibble(sheet_1), labelled_sheet_1)
-      expect_equal(tibble::tibble(sheet_2), labelled_sheet_2)
+      expect_equal(tibble::tibble(sheet_1), labelled_sheet_1, ignore_attr = TRUE)
+      expect_equal(tibble::tibble(sheet_2), labelled_sheet_2, ignore_attr = TRUE)
 
       unlink(paste0(tempdir(), "labelled_supertbl_wb.xlsx"))
     }
@@ -82,9 +88,9 @@ test_that("write_supertibble_xlsx with labels works", {
 test_that("write_supertibble_xlsx has expected supertibble and metadata outputs", {
   # tribble for readability
   expected_supertibble <- tibble::tribble(
-    ~redcap_form_name, ~redcap_form_label, ~redcap_data,   ~redcap_metadata,
-    "a",                "A",                "<tibble>",     "<tibble>",
-    "b",                "B",                "<tibble>",     "<tibble>"
+    ~redcap_form_name, ~redcap_form_label,
+    "a",                "A",
+    "b",                "B"
   ) %>%
     as.data.frame()
 
@@ -103,11 +109,11 @@ test_that("write_supertibble_xlsx has expected supertibble and metadata outputs"
                              file = paste0(tempdir(), "default_supertbl_wb.xlsx"),
                              incl_supertbl = TRUE,
                              incl_meta = TRUE)
-      sheet_1 <- openxlsx::read.xlsx(xlsxFile = paste0(tempdir(), "default_supertbl_wb.xlsx"), sheet = 1)
-      sheet_2 <- openxlsx::read.xlsx(xlsxFile = paste0(tempdir(), "default_supertbl_wb.xlsx"), sheet = 2)
+      sheet_1 <- openxlsx2::read_xlsx(xlsxFile = paste0(tempdir(), "default_supertbl_wb.xlsx"), sheet = 1)
+      sheet_2 <- openxlsx2::read_xlsx(xlsxFile = paste0(tempdir(), "default_supertbl_wb.xlsx"), sheet = 2)
 
-      expect_equal(sheet_1, expected_supertibble)
-      expect_equal(sheet_2, expected_meta)
+      expect_equal(sheet_1, expected_supertibble, ignore_attr = TRUE)
+      expect_equal(sheet_2, expected_meta, ignore_attr = TRUE)
 
       unlink(paste0(tempdir(), "default_supertbl_wb.xlsx"))
     }
@@ -115,9 +121,7 @@ test_that("write_supertibble_xlsx has expected supertibble and metadata outputs"
 
   expected_supertibble_labels <- c(
     "REDCap Instrument Name",
-    "REDCap Instrument Description",
-    "Data",
-    "Metadata"
+    "REDCap Instrument Description"
   )
 
   expected_meta_labels <- c(
@@ -132,10 +136,10 @@ test_that("write_supertibble_xlsx has expected supertibble and metadata outputs"
                              file = paste0(tempdir(), "default_labelled_supertbl_wb.xlsx"),
                              incl_supertbl = TRUE,
                              incl_meta = TRUE)
-      sheet_1 <- openxlsx::read.xlsx(xlsxFile = paste0(tempdir(), "default_labelled_supertbl_wb.xlsx"),
+      sheet_1 <- openxlsx2::read_xlsx(xlsxFile = paste0(tempdir(), "default_labelled_supertbl_wb.xlsx"),
                                      sheet = 1,
                                      sep.names = " ")
-      sheet_2 <- openxlsx::read.xlsx(xlsxFile = paste0(tempdir(), "default_labelled_supertbl_wb.xlsx"),
+      sheet_2 <- openxlsx2::read_xlsx(xlsxFile = paste0(tempdir(), "default_labelled_supertbl_wb.xlsx"),
                                      sheet = 2,
                                      sep.names = " ")
 
