@@ -2,14 +2,14 @@
 % Please edit documentation in R/write.R
 \name{add_labelled_xlsx_features}
 \alias{add_labelled_xlsx_features}
-\title{Add labelled features to write_supertibble_xlsx}
+\title{Add labelled features to write_redcap_xlsx}
 \usage{
 add_labelled_xlsx_features(
   supertbl,
   wb,
   sheet_vals,
-  incl_supertbl = TRUE,
-  incl_meta = TRUE,
+  include_toc_from_supertbl = TRUE,
+  include_metadata = TRUE,
   supertbl_toc
 )
 }
@@ -18,13 +18,13 @@ add_labelled_xlsx_features(
 
 \item{wb}{An \code{openxlsx2} workbook object}
 
-\item{sheet_vals}{Helper argument passed from \code{write_supertibble_xlsx} to
+\item{sheet_vals}{Helper argument passed from \code{write_redcap_xlsx} to
 determine and assign sheet values.}
 
-\item{incl_supertbl}{Include a sheet capturing the supertibble output.
+\item{include_toc_from_supertbl}{Include a sheet capturing the supertibble output.
 Default \code{TRUE}.}
 
-\item{incl_meta}{Include a sheet capturing the combined output of the
+\item{include_metadata}{Include a sheet capturing the combined output of the
 supertibble \code{redcap_metadata}. Default \code{TRUE}.}
 
 \item{supertbl_toc}{The table of contents supertibble defined in the parent

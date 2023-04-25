@@ -27,13 +27,13 @@ supertbl <- tibble::tribble(
 ) %>%
   as_supertbl()
 
-test_that("write_supertibble_xlsx without labels works", {
+test_that("write_redcap_xlsx without labels works", {
   withr::with_dir(
     tempdir(), {
-      write_supertibble_xlsx(supertbl,
-                             file = paste0(tempdir(), "supertbl_wb.xlsx"),
-                             incl_meta = FALSE,
-                             incl_supertbl = FALSE)
+      write_redcap_xlsx(supertbl,
+                        file = paste0(tempdir(), "supertbl_wb.xlsx"),
+                        include_metadata = FALSE,
+                        include_toc_from_supertbl = FALSE)
       sheet_1 <- openxlsx2::read_xlsx(xlsxFile = paste0(tempdir(), "supertbl_wb.xlsx"), sheet = 1, startRow = 1)
       # For some reason, read_xlsx resets row names and starts at 2, likely due
       # to reading the column names as a row
@@ -52,7 +52,7 @@ test_that("write_supertibble_xlsx without labels works", {
 })
 
 
-test_that("write_supertibble_xlsx with labels works", {
+test_that("write_redcap_xlsx with labels works", {
   labelled_supertbl <- make_labelled(supertbl)
 
   labelled_sheet_1 <- tibble::tribble(
@@ -69,11 +69,11 @@ test_that("write_supertibble_xlsx with labels works", {
 
   withr::with_dir(
     tempdir(), {
-      write_supertibble_xlsx(labelled_supertbl,
-                             labelled = TRUE,
-                             file = paste0(tempdir(), "labelled_supertbl_wb.xlsx"),
-                             incl_supertbl = FALSE,
-                             incl_meta = FALSE)
+      write_redcap_xlsx(labelled_supertbl,
+                        labelled = TRUE,
+                        file = paste0(tempdir(), "labelled_supertbl_wb.xlsx"),
+                        include_toc_from_supertbl = FALSE,
+                        include_metadata = FALSE)
       sheet_1 <- openxlsx2::read_xlsx(xlsxFile = paste0(tempdir(), "labelled_supertbl_wb.xlsx"), sheet = 1)
       sheet_2 <- openxlsx2::read_xlsx(xlsxFile = paste0(tempdir(), "labelled_supertbl_wb.xlsx"), sheet = 2)
 
@@ -85,7 +85,7 @@ test_that("write_supertibble_xlsx with labels works", {
   )
 })
 
-test_that("write_supertibble_xlsx has expected supertibble and metadata outputs", {
+test_that("write_redcap_xlsx has expected supertibble and metadata outputs", {
   # tribble for readability
   expected_supertibble <- tibble::tribble(
     ~redcap_form_name, ~redcap_form_label,
@@ -104,11 +104,11 @@ test_that("write_supertibble_xlsx has expected supertibble and metadata outputs"
 
   withr::with_dir(
     tempdir(), {
-      write_supertibble_xlsx(supertbl,
-                             labelled = FALSE,
-                             file = paste0(tempdir(), "default_supertbl_wb.xlsx"),
-                             incl_supertbl = TRUE,
-                             incl_meta = TRUE)
+      write_redcap_xlsx(supertbl,
+                        labelled = FALSE,
+                        file = paste0(tempdir(), "default_supertbl_wb.xlsx"),
+                        include_toc_from_supertbl = TRUE,
+                        include_metadata = TRUE)
       sheet_1 <- openxlsx2::read_xlsx(xlsxFile = paste0(tempdir(), "default_supertbl_wb.xlsx"), sheet = 1)
       sheet_2 <- openxlsx2::read_xlsx(xlsxFile = paste0(tempdir(), "default_supertbl_wb.xlsx"), sheet = 2)
 
@@ -131,17 +131,17 @@ test_that("write_supertibble_xlsx has expected supertibble and metadata outputs"
 
   withr::with_dir(
     tempdir(), {
-      write_supertibble_xlsx(supertbl %>% make_labelled(),
-                             labelled = TRUE,
-                             file = paste0(tempdir(), "default_labelled_supertbl_wb.xlsx"),
-                             incl_supertbl = TRUE,
-                             incl_meta = TRUE)
+      write_redcap_xlsx(supertbl %>% make_labelled(),
+                        labelled = TRUE,
+                        file = paste0(tempdir(), "default_labelled_supertbl_wb.xlsx"),
+                        include_toc_from_supertbl = TRUE,
+                        include_metadata = TRUE)
       sheet_1 <- openxlsx2::read_xlsx(xlsxFile = paste0(tempdir(), "default_labelled_supertbl_wb.xlsx"),
-                                     sheet = 1,
-                                     sep.names = " ")
+                                      sheet = 1,
+                                      sep.names = " ")
       sheet_2 <- openxlsx2::read_xlsx(xlsxFile = paste0(tempdir(), "default_labelled_supertbl_wb.xlsx"),
-                                     sheet = 2,
-                                     sep.names = " ")
+                                      sheet = 2,
+                                      sep.names = " ")
 
       expect_setequal(names(sheet_1), expected_supertibble_labels)
       expect_setequal(names(sheet_2), expected_meta_labels)

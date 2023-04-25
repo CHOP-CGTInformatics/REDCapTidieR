@@ -51,7 +51,7 @@ reference:
   desc: >
     Export a supertibble to other usable formats.
   contents:
-  - write_supertibble_xlsx
+  - write_redcap_xlsx
 - title: "Data"
   contents:
   - superheroes_supertbl

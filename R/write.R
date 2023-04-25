@@ -7,15 +7,17 @@
 #' @param supertbl A supertibble generated using `read_redcap()`
 #' @param labelled Whether or not to include labelled outputs, default `FALSE`.
 #' Requires use of `make_labelled()`.
-#' @param labelled_sheets Whether or not to include labels in the XLSX sheets
-#' instead of raw values. Default `FALSE`.
+#' @param use_labels_for_sheet_names Whether or not to include labels in the XLSX sheets
+#' instead of raw values. Default `TRUE`.
 #' @param file A character string naming an xlsx file
-#' @param incl_supertbl Include a sheet capturing the supertibble output.
+#' @param include_toc_from_supertbl Include a sheet capturing the supertibble output.
 #' Default `TRUE`.
-#' @param incl_meta Include a sheet capturing the combined output of the
+#' @param include_metadata Include a sheet capturing the combined output of the
 #' supertibble `redcap_metadata`. Default `TRUE`.
-#' @param tableStyle Any excel table style name or "none" (see "formatting"
-#' vignette in \link[openxlsx2]{wb_add_data_table}). Default "TableStyleLight8".
+#' @param table_style Any excel table style name or "none" (see "formatting"
+#' vignette in \link[openxlsx2]{wb_add_data_table}). Default "tableStyleLight8".
+#' @param set_col_widths Width to set columns across the workbook. Default
+#' "auto", otherwise a numeric value. Standard Excel is 8.43.
 #'
 #' @importFrom purrr map map2
 #' @importFrom stringr str_trunc str_replace_all str_squish
@@ -31,20 +33,21 @@
 #' token <- Sys.getenv("REDCAP_TOKEN")
 #'
 #' supertbl <- read_redcap(redcap_uri, token)
-#' write_supertibble_xlsx(supertbl, file = "supertibble.xlsx")
+#' write_redcap_xlsx(supertbl, file = "supertibble.xlsx")
 #'
-#' write_supertibble_xlsx(supertbl, labelled = TRUE, file = "supertibble.xlsx")
+#' write_redcap_xlsx(supertbl, labelled = TRUE, file = "supertibble.xlsx")
 #' }
 #'
 #' @export
 
-write_supertibble_xlsx <- function(supertbl,
-                                    labelled = FALSE,
-                                    labelled_sheets = FALSE,
-                                    file,
-                                    incl_supertbl = TRUE,
-                                    incl_meta = TRUE,
-                                    tableStyle = "TableStyleLight8" #nolint: object_name_linter
+write_redcap_xlsx <- function(supertbl,
+                                   labelled = FALSE,
+                                   use_labels_for_sheet_names = TRUE,
+                                   file,
+                                   include_toc_from_supertbl = TRUE,
+                                   include_metadata = TRUE,
+                                   table_style = "tableStyleLight8",
+                                   set_col_widths = "auto"
 ) {
   # Initialize Workbook object ----
   wb <- openxlsx2::wb_workbook()
@@ -52,7 +55,7 @@ write_supertibble_xlsx <- function(supertbl,
   # Create Sheet Names ----
   # Assign sheet values based on use of labels
   # Enforce max length of 31 per Excel restrictions
-  sheet_vals <- if (labelled_sheets) {
+  sheet_vals <- if (use_labels_for_sheet_names) {
     # Remove special characters from labelled sheet names that cause
     # openxlsx2 worksheet failures
     supertbl$redcap_form_label %>%
@@ -64,8 +67,8 @@ write_supertibble_xlsx <- function(supertbl,
 
   sheet_vals <- str_trunc(sheet_vals, width = 31)
 
-  # Construct default supertibble and metadata sheets ----
-  if (incl_supertbl) {
+  # Construct default supertibble sheet ----
+  if (include_toc_from_supertbl) {
     supertbl_toc <- supertbl %>%
       # Remove list elements
       select(-any_of(c("redcap_data", "redcap_metadata", "redcap_events"))) %>%
@@ -80,10 +83,14 @@ write_supertibble_xlsx <- function(supertbl,
     wb$add_data_table(sheet = "supertibble",
                       x = supertbl_toc,
                       startRow = ifelse(labelled, 2, 1),
-                      tableStyle = tableStyle)
+                      tableStyle = table_style)
+    wb$set_col_widths(sheet = "supertibble",
+                      cols = seq_along(supertbl_toc),
+                      widths = set_col_widths)
   }
 
-  if (incl_meta) {
+  # Construct default metadata sheet ----
+  if (include_metadata) {
     supertbl_meta <- supertbl %>%
       select("redcap_metadata") %>% #nolint: object_usage_linter
       tidyr::unnest(cols = "redcap_metadata") %>% # record ID gets duplicated.
@@ -95,7 +102,10 @@ write_supertibble_xlsx <- function(supertbl,
     wb$add_data_table(sheet = "supertibble_metadata",
                       x = supertbl_meta,
                       startRow = ifelse(labelled, 2, 1),
-                      tableStyle = tableStyle)
+                      tableStyle = table_style)
+    wb$set_col_widths(sheet = "supertibble_metadata",
+                      cols = seq_along(supertbl_meta),
+                      widths = set_col_widths)
   }
 
   # Write all redcap_form_name to sheets ----
@@ -119,30 +129,40 @@ write_supertibble_xlsx <- function(supertbl,
     sheet_vals,
     \(x, y) wb$add_data_table(sheet = y, x = x,
                               startRow = ifelse(labelled, 2, 1),
-                              tableStyle = tableStyle)
+                              tableStyle = table_style)
+  )
+
+  # Apply additional aesthetics ----
+  # Apply standard colwidth
+  map2(
+    supertbl$redcap_data,
+    sheet_vals,
+    \(x, y) wb$set_col_widths(sheet = y,
+                             cols = seq_len(ncol(x)),
+                             widths = set_col_widths)
   )
 
   # Add labelled features ----
   if (labelled) {
-    add_labelled_xlsx_features(supertbl, wb, sheet_vals, incl_supertbl, incl_meta, supertbl_toc)
+    add_labelled_xlsx_features(supertbl, wb, sheet_vals, include_toc_from_supertbl, include_metadata, supertbl_toc)
   }
 
-  # Export workbook object
-  openxlsx2::wb_save(wb, path = file, overwrite = TRUE)
+  # Export workbook object ----
+  wb$save(path = file, overwrite = TRUE)
 }
 
-#' @title Add labelled features to write_supertibble_xlsx
+#' @title Add labelled features to write_redcap_xlsx
 #'
 #' @description
 #' Helper function to support `labelled` aesthetics to XLSX supertibble output
 #'
 #' @param supertbl a supertibble generated using `read_redcap()`
 #' @param wb An `openxlsx2` workbook object
-#' @param sheet_vals Helper argument passed from `write_supertibble_xlsx` to
+#' @param sheet_vals Helper argument passed from `write_redcap_xlsx` to
 #' determine and assign sheet values.
-#' @param incl_supertbl Include a sheet capturing the supertibble output.
+#' @param include_toc_from_supertbl Include a sheet capturing the supertibble output.
 #' Default `TRUE`.
-#' @param incl_meta Include a sheet capturing the combined output of the
+#' @param include_metadata Include a sheet capturing the combined output of the
 #' supertibble `redcap_metadata`. Default `TRUE`.
 #' @param supertbl_toc The table of contents supertibble defined in the parent
 #' function.
@@ -156,8 +176,8 @@ write_supertibble_xlsx <- function(supertbl,
 add_labelled_xlsx_features <- function(supertbl,
                                        wb,
                                        sheet_vals,
-                                       incl_supertbl = TRUE,
-                                       incl_meta = TRUE,
+                                       include_toc_from_supertbl = TRUE,
+                                       include_metadata = TRUE,
                                        supertbl_toc) {
 
   # Generate variable labels off of labelled dictionary objects ----
@@ -171,7 +191,7 @@ add_labelled_xlsx_features <- function(supertbl,
   }
 
   # Add supertbl labels ----
-  if (incl_supertbl) {
+  if (include_toc_from_supertbl) {
     supertbl_labels <- supertbl_toc %>%
       labelled::lookfor() %>%
       select(.data$variable, .data$label) %>%
@@ -182,7 +202,7 @@ add_labelled_xlsx_features <- function(supertbl,
   }
 
   # Add supertbl_meta labels ----
-  if (incl_meta) {
+  if (include_metadata) {
     supertbl_meta_labels <- supertbl %>%
       select("redcap_metadata") %>%
       pluck(1, 1) %>%
