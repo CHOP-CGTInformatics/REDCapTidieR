@@ -12,7 +12,8 @@ write_redcap_xlsx(
   include_toc_from_supertbl = TRUE,
   include_metadata = TRUE,
   table_style = "tableStyleLight8",
-  set_col_widths = "auto"
+  set_col_widths = "auto",
+  recode_yn = TRUE
 )
 }
 \arguments{
@@ -37,6 +38,9 @@ vignette in \link[openxlsx2]{wb_add_data_table}). Default "tableStyleLight8".}
 
 \item{set_col_widths}{Width to set columns across the workbook. Default
 "auto", otherwise a numeric value. Standard Excel is 8.43.}
+
+\item{recode_yn}{Convert REDCap yesno questions from TRUE/FALSE to "yes"/"no"
+for readability. Default TRUE.}
 }
 \value{
 A workbook object

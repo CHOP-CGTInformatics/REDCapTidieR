@@ -18,6 +18,8 @@
 #' vignette in \link[openxlsx2]{wb_add_data_table}). Default "tableStyleLight8".
 #' @param set_col_widths Width to set columns across the workbook. Default
 #' "auto", otherwise a numeric value. Standard Excel is 8.43.
+#' @param recode_yn Convert REDCap yesno questions from TRUE/FALSE to "yes"/"no"
+#' for readability. Default TRUE.
 #'
 #' @importFrom purrr map map2
 #' @importFrom stringr str_trunc str_replace_all str_squish
@@ -46,7 +48,8 @@ write_redcap_xlsx <- function(supertbl,
                               include_toc_from_supertbl = TRUE,
                               include_metadata = TRUE,
                               table_style = "tableStyleLight8",
-                              set_col_widths = "auto"
+                              set_col_widths = "auto",
+                              recode_yn = TRUE
 ) {
   # Enforce checks ----
   labelled <- check_labelled(supertbl, labelled)
@@ -81,6 +84,12 @@ write_redcap_xlsx <- function(supertbl,
   )
 
   # Write all redcap_data to sheets ----
+  # Define supertibble metadata
+  supertbl_meta <- bind_supertbl_metadata(supertbl)
+
+  # Apply recodes based on metadata
+  supertbl$redcap_data <- supertbl_recode(supertbl, supertbl_meta, recode_yn)
+
   # Account for special case when a dataframe may have zero rows
   # This causes an error on opening the Excel file.
   # Instead, apply a row of auto-determined NA types.
@@ -100,7 +109,13 @@ write_redcap_xlsx <- function(supertbl,
 
   # Construct default metadata sheet ----
   if (include_metadata) {
-    add_metadata_sheet(supertbl, wb, labelled, table_style, set_col_widths)
+    add_metadata_sheet(supertbl,
+                       supertbl_meta,
+                       include_metadata,
+                       wb,
+                       labelled,
+                       table_style,
+                       set_col_widths)
   }
 
   # Apply additional aesthetics ----
@@ -289,9 +304,12 @@ add_supertbl_toc <- function(wb,
 #' a dataframe.
 #'
 #' @param supertbl a supertibble generated using `read_redcap()`
+#' @param superbl_meta an `unnest`-ed metadata tibble from the supertibble
 #' @param wb An `openxlsx2` workbook object
 #' @param labelled Whether or not to include labelled outputs, default `FALSE`.
 #' Requires use of `make_labelled()`.
+#' @param include_metadata Include a sheet capturing the combined output of the
+#' supertibble `redcap_metadata`. Default `TRUE`.
 #' @param table_style Any excel table style name or "none" (see "formatting"
 #' vignette in \link[openxlsx2]{wb_add_data_table}). Default "tableStyleLight8".
 #' @param set_col_widths Width to set columns across the workbook. Default
@@ -304,13 +322,13 @@ add_supertbl_toc <- function(wb,
 #'
 #' @keywords internal
 
-add_metadata_sheet <- function(supertbl, wb, labelled, table_style, set_col_widths) {
-  supertbl_meta <- supertbl %>%
-    select("redcap_metadata") %>% #nolint: object_usage_linter
-    unnest(cols = "redcap_metadata") %>% # record ID gets duplicated.
-    # Since no other fields are allowed to be duplicated in REDCap,
-    # can use filtering here for removal of duplicated record ID fields
-    filter(!duplicated(.data$field_name))
+add_metadata_sheet <- function(supertbl,
+                               supertbl_meta,
+                               include_metadata,
+                               wb,
+                               labelled,
+                               table_style,
+                               set_col_widths) {
 
   wb$add_worksheet(sheet = "REDCap Metadata")
   wb$add_data_table(sheet = "REDCap Metadata",
@@ -361,4 +379,65 @@ check_labelled <- function(supertbl, labelled, call = caller_env()) {
   }
 
   labelled
+}
+
+
+#' @title Recode fields using supertbl metadata
+#'
+#' @description
+#' This utility function helps to map metadata field types in order to apply
+#' changes in supertbl tables.
+#'
+#' @param supertbl A supertibble generated using `read_redcap()`
+#' @param superbl_meta an `unnest`-ed metadata tibble from the supertibble
+#' @param recode_yn Convert REDCap yesno questions from TRUE/FALSE to "yes"/"no"
+#' for readability. Default TRUE.
+#'
+#' @importFrom dplyr mutate across case_when filter pull
+#' @importFrom purrr map
+#' @importFrom tidyselect any_of
+#'
+#' @keywords internal
+
+supertbl_recode <- function(supertbl, supertbl_meta, recode_yn) {
+
+  # Recode yesno from TRUE/FALSE to "yes"/"no"
+  if (recode_yn) {
+    yesno_fields <- supertbl_meta %>%
+      filter(.data$field_type == "yesno") %>%
+      pull(.data$field_name)
+
+    supertbl$redcap_data <- map(
+      supertbl$redcap_data,
+      \(x) .x <- x %>% #nolint: object_usage_linter
+        mutate(across(any_of(yesno_fields),
+                      ~case_when(. == "TRUE" ~ "yes",
+                                 . == "FALSE" ~ "no",
+                                 TRUE ~ NA_character_)))
+    )
+  }
+
+  supertbl$redcap_data
+}
+
+#' @title Bind supertbl metadata
+#'
+#' @description
+#' Simple helper function for binding supertbl metadata into one table. This
+#' supports creating the metadata XLSX sheet as well as `supertbl_recode`.
+#'
+#' @param supertbl A supertibble generated using `read_redcap()`
+#'
+#' @importFrom dplyr filter select
+#' @importFrom tidyr unnest
+#'
+#' @keywords internal
+
+bind_supertbl_metadata <- function(supertbl) {
+  supertbl %>%
+    select("redcap_metadata") %>% #nolint: object_usage_linter
+    unnest(cols = "redcap_metadata") %>% # record ID gets duplicated.
+    # Since no other fields are allowed to be duplicated in REDCap,
+    # can use filtering here for removal of duplicated record ID fields
+    filter(!duplicated(.data$field_name))
 }

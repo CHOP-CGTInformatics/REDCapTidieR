@@ -33,7 +33,8 @@ test_that("write_redcap_xlsx without labels works", {
       write_redcap_xlsx(supertbl,
                         file = paste0(tempdir(), "supertbl_wb.xlsx"),
                         include_metadata = FALSE,
-                        include_toc_from_supertbl = FALSE)
+                        include_toc_from_supertbl = FALSE,
+                        recode_yn = FALSE)
       sheet_1 <- openxlsx2::read_xlsx(xlsxFile = paste0(tempdir(), "supertbl_wb.xlsx"), sheet = 1, startRow = 1)
       # For some reason, read_xlsx resets row names and starts at 2, likely due
       # to reading the column names as a row
@@ -73,7 +74,8 @@ test_that("write_redcap_xlsx with labels works", {
                         labelled = TRUE,
                         file = paste0(tempdir(), "labelled_supertbl_wb.xlsx"),
                         include_toc_from_supertbl = FALSE,
-                        include_metadata = FALSE)
+                        include_metadata = FALSE,
+                        recode_yn = FALSE)
       sheet_1 <- openxlsx2::read_xlsx(xlsxFile = paste0(tempdir(), "labelled_supertbl_wb.xlsx"), sheet = 1)
       sheet_2 <- openxlsx2::read_xlsx(xlsxFile = paste0(tempdir(), "labelled_supertbl_wb.xlsx"), sheet = 2)
 
@@ -109,7 +111,8 @@ test_that("write_redcap_xlsx has expected supertibble and metadata outputs", {
                         labelled = FALSE,
                         file = paste0(tempdir(), "default_supertbl_wb.xlsx"),
                         include_toc_from_supertbl = TRUE,
-                        include_metadata = TRUE)
+                        include_metadata = TRUE,
+                        recode_yn = FALSE)
       sheet_1 <- openxlsx2::read_xlsx(xlsxFile = paste0(tempdir(), "default_supertbl_wb.xlsx"), sheet = 1)
       sheet_4 <- openxlsx2::read_xlsx(xlsxFile = paste0(tempdir(), "default_supertbl_wb.xlsx"), sheet = 4)
 
@@ -137,7 +140,8 @@ test_that("write_redcap_xlsx has expected supertibble and metadata outputs", {
                         labelled = TRUE,
                         file = paste0(tempdir(), "default_labelled_supertbl_wb.xlsx"),
                         include_toc_from_supertbl = TRUE,
-                        include_metadata = TRUE)
+                        include_metadata = TRUE,
+                        recode_yn = FALSE)
       sheet_1 <- openxlsx2::read_xlsx(xlsxFile = paste0(tempdir(), "default_labelled_supertbl_wb.xlsx"),
                                       sheet = 1,
                                       sep.names = " ")
@@ -159,16 +163,74 @@ test_that("write_redcap_xlsx checks work", {
   withr::with_dir(
     tempdir(), {
       supertbl %>%
-        write_redcap_xlsx(labelled = TRUE, file = paste0(tempdir(), "temp.xlsx")) %>%
+        write_redcap_xlsx(labelled = TRUE,
+                          file = paste0(tempdir(), "temp.xlsx"),
+                          recode_yn = FALSE) %>%
         expect_error()
 
       supertbl %>%
         make_labelled() %>%
-        write_redcap_xlsx(labelled = TRUE, file = paste0(tempdir(), "temp.xlsx")) %>%
+        write_redcap_xlsx(labelled = TRUE, file =
+                            paste0(tempdir(), "temp.xlsx"),
+                          recode_yn = FALSE) %>%
         expect_no_error()
 
       unlink(paste0(tempdir(), "temp.xlsx"))
     }
   )
 
+})
+
+test_that("bind_supertbl_metadata works", {
+
+  supertbl_meta <- bind_supertbl_metadata(supertbl)
+  expected_meta <- tibble::tribble(
+    ~field_name, ~field_label,
+    "record_id",  "Record ID",
+    "col_a",      "Label A",
+    "col_b",      "Label B"
+  )
+
+  expect_equal(supertbl_meta, expected_meta)
+
+})
+
+test_that("supertbl_recode works", {
+  # Set up testable yesno fields and metadata
+  redcap_data_c <- tibble::tribble(
+    ~record_id, ~yesno,
+    1,          TRUE,
+    2,          FALSE,
+    3,          NA
+  )
+
+  redcap_metadata_c <- tibble::tribble(
+    ~field_name, ~field_type, ~field_label,
+    "record_id",  "text",      "Record ID",
+    "yesno",      "yesno",     "YesNo"
+  )
+
+  supertbl_recoded <- tibble::tribble(
+    ~redcap_form_name, ~redcap_form_label, ~redcap_data,   ~redcap_metadata,
+    "c",                "C",                redcap_data_c,  redcap_metadata_c
+  ) %>%
+    as_supertbl()
+
+  # Pass through testing function
+  supertbl_recoded_meta <- bind_supertbl_metadata(supertbl_recoded)
+
+  out_false <- supertbl_recode(supertbl_recoded, supertbl_recoded_meta, recode_yn = FALSE)
+  out_true <- supertbl_recode(supertbl_recoded, supertbl_recoded_meta, recode_yn = TRUE)
+
+  # Set up expectations
+  expected_out_true <- tibble::tribble(
+    ~record_id, ~yesno,
+    1,          "yes",
+    2,          "no",
+    3,          NA
+  )
+
+
+  expect_equal(out_false[[1]], redcap_data_c)
+  expect_equal(out_true[[1]], expected_out_true)
 })

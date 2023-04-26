@@ -4,10 +4,21 @@
 \alias{add_metadata_sheet}
 \title{Add the metadata sheet}
 \usage{
-add_metadata_sheet(supertbl, wb, labelled, table_style, set_col_widths)
+add_metadata_sheet(
+  supertbl,
+  supertbl_meta,
+  include_metadata,
+  wb,
+  labelled,
+  table_style,
+  set_col_widths
+)
 }
 \arguments{
 \item{supertbl}{a supertibble generated using \code{read_redcap()}}
+
+\item{include_metadata}{Include a sheet capturing the combined output of the
+supertibble \code{redcap_metadata}. Default \code{TRUE}.}
 
 \item{wb}{An \code{openxlsx2} workbook object}
 
@@ -19,6 +30,8 @@ vignette in \link[openxlsx2]{wb_add_data_table}). Default "tableStyleLight8".}
 
 \item{set_col_widths}{Width to set columns across the workbook. Default
 "auto", otherwise a numeric value. Standard Excel is 8.43.}
+
+\item{superbl_meta}{an \code{unnest}-ed metadata tibble from the supertibble}
 }
 \value{
 A dataframe
