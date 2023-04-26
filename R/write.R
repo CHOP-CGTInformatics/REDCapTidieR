@@ -53,6 +53,17 @@ write_redcap_xlsx <- function(supertbl,
                               recode_yn = TRUE
 ) {
   # Enforce checks ----
+  check_arg_is_supertbl(supertbl)
+  check_arg_is_character(table_style, any.missing = FALSE)
+  check_arg_is_character(file, any.missing = FALSE)
+  check_arg_is_valid_extension(file)
+  check_arg_is_character(set_col_widths, any.missing = FALSE)
+  check_arg_is_logical(labelled, null.ok = TRUE)
+  check_arg_is_logical(use_labels_for_sheet_names, any.missing = FALSE)
+  check_arg_is_logical(include_toc_from_supertbl, any.missing = FALSE)
+  check_arg_is_logical(include_metadata, any.missing = FALSE)
+  check_arg_is_logical(recode_yn, any.missing = FALSE)
+
   labelled <- check_labelled(supertbl, labelled)
 
   # Initialize Workbook object ----

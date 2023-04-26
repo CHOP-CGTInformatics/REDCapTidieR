@@ -232,3 +232,35 @@ test_that("check_labelled works", {
   expect_true(check_labelled(labelled_supertbl, labelled = TRUE))
   expect_false(check_labelled(labelled_supertbl, labelled = FALSE))
 })
+
+test_that("key argument checks work", {
+  # labelled arg
+  expect_error(write_redcap_xlsx(supertbl, file = "temp.xlsx", labelled = "char"))
+  expect_error(write_redcap_xlsx(supertbl, file = "temp.xlsx", labelled = 1))
+
+  # use_labels_for_sheet_names arg
+  expect_error(write_redcap_xlsx(supertbl, file = "temp.xlsx", use_labels_for_sheet_names = NULL))
+  expect_error(write_redcap_xlsx(supertbl, file = "temp.xlsx", use_labels_for_sheet_names = "char"))
+  expect_error(write_redcap_xlsx(supertbl, file = "temp.xlsx", use_labels_for_sheet_names = 1))
+
+  # include_toc_from_supertbl arg
+  expect_error(write_redcap_xlsx(supertbl, file = "temp.xlsx", include_toc_from_supertbl = NULL))
+  expect_error(write_redcap_xlsx(supertbl, file = "temp.xlsx", include_toc_from_supertbl = "char"))
+  expect_error(write_redcap_xlsx(supertbl, file = "temp.xlsx", include_toc_from_supertbl = 1))
+
+  # include_metadata arg
+  expect_error(write_redcap_xlsx(supertbl, file = "temp.xlsx", include_metadata = NULL))
+  expect_error(write_redcap_xlsx(supertbl, file = "temp.xlsx", include_metadata = "char"))
+  expect_error(write_redcap_xlsx(supertbl, file = "temp.xlsx", include_metadata = 1))
+
+  # recode_yn arg
+  expect_error(write_redcap_xlsx(supertbl, file = "temp.xlsx", recode_yn = NULL))
+  expect_error(write_redcap_xlsx(supertbl, file = "temp.xlsx", recode_yn = "char"))
+  expect_error(write_redcap_xlsx(supertbl, file = "temp.xlsx", recode_yn = 1))
+
+  # file arg
+  expect_error(write_redcap_xlsx(supertbl, file = "temp.xlsx"))
+  expect_error(write_redcap_xlsx(supertbl, file = "temp.docx"))
+  expect_error(write_redcap_xlsx(supertbl, file = TRUE))
+  expect_error(write_redcap_xlsx(supertbl, file = NULL))
+})

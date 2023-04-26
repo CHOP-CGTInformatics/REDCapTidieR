@@ -8,6 +8,7 @@
 \alias{check_arg_is_logical}
 \alias{check_arg_choices}
 \alias{check_arg_is_valid_token}
+\alias{check_arg_is_valid_extension}
 \title{Check an argument with checkmate}
 \usage{
 check_arg_is_supertbl(
@@ -26,6 +27,8 @@ check_arg_is_logical(x, ..., arg = caller_arg(x), call = caller_env())
 check_arg_choices(x, ..., arg = caller_arg(x), call = caller_env())
 
 check_arg_is_valid_token(x, arg = caller_arg(x), call = caller_env())
+
+check_arg_is_valid_extension(x, arg = caller_arg(x), call = caller_env())
 }
 \arguments{
 \item{x}{An object to check}
