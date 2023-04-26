@@ -28,27 +28,24 @@ supertbl <- tibble::tribble(
   as_supertbl()
 
 test_that("write_redcap_xlsx without labels works", {
-  withr::with_dir(
-    tempdir(), {
-      write_redcap_xlsx(supertbl,
-                        file = paste0(tempdir(), "supertbl_wb.xlsx"),
-                        include_metadata = FALSE,
-                        include_toc_from_supertbl = FALSE,
-                        recode_yn = FALSE)
-      sheet_1 <- openxlsx2::read_xlsx(xlsxFile = paste0(tempdir(), "supertbl_wb.xlsx"), sheet = 1, startRow = 1)
-      # For some reason, read_xlsx resets row names and starts at 2, likely due
-      # to reading the column names as a row
-      rownames(sheet_1) <- seq_len(nrow(sheet_1))
+  withr::with_tempdir({
+    write_redcap_xlsx(supertbl,
+                      file = "supertbl_wb.xlsx",
+                      include_metadata = FALSE,
+                      include_toc_from_supertbl = FALSE,
+                      recode_yn = FALSE)
+    sheet_1 <- openxlsx2::read_xlsx(xlsxFile = "supertbl_wb.xlsx", sheet = 1, startRow = 1)
+    # For some reason, read_xlsx resets row names and starts at 2, likely due
+    # to reading the column names as a row
+    rownames(sheet_1) <- seq_len(nrow(sheet_1))
 
-      sheet_2 <- openxlsx2::read_xlsx(xlsxFile = paste0(tempdir(), "supertbl_wb.xlsx"), sheet = 2)
-      rownames(sheet_2) <- seq_len(nrow(sheet_2))
+    sheet_2 <- openxlsx2::read_xlsx(xlsxFile = "supertbl_wb.xlsx", sheet = 2)
+    rownames(sheet_2) <- seq_len(nrow(sheet_2))
 
-      # Ignore attr applied by openxlsx2 read_xlsx
-      expect_equal(tibble::tibble(sheet_1), redcap_data_a, ignore_attr = TRUE)
-      expect_equal(tibble::tibble(sheet_2), redcap_data_b, ignore_attr = TRUE)
-
-      unlink(paste0(tempdir(), "supertbl_wb.xlsx"))
-    }
+    # Ignore attr applied by openxlsx2 read_xlsx
+    expect_equal(tibble::tibble(sheet_1), redcap_data_a, ignore_attr = TRUE)
+    expect_equal(tibble::tibble(sheet_2), redcap_data_b, ignore_attr = TRUE)
+  }
   )
 })
 
@@ -57,34 +54,30 @@ test_that("write_redcap_xlsx with labels works", {
   labelled_supertbl <- make_labelled(supertbl)
 
   labelled_sheet_1 <- tibble::tribble(
-    ~"Record.ID", ~"Label.A",
+    ~"Record ID", ~"Label A",
     "record_id",   "col_a",
     "1",           "A"
   )
 
   labelled_sheet_2 <- tibble::tribble(
-    ~"Record.ID", ~"Label.B",
+    ~"Record ID", ~"Label B",
     "record_id",   "col_b",
     "1",           "B"
   )
 
-  withr::with_dir(
-    tempdir(), {
-      write_redcap_xlsx(labelled_supertbl,
-                        labelled = TRUE,
-                        file = paste0(tempdir(), "labelled_supertbl_wb.xlsx"),
-                        include_toc_from_supertbl = FALSE,
-                        include_metadata = FALSE,
-                        recode_yn = FALSE)
-      sheet_1 <- openxlsx2::read_xlsx(xlsxFile = paste0(tempdir(), "labelled_supertbl_wb.xlsx"), sheet = 1)
-      sheet_2 <- openxlsx2::read_xlsx(xlsxFile = paste0(tempdir(), "labelled_supertbl_wb.xlsx"), sheet = 2)
+  withr::with_tempdir({
+    write_redcap_xlsx(labelled_supertbl,
+                      labelled = TRUE,
+                      file = "labelled_supertbl_wb.xlsx",
+                      include_toc_from_supertbl = FALSE,
+                      include_metadata = FALSE,
+                      recode_yn = FALSE)
+    sheet_1 <- openxlsx2::read_xlsx(xlsxFile = "labelled_supertbl_wb.xlsx", sheet = 1)
+    sheet_2 <- openxlsx2::read_xlsx(xlsxFile = "labelled_supertbl_wb.xlsx", sheet = 2)
 
-      expect_equal(tibble::tibble(sheet_1), labelled_sheet_1, ignore_attr = TRUE)
-      expect_equal(tibble::tibble(sheet_2), labelled_sheet_2, ignore_attr = TRUE)
-
-      unlink(paste0(tempdir(), "labelled_supertbl_wb.xlsx"))
-    }
-  )
+    expect_equal(tibble::tibble(sheet_1), labelled_sheet_1, ignore_attr = TRUE)
+    expect_equal(tibble::tibble(sheet_2), labelled_sheet_2, ignore_attr = TRUE)
+  })
 })
 
 test_that("write_redcap_xlsx has expected supertibble and metadata outputs", {
@@ -105,22 +98,19 @@ test_that("write_redcap_xlsx has expected supertibble and metadata outputs", {
   ) %>%
     as.data.frame()
 
-  withr::with_dir(
-    tempdir(), {
-      write_redcap_xlsx(supertbl,
-                        labelled = FALSE,
-                        file = paste0(tempdir(), "default_supertbl_wb.xlsx"),
-                        include_toc_from_supertbl = TRUE,
-                        include_metadata = TRUE,
-                        recode_yn = FALSE)
-      sheet_1 <- openxlsx2::read_xlsx(xlsxFile = paste0(tempdir(), "default_supertbl_wb.xlsx"), sheet = 1)
-      sheet_4 <- openxlsx2::read_xlsx(xlsxFile = paste0(tempdir(), "default_supertbl_wb.xlsx"), sheet = 4)
+  withr::with_tempdir({
+    write_redcap_xlsx(supertbl,
+                      labelled = FALSE,
+                      file = "default_supertbl_wb.xlsx",
+                      include_toc_from_supertbl = TRUE,
+                      include_metadata = TRUE,
+                      recode_yn = FALSE)
+    sheet_1 <- openxlsx2::read_xlsx(xlsxFile = "default_supertbl_wb.xlsx", sheet = 1)
+    sheet_4 <- openxlsx2::read_xlsx(xlsxFile = "default_supertbl_wb.xlsx", sheet = 4)
 
-      expect_equal(sheet_1, expected_supertibble, ignore_attr = TRUE)
-      expect_equal(sheet_4, expected_meta, ignore_attr = TRUE)
-
-      unlink(paste0(tempdir(), "default_supertbl_wb.xlsx"))
-    }
+    expect_equal(sheet_1, expected_supertibble, ignore_attr = TRUE)
+    expect_equal(sheet_4, expected_meta, ignore_attr = TRUE)
+  }
   )
 
   expected_supertibble_labels <- c(
@@ -134,25 +124,22 @@ test_that("write_redcap_xlsx has expected supertibble and metadata outputs", {
     "Field Label"
   )
 
-  withr::with_dir(
-    tempdir(), {
+  withr::with_tempdir({
       write_redcap_xlsx(supertbl %>% make_labelled(),
                         labelled = TRUE,
-                        file = paste0(tempdir(), "default_labelled_supertbl_wb.xlsx"),
+                        file = "default_labelled_supertbl_wb.xlsx",
                         include_toc_from_supertbl = TRUE,
                         include_metadata = TRUE,
                         recode_yn = FALSE)
-      sheet_1 <- openxlsx2::read_xlsx(xlsxFile = paste0(tempdir(), "default_labelled_supertbl_wb.xlsx"),
+      sheet_1 <- openxlsx2::read_xlsx(xlsxFile = "default_labelled_supertbl_wb.xlsx",
                                       sheet = 1,
                                       sep.names = " ")
-      sheet_4 <- openxlsx2::read_xlsx(xlsxFile = paste0(tempdir(), "default_labelled_supertbl_wb.xlsx"),
+      sheet_4 <- openxlsx2::read_xlsx(xlsxFile = "default_labelled_supertbl_wb.xlsx",
                                       sheet = 4,
                                       sep.names = " ")
 
       expect_setequal(names(sheet_1), expected_supertibble_labels)
       expect_setequal(names(sheet_4), expected_meta_labels)
-
-      unlink(paste0(tempdir(), "default_labelled_supertbl_wb.xlsx"))
     }
   )
 
@@ -160,23 +147,20 @@ test_that("write_redcap_xlsx has expected supertibble and metadata outputs", {
 
 test_that("write_redcap_xlsx checks work", {
 
-  withr::with_dir(
-    tempdir(), {
-      supertbl %>%
-        write_redcap_xlsx(labelled = TRUE,
-                          file = paste0(tempdir(), "temp.xlsx"),
-                          recode_yn = FALSE) %>%
-        expect_error()
+  withr::with_tempdir({
+    supertbl %>%
+      write_redcap_xlsx(labelled = TRUE,
+                        file = "temp.xlsx",
+                        recode_yn = FALSE) %>%
+      expect_error()
 
-      supertbl %>%
-        make_labelled() %>%
-        write_redcap_xlsx(labelled = TRUE, file =
-                            paste0(tempdir(), "temp.xlsx"),
-                          recode_yn = FALSE) %>%
-        expect_no_error()
-
-      unlink(paste0(tempdir(), "temp.xlsx"))
-    }
+    supertbl %>%
+      make_labelled() %>%
+      write_redcap_xlsx(labelled = TRUE, file =
+                          "temp.xlsx",
+                        recode_yn = FALSE) %>%
+      expect_no_error()
+  }
   )
 
 })
@@ -229,7 +213,6 @@ test_that("supertbl_recode works", {
     2,          "no",
     3,          NA
   )
-
 
   expect_equal(out_false[[1]], redcap_data_c)
   expect_equal(out_true[[1]], expected_out_true)

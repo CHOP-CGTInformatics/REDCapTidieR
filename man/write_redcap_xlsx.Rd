@@ -6,9 +6,9 @@
 \usage{
 write_redcap_xlsx(
   supertbl,
+  file,
   labelled = NULL,
   use_labels_for_sheet_names = TRUE,
-  file,
   include_toc_from_supertbl = TRUE,
   include_metadata = TRUE,
   table_style = "tableStyleLight8",
@@ -19,13 +19,13 @@ write_redcap_xlsx(
 \arguments{
 \item{supertbl}{A supertibble generated using \code{read_redcap()}}
 
+\item{file}{A character string naming an xlsx file}
+
 \item{labelled}{Whether or not to include labelled outputs, default \code{NULL}.
 Requires use of \code{make_labelled()}.}
 
 \item{use_labels_for_sheet_names}{Whether or not to include labels in the XLSX sheets
 instead of raw values. Default \code{TRUE}.}
-
-\item{file}{A character string naming an xlsx file}
 
 \item{include_toc_from_supertbl}{Include a sheet capturing the supertibble output.
 Default \code{TRUE}.}
@@ -43,7 +43,7 @@ vignette in \link[openxlsx2]{wb_add_data_table}). Default "tableStyleLight8".}
 for readability. Default TRUE.}
 }
 \value{
-A workbook object
+An \code{openxlsx2} workbook object
 }
 \description{
 Write supertibble outputs to XLSX file outputs, where each REDCap data tibble

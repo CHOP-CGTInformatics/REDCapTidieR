@@ -5,11 +5,11 @@
 #' exists in a separate sheet.
 #'
 #' @param supertbl A supertibble generated using `read_redcap()`
+#' @param file A character string naming an xlsx file
 #' @param labelled Whether or not to include labelled outputs, default `NULL`.
 #' Requires use of `make_labelled()`.
 #' @param use_labels_for_sheet_names Whether or not to include labels in the XLSX sheets
 #' instead of raw values. Default `TRUE`.
-#' @param file A character string naming an xlsx file
 #' @param include_toc_from_supertbl Include a sheet capturing the supertibble output.
 #' Default `TRUE`.
 #' @param include_metadata Include a sheet capturing the combined output of the
@@ -24,9 +24,10 @@
 #' @importFrom purrr map map2
 #' @importFrom stringr str_trunc str_replace_all str_squish
 #' @importFrom dplyr select pull
+#' @importFrom rlang check_installed
 #'
 #' @return
-#' A workbook object
+#' An `openxlsx2` workbook object
 #'
 #' @examples
 #' \dontrun{
@@ -42,9 +43,9 @@
 #' @export
 
 write_redcap_xlsx <- function(supertbl,
+                              file,
                               labelled = NULL,
                               use_labels_for_sheet_names = TRUE,
-                              file,
                               include_toc_from_supertbl = TRUE,
                               include_metadata = TRUE,
                               table_style = "tableStyleLight8",
@@ -55,6 +56,7 @@ write_redcap_xlsx <- function(supertbl,
   labelled <- check_labelled(supertbl, labelled)
 
   # Initialize Workbook object ----
+  check_installed("openxlsx2", reason = "to use `write_redcap_xl()`")
   wb <- openxlsx2::wb_workbook()
 
   # Create Sheet Names ----
@@ -80,7 +82,7 @@ write_redcap_xlsx <- function(supertbl,
   # Write all redcap_form_name to sheets ----
   map(
     sheet_vals,
-    \(x) wb$add_worksheet(sheet = x)
+    function(x) wb$add_worksheet(sheet = x)
   )
 
   # Write all redcap_data to sheets ----
@@ -102,9 +104,11 @@ write_redcap_xlsx <- function(supertbl,
   map2(
     supertbl$redcap_data,
     sheet_vals,
-    \(x, y) wb$add_data_table(sheet = y, x = x,
-                              startRow = ifelse(labelled, 2, 1),
-                              tableStyle = table_style)
+    function(x, y) {
+      wb$add_data_table(sheet = y, x = x,
+                        startRow = ifelse(labelled, 2, 1),
+                        tableStyle = table_style)
+    }
   )
 
   # Construct default metadata sheet ----
@@ -123,9 +127,11 @@ write_redcap_xlsx <- function(supertbl,
   map2(
     supertbl$redcap_data,
     sheet_vals,
-    \(x, y) wb$set_col_widths(sheet = y,
-                              cols = seq_len(ncol(x)),
-                              widths = set_col_widths)
+    function(x, y) {
+      wb$set_col_widths(sheet = y,
+                        cols = seq_len(ncol(x)),
+                        widths = set_col_widths)
+    }
   )
 
   # Add labelled features ----
@@ -173,6 +179,7 @@ add_labelled_xlsx_features <- function(supertbl,
                                        include_metadata = TRUE,
                                        supertbl_toc = NULL) {
 
+  check_installed("labelled", reason = "to make use of labelled features in `write_redcap_xlsx`")
   # Generate variable labels off of labelled dictionary objects ----
   generate_dictionaries <- function(x) {
     labelled::generate_dictionary(x) %>%
@@ -409,7 +416,7 @@ supertbl_recode <- function(supertbl, supertbl_meta, recode_yn) {
 
     supertbl$redcap_data <- map(
       supertbl$redcap_data,
-      \(x) .x <- x %>% #nolint: object_usage_linter
+      function(x) .x <- x %>% #nolint: object_usage_linter
         mutate(across(any_of(yesno_fields),
                       ~case_when(. == "TRUE" ~ "yes",
                                  . == "FALSE" ~ "no",
