@@ -217,3 +217,18 @@ test_that("supertbl_recode works", {
   expect_equal(out_false[[1]], redcap_data_c)
   expect_equal(out_true[[1]], expected_out_true)
 })
+
+test_that("check_labelled works", {
+  labelled_supertbl <- supertbl %>%
+    make_labelled()
+
+  # Check possibilities for unlabelled supertbl
+  expect_false(check_labelled(supertbl, labelled = NULL))
+  expect_error(check_labelled(supertbl, labelled = TRUE))
+  expect_false(check_labelled(supertbl, labelled = FALSE))
+
+  # Check possibilities for labelled supertbl
+  expect_true(check_labelled(labelled_supertbl, labelled = NULL))
+  expect_true(check_labelled(labelled_supertbl, labelled = TRUE))
+  expect_false(check_labelled(labelled_supertbl, labelled = FALSE))
+})

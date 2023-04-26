@@ -169,6 +169,7 @@ write_redcap_xlsx <- function(supertbl,
 #' @importFrom purrr map pluck
 #' @importFrom tidyr pivot_wider
 #' @importFrom dplyr select filter
+#' @importFrom rlang check_installed
 #'
 #' @keywords internal
 
@@ -366,26 +367,37 @@ add_metadata_sheet <- function(supertbl,
 #' @keywords internal
 
 check_labelled <- function(supertbl, labelled, call = caller_env()) {
-  # Check if labelled, if all look_for labels are NA then not labelled
+  # supertbl is considered labeleld if any look_for labels not NA
   label_vec <- supertbl %>%
     labelled::look_for() %>%
     pull(.data$label) %>%
     is.na()
 
-  is_labelled <- all(label_vec == FALSE)
-  labelled <- ifelse(is.null(labelled), is_labelled, labelled)
-
-  if (!is_labelled && labelled == TRUE) {
-    cli_abort(
-      message = c(
-        "x" = "{.arg labelled} declared TRUE, but no labels detected.",
-        "i" = "Was {.fun REDCapTidieR::make_labelled() used first?}"
-      ),
-      call = call
-    )
+  # If labelled is FALSE return FALSE
+  if (!is.null(labelled) && !labelled) {
+    return(FALSE)
   }
 
-  labelled
+  is_labelled <- all(label_vec == FALSE) # Detect labels
+
+  # If labels are detected, return TRUE
+  if (is_labelled) {
+    return(TRUE)
+  }
+
+  # If user declared FALSE, return FALSE
+  if (is.null(labelled)) {
+    return(FALSE)
+  }
+
+  # Otherwise error, meaning labels asked for on a non-labelled input
+  cli_abort(
+    message = c(
+      "x" = "{.arg labelled} declared TRUE, but no labels detected.",
+      "i" = "Was {.fun REDCapTidieR::make_labelled() used first?}"
+    ),
+    call = call
+  )
 }
 
 
