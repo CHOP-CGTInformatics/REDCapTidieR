@@ -28,7 +28,12 @@ check_arg_choices(x, ..., arg = caller_arg(x), call = caller_env())
 
 check_arg_is_valid_token(x, arg = caller_arg(x), call = caller_env())
 
-check_arg_is_valid_extension(x, arg = caller_arg(x), call = caller_env())
+check_arg_is_valid_extension(
+  x,
+  valid_extensions,
+  arg = caller_arg(x),
+  call = caller_env()
+)
 }
 \arguments{
 \item{x}{An object to check}

@@ -536,6 +536,7 @@ format_error_val <- function(x) {
 #' @importFrom cli cli_abort
 #' @importFrom rlang caller_arg caller_env try_fetch
 check_arg_is_valid_extension <- function(x,
+                                         valid_extensions,
                                          arg = caller_arg(x),
                                          call = caller_env()) {
   ext <- sub(".*\\.", "", x)
@@ -543,7 +544,7 @@ check_arg_is_valid_extension <- function(x,
   msg_x <- paste0("Invalid file extension supplied to {.arg {arg}}: ", ext)
   msg_i <- "File extension must be of type 'xlsx'"
 
-  if (ext != "xlsx") {
+  if (!ext %in% valid_extensions) {
       cli_abort(
         message = c(
           "x" = msg_x,
