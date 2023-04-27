@@ -281,7 +281,7 @@ add_supertbl_toc <- function(wb,
                              set_col_widths) {
 
   # To avoid XLSX indicators of "Number stored as text", change class type
-  convert_percent <- function(x){
+  convert_percent <- function(x) {
     class(x) <- c("numeric", "percentage")
     x
   }
