@@ -158,6 +158,7 @@ write_redcap_xlsx <- function(supertbl,
   }
 
   # Export workbook object ----
+  wb$set_bookview(windowHeight = 130000, windowWidth = 6000)
   wb$save(path = file, overwrite = TRUE)
 }
 
