@@ -279,11 +279,18 @@ add_supertbl_toc <- function(wb,
                              labelled,
                              table_style,
                              set_col_widths) {
+
+  # To avoid XLSX indicators of "Number stored as text", change class type
+  convert_percent <- function(x){
+    class(x) <- c("numeric", "percentage")
+    x
+  }
+
   supertbl_toc <- supertbl %>%
     # Remove list elements
     select(-any_of(c("redcap_data", "redcap_metadata", "redcap_events"))) %>%
     # Necessary to avoid "Number stored as text" Excel dialogue warnings
-    mutate(across(any_of("data_na_pct"), as.character))
+    mutate(across(any_of("data_na_pct"), convert_percent))
 
   # Conditionally Add metadata default to TOC
   if (include_metadata) {
