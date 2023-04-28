@@ -13,7 +13,8 @@ write_redcap_xlsx(
   include_metadata = TRUE,
   table_style = "tableStyleLight8",
   set_col_widths = "auto",
-  recode_yn = TRUE
+  recode_yn = TRUE,
+  na_strings = openxlsx2::na_strings()
 )
 }
 \arguments{
@@ -41,6 +42,9 @@ vignette in \link[openxlsx2]{wb_add_data_table}). Default "tableStyleLight8".}
 
 \item{recode_yn}{Convert REDCap yesno questions from TRUE/FALSE to "yes"/"no"
 for readability. Default TRUE.}
+
+\item{na_strings}{Value used for replacing NA values from x. Default
+\code{na_strings()} uses the special ⁠#N/A⁠ value within the workbook.}
 }
 \value{
 An \code{openxlsx2} workbook object

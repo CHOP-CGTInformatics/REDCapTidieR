@@ -20,6 +20,8 @@
 #' "auto", otherwise a numeric value. Standard Excel is 8.43.
 #' @param recode_yn Convert REDCap yesno questions from TRUE/FALSE to "yes"/"no"
 #' for readability. Default TRUE.
+#' @param na_strings Value used for replacing NA values from x. Default
+#' `na_strings()` uses the special ⁠#N/A⁠ value within the workbook.
 #'
 #' @importFrom purrr map map2
 #' @importFrom stringr str_trunc str_replace_all str_squish
@@ -50,7 +52,8 @@ write_redcap_xlsx <- function(supertbl,
                               include_metadata = TRUE,
                               table_style = "tableStyleLight8",
                               set_col_widths = "auto",
-                              recode_yn = TRUE
+                              recode_yn = TRUE,
+                              na_strings = openxlsx2::na_strings()
 ) {
   # Enforce checks ----
   check_arg_is_supertbl(supertbl)
@@ -87,7 +90,13 @@ write_redcap_xlsx <- function(supertbl,
 
   # Construct default supertibble sheet ----
   if (include_toc_from_supertbl) {
-    supertbl_toc <- add_supertbl_toc(wb, supertbl, include_metadata, labelled, table_style, set_col_widths)
+    supertbl_toc <- add_supertbl_toc(wb,
+                                     supertbl,
+                                     include_metadata,
+                                     labelled,
+                                     table_style,
+                                     set_col_widths,
+                                     na_strings)
   }
 
   # Write all redcap_form_name to sheets ----
@@ -118,7 +127,8 @@ write_redcap_xlsx <- function(supertbl,
     function(x, y) {
       wb$add_data_table(sheet = y, x = x,
                         startRow = ifelse(labelled, 2, 1),
-                        tableStyle = table_style)
+                        tableStyle = table_style,
+                        na.strings = na_strings)
     }
   )
 
@@ -130,7 +140,8 @@ write_redcap_xlsx <- function(supertbl,
                        wb,
                        labelled,
                        table_style,
-                       set_col_widths)
+                       set_col_widths,
+                       na_strings)
   }
 
   # Apply additional aesthetics ----
@@ -265,6 +276,8 @@ add_labelled_xlsx_features <- function(supertbl,
 #' vignette in \link[openxlsx2]{wb_add_data_table}). Default "tableStyleLight8".
 #' @param set_col_widths Width to set columns across the workbook. Default
 #' "auto", otherwise a numeric value. Standard Excel is 8.43.
+#' @param na_strings Value used for replacing NA values from x. Default
+#' `na_strings()` uses the special ⁠#N/A⁠ value within the workbook.
 #'
 #' @importFrom dplyr select mutate row_number across
 #' @importFrom tidyselect any_of
@@ -278,7 +291,8 @@ add_supertbl_toc <- function(wb,
                              include_metadata,
                              labelled,
                              table_style,
-                             set_col_widths) {
+                             set_col_widths,
+                             na_strings) {
 
   # To avoid XLSX indicators of "Number stored as text", change class type
   convert_percent <- function(x) {
@@ -319,7 +333,8 @@ add_supertbl_toc <- function(wb,
   wb$add_data_table(sheet = "Table of Contents",
                     x = supertbl_toc,
                     startRow = ifelse(labelled, 2, 1),
-                    tableStyle = table_style)
+                    tableStyle = table_style,
+                    na.strings = na_strings)
   wb$set_col_widths(sheet = "Table of Contents",
                     cols = seq_along(supertbl_toc),
                     widths = set_col_widths)
@@ -345,6 +360,8 @@ add_supertbl_toc <- function(wb,
 #' vignette in \link[openxlsx2]{wb_add_data_table}). Default "tableStyleLight8".
 #' @param set_col_widths Width to set columns across the workbook. Default
 #' "auto", otherwise a numeric value. Standard Excel is 8.43.
+#' @param na_strings Value used for replacing NA values from x. Default
+#' `na_strings()` uses the special ⁠#N/A⁠ value within the workbook.
 #'
 #' @importFrom dplyr select filter
 #' @importFrom tidyr unnest
@@ -359,13 +376,15 @@ add_metadata_sheet <- function(supertbl,
                                wb,
                                labelled,
                                table_style,
-                               set_col_widths) {
+                               set_col_widths,
+                               na_strings) {
 
   wb$add_worksheet(sheet = "REDCap Metadata")
   wb$add_data_table(sheet = "REDCap Metadata",
                     x = supertbl_meta,
                     startRow = ifelse(labelled, 2, 1),
-                    tableStyle = table_style)
+                    tableStyle = table_style,
+                    na.strings = na_strings)
   wb$set_col_widths(sheet = "REDCap Metadata",
                     cols = seq_along(supertbl_meta),
                     widths = set_col_widths)

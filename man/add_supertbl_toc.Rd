@@ -10,7 +10,8 @@ add_supertbl_toc(
   include_metadata,
   labelled,
   table_style,
-  set_col_widths
+  set_col_widths,
+  na_strings
 )
 }
 \arguments{
@@ -29,6 +30,9 @@ vignette in \link[openxlsx2]{wb_add_data_table}). Default "tableStyleLight8".}
 
 \item{set_col_widths}{Width to set columns across the workbook. Default
 "auto", otherwise a numeric value. Standard Excel is 8.43.}
+
+\item{na_strings}{Value used for replacing NA values from x. Default
+\code{na_strings()} uses the special ⁠#N/A⁠ value within the workbook.}
 }
 \value{
 A dataframe
