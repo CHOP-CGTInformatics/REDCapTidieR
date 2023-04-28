@@ -534,15 +534,15 @@ format_error_val <- function(x) {
 
 #' @rdname checkmate
 #' @importFrom cli cli_abort
-#' @importFrom rlang caller_arg caller_env try_fetch
+#' @importFrom rlang caller_arg caller_env
 check_arg_is_valid_extension <- function(x,
                                          valid_extensions,
                                          arg = caller_arg(x),
                                          call = caller_env()) {
   ext <- sub(".*\\.", "", x)
 
-  msg_x <- paste0("Invalid file extension supplied to {.arg {arg}}: ", ext)
-  msg_i <- "File extension must be of type 'xlsx'"
+  msg_x <- "Invalid file extension supplied to {.arg {arg}}: {ext}"
+  msg_i <- "File extension must be 'xlsx'"
 
   if (!ext %in% valid_extensions) {
       cli_abort(

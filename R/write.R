@@ -297,15 +297,19 @@ add_supertbl_toc <- function(wb,
     supertbl_toc[nrow(supertbl_toc) + 1, 1] <- "REDCap Metadata"
   }
 
-  # Re-establish lost label(s) by referencing original labels and indexing
-  # Generalized for future proofing
-  labelled::var_label(supertbl_toc) <- labelled::var_label(supertbl)[names(labelled::var_label(supertbl_toc))]
+  # Re-assign label
+  if (labelled) {
+    # Re-establish lost label(s) by referencing original labels and indexing
+    # Generalized for future proofing, must take place before assignment of new
+    # columns and labels
+    labelled::var_label(supertbl_toc) <- labelled::var_label(supertbl)[names(labelled::var_label(supertbl_toc))]
+  }
 
   # Add custom Sheet # column and label
   supertbl_toc <- supertbl_toc %>%
     mutate(`Sheet #` = row_number())
 
-  # Assign label
+  # Assign label for sheet #
   if (labelled) {
     labelled::var_label(supertbl_toc)$`Sheet #` <- "Sheet #"
   }
@@ -379,7 +383,7 @@ add_metadata_sheet <- function(supertbl,
 #' @param call the calling environment to use in the warning message
 #'
 #' @importFrom cli cli_abort
-#' @importFrom rlang caller_env
+#' @importFrom rlang caller_env is_installed
 #'
 #' @returns A boolean
 #'
@@ -392,20 +396,33 @@ check_labelled <- function(supertbl, labelled, call = caller_env()) {
     pull(.data$label) %>%
     is.na()
 
-  # If labelled is FALSE return FALSE
+  # Detect labels regardless of user specification
+  is_labelled <- all(label_vec == FALSE)
+
+  # If user declared labelled is FALSE return FALSE
   if (!is.null(labelled) && !labelled) {
     return(FALSE)
   }
 
-  is_labelled <- all(label_vec == FALSE) # Detect labels
+  # If user not declared and no labels detected, return FALSE
+  if (is.null(labelled) && !is_labelled) {
+    return(FALSE)
+  }
 
-  # If labels are detected, return TRUE
-  if (is_labelled) {
+  # If labels are detected & labelled is installed, return TRUE
+  if (is_labelled & is_installed("labelled")) {
     return(TRUE)
   }
 
-  # If user declared FALSE, return FALSE
-  if (is.null(labelled)) {
+  # If labels detected and labelled is not installed, return warning message and FALSE
+  if (is_labelled & !is_installed("labelled")) {
+    cli_warn(
+      message = c(
+        "!" = "Labels detected, but {.pkg labelled} not installed. Labels not applied.",
+        "i" = "Consider installing {.pkg labelled} and re-running."
+      ),
+      call = call
+    )
     return(FALSE)
   }
 
