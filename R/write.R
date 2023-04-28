@@ -429,12 +429,12 @@ check_labelled <- function(supertbl, labelled, call = caller_env()) {
   }
 
   # If labels are detected & labelled is installed, return TRUE
-  if (is_labelled & is_installed("labelled")) {
+  if (is_labelled && is_installed("labelled")) {
     return(TRUE)
   }
 
   # If labels detected and labelled is not installed, return warning message and FALSE
-  if (is_labelled & !is_installed("labelled")) {
+  if (is_labelled && !is_installed("labelled")) {
     cli_warn(
       message = c(
         "!" = "Labels detected, but {.pkg labelled} not installed. Labels not applied.",
