@@ -218,7 +218,7 @@ add_labelled_xlsx_features <- function(supertbl,
   if (include_toc_from_supertbl) {
     supertbl_labels <- supertbl_toc %>%
       labelled::lookfor() %>%
-      select(.data$variable, .data$label) %>%
+      select("variable", "label") %>%
       pivot_wider(names_from = "variable", values_from = "label")
 
     wb$add_data(sheet = "Table of Contents",
@@ -231,7 +231,7 @@ add_labelled_xlsx_features <- function(supertbl,
       select("redcap_metadata") %>%
       pluck(1, 1) %>%
       labelled::lookfor() %>%
-      select(.data$variable, .data$label) %>%
+      select("variable", "label") %>%
       pivot_wider(names_from = "variable", values_from = "label")
 
     wb$add_data(sheet = "REDCap Metadata",
@@ -403,20 +403,15 @@ add_metadata_sheet <- function(supertbl,
 #'
 #' @importFrom cli cli_abort
 #' @importFrom rlang caller_env is_installed
+#' @importFrom purrr some
 #'
 #' @returns A boolean
 #'
 #' @keywords internal
 
 check_labelled <- function(supertbl, labelled, call = caller_env()) {
-  # supertbl is considered labeleld if any look_for labels not NA
-  label_vec <- supertbl %>%
-    labelled::look_for() %>%
-    pull(.data$label) %>%
-    is.na()
-
-  # Detect labels regardless of user specification
-  is_labelled <- all(label_vec == FALSE)
+  # supertbl is considered labelled if cols have label attributes
+  is_labelled <- some(supertbl, function(x) !is.null(attr(x, "label")))
 
   # If user declared labelled is FALSE return FALSE
   if (!is.null(labelled) && !labelled) {
