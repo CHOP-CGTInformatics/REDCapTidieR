@@ -8,8 +8,8 @@ add_labelled_xlsx_features(
   supertbl,
   wb,
   sheet_vals,
-  include_toc_from_supertbl = TRUE,
-  include_metadata = TRUE,
+  include_toc_sheet = TRUE,
+  include_metadata_sheet = TRUE,
   supertbl_toc = NULL
 )
 }
@@ -21,10 +21,10 @@ add_labelled_xlsx_features(
 \item{sheet_vals}{Helper argument passed from \code{write_redcap_xlsx} to
 determine and assign sheet values.}
 
-\item{include_toc_from_supertbl}{Include a sheet capturing the supertibble output.
+\item{include_toc_sheet}{Include a sheet capturing the supertibble output.
 Default \code{TRUE}.}
 
-\item{include_metadata}{Include a sheet capturing the combined output of the
+\item{include_metadata_sheet}{Include a sheet capturing the combined output of the
 supertibble \code{redcap_metadata}. Default \code{TRUE}.}
 
 \item{supertbl_toc}{The table of contents supertibble defined in the parent

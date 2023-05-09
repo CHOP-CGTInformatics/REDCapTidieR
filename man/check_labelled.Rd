@@ -4,13 +4,12 @@
 \alias{check_labelled}
 \title{Check if labelled}
 \usage{
-check_labelled(supertbl, labelled, call = caller_env())
+check_labelled(supertbl, add_labelled_column_headers, call = caller_env())
 }
 \arguments{
 \item{supertbl}{a supertibble generated using \code{read_redcap()}}
 
-\item{labelled}{Whether or not to include labelled outputs, default \code{FALSE}.
-Requires use of \code{make_labelled()}.}
+\item{add_labelled_column_headers}{Whether or not to include labelled outputs}
 
 \item{call}{the calling environment to use in the warning message}
 }

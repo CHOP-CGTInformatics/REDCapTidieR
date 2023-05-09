@@ -4,13 +4,10 @@
 \alias{supertbl_recode}
 \title{Recode fields using supertbl metadata}
 \usage{
-supertbl_recode(supertbl, supertbl_meta, recode_yn)
+supertbl_recode(supertbl, supertbl_meta)
 }
 \arguments{
 \item{supertbl}{A supertibble generated using \code{read_redcap()}}
-
-\item{recode_yn}{Convert REDCap yesno questions from TRUE/FALSE to "yes"/"no"
-for readability. Default TRUE.}
 
 \item{superbl_meta}{an \code{unnest}-ed metadata tibble from the supertibble}
 }

@@ -7,29 +7,24 @@
 add_metadata_sheet(
   supertbl,
   supertbl_meta,
-  include_metadata,
   wb,
-  labelled,
+  add_labelled_column_headers,
   table_style,
-  set_col_widths,
+  column_width,
   na_strings
 )
 }
 \arguments{
 \item{supertbl}{a supertibble generated using \code{read_redcap()}}
 
-\item{include_metadata}{Include a sheet capturing the combined output of the
-supertibble \code{redcap_metadata}. Default \code{TRUE}.}
-
 \item{wb}{An \code{openxlsx2} workbook object}
 
-\item{labelled}{Whether or not to include labelled outputs, default \code{FALSE}.
-Requires use of \code{make_labelled()}.}
+\item{add_labelled_column_headers}{Whether or not to include labelled outputs.}
 
 \item{table_style}{Any excel table style name or "none" (see "formatting"
 vignette in \link[openxlsx2]{wb_add_data_table}). Default "tableStyleLight8".}
 
-\item{set_col_widths}{Width to set columns across the workbook. Default
+\item{column_width}{Width to set columns across the workbook. Default
 "auto", otherwise a numeric value. Standard Excel is 8.43.}
 
 \item{na_strings}{Value used for replacing NA values from x. Default

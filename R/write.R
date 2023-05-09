@@ -5,23 +5,26 @@
 #' exists in a separate sheet.
 #'
 #' @param supertbl A supertibble generated using `read_redcap()`
-#' @param file A character string naming an xlsx file
-#' @param labelled Whether or not to include labelled outputs, default `NULL`.
-#' Requires use of `make_labelled()`.
-#' @param use_labels_for_sheet_names Whether or not to include labels in the XLSX sheets
-#' instead of raw values. Default `TRUE`.
-#' @param include_toc_from_supertbl Include a sheet capturing the supertibble output.
+#' @param file A file name to write to
+#' @param add_labelled_column_headers If `TRUE`, row 1 of each sheet will contain variable labels. Row 2 will contain
+#' variable names. If `FALSE`, row 1 will contain variable names. The default, `NULL`, attempts to determine
+#' if `supertbl` has variable labels and, if detected, includes them in row 1. `labelled` must be installed if
+#' `add_labelled_column_headers` is `TRUE`.
+#' @param use_labels_for_sheet_names If `TRUE`, sheets in the xlsx output will be named with the values in
+#' `supertbl$redcap_form_label`. If `FALSE`, sheets will be named with values from `supertbl$redcap_form_name`.
 #' Default `TRUE`.
-#' @param include_metadata Include a sheet capturing the combined output of the
-#' supertibble `redcap_metadata`. Default `TRUE`.
+#' @param include_toc_sheet If `TRUE`, the first sheet in the xlsx output will be a table of contents
+#' with information about each data tibble included in the workbook. Default `TRUE`.
+#' @param include_metadata_sheet If `TRUE`, the last sheet in the xlsx output will contain metadata about each
+#' variable, combining the content of `supertbl$redcap_metadata`. Default `TRUE`.
 #' @param table_style Any excel table style name or "none" (see "formatting"
 #' vignette in \link[openxlsx2]{wb_add_data_table}). Default "tableStyleLight8".
-#' @param set_col_widths Width to set columns across the workbook. Default
+#' @param column_width Width to set columns across the workbook. Default
 #' "auto", otherwise a numeric value. Standard Excel is 8.43.
-#' @param recode_yn Convert REDCap yesno questions from TRUE/FALSE to "yes"/"no"
-#' for readability. Default TRUE.
-#' @param na_strings Value used for replacing NA values from x. Default
-#' `na_strings()` uses the special ⁠#N/A⁠ value within the workbook.
+#' @param recode_logical If `TRUE`, fields with "yesno" field type are recoded to "yes"/"no" and fields
+#' with a "checkbox" field type are recoded to "Checked"/"Unchecked". Default `TRUE`.
+#' @param na_strings Value used for replacing NA values in `supertbl`. Default is "".
+#' @param overwrite If `FALSE`, will not overwrite `file` when it exists. Default `TRUE`.
 #'
 #' @importFrom purrr map map2
 #' @importFrom stringr str_trunc str_replace_all str_squish
@@ -29,7 +32,7 @@
 #' @importFrom rlang check_installed
 #'
 #' @return
-#' An `openxlsx2` workbook object
+#' An `openxlsx2` workbook object, invisibly
 #'
 #' @examples
 #' \dontrun{
@@ -37,40 +40,44 @@
 #' token <- Sys.getenv("REDCAP_TOKEN")
 #'
 #' supertbl <- read_redcap(redcap_uri, token)
-#' write_redcap_xlsx(supertbl, file = "supertibble.xlsx")
 #'
-#' write_redcap_xlsx(supertbl, labelled = TRUE, file = "supertibble.xlsx")
+#' supertbl %>%
+#'   write_redcap_xlsx(file = "supertibble.xlsx")
+#'
+#' supertbl %>%
+#'   write_redcap_xlsx(file = "supertibble.xlsx", add_labelled_column_headers = TRUE)
 #' }
 #'
 #' @export
 
 write_redcap_xlsx <- function(supertbl,
                               file,
-                              labelled = NULL,
+                              add_labelled_column_headers = NULL,
                               use_labels_for_sheet_names = TRUE,
-                              include_toc_from_supertbl = TRUE,
-                              include_metadata = TRUE,
+                              include_toc_sheet = TRUE,
+                              include_metadata_sheet = TRUE,
                               table_style = "tableStyleLight8",
-                              set_col_widths = "auto",
-                              recode_yn = TRUE,
-                              na_strings = openxlsx2::na_strings()
+                              column_width = "auto",
+                              recode_logical = TRUE,
+                              na_strings = "",
+                              overwrite = TRUE
 ) {
   # Enforce checks ----
   check_arg_is_supertbl(supertbl)
-  check_arg_is_character(table_style, any.missing = FALSE)
   check_arg_is_character(file, any.missing = FALSE)
   check_arg_is_valid_extension(file, valid_extensions = c("xlsx"))
-  check_arg_is_character(set_col_widths, any.missing = FALSE)
-  check_arg_is_logical(labelled, null.ok = TRUE)
+  check_arg_is_character(column_width, any.missing = FALSE)
+  check_arg_is_logical(add_labelled_column_headers, null.ok = TRUE)
   check_arg_is_logical(use_labels_for_sheet_names, any.missing = FALSE)
-  check_arg_is_logical(include_toc_from_supertbl, any.missing = FALSE)
-  check_arg_is_logical(include_metadata, any.missing = FALSE)
-  check_arg_is_logical(recode_yn, any.missing = FALSE)
+  check_arg_is_logical(include_toc_sheet, any.missing = FALSE)
+  check_arg_is_logical(include_metadata_sheet, any.missing = FALSE)
+  check_arg_is_logical(recode_logical, any.missing = FALSE)
+  check_arg_is_logical(overwrite, any.missing = FALSE)
 
-  labelled <- check_labelled(supertbl, labelled)
+  add_labelled_column_headers <- check_labelled(supertbl, add_labelled_column_headers)
 
   # Initialize Workbook object ----
-  check_installed("openxlsx2", reason = "to use `write_redcap_xl()`")
+  check_installed("openxlsx2", reason = "to write Excel files.")
   wb <- openxlsx2::wb_workbook()
 
   # Create Sheet Names ----
@@ -89,13 +96,13 @@ write_redcap_xlsx <- function(supertbl,
   sheet_vals <- str_trunc(sheet_vals, width = 31)
 
   # Construct default supertibble sheet ----
-  if (include_toc_from_supertbl) {
+  if (include_toc_sheet) {
     supertbl_toc <- add_supertbl_toc(wb,
                                      supertbl,
-                                     include_metadata,
-                                     labelled,
+                                     include_metadata_sheet,
+                                     add_labelled_column_headers,
                                      table_style,
-                                     set_col_widths,
+                                     column_width,
                                      na_strings)
   }
 
@@ -110,7 +117,9 @@ write_redcap_xlsx <- function(supertbl,
   supertbl_meta <- bind_supertbl_metadata(supertbl)
 
   # Apply recodes based on metadata
-  supertbl$redcap_data <- supertbl_recode(supertbl, supertbl_meta, recode_yn)
+  if (recode_logical) {
+    supertbl$redcap_data <- supertbl_recode(supertbl, supertbl_meta)
+  }
 
   # Account for special case when a dataframe may have zero rows
   # This causes an error on opening the Excel file.
@@ -126,21 +135,20 @@ write_redcap_xlsx <- function(supertbl,
     sheet_vals,
     function(x, y) {
       wb$add_data_table(sheet = y, x = x,
-                        startRow = ifelse(labelled, 2, 1),
+                        startRow = ifelse(add_labelled_column_headers, 2, 1),
                         tableStyle = table_style,
                         na.strings = na_strings)
     }
   )
 
   # Construct default metadata sheet ----
-  if (include_metadata) {
+  if (include_metadata_sheet) {
     add_metadata_sheet(supertbl,
                        supertbl_meta,
-                       include_metadata,
                        wb,
-                       labelled,
+                       add_labelled_column_headers,
                        table_style,
-                       set_col_widths,
+                       column_width,
                        na_strings)
   }
 
@@ -152,25 +160,25 @@ write_redcap_xlsx <- function(supertbl,
     function(x, y) {
       wb$set_col_widths(sheet = y,
                         cols = seq_len(ncol(x)),
-                        widths = set_col_widths)
+                        widths = column_width)
     }
   )
 
   # Add labelled features ----
-  if (labelled) {
+  if (add_labelled_column_headers) {
     add_labelled_xlsx_features(
       supertbl,
       wb,
       sheet_vals,
-      include_toc_from_supertbl,
-      include_metadata,
+      include_toc_sheet,
+      include_metadata_sheet,
       supertbl_toc
     )
   }
 
   # Export workbook object ----
   wb$set_bookview(windowHeight = 130000, windowWidth = 6000)
-  wb$save(path = file, overwrite = TRUE)
+  wb$save(path = file, overwrite = overwrite)
 }
 
 #' @title Add labelled features to write_redcap_xlsx
@@ -182,9 +190,9 @@ write_redcap_xlsx <- function(supertbl,
 #' @param wb An `openxlsx2` workbook object
 #' @param sheet_vals Helper argument passed from `write_redcap_xlsx` to
 #' determine and assign sheet values.
-#' @param include_toc_from_supertbl Include a sheet capturing the supertibble output.
+#' @param include_toc_sheet Include a sheet capturing the supertibble output.
 #' Default `TRUE`.
-#' @param include_metadata Include a sheet capturing the combined output of the
+#' @param include_metadata_sheet Include a sheet capturing the combined output of the
 #' supertibble `redcap_metadata`. Default `TRUE`.
 #' @param supertbl_toc The table of contents supertibble defined in the parent
 #' function. Default `NULL`.
@@ -199,8 +207,8 @@ write_redcap_xlsx <- function(supertbl,
 add_labelled_xlsx_features <- function(supertbl,
                                        wb,
                                        sheet_vals,
-                                       include_toc_from_supertbl = TRUE,
-                                       include_metadata = TRUE,
+                                       include_toc_sheet = TRUE,
+                                       include_metadata_sheet = TRUE,
                                        supertbl_toc = NULL) {
 
   check_installed("labelled", reason = "to make use of labelled features in `write_redcap_xlsx`")
@@ -215,7 +223,7 @@ add_labelled_xlsx_features <- function(supertbl,
   }
 
   # Add supertbl labels ----
-  if (include_toc_from_supertbl) {
+  if (include_toc_sheet) {
     supertbl_labels <- supertbl_toc %>%
       labelled::lookfor() %>%
       select("variable", "label") %>%
@@ -226,7 +234,7 @@ add_labelled_xlsx_features <- function(supertbl,
   }
 
   # Add supertbl_meta labels ----
-  if (include_metadata) {
+  if (include_metadata_sheet) {
     supertbl_meta_labels <- supertbl %>%
       select("redcap_metadata") %>%
       pluck(1, 1) %>%
@@ -268,13 +276,12 @@ add_labelled_xlsx_features <- function(supertbl,
 #'
 #' @param supertbl a supertibble generated using `read_redcap()`
 #' @param wb An `openxlsx2` workbook object
-#' @param include_metadata Include a sheet capturing the combined output of the
-#' supertibble `redcap_metadata`. Default `TRUE`.
-#' @param labelled Whether or not to include labelled outputs, default `FALSE`.
-#' Requires use of `make_labelled()`.
+#' @param include_metadata_sheet Include a sheet capturing the combined output of the
+#' supertibble `redcap_metadata`.
+#' @param add_labelled_column_headers Whether or not to include labelled outputs.
 #' @param table_style Any excel table style name or "none" (see "formatting"
 #' vignette in \link[openxlsx2]{wb_add_data_table}). Default "tableStyleLight8".
-#' @param set_col_widths Width to set columns across the workbook. Default
+#' @param column_width Width to set columns across the workbook. Default
 #' "auto", otherwise a numeric value. Standard Excel is 8.43.
 #' @param na_strings Value used for replacing NA values from x. Default
 #' `na_strings()` uses the special ⁠#N/A⁠ value within the workbook.
@@ -288,10 +295,10 @@ add_labelled_xlsx_features <- function(supertbl,
 
 add_supertbl_toc <- function(wb,
                              supertbl,
-                             include_metadata,
-                             labelled,
+                             include_metadata_sheet,
+                             add_labelled_column_headers,
                              table_style,
-                             set_col_widths,
+                             column_width,
                              na_strings) {
 
   # To avoid XLSX indicators of "Number stored as text", change class type
@@ -304,15 +311,18 @@ add_supertbl_toc <- function(wb,
     # Remove list elements
     select(-any_of(c("redcap_data", "redcap_metadata", "redcap_events"))) %>%
     # Necessary to avoid "Number stored as text" Excel dialogue warnings
-    mutate(across(any_of("data_na_pct"), convert_percent))
+    mutate(
+      across(any_of("data_na_pct"), convert_percent),
+      across(any_of("data_size"), as.character)
+    )
 
   # Conditionally Add metadata default to TOC
-  if (include_metadata) {
+  if (include_metadata_sheet) {
     supertbl_toc[nrow(supertbl_toc) + 1, 1] <- "REDCap Metadata"
   }
 
   # Re-assign label
-  if (labelled) {
+  if (add_labelled_column_headers) {
     # Re-establish lost label(s) by referencing original labels and indexing
     # Generalized for future proofing, must take place before assignment of new
     # columns and labels
@@ -324,7 +334,7 @@ add_supertbl_toc <- function(wb,
     mutate(`Sheet #` = row_number())
 
   # Assign label for sheet #
-  if (labelled) {
+  if (add_labelled_column_headers) {
     labelled::var_label(supertbl_toc)$`Sheet #` <- "Sheet #"
   }
 
@@ -332,12 +342,12 @@ add_supertbl_toc <- function(wb,
   wb$add_worksheet(sheet = "Table of Contents")
   wb$add_data_table(sheet = "Table of Contents",
                     x = supertbl_toc,
-                    startRow = ifelse(labelled, 2, 1),
+                    startRow = ifelse(add_labelled_column_headers, 2, 1),
                     tableStyle = table_style,
                     na.strings = na_strings)
   wb$set_col_widths(sheet = "Table of Contents",
                     cols = seq_along(supertbl_toc),
-                    widths = set_col_widths)
+                    widths = column_width)
 
   # Return TOC object as dataframe
   supertbl_toc
@@ -352,13 +362,10 @@ add_supertbl_toc <- function(wb,
 #' @param supertbl a supertibble generated using `read_redcap()`
 #' @param superbl_meta an `unnest`-ed metadata tibble from the supertibble
 #' @param wb An `openxlsx2` workbook object
-#' @param labelled Whether or not to include labelled outputs, default `FALSE`.
-#' Requires use of `make_labelled()`.
-#' @param include_metadata Include a sheet capturing the combined output of the
-#' supertibble `redcap_metadata`. Default `TRUE`.
+#' @param add_labelled_column_headers Whether or not to include labelled outputs.
 #' @param table_style Any excel table style name or "none" (see "formatting"
 #' vignette in \link[openxlsx2]{wb_add_data_table}). Default "tableStyleLight8".
-#' @param set_col_widths Width to set columns across the workbook. Default
+#' @param column_width Width to set columns across the workbook. Default
 #' "auto", otherwise a numeric value. Standard Excel is 8.43.
 #' @param na_strings Value used for replacing NA values from x. Default
 #' `na_strings()` uses the special ⁠#N/A⁠ value within the workbook.
@@ -372,22 +379,21 @@ add_supertbl_toc <- function(wb,
 
 add_metadata_sheet <- function(supertbl,
                                supertbl_meta,
-                               include_metadata,
                                wb,
-                               labelled,
+                               add_labelled_column_headers,
                                table_style,
-                               set_col_widths,
+                               column_width,
                                na_strings) {
 
   wb$add_worksheet(sheet = "REDCap Metadata")
   wb$add_data_table(sheet = "REDCap Metadata",
                     x = supertbl_meta,
-                    startRow = ifelse(labelled, 2, 1),
+                    startRow = ifelse(add_labelled_column_headers, 2, 1),
                     tableStyle = table_style,
                     na.strings = na_strings)
   wb$set_col_widths(sheet = "REDCap Metadata",
                     cols = seq_along(supertbl_meta),
-                    widths = set_col_widths)
+                    widths = column_width)
 }
 
 #' @title Check if labelled
@@ -397,8 +403,7 @@ add_metadata_sheet <- function(supertbl,
 #' but `labelled` is set to `TRUE`
 #'
 #' @param supertbl a supertibble generated using `read_redcap()`
-#' @param labelled Whether or not to include labelled outputs, default `FALSE`.
-#' Requires use of `make_labelled()`.
+#' @param add_labelled_column_headers Whether or not to include labelled outputs
 #' @param call the calling environment to use in the warning message
 #'
 #' @importFrom cli cli_abort
@@ -409,17 +414,17 @@ add_metadata_sheet <- function(supertbl,
 #'
 #' @keywords internal
 
-check_labelled <- function(supertbl, labelled, call = caller_env()) {
+check_labelled <- function(supertbl, add_labelled_column_headers, call = caller_env()) {
   # supertbl is considered labelled if cols have label attributes
   is_labelled <- some(supertbl, function(x) !is.null(attr(x, "label")))
 
   # If user declared labelled is FALSE return FALSE
-  if (!is.null(labelled) && !labelled) {
+  if (!is.null(add_labelled_column_headers) && !add_labelled_column_headers) {
     return(FALSE)
   }
 
   # If user not declared and no labels detected, return FALSE
-  if (is.null(labelled) && !is_labelled) {
+  if (is.null(add_labelled_column_headers) && !is_labelled) {
     return(FALSE)
   }
 
@@ -435,6 +440,7 @@ check_labelled <- function(supertbl, labelled, call = caller_env()) {
         "!" = "Labels detected, but {.pkg labelled} not installed. Labels not applied.",
         "i" = "Consider installing {.pkg labelled} and re-running."
       ),
+      class = c("labelled_not_installed", "REDCapTidieR_cond"),
       call = call
     )
     return(FALSE)
@@ -443,9 +449,10 @@ check_labelled <- function(supertbl, labelled, call = caller_env()) {
   # Otherwise error, meaning labels asked for on a non-labelled input
   cli_abort(
     message = c(
-      "x" = "{.arg labelled} declared TRUE, but no labels detected.",
-      "i" = "Was {.fun REDCapTidieR::make_labelled() used first?}"
+      "x" = "{.arg labelled} declared TRUE, but no variable labels detected.",
+      "i" = "Did you run {.fun make_labelled()} on the supertibble?"
     ),
+    class = c("missing_labelled_labels", "REDCapTidieR_cond"),
     call = call
   )
 }
@@ -459,34 +466,41 @@ check_labelled <- function(supertbl, labelled, call = caller_env()) {
 #'
 #' @param supertbl A supertibble generated using `read_redcap()`
 #' @param superbl_meta an `unnest`-ed metadata tibble from the supertibble
-#' @param recode_yn Convert REDCap yesno questions from TRUE/FALSE to "yes"/"no"
-#' for readability. Default TRUE.
 #'
 #' @importFrom dplyr mutate across case_when filter pull
 #' @importFrom purrr map
 #' @importFrom tidyselect any_of
 #'
 #' @keywords internal
-
-supertbl_recode <- function(supertbl, supertbl_meta, recode_yn) {
-
+supertbl_recode <- function(supertbl, supertbl_meta) {
   # Recode yesno from TRUE/FALSE to "yes"/"no"
-  if (recode_yn) {
-    yesno_fields <- supertbl_meta %>%
-      filter(.data$field_type == "yesno") %>%
-      pull(.data$field_name)
 
-    supertbl$redcap_data <- map(
-      supertbl$redcap_data,
-      function(x) .x <- x %>% #nolint: object_usage_linter
-        mutate(across(any_of(yesno_fields),
-                      ~case_when(. == "TRUE" ~ "yes",
-                                 . == "FALSE" ~ "no",
-                                 TRUE ~ NA_character_)))
-    )
-  }
+  yesno_fields <- supertbl_meta %>%
+    filter(.data$field_type == "yesno") %>%
+    pull(.data$field_name)
 
-  supertbl$redcap_data
+  checkbox_fields <- supertbl_meta %>%
+    filter(.data$field_type == "checkbox") %>%
+    pull(.data$field_name)
+
+  map(
+    supertbl$redcap_data,
+    function(x) {
+      x %>%
+        mutate(
+          across(any_of(yesno_fields), ~ case_when(
+            . == "TRUE" ~ "yes",
+            . == "FALSE" ~ "no",
+            TRUE ~ NA_character_
+          )),
+          across(any_of(checkbox_fields), ~ case_when(
+            . == "TRUE" ~ "Checked",
+            . == "FALSE" ~ "Unchecked",
+            TRUE ~ NA_character_
+          ))
+        )
+    }
+  )
 }
 
 #' @title Bind supertbl metadata
