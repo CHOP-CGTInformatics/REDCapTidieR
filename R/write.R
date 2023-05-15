@@ -66,7 +66,6 @@ write_redcap_xlsx <- function(supertbl,
   check_arg_is_supertbl(supertbl)
   check_arg_is_character(file, any.missing = FALSE)
   check_arg_is_valid_extension(file, valid_extensions = c("xlsx"))
-  check_arg_is_character(column_width, any.missing = FALSE)
   check_arg_is_logical(add_labelled_column_headers, null.ok = TRUE)
   check_arg_is_logical(use_labels_for_sheet_names, any.missing = FALSE)
   check_arg_is_logical(include_toc_sheet, any.missing = FALSE)
