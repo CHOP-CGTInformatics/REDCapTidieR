@@ -20,6 +20,7 @@ Imports:
     dplyr,
     lobstr,
     lifecycle,
+    lubridate,
     purrr,
     REDCapR (>= 1.1.0),
     rlang,

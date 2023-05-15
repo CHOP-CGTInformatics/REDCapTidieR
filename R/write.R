@@ -30,6 +30,8 @@
 #' @importFrom stringr str_trunc str_replace_all str_squish
 #' @importFrom dplyr select pull
 #' @importFrom rlang check_installed
+#' @importFrom lubridate is.period is.difftime
+#' @importFrom tidyselect where
 #'
 #' @return
 #' An `openxlsx2` workbook object, invisibly
@@ -133,6 +135,12 @@ write_redcap_xlsx <- function(supertbl,
     supertbl$redcap_data,
     sheet_vals,
     function(x, y) {
+
+      # Convert period/difftime to character to address possible file corruption
+      x <- x %>%
+        mutate(across(where(is.difftime), as.character),
+               across(where(is.period), as.character))
+
       wb$add_data_table(sheet = y, x = x,
                         startRow = ifelse(add_labelled_column_headers, 2, 1),
                         tableStyle = table_style,
