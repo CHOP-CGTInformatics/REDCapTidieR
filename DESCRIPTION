@@ -36,6 +36,7 @@ Suggests:
     labelled,
     lintr,
     openxlsx2,
+    prettyunits,
     readr,
     rmarkdown,
     skimr,

@@ -313,7 +313,7 @@ add_supertbl_toc <- function(wb,
     # Necessary to avoid "Number stored as text" Excel dialogue warnings
     mutate(
       across(any_of("data_na_pct"), convert_percent),
-      across(any_of("data_size"), as.character)
+      across(any_of("data_size"), ~prettyunits::pretty_bytes(as.numeric(.)))
     )
 
   # Conditionally Add metadata default to TOC
