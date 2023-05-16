@@ -40,7 +40,13 @@
     <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/add_event_mapping.html</loc>
   </url>
   <url>
+    <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/add_labelled_xlsx_features.html</loc>
+  </url>
+  <url>
     <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/add_metadata.html</loc>
+  </url>
+  <url>
+    <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/add_metadata_sheet.html</loc>
   </url>
   <url>
     <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/add_partial_keys.html</loc>
@@ -49,7 +55,13 @@
     <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/add_skimr_metadata.html</loc>
   </url>
   <url>
+    <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/add_supertbl_toc.html</loc>
+  </url>
+  <url>
     <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/as_supertbl.html</loc>
+  </url>
+  <url>
+    <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/bind_supertbl_metadata.html</loc>
   </url>
   <url>
     <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/bind_tibbles.html</loc>
@@ -59,6 +71,9 @@
   </url>
   <url>
     <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/check_forms_exist.html</loc>
+  </url>
+  <url>
+    <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/check_labelled.html</loc>
   </url>
   <url>
     <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/check_parsed_labels.html</loc>
@@ -160,6 +175,9 @@
     <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/superheroes_supertbl.html</loc>
   </url>
   <url>
+    <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/supertbl_recode.html</loc>
+  </url>
+  <url>
     <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/try_redcapr.html</loc>
   </url>
   <url>
@@ -167,6 +185,9 @@
   </url>
   <url>
     <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/update_field_names.html</loc>
+  </url>
+  <url>
+    <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/write_redcap_xlsx.html</loc>
   </url>
   <url>
     <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/updating-mocks.html</loc>
