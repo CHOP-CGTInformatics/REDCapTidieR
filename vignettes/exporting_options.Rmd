@@ -1,0 +1,112 @@
+---
+title: "Exporting Options"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Exporting Options}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r, include = FALSE}
+library(httptest)
+# Make sure REDCapTidieR is loaded so httptest can find redact.R
+library(REDCapTidieR)
+
+# Use fake credentials if mocks exist, otherwise use real credentials to create mocks
+fake <- dir.exists("exporting_options")
+
+creds <- REDCapTidieR:::get_credentials(
+  c("REDCAP_URI", "SUPERHEROES_REDCAP_API", "REDCAPTIDIER_CLASSIC_API"),
+  fake = fake
+)
+
+redcap_uri <- creds$REDCAP_URI
+superheroes_token <- creds$SUPERHEROES_REDCAP_API
+classic_token <- creds$REDCAPTIDIER_CLASSIC_API
+
+start_vignette("exporting_options")
+```
+
+## Exporting REDCapTidieR Outputs
+
+In this section, we will be discussing options available to export your data once you've successfully created a [supertibble](glossary.html#supertibble). For more information on how to make a [supertibble](glossary.html#supertibble), refer to the [Getting Started](REDCapTidieR.html) vignette.
+
+Have an idea or suggestion for other formats or methods you wish to see? Please submit a [feature request](https://github.com/CHOP-CGTInformatics/REDCapTidieR/issues/new/choose) to us on GitHub!
+
+### Exporting to XLSX
+
+A common need for analysts working with REDCap data is the ability to sharing share it in an accessible and interpretable format. Excel spreadsheets are one such solution, and REDCapTidieR supports this using the `write_redcap_xlsx()` function. `write_redcap_xlsx()` is built by leveraging the powerful [`openxlsx2`](https://janmarvin.github.io/openxlsx2/) package. Let's explore how to leverage this function and what to expect from an output by starting with the superheroes dataset:
+
+``` r
+superheroes_token <- "123456789ABCDEF123456789ABCDEF04"
+redcap_uri <- "https://my.institution.edu/redcap/api/"
+```
+
+```{r}
+supertbl <- read_redcap(redcap_uri, superheroes_token)
+
+supertbl %>%
+  rmarkdown::paged_table()
+```
+
+The goal of `write_redcap_xlsx()` is to provide a single .xlsx file where each [data tibble](glossary.html#data-tibble) (i.e., what is listed under the `redcap_data` column) is displayed in its own sheet. Let's pass the `supertbl` defined above through the function and investigate the default output:
+
+```{r, eval=FALSE}
+supertbl %>%
+  write_redcap_xlsx(file = "supertbl.xlsx")
+```
+
+<center>
+
+![Default output using write_redcap_xlsx](images/write_xlsx_default.png)
+
+</center>
+
+You may notice two unexpected sheets appear. The "Table of Contents" and "REDCap Metadata" sheets are provided by default to assist users in navigating their export contents. Both are optional and can be hidden via their corresponding function arguments. 
+
+The "Table of Contents" sheet provides summary data representing key elements from the supertibble along with the numeric sheet location of the corresponding `redcap_data`/[data tibble](glossary.html#data-tibble) in the XLSX file (see column H titled "Sheet" in the image above).
+
+The "REDCap Metadata" sheet provides a consolidated view of the `redcap_metadata`/[metadata tibbles](glossary.html#metadata-tibble) from the supertibble:
+
+<center>
+
+![Metadata sheet using write_redcap_xlsx](images/write_xlsx_metadata.png)
+
+</center>
+
+In between these sheets, you can find the expected [data tibbles](glossary.html#data-tibble). Below, observe the expected contents of the "Heroes Information" [data tibble](glossary.html#data-tibble):
+
+<center>
+
+![Metadata sheet using write_redcap_xlsx](images/write_xlsx_heroes_information.png)
+
+</center>
+
+`write_redcap_xlsx()` also supports application of labels via `make_labelled()`. Labels can be applied to both the column names in sheets and to the names of the sheets themselves. By default, `write_redcap_xlsx()` will attempt to detect the presence of labels and apply them accordingly, but you can specify whether or not you want them using the appropriate function arguments. If labels are applied to the [data tibbles](glossary.html#data-tibble), then tables will shift down one row and the first row will be dedicated to the labels.
+
+Applying labels to an output would like this:
+
+```{r, eval=FALSE}
+supertbl %>%
+   make_labelled() %>%
+   write_redcap_xlsx("supertbl.xlsx")
+```
+
+<center>
+
+![Labelled supertbl output](images/write_xlsx_supertbl_labelled.png)
+
+</center>
+
+Notice how row 1 now contains labels associated with each column.
+
+```{r, include=FALSE}
+end_vignette()
+```
