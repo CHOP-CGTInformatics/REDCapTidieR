@@ -983,6 +983,20 @@
         "askpass"
       ]
     },
+    "openxlsx2": {
+      "Package": "openxlsx2",
+      "Version": "0.6.1",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "9396d52e2303e5773388012410ee292a",
+      "Requirements": [
+        "R6",
+        "Rcpp",
+        "magrittr",
+        "stringi",
+        "zip"
+      ]
+    },
     "parsedate": {
       "Package": "parsedate",
       "Version": "1.3.1",

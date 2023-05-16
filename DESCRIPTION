@@ -1,7 +1,7 @@
 Package: REDCapTidieR
 Type: Package
 Title: Extract 'REDCap' Databases into Tidy 'Tibble's
-Version: 0.3.0.9000
+Version: 0.3.0.9001
 Authors@R: c(
     person("Richard", "Hanna", , "richardshanna91@gmail.com", role = c("aut", "cre")),
     person("Stephan", "Kadauke", , "kadaukes@chop.edu", role = "aut"),
@@ -20,6 +20,7 @@ Imports:
     dplyr,
     lobstr,
     lifecycle,
+    lubridate,
     purrr,
     REDCapR (>= 1.1.0),
     rlang,
@@ -35,10 +36,13 @@ Suggests:
     knitr,
     labelled,
     lintr,
+    openxlsx2,
+    prettyunits,
     readr,
     rmarkdown,
     skimr,
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    withr
 VignetteBuilder: knitr
 Config/testthat/edition: 3
 Encoding: UTF-8

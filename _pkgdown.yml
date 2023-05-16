@@ -47,6 +47,11 @@ reference:
     Add skimr metrics to metadata list elements of a supertibble.
   contents:
   - add_skimr_metadata
+- title: "Export to Other Formats"
+  desc: >
+    Export a supertibble to other usable formats.
+  contents:
+  - write_redcap_xlsx
 - title: "Data"
   contents:
   - superheroes_supertbl

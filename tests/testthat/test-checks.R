@@ -148,4 +148,9 @@ test_that("checkmate wrappers work", {
   # token
   expect_error(check_arg_is_valid_token("abc"), class = "invalid_token")
   expect_true(check_arg_is_valid_token("123456789ABCDEF123456789ABCDEF01"))
+
+  # extension
+  expect_error(check_arg_is_valid_extension("temp.docx", valid_extensions = "xlsx"), class = "invalid_file_extension")
+  expect_error(check_arg_is_valid_extension("xlsx.", valid_extensions = "xlsx"), class = "invalid_file_extension")
+  expect_true(check_arg_is_valid_extension("temp.xlsx", valid_extensions = "xlsx"))
 })
