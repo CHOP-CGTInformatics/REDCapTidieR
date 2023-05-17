@@ -40,7 +40,7 @@ In this section, we will be discussing options available to export your data onc
 
 Have an idea or suggestion for other formats or methods you wish to see? Please submit a [feature request](https://github.com/CHOP-CGTInformatics/REDCapTidieR/issues/new/choose) to us on GitHub!
 
-### Exporting to XLSX
+## Exporting to XLSX
 
 A common need for analysts working with REDCap data is the ability to sharing share it in an accessible and interpretable format. Excel spreadsheets are one such solution, and REDCapTidieR supports this using the `write_redcap_xlsx()` function. `write_redcap_xlsx()` is built by leveraging the powerful [`openxlsx2`](https://janmarvin.github.io/openxlsx2/) package. Let's explore how to leverage this function and what to expect from an output by starting with the superheroes dataset:
 
@@ -89,7 +89,7 @@ In between these sheets, you can find the expected [data tibbles](glossary.html#
 
 </center>
 
-`write_redcap_xlsx()` also supports application of labels via `make_labelled()`. Labels can be applied to both the column names in sheets and to the names of the sheets themselves. By default, `write_redcap_xlsx()` will attempt to detect the presence of labels and apply them accordingly, but you can specify whether or not you want them using the appropriate function arguments. If labels are applied to the [data tibbles](glossary.html#data-tibble), then tables will shift down one row and the first row will be dedicated to the labels.
+`write_redcap_xlsx()` also supports application of labels via `make_labelled()`. You can learn more about label application to your [supertibble](glossary.html#supertibble) data in the [Getting Started](REDCapTidieR.html#adding-variable-labels-with-the-labelled-package) vignette. Labels can be applied to both the column names in sheets and to the names of the sheets themselves. By default, `write_redcap_xlsx()` will attempt to detect the presence of labels and apply them accordingly, but you can specify whether or not you want them using the appropriate function arguments. If labels are applied to the [data tibbles](glossary.html#data-tibble), then tables will shift down one row and the first row will be dedicated to the labels.
 
 Applying labels to an output would like this:
 
