@@ -56,7 +56,7 @@ supertbl %>%
   rmarkdown::paged_table()
 ```
 
-The goal of `write_redcap_xlsx()` is to provide a single .xlsx file where each [data tibble](glossary.html#data-tibble) (i.e., what is listed under the `redcap_data` column) is displayed in its own sheet. Let's pass the `supertbl` defined above through the function and investigate the default output:
+The goal of `write_redcap_xlsx()` is to provide a single `.xlsx` file where each [data tibble](glossary.html#data-tibble) (i.e., what is listed under the `redcap_data` column) is displayed in its own sheet. Let's try it with the superheroes `supertbl` created above:
 
 ```{r, eval=FALSE}
 supertbl %>%
