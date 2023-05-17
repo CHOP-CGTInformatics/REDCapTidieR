@@ -36,6 +36,7 @@
 
 add_skimr_metadata <- function(supertbl) {
   check_installed("skimr", reason = "to use `add_skimr_metadata()`")
+  check_arg_is_supertbl(supertbl)
 
   skim_data <- function(redcap_data, redcap_metadata) {
     excluded_fields <- c(

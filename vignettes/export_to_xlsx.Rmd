@@ -1,8 +1,8 @@
 ---
-title: "Exporting to XLSX"
+title: "Exporting to Excel"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Exporting to XLSX}
+  %\VignetteIndexEntry{Exporting to Excel}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -34,37 +34,33 @@ classic_token <- creds$REDCAPTIDIER_CLASSIC_API
 start_vignette("export_to_xlsx")
 ```
 
-## Exporting REDCap Data to XLSX
+Excel spreadsheets are an accessible medium for data analysis and collaboration. This vignette will guide you through the process of using REDCapTidieR to transform your REDCap data into an XLSX document, facilitating easy sharing with colleagues.
 
-Excel spreadsheets offer an accessible medium for data analysis and collaboration. In this section, we will be discussing how to turn your REDCap data into a XLSX document that can be easily shared with others using REDCapTidieR.
+## Transforming a REDCap project into an XLSX document
 
-Converting your data into a XLSX output can be achieved in 3 simple steps using the `write_redcap_xlsx()` function:
+The transformation of a REDCap [project](glossary.html#project) into a XLSX document can be achieved in three straightforward steps using the `write_redcap_xlsx()` function:
 
-1) Define your REDCap URI and API token
-2) Call `read_redcap()`
-3) Call `write_redcap_xlsx()`
+1)  Specify your REDCap URI and [API](glossary.html#redcap-api) token.
+2)  Invoke `read_redcap()`.
+3)  Apply `write_redcap_xlsx()`.
 
-In practice, this looks like:
+Below is a practical illustration:
 
 ```{r, eval=FALSE}
 redcap_uri <- "https://my.institution.edu/redcap/api/"
 token <- "123456789ABCDEF123456789ABCDEF04"
 
-supertbl <- read_redcap(redcap_uri, token)
-write_redcap_xlsx(supertbl, file = "my_redcap_data.xlsx")
+my_redcap_data <- read_redcap(redcap_uri, token)
+write_redcap_xlsx(my_redcap_data, file = "my_redcap_data.xlsx")
 ```
 
-The output file will contain the data corresponding to each REDCap [instrument](glossary.html#instrument) in its own sheet along with two helper sheets called "Table of Contents" and "REDCap Metadata."
+The resulting file will contain the data corresponding to each REDCap [instrument](glossary.html#instrument) in a dedicated sheet. Additionally, a "Table of Contents" sheet will be at the beginning, and a "REDCap Metadata" sheet will be at the end.
 
-<center>
+## Diving Deeper
 
-![Sample output](images/write_xlsx_heroes_information.png)
+We will revisit the Superheroes dataset from the [Getting Started](REDCapTidieR.html#case-study-the-superhero-database) vignette. 
 
-</center>
-
-## Under the Hood and Additional Options
-
-`write_redcap_xlsx()` is built by leveraging the powerful [`openxlsx2`](https://janmarvin.github.io/openxlsx2/) package. To demonstrate more of its capabilities, we will be using the superheroes dataset from the case study in the [Getting Started](REDCapTidieR.html#case-study-the-superhero-database) vignette. Let's start by looking at the data:
+First, we'll first use `read_redcap()` to create the `superheroes` [supertibble](glossary.html#supertibble):
 
 ``` r
 superheroes_token <- "123456789ABCDEF123456789ABCDEF04"
@@ -72,83 +68,69 @@ redcap_uri <- "https://my.institution.edu/redcap/api/"
 ```
 
 ```{r}
-supertbl <- read_redcap(redcap_uri, superheroes_token)
+superheroes <- read_redcap(redcap_uri, superheroes_token)
 
-supertbl %>%
+superheroes %>%
   rmarkdown::paged_table()
 ```
 
-The goal of `write_redcap_xlsx()` is to provide a single `.xlsx` file where each [data tibble](glossary.html#data-tibble) (i.e., what is listed under the `redcap_data` column) is displayed in its own sheet. Let's try it with the superheroes `supertbl` created above:
+The `superheroes` supertibble contains two rows, one for each [instrument](glossary.html#instrument) of the Superheroes REDCap [project](glossary.html#project). The `write_redcap_xlsx()` function, leveraging the [openxlsx2](https://janmarvin.github.io/openxlsx2/) package, understands the supertibble's structure and creates a collaborator-friendly XLSX file.
+
+Let's try it out!
 
 ```{r, eval=FALSE}
-supertbl %>%
-  write_redcap_xlsx(file = "supertbl.xlsx")
+superheroes %>%
+  write_redcap_xlsx(file = "superheroes.xlsx")
 ```
 
-<center>
+When you open the Excel document, you'll see multiple sheets. The first one is the **Table of Contents** sheet, followed by individual sheets for each instrument's data, and concluded with a **REDCap Metadata** sheet.
 
-![Default output using write_redcap_xlsx](images/write_xlsx_default.png)
+<center>![Table of Contents sheet of `superheroes.xlsx`](images/write_xlsx_default.png)</center>
 
-</center>
+The **Table of Contents** sheet provides an overview of the data present in the rest of the document. If you wish to exclude this sheet, set the `include_toc_sheet` argument of `write_redcap_xlsx()` to `FALSE`.
 
-### Sheet Structure
+Each instrument's data is contained in a separate sheet. For a better understanding of how REDCapTidieR represents REDCap data, refer to the [Diving Deeper](diving_deeper.html) vignette.
 
-You may notice two unexpected sheets appear. The "Table of Contents" and "REDCap Metadata" sheets are provided by default to assist users in navigating their export contents. Both are optional and can be hidden via their corresponding function arguments `include_toc_sheet` and `include_metadata_sheet`. 
+The column headers come with pre-applied filters (notice the arrow on the right side of each header cell), making data exploration straightforward.
 
-The "Table of Contents" sheet provides summary data representing key elements from the [supertibble](glossary.html#supertibble) along with the numeric sheet location of the corresponding `redcap_data`/[data tibble](glossary.html#data-tibble) in the XLSX file (see column H titled "Sheet" in the image above).
+<center>![A data sheet of `superheroes.xlsx`](images/write_xlsx_heroes_information.png)</center>
 
-The "REDCap Metadata" sheet provides a consolidated view of the `redcap_metadata`/[metadata tibbles](glossary.html#metadata-tibble) from the [supertibble](glossary.html#supertibble):
+The **REDCap Metadata** sheet offers metadata for *all* fields from *all* instruments in one place. If you don't want this sheet, set the `include_metadata_sheet` argument of `write_redcap_xlsx()` to `FALSE`.
 
-<center>
+<center>![REDCap Metadata sheet of `superheroes.xlsx`](images/write_xlsx_metadata.png)</center>
 
-![Metadata sheet using write_redcap_xlsx](images/write_xlsx_metadata.png)
+### Applying Labels
 
-</center>
+Labels can offer valuable context to collaborators, helping them understand the data in a specific column. The `make_labelled()` function allows you to add [variable labels](glossary.html#variable-label) to a REDCapTidieR [supertibble](glossary.html#supertibble), and `write_redcap_xlsx()` can integrate these labels to the Excel sheets. 
 
-In between these sheets, you can find the expected [data tibbles](glossary.html#data-tibble). Below, observe the expected contents of the "Heroes Information" [data tibble](glossary.html#data-tibble):
-
-<center>
-
-![Heroes Information sheet](images/write_xlsx_heroes_information.png)
-
-</center>
-
-### Making Your XLSX Labelled
-
-`write_redcap_xlsx()` also supports application of labels via `make_labelled()`. Labels can be applied to both the column names in sheets and to the names of the sheets themselves. By default, `write_redcap_xlsx()` will attempt to detect the presence of labels and apply them accordingly, but you can specify whether or not you want them using the appropriate function arguments `add_labelled_column_headers` and `use_labels_for_sheet_names`. If labels are applied to the [data tibbles](glossary.html#data-tibble), then tables will shift down one row and the first row will be dedicated to the labels.
-
-You can learn more about label application to your [supertibble](glossary.html#supertibble) data in the [Getting Started](REDCapTidieR.html#adding-variable-labels-with-the-labelled-package) vignette.
-
-Applying labels to an output looks like:
+Let's add variable labels to `superheroes` and export it to Excel:
 
 ```{r, eval=FALSE}
-supertbl %>%
+superheroes %>%
    make_labelled() %>%
-   write_redcap_xlsx("supertbl.xlsx")
+   write_redcap_xlsx("superheroes-labelled.xlsx")
 ```
 
-<center>
+Observe how the first row now contains a human-readable description for each column.
 
-![Labelled supertbl output](images/write_xlsx_supertbl_labelled.png)
+<center>![Labelled supertbl output](images/write_xlsx_supertbl_labelled.png)</center>
 
-</center>
+### Recoding Logical Columns
 
-Notice how row 1 now contains labels associated with each column.
-
-### Logical Recoding
-
-By default, `write_redcap_xlsx()` recodes logical values to ones that are easier to decipher using the `recode_logical` argument:
+By default, `write_redcap_xlsx()` recodes logical (`TRUE`/`FALSE`) columns into more human-friendly terms. You can adjust this behavior using the `recode_logical` argument:
 
 ```{r, eval = FALSE}
 supertbl %>%
   write_redcap_xlsx(recode_logical = TRUE)
 ```
 
-Using the default (`TRUE`), results in the following changes:
+`write_redcap_xlsx()` uses the [field label](glossary.html#field-label) to decide how to recode logical fields:
 
-- "yesno" fields are recoded from `TRUE`/`FALSE` to `yes`/`no`
-- "checkbox" fields are recoded from `TRUE`/`FALSE` to `Checked`/`Unchecked`
-- "truefalse" fields are left as is (`TRUE`/`FALSE`)
+-   Columns derived from **yesno** fields are recoded from `TRUE`/`FALSE` to `yes`/`no`
+-   Columns derived from **checkbox** fields are recoded from `TRUE`/`FALSE` to `Checked`/`Unchecked`
+-   Columns derived from **truefalse** fields are left as is (`TRUE`/`FALSE`)
+
+Setting `recode_logical` to `FALSE` will preserve all logical fields as (`TRUE`/`FALSE`).
 
 ```{r, include=FALSE}
 end_vignette()
