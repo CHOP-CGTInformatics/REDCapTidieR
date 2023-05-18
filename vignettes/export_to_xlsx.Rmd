@@ -60,7 +60,7 @@ The resulting file will contain the data corresponding to each REDCap [instrumen
 
 We will revisit the Superheroes dataset from the [Getting Started](REDCapTidieR.html#case-study-the-superhero-database) vignette. 
 
-First, we'll first use `read_redcap()` to create the `superheroes` [supertibble](glossary.html#supertibble):
+First, we'll use `read_redcap()` to create the `superheroes` [supertibble](glossary.html#supertibble):
 
 ``` r
 superheroes_token <- "123456789ABCDEF123456789ABCDEF04"

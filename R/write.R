@@ -16,7 +16,9 @@
 #' providing information about each data tibble in the workbook. The default is `TRUE`.
 #' @param include_metadata_sheet If `TRUE`, the final sheet in the XLSX output will contain metadata
 #' about each variable, combining the content of `supertbl$redcap_metadata`. The default is `TRUE`.
-#' @param table_style Any Excel table style name or "none". For more details, see the ["formatting" vignette](https://ycphs.github.io/openxlsx/articles/Formatting.html#use-of-pre-defined-table-styles)
+#' @param table_style Any Excel table style name or "none". For more details, see
+#' the
+#' ["formatting" vignette](https://ycphs.github.io/openxlsx/articles/Formatting.html#use-of-pre-defined-table-styles)
 #' of the `openxlsx` package. The default is "tableStyleLight8".
 #' @param column_width Sets the width of columns throughout the workbook.
 #' The default is "auto", but you can specify a numeric value.
