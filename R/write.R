@@ -212,7 +212,7 @@ write_redcap_xlsx <- function(supertbl,
 #'
 #' @importFrom purrr map pluck
 #' @importFrom tidyr pivot_wider
-#' @importFrom dplyr select filter
+#' @importFrom dplyr select filter relocate
 #' @importFrom rlang check_installed
 #'
 #' @keywords internal
@@ -253,7 +253,12 @@ add_labelled_xlsx_features <- function(supertbl,
       pluck(1, 1) %>%
       labelled::lookfor() %>%
       select("variable", "label") %>%
-      pivot_wider(names_from = "variable", values_from = "label")
+      pivot_wider(names_from = "variable", values_from = "label") %>%
+      # Manually add missing redcap_form_name label
+      mutate(
+        redcap_form_name = "REDCap Form Name"
+      ) %>%
+      relocate(.data$redcap_form_name, .before = "field_name")
 
     wb$add_data(sheet = "REDCap Metadata",
                 x = supertbl_meta_labels, colNames = FALSE)
@@ -524,16 +529,35 @@ supertbl_recode <- function(supertbl, supertbl_meta) {
 #'
 #' @param supertbl A supertibble generated using `read_redcap()`
 #'
-#' @importFrom dplyr filter select
+#' @importFrom dplyr filter select mutate case_when pull
 #' @importFrom tidyr unnest
 #'
 #' @keywords internal
 
 bind_supertbl_metadata <- function(supertbl) {
-  supertbl %>%
-    select("redcap_metadata") %>% #nolint: object_usage_linter
-    unnest(cols = "redcap_metadata") %>% # record ID gets duplicated.
-    # Since no other fields are allowed to be duplicated in REDCap,
-    # can use filtering here for removal of duplicated record ID fields
-    filter(!duplicated(.data$field_name))
+  out <- supertbl %>%
+    select("redcap_form_name", "redcap_metadata") %>% #nolint: object_usage_linter
+    unnest(cols = c("redcap_form_name", "redcap_metadata"))
+
+  # Detect Record ID field by looking for duplicated field_names
+  # Since no other fields in REDCap are allowed to be duplicated, we should only
+  # ever expect to receive the record ID field (whatever it's named)
+  if (any(duplicated(out$field_name))) {
+    record_id <- out %>% #nolint: object_usage_linter
+      filter(duplicated(.data$field_name)) %>%
+      pull(.data$field_name)
+  } else {
+    # Edge case when there is only one instrument
+    record_id <- out$field_name[1]
+  }
+
+  # Remove duplicated rows left over by record ID
+  out %>%
+    mutate(
+      redcap_form_name = case_when(
+        field_name == record_id ~ NA,
+        TRUE ~ redcap_form_name
+      )
+    ) %>%
+    unique()
 }
