@@ -14,49 +14,50 @@ write_redcap_xlsx(
   table_style = "tableStyleLight8",
   column_width = "auto",
   recode_logical = TRUE,
-  na_strings = "",
-  overwrite = TRUE
+  na_replace = "",
+  overwrite = FALSE
 )
 }
 \arguments{
-\item{supertbl}{A supertibble generated using \code{read_redcap()}}
+\item{supertbl}{A supertibble generated using \code{read_redcap()}.}
 
-\item{file}{A file name to write to}
+\item{file}{The name of the file to which the output will be written.}
 
-\item{add_labelled_column_headers}{If \code{TRUE}, row 1 of each sheet will contain variable labels. Row 2 will contain
-variable names. If \code{FALSE}, row 1 will contain variable names. The default, \code{NULL}, attempts to determine
-if \code{supertbl} has variable labels and, if detected, includes them in row 1. \code{labelled} must be installed if
-\code{add_labelled_column_headers} is \code{TRUE}.}
+\item{add_labelled_column_headers}{If \code{TRUE}, the first row of each sheet will contain variable labels,
+with variable names in the second row. If \code{FALSE}, variable names will be in the first row.
+The default value, \code{NULL}, tries to determine if \code{supertbl} contains variable labels and,
+if present, includes them in the first row. The \code{labelled} package must be installed
+if \code{add_labelled_column_headers} is \code{TRUE}.}
 
-\item{use_labels_for_sheet_names}{If \code{TRUE}, sheets in the xlsx output will be named with the values in
-\code{supertbl$redcap_form_label}. If \code{FALSE}, sheets will be named with values from \code{supertbl$redcap_form_name}.
-Default \code{TRUE}.}
+\item{use_labels_for_sheet_names}{If \code{FALSE}, sheet names will come from the REDCap instrument names.
+If \code{TRUE}, sheet names will come from instrument labels. The default is \code{TRUE}.}
 
-\item{include_toc_sheet}{If \code{TRUE}, the first sheet in the xlsx output will be a table of contents
-with information about each data tibble included in the workbook. Default \code{TRUE}.}
+\item{include_toc_sheet}{If \code{TRUE}, the first sheet in the XLSX output will be a table of contents,
+providing information about each data tibble in the workbook. The default is \code{TRUE}.}
 
-\item{include_metadata_sheet}{If \code{TRUE}, the last sheet in the xlsx output will contain metadata about each
-variable, combining the content of \code{supertbl$redcap_metadata}. Default \code{TRUE}.}
+\item{include_metadata_sheet}{If \code{TRUE}, the final sheet in the XLSX output will contain metadata
+about each variable, combining the content of \code{supertbl$redcap_metadata}. The default is \code{TRUE}.}
 
-\item{table_style}{Any excel table style name or "none" (see "formatting"
-vignette in \link[openxlsx2]{wb_add_data_table}). Default "tableStyleLight8".}
+\item{table_style}{Any Excel table style name or "none". For more details, see
+the
+\href{https://ycphs.github.io/openxlsx/articles/Formatting.html#use-of-pre-defined-table-styles}{"formatting" vignette}
+of the \code{openxlsx} package. The default is "tableStyleLight8".}
 
-\item{column_width}{Width to set columns across the workbook. Default
-"auto", otherwise a numeric value. Standard Excel is 8.43.}
+\item{column_width}{Sets the width of columns throughout the workbook.
+The default is "auto", but you can specify a numeric value.}
 
 \item{recode_logical}{If \code{TRUE}, fields with "yesno" field type are recoded to "yes"/"no" and fields
-with a "checkbox" field type are recoded to "Checked"/"Unchecked". Default \code{TRUE}.}
+with a "checkbox" field type are recoded to "Checked"/"Unchecked". The default is \code{TRUE}.}
 
-\item{na_strings}{Value used for replacing NA values in \code{supertbl}. Default is "".}
+\item{na_replace}{The value used to replace \code{NA} values in \code{supertbl}. The default is "".}
 
-\item{overwrite}{If \code{FALSE}, will not overwrite \code{file} when it exists. Default \code{TRUE}.}
+\item{overwrite}{If \code{FALSE}, will not overwrite \code{file} when it exists. The default is \code{FALSE}.}
 }
 \value{
 An \code{openxlsx2} workbook object, invisibly
 }
 \description{
-Write supertibble outputs to XLSX file outputs, where each REDCap data tibble
-exists in a separate sheet.
+Transform a supertibble into an XLSX file, with each REDCap data tibble in a separate sheet.
 }
 \examples{
 \dontrun{
@@ -68,7 +69,12 @@ supertbl <- read_redcap(redcap_uri, token)
 supertbl \%>\%
   write_redcap_xlsx(file = "supertibble.xlsx")
 
+# Add variable labels
+
+library(labelled)
+
 supertbl \%>\%
+  make_labelled() \%>\%
   write_redcap_xlsx(file = "supertibble.xlsx", add_labelled_column_headers = TRUE)
 }
 

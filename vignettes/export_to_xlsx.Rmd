@@ -1,0 +1,137 @@
+---
+title: "Exporting to Excel"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Exporting to Excel}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r, include = FALSE}
+library(httptest)
+# Make sure REDCapTidieR is loaded so httptest can find redact.R
+library(REDCapTidieR)
+
+# Use fake credentials if mocks exist, otherwise use real credentials to create mocks
+fake <- dir.exists("export_to_xlsx")
+
+creds <- REDCapTidieR:::get_credentials(
+  c("REDCAP_URI", "SUPERHEROES_REDCAP_API", "REDCAPTIDIER_CLASSIC_API"),
+  fake = fake
+)
+
+redcap_uri <- creds$REDCAP_URI
+superheroes_token <- creds$SUPERHEROES_REDCAP_API
+classic_token <- creds$REDCAPTIDIER_CLASSIC_API
+
+start_vignette("export_to_xlsx")
+```
+
+Excel spreadsheets are an accessible medium for data analysis and collaboration. This vignette will guide you through the process of using REDCapTidieR to transform your REDCap data into an XLSX document, facilitating easy sharing with colleagues.
+
+## Transforming a REDCap project into an XLSX document
+
+The transformation of a REDCap [project](glossary.html#project) into a XLSX document can be achieved in three straightforward steps using the `write_redcap_xlsx()` function:
+
+1)  Specify your REDCap URI and [API](glossary.html#redcap-api) token.
+2)  Invoke `read_redcap()`.
+3)  Apply `write_redcap_xlsx()`.
+
+Below is a practical illustration:
+
+```{r, eval=FALSE}
+redcap_uri <- "https://my.institution.edu/redcap/api/"
+token <- "123456789ABCDEF123456789ABCDEF04"
+
+my_redcap_data <- read_redcap(redcap_uri, token)
+write_redcap_xlsx(my_redcap_data, file = "my_redcap_data.xlsx")
+```
+
+The resulting file will contain the data corresponding to each REDCap [instrument](glossary.html#instrument) in a dedicated sheet. Additionally, a "Table of Contents" sheet will be at the beginning, and a "REDCap Metadata" sheet will be at the end.
+
+## Diving Deeper
+
+We will revisit the Superheroes dataset from the [Getting Started](REDCapTidieR.html#case-study-the-superhero-database) vignette. 
+
+First, we'll use `read_redcap()` to create the `superheroes` [supertibble](glossary.html#supertibble):
+
+``` r
+superheroes_token <- "123456789ABCDEF123456789ABCDEF04"
+redcap_uri <- "https://my.institution.edu/redcap/api/"
+```
+
+```{r}
+superheroes <- read_redcap(redcap_uri, superheroes_token)
+
+superheroes %>%
+  rmarkdown::paged_table()
+```
+
+The `superheroes` supertibble contains two rows, one for each [instrument](glossary.html#instrument) of the Superheroes REDCap [project](glossary.html#project). The `write_redcap_xlsx()` function, leveraging the [openxlsx2](https://janmarvin.github.io/openxlsx2/) package, understands the supertibble's structure and creates a collaborator-friendly XLSX file.
+
+Let's try it out!
+
+```{r, eval=FALSE}
+superheroes %>%
+  write_redcap_xlsx(file = "superheroes.xlsx")
+```
+
+When you open the Excel document, you'll see multiple sheets. The first one is the **Table of Contents** sheet, followed by individual sheets for each instrument's data, and concluded with a **REDCap Metadata** sheet.
+
+<center>![Table of Contents sheet of `superheroes.xlsx`](images/write_xlsx_default.png)</center>
+
+The **Table of Contents** sheet provides an overview of the data present in the rest of the document. If you wish to exclude this sheet, set the `include_toc_sheet` argument of `write_redcap_xlsx()` to `FALSE`.
+
+Each instrument's data is contained in a separate sheet. For a better understanding of how REDCapTidieR represents REDCap data, refer to the [Diving Deeper](diving_deeper.html) vignette.
+
+The column headers come with pre-applied filters (notice the arrow on the right side of each header cell), making data exploration straightforward.
+
+<center>![A data sheet of `superheroes.xlsx`](images/write_xlsx_heroes_information.png)</center>
+
+The **REDCap Metadata** sheet offers metadata for *all* fields from *all* instruments in one place. If you don't want this sheet, set the `include_metadata_sheet` argument of `write_redcap_xlsx()` to `FALSE`.
+
+<center>![REDCap Metadata sheet of `superheroes.xlsx`](images/write_xlsx_metadata.png)</center>
+
+### Applying Labels
+
+Labels can offer valuable context to collaborators, helping them understand the data in a specific column. The `make_labelled()` function allows you to add [variable labels](glossary.html#variable-label) to a REDCapTidieR [supertibble](glossary.html#supertibble), and `write_redcap_xlsx()` can integrate these labels to the Excel sheets. 
+
+Let's add variable labels to `superheroes` and export it to Excel:
+
+```{r, eval=FALSE}
+superheroes %>%
+   make_labelled() %>%
+   write_redcap_xlsx("superheroes-labelled.xlsx")
+```
+
+Observe how the first row now contains a human-readable description for each column.
+
+<center>![Labelled supertbl output](images/write_xlsx_supertbl_labelled.png)</center>
+
+### Recoding Logical Columns
+
+By default, `write_redcap_xlsx()` recodes logical (`TRUE`/`FALSE`) columns into more human-friendly terms. You can adjust this behavior using the `recode_logical` argument:
+
+```{r, eval = FALSE}
+supertbl %>%
+  write_redcap_xlsx(recode_logical = TRUE)
+```
+
+`write_redcap_xlsx()` uses the [field label](glossary.html#field-label) to decide how to recode logical fields:
+
+-   Columns derived from **yesno** fields are recoded from `TRUE`/`FALSE` to `yes`/`no`
+-   Columns derived from **checkbox** fields are recoded from `TRUE`/`FALSE` to `Checked`/`Unchecked`
+-   Columns derived from **truefalse** fields are left as is (`TRUE`/`FALSE`)
+
+Setting `recode_logical` to `FALSE` will preserve all logical fields as (`TRUE`/`FALSE`).
+
+```{r, include=FALSE}
+end_vignette()
+```

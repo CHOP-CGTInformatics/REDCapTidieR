@@ -1,30 +1,31 @@
 #' @title Write Supertibbles to XLSX
 #'
 #' @description
-#' Write supertibble outputs to XLSX file outputs, where each REDCap data tibble
-#' exists in a separate sheet.
+#' Transform a supertibble into an XLSX file, with each REDCap data tibble in a separate sheet.
 #'
-#' @param supertbl A supertibble generated using `read_redcap()`
-#' @param file A file name to write to
-#' @param add_labelled_column_headers If `TRUE`, row 1 of each sheet will contain variable labels. Row 2 will contain
-#' variable names. If `FALSE`, row 1 will contain variable names. The default, `NULL`, attempts to determine
-#' if `supertbl` has variable labels and, if detected, includes them in row 1. `labelled` must be installed if
-#' `add_labelled_column_headers` is `TRUE`.
-#' @param use_labels_for_sheet_names If `TRUE`, sheets in the xlsx output will be named with the values in
-#' `supertbl$redcap_form_label`. If `FALSE`, sheets will be named with values from `supertbl$redcap_form_name`.
-#' Default `TRUE`.
-#' @param include_toc_sheet If `TRUE`, the first sheet in the xlsx output will be a table of contents
-#' with information about each data tibble included in the workbook. Default `TRUE`.
-#' @param include_metadata_sheet If `TRUE`, the last sheet in the xlsx output will contain metadata about each
-#' variable, combining the content of `supertbl$redcap_metadata`. Default `TRUE`.
-#' @param table_style Any excel table style name or "none" (see "formatting"
-#' vignette in \link[openxlsx2]{wb_add_data_table}). Default "tableStyleLight8".
-#' @param column_width Width to set columns across the workbook. Default
-#' "auto", otherwise a numeric value. Standard Excel is 8.43.
+#' @param supertbl A supertibble generated using `read_redcap()`.
+#' @param file The name of the file to which the output will be written.
+#' @param add_labelled_column_headers If `TRUE`, the first row of each sheet will contain variable labels,
+#' with variable names in the second row. If `FALSE`, variable names will be in the first row.
+#' The default value, `NULL`, tries to determine if `supertbl` contains variable labels and,
+#' if present, includes them in the first row. The `labelled` package must be installed
+#' if `add_labelled_column_headers` is `TRUE`.
+#' @param use_labels_for_sheet_names If `FALSE`, sheet names will come from the REDCap instrument names.
+#' If `TRUE`, sheet names will come from instrument labels. The default is `TRUE`.
+#' @param include_toc_sheet If `TRUE`, the first sheet in the XLSX output will be a table of contents,
+#' providing information about each data tibble in the workbook. The default is `TRUE`.
+#' @param include_metadata_sheet If `TRUE`, the final sheet in the XLSX output will contain metadata
+#' about each variable, combining the content of `supertbl$redcap_metadata`. The default is `TRUE`.
+#' @param table_style Any Excel table style name or "none". For more details, see
+#' the
+#' ["formatting" vignette](https://ycphs.github.io/openxlsx/articles/Formatting.html#use-of-pre-defined-table-styles)
+#' of the `openxlsx` package. The default is "tableStyleLight8".
+#' @param column_width Sets the width of columns throughout the workbook.
+#' The default is "auto", but you can specify a numeric value.
 #' @param recode_logical If `TRUE`, fields with "yesno" field type are recoded to "yes"/"no" and fields
-#' with a "checkbox" field type are recoded to "Checked"/"Unchecked". Default `TRUE`.
-#' @param na_strings Value used for replacing NA values in `supertbl`. Default is "".
-#' @param overwrite If `FALSE`, will not overwrite `file` when it exists. Default `TRUE`.
+#' with a "checkbox" field type are recoded to "Checked"/"Unchecked". The default is `TRUE`.
+#' @param na_replace The value used to replace `NA` values in `supertbl`. The default is "".
+#' @param overwrite If `FALSE`, will not overwrite `file` when it exists. The default is `FALSE`.
 #'
 #' @importFrom purrr map map2
 #' @importFrom stringr str_trunc str_replace_all str_squish
@@ -46,7 +47,12 @@
 #' supertbl %>%
 #'   write_redcap_xlsx(file = "supertibble.xlsx")
 #'
+#' # Add variable labels
+#'
+#' library(labelled)
+#'
 #' supertbl %>%
+#'   make_labelled() %>%
 #'   write_redcap_xlsx(file = "supertibble.xlsx", add_labelled_column_headers = TRUE)
 #' }
 #'
@@ -61,8 +67,8 @@ write_redcap_xlsx <- function(supertbl,
                               table_style = "tableStyleLight8",
                               column_width = "auto",
                               recode_logical = TRUE,
-                              na_strings = "",
-                              overwrite = TRUE
+                              na_replace = "",
+                              overwrite = FALSE
 ) {
   # Enforce checks ----
   check_arg_is_supertbl(supertbl)
@@ -104,7 +110,7 @@ write_redcap_xlsx <- function(supertbl,
                                      add_labelled_column_headers,
                                      table_style,
                                      column_width,
-                                     na_strings)
+                                     na_replace)
   }
 
   # Write all redcap_form_name to sheets ----
@@ -144,7 +150,7 @@ write_redcap_xlsx <- function(supertbl,
       wb$add_data_table(sheet = y, x = x,
                         startRow = ifelse(add_labelled_column_headers, 2, 1),
                         tableStyle = table_style,
-                        na.strings = na_strings)
+                        na.strings = na_replace)
     }
   )
 
@@ -156,7 +162,7 @@ write_redcap_xlsx <- function(supertbl,
                        add_labelled_column_headers,
                        table_style,
                        column_width,
-                       na_strings)
+                       na_replace)
   }
 
   # Apply additional aesthetics ----
@@ -206,7 +212,7 @@ write_redcap_xlsx <- function(supertbl,
 #'
 #' @importFrom purrr map pluck
 #' @importFrom tidyr pivot_wider
-#' @importFrom dplyr select filter
+#' @importFrom dplyr select filter relocate
 #' @importFrom rlang check_installed
 #'
 #' @keywords internal
@@ -247,7 +253,12 @@ add_labelled_xlsx_features <- function(supertbl,
       pluck(1, 1) %>%
       labelled::lookfor() %>%
       select("variable", "label") %>%
-      pivot_wider(names_from = "variable", values_from = "label")
+      pivot_wider(names_from = "variable", values_from = "label") %>%
+      # Manually add missing redcap_form_name label
+      mutate(
+        redcap_form_name = "REDCap Form Name"
+      ) %>%
+      relocate(.data$redcap_form_name, .before = "field_name")
 
     wb$add_data(sheet = "REDCap Metadata",
                 x = supertbl_meta_labels, colNames = FALSE)
@@ -290,8 +301,8 @@ add_labelled_xlsx_features <- function(supertbl,
 #' vignette in \link[openxlsx2]{wb_add_data_table}). Default "tableStyleLight8".
 #' @param column_width Width to set columns across the workbook. Default
 #' "auto", otherwise a numeric value. Standard Excel is 8.43.
-#' @param na_strings Value used for replacing NA values from x. Default
-#' `na_strings()` uses the special ⁠#N/A⁠ value within the workbook.
+#' @param na_replace Value used for replacing NA values from x. Default
+#' `na_replace()` uses the special ⁠#N/A⁠ value within the workbook.
 #'
 #' @importFrom dplyr select mutate row_number across
 #' @importFrom tidyselect any_of
@@ -306,7 +317,7 @@ add_supertbl_toc <- function(wb,
                              add_labelled_column_headers,
                              table_style,
                              column_width,
-                             na_strings) {
+                             na_replace) {
 
   # To avoid XLSX indicators of "Number stored as text", change class type
   convert_percent <- function(x) {
@@ -351,7 +362,7 @@ add_supertbl_toc <- function(wb,
                     x = supertbl_toc,
                     startRow = ifelse(add_labelled_column_headers, 2, 1),
                     tableStyle = table_style,
-                    na.strings = na_strings)
+                    na.strings = na_replace)
   wb$set_col_widths(sheet = "Table of Contents",
                     cols = seq_along(supertbl_toc),
                     widths = column_width)
@@ -374,8 +385,8 @@ add_supertbl_toc <- function(wb,
 #' vignette in \link[openxlsx2]{wb_add_data_table}). Default "tableStyleLight8".
 #' @param column_width Width to set columns across the workbook. Default
 #' "auto", otherwise a numeric value. Standard Excel is 8.43.
-#' @param na_strings Value used for replacing NA values from x. Default
-#' `na_strings()` uses the special ⁠#N/A⁠ value within the workbook.
+#' @param na_replace Value used for replacing NA values from x. Default
+#' `na_replace()` uses the special ⁠#N/A⁠ value within the workbook.
 #'
 #' @importFrom dplyr select filter
 #' @importFrom tidyr unnest
@@ -390,14 +401,14 @@ add_metadata_sheet <- function(supertbl,
                                add_labelled_column_headers,
                                table_style,
                                column_width,
-                               na_strings) {
+                               na_replace) {
 
   wb$add_worksheet(sheet = "REDCap Metadata")
   wb$add_data_table(sheet = "REDCap Metadata",
                     x = supertbl_meta,
                     startRow = ifelse(add_labelled_column_headers, 2, 1),
                     tableStyle = table_style,
-                    na.strings = na_strings)
+                    na.strings = na_replace)
   wb$set_col_widths(sheet = "REDCap Metadata",
                     cols = seq_along(supertbl_meta),
                     widths = column_width)
@@ -518,16 +529,35 @@ supertbl_recode <- function(supertbl, supertbl_meta) {
 #'
 #' @param supertbl A supertibble generated using `read_redcap()`
 #'
-#' @importFrom dplyr filter select
+#' @importFrom dplyr filter select mutate case_when pull
 #' @importFrom tidyr unnest
 #'
 #' @keywords internal
 
 bind_supertbl_metadata <- function(supertbl) {
-  supertbl %>%
-    select("redcap_metadata") %>% #nolint: object_usage_linter
-    unnest(cols = "redcap_metadata") %>% # record ID gets duplicated.
-    # Since no other fields are allowed to be duplicated in REDCap,
-    # can use filtering here for removal of duplicated record ID fields
-    filter(!duplicated(.data$field_name))
+  out <- supertbl %>%
+    select("redcap_form_name", "redcap_metadata") %>% #nolint: object_usage_linter
+    unnest(cols = c("redcap_form_name", "redcap_metadata"))
+
+  # Detect Record ID field by looking for duplicated field_names
+  # Since no other fields in REDCap are allowed to be duplicated, we should only
+  # ever expect to receive the record ID field (whatever it's named)
+  if (any(duplicated(out$field_name))) {
+    record_id <- out %>% #nolint: object_usage_linter
+      filter(duplicated(.data$field_name)) %>%
+      pull(.data$field_name)
+  } else {
+    # Edge case when there is only one instrument
+    record_id <- out$field_name[1]
+  }
+
+  # Remove duplicated rows left over by record ID
+  out %>%
+    mutate(
+      redcap_form_name = case_when(
+        field_name == record_id ~ NA,
+        TRUE ~ redcap_form_name
+      )
+    ) %>%
+    unique()
 }

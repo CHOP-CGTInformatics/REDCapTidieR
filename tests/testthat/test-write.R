@@ -91,10 +91,10 @@ test_that("write_redcap_xlsx has expected supertibble and metadata outputs", {
     as.data.frame()
 
   expected_meta <- tibble::tribble(
-    ~field_name, ~field_label,
-    "record_id",  "Record ID",
-    "col_a",      "Label A",
-    "col_b",      "Label B"
+    ~redcap_form_name, ~field_name, ~field_label,
+    NA,                  "record_id",  "Record ID",
+    "a",                 "col_a",      "Label A",
+    "b",                 "col_b",      "Label B"
   ) %>%
     as.data.frame()
 
@@ -120,6 +120,7 @@ test_that("write_redcap_xlsx has expected supertibble and metadata outputs", {
   )
 
   expected_meta_labels <- c(
+    "REDCap Form Name",
     "Variable / Field Name",
     "Field Label"
   )
@@ -169,10 +170,10 @@ test_that("bind_supertbl_metadata works", {
 
   supertbl_meta <- bind_supertbl_metadata(supertbl)
   expected_meta <- tibble::tribble(
-    ~field_name, ~field_label,
-    "record_id",  "Record ID",
-    "col_a",      "Label A",
-    "col_b",      "Label B"
+    ~redcap_form_name, ~field_name, ~field_label,
+    NA,                 "record_id",  "Record ID",
+    "a",                "col_a",      "Label A",
+    "b",                "col_b",      "Label B"
   )
 
   expect_equal(supertbl_meta, expected_meta)
@@ -190,9 +191,9 @@ test_that("supertbl_recode works", {
 
   redcap_metadata_c <- tibble::tribble(
     ~field_name, ~field_type, ~field_label,
-    "record_id",  "text",      "Record ID",
-    "yesno",      "yesno",     "YesNo",
-    "checkbox",   "checkbox",  "Checkbox"
+     "record_id",  "text",      "Record ID",
+     "yesno",      "yesno",     "YesNo",
+     "checkbox",   "checkbox",  "Checkbox"
   )
 
   supertbl_recoded <- tibble::tribble(
