@@ -96,8 +96,8 @@ create_repeat_instance_vars <- function(db_data) {
     )
 
     out <- relocate(out,
-      "redcap_event_instance",
-      .after = "redcap_form_instance"
+                    "redcap_event_instance",
+                    .after = "redcap_form_instance"
     )
   }
 
@@ -186,7 +186,7 @@ parse_labels <- function(string, return_vector = FALSE, return_stripped_text_fla
   # If string is empty/NA, throw a warning
   if (is.na(string)) {
     cli_warn("Empty string detected for a given multiple choice label.",
-      class = c("empty_parse_warning", "REDCapTidieR_cond")
+             class = c("empty_parse_warning", "REDCapTidieR_cond")
     )
   }
 
@@ -731,4 +731,25 @@ remove_empty_rows <- function(data, my_record_id) {
   # Filter for rows where specified columns have any non-NA data
   data %>%
     filter(if_any(all_of(data_cols), ~ !is.na(.))) # nolint: object_usage_linter
+}
+
+#' @title Determine if an object is labelled
+#'
+#' @description
+#' An internal utility function used to inform other processes of whether or
+#' not a given object has been labelled (i.e. with `make_labelled()`).
+#'
+#' @details
+#' An object is considered labelled if it has "label" attributes.
+#'
+#' @returns A boolean
+#'
+#' @param obj An object to be tested for "label" attributes
+#'
+#' @importFrom purrr some
+#'
+#' @keywords internal
+
+is_labelled <- function(obj) {
+  some(obj, function(x) !is.null(attr(x, "label")))
 }
