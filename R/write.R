@@ -181,6 +181,7 @@ write_redcap_xlsx <- function(supertbl,
   if (add_labelled_column_headers) {
     add_labelled_xlsx_features(
       supertbl,
+      supertbl_meta,
       wb,
       sheet_vals,
       include_toc_sheet,
@@ -200,6 +201,7 @@ write_redcap_xlsx <- function(supertbl,
 #' Helper function to support `labelled` aesthetics to XLSX supertibble output
 #'
 #' @param supertbl a supertibble generated using `read_redcap()`
+#' @param supertbl_meta description TBD
 #' @param wb An `openxlsx2` workbook object
 #' @param sheet_vals Helper argument passed from `write_redcap_xlsx` to
 #' determine and assign sheet values.
@@ -214,10 +216,12 @@ write_redcap_xlsx <- function(supertbl,
 #' @importFrom tidyr pivot_wider
 #' @importFrom dplyr select filter relocate
 #' @importFrom rlang check_installed
+#' @importFrom tidyselect contains
 #'
 #' @keywords internal
 
 add_labelled_xlsx_features <- function(supertbl,
+                                       supertbl_meta,
                                        wb,
                                        sheet_vals,
                                        include_toc_sheet = TRUE,
@@ -248,20 +252,37 @@ add_labelled_xlsx_features <- function(supertbl,
 
   # Add supertbl_meta labels ----
   if (include_metadata_sheet) {
-    supertbl_meta_labels <- supertbl %>%
+    # Define skimr labels ----
+    skimr_labs <- make_skimr_labs()
+
+    # Define standard metadata labs ----
+    supertbl_meta_labs <- supertbl %>%
       select("redcap_metadata") %>%
       pluck(1, 1) %>%
+      select(!contains(names(skimr_labs))) %>%
+      labelled::lookfor()
+
+    supertbl_meta_labs <- c(supertbl_meta_labs$label)
+
+    # Combine Labels ----
+    metadata_labs <- c(skimr_labs, supertbl_meta_labs)
+
+    # Apply labels ----
+    # Utility function for label setting
+    # Set labels of tibble from named vector but don't fail if labels vector has
+    # variables that aren't in the data
+    safe_set_variable_labels <- function(data, labs) {
+      labs_to_keep <- intersect(names(labs), colnames(data))
+      labelled::set_variable_labels(data, !!!labs[labs_to_keep])
+    }
+
+    supertbl_meta_labs <- safe_set_variable_labels(supertbl_meta, metadata_labs) %>%
       labelled::lookfor() %>%
       select("variable", "label") %>%
-      pivot_wider(names_from = "variable", values_from = "label") %>%
-      # Manually add missing redcap_form_name label
-      mutate(
-        redcap_form_name = "REDCap Form Name"
-      ) %>%
-      relocate(.data$redcap_form_name, .before = "field_name")
+      pivot_wider(names_from = "variable", values_from = "label")
 
     wb$add_data(sheet = "REDCap Metadata",
-                x = supertbl_meta_labels, colNames = FALSE)
+                x = supertbl_meta_labs, colNames = FALSE)
   }
 
   # Define redcap_data variable labels
@@ -545,7 +566,8 @@ bind_supertbl_metadata <- function(supertbl) {
   if (any(duplicated(out$field_name))) {
     record_id <- out %>% #nolint: object_usage_linter
       filter(duplicated(.data$field_name)) %>%
-      pull(.data$field_name)
+      pull(.data$field_name) %>%
+      unique()
   } else {
     # Edge case when there is only one instrument
     record_id <- out$field_name[1]

@@ -6,6 +6,7 @@
 \usage{
 add_labelled_xlsx_features(
   supertbl,
+  supertbl_meta,
   wb,
   sheet_vals,
   include_toc_sheet = TRUE,
@@ -15,6 +16,8 @@ add_labelled_xlsx_features(
 }
 \arguments{
 \item{supertbl}{a supertibble generated using \code{read_redcap()}}
+
+\item{supertbl_meta}{description TBD}
 
 \item{wb}{An \code{openxlsx2} workbook object}
 
