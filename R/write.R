@@ -434,7 +434,7 @@ add_metadata_sheet <- function(supertbl,
 
 check_labelled <- function(supertbl, add_labelled_column_headers, call = caller_env()) {
   # supertbl is considered labelled if cols have label attributes
-  is_labelled <- some(supertbl, function(x) !is.null(attr(x, "label")))
+  is_labelled <- is_labelled(supertbl)
 
   # If user declared labelled is FALSE return FALSE
   if (!is.null(add_labelled_column_headers) && !add_labelled_column_headers) {
