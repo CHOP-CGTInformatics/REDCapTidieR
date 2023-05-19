@@ -4,8 +4,9 @@ pkgdown_sha: ~
 articles:
   REDCapTidieR: REDCapTidieR.html
   diving_deeper: diving_deeper.html
+  export_to_xlsx: export_to_xlsx.html
   glossary: glossary.html
-last_built: 2023-05-16T15:59Z
+last_built: 2023-05-19T13:36Z
 urls:
   reference: https://chop-cgtinformatics.github.io/REDCapTidieR/reference
   article: https://chop-cgtinformatics.github.io/REDCapTidieR/articles
