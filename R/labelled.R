@@ -110,14 +110,6 @@ make_labelled <- function(supertbl, format_labels = NULL) {
 
   # Apply labels ----
 
-  # Utility function for label setting
-  # Set labels of tibble from named vector but don't fail if labels vector has
-  # variables that aren't in the data
-  safe_set_variable_labels <- function(data, labs) {
-    labs_to_keep <- intersect(names(labs), colnames(data))
-    labelled::set_variable_labels(data, !!!labs[labs_to_keep])
-  }
-
   out <- supertbl
 
   # Label cols of each metadata tibble
@@ -293,46 +285,4 @@ resolve_formatter <- function(format_labels, env = caller_env(n = 2), call = cal
     class = c("unresolved_formatter", "REDCapTidieR_cond"),
     call = call
   )
-}
-
-#' @title
-#' Make skimr labels from default skimr outputs
-#'
-#' @details
-#' A simple helper function that returns all default `skimr` names as formatted
-#' character vector for use in `make_lablled`
-#'
-#' @importFrom stringr str_replace str_to_title
-#' @importFrom purrr imap_chr
-#' @importFrom stats setNames
-#'
-#' @return A character vector
-#'
-#' @keywords internal
-#'
-make_skimr_labs <- function() {
-  all_skimr_names <- skimr::get_default_skimmer_names()
-  all_skimr_names <- setNames(
-    unlist(all_skimr_names, use.names = FALSE),
-    rep(names(all_skimr_names), lengths(all_skimr_names))
-  )
-
-  updated_skimr_names <- imap_chr(all_skimr_names, \(x, idx) paste0(idx, ".", x))
-
-  skimr_labels <- updated_skimr_names %>%
-    str_replace("[.]", " ") %>%
-    str_replace("_", " ") %>%
-    str_to_title()
-
-  skimr_labs <- skimr_labels
-  names(skimr_labs) <- updated_skimr_names
-
-  skimr_labs <- c(
-    skim_type = "Skim Type",
-    n_missing = "N Missing",
-    complete_rate = "Complete Rate",
-    skimr_labs
-  )
-
-  skimr_labs
 }

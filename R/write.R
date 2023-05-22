@@ -268,13 +268,6 @@ add_labelled_xlsx_features <- function(supertbl,
     metadata_labs <- c(skimr_labs, supertbl_meta_labs)
 
     # Apply labels ----
-    # Utility function for label setting
-    # Set labels of tibble from named vector but don't fail if labels vector has
-    # variables that aren't in the data
-    safe_set_variable_labels <- function(data, labs) {
-      labs_to_keep <- intersect(names(labs), colnames(data))
-      labelled::set_variable_labels(data, !!!labs[labs_to_keep])
-    }
 
     supertbl_meta_labs <- safe_set_variable_labels(supertbl_meta, metadata_labs) %>%
       labelled::lookfor() %>%

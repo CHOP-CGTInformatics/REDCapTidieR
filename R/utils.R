@@ -753,3 +753,60 @@ remove_empty_rows <- function(data, my_record_id) {
 is_labelled <- function(obj) {
   some(obj, function(x) !is.null(attr(x, "label")))
 }
+
+#' @title
+#' Make skimr labels from default skimr outputs
+#'
+#' @details
+#' A simple helper function that returns all default `skimr` names as formatted
+#' character vector for use in `make_lablled`
+#'
+#' @importFrom stringr str_replace str_to_title
+#' @importFrom purrr imap_chr
+#' @importFrom stats setNames
+#'
+#' @return A character vector
+#'
+#' @keywords internal
+#'
+make_skimr_labs <- function() {
+  all_skimr_names <- skimr::get_default_skimmer_names()
+  all_skimr_names <- setNames(
+    unlist(all_skimr_names, use.names = FALSE),
+    rep(names(all_skimr_names), lengths(all_skimr_names))
+  )
+
+  updated_skimr_names <- imap_chr(all_skimr_names, \(x, idx) paste0(idx, ".", x))
+
+  skimr_labels <- updated_skimr_names %>%
+    str_replace("[.]", " ") %>%
+    str_replace("_", " ") %>%
+    str_to_title()
+
+  skimr_labs <- skimr_labels
+  names(skimr_labs) <- updated_skimr_names
+
+  skimr_labs <- c(
+    skim_type = "Skim Type",
+    n_missing = "N Missing",
+    complete_rate = "Complete Rate",
+    skimr_labs
+  )
+
+  skimr_labs
+}
+
+#' @title Safely set variable labels
+#'
+#' @description
+#' A utility function for setting labels of a tibble from a named vector while
+#' accounting for labels that may not be present in the data.
+#'
+#' @returns A tibble
+#'
+#' @keywords internal
+
+safe_set_variable_labels <- function(data, labs) {
+  labs_to_keep <- intersect(names(labs), colnames(data))
+  labelled::set_variable_labels(data, !!!labs[labs_to_keep])
+}
