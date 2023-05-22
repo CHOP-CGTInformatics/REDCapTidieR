@@ -378,3 +378,75 @@ test_that("is_labelled works", {
   is_labelled <- is_labelled(df)
   expect_true(is_labelled)
 })
+
+test_that("make_skimr_labs works", {
+  expected_skimr_labs <- c(
+    skim_type = "Skim Type",
+    n_missing = "N Missing",
+    complete_rate = "Complete Rate",
+    AsIs.n_unique = "Asis N Unique",
+    AsIs.min_length = "Asis Min Length",
+    AsIs.max_length = "Asis Max Length",
+    character.min = "Character Min",
+    character.max = "Character Max",
+    character.empty = "Character Empty",
+    character.n_unique = "Character N Unique",
+    character.whitespace = "Character Whitespace",
+    complex.mean = "Complex Mean",
+    Date.min = "Date Min",
+    Date.max = "Date Max",
+    Date.median = "Date Median",
+    Date.n_unique = "Date N Unique",
+    difftime.min = "Difftime Min",
+    difftime.max = "Difftime Max",
+    difftime.median = "Difftime Median",
+    difftime.n_unique = "Difftime N Unique",
+    factor.ordered = "Factor Ordered",
+    factor.n_unique = "Factor N Unique",
+    factor.top_counts = "Factor Top Counts",
+    haven_labelled.mean = "Haven Labelled Mean",
+    haven_labelled.sd = "Haven Labelled Sd",
+    haven_labelled.p0 = "Haven Labelled P0",
+    haven_labelled.p25 = "Haven Labelled P25",
+    haven_labelled.p50 = "Haven Labelled P50",
+    haven_labelled.p75 = "Haven Labelled P75",
+    haven_labelled.p100 = "Haven Labelled P100",
+    haven_labelled.hist = "Haven Labelled Hist",
+    list.n_unique = "List N Unique",
+    list.min_length = "List Min Length",
+    list.max_length = "List Max Length",
+    logical.mean = "Logical Mean",
+    logical.count = "Logical Count",
+    numeric.mean = "Numeric Mean",
+    numeric.sd = "Numeric Sd",
+    numeric.p0 = "Numeric P0",
+    numeric.p25 = "Numeric P25",
+    numeric.p50 = "Numeric P50",
+    numeric.p75 = "Numeric P75",
+    numeric.p100 = "Numeric P100",
+    numeric.hist = "Numeric Hist",
+    POSIXct.min = "Posixct Min",
+    POSIXct.max = "Posixct Max",
+    POSIXct.median = "Posixct Median",
+    POSIXct.n_unique = "Posixct N Unique",
+    Timespan.min = "Timespan Min",
+    Timespan.max = "Timespan Max",
+    Timespan.median = "Timespan Median",
+    Timespan.n_unique = "Timespan N Unique",
+    ts.start = "Ts Start",
+    ts.end = "Ts End",
+    ts.frequency = "Ts Frequency",
+    ts.deltat = "Ts Deltat",
+    ts.mean = "Ts Mean",
+    ts.sd = "Ts Sd",
+    ts.min = "Ts Min",
+    ts.max = "Ts Max",
+    ts.median = "Ts Median",
+    ts.line_graph = "Ts Line Graph"
+  )
+
+  skimr_labs <- make_skimr_labs()
+
+  expect_true(all(skimr_labs %in% expected_skimr_labs))
+  expect_true(all(names(skimr_labs) %in% names(expected_skimr_labs)))
+})
