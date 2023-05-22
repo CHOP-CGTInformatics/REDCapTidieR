@@ -216,7 +216,7 @@ write_redcap_xlsx <- function(supertbl,
 #' @importFrom tidyr pivot_wider
 #' @importFrom dplyr select filter relocate
 #' @importFrom rlang check_installed
-#' @importFrom tidyselect contains
+#' @importFrom tidyselect any_of
 #'
 #' @keywords internal
 
@@ -259,7 +259,7 @@ add_labelled_xlsx_features <- function(supertbl,
     supertbl_meta_labs <- supertbl %>%
       select("redcap_metadata") %>%
       pluck(1, 1) %>%
-      select(!contains(names(skimr_labs))) %>%
+      select(!any_of(names(skimr_labs))) %>%
       labelled::lookfor()
 
     supertbl_meta_labs <- c(supertbl_meta_labs$label)
