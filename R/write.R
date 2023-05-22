@@ -545,6 +545,8 @@ supertbl_recode <- function(supertbl, supertbl_meta) {
 #'
 #' @importFrom dplyr filter select mutate case_when pull
 #' @importFrom tidyr unnest
+#' @importFrom lubridate is.period is.difftime
+#' @importFrom tidyselect where
 #'
 #' @keywords internal
 
@@ -566,9 +568,10 @@ bind_supertbl_metadata <- function(supertbl) {
     record_id <- out$field_name[1]
   }
 
-  # Remove duplicated rows left over by record ID
+
   out %>%
     mutate(
+      # Remove duplicated rows left over by record ID
       redcap_form_name = case_when(
         field_name == record_id ~ NA,
         TRUE ~ redcap_form_name
@@ -576,7 +579,10 @@ bind_supertbl_metadata <- function(supertbl) {
       redcap_form_label = case_when(
         field_name == record_id ~ NA,
         TRUE ~ redcap_form_label
-      )
+      ),
+      # Convert period/difftime to character to address possible file corruption
+      across(where(is.difftime), as.character),
+      across(where(is.period), as.character)
     ) %>%
     unique()
 }
