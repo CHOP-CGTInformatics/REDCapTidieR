@@ -550,8 +550,8 @@ supertbl_recode <- function(supertbl, supertbl_meta) {
 
 bind_supertbl_metadata <- function(supertbl) {
   out <- supertbl %>%
-    select("redcap_form_name", "redcap_metadata") %>% #nolint: object_usage_linter
-    unnest(cols = c("redcap_form_name", "redcap_metadata"))
+    select("redcap_form_name", "redcap_form_label", "redcap_metadata") %>% #nolint: object_usage_linter
+    unnest(cols = c("redcap_form_name", "redcap_form_label", "redcap_metadata"))
 
   # Detect Record ID field by looking for duplicated field_names
   # Since no other fields in REDCap are allowed to be duplicated, we should only
@@ -572,6 +572,10 @@ bind_supertbl_metadata <- function(supertbl) {
       redcap_form_name = case_when(
         field_name == record_id ~ NA,
         TRUE ~ redcap_form_name
+      ),
+      redcap_form_label = case_when(
+        field_name == record_id ~ NA,
+        TRUE ~ redcap_form_label
       )
     ) %>%
     unique()

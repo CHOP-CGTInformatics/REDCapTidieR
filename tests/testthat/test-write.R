@@ -91,10 +91,10 @@ test_that("write_redcap_xlsx has expected supertibble and metadata outputs", {
     as.data.frame()
 
   expected_meta <- tibble::tribble(
-    ~redcap_form_name, ~field_name, ~field_label,
-    NA,                  "record_id",  "Record ID",
-    "a",                 "col_a",      "Label A",
-    "b",                 "col_b",      "Label B"
+    ~redcap_form_name, ~redcap_form_label, ~field_name, ~field_label,
+    NA,                  NA,                "record_id",  "Record ID",
+    "a",                 "A",               "col_a",      "Label A",
+    "b",                 "B",               "col_b",      "Label B"
   ) %>%
     as.data.frame()
 
@@ -120,7 +120,8 @@ test_that("write_redcap_xlsx has expected supertibble and metadata outputs", {
   )
 
   expected_meta_labels <- c(
-    "REDCap Form Name",
+    "REDCap Instrument Name",
+    "REDCap Instrument Description",
     "Variable / Field Name",
     "Field Label"
   )
@@ -170,10 +171,10 @@ test_that("bind_supertbl_metadata works", {
 
   supertbl_meta <- bind_supertbl_metadata(supertbl)
   expected_meta <- tibble::tribble(
-    ~redcap_form_name, ~field_name, ~field_label,
-    NA,                 "record_id",  "Record ID",
-    "a",                "col_a",      "Label A",
-    "b",                "col_b",      "Label B"
+    ~redcap_form_name, ~redcap_form_label, ~field_name, ~field_label,
+    NA,                 NA,                 "record_id",  "Record ID",
+    "a",                "A",                "col_a",      "Label A",
+    "b",                "B",                "col_b",      "Label B"
   )
 
   expect_equal(supertbl_meta, expected_meta)
