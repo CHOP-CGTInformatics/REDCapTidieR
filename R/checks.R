@@ -114,7 +114,8 @@ check_repeat_and_nonrepeat <- function(db_data, call = caller_env()) {
   # Identify columns to check for repeat/nonrepeat behavior
   safe_cols <- c(
     names(db_data)[1], "redcap_event_name",
-    "redcap_repeat_instrument", "redcap_repeat_instance"
+    "redcap_repeat_instrument", "redcap_repeat_instance",
+    "redcap_data_access_group"
   )
 
   check_cols <- setdiff(names(db_data), safe_cols)

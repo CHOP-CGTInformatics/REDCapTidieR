@@ -161,6 +161,11 @@ distill_nonrepeat_table_long <- function(form_name,
     my_fields <- c(my_fields, "redcap_survey_identifier")
   }
 
+  # For projects containing DAGs, also pull redcap_data_access_group
+  if ("redcap_data_access_group" %in% names(db_data_long)) {
+    my_fields <- c(my_fields, "redcap_data_access_group")
+  }
+
   # Setup data for loop redcap_arm linking
   db_data_long <- db_data_long %>%
     add_partial_keys(var = .data$redcap_event_name)
@@ -191,6 +196,7 @@ distill_nonrepeat_table_long <- function(form_name,
       any_of(c("redcap_event", "redcap_arm", "redcap_form_instance", "redcap_event_instance")),
       .after = !!my_record_id
     ) %>%
+    relocate(any_of("redcap_data_access_group"), .after = all_of(my_record_id)) %>%
     rename("redcap_survey_timestamp" = any_of(paste0(my_form, "_timestamp"))) %>%
     relocate(any_of("redcap_survey_timestamp"), .after = everything()) %>%
     rename("form_status_complete" = paste0(my_form, "_complete")) %>%
@@ -281,6 +287,11 @@ distill_repeat_table_long <- function(form_name,
     my_fields <- c(my_fields, "redcap_survey_identifier")
   }
 
+  # For projects containing DAGs, also pull redcap_data_access_group
+  if ("redcap_data_access_group" %in% names(db_data_long)) {
+    my_fields <- c(my_fields, "redcap_data_access_group")
+  }
+
   # Setup data for loop redcap_arm linking
   db_data_long <- db_data_long %>%
     add_partial_keys(var = .data$redcap_event_name) %>%
@@ -311,6 +322,7 @@ distill_repeat_table_long <- function(form_name,
       any_of(c("redcap_event", "redcap_arm", "redcap_form_instance", "redcap_event_instance")),
       .after = !!my_record_id
     ) %>%
+    relocate(any_of("redcap_data_access_group"), .after = all_of(my_record_id)) %>%
     rename("redcap_survey_timestamp" = any_of(paste0(my_form, "_timestamp"))) %>%
     relocate(any_of("redcap_survey_timestamp"), .after = everything()) %>%
     rename("form_status_complete" = paste0(my_form, "_complete")) %>%

@@ -10,6 +10,7 @@ read_redcap(
   raw_or_label = "label",
   forms = NULL,
   export_survey_fields = TRUE,
+  export_data_access_groups = TRUE,
   suppress_redcapr_messages = TRUE,
   guess_max = .Machine$integer.max
 )
@@ -32,6 +33,10 @@ in the project.}
 
 \item{export_survey_fields}{A logical that specifies whether to export the
 survey identifier and timestamp fields if available. Default is \code{TRUE}.}
+
+\item{export_data_access_groups}{A boolean value that specifies whether or
+not to export the \code{redcap_data_access_group} field when data access groups are
+utilized in the project. Default is \code{FALSE}.}
 
 \item{suppress_redcapr_messages}{A logical to control whether to suppress messages
 from REDCapR API calls. Default \code{TRUE}.}

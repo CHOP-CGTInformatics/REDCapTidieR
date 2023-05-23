@@ -50,6 +50,9 @@
 #' in the project.
 #' @param export_survey_fields A logical that specifies whether to export the
 #' survey identifier and timestamp fields if available. Default is `TRUE`.
+#' @param export_data_access_groups A boolean value that specifies whether or
+#' not to export the `redcap_data_access_group` field when data access groups are
+#' utilized in the project. Default is `FALSE`.
 #' @param suppress_redcapr_messages A logical to control whether to suppress messages
 #' from REDCapR API calls. Default `TRUE`.
 #' @param guess_max A positive [base::numeric] value
@@ -75,6 +78,7 @@ read_redcap <- function(redcap_uri,
                         raw_or_label = "label",
                         forms = NULL,
                         export_survey_fields = TRUE,
+                        export_data_access_groups = TRUE,
                         suppress_redcapr_messages = TRUE,
                         guess_max = .Machine$integer.max) {
   check_arg_is_character(redcap_uri, len = 1, any.missing = FALSE)
@@ -162,6 +166,7 @@ read_redcap <- function(redcap_uri,
       token = token,
       forms = forms_for_api_call,
       export_survey_fields = export_survey_fields,
+      export_data_access_groups = export_data_access_groups,
       verbose = !suppress_redcapr_messages,
       guess_max = guess_max
     )
