@@ -10,10 +10,10 @@ make_skimr_labels()
 A character vector
 }
 \description{
-Make skimr labels from default skimr outputs
-}
-\details{
 A simple helper function that returns all default \code{skimr} names as formatted
 character vector for use in \code{make_lablled}
+}
+\details{
+All labels supplied are manually created and agreed upon as human-readable
 }
 \keyword{internal}
