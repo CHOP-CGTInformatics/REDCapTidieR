@@ -326,7 +326,8 @@ test_that("Combining skimr, labelled, and xlsx returns expected snapshot", {
   httptest::with_mock_api({
     out <-
       read_redcap(creds$REDCAP_URI, creds$REDCAPTIDIER_CLASSIC_API) %>%
-      # suppress expected warning
+      # Suppress expected warnings from the REDCapTidieR Classic database.
+      # Warnings here are meant to validate checks in other tests.
       suppressWarnings(classes = c(
         "field_missing_categories",
         "empty_parse_warning",
@@ -341,5 +342,17 @@ test_that("Combining skimr, labelled, and xlsx returns expected snapshot", {
       write_redcap_xlsx(file = "temp.xlsx")
   })
 
-  expect_snapshot(wb_obj)
+  # Select wb elements of interest
+  wb_list <- list(
+    wb_obj$tables,
+    wb_obj$workbook,
+    wb_obj$workbook.xml.rels,
+    wb_obj$worksheets,
+    wb_obj$worksheets_rels,
+    wb_obj$workbook.xml.rels,
+    wb_obj$sheetOrder,
+    wb_obj$sheet_names
+  )
+
+  expect_snapshot(wb_list, cran = FALSE) # Not to be checked on CRAN
 })
