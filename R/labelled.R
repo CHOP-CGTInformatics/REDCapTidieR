@@ -106,7 +106,7 @@ make_labelled <- function(supertbl, format_labels = NULL) {
 
   # Define skimr labels ----
 
-  skimr_labs <- make_skimr_labs()
+  skimr_labs <- make_skimr_labels()
 
   # Apply labels ----
 

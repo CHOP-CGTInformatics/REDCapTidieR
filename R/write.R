@@ -253,7 +253,7 @@ add_labelled_xlsx_features <- function(supertbl,
   # Add supertbl_meta labels ----
   if (include_metadata_sheet) {
     # Define skimr labels ----
-    skimr_labs <- make_skimr_labs()
+    skimr_labs <- make_skimr_labels()
 
     # Define standard metadata labs ----
     supertbl_meta_labs <- supertbl %>%

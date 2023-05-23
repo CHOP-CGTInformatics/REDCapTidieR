@@ -379,7 +379,7 @@ test_that("is_labelled works", {
   expect_true(is_labelled)
 })
 
-test_that("make_skimr_labs works", {
+test_that("make_skimr_labels works", {
   expected_skimr_labs <- c(
     skim_type = "Skim Type",
     n_missing = "N Missing",
@@ -445,7 +445,7 @@ test_that("make_skimr_labs works", {
     ts.line_graph = "Ts Line Graph"
   )
 
-  skimr_labs <- make_skimr_labs()
+  skimr_labs <- make_skimr_labels()
 
   expect_true(all(skimr_labs %in% expected_skimr_labs))
   expect_true(all(names(skimr_labs) %in% names(expected_skimr_labs)))

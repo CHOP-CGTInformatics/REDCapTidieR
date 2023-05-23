@@ -769,7 +769,7 @@ is_labelled <- function(obj) {
 #'
 #' @keywords internal
 #'
-make_skimr_labs <- function() {
+make_skimr_labels <- function() {
   all_skimr_names <- skimr::get_default_skimmer_names()
   all_skimr_names <- setNames(
     unlist(all_skimr_names, use.names = FALSE),
