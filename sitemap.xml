@@ -148,13 +148,16 @@
     <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/index.html</loc>
   </url>
   <url>
+    <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/is_labelled.html</loc>
+  </url>
+  <url>
     <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/link_arms.html</loc>
   </url>
   <url>
     <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/make_labelled.html</loc>
   </url>
   <url>
-    <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/make_skimr_labs.html</loc>
+    <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/make_skimr_labels.html</loc>
   </url>
   <url>
     <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/multi_choice_to_labels.html</loc>
@@ -170,6 +173,12 @@
   </url>
   <url>
     <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/resolve_formatter.html</loc>
+  </url>
+  <url>
+    <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/safe_set_variable_labels.html</loc>
+  </url>
+  <url>
+    <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/skim_data.html</loc>
   </url>
   <url>
     <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/strip_html_field_embedding.html</loc>
