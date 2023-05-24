@@ -127,14 +127,14 @@ test_that("make_labelled applies all predefined labeles", {
     field_name = "Variable / Field Name",
     field_label = "Field Label",
     field_type = "Field Type",
-    section_header = "Section Header",
+    section_header = "Section Header Prior to this Field",
     field_note = "Field Note",
     text_validation_type_or_show_slider_number = "Text Validation Type OR Show Slider Number",
-    text_validation_min = "Text Validation Min",
-    text_validation_max = "Text Validation Max",
-    identifier = "Identifier?",
+    text_validation_min = "Minimum Accepted Value for Text Validation",
+    text_validation_max = "Maximum Accepted Value for Text Validation",
+    identifier = "Is this Field an Identifier?",
     branching_logic = "Branching Logic (Show field only if...)",
-    required_field = "Required Field?",
+    required_field = "Is this Field Required?",
     custom_alignment = "Custom Alignment",
     question_number = "Question Number (surveys only)",
     matrix_group_name = "Matrix Group Name",
@@ -316,15 +316,9 @@ test_that("make_labelled preserves S3 class", {
 })
 
 test_that("make_labelled returns expected skimr labels", {
-  # Create a tibble with all possible skimr data columns
-  skimr_names <- skimr::get_default_skimmer_names()
-  skimr_names <- stats::setNames(
-    unlist(skimr_names, use.names = FALSE),
-    rep(names(skimr_names), lengths(skimr_names))
-  )
-
-  supertbl_skimr_meta <- imap_chr(skimr_names, \(x, idx) paste0(idx, ".", x)) %>%
-    tibble::as_tibble() %>%
+  supertbl_skimr_meta <- make_skimr_labels() %>%
+    names() %>%
+    as_tibble() %>%
     dplyr::rename("name" = value) %>%
     dplyr::mutate(value = NA) %>%
     tidyr::pivot_wider()
@@ -341,71 +335,48 @@ test_that("make_labelled returns expected skimr labels", {
   # Create expectations
   out <- make_labelled(supertbl)
 
-  skimr_labs <- labelled::var_label(out$redcap_metadata[[1]])
+  skimr_labels <- labelled::var_label(out$redcap_metadata[[1]])
 
-  expected_skimr_labs <- list(
+  expected_skimr_labels <- c(
     field_name = "Variable / Field Name",
     field_label = "Field Label",
-    AsIs.n_unique = "Asis N Unique",
-    AsIs.min_length = "Asis Min Length",
-    AsIs.max_length = "Asis Max Length",
-    character.min = "Character Min",
-    character.max = "Character Max",
-    character.empty = "Character Empty",
-    character.n_unique = "Character N Unique",
-    character.whitespace = "Character Whitespace",
-    complex.mean = "Complex Mean",
-    Date.min = "Date Min",
-    Date.max = "Date Max",
-    Date.median = "Date Median",
-    Date.n_unique = "Date N Unique",
-    difftime.min = "Difftime Min",
-    difftime.max = "Difftime Max",
-    difftime.median = "Difftime Median",
-    difftime.n_unique = "Difftime N Unique",
-    factor.ordered = "Factor Ordered",
-    factor.n_unique = "Factor N Unique",
-    factor.top_counts = "Factor Top Counts",
-    haven_labelled.mean = "Haven Labelled Mean",
-    haven_labelled.sd = "Haven Labelled Sd",
-    haven_labelled.p0 = "Haven Labelled P0",
-    haven_labelled.p25 = "Haven Labelled P25",
-    haven_labelled.p50 = "Haven Labelled P50",
-    haven_labelled.p75 = "Haven Labelled P75",
-    haven_labelled.p100 = "Haven Labelled P100",
-    haven_labelled.hist = "Haven Labelled Hist",
-    list.n_unique = "List N Unique",
-    list.min_length = "List Min Length",
-    list.max_length = "List Max Length",
-    logical.mean = "Logical Mean",
-    logical.count = "Logical Count",
-    numeric.mean = "Numeric Mean",
-    numeric.sd = "Numeric Sd",
-    numeric.p0 = "Numeric P0",
-    numeric.p25 = "Numeric P25",
-    numeric.p50 = "Numeric P50",
-    numeric.p75 = "Numeric P75",
-    numeric.p100 = "Numeric P100",
-    numeric.hist = "Numeric Hist",
-    POSIXct.min = "Posixct Min",
-    POSIXct.max = "Posixct Max",
-    POSIXct.median = "Posixct Median",
-    POSIXct.n_unique = "Posixct N Unique",
-    Timespan.min = "Timespan Min",
-    Timespan.max = "Timespan Max",
-    Timespan.median = "Timespan Median",
-    Timespan.n_unique = "Timespan N Unique",
-    ts.start = "Ts Start",
-    ts.end = "Ts End",
-    ts.frequency = "Ts Frequency",
-    ts.deltat = "Ts Deltat",
-    ts.mean = "Ts Mean",
-    ts.sd = "Ts Sd",
-    ts.min = "Ts Min",
-    ts.max = "Ts Max",
-    ts.median = "Ts Median",
-    ts.line_graph = "Ts Line Graph"
+    skim_type = "Data Type",
+    n_missing = "Count of Missing Values",
+    complete_rate = "Proportion of Non-Missing Values",
+    AsIs.n_unique = "Count of Unique Values in AsIs",
+    AsIs.min_length = "Minimum Length of AsIs Values",
+    AsIs.max_length = "Maximum Length of AsIs Values",
+    character.min = "Shortest Value (Fewest Characters)",
+    character.max = "Longest Value (Most Characters)",
+    character.empty = "Count of Empty Values",
+    character.n_unique = "Count of Unique Values",
+    character.whitespace = "Count of Values that are all Whitespace",
+    Date.min = "Earliest",
+    Date.max = "Latest",
+    Date.median = "Median",
+    Date.n_unique = "Count of Unique Values",
+    difftime.min = "Minimum",
+    difftime.max = "Maximum",
+    difftime.median = "Median",
+    difftime.n_unique = "Count of Unique Values",
+    factor.ordered = "Is the Categorical Value Ordered?",
+    factor.n_unique = "Count of Unique Values",
+    factor.top_counts = "Most Frequent Values",
+    logical.mean = "Proportion of TRUE Values",
+    logical.count = "Count of Logical Values",
+    numeric.mean = "Mean",
+    numeric.sd = "Standard Deviation ",
+    numeric.p0 = "Minimum",
+    numeric.p25 = "25th Percentile",
+    numeric.p50 = "Median",
+    numeric.p75 = "75th Percentile",
+    numeric.p100 = "Maximum",
+    numeric.hist = "Histogram",
+    POSIXct.min = "Earliest",
+    POSIXct.max = "Latest",
+    POSIXct.median = "Median",
+    POSIXct.n_unique = "Count of Unique Values"
   )
 
-  expect_true(all(skimr_labs %in% expected_skimr_labs))
+  expect_true(all(skimr_labels %in% expected_skimr_labels))
 })

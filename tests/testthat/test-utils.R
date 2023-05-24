@@ -362,3 +362,28 @@ test_that("remove_empty_rows works", {
     remove_empty_rows(my_record_id) %>%
     expect_equal(expected_out)
 })
+
+test_that("is_labelled works", {
+  df <- tibble::tribble(
+    ~"one", ~"two", ~"three",
+    1,        2,      3
+  )
+
+  is_labelled <- is_labelled(df)
+  expect_false(is_labelled)
+
+  labels <- c("One", "Two", "Three")
+  labelled::var_label(df) <- labels
+
+  is_labelled <- is_labelled(df)
+  expect_true(is_labelled)
+})
+
+test_that("make_skimr_labels works", {
+  skimr_labels <- make_skimr_labels()
+
+  # Test for named character vector output
+  expect_true(is.vector(skimr_labels))
+  expect_true(is.character(skimr_labels))
+  expect_true(!is.null(attr(skimr_labels, "name")))
+})
