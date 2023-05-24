@@ -429,75 +429,75 @@
       66                                        Checkbox Field: Choice 1   checkbox
       67                                        Checkbox Field: Choice 2   checkbox
       68                                        Checkbox Field: Choice 3   checkbox
-         Section Header
-      2  section_header
-      3            <NA>
-      4            <NA>
-      5            <NA>
-      6            <NA>
-      7            <NA>
-      8            <NA>
-      9            <NA>
-      10           <NA>
-      11           <NA>
-      12           <NA>
-      13           <NA>
-      14           <NA>
-      15           <NA>
-      16           <NA>
-      17           <NA>
-      18           <NA>
-      19           <NA>
-      20           <NA>
-      21           <NA>
-      22           <NA>
-      23           <NA>
-      24           <NA>
-      25           <NA>
-      26           <NA>
-      27           <NA>
-      28           <NA>
-      29           <NA>
-      30           <NA>
-      31           <NA>
-      32           <NA>
-      33           <NA>
-      34           <NA>
-      35           <NA>
-      36           <NA>
-      37           <NA>
-      38           <NA>
-      39           <NA>
-      40           <NA>
-      41           <NA>
-      42           <NA>
-      43           <NA>
-      44           <NA>
-      45           <NA>
-      46           <NA>
-      47           <NA>
-      48           <NA>
-      49           <NA>
-      50           <NA>
-      51           <NA>
-      52           <NA>
-      53           <NA>
-      54           <NA>
-      55           <NA>
-      56           <NA>
-      57           <NA>
-      58           <NA>
-      59           <NA>
-      60           <NA>
-      61           <NA>
-      62           <NA>
-      63           <NA>
-      64           <NA>
-      65           <NA>
-      66           <NA>
-      67           <NA>
-      68           <NA>
-                                                                                Select Choices or Calculations
+         Section Header Prior to this Field
+      2                      section_header
+      3                                <NA>
+      4                                <NA>
+      5                                <NA>
+      6                                <NA>
+      7                                <NA>
+      8                                <NA>
+      9                                <NA>
+      10                               <NA>
+      11                               <NA>
+      12                               <NA>
+      13                               <NA>
+      14                               <NA>
+      15                               <NA>
+      16                               <NA>
+      17                               <NA>
+      18                               <NA>
+      19                               <NA>
+      20                               <NA>
+      21                               <NA>
+      22                               <NA>
+      23                               <NA>
+      24                               <NA>
+      25                               <NA>
+      26                               <NA>
+      27                               <NA>
+      28                               <NA>
+      29                               <NA>
+      30                               <NA>
+      31                               <NA>
+      32                               <NA>
+      33                               <NA>
+      34                               <NA>
+      35                               <NA>
+      36                               <NA>
+      37                               <NA>
+      38                               <NA>
+      39                               <NA>
+      40                               <NA>
+      41                               <NA>
+      42                               <NA>
+      43                               <NA>
+      44                               <NA>
+      45                               <NA>
+      46                               <NA>
+      47                               <NA>
+      48                               <NA>
+      49                               <NA>
+      50                               <NA>
+      51                               <NA>
+      52                               <NA>
+      53                               <NA>
+      54                               <NA>
+      55                               <NA>
+      56                               <NA>
+      57                               <NA>
+      58                               <NA>
+      59                               <NA>
+      60                               <NA>
+      61                               <NA>
+      62                               <NA>
+      63                               <NA>
+      64                               <NA>
+      65                               <NA>
+      66                               <NA>
+      67                               <NA>
+      68                               <NA>
+                                                                       Choices, Calculations, or Slider Labels
       2                                                                         select_choices_or_calculations
       3                                                                                                   <NA>
       4                                                                                                   <NA>
@@ -565,482 +565,550 @@
       66                                                       one, Choice 1 | two, Choice 2 | three, Choice 3
       67                                                       one, Choice 1 | two, Choice 2 | three, Choice 3
       68                                                       one, Choice 1 | two, Choice 2 | three, Choice 3
-         Field Note Text Validation Type OR Show Slider Number Text Validation Min
-      2  field_note text_validation_type_or_show_slider_number text_validation_min
-      3        <NA>                                       <NA>                <NA>
-      4        <NA>                                       <NA>                <NA>
-      5        <NA>                                       <NA>                <NA>
-      6        <NA>                                       <NA>                <NA>
-      7        <NA>                                       <NA>                <NA>
-      8        <NA>                                       <NA>                <NA>
-      9        <NA>                                       <NA>                <NA>
-      10       <NA>                                       <NA>                <NA>
-      11       <NA>                                       <NA>                <NA>
-      12       <NA>                                       <NA>                <NA>
-      13       <NA>                                       <NA>                <NA>
-      14       <NA>                                       <NA>                <NA>
-      15       <NA>                                       <NA>                <NA>
-      16       <NA>                                       <NA>                <NA>
-      17       <NA>                                       <NA>                <NA>
-      18       <NA>                                       <NA>                <NA>
-      19       <NA>                                       <NA>                <NA>
-      20       <NA>                                       <NA>                <NA>
-      21       <NA>                                       <NA>                <NA>
-      22       <NA>                                       <NA>                <NA>
-      23       <NA>                                       <NA>                <NA>
-      24       <NA>                                       <NA>                <NA>
-      25       <NA>                                       <NA>                <NA>
-      26       <NA>                                       <NA>                <NA>
-      27       <NA>                                       <NA>                <NA>
-      28       <NA>                                       <NA>                <NA>
-      29       <NA>                                       <NA>                <NA>
-      30       <NA>                                       <NA>                <NA>
-      31       <NA>                                       <NA>                <NA>
-      32       <NA>                                       <NA>                <NA>
-      33       <NA>                                       <NA>                <NA>
-      34       <NA>                                       <NA>                <NA>
-      35       <NA>                                  signature                <NA>
-      36       <NA>                                       <NA>                <NA>
-      37       <NA>                                       <NA>                <NA>
-      38       <NA>                                       <NA>                <NA>
-      39       <NA>                                   date_dmy                <NA>
-      40       <NA>                                   date_mdy                <NA>
-      41       <NA>                                   date_ymd                <NA>
-      42       <NA>                               datetime_dmy                <NA>
-      43       <NA>                               datetime_mdy                <NA>
-      44       <NA>                               datetime_ymd                <NA>
-      45       <NA>                       datetime_seconds_dmy                <NA>
-      46       <NA>                       datetime_seconds_mdy                <NA>
-      47       <NA>                       datetime_seconds_ymd                <NA>
-      48       <NA>                                     mrn_8d                <NA>
-      49       <NA>                                      phone                <NA>
-      50       <NA>                                        ssn                <NA>
-      51       <NA>                              time_hh_mm_ss                <NA>
-      52       <NA>                                       time                <NA>
-      53       <NA>                                 time_mm_ss                <NA>
-      54       <NA>                                    zipcode                <NA>
-      55       <NA>                                       <NA>                <NA>
-      56       <NA>                                       <NA>                <NA>
-      57       <NA>                                       <NA>                <NA>
-      58       <NA>                                       <NA>                <NA>
-      59       <NA>                                       <NA>                <NA>
-      60       <NA>                                       <NA>                <NA>
-      61       <NA>                                       <NA>                <NA>
-      62       <NA>                                       <NA>                <NA>
-      63       <NA>                                       <NA>                <NA>
-      64       <NA>                                       <NA>                <NA>
-      65       <NA>                                       <NA>                <NA>
-      66       <NA>                                       <NA>                <NA>
-      67       <NA>                                       <NA>                <NA>
-      68       <NA>                                       <NA>                <NA>
-         Text Validation Max Identifier? Branching Logic (Show field only if...)
-      2  text_validation_max  identifier                         branching_logic
-      3                 <NA>        <NA>                                    <NA>
-      4                 <NA>        <NA>                                    <NA>
-      5                 <NA>        <NA>                                    <NA>
-      6                 <NA>        <NA>                                    <NA>
-      7                 <NA>        <NA>                                    <NA>
-      8                 <NA>        <NA>                                    <NA>
-      9                 <NA>        <NA>                                    <NA>
-      10                <NA>        <NA>                                    <NA>
-      11                <NA>        <NA>                                    <NA>
-      12                <NA>        <NA>                                    <NA>
-      13                <NA>        <NA>                                    <NA>
-      14                <NA>        <NA>                                    <NA>
-      15                <NA>        <NA>                                    <NA>
-      16                <NA>        <NA>                                    <NA>
-      17                <NA>        <NA>                                    <NA>
-      18                <NA>        <NA>                                    <NA>
-      19                <NA>        <NA>                                    <NA>
-      20                <NA>        <NA>                                    <NA>
-      21                <NA>        <NA>                                    <NA>
-      22                <NA>        <NA>                                    <NA>
-      23                <NA>        <NA>                                    <NA>
-      24                <NA>        <NA>                                    <NA>
-      25                <NA>        <NA>                                    <NA>
-      26                <NA>        <NA>                                    <NA>
-      27                <NA>        <NA>                                    <NA>
-      28                <NA>        <NA>                                    <NA>
-      29                <NA>        <NA>                                    <NA>
-      30                <NA>        <NA>                                    <NA>
-      31                <NA>        <NA>                                    <NA>
-      32                <NA>        <NA>                                    <NA>
-      33                <NA>        <NA>                                    <NA>
-      34                <NA>        <NA>                                    <NA>
-      35                <NA>        <NA>                                    <NA>
-      36                <NA>        <NA>                                    <NA>
-      37                <NA>        <NA>                                    <NA>
-      38                <NA>        <NA>                                    <NA>
-      39                <NA>        <NA>                                    <NA>
-      40                <NA>        <NA>                                    <NA>
-      41                <NA>        <NA>                                    <NA>
-      42                <NA>        <NA>                                    <NA>
-      43                <NA>        <NA>                                    <NA>
-      44                <NA>        <NA>                                    <NA>
-      45                <NA>        <NA>                                    <NA>
-      46                <NA>        <NA>                                    <NA>
-      47                <NA>        <NA>                                    <NA>
-      48                <NA>        <NA>                                    <NA>
-      49                <NA>        <NA>                                    <NA>
-      50                <NA>        <NA>                                    <NA>
-      51                <NA>        <NA>                                    <NA>
-      52                <NA>        <NA>                                    <NA>
-      53                <NA>        <NA>                                    <NA>
-      54                <NA>        <NA>                                    <NA>
-      55                <NA>        <NA>                                    <NA>
-      56                <NA>        <NA>                                    <NA>
-      57                <NA>        <NA>                                    <NA>
-      58                <NA>        <NA>                                    <NA>
-      59                <NA>        <NA>                                    <NA>
-      60                <NA>        <NA>                                    <NA>
-      61                <NA>        <NA>                                    <NA>
-      62                <NA>        <NA>                                    <NA>
-      63                <NA>        <NA>                                    <NA>
-      64                <NA>        <NA>                                    <NA>
-      65                <NA>        <NA>                                    <NA>
-      66                <NA>        <NA>                                    <NA>
-      67                <NA>        <NA>                                    <NA>
-      68                <NA>        <NA>                                    <NA>
-         Required Field? Custom Alignment Question Number (surveys only)
-      2   required_field custom_alignment                question_number
-      3             <NA>             <NA>                           <NA>
-      4             <NA>             <NA>                           <NA>
-      5             <NA>             <NA>                           <NA>
-      6             <NA>             <NA>                           <NA>
-      7             <NA>             <NA>                           <NA>
-      8             <NA>             <NA>                           <NA>
-      9             <NA>             <NA>                           <NA>
-      10            <NA>             <NA>                           <NA>
-      11            <NA>             <NA>                           <NA>
-      12            <NA>             <NA>                           <NA>
-      13            <NA>             <NA>                           <NA>
-      14            <NA>             <NA>                           <NA>
-      15            <NA>             <NA>                           <NA>
-      16            <NA>             <NA>                           <NA>
-      17            <NA>             <NA>                           <NA>
-      18            <NA>             <NA>                           <NA>
-      19            <NA>             <NA>                           <NA>
-      20            <NA>             <NA>                           <NA>
-      21            <NA>             <NA>                           <NA>
-      22            <NA>             <NA>                           <NA>
-      23            <NA>             <NA>                           <NA>
-      24            <NA>             <NA>                           <NA>
-      25            <NA>             <NA>                           <NA>
-      26            <NA>             <NA>                           <NA>
-      27            <NA>             <NA>                           <NA>
-      28            <NA>             <NA>                           <NA>
-      29            <NA>             <NA>                           <NA>
-      30            <NA>             <NA>                           <NA>
-      31            <NA>             <NA>                           <NA>
-      32            <NA>             <NA>                           <NA>
-      33            <NA>             <NA>                           <NA>
-      34            <NA>             <NA>                           <NA>
-      35            <NA>             <NA>                           <NA>
-      36            <NA>             <NA>                           <NA>
-      37            <NA>               RH                           <NA>
-      38            <NA>             <NA>                           <NA>
-      39            <NA>             <NA>                           <NA>
-      40            <NA>             <NA>                           <NA>
-      41            <NA>             <NA>                           <NA>
-      42            <NA>             <NA>                           <NA>
-      43            <NA>             <NA>                           <NA>
-      44            <NA>             <NA>                           <NA>
-      45            <NA>             <NA>                           <NA>
-      46            <NA>             <NA>                           <NA>
-      47            <NA>             <NA>                           <NA>
-      48            <NA>             <NA>                           <NA>
-      49            <NA>             <NA>                           <NA>
-      50            <NA>             <NA>                           <NA>
-      51            <NA>             <NA>                           <NA>
-      52            <NA>             <NA>                           <NA>
-      53            <NA>             <NA>                           <NA>
-      54            <NA>             <NA>                           <NA>
-      55            <NA>             <NA>                           <NA>
-      56            <NA>             <NA>                           <NA>
-      57            <NA>             <NA>                           <NA>
-      58            <NA>             <NA>                           <NA>
-      59            <NA>             <NA>                           <NA>
-      60            <NA>             <NA>                           <NA>
-      61            <NA>             <NA>                           <NA>
-      62            <NA>             <NA>                           <NA>
-      63            <NA>             <NA>                           <NA>
-      64            <NA>             <NA>                           <NA>
-      65            <NA>             <NA>                           <NA>
-      66            <NA>             <NA>                           <NA>
-      67            <NA>             <NA>                           <NA>
-      68            <NA>             <NA>                           <NA>
-         Matrix Group Name Matrix Ranking? Field Annotation Data Type
-      2  matrix_group_name  matrix_ranking field_annotation skim_type
-      3               <NA>            <NA>             <NA>      <NA>
-      4               <NA>            <NA>             <NA> character
-      5               <NA>            <NA>             <NA> character
-      6               <NA>            <NA>             <NA>   numeric
-      7               <NA>            <NA>             <NA>   numeric
-      8               <NA>            <NA>             <NA> character
-      9               <NA>            <NA>             <NA> character
-      10              <NA>            <NA>             <NA> character
-      11              <NA>            <NA>             <NA> character
-      12              <NA>            <NA>             <NA>   numeric
-      13              <NA>            <NA>             <NA>    factor
-      14              <NA>            <NA>             <NA>    factor
-      15              <NA>            <NA>             <NA>    factor
-      16              <NA>            <NA>             <NA>   logical
-      17              <NA>            <NA>             <NA>   logical
-      18              <NA>            <NA>             <NA>   logical
-      19              <NA>            <NA>             <NA>   logical
-      20              <NA>            <NA>             <NA>   logical
-      21              <NA>            <NA>             <NA>   logical
-      22              <NA>            <NA>             <NA>   logical
-      23              <NA>            <NA>             <NA>   logical
-      24              <NA>            <NA>             <NA>   logical
-      25              <NA>            <NA>             <NA>   logical
-      26              <NA>            <NA>             <NA>   logical
-      27              <NA>            <NA>             <NA>   logical
-      28              <NA>            <NA>             <NA>   logical
-      29              <NA>            <NA>             <NA>   logical
-      30              <NA>            <NA>             <NA>   logical
-      31              <NA>            <NA>             <NA>   logical
-      32              <NA>            <NA>             <NA>   logical
-      33              <NA>            <NA>             <NA>   logical
-      34              <NA>            <NA>             <NA>   logical
-      35              <NA>            <NA>             <NA> character
-      36              <NA>            <NA>             <NA> character
-      37              <NA>            <NA>             <NA>   numeric
-      38              <NA>            <NA>             <NA>    factor
-      39              <NA>            <NA>             <NA>      Date
-      40              <NA>            <NA>             <NA>      Date
-      41              <NA>            <NA>             <NA>      Date
-      42              <NA>            <NA>             <NA>   POSIXct
-      43              <NA>            <NA>             <NA>   POSIXct
-      44              <NA>            <NA>             <NA>   POSIXct
-      45              <NA>            <NA>             <NA>   POSIXct
-      46              <NA>            <NA>             <NA>   POSIXct
-      47              <NA>            <NA>             <NA>   POSIXct
-      48              <NA>            <NA>             <NA> character
-      49              <NA>            <NA>             <NA> character
-      50              <NA>            <NA>             <NA> character
-      51              <NA>            <NA>             <NA>  difftime
-      52              <NA>            <NA>             <NA>  difftime
-      53              <NA>            <NA>             <NA>  difftime
-      54              <NA>            <NA>             <NA> character
-      55              <NA>            <NA>             <NA>   logical
-      56              <NA>            <NA>             <NA>   logical
-      57              <NA>            <NA>             <NA>   logical
-      58              <NA>            <NA>             <NA>   logical
-      59              <NA>            <NA>             <NA>   logical
-      60              <NA>            <NA>             <NA>    factor
-      61              <NA>            <NA>             <NA>   logical
-      62              <NA>            <NA>             <NA>   logical
-      63              <NA>            <NA>             <NA>   logical
-      64              <NA>            <NA>             <NA>   logical
-      65              <NA>            <NA>             <NA>    factor
-      66              <NA>            <NA>             <NA>   logical
-      67              <NA>            <NA>             <NA>   logical
-      68              <NA>            <NA>             <NA>   logical
-         Count of Missing Values Percentage of Non-Missing Values
-      2                n_missing                    complete_rate
-      3                     <NA>                             <NA>
-      4                        1                             0.75
-      5                        1                             0.75
-      6                        2                              0.5
-      7                        2                              0.5
-      8                        0                                1
-      9                        0                                1
-      10                       3                             0.25
-      11                       3                             0.25
-      12                       1                             0.75
-      13                       2                              0.5
-      14                       2                              0.5
-      15                       4                                0
-      16                       0                                1
-      17                       0                                1
-      18                       0                                1
-      19                       0                                1
-      20                       0                                1
-      21                       0                                1
-      22                       0                                1
-      23                       0                                1
-      24                       0                                1
-      25                       0                                1
-      26                       0                                1
-      27                       0                                1
-      28                       0                                1
-      29                       0                                1
-      30                       0                                1
-      31                       0                                1
-      32                       0                                1
-      33                       3                             0.25
-      34                       3                             0.25
-      35                       3                             0.25
-      36                       3                             0.25
-      37                       3                             0.25
-      38                       4                                0
-      39                       3                             0.25
-      40                       3                             0.25
-      41                       3                             0.25
-      42                       3                             0.25
-      43                       3                             0.25
-      44                       3                             0.25
-      45                       3                             0.25
-      46                       3                             0.25
-      47                       3                             0.25
-      48                       3                             0.25
-      49                       3                             0.25
-      50                       3                             0.25
-      51                       3                             0.25
-      52                       3                             0.25
-      53                       3                             0.25
-      54                       3                             0.25
-      55                       4                                0
-      56                       4                                0
-      57                       4                                0
-      58                       4                                0
-      59                       2                              0.5
-      60                       2                              0.5
-      61                       0                                1
-      62                       0                                1
-      63                       0                                1
-      64                       0                                1
-      65                       0                                1
-      66                       0                                1
-      67                       0                                1
-      68                       0                                1
-         Minimum Length of Characters Maximum Length of Characters
-      2                 character.min                character.max
-      3                          <NA>                         <NA>
-      4                             1                           11
-      5                             1                           11
-      6                          <NA>                         <NA>
-      7                          <NA>                         <NA>
-      8                             1                            1
-      9                             1                            1
-      10                            4                            4
-      11                            5                            5
-      12                         <NA>                         <NA>
-      13                         <NA>                         <NA>
-      14                         <NA>                         <NA>
-      15                         <NA>                         <NA>
-      16                         <NA>                         <NA>
-      17                         <NA>                         <NA>
-      18                         <NA>                         <NA>
-      19                         <NA>                         <NA>
-      20                         <NA>                         <NA>
-      21                         <NA>                         <NA>
-      22                         <NA>                         <NA>
-      23                         <NA>                         <NA>
-      24                         <NA>                         <NA>
-      25                         <NA>                         <NA>
-      26                         <NA>                         <NA>
-      27                         <NA>                         <NA>
-      28                         <NA>                         <NA>
-      29                         <NA>                         <NA>
-      30                         <NA>                         <NA>
-      31                         <NA>                         <NA>
-      32                         <NA>                         <NA>
-      33                         <NA>                         <NA>
-      34                         <NA>                         <NA>
-      35                           29                           29
-      36                           25                           25
-      37                         <NA>                         <NA>
-      38                         <NA>                         <NA>
-      39                         <NA>                         <NA>
-      40                         <NA>                         <NA>
-      41                         <NA>                         <NA>
-      42                         <NA>                         <NA>
-      43                         <NA>                         <NA>
-      44                         <NA>                         <NA>
-      45                         <NA>                         <NA>
-      46                         <NA>                         <NA>
-      47                         <NA>                         <NA>
-      48                            8                            8
-      49                           14                           14
-      50                           11                           11
-      51                         <NA>                         <NA>
-      52                         <NA>                         <NA>
-      53                         <NA>                         <NA>
-      54                            5                            5
-      55                         <NA>                         <NA>
-      56                         <NA>                         <NA>
-      57                         <NA>                         <NA>
-      58                         <NA>                         <NA>
-      59                         <NA>                         <NA>
-      60                         <NA>                         <NA>
-      61                         <NA>                         <NA>
-      62                         <NA>                         <NA>
-      63                         <NA>                         <NA>
-      64                         <NA>                         <NA>
-      65                         <NA>                         <NA>
-      66                         <NA>                         <NA>
-      67                         <NA>                         <NA>
-      68                         <NA>                         <NA>
-         Count of Empty Values Count of Unique Values
-      2        character.empty     character.n_unique
-      3                   <NA>                   <NA>
-      4                      0                      3
-      5                      0                      3
-      6                   <NA>                   <NA>
-      7                   <NA>                   <NA>
-      8                      0                      4
-      9                      0                      4
-      10                     0                      1
-      11                     0                      1
-      12                  <NA>                   <NA>
-      13                  <NA>                   <NA>
-      14                  <NA>                   <NA>
-      15                  <NA>                   <NA>
-      16                  <NA>                   <NA>
-      17                  <NA>                   <NA>
-      18                  <NA>                   <NA>
-      19                  <NA>                   <NA>
-      20                  <NA>                   <NA>
-      21                  <NA>                   <NA>
-      22                  <NA>                   <NA>
-      23                  <NA>                   <NA>
-      24                  <NA>                   <NA>
-      25                  <NA>                   <NA>
-      26                  <NA>                   <NA>
-      27                  <NA>                   <NA>
-      28                  <NA>                   <NA>
-      29                  <NA>                   <NA>
-      30                  <NA>                   <NA>
-      31                  <NA>                   <NA>
-      32                  <NA>                   <NA>
-      33                  <NA>                   <NA>
-      34                  <NA>                   <NA>
-      35                     0                      1
-      36                     0                      1
-      37                  <NA>                   <NA>
-      38                  <NA>                   <NA>
-      39                  <NA>                   <NA>
-      40                  <NA>                   <NA>
-      41                  <NA>                   <NA>
-      42                  <NA>                   <NA>
-      43                  <NA>                   <NA>
-      44                  <NA>                   <NA>
-      45                  <NA>                   <NA>
-      46                  <NA>                   <NA>
-      47                  <NA>                   <NA>
-      48                     0                      1
-      49                     0                      1
-      50                     0                      1
-      51                  <NA>                   <NA>
-      52                  <NA>                   <NA>
-      53                  <NA>                   <NA>
-      54                     0                      1
-      55                  <NA>                   <NA>
-      56                  <NA>                   <NA>
-      57                  <NA>                   <NA>
-      58                  <NA>                   <NA>
-      59                  <NA>                   <NA>
-      60                  <NA>                   <NA>
-      61                  <NA>                   <NA>
-      62                  <NA>                   <NA>
-      63                  <NA>                   <NA>
-      64                  <NA>                   <NA>
-      65                  <NA>                   <NA>
-      66                  <NA>                   <NA>
-      67                  <NA>                   <NA>
-      68                  <NA>                   <NA>
+         Field Note Text Validation Type OR Show Slider Number
+      2  field_note text_validation_type_or_show_slider_number
+      3        <NA>                                       <NA>
+      4        <NA>                                       <NA>
+      5        <NA>                                       <NA>
+      6        <NA>                                       <NA>
+      7        <NA>                                       <NA>
+      8        <NA>                                       <NA>
+      9        <NA>                                       <NA>
+      10       <NA>                                       <NA>
+      11       <NA>                                       <NA>
+      12       <NA>                                       <NA>
+      13       <NA>                                       <NA>
+      14       <NA>                                       <NA>
+      15       <NA>                                       <NA>
+      16       <NA>                                       <NA>
+      17       <NA>                                       <NA>
+      18       <NA>                                       <NA>
+      19       <NA>                                       <NA>
+      20       <NA>                                       <NA>
+      21       <NA>                                       <NA>
+      22       <NA>                                       <NA>
+      23       <NA>                                       <NA>
+      24       <NA>                                       <NA>
+      25       <NA>                                       <NA>
+      26       <NA>                                       <NA>
+      27       <NA>                                       <NA>
+      28       <NA>                                       <NA>
+      29       <NA>                                       <NA>
+      30       <NA>                                       <NA>
+      31       <NA>                                       <NA>
+      32       <NA>                                       <NA>
+      33       <NA>                                       <NA>
+      34       <NA>                                       <NA>
+      35       <NA>                                  signature
+      36       <NA>                                       <NA>
+      37       <NA>                                       <NA>
+      38       <NA>                                       <NA>
+      39       <NA>                                   date_dmy
+      40       <NA>                                   date_mdy
+      41       <NA>                                   date_ymd
+      42       <NA>                               datetime_dmy
+      43       <NA>                               datetime_mdy
+      44       <NA>                               datetime_ymd
+      45       <NA>                       datetime_seconds_dmy
+      46       <NA>                       datetime_seconds_mdy
+      47       <NA>                       datetime_seconds_ymd
+      48       <NA>                                     mrn_8d
+      49       <NA>                                      phone
+      50       <NA>                                        ssn
+      51       <NA>                              time_hh_mm_ss
+      52       <NA>                                       time
+      53       <NA>                                 time_mm_ss
+      54       <NA>                                    zipcode
+      55       <NA>                                       <NA>
+      56       <NA>                                       <NA>
+      57       <NA>                                       <NA>
+      58       <NA>                                       <NA>
+      59       <NA>                                       <NA>
+      60       <NA>                                       <NA>
+      61       <NA>                                       <NA>
+      62       <NA>                                       <NA>
+      63       <NA>                                       <NA>
+      64       <NA>                                       <NA>
+      65       <NA>                                       <NA>
+      66       <NA>                                       <NA>
+      67       <NA>                                       <NA>
+      68       <NA>                                       <NA>
+         Minimum Accepted Value for Text Validation
+      2                         text_validation_min
+      3                                        <NA>
+      4                                        <NA>
+      5                                        <NA>
+      6                                        <NA>
+      7                                        <NA>
+      8                                        <NA>
+      9                                        <NA>
+      10                                       <NA>
+      11                                       <NA>
+      12                                       <NA>
+      13                                       <NA>
+      14                                       <NA>
+      15                                       <NA>
+      16                                       <NA>
+      17                                       <NA>
+      18                                       <NA>
+      19                                       <NA>
+      20                                       <NA>
+      21                                       <NA>
+      22                                       <NA>
+      23                                       <NA>
+      24                                       <NA>
+      25                                       <NA>
+      26                                       <NA>
+      27                                       <NA>
+      28                                       <NA>
+      29                                       <NA>
+      30                                       <NA>
+      31                                       <NA>
+      32                                       <NA>
+      33                                       <NA>
+      34                                       <NA>
+      35                                       <NA>
+      36                                       <NA>
+      37                                       <NA>
+      38                                       <NA>
+      39                                       <NA>
+      40                                       <NA>
+      41                                       <NA>
+      42                                       <NA>
+      43                                       <NA>
+      44                                       <NA>
+      45                                       <NA>
+      46                                       <NA>
+      47                                       <NA>
+      48                                       <NA>
+      49                                       <NA>
+      50                                       <NA>
+      51                                       <NA>
+      52                                       <NA>
+      53                                       <NA>
+      54                                       <NA>
+      55                                       <NA>
+      56                                       <NA>
+      57                                       <NA>
+      58                                       <NA>
+      59                                       <NA>
+      60                                       <NA>
+      61                                       <NA>
+      62                                       <NA>
+      63                                       <NA>
+      64                                       <NA>
+      65                                       <NA>
+      66                                       <NA>
+      67                                       <NA>
+      68                                       <NA>
+         Maximum Accepted Value for Text Validation Is this Field an Identifier?
+      2                         text_validation_max                   identifier
+      3                                        <NA>                         <NA>
+      4                                        <NA>                         <NA>
+      5                                        <NA>                         <NA>
+      6                                        <NA>                         <NA>
+      7                                        <NA>                         <NA>
+      8                                        <NA>                         <NA>
+      9                                        <NA>                         <NA>
+      10                                       <NA>                         <NA>
+      11                                       <NA>                         <NA>
+      12                                       <NA>                         <NA>
+      13                                       <NA>                         <NA>
+      14                                       <NA>                         <NA>
+      15                                       <NA>                         <NA>
+      16                                       <NA>                         <NA>
+      17                                       <NA>                         <NA>
+      18                                       <NA>                         <NA>
+      19                                       <NA>                         <NA>
+      20                                       <NA>                         <NA>
+      21                                       <NA>                         <NA>
+      22                                       <NA>                         <NA>
+      23                                       <NA>                         <NA>
+      24                                       <NA>                         <NA>
+      25                                       <NA>                         <NA>
+      26                                       <NA>                         <NA>
+      27                                       <NA>                         <NA>
+      28                                       <NA>                         <NA>
+      29                                       <NA>                         <NA>
+      30                                       <NA>                         <NA>
+      31                                       <NA>                         <NA>
+      32                                       <NA>                         <NA>
+      33                                       <NA>                         <NA>
+      34                                       <NA>                         <NA>
+      35                                       <NA>                         <NA>
+      36                                       <NA>                         <NA>
+      37                                       <NA>                         <NA>
+      38                                       <NA>                         <NA>
+      39                                       <NA>                         <NA>
+      40                                       <NA>                         <NA>
+      41                                       <NA>                         <NA>
+      42                                       <NA>                         <NA>
+      43                                       <NA>                         <NA>
+      44                                       <NA>                         <NA>
+      45                                       <NA>                         <NA>
+      46                                       <NA>                         <NA>
+      47                                       <NA>                         <NA>
+      48                                       <NA>                         <NA>
+      49                                       <NA>                         <NA>
+      50                                       <NA>                         <NA>
+      51                                       <NA>                         <NA>
+      52                                       <NA>                         <NA>
+      53                                       <NA>                         <NA>
+      54                                       <NA>                         <NA>
+      55                                       <NA>                         <NA>
+      56                                       <NA>                         <NA>
+      57                                       <NA>                         <NA>
+      58                                       <NA>                         <NA>
+      59                                       <NA>                         <NA>
+      60                                       <NA>                         <NA>
+      61                                       <NA>                         <NA>
+      62                                       <NA>                         <NA>
+      63                                       <NA>                         <NA>
+      64                                       <NA>                         <NA>
+      65                                       <NA>                         <NA>
+      66                                       <NA>                         <NA>
+      67                                       <NA>                         <NA>
+      68                                       <NA>                         <NA>
+         Branching Logic (Show field only if...) Is this Field Required?
+      2                          branching_logic          required_field
+      3                                     <NA>                    <NA>
+      4                                     <NA>                    <NA>
+      5                                     <NA>                    <NA>
+      6                                     <NA>                    <NA>
+      7                                     <NA>                    <NA>
+      8                                     <NA>                    <NA>
+      9                                     <NA>                    <NA>
+      10                                    <NA>                    <NA>
+      11                                    <NA>                    <NA>
+      12                                    <NA>                    <NA>
+      13                                    <NA>                    <NA>
+      14                                    <NA>                    <NA>
+      15                                    <NA>                    <NA>
+      16                                    <NA>                    <NA>
+      17                                    <NA>                    <NA>
+      18                                    <NA>                    <NA>
+      19                                    <NA>                    <NA>
+      20                                    <NA>                    <NA>
+      21                                    <NA>                    <NA>
+      22                                    <NA>                    <NA>
+      23                                    <NA>                    <NA>
+      24                                    <NA>                    <NA>
+      25                                    <NA>                    <NA>
+      26                                    <NA>                    <NA>
+      27                                    <NA>                    <NA>
+      28                                    <NA>                    <NA>
+      29                                    <NA>                    <NA>
+      30                                    <NA>                    <NA>
+      31                                    <NA>                    <NA>
+      32                                    <NA>                    <NA>
+      33                                    <NA>                    <NA>
+      34                                    <NA>                    <NA>
+      35                                    <NA>                    <NA>
+      36                                    <NA>                    <NA>
+      37                                    <NA>                    <NA>
+      38                                    <NA>                    <NA>
+      39                                    <NA>                    <NA>
+      40                                    <NA>                    <NA>
+      41                                    <NA>                    <NA>
+      42                                    <NA>                    <NA>
+      43                                    <NA>                    <NA>
+      44                                    <NA>                    <NA>
+      45                                    <NA>                    <NA>
+      46                                    <NA>                    <NA>
+      47                                    <NA>                    <NA>
+      48                                    <NA>                    <NA>
+      49                                    <NA>                    <NA>
+      50                                    <NA>                    <NA>
+      51                                    <NA>                    <NA>
+      52                                    <NA>                    <NA>
+      53                                    <NA>                    <NA>
+      54                                    <NA>                    <NA>
+      55                                    <NA>                    <NA>
+      56                                    <NA>                    <NA>
+      57                                    <NA>                    <NA>
+      58                                    <NA>                    <NA>
+      59                                    <NA>                    <NA>
+      60                                    <NA>                    <NA>
+      61                                    <NA>                    <NA>
+      62                                    <NA>                    <NA>
+      63                                    <NA>                    <NA>
+      64                                    <NA>                    <NA>
+      65                                    <NA>                    <NA>
+      66                                    <NA>                    <NA>
+      67                                    <NA>                    <NA>
+      68                                    <NA>                    <NA>
+         Custom Alignment Question Number (surveys only) Matrix Group Name
+      2  custom_alignment                question_number matrix_group_name
+      3              <NA>                           <NA>              <NA>
+      4              <NA>                           <NA>              <NA>
+      5              <NA>                           <NA>              <NA>
+      6              <NA>                           <NA>              <NA>
+      7              <NA>                           <NA>              <NA>
+      8              <NA>                           <NA>              <NA>
+      9              <NA>                           <NA>              <NA>
+      10             <NA>                           <NA>              <NA>
+      11             <NA>                           <NA>              <NA>
+      12             <NA>                           <NA>              <NA>
+      13             <NA>                           <NA>              <NA>
+      14             <NA>                           <NA>              <NA>
+      15             <NA>                           <NA>              <NA>
+      16             <NA>                           <NA>              <NA>
+      17             <NA>                           <NA>              <NA>
+      18             <NA>                           <NA>              <NA>
+      19             <NA>                           <NA>              <NA>
+      20             <NA>                           <NA>              <NA>
+      21             <NA>                           <NA>              <NA>
+      22             <NA>                           <NA>              <NA>
+      23             <NA>                           <NA>              <NA>
+      24             <NA>                           <NA>              <NA>
+      25             <NA>                           <NA>              <NA>
+      26             <NA>                           <NA>              <NA>
+      27             <NA>                           <NA>              <NA>
+      28             <NA>                           <NA>              <NA>
+      29             <NA>                           <NA>              <NA>
+      30             <NA>                           <NA>              <NA>
+      31             <NA>                           <NA>              <NA>
+      32             <NA>                           <NA>              <NA>
+      33             <NA>                           <NA>              <NA>
+      34             <NA>                           <NA>              <NA>
+      35             <NA>                           <NA>              <NA>
+      36             <NA>                           <NA>              <NA>
+      37               RH                           <NA>              <NA>
+      38             <NA>                           <NA>              <NA>
+      39             <NA>                           <NA>              <NA>
+      40             <NA>                           <NA>              <NA>
+      41             <NA>                           <NA>              <NA>
+      42             <NA>                           <NA>              <NA>
+      43             <NA>                           <NA>              <NA>
+      44             <NA>                           <NA>              <NA>
+      45             <NA>                           <NA>              <NA>
+      46             <NA>                           <NA>              <NA>
+      47             <NA>                           <NA>              <NA>
+      48             <NA>                           <NA>              <NA>
+      49             <NA>                           <NA>              <NA>
+      50             <NA>                           <NA>              <NA>
+      51             <NA>                           <NA>              <NA>
+      52             <NA>                           <NA>              <NA>
+      53             <NA>                           <NA>              <NA>
+      54             <NA>                           <NA>              <NA>
+      55             <NA>                           <NA>              <NA>
+      56             <NA>                           <NA>              <NA>
+      57             <NA>                           <NA>              <NA>
+      58             <NA>                           <NA>              <NA>
+      59             <NA>                           <NA>              <NA>
+      60             <NA>                           <NA>              <NA>
+      61             <NA>                           <NA>              <NA>
+      62             <NA>                           <NA>              <NA>
+      63             <NA>                           <NA>              <NA>
+      64             <NA>                           <NA>              <NA>
+      65             <NA>                           <NA>              <NA>
+      66             <NA>                           <NA>              <NA>
+      67             <NA>                           <NA>              <NA>
+      68             <NA>                           <NA>              <NA>
+         Matrix Ranking? Field Annotation Data Type Count of Missing Values
+      2   matrix_ranking field_annotation skim_type               n_missing
+      3             <NA>             <NA>      <NA>                    <NA>
+      4             <NA>             <NA> character                       1
+      5             <NA>             <NA> character                       1
+      6             <NA>             <NA>   numeric                       2
+      7             <NA>             <NA>   numeric                       2
+      8             <NA>             <NA> character                       0
+      9             <NA>             <NA> character                       0
+      10            <NA>             <NA> character                       3
+      11            <NA>             <NA> character                       3
+      12            <NA>             <NA>   numeric                       1
+      13            <NA>             <NA>    factor                       2
+      14            <NA>             <NA>    factor                       2
+      15            <NA>             <NA>    factor                       4
+      16            <NA>             <NA>   logical                       0
+      17            <NA>             <NA>   logical                       0
+      18            <NA>             <NA>   logical                       0
+      19            <NA>             <NA>   logical                       0
+      20            <NA>             <NA>   logical                       0
+      21            <NA>             <NA>   logical                       0
+      22            <NA>             <NA>   logical                       0
+      23            <NA>             <NA>   logical                       0
+      24            <NA>             <NA>   logical                       0
+      25            <NA>             <NA>   logical                       0
+      26            <NA>             <NA>   logical                       0
+      27            <NA>             <NA>   logical                       0
+      28            <NA>             <NA>   logical                       0
+      29            <NA>             <NA>   logical                       0
+      30            <NA>             <NA>   logical                       0
+      31            <NA>             <NA>   logical                       0
+      32            <NA>             <NA>   logical                       0
+      33            <NA>             <NA>   logical                       3
+      34            <NA>             <NA>   logical                       3
+      35            <NA>             <NA> character                       3
+      36            <NA>             <NA> character                       3
+      37            <NA>             <NA>   numeric                       3
+      38            <NA>             <NA>    factor                       4
+      39            <NA>             <NA>      Date                       3
+      40            <NA>             <NA>      Date                       3
+      41            <NA>             <NA>      Date                       3
+      42            <NA>             <NA>   POSIXct                       3
+      43            <NA>             <NA>   POSIXct                       3
+      44            <NA>             <NA>   POSIXct                       3
+      45            <NA>             <NA>   POSIXct                       3
+      46            <NA>             <NA>   POSIXct                       3
+      47            <NA>             <NA>   POSIXct                       3
+      48            <NA>             <NA> character                       3
+      49            <NA>             <NA> character                       3
+      50            <NA>             <NA> character                       3
+      51            <NA>             <NA>  difftime                       3
+      52            <NA>             <NA>  difftime                       3
+      53            <NA>             <NA>  difftime                       3
+      54            <NA>             <NA> character                       3
+      55            <NA>             <NA>   logical                       4
+      56            <NA>             <NA>   logical                       4
+      57            <NA>             <NA>   logical                       4
+      58            <NA>             <NA>   logical                       4
+      59            <NA>             <NA>   logical                       2
+      60            <NA>             <NA>    factor                       2
+      61            <NA>             <NA>   logical                       0
+      62            <NA>             <NA>   logical                       0
+      63            <NA>             <NA>   logical                       0
+      64            <NA>             <NA>   logical                       0
+      65            <NA>             <NA>    factor                       0
+      66            <NA>             <NA>   logical                       0
+      67            <NA>             <NA>   logical                       0
+      68            <NA>             <NA>   logical                       0
+         Proportion of Non-Missing Values Shortest Value (Fewest Characters)
+      2                     complete_rate                      character.min
+      3                              <NA>                               <NA>
+      4                              0.75                                  1
+      5                              0.75                                  1
+      6                               0.5                               <NA>
+      7                               0.5                               <NA>
+      8                                 1                                  1
+      9                                 1                                  1
+      10                             0.25                                  4
+      11                             0.25                                  5
+      12                             0.75                               <NA>
+      13                              0.5                               <NA>
+      14                              0.5                               <NA>
+      15                                0                               <NA>
+      16                                1                               <NA>
+      17                                1                               <NA>
+      18                                1                               <NA>
+      19                                1                               <NA>
+      20                                1                               <NA>
+      21                                1                               <NA>
+      22                                1                               <NA>
+      23                                1                               <NA>
+      24                                1                               <NA>
+      25                                1                               <NA>
+      26                                1                               <NA>
+      27                                1                               <NA>
+      28                                1                               <NA>
+      29                                1                               <NA>
+      30                                1                               <NA>
+      31                                1                               <NA>
+      32                                1                               <NA>
+      33                             0.25                               <NA>
+      34                             0.25                               <NA>
+      35                             0.25                                 29
+      36                             0.25                                 25
+      37                             0.25                               <NA>
+      38                                0                               <NA>
+      39                             0.25                               <NA>
+      40                             0.25                               <NA>
+      41                             0.25                               <NA>
+      42                             0.25                               <NA>
+      43                             0.25                               <NA>
+      44                             0.25                               <NA>
+      45                             0.25                               <NA>
+      46                             0.25                               <NA>
+      47                             0.25                               <NA>
+      48                             0.25                                  8
+      49                             0.25                                 14
+      50                             0.25                                 11
+      51                             0.25                               <NA>
+      52                             0.25                               <NA>
+      53                             0.25                               <NA>
+      54                             0.25                                  5
+      55                                0                               <NA>
+      56                                0                               <NA>
+      57                                0                               <NA>
+      58                                0                               <NA>
+      59                              0.5                               <NA>
+      60                              0.5                               <NA>
+      61                                1                               <NA>
+      62                                1                               <NA>
+      63                                1                               <NA>
+      64                                1                               <NA>
+      65                                1                               <NA>
+      66                                1                               <NA>
+      67                                1                               <NA>
+      68                                1                               <NA>
+         Longest Value (Most Characters) Count of Empty Values Count of Unique Values
+      2                    character.max       character.empty     character.n_unique
+      3                             <NA>                  <NA>                   <NA>
+      4                               11                     0                      3
+      5                               11                     0                      3
+      6                             <NA>                  <NA>                   <NA>
+      7                             <NA>                  <NA>                   <NA>
+      8                                1                     0                      4
+      9                                1                     0                      4
+      10                               4                     0                      1
+      11                               5                     0                      1
+      12                            <NA>                  <NA>                   <NA>
+      13                            <NA>                  <NA>                   <NA>
+      14                            <NA>                  <NA>                   <NA>
+      15                            <NA>                  <NA>                   <NA>
+      16                            <NA>                  <NA>                   <NA>
+      17                            <NA>                  <NA>                   <NA>
+      18                            <NA>                  <NA>                   <NA>
+      19                            <NA>                  <NA>                   <NA>
+      20                            <NA>                  <NA>                   <NA>
+      21                            <NA>                  <NA>                   <NA>
+      22                            <NA>                  <NA>                   <NA>
+      23                            <NA>                  <NA>                   <NA>
+      24                            <NA>                  <NA>                   <NA>
+      25                            <NA>                  <NA>                   <NA>
+      26                            <NA>                  <NA>                   <NA>
+      27                            <NA>                  <NA>                   <NA>
+      28                            <NA>                  <NA>                   <NA>
+      29                            <NA>                  <NA>                   <NA>
+      30                            <NA>                  <NA>                   <NA>
+      31                            <NA>                  <NA>                   <NA>
+      32                            <NA>                  <NA>                   <NA>
+      33                            <NA>                  <NA>                   <NA>
+      34                            <NA>                  <NA>                   <NA>
+      35                              29                     0                      1
+      36                              25                     0                      1
+      37                            <NA>                  <NA>                   <NA>
+      38                            <NA>                  <NA>                   <NA>
+      39                            <NA>                  <NA>                   <NA>
+      40                            <NA>                  <NA>                   <NA>
+      41                            <NA>                  <NA>                   <NA>
+      42                            <NA>                  <NA>                   <NA>
+      43                            <NA>                  <NA>                   <NA>
+      44                            <NA>                  <NA>                   <NA>
+      45                            <NA>                  <NA>                   <NA>
+      46                            <NA>                  <NA>                   <NA>
+      47                            <NA>                  <NA>                   <NA>
+      48                               8                     0                      1
+      49                              14                     0                      1
+      50                              11                     0                      1
+      51                            <NA>                  <NA>                   <NA>
+      52                            <NA>                  <NA>                   <NA>
+      53                            <NA>                  <NA>                   <NA>
+      54                               5                     0                      1
+      55                            <NA>                  <NA>                   <NA>
+      56                            <NA>                  <NA>                   <NA>
+      57                            <NA>                  <NA>                   <NA>
+      58                            <NA>                  <NA>                   <NA>
+      59                            <NA>                  <NA>                   <NA>
+      60                            <NA>                  <NA>                   <NA>
+      61                            <NA>                  <NA>                   <NA>
+      62                            <NA>                  <NA>                   <NA>
+      63                            <NA>                  <NA>                   <NA>
+      64                            <NA>                  <NA>                   <NA>
+      65                            <NA>                  <NA>                   <NA>
+      66                            <NA>                  <NA>                   <NA>
+      67                            <NA>                  <NA>                   <NA>
+      68                            <NA>                  <NA>                   <NA>
          Count of Values that are all Whitespace         Mean Standard Deviation 
       2                     character.whitespace numeric.mean          numeric.sd
       3                                     <NA>         <NA>                <NA>

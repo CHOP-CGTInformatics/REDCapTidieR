@@ -215,7 +215,7 @@ write_redcap_xlsx <- function(supertbl,
 #' @importFrom purrr map pluck
 #' @importFrom tidyr pivot_wider
 #' @importFrom dplyr select filter relocate mutate if_else
-#' @importFrom rlang check_installed
+#' @importFrom rlang check_installed .data
 #' @importFrom tidyselect any_of
 #'
 #' @keywords internal
@@ -233,7 +233,7 @@ add_labelled_xlsx_features <- function(supertbl,
   generate_dictionaries <- function(x) {
     labelled::generate_dictionary(x) %>%
       select("variable", "label") %>%
-      mutate(label = if_else(is.na(label), "", label)) %>%
+      mutate(label = if_else(is.na(.data$label), "", .data$label)) %>%
       pivot_wider(
         names_from = "variable",
         values_from = "label"
