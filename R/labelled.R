@@ -91,6 +91,7 @@ make_labelled <- function(supertbl, format_labels = NULL) {
   data_labs <- c( # nolint: object_usage_linter
     redcap_form_instance = "REDCap Form Instance",
     redcap_event_instance = "REDCap Event Instance",
+    redcap_data_access_group = "REDCap Data Access Group",
     redcap_event = "REDCap Event",
     redcap_arm = "REDCap Arm",
     redcap_survey_timestamp = "REDCap Survey Timestamp",
