@@ -569,19 +569,20 @@ test_that("read_redcap works for a large sparse database", {
     expect_equal(expected_col_types)
 })
 
-test_that("read_redcap works with Data Access Groups", {
-  # Non-Longitudinal DAGs
+test_that("read_redcap works with non-longitudinal Data Access Groups", {
   httptest::with_mock_api({
     out_dag <- read_redcap(creds$REDCAP_URI,
                            creds$REDCAPTIDIER_DAG_API)
   })
 
+  # Check for expected column and data
   dag_data <- out_dag$redcap_data[[1]]
 
   expect_true("redcap_data_access_group" %in% names(dag_data))
   expect_true(is.character(dag_data$redcap_data_access_group))
   expect_equal(dag_data$redcap_data_access_group, c("dag1", "dag2", "dag3", NA))
 
+  # Check for expected label
   out_dag_labelled <- out_dag %>% make_labelled()
 
   dag_label <- labelled::lookfor(out_dag_labelled$redcap_data[[1]])
@@ -589,22 +590,26 @@ test_that("read_redcap works with Data Access Groups", {
 
   expect_equal(dag_label, c("redcap_data_access_group" = "REDCap Data Access Group"))
 
-  # Longitudinal DAGs
+})
+
+test_that("read_redcap works with longitudinal Data Access Groups", {
   httptest::with_mock_api({
     out_dag_long <- read_redcap(creds$REDCAP_URI,
                            creds$REDCAPTIDIER_LONGITUDINAL_DAG_API)
   })
 
+  # Check for expected column and data
   dag_data_long <- out_dag_long$redcap_data[[1]]
 
   expect_true("redcap_data_access_group" %in% names(dag_data_long))
   expect_true(is.character(dag_data_long$redcap_data_access_group))
   expect_equal(dag_data_long$redcap_data_access_group, c("dag1", "dag1", "dag2", "dag2", "dag3"))
 
+  # Check for expected label
   out_dag_long_labelled <- out_dag_long %>% make_labelled()
 
   dag_label_long <- labelled::lookfor(out_dag_long_labelled$redcap_data[[1]])
   dag_label_long <- dag_label_long$label[dag_label_long$variable == "redcap_data_access_group"]
 
-  expect_equal(dag_label, c("redcap_data_access_group" = "REDCap Data Access Group"))
+  expect_equal(dag_label_long, c("redcap_data_access_group" = "REDCap Data Access Group"))
 })
