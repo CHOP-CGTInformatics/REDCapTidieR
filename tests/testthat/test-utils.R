@@ -380,10 +380,10 @@ test_that("is_labelled works", {
 })
 
 test_that("make_skimr_labels works", {
-  skimr_labs <- make_skimr_labels()
+  skimr_labels <- make_skimr_labels()
 
   # Test for named character vector output
-  expect_true(is.vector(skimr_labs))
-  expect_true(is.character(skimr_labs))
-  expect_true(!is.null(attr(skimr_labs, "name")))
+  expect_true(is.vector(skimr_labels))
+  expect_true(is.character(skimr_labels))
+  expect_true(!is.null(attr(skimr_labels, "name")))
 })

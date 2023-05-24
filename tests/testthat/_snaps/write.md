@@ -973,822 +973,550 @@
       66                         <NA>                         <NA>
       67                         <NA>                         <NA>
       68                         <NA>                         <NA>
-         Count of Empty Characters Count of Unique Characters
-      2            character.empty         character.n_unique
-      3                       <NA>                       <NA>
-      4                          0                          3
-      5                          0                          3
-      6                       <NA>                       <NA>
-      7                       <NA>                       <NA>
-      8                          0                          4
-      9                          0                          4
-      10                         0                          1
-      11                         0                          1
-      12                      <NA>                       <NA>
-      13                      <NA>                       <NA>
-      14                      <NA>                       <NA>
-      15                      <NA>                       <NA>
-      16                      <NA>                       <NA>
-      17                      <NA>                       <NA>
-      18                      <NA>                       <NA>
-      19                      <NA>                       <NA>
-      20                      <NA>                       <NA>
-      21                      <NA>                       <NA>
-      22                      <NA>                       <NA>
-      23                      <NA>                       <NA>
-      24                      <NA>                       <NA>
-      25                      <NA>                       <NA>
-      26                      <NA>                       <NA>
-      27                      <NA>                       <NA>
-      28                      <NA>                       <NA>
-      29                      <NA>                       <NA>
-      30                      <NA>                       <NA>
-      31                      <NA>                       <NA>
-      32                      <NA>                       <NA>
-      33                      <NA>                       <NA>
-      34                      <NA>                       <NA>
-      35                         0                          1
-      36                         0                          1
-      37                      <NA>                       <NA>
-      38                      <NA>                       <NA>
-      39                      <NA>                       <NA>
-      40                      <NA>                       <NA>
-      41                      <NA>                       <NA>
-      42                      <NA>                       <NA>
-      43                      <NA>                       <NA>
-      44                      <NA>                       <NA>
-      45                      <NA>                       <NA>
-      46                      <NA>                       <NA>
-      47                      <NA>                       <NA>
-      48                         0                          1
-      49                         0                          1
-      50                         0                          1
-      51                      <NA>                       <NA>
-      52                      <NA>                       <NA>
-      53                      <NA>                       <NA>
-      54                         0                          1
-      55                      <NA>                       <NA>
-      56                      <NA>                       <NA>
-      57                      <NA>                       <NA>
-      58                      <NA>                       <NA>
-      59                      <NA>                       <NA>
-      60                      <NA>                       <NA>
-      61                      <NA>                       <NA>
-      62                      <NA>                       <NA>
-      63                      <NA>                       <NA>
-      64                      <NA>                       <NA>
-      65                      <NA>                       <NA>
-      66                      <NA>                       <NA>
-      67                      <NA>                       <NA>
-      68                      <NA>                       <NA>
-         Count of Whitespaces in Characters Mean of Numeric Values
-      2                character.whitespace           numeric.mean
-      3                                <NA>                   <NA>
-      4                                   0                   <NA>
-      5                                   0                   <NA>
-      6                                <NA>                      4
-      7                                <NA>                      5
-      8                                   0                   <NA>
-      9                                   0                   <NA>
-      10                                  0                   <NA>
-      11                                  0                   <NA>
-      12                               <NA>                      2
-      13                               <NA>                   <NA>
-      14                               <NA>                   <NA>
-      15                               <NA>                   <NA>
-      16                               <NA>                   <NA>
-      17                               <NA>                   <NA>
-      18                               <NA>                   <NA>
-      19                               <NA>                   <NA>
-      20                               <NA>                   <NA>
-      21                               <NA>                   <NA>
-      22                               <NA>                   <NA>
-      23                               <NA>                   <NA>
-      24                               <NA>                   <NA>
-      25                               <NA>                   <NA>
-      26                               <NA>                   <NA>
-      27                               <NA>                   <NA>
-      28                               <NA>                   <NA>
-      29                               <NA>                   <NA>
-      30                               <NA>                   <NA>
-      31                               <NA>                   <NA>
-      32                               <NA>                   <NA>
-      33                               <NA>                   <NA>
-      34                               <NA>                   <NA>
-      35                                  0                   <NA>
-      36                                  0                   <NA>
-      37                               <NA>                     73
-      38                               <NA>                   <NA>
-      39                               <NA>                   <NA>
-      40                               <NA>                   <NA>
-      41                               <NA>                   <NA>
-      42                               <NA>                   <NA>
-      43                               <NA>                   <NA>
-      44                               <NA>                   <NA>
-      45                               <NA>                   <NA>
-      46                               <NA>                   <NA>
-      47                               <NA>                   <NA>
-      48                                  0                   <NA>
-      49                                  0                   <NA>
-      50                                  0                   <NA>
-      51                               <NA>                   <NA>
-      52                               <NA>                   <NA>
-      53                               <NA>                   <NA>
-      54                                  0                   <NA>
-      55                               <NA>                   <NA>
-      56                               <NA>                   <NA>
-      57                               <NA>                   <NA>
-      58                               <NA>                   <NA>
-      59                               <NA>                   <NA>
-      60                               <NA>                   <NA>
-      61                               <NA>                   <NA>
-      62                               <NA>                   <NA>
-      63                               <NA>                   <NA>
-      64                               <NA>                   <NA>
-      65                               <NA>                   <NA>
-      66                               <NA>                   <NA>
-      67                               <NA>                   <NA>
-      68                               <NA>                   <NA>
-         Standard Deviation of Numeric Values 0th Percentile of Numeric Values
-      2                            numeric.sd                       numeric.p0
-      3                                  <NA>                             <NA>
-      4                                  <NA>                             <NA>
-      5                                  <NA>                             <NA>
-      6                       1.4142135623731                                3
-      7                       1.4142135623731                                4
-      8                                  <NA>                             <NA>
-      9                                  <NA>                             <NA>
-      10                                 <NA>                             <NA>
-      11                                 <NA>                             <NA>
-      12                                    0                                2
-      13                                 <NA>                             <NA>
-      14                                 <NA>                             <NA>
-      15                                 <NA>                             <NA>
-      16                                 <NA>                             <NA>
-      17                                 <NA>                             <NA>
-      18                                 <NA>                             <NA>
-      19                                 <NA>                             <NA>
-      20                                 <NA>                             <NA>
-      21                                 <NA>                             <NA>
-      22                                 <NA>                             <NA>
-      23                                 <NA>                             <NA>
-      24                                 <NA>                             <NA>
-      25                                 <NA>                             <NA>
-      26                                 <NA>                             <NA>
-      27                                 <NA>                             <NA>
-      28                                 <NA>                             <NA>
-      29                                 <NA>                             <NA>
-      30                                 <NA>                             <NA>
-      31                                 <NA>                             <NA>
-      32                                 <NA>                             <NA>
-      33                                 <NA>                             <NA>
-      34                                 <NA>                             <NA>
-      35                                 <NA>                             <NA>
-      36                                 <NA>                             <NA>
-      37                                 <NA>                               73
-      38                                 <NA>                             <NA>
-      39                                 <NA>                             <NA>
-      40                                 <NA>                             <NA>
-      41                                 <NA>                             <NA>
-      42                                 <NA>                             <NA>
-      43                                 <NA>                             <NA>
-      44                                 <NA>                             <NA>
-      45                                 <NA>                             <NA>
-      46                                 <NA>                             <NA>
-      47                                 <NA>                             <NA>
-      48                                 <NA>                             <NA>
-      49                                 <NA>                             <NA>
-      50                                 <NA>                             <NA>
-      51                                 <NA>                             <NA>
-      52                                 <NA>                             <NA>
-      53                                 <NA>                             <NA>
-      54                                 <NA>                             <NA>
-      55                                 <NA>                             <NA>
-      56                                 <NA>                             <NA>
-      57                                 <NA>                             <NA>
-      58                                 <NA>                             <NA>
-      59                                 <NA>                             <NA>
-      60                                 <NA>                             <NA>
-      61                                 <NA>                             <NA>
-      62                                 <NA>                             <NA>
-      63                                 <NA>                             <NA>
-      64                                 <NA>                             <NA>
-      65                                 <NA>                             <NA>
-      66                                 <NA>                             <NA>
-      67                                 <NA>                             <NA>
-      68                                 <NA>                             <NA>
-         25th Percentile of Numeric Values 50th Percentile of Numeric Values
-      2                        numeric.p25                       numeric.p50
-      3                               <NA>                              <NA>
-      4                               <NA>                              <NA>
-      5                               <NA>                              <NA>
-      6                                3.5                                 4
-      7                                4.5                                 5
-      8                               <NA>                              <NA>
-      9                               <NA>                              <NA>
-      10                              <NA>                              <NA>
-      11                              <NA>                              <NA>
-      12                                 2                                 2
-      13                              <NA>                              <NA>
-      14                              <NA>                              <NA>
-      15                              <NA>                              <NA>
-      16                              <NA>                              <NA>
-      17                              <NA>                              <NA>
-      18                              <NA>                              <NA>
-      19                              <NA>                              <NA>
-      20                              <NA>                              <NA>
-      21                              <NA>                              <NA>
-      22                              <NA>                              <NA>
-      23                              <NA>                              <NA>
-      24                              <NA>                              <NA>
-      25                              <NA>                              <NA>
-      26                              <NA>                              <NA>
-      27                              <NA>                              <NA>
-      28                              <NA>                              <NA>
-      29                              <NA>                              <NA>
-      30                              <NA>                              <NA>
-      31                              <NA>                              <NA>
-      32                              <NA>                              <NA>
-      33                              <NA>                              <NA>
-      34                              <NA>                              <NA>
-      35                              <NA>                              <NA>
-      36                              <NA>                              <NA>
-      37                                73                                73
-      38                              <NA>                              <NA>
-      39                              <NA>                              <NA>
-      40                              <NA>                              <NA>
-      41                              <NA>                              <NA>
-      42                              <NA>                              <NA>
-      43                              <NA>                              <NA>
-      44                              <NA>                              <NA>
-      45                              <NA>                              <NA>
-      46                              <NA>                              <NA>
-      47                              <NA>                              <NA>
-      48                              <NA>                              <NA>
-      49                              <NA>                              <NA>
-      50                              <NA>                              <NA>
-      51                              <NA>                              <NA>
-      52                              <NA>                              <NA>
-      53                              <NA>                              <NA>
-      54                              <NA>                              <NA>
-      55                              <NA>                              <NA>
-      56                              <NA>                              <NA>
-      57                              <NA>                              <NA>
-      58                              <NA>                              <NA>
-      59                              <NA>                              <NA>
-      60                              <NA>                              <NA>
-      61                              <NA>                              <NA>
-      62                              <NA>                              <NA>
-      63                              <NA>                              <NA>
-      64                              <NA>                              <NA>
-      65                              <NA>                              <NA>
-      66                              <NA>                              <NA>
-      67                              <NA>                              <NA>
-      68                              <NA>                              <NA>
-         75th Percentile of Numeric Values 100th Percentile of Numeric Values
-      2                        numeric.p75                       numeric.p100
-      3                               <NA>                               <NA>
-      4                               <NA>                               <NA>
-      5                               <NA>                               <NA>
-      6                                4.5                                  5
-      7                                5.5                                  6
-      8                               <NA>                               <NA>
-      9                               <NA>                               <NA>
-      10                              <NA>                               <NA>
-      11                              <NA>                               <NA>
-      12                                 2                                  2
-      13                              <NA>                               <NA>
-      14                              <NA>                               <NA>
-      15                              <NA>                               <NA>
-      16                              <NA>                               <NA>
-      17                              <NA>                               <NA>
-      18                              <NA>                               <NA>
-      19                              <NA>                               <NA>
-      20                              <NA>                               <NA>
-      21                              <NA>                               <NA>
-      22                              <NA>                               <NA>
-      23                              <NA>                               <NA>
-      24                              <NA>                               <NA>
-      25                              <NA>                               <NA>
-      26                              <NA>                               <NA>
-      27                              <NA>                               <NA>
-      28                              <NA>                               <NA>
-      29                              <NA>                               <NA>
-      30                              <NA>                               <NA>
-      31                              <NA>                               <NA>
-      32                              <NA>                               <NA>
-      33                              <NA>                               <NA>
-      34                              <NA>                               <NA>
-      35                              <NA>                               <NA>
-      36                              <NA>                               <NA>
-      37                                73                                 73
-      38                              <NA>                               <NA>
-      39                              <NA>                               <NA>
-      40                              <NA>                               <NA>
-      41                              <NA>                               <NA>
-      42                              <NA>                               <NA>
-      43                              <NA>                               <NA>
-      44                              <NA>                               <NA>
-      45                              <NA>                               <NA>
-      46                              <NA>                               <NA>
-      47                              <NA>                               <NA>
-      48                              <NA>                               <NA>
-      49                              <NA>                               <NA>
-      50                              <NA>                               <NA>
-      51                              <NA>                               <NA>
-      52                              <NA>                               <NA>
-      53                              <NA>                               <NA>
-      54                              <NA>                               <NA>
-      55                              <NA>                               <NA>
-      56                              <NA>                               <NA>
-      57                              <NA>                               <NA>
-      58                              <NA>                               <NA>
-      59                              <NA>                               <NA>
-      60                              <NA>                               <NA>
-      61                              <NA>                               <NA>
-      62                              <NA>                               <NA>
-      63                              <NA>                               <NA>
-      64                              <NA>                               <NA>
-      65                              <NA>                               <NA>
-      66                              <NA>                               <NA>
-      67                              <NA>                               <NA>
-      68                              <NA>                               <NA>
-         Histogram of Numeric Values Order of Factor Levels
-      2                 numeric.hist                     NA
-      3                         <NA>                     NA
-      4                         <NA>                     NA
-      5                         <NA>                     NA
-      6                        ▇▁▁▁▇                     NA
-      7                        ▇▁▁▁▇                     NA
-      8                         <NA>                     NA
-      9                         <NA>                     NA
-      10                        <NA>                     NA
-      11                        <NA>                     NA
-      12                       ▁▁▇▁▁                     NA
-      13                        <NA>                  FALSE
-      14                        <NA>                  FALSE
-      15                        <NA>                  FALSE
-      16                        <NA>                     NA
-      17                        <NA>                     NA
-      18                        <NA>                     NA
-      19                        <NA>                     NA
-      20                        <NA>                     NA
-      21                        <NA>                     NA
-      22                        <NA>                     NA
-      23                        <NA>                     NA
-      24                        <NA>                     NA
-      25                        <NA>                     NA
-      26                        <NA>                     NA
-      27                        <NA>                     NA
-      28                        <NA>                     NA
-      29                        <NA>                     NA
-      30                        <NA>                     NA
-      31                        <NA>                     NA
-      32                        <NA>                     NA
-      33                        <NA>                     NA
-      34                        <NA>                     NA
-      35                        <NA>                     NA
-      36                        <NA>                     NA
-      37                       ▁▁▇▁▁                     NA
-      38                        <NA>                  FALSE
-      39                        <NA>                     NA
-      40                        <NA>                     NA
-      41                        <NA>                     NA
-      42                        <NA>                     NA
-      43                        <NA>                     NA
-      44                        <NA>                     NA
-      45                        <NA>                     NA
-      46                        <NA>                     NA
-      47                        <NA>                     NA
-      48                        <NA>                     NA
-      49                        <NA>                     NA
-      50                        <NA>                     NA
-      51                        <NA>                     NA
-      52                        <NA>                     NA
-      53                        <NA>                     NA
-      54                        <NA>                     NA
-      55                        <NA>                     NA
-      56                        <NA>                     NA
-      57                        <NA>                     NA
-      58                        <NA>                     NA
-      59                        <NA>                     NA
-      60                        <NA>                  FALSE
-      61                        <NA>                     NA
-      62                        <NA>                     NA
-      63                        <NA>                     NA
-      64                        <NA>                     NA
-      65                        <NA>                  FALSE
-      66                        <NA>                     NA
-      67                        <NA>                     NA
-      68                        <NA>                     NA
-         Count of Unique Factor Levels Most Frequent Factor Levels
-      2                factor.n_unique           factor.top_counts
-      3                           <NA>                        <NA>
-      4                           <NA>                        <NA>
-      5                           <NA>                        <NA>
-      6                           <NA>                        <NA>
-      7                           <NA>                        <NA>
-      8                           <NA>                        <NA>
-      9                           <NA>                        <NA>
-      10                          <NA>                        <NA>
-      11                          <NA>                        <NA>
-      12                          <NA>                        <NA>
-      13                             2      one: 1, thr: 1, two: 0
-      14                             2            B: 1, C: 1, A: 0
-      15                             0                  A: 0, C: 0
-      16                          <NA>                        <NA>
-      17                          <NA>                        <NA>
-      18                          <NA>                        <NA>
-      19                          <NA>                        <NA>
-      20                          <NA>                        <NA>
-      21                          <NA>                        <NA>
-      22                          <NA>                        <NA>
-      23                          <NA>                        <NA>
-      24                          <NA>                        <NA>
-      25                          <NA>                        <NA>
-      26                          <NA>                        <NA>
-      27                          <NA>                        <NA>
-      28                          <NA>                        <NA>
-      29                          <NA>                        <NA>
-      30                          <NA>                        <NA>
-      31                          <NA>                        <NA>
-      32                          <NA>                        <NA>
-      33                          <NA>                        <NA>
-      34                          <NA>                        <NA>
-      35                          <NA>                        <NA>
-      36                          <NA>                        <NA>
-      37                          <NA>                        <NA>
-      38                             0                          : 
-      39                          <NA>                        <NA>
-      40                          <NA>                        <NA>
-      41                          <NA>                        <NA>
-      42                          <NA>                        <NA>
-      43                          <NA>                        <NA>
-      44                          <NA>                        <NA>
-      45                          <NA>                        <NA>
-      46                          <NA>                        <NA>
-      47                          <NA>                        <NA>
-      48                          <NA>                        <NA>
-      49                          <NA>                        <NA>
-      50                          <NA>                        <NA>
-      51                          <NA>                        <NA>
-      52                          <NA>                        <NA>
-      53                          <NA>                        <NA>
-      54                          <NA>                        <NA>
-      55                          <NA>                        <NA>
-      56                          <NA>                        <NA>
-      57                          <NA>                        <NA>
-      58                          <NA>                        <NA>
-      59                          <NA>                        <NA>
-      60                             2      Cho: 1, Cho: 1, Cho: 0
-      61                          <NA>                        <NA>
-      62                          <NA>                        <NA>
-      63                          <NA>                        <NA>
-      64                          <NA>                        <NA>
-      65                             2      Cho: 2, Cho: 1, Cho: 0
-      66                          <NA>                        <NA>
-      67                          <NA>                        <NA>
-      68                          <NA>                        <NA>
-         Mean of Logical Values Count of Logical Values Earliest Date Latest Date
-      2            logical.mean           logical.count      Date.min    Date.max
-      3                    <NA>                    <NA>          <NA>        <NA>
-      4                    <NA>                    <NA>          <NA>        <NA>
-      5                    <NA>                    <NA>          <NA>        <NA>
-      6                    <NA>                    <NA>          <NA>        <NA>
-      7                    <NA>                    <NA>          <NA>        <NA>
-      8                    <NA>                    <NA>          <NA>        <NA>
-      9                    <NA>                    <NA>          <NA>        <NA>
-      10                   <NA>                    <NA>          <NA>        <NA>
-      11                   <NA>                    <NA>          <NA>        <NA>
-      12                   <NA>                    <NA>          <NA>        <NA>
-      13                   <NA>                    <NA>          <NA>        <NA>
-      14                   <NA>                    <NA>          <NA>        <NA>
-      15                   <NA>                    <NA>          <NA>        <NA>
-      16                    0.5          FAL: 2, TRU: 2          <NA>        <NA>
-      17                      0                  FAL: 4          <NA>        <NA>
-      18                      0                  FAL: 4          <NA>        <NA>
-      19                    0.5          FAL: 2, TRU: 2          <NA>        <NA>
-      20                      0                  FAL: 4          <NA>        <NA>
-      21                      0                  FAL: 4          <NA>        <NA>
-      22                   0.25          FAL: 3, TRU: 1          <NA>        <NA>
-      23                   0.25          FAL: 3, TRU: 1          <NA>        <NA>
-      24                      0                  FAL: 4          <NA>        <NA>
-      25                   0.25          FAL: 3, TRU: 1          <NA>        <NA>
-      26                   0.25          FAL: 3, TRU: 1          <NA>        <NA>
-      27                      0                  FAL: 4          <NA>        <NA>
-      28                      0                  FAL: 4          <NA>        <NA>
-      29                   0.25          FAL: 3, TRU: 1          <NA>        <NA>
-      30                      0                  FAL: 4          <NA>        <NA>
-      31                   0.25          FAL: 3, TRU: 1          <NA>        <NA>
-      32                      0                  FAL: 4          <NA>        <NA>
-      33                      1                  TRU: 1          <NA>        <NA>
-      34                      0                  FAL: 1          <NA>        <NA>
-      35                   <NA>                    <NA>          <NA>        <NA>
-      36                   <NA>                    <NA>          <NA>        <NA>
-      37                   <NA>                    <NA>          <NA>        <NA>
-      38                   <NA>                    <NA>          <NA>        <NA>
-      39                   <NA>                    <NA>    2022-08-03  2022-08-03
-      40                   <NA>                    <NA>    2022-08-03  2022-08-03
-      41                   <NA>                    <NA>    2022-08-03  2022-08-03
-      42                   <NA>                    <NA>          <NA>        <NA>
-      43                   <NA>                    <NA>          <NA>        <NA>
-      44                   <NA>                    <NA>          <NA>        <NA>
-      45                   <NA>                    <NA>          <NA>        <NA>
-      46                   <NA>                    <NA>          <NA>        <NA>
-      47                   <NA>                    <NA>          <NA>        <NA>
-      48                   <NA>                    <NA>          <NA>        <NA>
-      49                   <NA>                    <NA>          <NA>        <NA>
-      50                   <NA>                    <NA>          <NA>        <NA>
-      51                   <NA>                    <NA>          <NA>        <NA>
-      52                   <NA>                    <NA>          <NA>        <NA>
-      53                   <NA>                    <NA>          <NA>        <NA>
-      54                   <NA>                    <NA>          <NA>        <NA>
-      55                #VALUE!                      :           <NA>        <NA>
-      56                #VALUE!                      :           <NA>        <NA>
-      57                #VALUE!                      :           <NA>        <NA>
-      58                #VALUE!                      :           <NA>        <NA>
-      59                    0.5          FAL: 1, TRU: 1          <NA>        <NA>
-      60                   <NA>                    <NA>          <NA>        <NA>
-      61                      0                  FAL: 4          <NA>        <NA>
-      62                    0.5          FAL: 2, TRU: 2          <NA>        <NA>
-      63                    0.5          FAL: 2, TRU: 2          <NA>        <NA>
-      64      0.666666666666667          TRU: 2, FAL: 1          <NA>        <NA>
-      65                   <NA>                    <NA>          <NA>        <NA>
-      66      0.666666666666667          TRU: 2, FAL: 1          <NA>        <NA>
-      67      0.333333333333333          FAL: 2, TRU: 1          <NA>        <NA>
-      68      0.333333333333333          FAL: 2, TRU: 1          <NA>        <NA>
-         Median Date Count of Unique Dates Earliest POSIXct Value
-      2  Date.median         Date.n_unique            POSIXct.min
-      3         <NA>                  <NA>                   <NA>
-      4         <NA>                  <NA>                   <NA>
-      5         <NA>                  <NA>                   <NA>
-      6         <NA>                  <NA>                   <NA>
-      7         <NA>                  <NA>                   <NA>
-      8         <NA>                  <NA>                   <NA>
-      9         <NA>                  <NA>                   <NA>
-      10        <NA>                  <NA>                   <NA>
-      11        <NA>                  <NA>                   <NA>
-      12        <NA>                  <NA>                   <NA>
-      13        <NA>                  <NA>                   <NA>
-      14        <NA>                  <NA>                   <NA>
-      15        <NA>                  <NA>                   <NA>
-      16        <NA>                  <NA>                   <NA>
-      17        <NA>                  <NA>                   <NA>
-      18        <NA>                  <NA>                   <NA>
-      19        <NA>                  <NA>                   <NA>
-      20        <NA>                  <NA>                   <NA>
-      21        <NA>                  <NA>                   <NA>
-      22        <NA>                  <NA>                   <NA>
-      23        <NA>                  <NA>                   <NA>
-      24        <NA>                  <NA>                   <NA>
-      25        <NA>                  <NA>                   <NA>
-      26        <NA>                  <NA>                   <NA>
-      27        <NA>                  <NA>                   <NA>
-      28        <NA>                  <NA>                   <NA>
-      29        <NA>                  <NA>                   <NA>
-      30        <NA>                  <NA>                   <NA>
-      31        <NA>                  <NA>                   <NA>
-      32        <NA>                  <NA>                   <NA>
-      33        <NA>                  <NA>                   <NA>
-      34        <NA>                  <NA>                   <NA>
-      35        <NA>                  <NA>                   <NA>
-      36        <NA>                  <NA>                   <NA>
-      37        <NA>                  <NA>                   <NA>
-      38        <NA>                  <NA>                   <NA>
-      39  2022-08-03                     1                   <NA>
-      40  2022-08-03                     1                   <NA>
-      41  2022-08-03                     1                   <NA>
-      42        <NA>                  <NA>    2022-08-03 15:15:00
-      43        <NA>                  <NA>    2022-08-03 15:15:00
-      44        <NA>                  <NA>    2022-08-03 15:15:00
-      45        <NA>                  <NA>    2022-08-03 15:15:04
-      46        <NA>                  <NA>    2022-08-03 15:15:04
-      47        <NA>                  <NA>    2022-08-03 15:15:05
-      48        <NA>                  <NA>                   <NA>
-      49        <NA>                  <NA>                   <NA>
-      50        <NA>                  <NA>                   <NA>
-      51        <NA>                  <NA>                   <NA>
-      52        <NA>                  <NA>                   <NA>
-      53        <NA>                  <NA>                   <NA>
-      54        <NA>                  <NA>                   <NA>
-      55        <NA>                  <NA>                   <NA>
-      56        <NA>                  <NA>                   <NA>
-      57        <NA>                  <NA>                   <NA>
-      58        <NA>                  <NA>                   <NA>
-      59        <NA>                  <NA>                   <NA>
-      60        <NA>                  <NA>                   <NA>
-      61        <NA>                  <NA>                   <NA>
-      62        <NA>                  <NA>                   <NA>
-      63        <NA>                  <NA>                   <NA>
-      64        <NA>                  <NA>                   <NA>
-      65        <NA>                  <NA>                   <NA>
-      66        <NA>                  <NA>                   <NA>
-      67        <NA>                  <NA>                   <NA>
-      68        <NA>                  <NA>                   <NA>
-         Latest POSIXct Value Median POSIXct Value Count of Unique POSIXct Values
-      2           POSIXct.max       POSIXct.median               POSIXct.n_unique
-      3                  <NA>                 <NA>                           <NA>
-      4                  <NA>                 <NA>                           <NA>
-      5                  <NA>                 <NA>                           <NA>
-      6                  <NA>                 <NA>                           <NA>
-      7                  <NA>                 <NA>                           <NA>
-      8                  <NA>                 <NA>                           <NA>
-      9                  <NA>                 <NA>                           <NA>
-      10                 <NA>                 <NA>                           <NA>
-      11                 <NA>                 <NA>                           <NA>
-      12                 <NA>                 <NA>                           <NA>
-      13                 <NA>                 <NA>                           <NA>
-      14                 <NA>                 <NA>                           <NA>
-      15                 <NA>                 <NA>                           <NA>
-      16                 <NA>                 <NA>                           <NA>
-      17                 <NA>                 <NA>                           <NA>
-      18                 <NA>                 <NA>                           <NA>
-      19                 <NA>                 <NA>                           <NA>
-      20                 <NA>                 <NA>                           <NA>
-      21                 <NA>                 <NA>                           <NA>
-      22                 <NA>                 <NA>                           <NA>
-      23                 <NA>                 <NA>                           <NA>
-      24                 <NA>                 <NA>                           <NA>
-      25                 <NA>                 <NA>                           <NA>
-      26                 <NA>                 <NA>                           <NA>
-      27                 <NA>                 <NA>                           <NA>
-      28                 <NA>                 <NA>                           <NA>
-      29                 <NA>                 <NA>                           <NA>
-      30                 <NA>                 <NA>                           <NA>
-      31                 <NA>                 <NA>                           <NA>
-      32                 <NA>                 <NA>                           <NA>
-      33                 <NA>                 <NA>                           <NA>
-      34                 <NA>                 <NA>                           <NA>
-      35                 <NA>                 <NA>                           <NA>
-      36                 <NA>                 <NA>                           <NA>
-      37                 <NA>                 <NA>                           <NA>
-      38                 <NA>                 <NA>                           <NA>
-      39                 <NA>                 <NA>                           <NA>
-      40                 <NA>                 <NA>                           <NA>
-      41                 <NA>                 <NA>                           <NA>
-      42  2022-08-03 15:15:00  2022-08-03 15:15:00                              1
-      43  2022-08-03 15:15:00  2022-08-03 15:15:00                              1
-      44  2022-08-03 15:15:00  2022-08-03 15:15:00                              1
-      45  2022-08-03 15:15:04  2022-08-03 15:15:04                              1
-      46  2022-08-03 15:15:04  2022-08-03 15:15:04                              1
-      47  2022-08-03 15:15:05  2022-08-03 15:15:05                              1
-      48                 <NA>                 <NA>                           <NA>
-      49                 <NA>                 <NA>                           <NA>
-      50                 <NA>                 <NA>                           <NA>
-      51                 <NA>                 <NA>                           <NA>
-      52                 <NA>                 <NA>                           <NA>
-      53                 <NA>                 <NA>                           <NA>
-      54                 <NA>                 <NA>                           <NA>
-      55                 <NA>                 <NA>                           <NA>
-      56                 <NA>                 <NA>                           <NA>
-      57                 <NA>                 <NA>                           <NA>
-      58                 <NA>                 <NA>                           <NA>
-      59                 <NA>                 <NA>                           <NA>
-      60                 <NA>                 <NA>                           <NA>
-      61                 <NA>                 <NA>                           <NA>
-      62                 <NA>                 <NA>                           <NA>
-      63                 <NA>                 <NA>                           <NA>
-      64                 <NA>                 <NA>                           <NA>
-      65                 <NA>                 <NA>                           <NA>
-      66                 <NA>                 <NA>                           <NA>
-      67                 <NA>                 <NA>                           <NA>
-      68                 <NA>                 <NA>                           <NA>
-         Minimum Difference in Time Maximum Difference in Time
-      2                difftime.min               difftime.max
-      3                        <NA>                       <NA>
-      4                        <NA>                       <NA>
-      5                        <NA>                       <NA>
-      6                        <NA>                       <NA>
-      7                        <NA>                       <NA>
-      8                        <NA>                       <NA>
-      9                        <NA>                       <NA>
-      10                       <NA>                       <NA>
-      11                       <NA>                       <NA>
-      12                       <NA>                       <NA>
-      13                       <NA>                       <NA>
-      14                       <NA>                       <NA>
-      15                       <NA>                       <NA>
-      16                       <NA>                       <NA>
-      17                       <NA>                       <NA>
-      18                       <NA>                       <NA>
-      19                       <NA>                       <NA>
-      20                       <NA>                       <NA>
-      21                       <NA>                       <NA>
-      22                       <NA>                       <NA>
-      23                       <NA>                       <NA>
-      24                       <NA>                       <NA>
-      25                       <NA>                       <NA>
-      26                       <NA>                       <NA>
-      27                       <NA>                       <NA>
-      28                       <NA>                       <NA>
-      29                       <NA>                       <NA>
-      30                       <NA>                       <NA>
-      31                       <NA>                       <NA>
-      32                       <NA>                       <NA>
-      33                       <NA>                       <NA>
-      34                       <NA>                       <NA>
-      35                       <NA>                       <NA>
-      36                       <NA>                       <NA>
-      37                       <NA>                       <NA>
-      38                       <NA>                       <NA>
-      39                       <NA>                       <NA>
-      40                       <NA>                       <NA>
-      41                       <NA>                       <NA>
-      42                       <NA>                       <NA>
-      43                       <NA>                       <NA>
-      44                       <NA>                       <NA>
-      45                       <NA>                       <NA>
-      46                       <NA>                       <NA>
-      47                       <NA>                       <NA>
-      48                       <NA>                       <NA>
-      49                       <NA>                       <NA>
-      50                       <NA>                       <NA>
-      51                      54949                      54949
-      52                      54900                      54900
-      53                      54000                      54000
-      54                       <NA>                       <NA>
-      55                       <NA>                       <NA>
-      56                       <NA>                       <NA>
-      57                       <NA>                       <NA>
-      58                       <NA>                       <NA>
-      59                       <NA>                       <NA>
-      60                       <NA>                       <NA>
-      61                       <NA>                       <NA>
-      62                       <NA>                       <NA>
-      63                       <NA>                       <NA>
-      64                       <NA>                       <NA>
-      65                       <NA>                       <NA>
-      66                       <NA>                       <NA>
-      67                       <NA>                       <NA>
-      68                       <NA>                       <NA>
-         Median Difference in Time Count of Unique Time Differences
-      2            difftime.median                difftime.n_unique
-      3                       <NA>                             <NA>
-      4                       <NA>                             <NA>
-      5                       <NA>                             <NA>
-      6                       <NA>                             <NA>
-      7                       <NA>                             <NA>
-      8                       <NA>                             <NA>
-      9                       <NA>                             <NA>
-      10                      <NA>                             <NA>
-      11                      <NA>                             <NA>
-      12                      <NA>                             <NA>
-      13                      <NA>                             <NA>
-      14                      <NA>                             <NA>
-      15                      <NA>                             <NA>
-      16                      <NA>                             <NA>
-      17                      <NA>                             <NA>
-      18                      <NA>                             <NA>
-      19                      <NA>                             <NA>
-      20                      <NA>                             <NA>
-      21                      <NA>                             <NA>
-      22                      <NA>                             <NA>
-      23                      <NA>                             <NA>
-      24                      <NA>                             <NA>
-      25                      <NA>                             <NA>
-      26                      <NA>                             <NA>
-      27                      <NA>                             <NA>
-      28                      <NA>                             <NA>
-      29                      <NA>                             <NA>
-      30                      <NA>                             <NA>
-      31                      <NA>                             <NA>
-      32                      <NA>                             <NA>
-      33                      <NA>                             <NA>
-      34                      <NA>                             <NA>
-      35                      <NA>                             <NA>
-      36                      <NA>                             <NA>
-      37                      <NA>                             <NA>
-      38                      <NA>                             <NA>
-      39                      <NA>                             <NA>
-      40                      <NA>                             <NA>
-      41                      <NA>                             <NA>
-      42                      <NA>                             <NA>
-      43                      <NA>                             <NA>
-      44                      <NA>                             <NA>
-      45                      <NA>                             <NA>
-      46                      <NA>                             <NA>
-      47                      <NA>                             <NA>
-      48                      <NA>                             <NA>
-      49                      <NA>                             <NA>
-      50                      <NA>                             <NA>
-      51                  15:15:49                                1
-      52                  15:15:00                                1
-      53                  15:00:00                                1
-      54                      <NA>                             <NA>
-      55                      <NA>                             <NA>
-      56                      <NA>                             <NA>
-      57                      <NA>                             <NA>
-      58                      <NA>                             <NA>
-      59                      <NA>                             <NA>
-      60                      <NA>                             <NA>
-      61                      <NA>                             <NA>
-      62                      <NA>                             <NA>
-      63                      <NA>                             <NA>
-      64                      <NA>                             <NA>
-      65                      <NA>                             <NA>
-      66                      <NA>                             <NA>
-      67                      <NA>                             <NA>
-      68                      <NA>                             <NA>
+         Count of Empty Values Count of Unique Values
+      2        character.empty     character.n_unique
+      3                   <NA>                   <NA>
+      4                      0                      3
+      5                      0                      3
+      6                   <NA>                   <NA>
+      7                   <NA>                   <NA>
+      8                      0                      4
+      9                      0                      4
+      10                     0                      1
+      11                     0                      1
+      12                  <NA>                   <NA>
+      13                  <NA>                   <NA>
+      14                  <NA>                   <NA>
+      15                  <NA>                   <NA>
+      16                  <NA>                   <NA>
+      17                  <NA>                   <NA>
+      18                  <NA>                   <NA>
+      19                  <NA>                   <NA>
+      20                  <NA>                   <NA>
+      21                  <NA>                   <NA>
+      22                  <NA>                   <NA>
+      23                  <NA>                   <NA>
+      24                  <NA>                   <NA>
+      25                  <NA>                   <NA>
+      26                  <NA>                   <NA>
+      27                  <NA>                   <NA>
+      28                  <NA>                   <NA>
+      29                  <NA>                   <NA>
+      30                  <NA>                   <NA>
+      31                  <NA>                   <NA>
+      32                  <NA>                   <NA>
+      33                  <NA>                   <NA>
+      34                  <NA>                   <NA>
+      35                     0                      1
+      36                     0                      1
+      37                  <NA>                   <NA>
+      38                  <NA>                   <NA>
+      39                  <NA>                   <NA>
+      40                  <NA>                   <NA>
+      41                  <NA>                   <NA>
+      42                  <NA>                   <NA>
+      43                  <NA>                   <NA>
+      44                  <NA>                   <NA>
+      45                  <NA>                   <NA>
+      46                  <NA>                   <NA>
+      47                  <NA>                   <NA>
+      48                     0                      1
+      49                     0                      1
+      50                     0                      1
+      51                  <NA>                   <NA>
+      52                  <NA>                   <NA>
+      53                  <NA>                   <NA>
+      54                     0                      1
+      55                  <NA>                   <NA>
+      56                  <NA>                   <NA>
+      57                  <NA>                   <NA>
+      58                  <NA>                   <NA>
+      59                  <NA>                   <NA>
+      60                  <NA>                   <NA>
+      61                  <NA>                   <NA>
+      62                  <NA>                   <NA>
+      63                  <NA>                   <NA>
+      64                  <NA>                   <NA>
+      65                  <NA>                   <NA>
+      66                  <NA>                   <NA>
+      67                  <NA>                   <NA>
+      68                  <NA>                   <NA>
+         Count of Values that are all Whitespace         Mean Standard Deviation 
+      2                     character.whitespace numeric.mean          numeric.sd
+      3                                     <NA>         <NA>                <NA>
+      4                                        0         <NA>                <NA>
+      5                                        0         <NA>                <NA>
+      6                                     <NA>            4     1.4142135623731
+      7                                     <NA>            5     1.4142135623731
+      8                                        0         <NA>                <NA>
+      9                                        0         <NA>                <NA>
+      10                                       0         <NA>                <NA>
+      11                                       0         <NA>                <NA>
+      12                                    <NA>            2                   0
+      13                                    <NA>         <NA>                <NA>
+      14                                    <NA>         <NA>                <NA>
+      15                                    <NA>         <NA>                <NA>
+      16                                    <NA>         <NA>                <NA>
+      17                                    <NA>         <NA>                <NA>
+      18                                    <NA>         <NA>                <NA>
+      19                                    <NA>         <NA>                <NA>
+      20                                    <NA>         <NA>                <NA>
+      21                                    <NA>         <NA>                <NA>
+      22                                    <NA>         <NA>                <NA>
+      23                                    <NA>         <NA>                <NA>
+      24                                    <NA>         <NA>                <NA>
+      25                                    <NA>         <NA>                <NA>
+      26                                    <NA>         <NA>                <NA>
+      27                                    <NA>         <NA>                <NA>
+      28                                    <NA>         <NA>                <NA>
+      29                                    <NA>         <NA>                <NA>
+      30                                    <NA>         <NA>                <NA>
+      31                                    <NA>         <NA>                <NA>
+      32                                    <NA>         <NA>                <NA>
+      33                                    <NA>         <NA>                <NA>
+      34                                    <NA>         <NA>                <NA>
+      35                                       0         <NA>                <NA>
+      36                                       0         <NA>                <NA>
+      37                                    <NA>           73                <NA>
+      38                                    <NA>         <NA>                <NA>
+      39                                    <NA>         <NA>                <NA>
+      40                                    <NA>         <NA>                <NA>
+      41                                    <NA>         <NA>                <NA>
+      42                                    <NA>         <NA>                <NA>
+      43                                    <NA>         <NA>                <NA>
+      44                                    <NA>         <NA>                <NA>
+      45                                    <NA>         <NA>                <NA>
+      46                                    <NA>         <NA>                <NA>
+      47                                    <NA>         <NA>                <NA>
+      48                                       0         <NA>                <NA>
+      49                                       0         <NA>                <NA>
+      50                                       0         <NA>                <NA>
+      51                                    <NA>         <NA>                <NA>
+      52                                    <NA>         <NA>                <NA>
+      53                                    <NA>         <NA>                <NA>
+      54                                       0         <NA>                <NA>
+      55                                    <NA>         <NA>                <NA>
+      56                                    <NA>         <NA>                <NA>
+      57                                    <NA>         <NA>                <NA>
+      58                                    <NA>         <NA>                <NA>
+      59                                    <NA>         <NA>                <NA>
+      60                                    <NA>         <NA>                <NA>
+      61                                    <NA>         <NA>                <NA>
+      62                                    <NA>         <NA>                <NA>
+      63                                    <NA>         <NA>                <NA>
+      64                                    <NA>         <NA>                <NA>
+      65                                    <NA>         <NA>                <NA>
+      66                                    <NA>         <NA>                <NA>
+      67                                    <NA>         <NA>                <NA>
+      68                                    <NA>         <NA>                <NA>
+            Minimum 25th Percentile      Median 75th Percentile      Maximum
+      2  numeric.p0     numeric.p25 numeric.p50     numeric.p75 numeric.p100
+      3        <NA>            <NA>        <NA>            <NA>         <NA>
+      4        <NA>            <NA>        <NA>            <NA>         <NA>
+      5        <NA>            <NA>        <NA>            <NA>         <NA>
+      6           3             3.5           4             4.5            5
+      7           4             4.5           5             5.5            6
+      8        <NA>            <NA>        <NA>            <NA>         <NA>
+      9        <NA>            <NA>        <NA>            <NA>         <NA>
+      10       <NA>            <NA>        <NA>            <NA>         <NA>
+      11       <NA>            <NA>        <NA>            <NA>         <NA>
+      12          2               2           2               2            2
+      13       <NA>            <NA>        <NA>            <NA>         <NA>
+      14       <NA>            <NA>        <NA>            <NA>         <NA>
+      15       <NA>            <NA>        <NA>            <NA>         <NA>
+      16       <NA>            <NA>        <NA>            <NA>         <NA>
+      17       <NA>            <NA>        <NA>            <NA>         <NA>
+      18       <NA>            <NA>        <NA>            <NA>         <NA>
+      19       <NA>            <NA>        <NA>            <NA>         <NA>
+      20       <NA>            <NA>        <NA>            <NA>         <NA>
+      21       <NA>            <NA>        <NA>            <NA>         <NA>
+      22       <NA>            <NA>        <NA>            <NA>         <NA>
+      23       <NA>            <NA>        <NA>            <NA>         <NA>
+      24       <NA>            <NA>        <NA>            <NA>         <NA>
+      25       <NA>            <NA>        <NA>            <NA>         <NA>
+      26       <NA>            <NA>        <NA>            <NA>         <NA>
+      27       <NA>            <NA>        <NA>            <NA>         <NA>
+      28       <NA>            <NA>        <NA>            <NA>         <NA>
+      29       <NA>            <NA>        <NA>            <NA>         <NA>
+      30       <NA>            <NA>        <NA>            <NA>         <NA>
+      31       <NA>            <NA>        <NA>            <NA>         <NA>
+      32       <NA>            <NA>        <NA>            <NA>         <NA>
+      33       <NA>            <NA>        <NA>            <NA>         <NA>
+      34       <NA>            <NA>        <NA>            <NA>         <NA>
+      35       <NA>            <NA>        <NA>            <NA>         <NA>
+      36       <NA>            <NA>        <NA>            <NA>         <NA>
+      37         73              73          73              73           73
+      38       <NA>            <NA>        <NA>            <NA>         <NA>
+      39       <NA>            <NA>        <NA>            <NA>         <NA>
+      40       <NA>            <NA>        <NA>            <NA>         <NA>
+      41       <NA>            <NA>        <NA>            <NA>         <NA>
+      42       <NA>            <NA>        <NA>            <NA>         <NA>
+      43       <NA>            <NA>        <NA>            <NA>         <NA>
+      44       <NA>            <NA>        <NA>            <NA>         <NA>
+      45       <NA>            <NA>        <NA>            <NA>         <NA>
+      46       <NA>            <NA>        <NA>            <NA>         <NA>
+      47       <NA>            <NA>        <NA>            <NA>         <NA>
+      48       <NA>            <NA>        <NA>            <NA>         <NA>
+      49       <NA>            <NA>        <NA>            <NA>         <NA>
+      50       <NA>            <NA>        <NA>            <NA>         <NA>
+      51       <NA>            <NA>        <NA>            <NA>         <NA>
+      52       <NA>            <NA>        <NA>            <NA>         <NA>
+      53       <NA>            <NA>        <NA>            <NA>         <NA>
+      54       <NA>            <NA>        <NA>            <NA>         <NA>
+      55       <NA>            <NA>        <NA>            <NA>         <NA>
+      56       <NA>            <NA>        <NA>            <NA>         <NA>
+      57       <NA>            <NA>        <NA>            <NA>         <NA>
+      58       <NA>            <NA>        <NA>            <NA>         <NA>
+      59       <NA>            <NA>        <NA>            <NA>         <NA>
+      60       <NA>            <NA>        <NA>            <NA>         <NA>
+      61       <NA>            <NA>        <NA>            <NA>         <NA>
+      62       <NA>            <NA>        <NA>            <NA>         <NA>
+      63       <NA>            <NA>        <NA>            <NA>         <NA>
+      64       <NA>            <NA>        <NA>            <NA>         <NA>
+      65       <NA>            <NA>        <NA>            <NA>         <NA>
+      66       <NA>            <NA>        <NA>            <NA>         <NA>
+      67       <NA>            <NA>        <NA>            <NA>         <NA>
+      68       <NA>            <NA>        <NA>            <NA>         <NA>
+            Histogram Is the Categorical Value Ordered? Count of Unique Values
+      2  numeric.hist                                NA        factor.n_unique
+      3          <NA>                                NA                   <NA>
+      4          <NA>                                NA                   <NA>
+      5          <NA>                                NA                   <NA>
+      6         ▇▁▁▁▇                                NA                   <NA>
+      7         ▇▁▁▁▇                                NA                   <NA>
+      8          <NA>                                NA                   <NA>
+      9          <NA>                                NA                   <NA>
+      10         <NA>                                NA                   <NA>
+      11         <NA>                                NA                   <NA>
+      12        ▁▁▇▁▁                                NA                   <NA>
+      13         <NA>                             FALSE                      2
+      14         <NA>                             FALSE                      2
+      15         <NA>                             FALSE                      0
+      16         <NA>                                NA                   <NA>
+      17         <NA>                                NA                   <NA>
+      18         <NA>                                NA                   <NA>
+      19         <NA>                                NA                   <NA>
+      20         <NA>                                NA                   <NA>
+      21         <NA>                                NA                   <NA>
+      22         <NA>                                NA                   <NA>
+      23         <NA>                                NA                   <NA>
+      24         <NA>                                NA                   <NA>
+      25         <NA>                                NA                   <NA>
+      26         <NA>                                NA                   <NA>
+      27         <NA>                                NA                   <NA>
+      28         <NA>                                NA                   <NA>
+      29         <NA>                                NA                   <NA>
+      30         <NA>                                NA                   <NA>
+      31         <NA>                                NA                   <NA>
+      32         <NA>                                NA                   <NA>
+      33         <NA>                                NA                   <NA>
+      34         <NA>                                NA                   <NA>
+      35         <NA>                                NA                   <NA>
+      36         <NA>                                NA                   <NA>
+      37        ▁▁▇▁▁                                NA                   <NA>
+      38         <NA>                             FALSE                      0
+      39         <NA>                                NA                   <NA>
+      40         <NA>                                NA                   <NA>
+      41         <NA>                                NA                   <NA>
+      42         <NA>                                NA                   <NA>
+      43         <NA>                                NA                   <NA>
+      44         <NA>                                NA                   <NA>
+      45         <NA>                                NA                   <NA>
+      46         <NA>                                NA                   <NA>
+      47         <NA>                                NA                   <NA>
+      48         <NA>                                NA                   <NA>
+      49         <NA>                                NA                   <NA>
+      50         <NA>                                NA                   <NA>
+      51         <NA>                                NA                   <NA>
+      52         <NA>                                NA                   <NA>
+      53         <NA>                                NA                   <NA>
+      54         <NA>                                NA                   <NA>
+      55         <NA>                                NA                   <NA>
+      56         <NA>                                NA                   <NA>
+      57         <NA>                                NA                   <NA>
+      58         <NA>                                NA                   <NA>
+      59         <NA>                                NA                   <NA>
+      60         <NA>                             FALSE                      2
+      61         <NA>                                NA                   <NA>
+      62         <NA>                                NA                   <NA>
+      63         <NA>                                NA                   <NA>
+      64         <NA>                                NA                   <NA>
+      65         <NA>                             FALSE                      2
+      66         <NA>                                NA                   <NA>
+      67         <NA>                                NA                   <NA>
+      68         <NA>                                NA                   <NA>
+           Most Frequent Values Proportion of TRUE Values Count of Logical Values
+      2       factor.top_counts              logical.mean           logical.count
+      3                    <NA>                      <NA>                    <NA>
+      4                    <NA>                      <NA>                    <NA>
+      5                    <NA>                      <NA>                    <NA>
+      6                    <NA>                      <NA>                    <NA>
+      7                    <NA>                      <NA>                    <NA>
+      8                    <NA>                      <NA>                    <NA>
+      9                    <NA>                      <NA>                    <NA>
+      10                   <NA>                      <NA>                    <NA>
+      11                   <NA>                      <NA>                    <NA>
+      12                   <NA>                      <NA>                    <NA>
+      13 one: 1, thr: 1, two: 0                      <NA>                    <NA>
+      14       B: 1, C: 1, A: 0                      <NA>                    <NA>
+      15             A: 0, C: 0                      <NA>                    <NA>
+      16                   <NA>                       0.5          FAL: 2, TRU: 2
+      17                   <NA>                         0                  FAL: 4
+      18                   <NA>                         0                  FAL: 4
+      19                   <NA>                       0.5          FAL: 2, TRU: 2
+      20                   <NA>                         0                  FAL: 4
+      21                   <NA>                         0                  FAL: 4
+      22                   <NA>                      0.25          FAL: 3, TRU: 1
+      23                   <NA>                      0.25          FAL: 3, TRU: 1
+      24                   <NA>                         0                  FAL: 4
+      25                   <NA>                      0.25          FAL: 3, TRU: 1
+      26                   <NA>                      0.25          FAL: 3, TRU: 1
+      27                   <NA>                         0                  FAL: 4
+      28                   <NA>                         0                  FAL: 4
+      29                   <NA>                      0.25          FAL: 3, TRU: 1
+      30                   <NA>                         0                  FAL: 4
+      31                   <NA>                      0.25          FAL: 3, TRU: 1
+      32                   <NA>                         0                  FAL: 4
+      33                   <NA>                         1                  TRU: 1
+      34                   <NA>                         0                  FAL: 1
+      35                   <NA>                      <NA>                    <NA>
+      36                   <NA>                      <NA>                    <NA>
+      37                   <NA>                      <NA>                    <NA>
+      38                     :                       <NA>                    <NA>
+      39                   <NA>                      <NA>                    <NA>
+      40                   <NA>                      <NA>                    <NA>
+      41                   <NA>                      <NA>                    <NA>
+      42                   <NA>                      <NA>                    <NA>
+      43                   <NA>                      <NA>                    <NA>
+      44                   <NA>                      <NA>                    <NA>
+      45                   <NA>                      <NA>                    <NA>
+      46                   <NA>                      <NA>                    <NA>
+      47                   <NA>                      <NA>                    <NA>
+      48                   <NA>                      <NA>                    <NA>
+      49                   <NA>                      <NA>                    <NA>
+      50                   <NA>                      <NA>                    <NA>
+      51                   <NA>                      <NA>                    <NA>
+      52                   <NA>                      <NA>                    <NA>
+      53                   <NA>                      <NA>                    <NA>
+      54                   <NA>                      <NA>                    <NA>
+      55                   <NA>                   #VALUE!                      : 
+      56                   <NA>                   #VALUE!                      : 
+      57                   <NA>                   #VALUE!                      : 
+      58                   <NA>                   #VALUE!                      : 
+      59                   <NA>                       0.5          FAL: 1, TRU: 1
+      60 Cho: 1, Cho: 1, Cho: 0                      <NA>                    <NA>
+      61                   <NA>                         0                  FAL: 4
+      62                   <NA>                       0.5          FAL: 2, TRU: 2
+      63                   <NA>                       0.5          FAL: 2, TRU: 2
+      64                   <NA>         0.666666666666667          TRU: 2, FAL: 1
+      65 Cho: 2, Cho: 1, Cho: 0                      <NA>                    <NA>
+      66                   <NA>         0.666666666666667          TRU: 2, FAL: 1
+      67                   <NA>         0.333333333333333          FAL: 2, TRU: 1
+      68                   <NA>         0.333333333333333          FAL: 2, TRU: 1
+           Earliest     Latest      Median Count of Unique Values            Earliest
+      2    Date.min   Date.max Date.median          Date.n_unique         POSIXct.min
+      3        <NA>       <NA>        <NA>                   <NA>                <NA>
+      4        <NA>       <NA>        <NA>                   <NA>                <NA>
+      5        <NA>       <NA>        <NA>                   <NA>                <NA>
+      6        <NA>       <NA>        <NA>                   <NA>                <NA>
+      7        <NA>       <NA>        <NA>                   <NA>                <NA>
+      8        <NA>       <NA>        <NA>                   <NA>                <NA>
+      9        <NA>       <NA>        <NA>                   <NA>                <NA>
+      10       <NA>       <NA>        <NA>                   <NA>                <NA>
+      11       <NA>       <NA>        <NA>                   <NA>                <NA>
+      12       <NA>       <NA>        <NA>                   <NA>                <NA>
+      13       <NA>       <NA>        <NA>                   <NA>                <NA>
+      14       <NA>       <NA>        <NA>                   <NA>                <NA>
+      15       <NA>       <NA>        <NA>                   <NA>                <NA>
+      16       <NA>       <NA>        <NA>                   <NA>                <NA>
+      17       <NA>       <NA>        <NA>                   <NA>                <NA>
+      18       <NA>       <NA>        <NA>                   <NA>                <NA>
+      19       <NA>       <NA>        <NA>                   <NA>                <NA>
+      20       <NA>       <NA>        <NA>                   <NA>                <NA>
+      21       <NA>       <NA>        <NA>                   <NA>                <NA>
+      22       <NA>       <NA>        <NA>                   <NA>                <NA>
+      23       <NA>       <NA>        <NA>                   <NA>                <NA>
+      24       <NA>       <NA>        <NA>                   <NA>                <NA>
+      25       <NA>       <NA>        <NA>                   <NA>                <NA>
+      26       <NA>       <NA>        <NA>                   <NA>                <NA>
+      27       <NA>       <NA>        <NA>                   <NA>                <NA>
+      28       <NA>       <NA>        <NA>                   <NA>                <NA>
+      29       <NA>       <NA>        <NA>                   <NA>                <NA>
+      30       <NA>       <NA>        <NA>                   <NA>                <NA>
+      31       <NA>       <NA>        <NA>                   <NA>                <NA>
+      32       <NA>       <NA>        <NA>                   <NA>                <NA>
+      33       <NA>       <NA>        <NA>                   <NA>                <NA>
+      34       <NA>       <NA>        <NA>                   <NA>                <NA>
+      35       <NA>       <NA>        <NA>                   <NA>                <NA>
+      36       <NA>       <NA>        <NA>                   <NA>                <NA>
+      37       <NA>       <NA>        <NA>                   <NA>                <NA>
+      38       <NA>       <NA>        <NA>                   <NA>                <NA>
+      39 2022-08-03 2022-08-03  2022-08-03                      1                <NA>
+      40 2022-08-03 2022-08-03  2022-08-03                      1                <NA>
+      41 2022-08-03 2022-08-03  2022-08-03                      1                <NA>
+      42       <NA>       <NA>        <NA>                   <NA> 2022-08-03 15:15:00
+      43       <NA>       <NA>        <NA>                   <NA> 2022-08-03 15:15:00
+      44       <NA>       <NA>        <NA>                   <NA> 2022-08-03 15:15:00
+      45       <NA>       <NA>        <NA>                   <NA> 2022-08-03 15:15:04
+      46       <NA>       <NA>        <NA>                   <NA> 2022-08-03 15:15:04
+      47       <NA>       <NA>        <NA>                   <NA> 2022-08-03 15:15:05
+      48       <NA>       <NA>        <NA>                   <NA>                <NA>
+      49       <NA>       <NA>        <NA>                   <NA>                <NA>
+      50       <NA>       <NA>        <NA>                   <NA>                <NA>
+      51       <NA>       <NA>        <NA>                   <NA>                <NA>
+      52       <NA>       <NA>        <NA>                   <NA>                <NA>
+      53       <NA>       <NA>        <NA>                   <NA>                <NA>
+      54       <NA>       <NA>        <NA>                   <NA>                <NA>
+      55       <NA>       <NA>        <NA>                   <NA>                <NA>
+      56       <NA>       <NA>        <NA>                   <NA>                <NA>
+      57       <NA>       <NA>        <NA>                   <NA>                <NA>
+      58       <NA>       <NA>        <NA>                   <NA>                <NA>
+      59       <NA>       <NA>        <NA>                   <NA>                <NA>
+      60       <NA>       <NA>        <NA>                   <NA>                <NA>
+      61       <NA>       <NA>        <NA>                   <NA>                <NA>
+      62       <NA>       <NA>        <NA>                   <NA>                <NA>
+      63       <NA>       <NA>        <NA>                   <NA>                <NA>
+      64       <NA>       <NA>        <NA>                   <NA>                <NA>
+      65       <NA>       <NA>        <NA>                   <NA>                <NA>
+      66       <NA>       <NA>        <NA>                   <NA>                <NA>
+      67       <NA>       <NA>        <NA>                   <NA>                <NA>
+      68       <NA>       <NA>        <NA>                   <NA>                <NA>
+                      Latest              Median Count of Unique Values      Minimum
+      2          POSIXct.max      POSIXct.median       POSIXct.n_unique difftime.min
+      3                 <NA>                <NA>                   <NA>         <NA>
+      4                 <NA>                <NA>                   <NA>         <NA>
+      5                 <NA>                <NA>                   <NA>         <NA>
+      6                 <NA>                <NA>                   <NA>         <NA>
+      7                 <NA>                <NA>                   <NA>         <NA>
+      8                 <NA>                <NA>                   <NA>         <NA>
+      9                 <NA>                <NA>                   <NA>         <NA>
+      10                <NA>                <NA>                   <NA>         <NA>
+      11                <NA>                <NA>                   <NA>         <NA>
+      12                <NA>                <NA>                   <NA>         <NA>
+      13                <NA>                <NA>                   <NA>         <NA>
+      14                <NA>                <NA>                   <NA>         <NA>
+      15                <NA>                <NA>                   <NA>         <NA>
+      16                <NA>                <NA>                   <NA>         <NA>
+      17                <NA>                <NA>                   <NA>         <NA>
+      18                <NA>                <NA>                   <NA>         <NA>
+      19                <NA>                <NA>                   <NA>         <NA>
+      20                <NA>                <NA>                   <NA>         <NA>
+      21                <NA>                <NA>                   <NA>         <NA>
+      22                <NA>                <NA>                   <NA>         <NA>
+      23                <NA>                <NA>                   <NA>         <NA>
+      24                <NA>                <NA>                   <NA>         <NA>
+      25                <NA>                <NA>                   <NA>         <NA>
+      26                <NA>                <NA>                   <NA>         <NA>
+      27                <NA>                <NA>                   <NA>         <NA>
+      28                <NA>                <NA>                   <NA>         <NA>
+      29                <NA>                <NA>                   <NA>         <NA>
+      30                <NA>                <NA>                   <NA>         <NA>
+      31                <NA>                <NA>                   <NA>         <NA>
+      32                <NA>                <NA>                   <NA>         <NA>
+      33                <NA>                <NA>                   <NA>         <NA>
+      34                <NA>                <NA>                   <NA>         <NA>
+      35                <NA>                <NA>                   <NA>         <NA>
+      36                <NA>                <NA>                   <NA>         <NA>
+      37                <NA>                <NA>                   <NA>         <NA>
+      38                <NA>                <NA>                   <NA>         <NA>
+      39                <NA>                <NA>                   <NA>         <NA>
+      40                <NA>                <NA>                   <NA>         <NA>
+      41                <NA>                <NA>                   <NA>         <NA>
+      42 2022-08-03 15:15:00 2022-08-03 15:15:00                      1         <NA>
+      43 2022-08-03 15:15:00 2022-08-03 15:15:00                      1         <NA>
+      44 2022-08-03 15:15:00 2022-08-03 15:15:00                      1         <NA>
+      45 2022-08-03 15:15:04 2022-08-03 15:15:04                      1         <NA>
+      46 2022-08-03 15:15:04 2022-08-03 15:15:04                      1         <NA>
+      47 2022-08-03 15:15:05 2022-08-03 15:15:05                      1         <NA>
+      48                <NA>                <NA>                   <NA>         <NA>
+      49                <NA>                <NA>                   <NA>         <NA>
+      50                <NA>                <NA>                   <NA>         <NA>
+      51                <NA>                <NA>                   <NA>        54949
+      52                <NA>                <NA>                   <NA>        54900
+      53                <NA>                <NA>                   <NA>        54000
+      54                <NA>                <NA>                   <NA>         <NA>
+      55                <NA>                <NA>                   <NA>         <NA>
+      56                <NA>                <NA>                   <NA>         <NA>
+      57                <NA>                <NA>                   <NA>         <NA>
+      58                <NA>                <NA>                   <NA>         <NA>
+      59                <NA>                <NA>                   <NA>         <NA>
+      60                <NA>                <NA>                   <NA>         <NA>
+      61                <NA>                <NA>                   <NA>         <NA>
+      62                <NA>                <NA>                   <NA>         <NA>
+      63                <NA>                <NA>                   <NA>         <NA>
+      64                <NA>                <NA>                   <NA>         <NA>
+      65                <NA>                <NA>                   <NA>         <NA>
+      66                <NA>                <NA>                   <NA>         <NA>
+      67                <NA>                <NA>                   <NA>         <NA>
+      68                <NA>                <NA>                   <NA>         <NA>
+              Maximum          Median Count of Unique Values
+      2  difftime.max difftime.median      difftime.n_unique
+      3          <NA>            <NA>                   <NA>
+      4          <NA>            <NA>                   <NA>
+      5          <NA>            <NA>                   <NA>
+      6          <NA>            <NA>                   <NA>
+      7          <NA>            <NA>                   <NA>
+      8          <NA>            <NA>                   <NA>
+      9          <NA>            <NA>                   <NA>
+      10         <NA>            <NA>                   <NA>
+      11         <NA>            <NA>                   <NA>
+      12         <NA>            <NA>                   <NA>
+      13         <NA>            <NA>                   <NA>
+      14         <NA>            <NA>                   <NA>
+      15         <NA>            <NA>                   <NA>
+      16         <NA>            <NA>                   <NA>
+      17         <NA>            <NA>                   <NA>
+      18         <NA>            <NA>                   <NA>
+      19         <NA>            <NA>                   <NA>
+      20         <NA>            <NA>                   <NA>
+      21         <NA>            <NA>                   <NA>
+      22         <NA>            <NA>                   <NA>
+      23         <NA>            <NA>                   <NA>
+      24         <NA>            <NA>                   <NA>
+      25         <NA>            <NA>                   <NA>
+      26         <NA>            <NA>                   <NA>
+      27         <NA>            <NA>                   <NA>
+      28         <NA>            <NA>                   <NA>
+      29         <NA>            <NA>                   <NA>
+      30         <NA>            <NA>                   <NA>
+      31         <NA>            <NA>                   <NA>
+      32         <NA>            <NA>                   <NA>
+      33         <NA>            <NA>                   <NA>
+      34         <NA>            <NA>                   <NA>
+      35         <NA>            <NA>                   <NA>
+      36         <NA>            <NA>                   <NA>
+      37         <NA>            <NA>                   <NA>
+      38         <NA>            <NA>                   <NA>
+      39         <NA>            <NA>                   <NA>
+      40         <NA>            <NA>                   <NA>
+      41         <NA>            <NA>                   <NA>
+      42         <NA>            <NA>                   <NA>
+      43         <NA>            <NA>                   <NA>
+      44         <NA>            <NA>                   <NA>
+      45         <NA>            <NA>                   <NA>
+      46         <NA>            <NA>                   <NA>
+      47         <NA>            <NA>                   <NA>
+      48         <NA>            <NA>                   <NA>
+      49         <NA>            <NA>                   <NA>
+      50         <NA>            <NA>                   <NA>
+      51        54949        15:15:49                      1
+      52        54900        15:15:00                      1
+      53        54000        15:00:00                      1
+      54         <NA>            <NA>                   <NA>
+      55         <NA>            <NA>                   <NA>
+      56         <NA>            <NA>                   <NA>
+      57         <NA>            <NA>                   <NA>
+      58         <NA>            <NA>                   <NA>
+      59         <NA>            <NA>                   <NA>
+      60         <NA>            <NA>                   <NA>
+      61         <NA>            <NA>                   <NA>
+      62         <NA>            <NA>                   <NA>
+      63         <NA>            <NA>                   <NA>
+      64         <NA>            <NA>                   <NA>
+      65         <NA>            <NA>                   <NA>
+      66         <NA>            <NA>                   <NA>
+      67         <NA>            <NA>                   <NA>
+      68         <NA>            <NA>                   <NA>
       
       
       [[2]]

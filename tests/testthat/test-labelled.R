@@ -316,15 +316,9 @@ test_that("make_labelled preserves S3 class", {
 })
 
 test_that("make_labelled returns expected skimr labels", {
-  # Create a tibble with all possible skimr data columns
-  skimr_names <- skimr::get_default_skimmer_names()
-  skimr_names <- stats::setNames(
-    unlist(skimr_names, use.names = FALSE),
-    rep(names(skimr_names), lengths(skimr_names))
-  )
-
-  supertbl_skimr_meta <- purrr::imap_chr(skimr_names, \(x, idx) paste0(idx, ".", x)) %>%
-    tibble::as_tibble() %>%
+  supertbl_skimr_meta <- make_skimr_labels() %>%
+    names() %>%
+    as_tibble() %>%
     dplyr::rename("name" = value) %>%
     dplyr::mutate(value = NA) %>%
     tidyr::pivot_wider()
@@ -341,9 +335,9 @@ test_that("make_labelled returns expected skimr labels", {
   # Create expectations
   out <- make_labelled(supertbl)
 
-  skimr_labs <- labelled::var_label(out$redcap_metadata[[1]])
+  skimr_labels <- labelled::var_label(out$redcap_metadata[[1]])
 
-  expected_skimr_labs <- list(
+  expected_skimr_labels <- c(
     field_name = "Variable / Field Name",
     field_label = "Field Label",
     skim_type = "Data Type",
@@ -354,61 +348,35 @@ test_that("make_labelled returns expected skimr labels", {
     AsIs.max_length = "Maximum Length of AsIs Values",
     character.min = "Minimum Length of Characters",
     character.max = "Maximum Length of Characters",
-    character.empty = "Count of Empty Characters",
-    character.n_unique = "Count of Unique Characters",
-    character.whitespace = "Count of Whitespaces in Characters",
-    complex.mean = "Mean of Complex Numbers",
-    Date.min = "Earliest Date",
-    Date.max = "Latest Date",
-    Date.median = "Median Date",
-    Date.n_unique = "Count of Unique Dates",
-    difftime.min = "Minimum Difference in Time",
-    difftime.max = "Maximum Difference in Time",
-    difftime.median = "Median Difference in Time",
-    difftime.n_unique = "Count of Unique Time Differences",
-    factor.ordered = "Order of Factor Levels",
-    factor.n_unique = "Count of Unique Factor Levels",
-    factor.top_counts = "Most Frequent Factor Levels",
-    haven_labelled.mean = "Mean of Haven Labelled Values",
-    haven_labelled.sd = "Standard Deviation of Haven Labelled Values",
-    haven_labelled.p0 = "0th Percentile of Haven Labelled Values",
-    haven_labelled.p25 = "25th Percentile of Haven Labelled Values",
-    haven_labelled.p50 = "50th Percentile of Haven Labelled Values",
-    haven_labelled.p75 = "75th Percentile of Haven Labelled Values",
-    haven_labelled.p100 = "100th Percentile of Haven Labelled Values",
-    haven_labelled.hist = "Histogram of Haven Labelled Values",
-    list.n_unique = "Count of Unique List Elements",
-    list.min_length = "Minimum List Length",
-    list.max_length = "Maximum List Length",
-    logical.mean = "Mean of Logical Values",
+    character.empty = "Count of Empty Values",
+    character.n_unique = "Count of Unique Values",
+    character.whitespace = "Count of Values that are all Whitespace",
+    Date.min = "Earliest",
+    Date.max = "Latest",
+    Date.median = "Median",
+    Date.n_unique = "Count of Unique Values",
+    difftime.min = "Minimum",
+    difftime.max = "Maximum",
+    difftime.median = "Median",
+    difftime.n_unique = "Count of Unique Values",
+    factor.ordered = "Is the Categorical Value Ordered?",
+    factor.n_unique = "Count of Unique Values",
+    factor.top_counts = "Most Frequent Values",
+    logical.mean = "Proportion of TRUE Values",
     logical.count = "Count of Logical Values",
-    numeric.mean = "Mean of Numeric Values",
-    numeric.sd = "Standard Deviation of Numeric Values",
-    numeric.p0 = "0th Percentile of Numeric Values",
-    numeric.p25 = "25th Percentile of Numeric Values",
-    numeric.p50 = "50th Percentile of Numeric Values",
-    numeric.p75 = "75th Percentile of Numeric Values",
-    numeric.p100 = "100th Percentile of Numeric Values",
-    numeric.hist = "Histogram of Numeric Values",
-    POSIXct.min = "Earliest POSIXct Value",
-    POSIXct.max = "Latest POSIXct Value",
-    POSIXct.median = "Median POSIXct Value",
-    POSIXct.n_unique = "Count of Unique POSIXct Values",
-    Timespan.min = "Shortest Timespan",
-    Timespan.max = "Longest Timespan",
-    Timespan.median = "Median Timespan",
-    Timespan.n_unique = "Count of Unique Timespans",
-    ts.start = "Start Time of Time Series",
-    ts.end = "End Time of Time Series",
-    ts.frequency = "Frequency of Time Series",
-    ts.deltat = "Change in Time for Time Series",
-    ts.mean = "Mean Value of Time Series",
-    ts.sd = "Standard Deviation of Time Series Values",
-    ts.min = "Minimum Value of Time Series",
-    ts.max = "Maximum Value of Time Series",
-    ts.median = "Median Value of Time Series",
-    ts.line_graph = "Line Graph of Time Series"
+    numeric.mean = "Mean",
+    numeric.sd = "Standard Deviation ",
+    numeric.p0 = "Minimum",
+    numeric.p25 = "25th Percentile",
+    numeric.p50 = "Median",
+    numeric.p75 = "75th Percentile",
+    numeric.p100 = "Maximum",
+    numeric.hist = "Histogram",
+    POSIXct.min = "Earliest",
+    POSIXct.max = "Latest",
+    POSIXct.median = "Median",
+    POSIXct.n_unique = "Count of Unique Values"
   )
 
-  expect_true(all(skimr_labs %in% expected_skimr_labs))
+  expect_true(all(skimr_labels %in% expected_skimr_labels))
 })
