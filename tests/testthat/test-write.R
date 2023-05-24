@@ -342,8 +342,12 @@ test_that("Combining skimr, labelled, and xlsx returns expected snapshot", {
       write_redcap_xlsx(file = "temp.xlsx")
   })
 
-  # Select wb elements of interest
+  # Extract all data from wb_obj per sheet, assign to a dataframe
+  wb_obj_data <- purrr::map(wb_obj$tables$tab_sheet, ~openxlsx2::wb_to_df(wb_obj, sheet = .x))
+
+  # Select additional wb elements of interest, combine with wb_obj_data
   wb_list <- list(
+    wb_obj_data,
     wb_obj$tables,
     wb_obj$workbook,
     wb_obj$workbook.xml.rels,
