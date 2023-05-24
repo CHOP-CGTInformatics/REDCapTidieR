@@ -378,3 +378,12 @@ test_that("is_labelled works", {
   is_labelled <- is_labelled(df)
   expect_true(is_labelled)
 })
+
+test_that("make_skimr_labels works", {
+  skimr_labs <- make_skimr_labels()
+
+  # Test for named character vector output
+  expect_true(is.vector(skimr_labs))
+  expect_true(is.character(skimr_labs))
+  expect_true(!is.null(attr(skimr_labs, "name")))
+})
