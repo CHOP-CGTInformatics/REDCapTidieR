@@ -36,7 +36,7 @@ survey identifier and timestamp fields if available. Default is \code{TRUE}.}
 
 \item{export_data_access_groups}{A boolean value that specifies whether or
 not to export the \code{redcap_data_access_group} field when data access groups are
-utilized in the project. Default is \code{FALSE}.}
+utilized in the project. Default is \code{TRUE}.}
 
 \item{suppress_redcapr_messages}{A logical to control whether to suppress messages
 from REDCapR API calls. Default \code{TRUE}.}

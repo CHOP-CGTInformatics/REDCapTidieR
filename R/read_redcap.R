@@ -52,7 +52,7 @@
 #' survey identifier and timestamp fields if available. Default is `TRUE`.
 #' @param export_data_access_groups A boolean value that specifies whether or
 #' not to export the `redcap_data_access_group` field when data access groups are
-#' utilized in the project. Default is `FALSE`.
+#' utilized in the project. Default is `TRUE`.
 #' @param suppress_redcapr_messages A logical to control whether to suppress messages
 #' from REDCapR API calls. Default `TRUE`.
 #' @param guess_max A positive [base::numeric] value
