@@ -96,8 +96,8 @@ create_repeat_instance_vars <- function(db_data) {
     )
 
     out <- relocate(out,
-      "redcap_event_instance",
-      .after = "redcap_form_instance"
+                    "redcap_event_instance",
+                    .after = "redcap_form_instance"
     )
   }
 
@@ -186,7 +186,7 @@ parse_labels <- function(string, return_vector = FALSE, return_stripped_text_fla
   # If string is empty/NA, throw a warning
   if (is.na(string)) {
     cli_warn("Empty string detected for a given multiple choice label.",
-      class = c("empty_parse_warning", "REDCapTidieR_cond")
+             class = c("empty_parse_warning", "REDCapTidieR_cond")
     )
   }
 
@@ -731,4 +731,98 @@ remove_empty_rows <- function(data, my_record_id) {
   # Filter for rows where specified columns have any non-NA data
   data %>%
     filter(if_any(all_of(data_cols), ~ !is.na(.))) # nolint: object_usage_linter
+}
+
+#' @title Determine if an object is labelled
+#'
+#' @description
+#' An internal utility function used to inform other processes of whether or
+#' not a given object has been labelled (i.e. with `make_labelled()`).
+#'
+#' @details
+#' An object is considered labelled if it has "label" attributes.
+#'
+#' @returns A boolean
+#'
+#' @param obj An object to be tested for "label" attributes
+#'
+#' @importFrom purrr some
+#'
+#' @keywords internal
+
+is_labelled <- function(obj) {
+  some(obj, function(x) !is.null(attr(x, "label")))
+}
+
+#' @title
+#' Make skimr labels from default skimr outputs
+#'
+#' @description
+#' A simple helper function that returns all default `skimr` names as formatted
+#' character vector for use in `make_lablled`
+#'
+#' @details
+#' All labels supplied are manually created and agreed upon as human-readable
+#'
+#' @return A character vector
+#'
+#' @keywords internal
+#'
+make_skimr_labels <- function() {
+
+  skimr_labels <- c(
+    skim_type = "Data Type",
+    n_missing = "Count of Missing Values",
+    complete_rate = "Proportion of Non-Missing Values",
+    AsIs.n_unique = "Count of Unique Values in AsIs",
+    AsIs.min_length = "Minimum Length of AsIs Values",
+    AsIs.max_length = "Maximum Length of AsIs Values",
+    character.min = "Shortest Value (Fewest Characters)",
+    character.max = "Longest Value (Most Characters)",
+    character.empty = "Count of Empty Values",
+    character.n_unique = "Count of Unique Values",
+    character.whitespace = "Count of Values that are all Whitespace",
+    Date.min = "Earliest",
+    Date.max = "Latest",
+    Date.median = "Median",
+    Date.n_unique = "Count of Unique Values",
+    difftime.min = "Minimum",
+    difftime.max = "Maximum",
+    difftime.median = "Median",
+    difftime.n_unique = "Count of Unique Values",
+    factor.ordered = "Is the Categorical Value Ordered?",
+    factor.n_unique = "Count of Unique Values",
+    factor.top_counts = "Most Frequent Values",
+    logical.mean = "Proportion of TRUE Values",
+    logical.count = "Count of Logical Values",
+    numeric.mean = "Mean",
+    numeric.sd = "Standard Deviation ",
+    numeric.p0 = "Minimum",
+    numeric.p25 = "25th Percentile",
+    numeric.p50 = "Median",
+    numeric.p75 = "75th Percentile",
+    numeric.p100 = "Maximum",
+    numeric.hist = "Histogram",
+    POSIXct.min = "Earliest",
+    POSIXct.max = "Latest",
+    POSIXct.median = "Median",
+    POSIXct.n_unique = "Count of Unique Values"
+  )
+
+  skimr_labels
+}
+
+#' @title Safely set variable labels
+#'
+#' @description
+#' A utility function for setting labels of a tibble from a named vector while
+#' accounting for labels that may not be present in the data.
+#'
+#' @returns A tibble
+#'
+#' @keywords internal
+
+safe_set_variable_labels <- function(data, labs) {
+  labs_to_keep <- intersect(names(labs), colnames(data))
+  labelled::set_variable_labels(data, !!!labs[labs_to_keep])
 }

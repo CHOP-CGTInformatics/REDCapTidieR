@@ -1,3 +1,9 @@
+# Tell httptest where to looks for mocks
+# Need this here since devtools::test_path doesn't work in helper.R
+# https://github.com/r-lib/testthat/issues/1270
+# For use with snapshot tests at end of file
+httptest::.mockPaths(test_path("fixtures"))
+
 redcap_data_a <- tibble::tribble(
   ~record_id, ~col_a,
   1,          "A"
@@ -91,10 +97,10 @@ test_that("write_redcap_xlsx has expected supertibble and metadata outputs", {
     as.data.frame()
 
   expected_meta <- tibble::tribble(
-    ~redcap_form_name, ~field_name, ~field_label,
-    NA,                  "record_id",  "Record ID",
-    "a",                 "col_a",      "Label A",
-    "b",                 "col_b",      "Label B"
+    ~redcap_form_name, ~redcap_form_label, ~field_name, ~field_label,
+    NA,                  NA,                "record_id",  "Record ID",
+    "a",                 "A",               "col_a",      "Label A",
+    "b",                 "B",               "col_b",      "Label B"
   ) %>%
     as.data.frame()
 
@@ -120,28 +126,29 @@ test_that("write_redcap_xlsx has expected supertibble and metadata outputs", {
   )
 
   expected_meta_labels <- c(
-    "REDCap Form Name",
+    "REDCap Instrument Name",
+    "REDCap Instrument Description",
     "Variable / Field Name",
     "Field Label"
   )
 
   withr::with_tempdir({
-      write_redcap_xlsx(supertbl %>% make_labelled(),
-                        add_labelled_column_headers = TRUE,
-                        file = "default_labelled_supertbl_wb.xlsx",
-                        include_toc_sheet = TRUE,
-                        include_metadata_sheet = TRUE,
-                        recode_logical = FALSE)
-      sheet_1 <- openxlsx2::read_xlsx(xlsxFile = "default_labelled_supertbl_wb.xlsx",
-                                      sheet = 1,
-                                      sep.names = " ")
-      sheet_4 <- openxlsx2::read_xlsx(xlsxFile = "default_labelled_supertbl_wb.xlsx",
-                                      sheet = 4,
-                                      sep.names = " ")
+    write_redcap_xlsx(supertbl %>% make_labelled(),
+                      add_labelled_column_headers = TRUE,
+                      file = "default_labelled_supertbl_wb.xlsx",
+                      include_toc_sheet = TRUE,
+                      include_metadata_sheet = TRUE,
+                      recode_logical = FALSE)
+    sheet_1 <- openxlsx2::read_xlsx(xlsxFile = "default_labelled_supertbl_wb.xlsx",
+                                    sheet = 1,
+                                    sep.names = " ")
+    sheet_4 <- openxlsx2::read_xlsx(xlsxFile = "default_labelled_supertbl_wb.xlsx",
+                                    sheet = 4,
+                                    sep.names = " ")
 
-      expect_setequal(names(sheet_1), expected_supertibble_labels)
-      expect_setequal(names(sheet_4), expected_meta_labels)
-    }
+    expect_setequal(names(sheet_1), expected_supertibble_labels)
+    expect_setequal(names(sheet_4), expected_meta_labels)
+  }
   )
 
 })
@@ -170,10 +177,10 @@ test_that("bind_supertbl_metadata works", {
 
   supertbl_meta <- bind_supertbl_metadata(supertbl)
   expected_meta <- tibble::tribble(
-    ~redcap_form_name, ~field_name, ~field_label,
-    NA,                 "record_id",  "Record ID",
-    "a",                "col_a",      "Label A",
-    "b",                "col_b",      "Label B"
+    ~redcap_form_name, ~redcap_form_label, ~field_name, ~field_label,
+    NA,                 NA,                 "record_id",  "Record ID",
+    "a",                "A",                "col_a",      "Label A",
+    "b",                "B",                "col_b",      "Label B"
   )
 
   expect_equal(supertbl_meta, expected_meta)
@@ -191,9 +198,9 @@ test_that("supertbl_recode works", {
 
   redcap_metadata_c <- tibble::tribble(
     ~field_name, ~field_type, ~field_label,
-     "record_id",  "text",      "Record ID",
-     "yesno",      "yesno",     "YesNo",
-     "checkbox",   "checkbox",  "Checkbox"
+    "record_id",  "text",      "Record ID",
+    "yesno",      "yesno",     "YesNo",
+    "checkbox",   "checkbox",  "Checkbox"
   )
 
   supertbl_recoded <- tibble::tribble(
@@ -294,4 +301,62 @@ test_that("key argument checks work", {
   expect_error(write_redcap_xlsx(supertbl, file = "temp.docx"), class = "invalid_file_extension")
   expect_error(write_redcap_xlsx(supertbl, file = TRUE), class = "check_character")
   expect_error(write_redcap_xlsx(supertbl, file = NULL), class = "check_character")
+})
+
+test_that("bind_supertbl_metadata works", {
+  # Create a supertbl metadata table representing in the output and check all
+  #expected elements are present
+  expected_meta <- tibble::tribble(
+    ~redcap_form_name, ~redcap_form_label, ~field_name, ~field_label,
+    NA,                 NA,                 "record_id", "Record ID",
+    "a",                "A",                "col_a",     "Label A",
+    "b",                "B",                "col_b",     "Label B"
+  )
+
+  supertbl_meta <- supertbl %>%
+    bind_supertbl_metadata()
+
+  expect_equal(expected_meta, supertbl_meta)
+  expect_true(all(names(expected_meta) %in% names(supertbl_meta)))
+})
+
+
+
+test_that("Combining skimr, labelled, and xlsx returns expected snapshot", {
+  httptest::with_mock_api({
+    out <-
+      read_redcap(creds$REDCAP_URI, creds$REDCAPTIDIER_CLASSIC_API) %>%
+      # Suppress expected warnings from the REDCapTidieR Classic database.
+      # Warnings here are meant to validate checks in other tests.
+      suppressWarnings(classes = c(
+        "field_missing_categories",
+        "empty_parse_warning",
+        "duplicate_labels"
+      ))
+  })
+
+  withr::with_tempdir({
+    wb_obj <- out %>%
+      make_labelled() %>%
+      add_skimr_metadata() %>%
+      write_redcap_xlsx(file = "temp.xlsx")
+  })
+
+  # Extract all data from wb_obj per sheet, assign to a dataframe
+  wb_obj_data <- purrr::map(wb_obj$tables$tab_sheet, ~openxlsx2::wb_to_df(wb_obj, sheet = .x))
+
+  # Select additional wb elements of interest, combine with wb_obj_data
+  wb_list <- list(
+    wb_obj_data,
+    wb_obj$tables,
+    wb_obj$workbook,
+    wb_obj$workbook.xml.rels,
+    wb_obj$worksheets,
+    wb_obj$worksheets_rels,
+    wb_obj$workbook.xml.rels,
+    wb_obj$sheetOrder,
+    wb_obj$sheet_names
+  )
+
+  expect_snapshot(wb_list, cran = FALSE) # Not to be checked on CRAN
 })

@@ -3,9 +3,6 @@
 # https://github.com/r-lib/testthat/issues/1270
 httptest::.mockPaths(test_path("fixtures"))
 
-# Load initial variables
-`%notin%` <- Negate(`%in%`)
-
 test_that("read_redcap works for a classic database with a nonrepeating instrument", {
   # Define partial key columns that should be in a nonrepeating table
   # from a classic database
