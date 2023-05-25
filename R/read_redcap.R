@@ -87,6 +87,7 @@ read_redcap <- function(redcap_uri,
   check_arg_choices(raw_or_label, choices = c("label", "raw"))
   check_arg_is_character(forms, min.len = 1, null.ok = TRUE, any.missing = FALSE)
   check_arg_is_logical(export_survey_fields, len = 1, any.missing = FALSE)
+  check_arg_is_logical(export_data_access_groups, len = 1, any.missing = FALSE)
   check_arg_is_logical(suppress_redcapr_messages, len = 1, any.missing = FALSE)
 
   # Load REDCap Metadata ----

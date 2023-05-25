@@ -452,6 +452,20 @@ test_that("read_redcap errors with bad inputs", {
     read_redcap(creds$REDCAP_URI, creds$REDCAPTIDIER_CLASSIC_API, suppress_redcapr_messages = c(TRUE, TRUE)),
     class = "check_logical"
   )
+
+  # export_data_access_group
+  expect_error(
+    read_redcap(creds$REDCAP_URI, creds$REDCAPTIDIER_DAG_API, export_data_access_groups = "TRUE"),
+    class = "check_logical"
+  )
+  expect_error(
+    read_redcap(creds$REDCAP_URI, creds$REDCAPTIDIER_DAG_API, export_data_access_groups = 123),
+    class = "check_logical"
+  )
+  expect_error(
+    read_redcap(creds$REDCAP_URI, creds$REDCAPTIDIER_DAG_API, export_data_access_groups = c(TRUE, TRUE)),
+    class = "check_logical"
+  )
 })
 
 test_that("read_redcap returns S3 object", {
@@ -609,4 +623,16 @@ test_that("read_redcap works with longitudinal Data Access Groups", {
   dag_label_long <- dag_label_long$label[dag_label_long$variable == "redcap_data_access_group"]
 
   expect_equal(dag_label_long, c("redcap_data_access_group" = "REDCap Data Access Group"))
+})
+
+test_that("read_redcap doesn't return the redcap_data_access_group column for non DAG databases", {
+  httptest::with_mock_api({
+    out_no_dag <- read_redcap(creds$REDCAP_URI,
+                              creds$REDCAPTIDIER_CLASSIC_API,
+                              export_data_access_groups = TRUE)
+  })
+
+  # retrieve all names from all redcap_data list elements
+  no_dag_all_names <- lapply(out_no_dag$redcap_data, names) %>% unlist()
+  expect_true(!"redcap_data_access_group" %in% no_dag_all_names)
 })
