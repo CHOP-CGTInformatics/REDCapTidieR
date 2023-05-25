@@ -192,11 +192,11 @@ distill_nonrepeat_table_long <- function(form_name,
       all_of(my_fields),
       any_of(c("redcap_event", "redcap_arm", "redcap_form_instance", "redcap_event_instance"))
     ) %>%
+    relocate(any_of("redcap_data_access_group"), .after = all_of(my_record_id)) %>%
     relocate(
       any_of(c("redcap_event", "redcap_arm", "redcap_form_instance", "redcap_event_instance")),
       .after = !!my_record_id
     ) %>%
-    relocate(any_of("redcap_data_access_group"), .after = all_of(my_record_id)) %>%
     rename("redcap_survey_timestamp" = any_of(paste0(my_form, "_timestamp"))) %>%
     relocate(any_of("redcap_survey_timestamp"), .after = everything()) %>%
     rename("form_status_complete" = paste0(my_form, "_complete")) %>%
@@ -318,11 +318,11 @@ distill_repeat_table_long <- function(form_name,
       all_of(my_fields),
       any_of(c("redcap_event", "redcap_arm", "redcap_form_instance", "redcap_event_instance")),
     ) %>%
+    relocate(any_of("redcap_data_access_group"), .after = all_of(my_record_id)) %>%
     relocate(
       any_of(c("redcap_event", "redcap_arm", "redcap_form_instance", "redcap_event_instance")),
       .after = !!my_record_id
     ) %>%
-    relocate(any_of("redcap_data_access_group"), .after = all_of(my_record_id)) %>%
     rename("redcap_survey_timestamp" = any_of(paste0(my_form, "_timestamp"))) %>%
     relocate(any_of("redcap_survey_timestamp"), .after = everything()) %>%
     rename("form_status_complete" = paste0(my_form, "_complete")) %>%
