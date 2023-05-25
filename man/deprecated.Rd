@@ -14,7 +14,8 @@ read_redcap_tidy(
   token,
   raw_or_label = "label",
   forms = NULL,
-  export_survey_fields = TRUE,
+  export_survey_fields = NULL,
+  export_data_access_groups = NULL,
   suppress_messages = TRUE
 )
 
@@ -23,7 +24,8 @@ import_redcap(
   token,
   raw_or_label = "label",
   forms = NULL,
-  export_survey_fields = TRUE,
+  export_survey_fields = NULL,
+  export_data_access_groups = NULL,
   suppress_redcapr_messages = TRUE
 )
 

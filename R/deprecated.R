@@ -13,7 +13,8 @@ read_redcap_tidy <- function(redcap_uri,
                              token,
                              raw_or_label = "label",
                              forms = NULL,
-                             export_survey_fields = TRUE,
+                             export_survey_fields = NULL,
+                             export_data_access_groups = NULL,
                              suppress_messages = TRUE) {
   deprecate_warn("0.2.0", "read_redcap_tidy()", "read_redcap()", always = TRUE)
 
@@ -41,7 +42,8 @@ import_redcap <- function(redcap_uri,
                           token,
                           raw_or_label = "label",
                           forms = NULL,
-                          export_survey_fields = TRUE,
+                          export_survey_fields = NULL,
+                          export_data_access_groups = NULL,
                           suppress_redcapr_messages = TRUE) {
   deprecate_warn("0.2.0", "import_redcap()", "read_redcap()", always = TRUE)
 
@@ -51,6 +53,7 @@ import_redcap <- function(redcap_uri,
     raw_or_label = raw_or_label,
     forms = forms,
     export_survey_fields = export_survey_fields,
+    export_data_access_groups = export_data_access_groups,
     suppress_redcapr_messages = suppress_redcapr_messages
   )
 }

@@ -154,3 +154,40 @@ test_that("checkmate wrappers work", {
   expect_error(check_arg_is_valid_extension("xlsx.", valid_extensions = "xlsx"), class = "invalid_file_extension")
   expect_true(check_arg_is_valid_extension("temp.xlsx", valid_extensions = "xlsx"))
 })
+
+test_that("check_data_arg_exists works", {
+  missing_fields <- tibble::tribble(
+    ~record_id, ~field_1,
+    1,          "1"
+  )
+
+  included_fields <- tibble::tribble(
+    ~record_id, ~redcap_data_access_group, ~redcap_survey_identifier, ~field_1,
+    1,           "A",                       NA,                        "1"
+  )
+
+  expect_error(
+    check_data_arg_exists(db_data = missing_fields,
+                          col = "redcap_data_access_group",
+                          arg = "export_data_access_groups"),
+    class = "nonexistent_arg_requested"
+  )
+  expect_no_error(
+    check_data_arg_exists(db_data = included_fields,
+                          col = "redcap_data_access_group",
+                          arg = "export_data_access_groups"),
+    class = "nonexistent_arg_requested"
+  )
+  expect_error(
+    check_data_arg_exists(db_data = missing_fields,
+                          col = "redcap_survey_identifier",
+                          arg = "export_survey_fields"),
+    class = "nonexistent_arg_requested"
+  )
+  expect_no_error(
+    check_data_arg_exists(db_data = included_fields,
+                          col = "redcap_survey_identifier",
+                          arg = "export_survey_fields"),
+    class = "nonexistent_arg_requested"
+  )
+})

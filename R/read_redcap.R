@@ -49,10 +49,12 @@
 #' which instruments to import. Default is `NULL` which imports all instruments
 #' in the project.
 #' @param export_survey_fields A logical that specifies whether to export the
-#' survey identifier and timestamp fields if available. Default is `TRUE`.
+#' survey identifier and timestamp fields if available. The default, `NULL`,
+#' tries to determine if survey fields exist and returns them as though `TRUE`.
 #' @param export_data_access_groups A boolean value that specifies whether or
 #' not to export the `redcap_data_access_group` field when data access groups are
-#' utilized in the project. Default is `TRUE`.
+#' utilized in the project. The default, `NULL`, tries to determine if data
+#' access group fields exist and returns them as though `TRUE`.
 #' @param suppress_redcapr_messages A logical to control whether to suppress messages
 #' from REDCapR API calls. Default `TRUE`.
 #' @param guess_max A positive [base::numeric] value
@@ -77,8 +79,8 @@ read_redcap <- function(redcap_uri,
                         token,
                         raw_or_label = "label",
                         forms = NULL,
-                        export_survey_fields = TRUE,
-                        export_data_access_groups = TRUE,
+                        export_survey_fields = NULL,
+                        export_data_access_groups = NULL,
                         suppress_redcapr_messages = TRUE,
                         guess_max = .Machine$integer.max) {
   check_arg_is_character(redcap_uri, len = 1, any.missing = FALSE)
@@ -86,8 +88,8 @@ read_redcap <- function(redcap_uri,
   check_arg_is_valid_token(token)
   check_arg_choices(raw_or_label, choices = c("label", "raw"))
   check_arg_is_character(forms, min.len = 1, null.ok = TRUE, any.missing = FALSE)
-  check_arg_is_logical(export_survey_fields, len = 1, any.missing = FALSE)
-  check_arg_is_logical(export_data_access_groups, len = 1, any.missing = FALSE)
+  check_arg_is_logical(export_survey_fields, len = 1, any.missing = FALSE, null.ok = TRUE)
+  check_arg_is_logical(export_data_access_groups, len = 1, any.missing = FALSE, null.ok = TRUE)
   check_arg_is_logical(suppress_redcapr_messages, len = 1, any.missing = FALSE)
 
   # Load REDCap Metadata ----
@@ -159,6 +161,17 @@ read_redcap <- function(redcap_uri,
     )
   }
 
+  # Determine fields to pass to REDCapR ----
+  # Enforce NULL opinionated checks for select arguments supplied:
+  # - export_data_access_groups
+  # - export_survey_fields
+
+  export_data_access_groups_original <- export_data_access_groups
+  export_data_access_groups <- ifelse(is.null(export_data_access_groups), TRUE, export_data_access_groups)
+
+  export_survey_fields_original <- export_survey_fields
+  export_survey_fields <- ifelse(is.null(export_survey_fields), TRUE, export_survey_fields)
+
   # Load REDCap Dataset output ----
 
   db_data <- try_redcapr({
@@ -175,6 +188,23 @@ read_redcap <- function(redcap_uri,
 
   # Check that results were returned
   check_redcap_populated(db_data)
+
+  # Check that requested args exist
+  if (!is.null(export_data_access_groups_original)) {
+    if (export_data_access_groups_original) {
+      check_data_arg_exists(db_data,
+                            col = "redcap_data_access_group",
+                            arg = "export_data_access_groups")
+    }
+  }
+
+  if (!is.null(export_survey_fields_original)) {
+    if (export_survey_fields_original) {
+      check_data_arg_exists(db_data,
+                            col = "redcap_survey_identifier",
+                            arg = "export_survey_fields")
+    }
+  }
 
   # Apply database output changes ----
   # Apply checkbox appending functions to metadata
