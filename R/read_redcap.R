@@ -48,13 +48,12 @@
 #' @param forms A character vector of REDCap instrument names that specifies
 #' which instruments to import. Default is `NULL` which imports all instruments
 #' in the project.
-#' @param export_survey_fields A logical that specifies whether to export the
-#' survey identifier and timestamp fields if available. The default, `NULL`,
-#' tries to determine if survey fields exist and returns them as though `TRUE`.
-#' @param export_data_access_groups A boolean value that specifies whether or
-#' not to export the `redcap_data_access_group` field when data access groups are
-#' utilized in the project. The default, `NULL`, tries to determine if data
-#' access group fields exist and returns them as though `TRUE`.
+#' @param export_survey_fields A logical that specifies whether to export
+#' survey identifier and timestamp fields. The default, `NULL`,
+#' tries to determine if survey fields exist and returns them if available.
+#' @param export_data_access_groups A logical that specifies whether or to export 
+#' the data access group field. The default, `NULL`, tries to determine if a data
+#' access group field exists and returns it if available.
 #' @param suppress_redcapr_messages A logical to control whether to suppress messages
 #' from REDCapR API calls. Default `TRUE`.
 #' @param guess_max A positive [base::numeric] value
