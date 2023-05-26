@@ -628,7 +628,13 @@ test_that("read_redcap works with longitudinal Data Access Groups", {
 test_that("read_redcap doesn't return the redcap_data_access_group column for non DAG databases", {
   httptest::with_mock_api({
     out_no_dag <- read_redcap(creds$REDCAP_URI,
-                              creds$REDCAPTIDIER_CLASSIC_API)
+                              creds$REDCAPTIDIER_CLASSIC_API) %>%
+      # suppress expected warning
+      suppressWarnings(classes = c(
+        "field_missing_categories",
+        "empty_parse_warning",
+        "duplicate_labels"
+      ))
   })
 
   # retrieve all names from all redcap_data list elements
