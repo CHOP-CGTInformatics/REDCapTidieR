@@ -90,9 +90,13 @@ Also known as a **traditional** project, this the simplest type of REDCap [proje
 
 ### Data Access Group {#data-access-group}
 
-A Data Access Group (DAG) in REDCap is a feature that allows administrators to manage user permissions and restrict access to records. When a [project](#project) has DAGs enabled, a corresponding `redcap_data_access_group` [column](#column) identifies which DAG a given record belongs to. This functionality is particularly useful in multi-center studies, where each center needs to protect their data from others. DAGs enable administrators to assign user rights and maintain data confidentiality effectively.
+The Data Access Group (DAG) feature of REDCap streamlines multi-group collaboration by partitioning groups of [records](#record) of a single [project](#project). This feature is particularly useful when you want certain users or groups of users to only have access to a specific subset of the data in a project.
 
-### Database
+In a multi-site study, for instance, you might want each site to only have access to their own data. By setting up a DAG for each site, you can ensure that site users can only view and edit records that belong to their DAG. Super users (i.e., those with full privileges) can view and edit all records in the project, regardless of the DAG to which they belong. 
+
+When a [project](#project) has DAGs enabled, a corresponding `redcap_data_access_group` [column](#column) identifies which DAG a given [record](#record) belongs to. 
+
+### Database {#database}
 
 In the context of REDCap, this is the same as [project](#project). We prefer the term "project" because it is has a more specific meaning. <a onclick="history.back()">↩︎</a>
 
@@ -116,7 +120,7 @@ A fundamental data structure in R that allows **binding** a set of names to a se
 
 A part of a [longitudinal project](#longitudinal-project). Each event can be associated with one or multiple [instruments](#instrument) and may be either [repeating](#repeating-event) or [nonrepeating](#nonrepeating-event). <a onclick="history.back()">↩︎</a>
 
-### Factor variable
+### Factor variable {#factor}
 
 A data type in R for categorical data. By default, single-answer categorical REDCap [field types](#field-type) (dropdown, radio) are represented as factor variables in the [data tibble](#data-tibble). <a onclick="history.back()">↩︎</a>
 
@@ -219,7 +223,7 @@ A horizontal series of cells in a data frame or [tibble](#tibble). One row of a 
 
 ### skimr {#skimr}
 
-The [skimr](https://docs.ropensci.org/skimr/) R package provides summary statistics to help users quickly skim and understand their data. In REDCapTidieR, the `add_skimr_metadata()` function attaches standard [skimr](https://docs.ropensci.org/skimr/) metrics to the [metadata tibbles](#metadata-tibble) of the [supertibble](#supertibble) output.
+The [skimr](https://docs.ropensci.org/skimr/) R package provides summary statistics to help users quickly skim and understand their data. REDCapTidieR's `add_skimr_metadata()` function uses [skimr](https://docs.ropensci.org/skimr/) to add various summary statistics of a specific [field](#field) to the [metadata tibbles](#metadata-tibble). See also: the section [Adding summary statistics to the metadata with the skimr package](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/REDCapTidieR.html#adding-summary-statistics-to-the-metadata-with-the-skimr-package) in the [Getting Started vignette](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/REDCapTidieR.html).
 
 ### Structure {#structure}
 

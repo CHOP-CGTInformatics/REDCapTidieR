@@ -64,12 +64,17 @@ all instruments into your environment.
 ![Demonstration of using the `read_redcap()` and `bind_tibbles()`
 functions](man/figures/redcaptidier-demo.gif)
 
+REDCapTidieR supports labelled data using the
+[labelled](https://larmarange.github.io/labelled/) package, and it can
+generate statistical summaries using the
+[skimr](https://docs.ropensci.org/skimr/) package.
+
 Read the [Getting Started
 vignette](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/REDCapTidieR.html)
 to learn more.
 
-REDCapTidieR also supports exporting data directly to .xlsx documents.
-To showcase this, a practical demonstration is provided below:
+In addition, you can easily create collaborator-friendly Excel files
+using the `write_redcap_xlsx()` function:
 
 ``` r
 redcap_uri <- "https://my.institution.edu/redcap/api/"
@@ -80,7 +85,7 @@ write_redcap_xlsx(my_redcap_data, file = "my_redcap_data.xlsx")
 ```
 
 ![Sample REDCapTidieR .xlsx output using
-write_redcap_xlsx()](man/figures/write_xlsx_default.png)
+`write_redcap_xlsx()`](man/figures/write_xlsx_default.png)
 
 For more information on how to work with and customize the output, read
 the [Exporting to Excel

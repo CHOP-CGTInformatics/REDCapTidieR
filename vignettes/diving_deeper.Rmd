@@ -248,16 +248,15 @@ adverse_events |>
 
 ## Data Access Groups
 
-Some REDCap [projects](glossary.html#project) may use [Data Access Groups](glossary.html#data-access-group) (DAGs) to assign specific user privileges and record-level access to entries within the [project](glossary.html#project). [DAGs](glossary.html#data-access-group) are frequently used in mutli-center [projects](glossary.html#project) studies where centers need their data hidden from other participants.
+Some REDCap [projects](glossary.html#project) may use [Data Access Groups](glossary.html#data-access-group) (DAGs) to assign specific user privileges and record-level access to entries within the [project](glossary.html#project). [DAGs](glossary.html#data-access-group) are frequently used in multi-center [projects](glossary.html#project) where the data from an individual centers needs to be isolated and protected from users belonging to other centers.
 
-[DAGs](glossary.html#data-access-group) are exported automatically, if available, after invoking `read_redcap()` and can be found as an additional [data column](glossary.html#data-column) called `redcap_data_access_group`.
+If a project has [DAGs](glossary.html#data-access-group) enabled, by default a column named `redcap_data_access_group` will appear in each [data tibble](glossary.html#data-tibble) after the [identifier columns](glossary.html#identifier-column).
 
 ```{r, warning = FALSE}
-my_redcap_data <- read_redcap(redcap_uri, dag_token)
+redcap_project_with_dags <- read_redcap(redcap_uri, dag_token)
 
-my_redcap_data |>
-  extract_tibbles() |>
-  purrr::pluck(1) |>
+redcap_project_with_dags |>
+  extract_tibble("non_repeat_form_1") |>
   rmarkdown::paged_table()
 ```
 
