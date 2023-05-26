@@ -51,7 +51,7 @@
 #' @param export_survey_fields A logical that specifies whether to export
 #' survey identifier and timestamp fields. The default, `NULL`,
 #' tries to determine if survey fields exist and returns them if available.
-#' @param export_data_access_groups A logical that specifies whether or to export 
+#' @param export_data_access_groups A logical that specifies whether to export
 #' the data access group field. The default, `NULL`, tries to determine if a data
 #' access group field exists and returns it if available.
 #' @param suppress_redcapr_messages A logical to control whether to suppress messages
@@ -188,7 +188,7 @@ read_redcap <- function(redcap_uri,
   # Check that results were returned
   check_redcap_populated(db_data)
 
-  # Check that requested args exist
+  # Check whether DAGs or survey fields are present in the project, if requested
   if (!is.null(export_data_access_groups_original)) {
     if (export_data_access_groups_original) {
       check_data_arg_exists(db_data,

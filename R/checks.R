@@ -125,11 +125,11 @@ check_repeat_and_nonrepeat <- function(db_data, call = caller_env()) {
   check_data <- function(db_data, check_col) {
     # Repeating Check
     rep <- any(!is.na(db_data[{{ check_col }}]) &
-      !is.na(db_data["redcap_repeat_instrument"]))
+                 !is.na(db_data["redcap_repeat_instrument"]))
 
     # Nonrepeating Check
     nonrep <- any(!is.na(db_data[{{ check_col }}]) &
-      is.na(db_data["redcap_repeat_instrument"]))
+                    is.na(db_data["redcap_repeat_instrument"]))
 
     rep & nonrep
   }
@@ -155,8 +155,8 @@ check_repeat_and_nonrepeat <- function(db_data, call = caller_env()) {
   if (nrow(out) > 0) {
     cli_abort(c("x" = "Instrument{?s} detected that ha{?s/ve} both repeating and
       nonrepeating instances defined in the project: {out$field}"),
-      class = c("repeat_nonrepeat_instrument", "REDCapTidieR_cond"),
-      call = call
+              class = c("repeat_nonrepeat_instrument", "REDCapTidieR_cond"),
+              call = call
     )
   }
 }
@@ -546,15 +546,15 @@ check_arg_is_valid_extension <- function(x,
   msg_i <- "File extension must be 'xlsx'"
 
   if (!ext %in% valid_extensions) {
-      cli_abort(
-        message = c(
-          "x" = msg_x,
-          "i" = msg_i
-        ),
-        class = c("invalid_file_extension", "REDCapTidieR_cond"),
-        call = call
-      )
-    }
+    cli_abort(
+      message = c(
+        "x" = msg_x,
+        "i" = msg_i
+      ),
+      class = c("invalid_file_extension", "REDCapTidieR_cond"),
+      call = call
+    )
+  }
 
   return(TRUE)
 }
@@ -589,8 +589,13 @@ check_arg_is_valid_extension <- function(x,
 #' @keywords internal
 check_data_arg_exists <- function(db_data, col, arg, call = caller_env()) {
 
-  msg_x <- "Invalid request: {.arg {arg}}."
-  msg_i <- "Identifying column, {.arg {col}}, not found."
+  if (arg == "export_survey_fields") {
+    msg_x <- "Project survey fields requested, but none found."
+    msg_i <- "{.pkg REDCapTidieR} did not detect expected columns for a survey-enabled project."
+  } else {
+    msg_x <- "Data access groups requested, but none found."
+    msg_i <- "{.pkg REDCapTidieR} did not detect expected columns for a project using DAGs."
+  }
 
   if (!col %in% names(db_data)) {
     cli_abort(
