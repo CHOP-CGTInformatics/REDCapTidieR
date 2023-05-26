@@ -73,6 +73,9 @@
     <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/calc_metadata_stats.html</loc>
   </url>
   <url>
+    <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/check_data_arg_exists.html</loc>
+  </url>
+  <url>
     <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/check_forms_exist.html</loc>
   </url>
   <url>
@@ -107,9 +110,6 @@
   </url>
   <url>
     <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/db_has_repeat_forms.html</loc>
-  </url>
-  <url>
-    <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/deprecated.html</loc>
   </url>
   <url>
     <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/distill_nonrepeat_table.html</loc>
