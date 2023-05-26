@@ -18,7 +18,6 @@ status](https://www.r-pkg.org/badges/version/REDCapTidieR)](https://CRAN.R-proje
 [![](https://cranlogs.r-pkg.org/badges/grand-total/REDCapTidieR)](https://cran.r-project.org/package=REDCapTidieR)
 [![Codecov test
 coverage](https://codecov.io/gh/CHOP-CGTInformatics/REDCapTidieR/branch/main/graph/badge.svg)](https://app.codecov.io/gh/CHOP-CGTInformatics/REDCapTidieR?branch=main)
-[![OpenSSF Best Practices](https://bestpractices.coreinfrastructure.org/projects/6845/badge)](https://bestpractices.coreinfrastructure.org/projects/6845)
 <!-- badges: end -->
 
 The REDCapTidieR package provides an elegant way to
@@ -67,6 +66,25 @@ functions](man/figures/redcaptidier-demo.gif)
 
 Read the [Getting Started
 vignette](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/REDCapTidieR.html)
+to learn more.
+
+REDCapTidieR also supports exporting data directly to .xlsx documents.
+To showcase this, a practical demonstration is provided below:
+
+``` r
+redcap_uri <- "https://my.institution.edu/redcap/api/"
+token <- "123456789ABCDEF123456789ABCDEF04"
+
+my_redcap_data <- read_redcap(redcap_uri, token)
+write_redcap_xlsx(my_redcap_data, file = "my_redcap_data.xlsx")
+```
+
+![Sample REDCapTidieR .xlsx output using
+write_redcap_xlsx()](man/figures/write_xlsx_default.png)
+
+For more information on how to work with and customize the output, read
+the [Exporting to Excel
+vignette](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/export_to_xlsx.html)
 to learn more.
 
 ## Collaboration

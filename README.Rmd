@@ -55,6 +55,20 @@ Use `read_redcap()` together with `bind_tibbles()` to import data from all instr
 
 Read the [Getting Started vignette](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/REDCapTidieR.html) to learn more.
 
+REDCapTidieR also supports exporting data directly to .xlsx documents. To showcase this, a practical demonstration is provided below:
+
+```{r, eval=FALSE}
+redcap_uri <- "https://my.institution.edu/redcap/api/"
+token <- "123456789ABCDEF123456789ABCDEF04"
+
+my_redcap_data <- read_redcap(redcap_uri, token)
+write_redcap_xlsx(my_redcap_data, file = "my_redcap_data.xlsx")
+```
+
+![Sample REDCapTidieR .xlsx output using write_redcap_xlsx()](man/figures/write_xlsx_default.png)
+
+For more information on how to work with and customize the output, read the [Exporting to Excel vignette](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/export_to_xlsx.html) to learn more.
+
 ## Collaboration
 
 We invite you to give feedback and collaborate with us! If you are familiar with GitHub and R packages, please feel free to submit a [pull request](https://github.com/CHOP-CGTInformatics/REDCapTidieR/pulls). Please do let us know if REDCapTidieR fails for whatever reason with your database and submit a bug report by creating a GitHub [issue](https://github.com/CHOP-CGTInformatics/REDCapTidieR/issues).
