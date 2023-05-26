@@ -322,41 +322,41 @@ test_that("bind_supertbl_metadata works", {
 
 
 
-# test_that("Combining skimr, labelled, and xlsx returns expected snapshot", {
-#   httptest::with_mock_api({
-#     out <-
-#       read_redcap(creds$REDCAP_URI, creds$REDCAPTIDIER_CLASSIC_API) %>%
-#       # Suppress expected warnings from the REDCapTidieR Classic database.
-#       # Warnings here are meant to validate checks in other tests.
-#       suppressWarnings(classes = c(
-#         "field_missing_categories",
-#         "empty_parse_warning",
-#         "duplicate_labels"
-#       ))
-#   })
-#
-#   withr::with_tempdir({
-#     wb_obj <- out %>%
-#       make_labelled() %>%
-#       add_skimr_metadata() %>%
-#       write_redcap_xlsx(file = "temp.xlsx")
-#   })
-#
-#   # Extract all data from wb_obj per sheet, assign to a dataframe
-#   wb_obj_data <- purrr::map(wb_obj$tables$tab_sheet, ~openxlsx2::wb_to_df(wb_obj, sheet = .x))
-#
-#   # Select additional wb elements of interest, combine with wb_obj_data
-#   wb_list <- list(
-#     wb_obj_data,
-#     wb_obj$tables,
-#     wb_obj$workbook,
-#     wb_obj$workbook.xml.rels,
-#     wb_obj$worksheets,
-#     wb_obj$worksheets_rels,
-#     wb_obj$workbook.xml.rels,
-#     wb_obj$sheetOrder,
-#     wb_obj$sheet_names
-#   )
-#
-#   expect_snapshot(wb_list, cran = FALSE) # Not to be checked on CRAN
-# })
+test_that("Combining skimr, labelled, and xlsx returns expected snapshot", {
+  httptest::with_mock_api({
+    out <-
+      read_redcap(creds$REDCAP_URI, creds$REDCAPTIDIER_CLASSIC_API) %>%
+      # Suppress expected warnings from the REDCapTidieR Classic database.
+      # Warnings here are meant to validate checks in other tests.
+      suppressWarnings(classes = c(
+        "field_missing_categories",
+        "empty_parse_warning",
+        "duplicate_labels"
+      ))
+  })
+
+  withr::with_tempdir({
+    wb_obj <- out %>%
+      make_labelled() %>%
+      add_skimr_metadata() %>%
+      write_redcap_xlsx(file = "temp.xlsx")
+  })
+
+  # Extract all data from wb_obj per sheet, assign to a dataframe
+  wb_obj_data <- purrr::map(wb_obj$tables$tab_sheet, ~openxlsx2::wb_to_df(wb_obj, sheet = .x))
+
+  # Select additional wb elements of interest, combine with wb_obj_data
+  wb_list <- list(
+    wb_obj_data,
+    wb_obj$tables,
+    wb_obj$workbook,
+    wb_obj$workbook.xml.rels,
+    wb_obj$worksheets,
+    wb_obj$worksheets_rels,
+    wb_obj$workbook.xml.rels,
+    wb_obj$sheetOrder,
+    wb_obj$sheet_names
+  )
+
+  expect_snapshot(wb_list, cran = FALSE) # Not to be checked on CRAN
+})
