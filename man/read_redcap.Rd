@@ -9,7 +9,8 @@ read_redcap(
   token,
   raw_or_label = "label",
   forms = NULL,
-  export_survey_fields = TRUE,
+  export_survey_fields = NULL,
+  export_data_access_groups = NULL,
   suppress_redcapr_messages = TRUE,
   guess_max = .Machine$integer.max
 )
@@ -30,8 +31,13 @@ fields. Default is 'label'.}
 which instruments to import. Default is \code{NULL} which imports all instruments
 in the project.}
 
-\item{export_survey_fields}{A logical that specifies whether to export the
-survey identifier and timestamp fields if available. Default is \code{TRUE}.}
+\item{export_survey_fields}{A logical that specifies whether to export
+survey identifier and timestamp fields. The default, \code{NULL},
+tries to determine if survey fields exist and returns them if available.}
+
+\item{export_data_access_groups}{A logical that specifies whether to export
+the data access group field. The default, \code{NULL}, tries to determine if a data
+access group field exists and returns it if available.}
 
 \item{suppress_redcapr_messages}{A logical to control whether to suppress messages
 from REDCapR API calls. Default \code{TRUE}.}

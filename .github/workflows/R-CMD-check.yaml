@@ -45,3 +45,4 @@ jobs:
           args: 'c("--no-manual", "--as-cran")'
           error-on: '"error"'
           check-dir: '"check"'
+          upload-snapshots: true

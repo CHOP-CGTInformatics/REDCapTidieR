@@ -452,6 +452,20 @@ test_that("read_redcap errors with bad inputs", {
     read_redcap(creds$REDCAP_URI, creds$REDCAPTIDIER_CLASSIC_API, suppress_redcapr_messages = c(TRUE, TRUE)),
     class = "check_logical"
   )
+
+  # export_data_access_group
+  expect_error(
+    read_redcap(creds$REDCAP_URI, creds$REDCAPTIDIER_DAG_API, export_data_access_groups = "TRUE"),
+    class = "check_logical"
+  )
+  expect_error(
+    read_redcap(creds$REDCAP_URI, creds$REDCAPTIDIER_DAG_API, export_data_access_groups = 123),
+    class = "check_logical"
+  )
+  expect_error(
+    read_redcap(creds$REDCAP_URI, creds$REDCAPTIDIER_DAG_API, export_data_access_groups = c(TRUE, TRUE)),
+    class = "check_logical"
+  )
 })
 
 test_that("read_redcap returns S3 object", {
@@ -564,4 +578,87 @@ test_that("read_redcap works for a large sparse database", {
     extract_tibble("form_1") %>%
     sapply(class) %>%
     expect_equal(expected_col_types)
+})
+
+test_that("read_redcap works with non-longitudinal Data Access Groups", {
+  httptest::with_mock_api({
+    out_dag <- read_redcap(creds$REDCAP_URI,
+                           creds$REDCAPTIDIER_DAG_API)
+  })
+
+  # Check for expected column and data
+  dag_data <- out_dag$redcap_data[[1]]
+
+  expect_true("redcap_data_access_group" %in% names(dag_data))
+  expect_true(is.character(dag_data$redcap_data_access_group))
+  expect_equal(dag_data$redcap_data_access_group, c("dag1", "dag2", "dag3", NA))
+
+  # Check for expected label
+  out_dag_labelled <- out_dag %>% make_labelled()
+
+  dag_label <- labelled::lookfor(out_dag_labelled$redcap_data[[1]])
+  dag_label <- dag_label$label[dag_label$variable == "redcap_data_access_group"]
+
+  expect_equal(dag_label, c("redcap_data_access_group" = "REDCap Data Access Group"))
+
+})
+
+test_that("read_redcap works with longitudinal Data Access Groups", {
+  httptest::with_mock_api({
+    out_dag_long <- read_redcap(creds$REDCAP_URI,
+                           creds$REDCAPTIDIER_LONGITUDINAL_DAG_API)
+  })
+
+  # Check for expected column and data
+  dag_data_long <- out_dag_long$redcap_data[[1]]
+
+  expect_true("redcap_data_access_group" %in% names(dag_data_long))
+  expect_true(is.character(dag_data_long$redcap_data_access_group))
+  expect_equal(dag_data_long$redcap_data_access_group, c("dag1", "dag1", "dag2", "dag2", "dag3"))
+
+  # Check for expected label
+  out_dag_long_labelled <- out_dag_long %>% make_labelled()
+
+  dag_label_long <- labelled::lookfor(out_dag_long_labelled$redcap_data[[1]])
+  dag_label_long <- dag_label_long$label[dag_label_long$variable == "redcap_data_access_group"]
+
+  expect_equal(dag_label_long, c("redcap_data_access_group" = "REDCap Data Access Group"))
+})
+
+test_that("read_redcap doesn't return the redcap_data_access_group column for non DAG databases", {
+  httptest::with_mock_api({
+    out_no_dag <- read_redcap(creds$REDCAP_URI,
+                              creds$REDCAPTIDIER_CLASSIC_API) %>%
+      # suppress expected warning
+      suppressWarnings(classes = c(
+        "field_missing_categories",
+        "empty_parse_warning",
+        "duplicate_labels"
+      ))
+  })
+
+  # retrieve all names from all redcap_data list elements
+  no_dag_all_names <- lapply(out_no_dag$redcap_data, names) %>% unlist()
+  expect_true(!"redcap_data_access_group" %in% no_dag_all_names)
+})
+
+test_that("read_redcap fails if DAG or survey columns are explicitly requested but don't exist", {
+
+  expect_error(
+    httptest::with_mock_api({
+      out_no_dag <- read_redcap(creds$REDCAP_URI,
+                                creds$REDCAPTIDIER_CLASSIC_API,
+                                export_data_access_groups = TRUE)
+    }),
+    class = "nonexistent_arg_requested"
+  )
+
+  expect_error(
+    httptest::with_mock_api({
+      out_no_dag <- read_redcap(creds$REDCAP_URI,
+                                creds$REDCAPTIDIER_DAG_API,
+                                export_survey_fields = TRUE)
+    }),
+    class = "nonexistent_arg_requested"
+  )
 })

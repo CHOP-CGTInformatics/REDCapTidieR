@@ -54,7 +54,7 @@ make_labelled <- function(supertbl, format_labels = NULL) {
   check_req_labelled_metadata_fields(supertbl)
 
   # Derive labels ----
-  main_labs <- c(
+  main_labels <- c(
     redcap_form_name = "REDCap Instrument Name",
     redcap_form_label = "REDCap Instrument Description",
     redcap_data = "Data",
@@ -67,7 +67,7 @@ make_labelled <- function(supertbl, format_labels = NULL) {
     data_na_pct = "% of Data Missing"
   )
 
-  metadata_labs <- c(
+  metadata_labels <- c(
     field_name = "Variable / Field Name",
     field_label = "Field Label",
     field_type = "Field Type",
@@ -88,9 +88,10 @@ make_labelled <- function(supertbl, format_labels = NULL) {
   )
 
   ## Set some predefined labels for data fields that aren't in the metadata
-  data_labs <- c( # nolint: object_usage_linter
+  data_labels <- c( # nolint: object_usage_linter
     redcap_form_instance = "REDCap Form Instance",
     redcap_event_instance = "REDCap Event Instance",
+    redcap_data_access_group = "REDCap Data Access Group",
     redcap_event = "REDCap Event",
     redcap_arm = "REDCap Arm",
     redcap_survey_timestamp = "REDCap Survey Timestamp",
@@ -98,7 +99,7 @@ make_labelled <- function(supertbl, format_labels = NULL) {
     form_status_complete = "REDCap Instrument Completed?"
   )
 
-  event_labs <- c(
+  event_labels <- c(
     redcap_event = "Event Name",
     redcap_arm = "Arm Name",
     arm_name = "Arm Description"
@@ -106,19 +107,19 @@ make_labelled <- function(supertbl, format_labels = NULL) {
 
   # Define skimr labels ----
 
-  skimr_labs <- make_skimr_labels()
+  skimr_labels <- make_skimr_labels()
 
   # Apply labels ----
 
   out <- supertbl
 
   # Label cols of each metadata tibble
-  metadata_labs <- c(metadata_labs, skimr_labs)
+  metadata_labels <- c(metadata_labels, skimr_labels)
 
   out$redcap_metadata <- map(
     out$redcap_metadata,
     .f = safe_set_variable_labels,
-    labs = metadata_labs
+    labs = metadata_labels
   )
 
   # Label cols of each data tibble
@@ -128,11 +129,11 @@ make_labelled <- function(supertbl, format_labels = NULL) {
     out$redcap_metadata,
     .f = ~ {
       # build labels from metadata + predefined labs
-      labs <- c(.y$field_label, data_labs) %>%
+      labs <- c(.y$field_label, data_labels) %>%
         formatter()
 
       # Formatter may have wiped names so set them after
-      names(labs) <- c(.y$field_name, names(data_labs))
+      names(labs) <- c(.y$field_name, names(data_labels))
 
       # set labs
       safe_set_variable_labels(.x, labs)
@@ -144,13 +145,13 @@ make_labelled <- function(supertbl, format_labels = NULL) {
     out$redcap_events <- map(
       out$redcap_events,
       .f = safe_set_variable_labels,
-      labs = event_labs
+      labs = event_labels
     )
   }
 
   # Label main cols
   # Do this last since map removes labels from columns we map over
-  out <- safe_set_variable_labels(out, main_labs)
+  out <- safe_set_variable_labels(out, main_labels)
 
   out
 }

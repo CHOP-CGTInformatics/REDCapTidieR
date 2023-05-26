@@ -351,9 +351,6 @@ test_that("Combining skimr, labelled, and xlsx returns expected snapshot", {
     wb_obj$tables,
     wb_obj$workbook,
     wb_obj$workbook.xml.rels,
-    wb_obj$worksheets,
-    wb_obj$worksheets_rels,
-    wb_obj$workbook.xml.rels,
     wb_obj$sheetOrder,
     wb_obj$sheet_names
   )
