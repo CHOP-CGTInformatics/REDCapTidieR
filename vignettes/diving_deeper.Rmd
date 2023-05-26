@@ -23,7 +23,10 @@ library(REDCapTidieR)
 fake <- dir.exists("diving_deeper")
 
 creds <- REDCapTidieR:::get_credentials(
-  c("REDCAP_URI", "SUPERHEROES_REDCAP_API", "REDCAPTIDIER_DEEP_DIVE_VIGNETTE_API", "REDCAPTIDIER_CLASSIC_API", "REDCAPTIDIER_DAG_API"),
+  c("REDCAP_URI", "SUPERHEROES_REDCAP_API",
+    "REDCAPTIDIER_DEEP_DIVE_VIGNETTE_API",
+    "REDCAPTIDIER_CLASSIC_API",
+    "REDCAPTIDIER_DAG_API"),
   fake = fake
 )
 
@@ -253,7 +256,7 @@ Some REDCap [projects](glossary.html#project) may use [Data Access Groups](gloss
 my_redcap_data <- read_redcap(redcap_uri, dag_token)
 
 my_redcap_data |>
-  extract_tibbles() |> 
+  extract_tibbles() |>
   purrr::pluck(1) |>
   rmarkdown::paged_table()
 ```

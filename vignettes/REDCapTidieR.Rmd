@@ -236,10 +236,10 @@ labelled::look_for(heroes_information)
 REDCapTidieR utilizes the [skimr](https://docs.ropensci.org/skimr/) package to generate summary statistics for [metadata tibbles](glossary.html#metadata-tibble). By employing the `add_skimr_metadata()` function, users can easily add these statistics as additional columns to their redcap_metadata tables. Below is a simple example, you may need to page over to the right to view the additional columns:
 
 ```{r}
-superheroes %>% 
+superheroes %>%
   add_skimr_metadata() %>%
-  dplyr::select(redcap_metadata) %>% 
-  purrr::pluck(1,1) %>% 
+  dplyr::select(redcap_metadata) %>%
+  purrr::pluck(1, 1) %>%
   rmarkdown::paged_table()
 ```
 
