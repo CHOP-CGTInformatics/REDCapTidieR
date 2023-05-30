@@ -57,6 +57,10 @@ Below we provide a rough mapping of REDCap concepts to their corresponding artif
 |                                            |                                                                                                          |
 |                                            | (only present if the [instrument](#instrument) is associated with a [repeating event](#repeating-event)) |
 +--------------------------------------------+----------------------------------------------------------------------------------------------------------+
+| [Data Access Group](#data-access-group)    | `redcap_data_access_group` [column](#column) of a [data tibble](#data-tibble)                            |
+|                                            |                                                                                                          |
+|                                            | (only present if the [project](#project) has [data access groups](#data-access-group) enabled)           |
++--------------------------------------------+----------------------------------------------------------------------------------------------------------+
 
 ### Arm {#arm}
 
@@ -84,7 +88,15 @@ In the context of REDCapTidieR, choices come into play in two scenarios during t
 
 Also known as a **traditional** project, this the simplest type of REDCap [project](#project). You can define one or multiple [instruments](#instrument) (also called forms) for data entry. Both [repeating](#repeating-instrument) and [nonrepeating](#repeating-instrument) instruments are allowed. Nonrepeating instruments are completed only once for each [record](#record). For nonrepeating instruments, one [row](#row) of data in the [data tibble](#data-tibble) represents one record. Repeating instruments can be completed an arbitrary number of times for each record. For repeating instruments, one row of data in the data tibble represents one repeat instance of one record. See also: [Longitudinal project](#longitudinal-project). <a onclick="history.back()">↩︎</a>
 
-### Database
+### Data Access Group {#data-access-group}
+
+The Data Access Group (DAG) feature of REDCap streamlines multi-group collaboration by partitioning groups of [records](#record) of a single [project](#project). This feature is particularly useful when you want certain users or groups of users to only have access to a specific subset of the data in a project.
+
+In a multi-site study, for instance, you might want each site to only have access to their own data. By setting up a DAG for each site, you can ensure that site users can only view and edit records that belong to their DAG. Super users (i.e., those with full privileges) can view and edit all records in the project, regardless of the DAG to which they belong. 
+
+When a [project](#project) has DAGs enabled, a corresponding `redcap_data_access_group` [column](#column) identifies which DAG a given [record](#record) belongs to. 
+
+### Database {#database}
 
 In the context of REDCap, this is the same as [project](#project). We prefer the term "project" because it is has a more specific meaning. <a onclick="history.back()">↩︎</a>
 
@@ -108,7 +120,7 @@ A fundamental data structure in R that allows **binding** a set of names to a se
 
 A part of a [longitudinal project](#longitudinal-project). Each event can be associated with one or multiple [instruments](#instrument) and may be either [repeating](#repeating-event) or [nonrepeating](#nonrepeating-event). <a onclick="history.back()">↩︎</a>
 
-### Factor variable
+### Factor variable {#factor}
 
 A data type in R for categorical data. By default, single-answer categorical REDCap [field types](#field-type) (dropdown, radio) are represented as factor variables in the [data tibble](#data-tibble). <a onclick="history.back()">↩︎</a>
 
@@ -208,6 +220,10 @@ An [instrument](#instrument) that can be filled out zero, one, or multiple times
 ### Row {#row}
 
 A horizontal series of cells in a data frame or [tibble](#tibble). One row of a [supertibble](#supertibble) represents an [instrument](#instrument). One row of a [data tibble](#data-tibble) can represent different things, depending on the [granularity](#granularity) of the data. See also: [Column](#column). <a onclick="history.back()">↩︎</a>
+
+### skimr {#skimr}
+
+The [skimr](https://docs.ropensci.org/skimr/) R package provides summary statistics to help users quickly skim and understand their data. REDCapTidieR's `add_skimr_metadata()` function uses [skimr](https://docs.ropensci.org/skimr/) to add various summary statistics of a specific [field](#field) to the [metadata tibbles](#metadata-tibble). See also: the section [Adding summary statistics to the metadata with the skimr package](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/REDCapTidieR.html#adding-summary-statistics-to-the-metadata-with-the-skimr-package) in the [Getting Started vignette](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/REDCapTidieR.html).
 
 ### Structure {#structure}
 

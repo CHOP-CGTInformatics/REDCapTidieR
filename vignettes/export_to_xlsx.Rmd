@@ -36,6 +36,8 @@ start_vignette("export_to_xlsx")
 
 Excel spreadsheets are an accessible medium for data analysis and collaboration. This vignette will guide you through the process of using REDCapTidieR to transform your REDCap data into an XLSX document, facilitating easy sharing with colleagues.
 
+`write_redcap_xlsx()` also works with `add_skimr_metadata()` to supply both labelled and unlabelled skimr metadata metrics to your XLSX document.
+
 ## Transforming a REDCap project into an XLSX document
 
 The transformation of a REDCap [project](glossary.html#project) into a XLSX document can be achieved in three straightforward steps using the `write_redcap_xlsx()` function:

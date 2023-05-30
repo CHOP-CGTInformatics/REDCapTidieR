@@ -231,6 +231,26 @@ superheroes |>
 labelled::look_for(heroes_information)
 ```
 
+## Adding summary statistics to the metadata with the skimr package
+
+REDCapTidieR provides the `add_skimr_metadata()` function to make it easy to compute summary statistics for [fields](glossary.html#field) of the project using the [skimr](https://docs.ropensci.org/skimr/) package. The summary statistics are added to [metadata tibbles](glossary.html#metadata-tibble). Below is a simple example showing some of the summaries including count of missing values (`n_missing`), proportion of non-missing values (`complete_rate`), and various numeric statistics:
+
+```{r}
+# Extract the heroes_information metadata tibble and add metadata
+heroes_information_metadata <-
+  superheroes |>
+  add_skimr_metadata() |>
+  dplyr::select(redcap_metadata) |>
+  purrr::pluck(1, 1)
+
+# Highlight the numeric summaries created by add_skimr_metadata()
+heroes_information_metadata |>
+  dplyr::select(field_name, skim_type:complete_rate, starts_with("numeric")) |>
+  rmarkdown::paged_table()
+```
+
+This enables quick insights into data content and supports exploratory data analytics. The columns added by `add_skimr_metadata()` can also be [labelled](glossary.html#labelled).
+
 ```{r, include=FALSE}
 end_vignette()
 ```
