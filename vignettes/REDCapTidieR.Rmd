@@ -237,7 +237,7 @@ REDCapTidieR provides the `add_skimr_metadata()` function to make it easy to com
 
 ```{r}
 # Extract the heroes_information metadata tibble and add metadata
-heroes_information_metadata <- 
+heroes_information_metadata <-
   superheroes |>
   add_skimr_metadata() |>
   dplyr::select(redcap_metadata) |>
