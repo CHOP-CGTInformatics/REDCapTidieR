@@ -222,6 +222,9 @@ test_that("supertbl_recode works", {
     3,          NA,     NA
   )
 
+  # Add labels to check for preservation
+  labelled::var_label(expected_out) <- c("Record ID", "YesNo", "Checkbox")
+
   expect_equal(out[[1]], expected_out)
 })
 
