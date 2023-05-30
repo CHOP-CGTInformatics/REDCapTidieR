@@ -207,7 +207,8 @@ test_that("supertbl_recode works", {
     ~redcap_form_name, ~redcap_form_label, ~redcap_data,   ~redcap_metadata,
     "c",                "C",                redcap_data_c,  redcap_metadata_c
   ) %>%
-    as_supertbl()
+    as_supertbl() %>%
+    make_labelled()
 
   # Pass through testing function
   supertbl_recoded_meta <- bind_supertbl_metadata(supertbl_recoded)

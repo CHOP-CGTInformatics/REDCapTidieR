@@ -518,25 +518,12 @@ supertbl_recode <- function(supertbl, supertbl_meta) {
 
   # Recode logical vars, define and re-apply labels (similar to labelled.R)
   # as these are lost during attribute changes
-  map2(
+  map(
     supertbl$redcap_data,
-    supertbl$redcap_metadata,
-    .f = ~ {
-      # Set some predefined labels for data fields that aren't in the metadata
-      data_labels <- c( # nolint: object_usage_linter
-        redcap_form_instance = "REDCap Form Instance",
-        redcap_event_instance = "REDCap Event Instance",
-        redcap_data_access_group = "REDCap Data Access Group",
-        redcap_event = "REDCap Event",
-        redcap_arm = "REDCap Arm",
-        redcap_survey_timestamp = "REDCap Survey Timestamp",
-        redcap_survey_identifier = "REDCap Survey Identifier",
-        form_status_complete = "REDCap Instrument Completed?"
-      )
+    function(x) {
+      labs <- labelled::lookfor(x)$label
 
-      labs <- c(.y$field_label, data_labels)
-
-      out <- .x %>%
+      out <- x %>%
         mutate(
           across(any_of(yesno_fields), ~ case_when(
             . == "TRUE" ~ "yes",
@@ -549,9 +536,6 @@ supertbl_recode <- function(supertbl, supertbl_meta) {
             TRUE ~ NA_character_
           ))
         )
-
-      # Recode may have wiped names so set them after
-      names(labs) <- c(.y$field_name, names(data_labels))
 
       # set labs
       safe_set_variable_labels(out, labs)
