@@ -178,7 +178,6 @@ write_redcap_xlsx <- function(supertbl,
     }
   )
 
-  # Add labelled features ----
   if (add_labelled_column_headers) {
     add_labelled_xlsx_features(
       supertbl,
@@ -509,18 +508,35 @@ check_labelled <- function(supertbl, add_labelled_column_headers, call = caller_
 supertbl_recode <- function(supertbl, supertbl_meta) {
   # Recode yesno from TRUE/FALSE to "yes"/"no"
 
-  yesno_fields <- supertbl_meta %>%
+  yesno_fields <- supertbl_meta %>% # nolint: object_usage_linter
     filter(.data$field_type == "yesno") %>%
     pull(.data$field_name)
 
-  checkbox_fields <- supertbl_meta %>%
+  checkbox_fields <- supertbl_meta %>% # nolint: object_usage_linter
     filter(.data$field_type == "checkbox") %>%
     pull(.data$field_name)
 
-  map(
+  # Recode logical vars, define and re-apply labels (similar to labelled.R)
+  # as these are lost during attribute changes
+  map2(
     supertbl$redcap_data,
-    function(x) {
-      x %>%
+    supertbl$redcap_metadata,
+    .f = ~ {
+      # Set some predefined labels for data fields that aren't in the metadata
+      data_labels <- c( # nolint: object_usage_linter
+        redcap_form_instance = "REDCap Form Instance",
+        redcap_event_instance = "REDCap Event Instance",
+        redcap_data_access_group = "REDCap Data Access Group",
+        redcap_event = "REDCap Event",
+        redcap_arm = "REDCap Arm",
+        redcap_survey_timestamp = "REDCap Survey Timestamp",
+        redcap_survey_identifier = "REDCap Survey Identifier",
+        form_status_complete = "REDCap Instrument Completed?"
+      )
+
+      labs <- c(.y$field_label, data_labels)
+
+      out <- .x %>%
         mutate(
           across(any_of(yesno_fields), ~ case_when(
             . == "TRUE" ~ "yes",
@@ -533,6 +549,12 @@ supertbl_recode <- function(supertbl, supertbl_meta) {
             TRUE ~ NA_character_
           ))
         )
+
+      # Recode may have wiped names so set them after
+      names(labs) <- c(.y$field_name, names(data_labels))
+
+      # set labs
+      safe_set_variable_labels(out, labs)
     }
   )
 }

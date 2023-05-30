@@ -636,7 +636,7 @@ check_file_exists <- function(file, overwrite, call = caller_env()) {
   msg_x <- "File '{.file {file}}' already exists."
   msg_i <- "Set {.arg overwrite = TRUE} to overwrite your file."
 
-  if (file.exists(file) & !overwrite) {
+  if (file.exists(file) && !overwrite) {
     cli_abort(
       message = c(
         "x" = msg_x,
