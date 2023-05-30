@@ -29,7 +29,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">REDCapTidieR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0.9004</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0.9005</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -444,6 +444,38 @@ case with <code><a href="https://rdrr.io/r/base/chartr.html" class="external-lin
 <span><span class="co">#&gt;  Incomplete</span></span>
 <span><span class="co">#&gt;  Unverified</span></span>
 <span><span class="co">#&gt;  Complete</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="adding-summary-statistics-to-the-metadata-with-the-skimr-package">Adding summary statistics to the metadata with the skimr
+package<a class="anchor" aria-label="anchor" href="#adding-summary-statistics-to-the-metadata-with-the-skimr-package"></a>
+</h2>
+<p>REDCapTidieR provides the <code><a href="../reference/add_skimr_metadata.html">add_skimr_metadata()</a></code> function
+to make it easy to compute summary statistics for <a href="glossary.html#field">fields</a> of the project using the <a href="https://docs.ropensci.org/skimr/" class="external-link">skimr</a> package. The summary
+statistics are added to <a href="glossary.html#metadata-tibble">metadata
+tibbles</a>. Below is a simple example showing some of the summaries
+including count of missing values (<code>n_missing</code>), proportion
+of non-missing values (<code>complete_rate</code>), and various numeric
+statistics:</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Extract the heroes_information metadata tibble and add metadata</span></span>
+<span><span class="va">heroes_information_metadata</span> <span class="op">&lt;-</span></span>
+<span>  <span class="va">superheroes</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/add_skimr_metadata.html">add_skimr_metadata</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">redcap_metadata</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/pluck.html" class="external-link">pluck</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Highlight the numeric summaries created by add_skimr_metadata()</span></span>
+<span><span class="va">heroes_information_metadata</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">field_name</span>, <span class="va">skim_type</span><span class="op">:</span><span class="va">complete_rate</span>, <span class="fu">starts_with</span><span class="op">(</span><span class="st">"numeric"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">rmarkdown</span><span class="fu">::</span><span class="fu"><a href="https://pkgs.rstudio.com/rmarkdown/reference/paged_table.html" class="external-link">paged_table</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["field_name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["skim_type"],"name":[2],"type":["chr"],"align":["left"]},{"label":["n_missing"],"name":[3],"type":["int"],"align":["right"]},{"label":["complete_rate"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["numeric.mean"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["numeric.sd"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["numeric.p0"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["numeric.p25"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["numeric.p50"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["numeric.p75"],"name":[10],"type":["dbl"],"align":["right"]},{"label":["numeric.p100"],"name":[11],"type":["dbl"],"align":["right"]},{"label":["numeric.hist"],"name":[12],"type":["chr"],"align":["left"]}],"data":[{"1":"record_id","2":"NA","3":"NA","4":"NA","5":"NA","6":"NA","7":"NA","8":"NA","9":"NA","10":"NA","11":"NA","12":"NA"},{"1":"name","2":"character","3":"0","4":"1.0000000","5":"NA","6":"NA","7":"NA","8":"NA","9":"NA","10":"NA","11":"NA","12":"NA"},{"1":"gender","2":"character","3":"0","4":"1.0000000","5":"NA","6":"NA","7":"NA","8":"NA","9":"NA","10":"NA","11":"NA","12":"NA"},{"1":"eye_color","2":"character","3":"0","4":"1.0000000","5":"NA","6":"NA","7":"NA","8":"NA","9":"NA","10":"NA","11":"NA","12":"NA"},{"1":"race","2":"character","3":"0","4":"1.0000000","5":"NA","6":"NA","7":"NA","8":"NA","9":"NA","10":"NA","11":"NA","12":"NA"},{"1":"hair_color","2":"character","3":"0","4":"1.0000000","5":"NA","6":"NA","7":"NA","8":"NA","9":"NA","10":"NA","11":"NA","12":"NA"},{"1":"height","2":"numeric","3":"0","4":"1.0000000","5":"102.25409","6":"139.6245","7":"-99","8":"-99","9":"175","10":"185","11":"975","12":"▃▇▁▁▁"},{"1":"weight","2":"numeric","3":"2","4":"0.9972752","5":"43.85519","6":"130.8237","7":"-99","8":"-99","9":"62","10":"90","11":"900","12":"▇▂▁▁▁"},{"1":"publisher","2":"character","3":"15","4":"0.9795640","5":"NA","6":"NA","7":"NA","8":"NA","9":"NA","10":"NA","11":"NA","12":"NA"},{"1":"skin_color","2":"character","3":"0","4":"1.0000000","5":"NA","6":"NA","7":"NA","8":"NA","9":"NA","10":"NA","11":"NA","12":"NA"},{"1":"alignment","2":"character","3":"0","4":"1.0000000","5":"NA","6":"NA","7":"NA","8":"NA","9":"NA","10":"NA","11":"NA","12":"NA"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>This enables quick insights into data content and supports
+exploratory data analytics. The columns added by
+<code><a href="../reference/add_skimr_metadata.html">add_skimr_metadata()</a></code> can also be <a href="glossary.html#labelled">labelled</a>.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>

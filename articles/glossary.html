@@ -27,7 +27,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">REDCapTidieR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0.9004</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0.9005</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -185,6 +185,15 @@ associated with a <a href="#repeating-event">repeating
 event</a>)</p>
 </td>
 </tr>
+<tr class="even">
+<td align="center"><a href="#data-access-group">Data Access
+Group</a></td>
+<td align="center">
+<p><code>redcap_data_access_group</code> <a href="#column">column</a> of a <a href="#data-tibble">data
+tibble</a></p>
+<p>(only present if the <a href="#project">project</a> has <a href="#data-access-group">data access groups</a> enabled)</p>
+</td>
+</tr>
 </tbody>
 </table>
 <div class="section level3">
@@ -253,6 +262,23 @@ record. See also: <a href="#longitudinal-project">Longitudinal
 project</a>. <a onclick="history.back()">↩︎</a></p>
 </div>
 <div class="section level3">
+<h3 id="data-access-group">Data Access Group<a class="anchor" aria-label="anchor" href="#data-access-group"></a>
+</h3>
+<p>The Data Access Group (DAG) feature of REDCap streamlines multi-group
+collaboration by partitioning groups of <a href="#record">records</a> of
+a single <a href="#project">project</a>. This feature is particularly
+useful when you want certain users or groups of users to only have
+access to a specific subset of the data in a project.</p>
+<p>In a multi-site study, for instance, you might want each site to only
+have access to their own data. By setting up a DAG for each site, you
+can ensure that site users can only view and edit records that belong to
+their DAG. Super users (i.e., those with full privileges) can view and
+edit all records in the project, regardless of the DAG to which they
+belong.</p>
+<p>When a <a href="#project">project</a> has DAGs enabled, a
+corresponding <code>redcap_data_access_group</code> <a href="#column">column</a> identifies which DAG a given <a href="#record">record</a> belongs to.</p>
+</div>
+<div class="section level3">
 <h3 id="database">Database<a class="anchor" aria-label="anchor" href="#database"></a>
 </h3>
 <p>In the context of REDCap, this is the same as <a href="#project">project</a>. We prefer the term “project” because it is
@@ -306,7 +332,7 @@ Each event can be associated with one or multiple <a href="#instrument">instrume
 <a onclick="history.back()">↩︎</a></p>
 </div>
 <div class="section level3">
-<h3 id="factor-variable">Factor variable<a class="anchor" aria-label="anchor" href="#factor-variable"></a>
+<h3 id="factor">Factor variable<a class="anchor" aria-label="anchor" href="#factor"></a>
 </h3>
 <p>A data type in R for categorical data. By default, single-answer
 categorical REDCap <a href="#field-type">field types</a> (dropdown,
@@ -554,6 +580,17 @@ not allow repeating instruments inside <a href="#repeating-event">repeating even
 depending on the <a href="#granularity">granularity</a> of the data. See
 also: <a href="#column">Column</a>.
 <a onclick="history.back()">↩︎</a></p>
+</div>
+<div class="section level3">
+<h3 id="skimr">skimr<a class="anchor" aria-label="anchor" href="#skimr"></a>
+</h3>
+<p>The <a href="https://docs.ropensci.org/skimr/" class="external-link">skimr</a> R package
+provides summary statistics to help users quickly skim and understand
+their data. REDCapTidieR’s <code><a href="../reference/add_skimr_metadata.html">add_skimr_metadata()</a></code> function
+uses <a href="https://docs.ropensci.org/skimr/" class="external-link">skimr</a> to add various
+summary statistics of a specific <a href="#field">field</a> to the <a href="#metadata-tibble">metadata tibbles</a>. See also: the section <a href="https://chop-cgtinformatics.github.io/REDCapTidieR/articles/REDCapTidieR.html#adding-summary-statistics-to-the-metadata-with-the-skimr-package">Adding
+summary statistics to the metadata with the skimr package</a> in the <a href="https://chop-cgtinformatics.github.io/REDCapTidieR/articles/REDCapTidieR.html">Getting
+Started vignette</a>.</p>
 </div>
 <div class="section level3">
 <h3 id="structure">Structure<a class="anchor" aria-label="anchor" href="#structure"></a>
