@@ -633,8 +633,8 @@ check_data_arg_exists <- function(db_data, col, arg, call = caller_env()) {
 #' @keywords internal
 check_file_exists <- function(file, overwrite, call = caller_env()) {
 
-  msg_x <- "File already exists."
-  msg_i <- "Set {.arg overwrite = TRUE} in {.code read_redcap()} to overwrite your file."
+  msg_x <- "File '{.file {file}}' already exists."
+  msg_i <- "Set {.arg overwrite = TRUE} to overwrite your file."
 
   if (file.exists(file) & !overwrite) {
     cli_abort(
