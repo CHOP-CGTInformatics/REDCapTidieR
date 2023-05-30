@@ -80,6 +80,7 @@ write_redcap_xlsx <- function(supertbl,
   check_arg_is_logical(include_metadata_sheet, any.missing = FALSE)
   check_arg_is_logical(recode_logical, any.missing = FALSE)
   check_arg_is_logical(overwrite, any.missing = FALSE)
+  check_file_exists(file, overwrite)
 
   add_labelled_column_headers <- check_labelled(supertbl, add_labelled_column_headers)
 

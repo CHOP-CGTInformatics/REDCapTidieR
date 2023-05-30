@@ -191,3 +191,25 @@ test_that("check_data_arg_exists works", {
     class = "nonexistent_arg_requested"
   )
 })
+
+test_that("check_file_exists works", {
+
+  withr::with_tempdir({
+    dir <- getwd()
+    filepath <- paste0(dir, "/temp.csv")
+    expect_no_error(
+      check_file_exists(file = filepath, overwrite = FALSE)
+    )
+  })
+
+  withr::with_tempdir({
+    dir <- getwd()
+    tempfile <- write.csv(x = mtcars, file = "temp.csv")
+    filepath <- paste0(dir, "/temp.csv")
+    expect_error(
+      check_file_exists(file = filepath, overwrite = FALSE),
+      class = "check_file_overwrite"
+    )
+  })
+
+})

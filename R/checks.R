@@ -608,3 +608,42 @@ check_data_arg_exists <- function(db_data, col, arg, call = caller_env()) {
     )
   }
 }
+
+#' @title
+#' Check if file already exists
+#'
+#' @description
+#' Provide an error message when a file is declared for writing that already
+#' exists.
+#'
+#' @details
+#' In the case of `write_redcap_xlsx()`, this should only error when a file
+#' already exists and is not declared for `overwite`.
+#'
+#' @return
+#' An error message saying the requested file already exists
+#'
+#' @importFrom cli cli_abort
+#' @importFrom rlang caller_env
+#'
+#' @param file The file that is being checked
+#' @param overwrite Whether the file was declared to be overwritten
+#' @param call The calling environment to use in the error message
+#'
+#' @keywords internal
+check_file_exists <- function(file, overwrite, call = caller_env()) {
+
+  msg_x <- "File already exists."
+  msg_i <- "Set {.arg overwrite = TRUE} in {.code read_redcap()} to overwrite your file."
+
+  if (file.exists(file) & !overwrite) {
+    cli_abort(
+      message = c(
+        "x" = msg_x,
+        "i" = msg_i
+      ),
+      class = c("check_file_overwrite", "REDCapTidieR_cond"),
+      call = call
+    )
+  }
+}
