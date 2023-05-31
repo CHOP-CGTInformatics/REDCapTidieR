@@ -482,8 +482,8 @@ check_labelled <- function(supertbl, add_labelled_column_headers, call = caller_
   # Otherwise error, meaning labels asked for on a non-labelled input
   cli_abort(
     message = c(
-      "x" = "{.arg labelled} declared TRUE, but no variable labels detected.",
-      "i" = "Did you run {.fun make_labelled()} on the supertibble?"
+      "x" = "{.arg add_labelled_column_headers} declared TRUE, but no variable labels detected.",
+      "i" = "Did you run {.fun make_labelled} on the supertibble?"
     ),
     class = c("missing_labelled_labels", "REDCapTidieR_cond"),
     call = call
