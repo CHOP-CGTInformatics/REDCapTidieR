@@ -123,14 +123,14 @@ read_redcap(redcap_uri, classic_token, suppress_redcapr_messages = c(TRUE, TRUE)
 read_redcap(redcap_uri, classic_token, export_data_access_groups = TRUE)
 #> Error in `read_redcap()`:
 #> ✖ Data access groups requested, but none found.
-#> ℹ REDCapTidieR did not detect expected columns for a project using DAGs.
+#> ℹ Are you sure the project has data access groups (DAGs) enabled?
 
 # surveys
 
 read_redcap(redcap_uri, longitudinal_token, export_survey_fields = TRUE)
 #> Error in `read_redcap()`:
 #> ✖ Project survey fields requested, but none found.
-#> ℹ REDCapTidieR did not detect expected columns for a survey-enabled project.
+#> ℹ Are you sure the project has at least one instrument configured as a survey?
 
 # bind_tibbles
 
@@ -243,9 +243,10 @@ withr::with_tempdir({
 })
 #> Error:
 #> ✖ File
-#>   ''/private/var/folders/qc/mmjjyjq50530z9r_7mfqcqfhxkkk67/T/Rtmp9DL6jB/file35a532406eec/temp.csv''
+#>   ''/private/var/folders/qc/mmjjyjq50530z9r_7mfqcqfhxkkk67/T/RtmpAeX0h2/file9ffa2aa480db/temp.csv''
 #>   already exists.
-#> ℹ Set `overwrite = TRUE` to overwrite your file.
+#> ℹ Overwriting files is disabled by default. Set `overwrite = TRUE` to overwrite
+#>   existing file.
 
 write_redcap_xlsx(mtcars, file = "temp.xlsx")
 #> Error in `write_redcap_xlsx()`:

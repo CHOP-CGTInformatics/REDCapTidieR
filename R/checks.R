@@ -591,10 +591,10 @@ check_data_arg_exists <- function(db_data, col, arg, call = caller_env()) {
 
   if (arg == "export_survey_fields") {
     msg_x <- "Project survey fields requested, but none found."
-    msg_i <- "{.pkg REDCapTidieR} did not detect expected columns for a survey-enabled project."
+    msg_i <- "Are you sure the project has at least one instrument configured as a survey?"
   } else {
     msg_x <- "Data access groups requested, but none found."
-    msg_i <- "{.pkg REDCapTidieR} did not detect expected columns for a project using DAGs."
+    msg_i <- "Are you sure the project has data access groups (DAGs) enabled?"
   }
 
   if (!col %in% names(db_data)) {
@@ -634,7 +634,8 @@ check_data_arg_exists <- function(db_data, col, arg, call = caller_env()) {
 check_file_exists <- function(file, overwrite, call = caller_env()) {
 
   msg_x <- "File '{.file {file}}' already exists."
-  msg_i <- "Set {.arg overwrite = TRUE} to overwrite your file."
+  msg_i <- "Overwriting files is disabled by default. Set {.arg overwrite = TRUE}
+  to overwrite existing file."
 
   if (file.exists(file) && !overwrite) {
     cli_abort(

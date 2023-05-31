@@ -285,8 +285,8 @@ In summary, here are the rules by which REDCapTidieR constructs data tibbles:
 1.  One [data tibble](glossary.html#data-tibble) is built for each [instrument](glossary.html#instrument).
 2.  The first [column](glossary.html#column) is always the [record](glossary.html#record) ID column which is derived from the record ID [field](glossary.html#field). 
 3.  Additional [identifier columns](glossary.html#identifier-column) may follow the record ID column, depending on the [structure](glossary.html#structure) of the instrument and the structure of the [project](glossary.html#project) (see the table above).
-4. If applicable, [data access groups](glossary.html#data-access-group) will be included in their own column after the [identifier columns](glossary.html#identifier-column).
-5.  After the identifier columns, [data columns](glossary.html#data-column) appear in the same order as in the REDCap instrument. True/false [type](glossary.html#field-type) fields are converted to logical columns. Single-answer categorical fields are converted to [factor](glossary.html#factor) columns. Multi-answer checkbox fields are expanded to a set of logical columns, one for each [choice](glossary.html#choice).
+4.  If the [project](glossary.html#project) has [data access groups](glossary.html#data-access-group) enabled, a column identifying the data access column will follow here.
+5.  Next, [data columns](glossary.html#data-column) appear in the same order as in the REDCap instrument. True/false [type](glossary.html#field-type) fields are converted to logical columns. Single-answer categorical fields are converted to [factor](glossary.html#factor) columns. Multi-answer checkbox fields are expanded to a set of logical columns, one for each [choice](glossary.html#choice).
 6.  If the instrument is used as a [survey](glossary.html#survey), the survey timestamp and identifier columns will appear next.
 7.  The final column is always `form_status_complete`.
 
