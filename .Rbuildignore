@@ -10,6 +10,7 @@
 ^pkgdown$
 ^data-raw$
 ^doc$
+^dev$
 ^Meta$
 ^cran-comments\.md$
 README.html$

@@ -87,10 +87,9 @@ write_redcap_xlsx(my_redcap_data, file = "my_redcap_data.xlsx")
 ![Sample REDCapTidieR .xlsx output using
 `write_redcap_xlsx()`](man/figures/write_xlsx_default.png)
 
-For more information on how to work with and customize the output, read
-the [Exporting to Excel
-vignette](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/export_to_xlsx.html)
-to learn more.
+To learn more about how to work with and customize the output, read the
+[Exporting to Excel
+vignette](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/export_to_xlsx.html).
 
 ## Collaboration
 
