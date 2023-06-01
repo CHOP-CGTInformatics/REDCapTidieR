@@ -667,11 +667,19 @@ try_redcapr <- function(expr, call = caller_env()) {
     } else {
       condition$class <- c("unexpected_error", condition$class)
 
-      # Throw error containing outcome message and attach that as the parent
-      # Get the name of the function called inside try_redcapr so it can be mentioned in the error message
-      # Need [[2]] to strip off the '{' from the expression
-      calling_fn <- quo_get_expr(quo)[[2]]
-      condition$parent <- catch_cnd(abort(out$outcome_message, call = calling_fn))
+      if (!is.null(out$outcome_message)) {
+        # Throw error containing outcome message and attach that as the parent
+        # Get the name of the function called inside try_redcapr so it can be mentioned in the error message
+        calling_fn <- quo_get_expr(quo)
+        # Handle case where try_redcapr had multiline expr
+        browser()
+        if (inherits(calling_fn, "{")) {
+          calling_fn <- calling_fn[[2]]
+        }
+
+        condition$parent <- catch_cnd(abort(out$outcome_message, call = calling_fn))
+      }
+
     }
     cli_abort(
       c(condition$message, condition$info),
