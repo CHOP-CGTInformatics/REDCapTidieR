@@ -542,8 +542,13 @@ check_arg_is_valid_extension <- function(x,
                                          call = caller_env()) {
   ext <- sub(".*\\.", "", x)
 
-  msg_x <- "Invalid file extension supplied to {.arg file}: {ext}"
-  msg_i <- "File extension should be 'xlsx'"
+  if (ext == x) {
+    msg_x <- "No extension provided for {.arg file}: '{x}'"
+    msg_i <- "The extension '.xlsx' will be appended to the file name."
+  } else {
+    msg_x <- "Invalid file extension provided for {.arg file}: {ext}"
+    msg_i <- "The file extension should be '.xlsx'"
+  }
 
   if (!ext %in% valid_extensions) {
     cli_warn(

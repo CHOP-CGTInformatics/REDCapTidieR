@@ -131,3 +131,10 @@ withr::with_tempdir({
   read_redcap(redcap_uri, longitudinal_token) %>%
     write_redcap_xlsx(file = filepath)
 })
+
+withr::with_tempdir({
+  dir <- getwd()
+  filepath <- paste0(dir, "/temp")
+  read_redcap(redcap_uri, longitudinal_token) %>%
+    write_redcap_xlsx(file = filepath)
+})

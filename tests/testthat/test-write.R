@@ -312,6 +312,10 @@ test_that("key argument checks work", {
     expect_warning(write_redcap_xlsx(supertbl, file = "temp.docx"),
                    class = "invalid_file_extension")
   })
+  withr::with_tempdir({
+    expect_warning(write_redcap_xlsx(supertbl, file = "temp"),
+                   class = "invalid_file_extension")
+  })
   expect_error(write_redcap_xlsx(supertbl, file = TRUE), class = "check_character")
   expect_error(write_redcap_xlsx(supertbl, file = NULL), class = "check_character")
 })

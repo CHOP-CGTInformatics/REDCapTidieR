@@ -243,7 +243,7 @@ withr::with_tempdir({
 })
 #> Error:
 #> ✖ File
-#>   ''/private/var/folders/qc/mmjjyjq50530z9r_7mfqcqfhxkkk67/T/RtmpygDvz2/file186c193bda88/temp.csv''
+#>   ''/private/var/folders/qc/mmjjyjq50530z9r_7mfqcqfhxkkk67/T/RtmphYCCdg/file99c3302ff1f7/temp.csv''
 #>   already exists.
 #> ℹ Overwriting files is disabled by default. Set `overwrite = TRUE` to overwrite
 #>   existing file.
@@ -274,8 +274,18 @@ withr::with_tempdir({
   read_redcap(redcap_uri, longitudinal_token) %>%
     write_redcap_xlsx(file = filepath)
 })
-#> Warning in write_redcap_xlsx(., file = filepath): ! Invalid file extension supplied to `file`: pdf
-#> ℹ File extension should be 'xlsx'
+#> Warning in write_redcap_xlsx(., file = filepath): ! Invalid file extension provided for `file`: pdf
+#> ℹ The file extension should be '.xlsx'
+
+withr::with_tempdir({
+  dir <- getwd()
+  filepath <- paste0(dir, "/temp")
+  read_redcap(redcap_uri, longitudinal_token) %>%
+    write_redcap_xlsx(file = filepath)
+})
+#> Warning in write_redcap_xlsx(., file = filepath): ! No extension provided for `file`:
+#>   '/private/var/folders/qc/mmjjyjq50530z9r_7mfqcqfhxkkk67/T/RtmphYCCdg/file99c33e79f54b/temp'
+#> ℹ The extension '.xlsx' will be appended to the file name.
 ```
 
 <sup>Created on 2023-06-01 with [reprex v2.0.2](https://reprex.tidyverse.org)</sup>

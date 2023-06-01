@@ -82,7 +82,13 @@ write_redcap_xlsx <- function(supertbl,
   check_arg_is_logical(overwrite, any.missing = FALSE)
   check_file_exists(file, overwrite)
 
+  # Check installation of labelled and apply labelled operations
   add_labelled_column_headers <- check_labelled(supertbl, add_labelled_column_headers)
+
+  # If no file extension supplied, append with .xlsx
+  if (sub(".*\\.", "", file) == file) {
+    file <- paste0(file, ".xlsx")
+  }
 
   # Initialize Workbook object ----
   check_installed("openxlsx2", reason = "to write Excel files.")
