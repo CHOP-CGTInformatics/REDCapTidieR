@@ -672,7 +672,6 @@ try_redcapr <- function(expr, call = caller_env()) {
         # Get the name of the function called inside try_redcapr so it can be mentioned in the error message
         calling_fn <- quo_get_expr(quo)
         # Handle case where try_redcapr had multiline expr
-        browser()
         if (inherits(calling_fn, "{")) {
           calling_fn <- calling_fn[[2]]
         }
