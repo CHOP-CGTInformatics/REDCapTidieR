@@ -126,7 +126,7 @@ write_redcap_xlsx <- function(supertbl,
 
   # Apply recodes based on metadata
   if (recode_logical) {
-    supertbl$redcap_data <- supertbl_recode(supertbl, supertbl_meta)
+    supertbl$redcap_data <- supertbl_recode(supertbl, supertbl_meta, add_labelled_column_headers)
   }
 
   # Account for special case when a dataframe may have zero rows
@@ -499,13 +499,14 @@ check_labelled <- function(supertbl, add_labelled_column_headers, call = caller_
 #'
 #' @param supertbl A supertibble generated using `read_redcap()`
 #' @param superbl_meta an `unnest`-ed metadata tibble from the supertibble
+#' @param add_labelled_column_headers Whether or not to include labelled outputs
 #'
 #' @importFrom dplyr mutate across case_when filter pull
 #' @importFrom purrr map
 #' @importFrom tidyselect any_of
 #'
 #' @keywords internal
-supertbl_recode <- function(supertbl, supertbl_meta) {
+supertbl_recode <- function(supertbl, supertbl_meta, add_labelled_column_headers) {
   # Recode yesno from TRUE/FALSE to "yes"/"no"
 
   yesno_fields <- supertbl_meta %>% # nolint: object_usage_linter
@@ -521,7 +522,9 @@ supertbl_recode <- function(supertbl, supertbl_meta) {
   map(
     supertbl$redcap_data,
     function(x) {
-      labs <- labelled::lookfor(x)$label
+      if (add_labelled_column_headers) {
+        labs <- labelled::lookfor(x)$label
+      }
 
       out <- x %>%
         mutate(
@@ -538,7 +541,11 @@ supertbl_recode <- function(supertbl, supertbl_meta) {
         )
 
       # set labs
-      safe_set_variable_labels(out, labs)
+      if (add_labelled_column_headers) {
+        safe_set_variable_labels(out, labs)
+      } else {
+        out
+      }
     }
   )
 }

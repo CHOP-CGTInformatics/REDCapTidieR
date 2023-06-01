@@ -217,7 +217,9 @@ test_that("supertbl_recode works", {
   # Pass through testing function
   supertbl_recoded_meta <- bind_supertbl_metadata(supertbl_recoded)
 
-  out <- supertbl_recode(supertbl_recoded, supertbl_recoded_meta)
+  out <- supertbl_recode(supertbl_recoded,
+                         supertbl_recoded_meta,
+                         add_labelled_column_headers = TRUE)
 
   # Set up expectations
   expected_out <- tibble::tribble(
@@ -307,7 +309,8 @@ test_that("key argument checks work", {
 
   # file arg
   withr::with_tempdir({
-    expect_warning(write_redcap_xlsx(supertbl, file = "temp.docx"), class = "invalid_file_extension")
+    expect_warning(write_redcap_xlsx(supertbl, file = "temp.docx"),
+                   class = "invalid_file_extension")
   })
   expect_error(write_redcap_xlsx(supertbl, file = TRUE), class = "check_character")
   expect_error(write_redcap_xlsx(supertbl, file = NULL), class = "check_character")
