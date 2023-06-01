@@ -19,7 +19,6 @@ Imports:
     cli,
     dplyr,
     lobstr,
-    lifecycle,
     lubridate,
     purrr,
     REDCapR (>= 1.1.0),
