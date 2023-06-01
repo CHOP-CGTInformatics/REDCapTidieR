@@ -125,5 +125,9 @@ write_redcap_xlsx(mtcars, file = "temp.xlsx")
 read_redcap(redcap_uri, classic_token) %>%
   write_redcap_xlsx(file = "temp.xlsx", add_labelled_column_headers = TRUE)
 
-read_redcap(redcap_uri, classic_token) %>%
-  write_redcap_xlsx(file = "temp.pdf")
+withr::with_tempdir({
+  dir <- getwd()
+  filepath <- paste0(dir, "/temp.pdf")
+  read_redcap(redcap_uri, longitudinal_token) %>%
+    write_redcap_xlsx(file = filepath)
+})

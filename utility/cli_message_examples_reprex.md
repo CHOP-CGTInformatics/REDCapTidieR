@@ -243,7 +243,7 @@ withr::with_tempdir({
 })
 #> Error:
 #> ✖ File
-#>   ''/private/var/folders/qc/mmjjyjq50530z9r_7mfqcqfhxkkk67/T/RtmpAeX0h2/file9ffa2aa480db/temp.csv''
+#>   ''/private/var/folders/qc/mmjjyjq50530z9r_7mfqcqfhxkkk67/T/RtmpygDvz2/file186c193bda88/temp.csv''
 #>   already exists.
 #> ℹ Overwriting files is disabled by default. Set `overwrite = TRUE` to overwrite
 #>   existing file.
@@ -268,17 +268,14 @@ read_redcap(redcap_uri, classic_token) %>%
 #>   detected.
 #> ℹ Did you run `make_labelled()` on the supertibble?
 
-read_redcap(redcap_uri, classic_token) %>%
-  write_redcap_xlsx(file = "temp.pdf")
-#> Warning in read_redcap(redcap_uri, classic_token): ! Multiple values are mapped to the label `A` in field `radio_duplicate_label`
-#> ℹ Consider making the labels for `radio_duplicate_label` unique in your REDCap
-#>   project
-#> Warning: ! The field radio_dtxt_error in data_field_types is a radio field type, however
-#>   it does not have any categories.
-#> Warning: Empty string detected for a given multiple choice label.
-#> Error in `write_redcap_xlsx()`:
-#> ✖ Invalid file extension supplied to `file`: pdf
-#> ℹ File extension must be 'xlsx'
+withr::with_tempdir({
+  dir <- getwd()
+  filepath <- paste0(dir, "/temp.pdf")
+  read_redcap(redcap_uri, longitudinal_token) %>%
+    write_redcap_xlsx(file = filepath)
+})
+#> Warning in write_redcap_xlsx(., file = filepath): ! Invalid file extension supplied to `file`: pdf
+#> ℹ File extension should be 'xlsx'
 ```
 
-<sup>Created on 2023-05-31 with [reprex v2.0.2](https://reprex.tidyverse.org)</sup>
+<sup>Created on 2023-06-01 with [reprex v2.0.2](https://reprex.tidyverse.org)</sup>
