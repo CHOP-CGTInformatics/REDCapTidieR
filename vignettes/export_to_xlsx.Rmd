@@ -109,8 +109,8 @@ Let's add variable labels to `superheroes` and export it to Excel:
 
 ```{r, eval=FALSE}
 superheroes |>
-   make_labelled() |>
-   write_redcap_xlsx("superheroes-labelled.xlsx")
+  make_labelled() |>
+  write_redcap_xlsx("superheroes-labelled.xlsx")
 ```
 
 Observe how the first row now contains a human-readable description for each column.

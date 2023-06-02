@@ -553,15 +553,17 @@ test_that("read_redcap works for a large sparse database", {
     "factor"
   )
 
-  names(expected_col_types) <- c("record_id",
-                                 "empty_int_column",
-                                 "partial_empty_int_column",
-                                 "empty_date_column",
-                                 "partial_empty_date_column",
-                                 "empty_factor_column",
-                                 "partial_empty_factor_column",
-                                 "data_type_switch",
-                                 "form_status_complete")
+  names(expected_col_types) <- c(
+    "record_id",
+    "empty_int_column",
+    "partial_empty_int_column",
+    "empty_date_column",
+    "partial_empty_date_column",
+    "empty_factor_column",
+    "partial_empty_factor_column",
+    "data_type_switch",
+    "form_status_complete"
+  )
 
   out %>%
     extract_tibble("form_1") %>%
@@ -570,8 +572,9 @@ test_that("read_redcap works for a large sparse database", {
 
   httptest::with_mock_api({
     out_low_max <- read_redcap(creds$REDCAP_URI,
-                               creds$REDCAPTIDIER_LARGE_SPARSE_API,
-                               guess_max = 500)
+      creds$REDCAPTIDIER_LARGE_SPARSE_API,
+      guess_max = 500
+    )
   })
 
   out_low_max %>%
@@ -582,8 +585,10 @@ test_that("read_redcap works for a large sparse database", {
 
 test_that("read_redcap works with non-longitudinal Data Access Groups", {
   httptest::with_mock_api({
-    out_dag <- read_redcap(creds$REDCAP_URI,
-                           creds$REDCAPTIDIER_DAG_API)
+    out_dag <- read_redcap(
+      creds$REDCAP_URI,
+      creds$REDCAPTIDIER_DAG_API
+    )
   })
 
   # Check for expected column and data
@@ -600,13 +605,14 @@ test_that("read_redcap works with non-longitudinal Data Access Groups", {
   dag_label <- dag_label$label[dag_label$variable == "redcap_data_access_group"]
 
   expect_equal(dag_label, c("redcap_data_access_group" = "REDCap Data Access Group"))
-
 })
 
 test_that("read_redcap works with longitudinal Data Access Groups", {
   httptest::with_mock_api({
-    out_dag_long <- read_redcap(creds$REDCAP_URI,
-                           creds$REDCAPTIDIER_LONGITUDINAL_DAG_API)
+    out_dag_long <- read_redcap(
+      creds$REDCAP_URI,
+      creds$REDCAPTIDIER_LONGITUDINAL_DAG_API
+    )
   })
 
   # Check for expected column and data
@@ -627,8 +633,10 @@ test_that("read_redcap works with longitudinal Data Access Groups", {
 
 test_that("read_redcap doesn't return the redcap_data_access_group column for non DAG databases", {
   httptest::with_mock_api({
-    out_no_dag <- read_redcap(creds$REDCAP_URI,
-                              creds$REDCAPTIDIER_CLASSIC_API) %>%
+    out_no_dag <- read_redcap(
+      creds$REDCAP_URI,
+      creds$REDCAPTIDIER_CLASSIC_API
+    ) %>%
       # suppress expected warning
       suppressWarnings(classes = c(
         "field_missing_categories",
@@ -643,12 +651,12 @@ test_that("read_redcap doesn't return the redcap_data_access_group column for no
 })
 
 test_that("read_redcap fails if DAG or survey columns are explicitly requested but don't exist", {
-
   expect_error(
     httptest::with_mock_api({
       out_no_dag <- read_redcap(creds$REDCAP_URI,
-                                creds$REDCAPTIDIER_CLASSIC_API,
-                                export_data_access_groups = TRUE)
+        creds$REDCAPTIDIER_CLASSIC_API,
+        export_data_access_groups = TRUE
+      )
     }),
     class = "nonexistent_arg_requested"
   )
@@ -656,8 +664,9 @@ test_that("read_redcap fails if DAG or survey columns are explicitly requested b
   expect_error(
     httptest::with_mock_api({
       out_no_dag <- read_redcap(creds$REDCAP_URI,
-                                creds$REDCAPTIDIER_DAG_API,
-                                export_survey_fields = TRUE)
+        creds$REDCAPTIDIER_DAG_API,
+        export_survey_fields = TRUE
+      )
     }),
     class = "nonexistent_arg_requested"
   )

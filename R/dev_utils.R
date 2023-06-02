@@ -52,7 +52,9 @@ get_credentials <- function(credentials = NULL, fake = FALSE) {
 #' @keywords internal
 
 release_questions <- function() {
-  c("Have you reviewed all error messages in `cli_message_examples.R`?",
+  c(
+    "Have you reviewed all error messages in `cli_message_examples.R`?",
     "Have you added new error messages in this release to `cli_message_examples.R`?",
-    "Have you tested this release against all test databases in `test_creds.R`?")
+    "Have you tested this release against all test databases in `test_creds.R`?"
+  )
 }

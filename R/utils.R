@@ -96,8 +96,8 @@ create_repeat_instance_vars <- function(db_data) {
     )
 
     out <- relocate(out,
-                    "redcap_event_instance",
-                    .after = "redcap_form_instance"
+      "redcap_event_instance",
+      .after = "redcap_form_instance"
     )
   }
 
@@ -186,7 +186,7 @@ parse_labels <- function(string, return_vector = FALSE, return_stripped_text_fla
   # If string is empty/NA, throw a warning
   if (is.na(string)) {
     cli_warn("Empty string detected for a given multiple choice label.",
-             class = c("empty_parse_warning", "REDCapTidieR_cond")
+      class = c("empty_parse_warning", "REDCapTidieR_cond")
     )
   }
 
@@ -657,7 +657,7 @@ try_redcapr <- function(expr, call = caller_env()) {
       )
       condition$class <- c("cannot_post", condition$class)
     } else if (!is.null(out$outcome_message) &&
-               str_detect(out$outcome_message, "The REDCap project no longer exists because it was deleted")) {
+      str_detect(out$outcome_message, "The REDCap project no longer exists because it was deleted")) {
       condition$info <- c(
         "!" = "The REDCap project does not exist because it was deleted.",
         "i" = "Are you sure this is the correct API token?",
@@ -678,7 +678,6 @@ try_redcapr <- function(expr, call = caller_env()) {
 
         condition$parent <- catch_cnd(abort(out$outcome_message, call = calling_fn))
       }
-
     }
     cli_abort(
       c(condition$message, condition$info),
@@ -791,7 +790,6 @@ is_labelled <- function(obj) {
 #' @keywords internal
 #'
 make_skimr_labels <- function() {
-
   skimr_labels <- c(
     skim_type = "Data Type",
     n_missing = "Count of Missing Values",

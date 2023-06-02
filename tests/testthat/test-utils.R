@@ -264,7 +264,7 @@ test_that("try_redcapr works", {
     success = FALSE,
     status_code = "",
     outcome_message = "The REDCap project no longer exists because it was deleted."
-    )) %>%
+  )) %>%
     expect_error(class = "deleted_project")
 
   # Unexpected error, no message
@@ -281,8 +281,8 @@ test_that("try_redcapr works", {
 
   # Unexpected error, w/ message, works with multiline expr
   cnd <- try_redcapr({
-      list(success = FALSE, status_code = "", outcome_message = "some error")
-    }) %>%
+    list(success = FALSE, status_code = "", outcome_message = "some error")
+  }) %>%
     catch_cnd()
   expect_s3_class(cnd, "unexpected_error")
   expect_equal(cnd$parent$message, "some error")
@@ -390,7 +390,7 @@ test_that("remove_empty_rows works", {
 test_that("is_labelled works", {
   df <- tibble::tribble(
     ~"one", ~"two", ~"three",
-    1,        2,      3
+    1, 2, 3
   )
 
   is_labelled <- is_labelled(df)

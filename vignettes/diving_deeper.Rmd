@@ -23,10 +23,12 @@ library(REDCapTidieR)
 fake <- dir.exists("diving_deeper")
 
 creds <- REDCapTidieR:::get_credentials(
-  c("REDCAP_URI", "SUPERHEROES_REDCAP_API",
+  c(
+    "REDCAP_URI", "SUPERHEROES_REDCAP_API",
     "REDCAPTIDIER_DEEP_DIVE_VIGNETTE_API",
     "REDCAPTIDIER_CLASSIC_API",
-    "REDCAPTIDIER_DAG_API"),
+    "REDCAPTIDIER_DAG_API"
+  ),
   fake = fake
 )
 

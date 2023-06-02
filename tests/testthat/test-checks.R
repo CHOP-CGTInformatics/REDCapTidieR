@@ -151,9 +151,11 @@ test_that("checkmate wrappers work", {
 
   # extension
   expect_warning(check_arg_is_valid_extension("temp.docx", valid_extensions = "xlsx"),
-                 class = "invalid_file_extension")
+    class = "invalid_file_extension"
+  )
   expect_warning(check_arg_is_valid_extension("xlsx.", valid_extensions = "xlsx"),
-                 class = "invalid_file_extension")
+    class = "invalid_file_extension"
+  )
   expect_true(check_arg_is_valid_extension("temp.xlsx", valid_extensions = "xlsx"))
 })
 
@@ -165,37 +167,44 @@ test_that("check_data_arg_exists works", {
 
   included_fields <- tibble::tribble(
     ~record_id, ~redcap_data_access_group, ~redcap_survey_identifier, ~field_1,
-    1,           "A",                       NA,                        "1"
+    1, "A", NA, "1"
   )
 
   expect_error(
-    check_data_arg_exists(db_data = missing_fields,
-                          col = "redcap_data_access_group",
-                          arg = "export_data_access_groups"),
+    check_data_arg_exists(
+      db_data = missing_fields,
+      col = "redcap_data_access_group",
+      arg = "export_data_access_groups"
+    ),
     class = "nonexistent_arg_requested"
   )
   expect_no_error(
-    check_data_arg_exists(db_data = included_fields,
-                          col = "redcap_data_access_group",
-                          arg = "export_data_access_groups"),
+    check_data_arg_exists(
+      db_data = included_fields,
+      col = "redcap_data_access_group",
+      arg = "export_data_access_groups"
+    ),
     class = "nonexistent_arg_requested"
   )
   expect_error(
-    check_data_arg_exists(db_data = missing_fields,
-                          col = "redcap_survey_identifier",
-                          arg = "export_survey_fields"),
+    check_data_arg_exists(
+      db_data = missing_fields,
+      col = "redcap_survey_identifier",
+      arg = "export_survey_fields"
+    ),
     class = "nonexistent_arg_requested"
   )
   expect_no_error(
-    check_data_arg_exists(db_data = included_fields,
-                          col = "redcap_survey_identifier",
-                          arg = "export_survey_fields"),
+    check_data_arg_exists(
+      db_data = included_fields,
+      col = "redcap_survey_identifier",
+      arg = "export_survey_fields"
+    ),
     class = "nonexistent_arg_requested"
   )
 })
 
 test_that("check_file_exists works", {
-
   withr::with_tempdir({
     dir <- getwd()
     filepath <- paste0(dir, "/temp.csv")
@@ -213,5 +222,4 @@ test_that("check_file_exists works", {
       class = "check_file_overwrite"
     )
   })
-
 })

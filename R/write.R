@@ -68,8 +68,7 @@ write_redcap_xlsx <- function(supertbl,
                               column_width = "auto",
                               recode_logical = TRUE,
                               na_replace = "",
-                              overwrite = FALSE
-) {
+                              overwrite = FALSE) {
   # Enforce checks ----
   check_arg_is_supertbl(supertbl)
   check_arg_is_character(file, any.missing = FALSE)
@@ -111,13 +110,15 @@ write_redcap_xlsx <- function(supertbl,
 
   # Construct default supertibble sheet ----
   if (include_toc_sheet) {
-    supertbl_toc <- add_supertbl_toc(wb,
-                                     supertbl,
-                                     include_metadata_sheet,
-                                     add_labelled_column_headers,
-                                     table_style,
-                                     column_width,
-                                     na_replace)
+    supertbl_toc <- add_supertbl_toc(
+      wb,
+      supertbl,
+      include_metadata_sheet,
+      add_labelled_column_headers,
+      table_style,
+      column_width,
+      na_replace
+    )
   }
 
   # Write all redcap_form_name to sheets ----
@@ -148,28 +149,33 @@ write_redcap_xlsx <- function(supertbl,
     supertbl$redcap_data,
     sheet_vals,
     function(x, y) {
-
       # Convert period/difftime to character to address possible file corruption
       x <- x %>%
-        mutate(across(where(is.difftime), as.character),
-               across(where(is.period), as.character))
+        mutate(
+          across(where(is.difftime), as.character),
+          across(where(is.period), as.character)
+        )
 
-      wb$add_data_table(sheet = y, x = x,
-                        startRow = ifelse(add_labelled_column_headers, 2, 1),
-                        tableStyle = table_style,
-                        na.strings = na_replace)
+      wb$add_data_table(
+        sheet = y, x = x,
+        startRow = ifelse(add_labelled_column_headers, 2, 1),
+        tableStyle = table_style,
+        na.strings = na_replace
+      )
     }
   )
 
   # Construct default metadata sheet ----
   if (include_metadata_sheet) {
-    add_metadata_sheet(supertbl,
-                       supertbl_meta,
-                       wb,
-                       add_labelled_column_headers,
-                       table_style,
-                       column_width,
-                       na_replace)
+    add_metadata_sheet(
+      supertbl,
+      supertbl_meta,
+      wb,
+      add_labelled_column_headers,
+      table_style,
+      column_width,
+      na_replace
+    )
   }
 
   # Apply additional aesthetics ----
@@ -178,9 +184,11 @@ write_redcap_xlsx <- function(supertbl,
     supertbl$redcap_data,
     sheet_vals,
     function(x, y) {
-      wb$set_col_widths(sheet = y,
-                        cols = seq_len(ncol(x)),
-                        widths = column_width)
+      wb$set_col_widths(
+        sheet = y,
+        cols = seq_len(ncol(x)),
+        widths = column_width
+      )
     }
   )
 
@@ -233,7 +241,6 @@ add_labelled_xlsx_features <- function(supertbl,
                                        include_toc_sheet = TRUE,
                                        include_metadata_sheet = TRUE,
                                        supertbl_toc = NULL) {
-
   check_installed("labelled", reason = "to make use of labelled features in `write_redcap_xlsx`")
   # Generate variable labels off of labelled dictionary objects ----
   generate_dictionaries <- function(x) {
@@ -253,8 +260,10 @@ add_labelled_xlsx_features <- function(supertbl,
       select("variable", "label") %>%
       pivot_wider(names_from = "variable", values_from = "label")
 
-    wb$add_data(sheet = "Table of Contents",
-                x = supertbl_labels, colNames = FALSE)
+    wb$add_data(
+      sheet = "Table of Contents",
+      x = supertbl_labels, colNames = FALSE
+    )
   }
 
   # Add supertbl_meta labels ----
@@ -281,8 +290,10 @@ add_labelled_xlsx_features <- function(supertbl,
       select("variable", "label") %>%
       pivot_wider(names_from = "variable", values_from = "label")
 
-    wb$add_data(sheet = "REDCap Metadata",
-                x = supertbl_meta_labs, colNames = FALSE)
+    wb$add_data(
+      sheet = "REDCap Metadata",
+      x = supertbl_meta_labs, colNames = FALSE
+    )
   }
 
   # Define redcap_data variable labels
@@ -291,19 +302,24 @@ add_labelled_xlsx_features <- function(supertbl,
   for (i in seq_along(supertbl$redcap_form_name)) {
     wb$add_data(
       sheet = sheet_vals[i],
-      x = var_labels[[i]], colNames = FALSE)
+      x = var_labels[[i]], colNames = FALSE
+    )
   }
 
   for (i in seq_len(nrow(wb$tables))) {
     dims <- gsub("[0-9]+", "1", wb$tables$tab_ref[i])
 
-    wb$add_cell_style(sheet = i,
-                      dims = dims,
-                      wrapText = "1")
-    wb$add_font(sheet = i,
-                dims = dims,
-                color = openxlsx2::wb_color(hex = "7F7F7F"),
-                italic = "1")
+    wb$add_cell_style(
+      sheet = i,
+      dims = dims,
+      wrapText = "1"
+    )
+    wb$add_font(
+      sheet = i,
+      dims = dims,
+      color = openxlsx2::wb_color(hex = "7F7F7F"),
+      italic = "1"
+    )
   }
 }
 
@@ -339,7 +355,6 @@ add_supertbl_toc <- function(wb,
                              table_style,
                              column_width,
                              na_replace) {
-
   # To avoid XLSX indicators of "Number stored as text", change class type
   convert_percent <- function(x) {
     class(x) <- c("numeric", "percentage")
@@ -352,7 +367,7 @@ add_supertbl_toc <- function(wb,
     # Necessary to avoid "Number stored as text" Excel dialogue warnings
     mutate(
       across(any_of("data_na_pct"), convert_percent),
-      across(any_of("data_size"), ~prettyunits::pretty_bytes(as.numeric(.)))
+      across(any_of("data_size"), ~ prettyunits::pretty_bytes(as.numeric(.)))
     )
 
   # Conditionally Add metadata default to TOC
@@ -379,14 +394,18 @@ add_supertbl_toc <- function(wb,
 
   # Create wb objects
   wb$add_worksheet(sheet = "Table of Contents")
-  wb$add_data_table(sheet = "Table of Contents",
-                    x = supertbl_toc,
-                    startRow = ifelse(add_labelled_column_headers, 2, 1),
-                    tableStyle = table_style,
-                    na.strings = na_replace)
-  wb$set_col_widths(sheet = "Table of Contents",
-                    cols = seq_along(supertbl_toc),
-                    widths = column_width)
+  wb$add_data_table(
+    sheet = "Table of Contents",
+    x = supertbl_toc,
+    startRow = ifelse(add_labelled_column_headers, 2, 1),
+    tableStyle = table_style,
+    na.strings = na_replace
+  )
+  wb$set_col_widths(
+    sheet = "Table of Contents",
+    cols = seq_along(supertbl_toc),
+    widths = column_width
+  )
 
   # Return TOC object as dataframe
   supertbl_toc
@@ -423,16 +442,19 @@ add_metadata_sheet <- function(supertbl,
                                table_style,
                                column_width,
                                na_replace) {
-
   wb$add_worksheet(sheet = "REDCap Metadata")
-  wb$add_data_table(sheet = "REDCap Metadata",
-                    x = supertbl_meta,
-                    startRow = ifelse(add_labelled_column_headers, 2, 1),
-                    tableStyle = table_style,
-                    na.strings = na_replace)
-  wb$set_col_widths(sheet = "REDCap Metadata",
-                    cols = seq_along(supertbl_meta),
-                    widths = column_width)
+  wb$add_data_table(
+    sheet = "REDCap Metadata",
+    x = supertbl_meta,
+    startRow = ifelse(add_labelled_column_headers, 2, 1),
+    tableStyle = table_style,
+    na.strings = na_replace
+  )
+  wb$set_col_widths(
+    sheet = "REDCap Metadata",
+    cols = seq_along(supertbl_meta),
+    widths = column_width
+  )
 }
 
 #' @title Check if labelled
@@ -573,14 +595,14 @@ supertbl_recode <- function(supertbl, supertbl_meta, add_labelled_column_headers
 
 bind_supertbl_metadata <- function(supertbl) {
   out <- supertbl %>%
-    select("redcap_form_name", "redcap_form_label", "redcap_metadata") %>% #nolint: object_usage_linter
+    select("redcap_form_name", "redcap_form_label", "redcap_metadata") %>% # nolint: object_usage_linter
     unnest(cols = c("redcap_form_name", "redcap_form_label", "redcap_metadata"))
 
   # Detect Record ID field by looking for duplicated field_names
   # Since no other fields in REDCap are allowed to be duplicated, we should only
   # ever expect to receive the record ID field (whatever it's named)
   if (any(duplicated(out$field_name))) {
-    record_id <- out %>% #nolint: object_usage_linter
+    record_id <- out %>% # nolint: object_usage_linter
       filter(duplicated(.data$field_name)) %>%
       pull(.data$field_name) %>%
       unique()

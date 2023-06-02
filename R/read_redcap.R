@@ -192,16 +192,18 @@ read_redcap <- function(redcap_uri,
   if (!is.null(export_data_access_groups_original)) {
     if (export_data_access_groups_original) {
       check_data_arg_exists(db_data,
-                            col = "redcap_data_access_group",
-                            arg = "export_data_access_groups")
+        col = "redcap_data_access_group",
+        arg = "export_data_access_groups"
+      )
     }
   }
 
   if (!is.null(export_survey_fields_original)) {
     if (export_survey_fields_original) {
       check_data_arg_exists(db_data,
-                            col = "redcap_survey_identifier",
-                            arg = "export_survey_fields")
+        col = "redcap_survey_identifier",
+        arg = "export_survey_fields"
+      )
     }
   }
 

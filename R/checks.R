@@ -125,11 +125,11 @@ check_repeat_and_nonrepeat <- function(db_data, call = caller_env()) {
   check_data <- function(db_data, check_col) {
     # Repeating Check
     rep <- any(!is.na(db_data[{{ check_col }}]) &
-                 !is.na(db_data["redcap_repeat_instrument"]))
+      !is.na(db_data["redcap_repeat_instrument"]))
 
     # Nonrepeating Check
     nonrep <- any(!is.na(db_data[{{ check_col }}]) &
-                    is.na(db_data["redcap_repeat_instrument"]))
+      is.na(db_data["redcap_repeat_instrument"]))
 
     rep & nonrep
   }
@@ -155,8 +155,8 @@ check_repeat_and_nonrepeat <- function(db_data, call = caller_env()) {
   if (nrow(out) > 0) {
     cli_abort(c("x" = "Instrument{?s} detected that ha{?s/ve} both repeating and
       nonrepeating instances defined in the project: {out$field}"),
-              class = c("repeat_nonrepeat_instrument", "REDCapTidieR_cond"),
-              call = call
+      class = c("repeat_nonrepeat_instrument", "REDCapTidieR_cond"),
+      call = call
     )
   }
 }
@@ -593,7 +593,6 @@ check_arg_is_valid_extension <- function(x,
 #'
 #' @keywords internal
 check_data_arg_exists <- function(db_data, col, arg, call = caller_env()) {
-
   if (arg == "export_survey_fields") {
     msg_x <- "Project survey fields requested, but none found."
     msg_i <- "Are you sure the project has at least one instrument configured as a survey?"
@@ -637,7 +636,6 @@ check_data_arg_exists <- function(db_data, col, arg, call = caller_env()) {
 #'
 #' @keywords internal
 check_file_exists <- function(file, overwrite, call = caller_env()) {
-
   msg_x <- "File '{.file {file}}' already exists."
   msg_i <- "Overwriting files is disabled by default. Set {.arg overwrite = TRUE}
   to overwrite existing file."

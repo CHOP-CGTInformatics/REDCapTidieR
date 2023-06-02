@@ -40,10 +40,12 @@ add_skimr_metadata <- function(supertbl) {
   # Check if supertbl has been labelled
   is_labelled <- is_labelled(supertbl)
 
-  supertbl$redcap_metadata <- map2(.x = supertbl$redcap_data,
-                                   .y = supertbl$redcap_metadata,
-                                   is_labelled,
-                                   .f = skim_data)
+  supertbl$redcap_metadata <- map2(
+    .x = supertbl$redcap_data,
+    .y = supertbl$redcap_metadata,
+    is_labelled,
+    .f = skim_data
+  )
 
   # If supertbl is labelled, apply skimr labels
   if (is_labelled) {
