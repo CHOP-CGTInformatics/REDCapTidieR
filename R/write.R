@@ -338,8 +338,7 @@ add_labelled_xlsx_features <- function(supertbl,
 #' vignette in \link[openxlsx2]{wb_add_data_table}). Default "tableStyleLight8".
 #' @param column_width Width to set columns across the workbook. Default
 #' "auto", otherwise a numeric value. Standard Excel is 8.43.
-#' @param na_replace Value used for replacing NA values from x. Default
-#' `na_replace()` uses the special ⁠#N/A⁠ value within the workbook.
+#' @param na_replace The value used to replace `NA` values in `supertbl`. The default is "".
 #'
 #' @importFrom dplyr select mutate row_number across
 #' @importFrom tidyselect any_of
@@ -425,8 +424,7 @@ add_supertbl_toc <- function(wb,
 #' vignette in \link[openxlsx2]{wb_add_data_table}). Default "tableStyleLight8".
 #' @param column_width Width to set columns across the workbook. Default
 #' "auto", otherwise a numeric value. Standard Excel is 8.43.
-#' @param na_replace Value used for replacing NA values from x. Default
-#' `na_replace()` uses the special ⁠#N/A⁠ value within the workbook.
+#' @param na_replace The value used to replace `NA` values in `supertbl`. The default is "".
 #'
 #' @importFrom dplyr select filter
 #' @importFrom tidyr unnest

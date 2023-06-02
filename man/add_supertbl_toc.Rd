@@ -30,8 +30,7 @@ vignette in \link[openxlsx2]{wb_add_data_table}). Default "tableStyleLight8".}
 \item{column_width}{Width to set columns across the workbook. Default
 "auto", otherwise a numeric value. Standard Excel is 8.43.}
 
-\item{na_replace}{Value used for replacing NA values from x. Default
-\code{na_replace()} uses the special ⁠#N/A⁠ value within the workbook.}
+\item{na_replace}{The value used to replace \code{NA} values in \code{supertbl}. The default is "".}
 }
 \value{
 A dataframe
