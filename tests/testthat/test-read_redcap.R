@@ -567,7 +567,7 @@ test_that("read_redcap works for a large sparse database", {
 
   out %>%
     extract_tibble("form_1") %>%
-    sapply(class) %>%
+    vapply(class, character(1)) %>%
     expect_equal(expected_col_types)
 
   httptest::with_mock_api({
@@ -579,7 +579,7 @@ test_that("read_redcap works for a large sparse database", {
 
   out_low_max %>%
     extract_tibble("form_1") %>%
-    sapply(class) %>%
+    vapply(class, character(1)) %>%
     expect_equal(expected_col_types)
 })
 
