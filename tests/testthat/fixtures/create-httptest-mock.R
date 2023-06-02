@@ -69,4 +69,10 @@ read_redcap(creds$REDCAP_URI, creds$REDCAPTIDIER_DAG_API)
 
 read_redcap(creds$REDCAP_URI, creds$REDCAPTIDIER_LONGITUDINAL_DAG_API)
 
+# Deleted project
+tryCatch(
+  deleted_project = function(cnd) {}, # nolint: brace_linter
+  read_redcap(creds$REDCAP_URI, creds$REDCAPTIDIER_DELETED_API)
+)
+
 stop_capturing()

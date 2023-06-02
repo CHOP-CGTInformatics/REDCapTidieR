@@ -75,6 +75,35 @@ read_redcap(redcap_uri, "CC0CE44238EF65C5DA26A55DD749AF7A") # will be rejected b
 #> ℹ Are you sure this is the correct API token?
 #> ℹ API token: `CC0CE44238EF65C5DA26A55DD749AF7A`
 
+## deleted project
+
+read_redcap(redcap_uri, "AC1759E5D3E10EF64350B05F5A96DB5F")
+#> Error in `read_redcap()`:
+#> ✖ The REDCapR export operation was not successful.
+#> ! The REDCap project does not exist because it was deleted.
+#> ℹ Are you sure this is the correct API token?
+#> ℹ API token: `AC1759E5D3E10EF64350B05F5A96DB5F`
+
+## unexpected REDCapR error
+
+try_redcapr(list(success = FALSE, status_code = "", outcome_message = "This is an error message from REDCapR!"))
+#> Called from: try_redcapr(list(success = FALSE, status_code = "", outcome_message = "This is an error message from REDCapR!"))
+#> debug at /Users/porterej/code/cgt-dataops/REDCapTidieR/R/utils.R#676: if (inherits(calling_fn, "{")) {
+#>     calling_fn <- calling_fn[[2]]
+#> }
+#> debug at /Users/porterej/code/cgt-dataops/REDCapTidieR/R/utils.R#680: condition$parent <- catch_cnd(abort(out$outcome_message, call = calling_fn))
+#> debug at /Users/porterej/code/cgt-dataops/REDCapTidieR/R/utils.R#684: cli_abort(c(condition$message, condition$info), call = condition$call, 
+#>     parent = condition$parent, class = condition$class, redcapr_status_code = out$status_code, 
+#>     redcapr_outcome_message = out$outcome_message)
+#> Error:
+#> ✖ The REDCapR export operation was not successful.
+#> ! An unexpected error occured.
+#> ℹ This means that you probably discovered a bug!
+#> ℹ Please consider submitting a bug report here:
+#>   <https://github.com/CHOP-CGTInformatics/REDCapTidieR/issues>.
+#> Caused by error in `list()`:
+#> ! This is an error message from REDCapR!
+
 ## raw_or_label
 
 read_redcap(redcap_uri, classic_token, raw_or_label = "bad option")
