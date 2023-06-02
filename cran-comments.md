@@ -15,7 +15,7 @@ This submission includes new features, optimizations, and bug fixes.
 
 1. Local macOS Ventura 13.2.1, R 4.2.0
 2. R-hub
-    1. [Ubuntu Linux 20.04.1 LTS, R-release, GCC](https://builder.r-hub.io/status/REDCapTidieR_0.2.0.9007.tar.gz-255c83ab7c984ea1ac3a15d94df5a18d)
+    1. [Ubuntu Linux 20.04.1 LTS, R-release, GCC](https://builder.r-hub.io/status/REDCapTidieR_0.4.0.tar.gz-51d7adf3970142a59b49a90754be9b1f)
     2. [Fedora Linux, R-devel, clang, gfortran](https://builder.r-hub.io/status/REDCapTidieR_0.4.0.tar.gz-e19ab02ebfcb407b9f824b1ccf778e79)
     3. [Windows Server](https://builder.r-hub.io/status/REDCapTidieR_0.4.0.tar.gz-d529d458e55941c38bf5f4694680c4ee)
 3.  [win-builder](https://win-builder.r-project.org/xZ25km7AC64Q/), development version.
