@@ -32,7 +32,7 @@ This submission includes new features, optimizations, and bug fixes.
 Skipping checking HTML validation: no command 'tidy' found
 ```
 
-- A NOTE is generated in all three R-hub servers related to a sub-directory size, but this is explicitly called out in the `.Rbuildignore`
+- A NOTE is generated in all three R-hub servers related to a sub-directory size, but this is explicitly called out in the `.Rbuildignore`. It is likely due to necessary images included in the vignette articles.
 
 ```
 * checking installed package size ... NOTE
