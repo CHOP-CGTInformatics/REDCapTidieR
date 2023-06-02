@@ -129,7 +129,7 @@ Started</a> vignette.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">superheroes</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_redcap.html">read_redcap</a></span><span class="op">(</span><span class="va">redcap_uri</span>, <span class="va">superheroes_token</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">superheroes</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span><span class="va">superheroes</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">rmarkdown</span><span class="fu">::</span><span class="fu"><a href="https://pkgs.rstudio.com/rmarkdown/reference/paged_table.html" class="external-link">paged_table</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
@@ -144,7 +144,7 @@ understands the supertibble’s structure and creates a
 collaborator-friendly XLSX file.</p>
 <p>Let’s try it out!</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">superheroes</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<code class="sourceCode R"><span><span class="va">superheroes</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/write_redcap_xlsx.html">write_redcap_xlsx</a></span><span class="op">(</span>file <span class="op">=</span> <span class="st">"superheroes.xlsx"</span><span class="op">)</span></span></code></pre></div>
 <p>When you open the Excel document, you’ll see multiple sheets. The
 first one is the <strong>Table of Contents</strong> sheet, followed by
@@ -193,8 +193,8 @@ sheets.</p>
 <p>Let’s add variable labels to <code>superheroes</code> and export it
 to Excel:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">superheroes</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>   <span class="fu"><a href="../reference/make_labelled.html">make_labelled</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<code class="sourceCode R"><span><span class="va">superheroes</span> <span class="op">|&gt;</span></span>
+<span>   <span class="fu"><a href="../reference/make_labelled.html">make_labelled</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>   <span class="fu"><a href="../reference/write_redcap_xlsx.html">write_redcap_xlsx</a></span><span class="op">(</span><span class="st">"superheroes-labelled.xlsx"</span><span class="op">)</span></span></code></pre></div>
 <p>Observe how the first row now contains a human-readable description
 for each column.</p>
@@ -212,7 +212,7 @@ for each column.</p>
 terms. You can adjust this behavior using the
 <code>recode_logical</code> argument:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">supertbl</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<code class="sourceCode R"><span><span class="va">supertbl</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/write_redcap_xlsx.html">write_redcap_xlsx</a></span><span class="op">(</span>recode_logical <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p><code><a href="../reference/write_redcap_xlsx.html">write_redcap_xlsx()</a></code> uses the <a href="glossary.html#field-label">field label</a> to decide how to recode
 logical fields:</p>

@@ -76,6 +76,9 @@
     <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/check_data_arg_exists.html</loc>
   </url>
   <url>
+    <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/check_file_exists.html</loc>
+  </url>
+  <url>
     <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/check_forms_exist.html</loc>
   </url>
   <url>
@@ -167,6 +170,9 @@
   </url>
   <url>
     <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/read_redcap.html</loc>
+  </url>
+  <url>
+    <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/release_questions.html</loc>
   </url>
   <url>
     <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/remove_empty_rows.html</loc>

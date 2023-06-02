@@ -580,8 +580,10 @@ the record ID <a href="glossary.html#field">field</a>.</li>
 columns</a> may follow the record ID column, depending on the <a href="glossary.html#structure">structure</a> of the instrument and the
 structure of the <a href="glossary.html#project">project</a> (see the
 table above).</li>
-<li>After the identifier columns, <a href="glossary.html#data-column">data columns</a> appear in the same
-order as in the REDCap instrument. True/false <a href="glossary.html#field-type">type</a> fields are converted to logical
+<li>If the <a href="glossary.html#project">project</a> has <a href="glossary.html#data-access-group">data access groups</a> enabled, a
+column identifying the data access column will follow here.</li>
+<li>Next, <a href="glossary.html#data-column">data columns</a> appear in
+the same order as in the REDCap instrument. True/false <a href="glossary.html#field-type">type</a> fields are converted to logical
 columns. Single-answer categorical fields are converted to <a href="glossary.html#factor">factor</a> columns. Multi-answer checkbox
 fields are expanded to a set of logical columns, one for each <a href="glossary.html#choice">choice</a>.</li>
 <li>If the instrument is used as a <a href="glossary.html#survey">survey</a>, the survey timestamp and
