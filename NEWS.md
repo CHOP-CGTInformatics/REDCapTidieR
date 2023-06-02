@@ -1,5 +1,3 @@
-# REDCapTidieR (development version)
-
 # REDCapTidieR 0.4.0
 
 Version 0.4.0 (Released 2023-06-02)
