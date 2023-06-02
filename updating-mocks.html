@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="index.html">REDCapTidieR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0.9005</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0.9006</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -73,7 +73,8 @@
 </ul><p>To add mocks from an existing REDCap:</p>
 <ol style="list-style-type: decimal"><li>Complete step 1 above. You’ll need valid tokens in your <code>.Renviron</code> for all REDCaps used in <code>create-httptest-mock.R</code>
 </li>
-</ol><ul><li>Technically you may be able to get away with running lines selectively if you’re careful</li>
+</ol><ul><li>Add <code>REDCAPTIDIER_DELETED_API = AC1759E5D3E10EF64350B05F5A96DB5F</code> to your <code>.Renviron</code> since new tokens for this project cannot generated</li>
+<li>Technically you may be able to get away with running lines selectively if you’re careful</li>
 </ul><ol start="2" style="list-style-type: decimal"><li>Complete steps 3-4 above</li>
 </ol><p>To refresh mocks for a vignette:</p>
 <ol style="list-style-type: decimal"><li>Delete the directory storing mocks for your vignette. This will be located at <code>vignettes/NAME_OF_VIGNETTE/</code>
