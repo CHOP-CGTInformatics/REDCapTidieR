@@ -80,8 +80,15 @@ write_redcap_xlsx <- function(supertbl,
   check_arg_is_logical(include_metadata_sheet, any.missing = FALSE)
   check_arg_is_logical(recode_logical, any.missing = FALSE)
   check_arg_is_logical(overwrite, any.missing = FALSE)
+  check_file_exists(file, overwrite)
 
+  # Check installation of labelled and apply labelled operations
   add_labelled_column_headers <- check_labelled(supertbl, add_labelled_column_headers)
+
+  # If no file extension supplied, append with .xlsx
+  if (sub(".*\\.", "", file) == file) {
+    file <- paste0(file, ".xlsx")
+  }
 
   # Initialize Workbook object ----
   check_installed("openxlsx2", reason = "to write Excel files.")
@@ -125,7 +132,7 @@ write_redcap_xlsx <- function(supertbl,
 
   # Apply recodes based on metadata
   if (recode_logical) {
-    supertbl$redcap_data <- supertbl_recode(supertbl, supertbl_meta)
+    supertbl$redcap_data <- supertbl_recode(supertbl, supertbl_meta, add_labelled_column_headers)
   }
 
   # Account for special case when a dataframe may have zero rows
@@ -177,7 +184,6 @@ write_redcap_xlsx <- function(supertbl,
     }
   )
 
-  # Add labelled features ----
   if (add_labelled_column_headers) {
     add_labelled_xlsx_features(
       supertbl,
@@ -482,8 +488,8 @@ check_labelled <- function(supertbl, add_labelled_column_headers, call = caller_
   # Otherwise error, meaning labels asked for on a non-labelled input
   cli_abort(
     message = c(
-      "x" = "{.arg labelled} declared TRUE, but no variable labels detected.",
-      "i" = "Did you run {.fun make_labelled()} on the supertibble?"
+      "x" = "{.arg add_labelled_column_headers} declared TRUE, but no variable labels detected.",
+      "i" = "Did you run {.fun make_labelled} on the supertibble?"
     ),
     class = c("missing_labelled_labels", "REDCapTidieR_cond"),
     call = call
@@ -499,27 +505,34 @@ check_labelled <- function(supertbl, add_labelled_column_headers, call = caller_
 #'
 #' @param supertbl A supertibble generated using `read_redcap()`
 #' @param superbl_meta an `unnest`-ed metadata tibble from the supertibble
+#' @param add_labelled_column_headers Whether or not to include labelled outputs
 #'
 #' @importFrom dplyr mutate across case_when filter pull
 #' @importFrom purrr map
 #' @importFrom tidyselect any_of
 #'
 #' @keywords internal
-supertbl_recode <- function(supertbl, supertbl_meta) {
+supertbl_recode <- function(supertbl, supertbl_meta, add_labelled_column_headers) {
   # Recode yesno from TRUE/FALSE to "yes"/"no"
 
-  yesno_fields <- supertbl_meta %>%
+  yesno_fields <- supertbl_meta %>% # nolint: object_usage_linter
     filter(.data$field_type == "yesno") %>%
     pull(.data$field_name)
 
-  checkbox_fields <- supertbl_meta %>%
+  checkbox_fields <- supertbl_meta %>% # nolint: object_usage_linter
     filter(.data$field_type == "checkbox") %>%
     pull(.data$field_name)
 
+  # Recode logical vars, define and re-apply labels (similar to labelled.R)
+  # as these are lost during attribute changes
   map(
     supertbl$redcap_data,
     function(x) {
-      x %>%
+      if (add_labelled_column_headers) {
+        labs <- labelled::lookfor(x)$label
+      }
+
+      out <- x %>%
         mutate(
           across(any_of(yesno_fields), ~ case_when(
             . == "TRUE" ~ "yes",
@@ -532,6 +545,13 @@ supertbl_recode <- function(supertbl, supertbl_meta) {
             TRUE ~ NA_character_
           ))
         )
+
+      # set labs
+      if (add_labelled_column_headers) {
+        safe_set_variable_labels(out, labs)
+      } else {
+        out
+      }
     }
   )
 }

@@ -18,9 +18,12 @@ Tibbles
 Tidyverse
 URI
 Wildenhain
+analytics
 api
 appendings
 cli
+DAG
+DAGs
 dplyr
 dropdown
 edu
@@ -33,9 +36,13 @@ labelled
 multiselection
 nonrepeat
 nonrepeating
+openxlsx
 pre
 preprocess
 recode
+recoded
+recoding
+skimr
 supertbl
 supertibble
 tibble
@@ -45,5 +52,8 @@ tidyselect
 tidyverse
 truefalse
 undirected
+unlabelled
+xlsx
+XLSX
 yesno
 ︎

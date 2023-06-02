@@ -72,7 +72,7 @@ redcap_uri <- "https://my.institution.edu/redcap/api/"
 ```{r}
 superheroes <- read_redcap(redcap_uri, superheroes_token)
 
-superheroes %>%
+superheroes |>
   rmarkdown::paged_table()
 ```
 
@@ -81,7 +81,7 @@ The `superheroes` supertibble contains two rows, one for each [instrument](gloss
 Let's try it out!
 
 ```{r, eval=FALSE}
-superheroes %>%
+superheroes |>
   write_redcap_xlsx(file = "superheroes.xlsx")
 ```
 
@@ -108,8 +108,8 @@ Labels can offer valuable context to collaborators, helping them understand the 
 Let's add variable labels to `superheroes` and export it to Excel:
 
 ```{r, eval=FALSE}
-superheroes %>%
-   make_labelled() %>%
+superheroes |>
+   make_labelled() |>
    write_redcap_xlsx("superheroes-labelled.xlsx")
 ```
 
@@ -122,7 +122,7 @@ Observe how the first row now contains a human-readable description for each col
 By default, `write_redcap_xlsx()` recodes logical (`TRUE`/`FALSE`) columns into more human-friendly terms. You can adjust this behavior using the `recode_logical` argument:
 
 ```{r, eval = FALSE}
-supertbl %>%
+supertbl |>
   write_redcap_xlsx(recode_logical = TRUE)
 ```
 

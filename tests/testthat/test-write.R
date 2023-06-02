@@ -10,9 +10,9 @@ redcap_data_a <- tibble::tribble(
 )
 
 redcap_metadata_a <- tibble::tribble(
-  ~field_name, ~field_label,
-  "record_id",  "Record ID",
-  "col_a",      "Label A"
+  ~field_name, ~field_label, ~field_type,
+  "record_id",  "Record ID", "text",
+  "col_a",      "Label A",   "text"
 )
 
 redcap_data_b <- tibble::tribble(
@@ -21,9 +21,9 @@ redcap_data_b <- tibble::tribble(
 )
 
 redcap_metadata_b <- tibble::tribble(
-  ~field_name, ~field_label,
-  "record_id",  "Record ID",
-  "col_b",      "Label B"
+  ~field_name, ~field_label, ~field_type,
+  "record_id",  "Record ID", "text",
+  "col_b",      "Label B",   "text"
 )
 
 supertbl <- tibble::tribble(
@@ -97,10 +97,10 @@ test_that("write_redcap_xlsx has expected supertibble and metadata outputs", {
     as.data.frame()
 
   expected_meta <- tibble::tribble(
-    ~redcap_form_name, ~redcap_form_label, ~field_name, ~field_label,
-    NA,                  NA,                "record_id",  "Record ID",
-    "a",                 "A",               "col_a",      "Label A",
-    "b",                 "B",               "col_b",      "Label B"
+    ~redcap_form_name, ~redcap_form_label, ~field_name, ~field_label,  ~field_type,
+    NA,                  NA,                "record_id",  "Record ID", "text",
+    "a",                 "A",               "col_a",      "Label A",   "text",
+    "b",                 "B",               "col_b",      "Label B",   "text"
   ) %>%
     as.data.frame()
 
@@ -112,7 +112,10 @@ test_that("write_redcap_xlsx has expected supertibble and metadata outputs", {
                       include_metadata_sheet = TRUE,
                       recode_logical = FALSE)
     sheet_1 <- openxlsx2::read_xlsx(xlsxFile = "default_supertbl_wb.xlsx", sheet = 1)
+    # Address rowname discrepancies
+    rownames(sheet_1) <- seq_len(nrow(sheet_1))
     sheet_4 <- openxlsx2::read_xlsx(xlsxFile = "default_supertbl_wb.xlsx", sheet = 4)
+    rownames(sheet_4) <- seq_len(nrow(sheet_4))
 
     expect_equal(sheet_1, expected_supertibble, ignore_attr = TRUE)
     expect_equal(sheet_4, expected_meta, ignore_attr = TRUE)
@@ -129,7 +132,8 @@ test_that("write_redcap_xlsx has expected supertibble and metadata outputs", {
     "REDCap Instrument Name",
     "REDCap Instrument Description",
     "Variable / Field Name",
-    "Field Label"
+    "Field Label",
+    "Field Type"
   )
 
   withr::with_tempdir({
@@ -177,10 +181,10 @@ test_that("bind_supertbl_metadata works", {
 
   supertbl_meta <- bind_supertbl_metadata(supertbl)
   expected_meta <- tibble::tribble(
-    ~redcap_form_name, ~redcap_form_label, ~field_name, ~field_label,
-    NA,                 NA,                 "record_id",  "Record ID",
-    "a",                "A",                "col_a",      "Label A",
-    "b",                "B",                "col_b",      "Label B"
+    ~redcap_form_name, ~redcap_form_label, ~field_name, ~field_label,  ~field_type,
+    NA,                 NA,                 "record_id",  "Record ID", "text",
+    "a",                "A",                "col_a",      "Label A",   "text",
+    "b",                "B",                "col_b",      "Label B",   "text"
   )
 
   expect_equal(supertbl_meta, expected_meta)
@@ -207,12 +211,15 @@ test_that("supertbl_recode works", {
     ~redcap_form_name, ~redcap_form_label, ~redcap_data,   ~redcap_metadata,
     "c",                "C",                redcap_data_c,  redcap_metadata_c
   ) %>%
-    as_supertbl()
+    as_supertbl() %>%
+    make_labelled()
 
   # Pass through testing function
   supertbl_recoded_meta <- bind_supertbl_metadata(supertbl_recoded)
 
-  out <- supertbl_recode(supertbl_recoded, supertbl_recoded_meta)
+  out <- supertbl_recode(supertbl_recoded,
+                         supertbl_recoded_meta,
+                         add_labelled_column_headers = TRUE)
 
   # Set up expectations
   expected_out <- tibble::tribble(
@@ -221,6 +228,9 @@ test_that("supertbl_recode works", {
     2,          "no",   "Unchecked",
     3,          NA,     NA
   )
+
+  # Add labels to check for preservation
+  labelled::var_label(expected_out) <- c("Record ID", "YesNo", "Checkbox")
 
   expect_equal(out[[1]], expected_out)
 })
@@ -298,7 +308,14 @@ test_that("key argument checks work", {
   expect_error(write_redcap_xlsx(supertbl, file = "temp.xlsx", recode_logical = 1), class = "check_logical")
 
   # file arg
-  expect_error(write_redcap_xlsx(supertbl, file = "temp.docx"), class = "invalid_file_extension")
+  withr::with_tempdir({
+    expect_warning(write_redcap_xlsx(supertbl, file = "temp.docx"),
+                   class = "invalid_file_extension")
+  })
+  withr::with_tempdir({
+    expect_warning(write_redcap_xlsx(supertbl, file = "temp"),
+                   class = "invalid_file_extension")
+  })
   expect_error(write_redcap_xlsx(supertbl, file = TRUE), class = "check_character")
   expect_error(write_redcap_xlsx(supertbl, file = NULL), class = "check_character")
 })
@@ -307,10 +324,10 @@ test_that("bind_supertbl_metadata works", {
   # Create a supertbl metadata table representing in the output and check all
   #expected elements are present
   expected_meta <- tibble::tribble(
-    ~redcap_form_name, ~redcap_form_label, ~field_name, ~field_label,
-    NA,                 NA,                 "record_id", "Record ID",
-    "a",                "A",                "col_a",     "Label A",
-    "b",                "B",                "col_b",     "Label B"
+    ~redcap_form_name, ~redcap_form_label, ~field_name, ~field_label, ~field_type,
+    NA,                 NA,                 "record_id", "Record ID",  "text",
+    "a",                "A",                "col_a",     "Label A",    "text",
+    "b",                "B",                "col_b",     "Label B",    "text"
   )
 
   supertbl_meta <- supertbl %>%

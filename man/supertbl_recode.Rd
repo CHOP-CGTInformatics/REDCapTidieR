@@ -4,10 +4,12 @@
 \alias{supertbl_recode}
 \title{Recode fields using supertbl metadata}
 \usage{
-supertbl_recode(supertbl, supertbl_meta)
+supertbl_recode(supertbl, supertbl_meta, add_labelled_column_headers)
 }
 \arguments{
 \item{supertbl}{A supertibble generated using \code{read_redcap()}}
+
+\item{add_labelled_column_headers}{Whether or not to include labelled outputs}
 
 \item{superbl_meta}{an \code{unnest}-ed metadata tibble from the supertibble}
 }

@@ -7,6 +7,7 @@ options(rlang_backtrace_on_error_report = "none")
 # read_redcap
 
 classic_token <- Sys.getenv("REDCAPTIDIER_CLASSIC_API")
+longitudinal_token <- Sys.getenv("REDCAPTIDIER_LONGITUDINAL_API")
 redcap_uri <- Sys.getenv("REDCAP_URI")
 
 ## args missing
@@ -146,6 +147,20 @@ read_redcap(redcap_uri, classic_token, suppress_redcapr_messages = c(TRUE, TRUE)
 #>   is not a valid value
 #> ! Must have length 1, but has length 2
 
+# data access groups
+
+read_redcap(redcap_uri, classic_token, export_data_access_groups = TRUE)
+#> Error in `read_redcap()`:
+#> ✖ Data access groups requested, but none found.
+#> ℹ Are you sure the project has data access groups (DAGs) enabled?
+
+# surveys
+
+read_redcap(redcap_uri, longitudinal_token, export_survey_fields = TRUE)
+#> Error in `read_redcap()`:
+#> ✖ Project survey fields requested, but none found.
+#> ℹ Are you sure the project has at least one instrument configured as a survey?
+
 # bind_tibbles
 
 bind_tibbles(123)
@@ -231,6 +246,75 @@ make_labelled(missing_list_col_supertbl)
 #> ! `supertbl$redcap_metadata` must be of type 'list'
 #> ℹ `supertbl` must be a REDCapTidieR supertibble, generated using
 #>   `read_redcap()`
+
+# add_skimr_metadata
+
+mtcars %>% add_skimr_metadata()
+#> Error in `add_skimr_metadata()`:
+#> ✖ You've supplied `<df[,11]>` for `supertbl` which is not a valid value
+#> ! Must be of class <redcap_supertbl>
+#> ℹ `supertbl` must be a REDCapTidieR supertibble, generated using
+#>   `read_redcap()`
+
+# write_redcap_xlsx
+
+withr::with_tempdir({
+  dir <- getwd()
+  filepath <- paste0(dir, "/temp.csv")
+  REDCapTidieR:::check_file_exists(file = filepath, overwrite = FALSE)
+})
+
+withr::with_tempdir({
+  dir <- getwd()
+  tempfile <- write.csv(x = mtcars, file = "temp.csv")
+  filepath <- paste0(dir, "/temp.csv")
+  REDCapTidieR:::check_file_exists(file = filepath, overwrite = FALSE)
+})
+#> Error:
+#> ✖ File
+#>   ''/private/var/folders/qc/mmjjyjq50530z9r_7mfqcqfhxkkk67/T/RtmphYCCdg/file99c3302ff1f7/temp.csv''
+#>   already exists.
+#> ℹ Overwriting files is disabled by default. Set `overwrite = TRUE` to overwrite
+#>   existing file.
+
+write_redcap_xlsx(mtcars, file = "temp.xlsx")
+#> Error in `write_redcap_xlsx()`:
+#> ✖ You've supplied `<df[,11]>` for `supertbl` which is not a valid value
+#> ! Must be of class <redcap_supertbl>
+#> ℹ `supertbl` must be a REDCapTidieR supertibble, generated using
+#>   `read_redcap()`
+
+read_redcap(redcap_uri, classic_token) %>%
+  write_redcap_xlsx(file = "temp.xlsx", add_labelled_column_headers = TRUE)
+#> Warning in read_redcap(redcap_uri, classic_token): ! Multiple values are mapped to the label `A` in field `radio_duplicate_label`
+#> ℹ Consider making the labels for `radio_duplicate_label` unique in your REDCap
+#>   project
+#> Warning: ! The field radio_dtxt_error in data_field_types is a radio field type, however
+#>   it does not have any categories.
+#> Warning: Empty string detected for a given multiple choice label.
+#> Error in `write_redcap_xlsx()`:
+#> ✖ `add_labelled_column_headers` declared TRUE, but no variable labels
+#>   detected.
+#> ℹ Did you run `make_labelled()` on the supertibble?
+
+withr::with_tempdir({
+  dir <- getwd()
+  filepath <- paste0(dir, "/temp.pdf")
+  read_redcap(redcap_uri, longitudinal_token) %>%
+    write_redcap_xlsx(file = filepath)
+})
+#> Warning in write_redcap_xlsx(., file = filepath): ! Invalid file extension provided for `file`: pdf
+#> ℹ The file extension should be '.xlsx'
+
+withr::with_tempdir({
+  dir <- getwd()
+  filepath <- paste0(dir, "/temp")
+  read_redcap(redcap_uri, longitudinal_token) %>%
+    write_redcap_xlsx(file = filepath)
+})
+#> Warning in write_redcap_xlsx(., file = filepath): ! No extension provided for `file`:
+#>   '/private/var/folders/qc/mmjjyjq50530z9r_7mfqcqfhxkkk67/T/RtmphYCCdg/file99c33e79f54b/temp'
+#> ℹ The extension '.xlsx' will be appended to the file name.
 ```
 
 <sup>Created on 2023-06-01 with [reprex v2.0.2](https://reprex.tidyverse.org)</sup>

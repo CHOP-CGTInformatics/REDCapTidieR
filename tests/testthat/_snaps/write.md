@@ -183,18 +183,18 @@
       6         4       <NA>       <NA>       <NA>                   Incomplete
       
       [[1]][[9]]
-        Record ID           NA Radio field:                    NA
-      2 record_id survey_yesno survey_radio survey_checkbox___one
-      3         1          yes     Choice 1             Unchecked
-      4         2           no     Choice 2             Unchecked
-      5         3         <NA>         <NA>             Unchecked
-      6         4         <NA>         <NA>             Unchecked
-                           NA                      NA REDCap Survey Identifier
-      2 survey_checkbox___two survey_checkbox___three redcap_survey_identifier
-      3               Checked                 Checked                     <NA>
-      4               Checked                 Checked                     <NA>
-      5             Unchecked               Unchecked                     <NA>
-      6             Unchecked               Unchecked                     <NA>
+        Record ID Yes - No field: Radio field: Checkbox Field: Choice 1
+      2 record_id    survey_yesno survey_radio    survey_checkbox___one
+      3         1             yes     Choice 1                Unchecked
+      4         2              no     Choice 2                Unchecked
+      5         3            <NA>         <NA>                Unchecked
+      6         4            <NA>         <NA>                Unchecked
+        Checkbox Field: Choice 2 Checkbox Field: Choice 3 REDCap Survey Identifier
+      2    survey_checkbox___two  survey_checkbox___three redcap_survey_identifier
+      3                  Checked                  Checked                     <NA>
+      4                  Checked                  Checked                     <NA>
+      5                Unchecked                Unchecked                     <NA>
+      6                Unchecked                Unchecked                     <NA>
         REDCap Survey Timestamp REDCap Instrument Completed?
       2 redcap_survey_timestamp         form_status_complete
       3     2022-11-09 10:33:35                     Complete
@@ -203,17 +203,17 @@
       6                    <NA>                   Incomplete
       
       [[1]][[10]]
-        Record ID REDCap Form Instance                 NA          Radio field:
+        Record ID REDCap Form Instance    Yes - No field:          Radio field:
       2 record_id redcap_form_instance repeatsurvey_yesno repeatsurvey_radio_v2
       3         1                    1                yes              Choice 1
       4         1                    2                 no              Choice 2
       5         4                    1                yes              Choice 1
-                                    NA                             NA
+              Checkbox Field: Choice 1       Checkbox Field: Choice 2
       2 repeatsurvey_checkbox_v2___one repeatsurvey_checkbox_v2___two
       3                        Checked                      Unchecked
       4                      Unchecked                        Checked
       5                        Checked                      Unchecked
-                                      NA REDCap Survey Identifier
+                Checkbox Field: Choice 3 REDCap Survey Identifier
       2 repeatsurvey_checkbox_v2___three redcap_survey_identifier
       3                        Unchecked                     <NA>
       4                          Checked                     <NA>

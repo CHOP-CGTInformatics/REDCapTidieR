@@ -150,8 +150,10 @@ test_that("checkmate wrappers work", {
   expect_true(check_arg_is_valid_token("123456789ABCDEF123456789ABCDEF01"))
 
   # extension
-  expect_error(check_arg_is_valid_extension("temp.docx", valid_extensions = "xlsx"), class = "invalid_file_extension")
-  expect_error(check_arg_is_valid_extension("xlsx.", valid_extensions = "xlsx"), class = "invalid_file_extension")
+  expect_warning(check_arg_is_valid_extension("temp.docx", valid_extensions = "xlsx"),
+                 class = "invalid_file_extension")
+  expect_warning(check_arg_is_valid_extension("xlsx.", valid_extensions = "xlsx"),
+                 class = "invalid_file_extension")
   expect_true(check_arg_is_valid_extension("temp.xlsx", valid_extensions = "xlsx"))
 })
 
@@ -190,4 +192,26 @@ test_that("check_data_arg_exists works", {
                           arg = "export_survey_fields"),
     class = "nonexistent_arg_requested"
   )
+})
+
+test_that("check_file_exists works", {
+
+  withr::with_tempdir({
+    dir <- getwd()
+    filepath <- paste0(dir, "/temp.csv")
+    expect_no_error(
+      check_file_exists(file = filepath, overwrite = FALSE)
+    )
+  })
+
+  withr::with_tempdir({
+    dir <- getwd()
+    tempfile <- write.csv(x = mtcars, file = "temp.csv")
+    filepath <- paste0(dir, "/temp.csv")
+    expect_error(
+      check_file_exists(file = filepath, overwrite = FALSE),
+      class = "check_file_overwrite"
+    )
+  })
+
 })

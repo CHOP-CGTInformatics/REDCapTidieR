@@ -534,7 +534,7 @@ format_error_val <- function(x) {
 }
 
 #' @rdname checkmate
-#' @importFrom cli cli_abort
+#' @importFrom cli cli_warn
 #' @importFrom rlang caller_arg caller_env
 check_arg_is_valid_extension <- function(x,
                                          valid_extensions,
@@ -542,13 +542,18 @@ check_arg_is_valid_extension <- function(x,
                                          call = caller_env()) {
   ext <- sub(".*\\.", "", x)
 
-  msg_x <- "Invalid file extension supplied to {.arg {arg}}: {ext}"
-  msg_i <- "File extension must be 'xlsx'"
+  if (ext == x) {
+    msg_x <- "No extension provided for {.arg file}: '{x}'"
+    msg_i <- "The extension '.xlsx' will be appended to the file name."
+  } else {
+    msg_x <- "Invalid file extension provided for {.arg file}: {ext}"
+    msg_i <- "The file extension should be '.xlsx'"
+  }
 
   if (!ext %in% valid_extensions) {
-    cli_abort(
+    cli_warn(
       message = c(
-        "x" = msg_x,
+        "!" = msg_x,
         "i" = msg_i
       ),
       class = c("invalid_file_extension", "REDCapTidieR_cond"),
@@ -591,10 +596,10 @@ check_data_arg_exists <- function(db_data, col, arg, call = caller_env()) {
 
   if (arg == "export_survey_fields") {
     msg_x <- "Project survey fields requested, but none found."
-    msg_i <- "{.pkg REDCapTidieR} did not detect expected columns for a survey-enabled project."
+    msg_i <- "Are you sure the project has at least one instrument configured as a survey?"
   } else {
     msg_x <- "Data access groups requested, but none found."
-    msg_i <- "{.pkg REDCapTidieR} did not detect expected columns for a project using DAGs."
+    msg_i <- "Are you sure the project has data access groups (DAGs) enabled?"
   }
 
   if (!col %in% names(db_data)) {
@@ -604,6 +609,46 @@ check_data_arg_exists <- function(db_data, col, arg, call = caller_env()) {
         "i" = msg_i
       ),
       class = c("nonexistent_arg_requested", "REDCapTidieR_cond"),
+      call = call
+    )
+  }
+}
+
+#' @title
+#' Check if file already exists
+#'
+#' @description
+#' Provide an error message when a file is declared for writing that already
+#' exists.
+#'
+#' @details
+#' In the case of `write_redcap_xlsx()`, this should only error when a file
+#' already exists and is not declared for `overwite`.
+#'
+#' @return
+#' An error message saying the requested file already exists
+#'
+#' @importFrom cli cli_abort
+#' @importFrom rlang caller_env
+#'
+#' @param file The file that is being checked
+#' @param overwrite Whether the file was declared to be overwritten
+#' @param call The calling environment to use in the error message
+#'
+#' @keywords internal
+check_file_exists <- function(file, overwrite, call = caller_env()) {
+
+  msg_x <- "File '{.file {file}}' already exists."
+  msg_i <- "Overwriting files is disabled by default. Set {.arg overwrite = TRUE}
+  to overwrite existing file."
+
+  if (file.exists(file) && !overwrite) {
+    cli_abort(
+      message = c(
+        "x" = msg_x,
+        "i" = msg_i
+      ),
+      class = c("check_file_overwrite", "REDCapTidieR_cond"),
       call = call
     )
   }

@@ -5,6 +5,7 @@ options(rlang_backtrace_on_error_report = "none")
 # read_redcap
 
 classic_token <- Sys.getenv("REDCAPTIDIER_CLASSIC_API")
+longitudinal_token <- Sys.getenv("REDCAPTIDIER_LONGITUDINAL_API")
 redcap_uri <- Sys.getenv("REDCAP_URI")
 
 ## args missing
@@ -65,6 +66,14 @@ read_redcap(redcap_uri, classic_token, suppress_redcapr_messages = 123)
 
 read_redcap(redcap_uri, classic_token, suppress_redcapr_messages = c(TRUE, TRUE))
 
+# data access groups
+
+read_redcap(redcap_uri, classic_token, export_data_access_groups = TRUE)
+
+# surveys
+
+read_redcap(redcap_uri, longitudinal_token, export_survey_fields = TRUE)
+
 # bind_tibbles
 
 bind_tibbles(123)
@@ -99,3 +108,41 @@ make_labelled(missing_col_supertbl)
 missing_list_col_supertbl <- tibble(redcap_data = list(), redcap_metadata = 123) %>%
   as_supertbl()
 make_labelled(missing_list_col_supertbl)
+
+# add_skimr_metadata
+
+mtcars %>% add_skimr_metadata()
+
+# write_redcap_xlsx
+
+withr::with_tempdir({
+  dir <- getwd()
+  filepath <- paste0(dir, "/temp.csv")
+  REDCapTidieR:::check_file_exists(file = filepath, overwrite = FALSE)
+})
+
+withr::with_tempdir({
+  dir <- getwd()
+  tempfile <- write.csv(x = mtcars, file = "temp.csv")
+  filepath <- paste0(dir, "/temp.csv")
+  REDCapTidieR:::check_file_exists(file = filepath, overwrite = FALSE)
+})
+
+write_redcap_xlsx(mtcars, file = "temp.xlsx")
+
+read_redcap(redcap_uri, classic_token) %>%
+  write_redcap_xlsx(file = "temp.xlsx", add_labelled_column_headers = TRUE)
+
+withr::with_tempdir({
+  dir <- getwd()
+  filepath <- paste0(dir, "/temp.pdf")
+  read_redcap(redcap_uri, longitudinal_token) %>%
+    write_redcap_xlsx(file = filepath)
+})
+
+withr::with_tempdir({
+  dir <- getwd()
+  filepath <- paste0(dir, "/temp")
+  read_redcap(redcap_uri, longitudinal_token) %>%
+    write_redcap_xlsx(file = filepath)
+})
