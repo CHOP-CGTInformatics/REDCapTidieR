@@ -662,3 +662,12 @@ test_that("read_redcap fails if DAG or survey columns are explicitly requested b
     class = "nonexistent_arg_requested"
   )
 })
+
+test_that("read_redcap fails with informative error deleted projects", {
+  expect_error(
+    httptest::with_mock_api({
+      read_redcap(creds$REDCAP_URI, creds$REDCAPTIDIER_DELETED_API)
+    }),
+    class = "deleted_project"
+  )
+})

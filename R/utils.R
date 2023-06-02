@@ -570,6 +570,7 @@ strip_html_field_embedding <- function(x) {
 #' @param call the calling environment to use in the warning message
 #'
 #' @importFrom rlang caller_env enquo try_fetch eval_tidy get_env zap cnd_muffle
+#' catch_cnd abort quo_get_expr
 #' @importFrom stringr str_detect
 #' @importFrom cli cli_abort cli_warn
 #'
@@ -655,8 +656,29 @@ try_redcapr <- function(expr, call = caller_env()) {
         "i" = "URI: `{condition$redcap_uri}`"
       )
       condition$class <- c("cannot_post", condition$class)
+    } else if (!is.null(out$outcome_message) &&
+               str_detect(out$outcome_message, "The REDCap project no longer exists because it was deleted")) {
+      condition$info <- c(
+        "!" = "The REDCap project does not exist because it was deleted.",
+        "i" = "Are you sure this is the correct API token?",
+        "i" = "API token: `{condition$token}`"
+      )
+      condition$class <- c("deleted_project", condition$class)
     } else {
       condition$class <- c("unexpected_error", condition$class)
+
+      if (!is.null(out$outcome_message)) {
+        # Throw error containing outcome message and attach that as the parent
+        # Get the name of the function called inside try_redcapr so it can be mentioned in the error message
+        calling_fn <- quo_get_expr(quo)
+        # Handle case where try_redcapr had multiline expr
+        if (inherits(calling_fn, "{")) {
+          calling_fn <- calling_fn[[2]]
+        }
+
+        condition$parent <- catch_cnd(abort(out$outcome_message, call = calling_fn))
+      }
+
     }
     cli_abort(
       c(condition$message, condition$info),
