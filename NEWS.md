@@ -1,5 +1,24 @@
 # REDCapTidieR (development version)
 
+# REDCapTidieR 0.4.0
+
+Version 0.4.0 (Released 2023-06-02)
+==========================================================
+
+## New Features
+
+* Introduces new functions `add_skimr_metadata()` and `write_redcap_xlsx()` with supporting documentation
+* `read_redcap()` now supports Data Access Groups (DAGs)
+   * New argument available to `read_redcap()`: `export_data_access_groups`
+
+## Bug Fixes
+
+* Fixed a bug where REDCapR API error messages weren't being returned from REDCapTidieR
+
+## Miscellaneous
+
+* All deprecated functions have been officially retired and removed from the package
+
 # REDCapTidieR 0.3.0
 
 Version 0.3.0 (Released 2023-03-17)
