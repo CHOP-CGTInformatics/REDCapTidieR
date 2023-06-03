@@ -15,8 +15,8 @@ This submission includes new features, optimizations, and bug fixes. It also add
 
 1. Local macOS Ventura 13.2.1, R 4.2.0
 2. R-hub
-    1. [Ubuntu Linux 20.04.1 LTS, R-release, GCC](https://builder.r-hub.io/status/REDCapTidieR_0.4.0.tar.gz-51d7adf3970142a59b49a90754be9b1f)
-    2. [Fedora Linux, R-devel, clang, gfortran](https://builder.r-hub.io/status/REDCapTidieR_0.4.0.tar.gz-e19ab02ebfcb407b9f824b1ccf778e79)
+    1. [Ubuntu Linux 20.04.1 LTS, R-release, GCC](https://builder.r-hub.io/status/REDCapTidieR_0.4.0.tar.gz-1567c0031be04352b70fb485f44e2b93)
+    2. [Fedora Linux, R-devel, clang, gfortran](https://builder.r-hub.io/status/REDCapTidieR_0.4.0.tar.gz-7e580ca7c42f47d79fc6b02b7777fbf6)
     3. [Windows Server](https://builder.r-hub.io/status/REDCapTidieR_0.4.0.tar.gz-6a7b69a606ac45da97d9f5d5f6d6c1ff)
 3.  [win-builder](https://win-builder.r-project.org/d8dmbgX197E5/), development version.
 4.  [GiHub Actions](https://github.com/CHOP-CGTInformatics/REDCapTidieR/actions), Ubuntu 20.04.02 LTS
@@ -25,7 +25,7 @@ This submission includes new features, optimizations, and bug fixes. It also add
 
 - 0 ERRORs or WARNINGs on any builds
 
-- A NOTE is generated in R-hub Fedora Linux (R-devel, clang, gfortran), but could not be reproduced locally. Based on [this discussion](https://groups.google.com/g/r-sig-mac/c/7u_ivEj4zhM?pli=1), it sounds like a problem with the testing environment, and not the package code.
+- A NOTE is generated in R-hub Fedora Linux (R-devel, clang, gfortran) and R-hub Ubuntu Linux (20.04.1 LTS, R-release, GCC), but could not be reproduced locally. Based on [this discussion](https://groups.google.com/g/r-sig-mac/c/7u_ivEj4zhM?pli=1), it sounds like a problem with the testing environment, and not the package code.
 
 ```
 * checking HTML version of manual ... NOTE
