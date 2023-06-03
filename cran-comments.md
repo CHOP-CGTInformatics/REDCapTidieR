@@ -2,7 +2,7 @@
 
 Thank you for taking the time to review this submission and please reach out to either Stephan Kadauke or Richard Hanna for any questions, comments, or concerns.
 
-This submission includes new features, optimizations, and bug fixes.
+This submission includes new features, optimizations, and bug fixes. It also addresses feedback requesting the tarball size be reduced.
 
 ### New Features
 
@@ -17,8 +17,8 @@ This submission includes new features, optimizations, and bug fixes.
 2. R-hub
     1. [Ubuntu Linux 20.04.1 LTS, R-release, GCC](https://builder.r-hub.io/status/REDCapTidieR_0.4.0.tar.gz-51d7adf3970142a59b49a90754be9b1f)
     2. [Fedora Linux, R-devel, clang, gfortran](https://builder.r-hub.io/status/REDCapTidieR_0.4.0.tar.gz-e19ab02ebfcb407b9f824b1ccf778e79)
-    3. [Windows Server](https://builder.r-hub.io/status/REDCapTidieR_0.4.0.tar.gz-d529d458e55941c38bf5f4694680c4ee)
-3.  [win-builder](https://win-builder.r-project.org/xZ25km7AC64Q/), development version.
+    3. [Windows Server](https://builder.r-hub.io/status/REDCapTidieR_0.4.0.tar.gz-6a7b69a606ac45da97d9f5d5f6d6c1ff)
+3.  [win-builder](https://win-builder.r-project.org/d8dmbgX197E5/), development version.
 4.  [GiHub Actions](https://github.com/CHOP-CGTInformatics/REDCapTidieR/actions), Ubuntu 20.04.02 LTS
 
 ## R CMD check results:
@@ -30,15 +30,6 @@ This submission includes new features, optimizations, and bug fixes.
 ```
 * checking HTML version of manual ... NOTE
 Skipping checking HTML validation: no command 'tidy' found
-```
-
-- A NOTE is generated in all three R-hub servers related to a sub-directory size, but this is explicitly called out in the `.Rbuildignore`. It is likely due to necessary images included in the vignette articles.
-
-```
-* checking installed package size ... NOTE
-  installed size is  5.3Mb
-  sub-directories of 1Mb or more:
-    doc   4.7Mb
 ```
 
 - A NOTE is generated in R-hub Windows (Server 2022, R-devel 64-bit), a similar issue appears to arise in the `REDCapR` package and appears to be related to the R-hub test environment.
