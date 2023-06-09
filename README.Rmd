@@ -27,6 +27,7 @@ knitr::opts_chunk$set(
 [![CRAN status](https://www.r-pkg.org/badges/version/REDCapTidieR)](https://CRAN.R-project.org/package=REDCapTidieR)
 [![](https://cranlogs.r-pkg.org/badges/grand-total/REDCapTidieR)](https://cran.r-project.org/package=REDCapTidieR)
 [![Codecov test coverage](https://codecov.io/gh/CHOP-CGTInformatics/REDCapTidieR/branch/main/graph/badge.svg)](https://app.codecov.io/gh/CHOP-CGTInformatics/REDCapTidieR?branch=main)
+[![OpenSSF Best Practices](https://bestpractices.coreinfrastructure.org/projects/6845/badge)](https://bestpractices.coreinfrastructure.org/projects/6845)
 <!-- badges: end -->
 
 The REDCapTidieR package provides an elegant way to [import](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/glossary.html#import) data from a [REDCap](https://www.project-redcap.org/) [project](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/glossary.html#project) into an R environment. It builds upon the [REDCapR](https://ouhscbbmc.github.io/REDCapR/) package to query the [REDCap API](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/glossary.html#redcap-api) and then transforms the returned data into a set of [tidy](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/glossary.html#tidy) [tibbles](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/glossary.html#tibble).
