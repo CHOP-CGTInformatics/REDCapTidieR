@@ -97,10 +97,9 @@
 <h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
 </h2>
 <p>Use <code><a href="reference/read_redcap.html">read_redcap()</a></code> together with <code><a href="reference/bind_tibbles.html">bind_tibbles()</a></code> to import data from all instruments into your environment.</p>
-<div class="figure">
-<img src="reference/figures/redcaptidier-demo.gif" alt=""><p class="caption">Demonstration of using the <code><a href="reference/read_redcap.html">read_redcap()</a></code> and <code><a href="reference/bind_tibbles.html">bind_tibbles()</a></code> functions</p>
-</div>
-<p>REDCapTidieR supports labelled data using the <a href="https://larmarange.github.io/labelled/" class="external-link">labelled</a> package, and it can generate statistical summaries using the <a href="https://docs.ropensci.org/skimr/" class="external-link">skimr</a> package.</p>
+<figure><img src="reference/figures/redcaptidier-demo.gif" alt="Demonstration of using the read_redcap() and bind_tibbles() functions"><figcaption aria-hidden="true">
+Demonstration of using the <code><a href="reference/read_redcap.html">read_redcap()</a></code> and <code><a href="reference/bind_tibbles.html">bind_tibbles()</a></code> functions
+</figcaption></figure><p>REDCapTidieR supports labelled data using the <a href="https://larmarange.github.io/labelled/" class="external-link">labelled</a> package, and it can generate statistical summaries using the <a href="https://docs.ropensci.org/skimr/" class="external-link">skimr</a> package.</p>
 <p>Read the <a href="https://chop-cgtinformatics.github.io/REDCapTidieR/articles/REDCapTidieR.html">Getting Started vignette</a> to learn more.</p>
 <p>In addition, you can easily create collaborator-friendly Excel files using the <code><a href="reference/write_redcap_xlsx.html">write_redcap_xlsx()</a></code> function:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
@@ -109,10 +108,9 @@
 <span></span>
 <span><span class="va">my_redcap_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_redcap.html">read_redcap</a></span><span class="op">(</span><span class="va">redcap_uri</span>, <span class="va">token</span><span class="op">)</span></span>
 <span><span class="fu"><a href="reference/write_redcap_xlsx.html">write_redcap_xlsx</a></span><span class="op">(</span><span class="va">my_redcap_data</span>, file <span class="op">=</span> <span class="st">"my_redcap_data.xlsx"</span><span class="op">)</span></span></code></pre></div>
-<div class="figure">
-<img src="reference/figures/write_xlsx_default.png" alt=""><p class="caption">Sample REDCapTidieR .xlsx output using <code><a href="reference/write_redcap_xlsx.html">write_redcap_xlsx()</a></code></p>
-</div>
-<p>To learn more about how to work with and customize the output, read the <a href="https://chop-cgtinformatics.github.io/REDCapTidieR/articles/export_to_xlsx.html">Exporting to Excel vignette</a>.</p>
+<figure><img src="reference/figures/write_xlsx_default.png" alt="Sample REDCapTidieR .xlsx output using write_redcap_xlsx()"><figcaption aria-hidden="true">
+Sample REDCapTidieR .xlsx output using <code><a href="reference/write_redcap_xlsx.html">write_redcap_xlsx()</a></code>
+</figcaption></figure><p>To learn more about how to work with and customize the output, read the <a href="https://chop-cgtinformatics.github.io/REDCapTidieR/articles/export_to_xlsx.html">Exporting to Excel vignette</a>.</p>
 </div>
 <div class="section level2">
 <h2 id="collaboration">Collaboration<a class="anchor" aria-label="anchor" href="#collaboration"></a>
@@ -173,6 +171,7 @@
 <li><a href="https://CRAN.R-project.org/package=REDCapTidieR" class="external-link"><img src="https://www.r-pkg.org/badges/version/REDCapTidieR" alt="CRAN status"></a></li>
 <li><a href="https://cran.r-project.org/package=REDCapTidieR" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/grand-total/REDCapTidieR"></a></li>
 <li><a href="https://app.codecov.io/gh/CHOP-CGTInformatics/REDCapTidieR?branch=main" class="external-link"><img src="https://codecov.io/gh/CHOP-CGTInformatics/REDCapTidieR/branch/main/graph/badge.svg" alt="Codecov test coverage"></a></li>
+<li><a href="https://bestpractices.coreinfrastructure.org/projects/6845" class="external-link"><img src="https://bestpractices.coreinfrastructure.org/projects/6845/badge" alt="OpenSSF Best Practices"></a></li>
 </ul>
 </div>
 
