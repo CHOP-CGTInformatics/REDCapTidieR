@@ -656,14 +656,6 @@ try_redcapr <- function(expr, call = caller_env()) {
         "i" = "URI: `{condition$redcap_uri}`"
       )
       condition$class <- c("cannot_post", condition$class)
-    } else if (!is.null(out$outcome_message) &&
-      str_detect(out$outcome_message, "The REDCap project no longer exists because it was deleted")) {
-      condition$info <- c(
-        "!" = "The REDCap project does not exist because it was deleted.",
-        "i" = "Are you sure this is the correct API token?",
-        "i" = "API token: `{condition$token}`"
-      )
-      condition$class <- c("deleted_project", condition$class)
     } else {
       condition$class <- c("unexpected_error", condition$class)
 

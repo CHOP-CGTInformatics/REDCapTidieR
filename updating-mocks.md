@@ -12,7 +12,6 @@ To add mocks for a new REDCap:
 To add mocks from an existing REDCap:
 
 1. Complete step 1 above. You'll need valid tokens in your `.Renviron` for all REDCaps used in `create-httptest-mock.R`
-  - Add `REDCAPTIDIER_DELETED_API = AC1759E5D3E10EF64350B05F5A96DB5F` to your `.Renviron` since new tokens for this project cannot generated
   - Technically you may be able to get away with running lines selectively if you're careful
 2. Complete steps 3-4 above
 

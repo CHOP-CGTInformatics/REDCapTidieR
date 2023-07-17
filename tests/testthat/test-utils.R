@@ -260,13 +260,6 @@ test_that("try_redcapr works", {
   try_redcapr(list(success = FALSE, status_code = 405)) %>%
     expect_error(class = "cannot_post")
 
-  try_redcapr(list(
-    success = FALSE,
-    status_code = "",
-    outcome_message = "The REDCap project no longer exists because it was deleted."
-  )) %>%
-    expect_error(class = "deleted_project")
-
   # Unexpected error, no message
   cnd <- try_redcapr(list(success = FALSE, status_code = "")) %>%
     catch_cnd()
