@@ -1,7 +1,0 @@
-record_id,redcap_repeat_instrument,redcap_repeat_instance,redcap_data_access_group,non_repeat_form_1_txt,non_repeat_form_1_complete,repeat_form_1_txt,repeat_form_1_complete
-1,,,dag1,,2,,
-1,repeat_form_1,1,dag1,,,1,2
-1,repeat_form_1,2,dag1,,,2,0
-2,,,dag2,,2,,
-3,,,dag3,,2,,
-4,,,,,0,,

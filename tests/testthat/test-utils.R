@@ -1,8 +1,3 @@
-# Tell httptest where to looks for mocks
-# Need this here since devtools::test_path doesn't work in helper.R
-# https://github.com/r-lib/testthat/issues/1270
-httptest::.mockPaths(test_path("fixtures"))
-
 # Load Sample Databases ----
 db_data_classic <- readRDS(system.file("testdata/db_data_classic.RDS", package = "REDCapTidieR"))
 db_metadata_classic <- readRDS(system.file("testdata/db_metadata_classic.RDS", package = "REDCapTidieR"))
@@ -156,9 +151,9 @@ test_that("parse_labels works", {
 })
 
 test_that("link_arms works", {
-  httptest::with_mock_api({
-    out <- link_arms(creds$REDCAP_URI, creds$REDCAPTIDIER_LONGITUDINAL_API)
-  })
+  skip_on_cran()
+
+  out <- link_arms(Sys.getenv("REDCAP_URI"), Sys.getenv("REDCAPTIDIER_LONGITUDINAL_API"))
 
   # output is a tibble
   expect_s3_class(out, "tbl")

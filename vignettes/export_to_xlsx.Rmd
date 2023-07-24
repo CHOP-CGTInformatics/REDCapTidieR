@@ -18,24 +18,11 @@ knitr::opts_chunk$set(
 knitr::knit_exit()
 ```
 
+
 ```{r, include = FALSE}
-library(httptest)
-# Make sure REDCapTidieR is loaded so httptest can find redact.R
-library(REDCapTidieR)
-
-# Use fake credentials if mocks exist, otherwise use real credentials to create mocks
-fake <- dir.exists("export_to_xlsx")
-
-creds <- REDCapTidieR:::get_credentials(
-  c("REDCAP_URI", "SUPERHEROES_REDCAP_API", "REDCAPTIDIER_CLASSIC_API"),
-  fake = fake
-)
-
-redcap_uri <- creds$REDCAP_URI
-superheroes_token <- creds$SUPERHEROES_REDCAP_API
-classic_token <- creds$REDCAPTIDIER_CLASSIC_API
-
-start_vignette("export_to_xlsx")
+# Load credentials
+redcap_uri <- Sys.getenv("REDCAP_URI")
+superheroes_token <- Sys.getenv("SUPERHEROES_REDCAP_API")
 ```
 
 Excel spreadsheets are an accessible medium for data analysis and collaboration. This vignette will guide you through the process of using REDCapTidieR to transform your REDCap data into an XLSX document, facilitating easy sharing with colleagues.
@@ -51,6 +38,11 @@ The transformation of a REDCap [project](glossary.html#project) into a XLSX docu
 3)  Apply `write_redcap_xlsx()`.
 
 Below is a practical illustration:
+
+```{r}
+library(REDCapTidieR)
+```
+
 
 ```{r, eval=FALSE}
 redcap_uri <- "https://my.institution.edu/redcap/api/"
@@ -137,7 +129,3 @@ supertbl |>
 -   Columns derived from **truefalse** fields are left as is (`TRUE`/`FALSE`)
 
 Setting `recode_logical` to `FALSE` will preserve all logical fields as (`TRUE`/`FALSE`).
-
-```{r, include=FALSE}
-end_vignette()
-```

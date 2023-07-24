@@ -9,9 +9,6 @@ on:
     types: [published]
   workflow_dispatch:
 
-env:
-  NOT_CRAN: true
-
 name: pkgdown
 
 jobs:
@@ -22,6 +19,12 @@ jobs:
       group: pkgdown-${{ github.event_name != 'pull_request' || github.run_id }}
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      NOT_CRAN: true
+      REDCAP_URI: ${{ secrets.REDCAP_URI }}
+      REDCAPTIDIER_CLASSIC_API: ${{ secrets.REDCAPTIDIER_CLASSIC_API }}
+      SUPERHEROES_REDCAP_API: ${{ secrets.SUPERHEROES_REDCAP_API }}
+      REDCAPTIDIER_DEEP_DIVE_VIGNETTE_API: ${{ secrets.REDCAPTIDIER_DEEP_DIVE_VIGNETTE_API }}
+      REDCAPTIDIER_DAG_API: ${{ secrets.REDCAPTIDIER_DAG_API }}
     steps:
       - uses: actions/checkout@v3
 

@@ -15,7 +15,7 @@ devtools::check_man() #Should return NULL
 # Therefore set clean = F
 withr::with_envvar(
   new = c("NOT_CRAN" = "true"),
-  devtools::build_vignettes(clean = FALSE)
+  devtools::build_vignettes()
 )
 
 checks_to_exclude <- c(

@@ -69,15 +69,10 @@
     },
     "REDCapR": {
       "Package": "REDCapR",
-      "Version": "1.1.9005",
-      "Source": "GitHub",
-      "RemoteType": "github",
-      "RemoteHost": "api.github.com",
-      "RemoteUsername": "OuhscBbmc",
-      "RemoteRepo": "REDCapR",
-      "RemoteRef": "main",
-      "RemoteSha": "34f2154852fb52fb99bccd8e8295df8171eb1c18",
-      "Hash": "227da5a00205e47c7a6f097990216bb9",
+      "Version": "1.1.0",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "e76c401b631961c865b89bb5a4ea3b97",
       "Requirements": [
         "checkmate",
         "dplyr",
@@ -759,20 +754,6 @@
         "knitr",
         "rmarkdown",
         "yaml"
-      ]
-    },
-    "httptest": {
-      "Package": "httptest",
-      "Version": "4.1.0",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "cd910dc78e8edbc40b9723824baa7097",
-      "Requirements": [
-        "curl",
-        "digest",
-        "httr",
-        "jsonlite",
-        "testthat"
       ]
     },
     "httpuv": {

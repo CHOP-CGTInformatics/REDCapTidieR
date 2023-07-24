@@ -20,18 +20,10 @@ knitr::opts_chunk$set(
 knitr::knit_exit()
 ```
 
-```{r, include=FALSE}
-library(httptest)
-# Make sure REDCapTidieR is loaded so httptest can find redact.R
-library(REDCapTidieR)
-
-# Use fake credentials if mocks exist, otherwise use real credentials to create mocks
-fake <- dir.exists("REDCapTidieR")
-
-redcap_uri <- REDCapTidieR:::get_credentials("REDCAP_URI", fake = fake)[[1]]
-token <- REDCapTidieR:::get_credentials("SUPERHEROES_REDCAP_API", fake = fake)[[1]]
-
-start_vignette("REDCapTidieR")
+```{r, include = FALSE}
+# Load credentials
+redcap_uri <- Sys.getenv("REDCAP_URI")
+token <- Sys.getenv("SUPERHEROES_REDCAP_API")
 ```
 
 [REDCap](https://www.project-redcap.org/) is an electronic data capture software that is widely used in the academic research community. The [REDCapR](https://ouhscbbmc.github.io/REDCapR/) package streamlines calls to the REDCap API from an R environment. One of REDCapR's main uses is to [import](glossary.html#import) [records](glossary.html#record) from a REDCap [project](glossary.html#project). This works well for simple projects, however becomes [ugly](diving_deeper.html) when complex databases that include [longitudinal](glossary.html#longitudinal-project) structure and/or [repeating](glossary.html#repeating) [instruments](glossary.html#instrument) are involved.
@@ -254,7 +246,3 @@ heroes_information_metadata |>
 ```
 
 This enables quick insights into data content and supports exploratory data analytics. The columns added by `add_skimr_metadata()` can also be [labelled](glossary.html#labelled).
-
-```{r, include=FALSE}
-end_vignette()
-```

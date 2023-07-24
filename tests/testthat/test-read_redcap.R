@@ -1,10 +1,5 @@
 skip_on_cran()
 
-# Tell httptest where to looks for mocks
-# Need this here since devtools::test_path doesn't work in helper.R
-# https://github.com/r-lib/testthat/issues/1270
-httptest::.mockPaths(test_path("fixtures"))
-
 test_that("read_redcap works for a classic database with a nonrepeating instrument", {
   # Define partial key columns that should be in a nonrepeating table
   # from a classic database
@@ -12,19 +7,17 @@ test_that("read_redcap works for a classic database with a nonrepeating instrume
   expected_absent_cols <- c("redcap_form_instance", "redcap_event", "redcap_arm")
 
   # Pull a nonrepeating table from a classic database
-  httptest::with_mock_api({
-    out <-
-      read_redcap(creds$REDCAP_URI, creds$REDCAPTIDIER_CLASSIC_API) %>%
-      # suppress expected warning
-      suppressWarnings(classes = c(
-        "field_missing_categories",
-        "empty_parse_warning",
-        "duplicate_labels"
-      )) %>%
-      filter(redcap_form_name == "nonrepeated") %>%
-      select(redcap_data) %>%
-      pluck(1, 1)
-  })
+  out <-
+    read_redcap(Sys.getenv("REDCAP_URI"), Sys.getenv("REDCAPTIDIER_CLASSIC_API")) %>%
+    # suppress expected warning
+    suppressWarnings(classes = c(
+      "field_missing_categories",
+      "empty_parse_warning",
+      "duplicate_labels"
+    )) %>%
+    filter(redcap_form_name == "nonrepeated") %>%
+    select(redcap_data) %>%
+    pluck(1, 1)
 
   expect_true(
     all(expected_present_cols %in% names(out))
@@ -42,19 +35,17 @@ test_that("read_redcap works for a classic database with a repeating instrument"
   expected_absent_cols <- c("redcap_event", "redcap_arm")
 
   # Pull a repeating table from a classic database
-  httptest::with_mock_api({
-    out <-
-      read_redcap(creds$REDCAP_URI, creds$REDCAPTIDIER_CLASSIC_API) %>%
-      # suppress expected warning
-      suppressWarnings(classes = c(
-        "field_missing_categories",
-        "empty_parse_warning",
-        "duplicate_labels"
-      )) %>%
-      filter(redcap_form_name == "repeated") %>%
-      select(redcap_data) %>%
-      pluck(1, 1)
-  })
+  out <-
+    read_redcap(Sys.getenv("REDCAP_URI"), Sys.getenv("REDCAPTIDIER_CLASSIC_API")) %>%
+    # suppress expected warning
+    suppressWarnings(classes = c(
+      "field_missing_categories",
+      "empty_parse_warning",
+      "duplicate_labels"
+    )) %>%
+    filter(redcap_form_name == "repeated") %>%
+    select(redcap_data) %>%
+    pluck(1, 1)
 
   expect_true(
     all(expected_present_cols %in% names(out))
@@ -67,45 +58,41 @@ test_that("read_redcap works for a classic database with a repeating instrument"
 
 test_that("read_redcap returns checkbox fields", {
   # Pull a nonrepeating table from a classic database
-  httptest::with_mock_api({
-    out <-
-      read_redcap(creds$REDCAP_URI, creds$REDCAPTIDIER_CLASSIC_API) %>%
-      # suppress expected warning
-      suppressWarnings(classes = c(
-        "field_missing_categories",
-        "empty_parse_warning",
-        "duplicate_labels"
-      )) %>%
-      filter(redcap_form_name == "data_field_types") %>%
-      select(redcap_data) %>%
-      pluck(1, 1)
-  })
+  out <-
+    read_redcap(Sys.getenv("REDCAP_URI"), Sys.getenv("REDCAPTIDIER_CLASSIC_API")) %>%
+    # suppress expected warning
+    suppressWarnings(classes = c(
+      "field_missing_categories",
+      "empty_parse_warning",
+      "duplicate_labels"
+    )) %>%
+    filter(redcap_form_name == "data_field_types") %>%
+    select(redcap_data) %>%
+    pluck(1, 1)
 
   expect_true("checkbox_multiple___1" %in% names(out))
 })
 
 test_that("supplying forms is equivalent to post-hoc filtering for a classic database", {
   # Explicitly testing form that doesn't contain identifiers
-  httptest::with_mock_api({
-    filtered_by_api <-
-      read_redcap(creds$REDCAP_URI,
-        creds$REDCAPTIDIER_CLASSIC_API,
-        forms = "repeated"
-      )
+  filtered_by_api <-
+    read_redcap(Sys.getenv("REDCAP_URI"),
+      Sys.getenv("REDCAPTIDIER_CLASSIC_API"),
+      forms = "repeated"
+    )
 
-    filtered_locally <-
-      read_redcap(
-        creds$REDCAP_URI,
-        creds$REDCAPTIDIER_CLASSIC_API
-      ) %>%
-      # suppress expected warning
-      suppressWarnings(classes = c(
-        "field_missing_categories",
-        "empty_parse_warning",
-        "duplicate_labels"
-      )) %>%
-      filter(redcap_form_name == "repeated")
-  })
+  filtered_locally <-
+    read_redcap(
+      Sys.getenv("REDCAP_URI"),
+      Sys.getenv("REDCAPTIDIER_CLASSIC_API")
+    ) %>%
+    # suppress expected warning
+    suppressWarnings(classes = c(
+      "field_missing_categories",
+      "empty_parse_warning",
+      "duplicate_labels"
+    )) %>%
+    filter(redcap_form_name == "repeated")
 
   expect_equal(
     filtered_by_api, filtered_locally
@@ -114,20 +101,18 @@ test_that("supplying forms is equivalent to post-hoc filtering for a classic dat
 
 test_that("supplying forms is equivalent to post-hoc filtering for a longitudinal database", {
   # Explicitly testing form that doesn't contain identifiers
-  httptest::with_mock_api({
-    filtered_by_api <-
-      read_redcap(creds$REDCAP_URI,
-        creds$REDCAPTIDIER_LONGITUDINAL_API,
-        forms = "repeated"
-      )
+  filtered_by_api <-
+    read_redcap(Sys.getenv("REDCAP_URI"),
+      Sys.getenv("REDCAPTIDIER_LONGITUDINAL_API"),
+      forms = "repeated"
+    )
 
-    filtered_locally <-
-      read_redcap(
-        creds$REDCAP_URI,
-        creds$REDCAPTIDIER_LONGITUDINAL_API
-      ) %>%
-      filter(redcap_form_name == "repeated")
-  })
+  filtered_locally <-
+    read_redcap(
+      Sys.getenv("REDCAP_URI"),
+      Sys.getenv("REDCAPTIDIER_LONGITUDINAL_API")
+    ) %>%
+    filter(redcap_form_name == "repeated")
 
   expect_equal(
     filtered_by_api, filtered_locally
@@ -136,20 +121,18 @@ test_that("supplying forms is equivalent to post-hoc filtering for a longitudina
 
 test_that("supplying forms is equivalent to post-hoc filtering for a database with a repeating first instrument", {
   # Explicitly testing form that doesn't contain identifiers
-  httptest::with_mock_api({
-    filtered_by_api <-
-      read_redcap(creds$REDCAP_URI,
-        creds$REDCAPTIDIER_REPEAT_FIRST_INSTRUMENT_API,
-        forms = "form_2"
-      )
+  filtered_by_api <-
+    read_redcap(Sys.getenv("REDCAP_URI"),
+      Sys.getenv("REDCAPTIDIER_REPEAT_FIRST_INSTRUMENT_API"),
+      forms = "form_2"
+    )
 
-    filtered_locally <-
-      read_redcap(
-        creds$REDCAP_URI,
-        creds$REDCAPTIDIER_REPEAT_FIRST_INSTRUMENT_API
-      ) %>%
-      filter(redcap_form_name == "form_2")
-  })
+  filtered_locally <-
+    read_redcap(
+      Sys.getenv("REDCAP_URI"),
+      Sys.getenv("REDCAPTIDIER_REPEAT_FIRST_INSTRUMENT_API")
+    ) %>%
+    filter(redcap_form_name == "form_2")
 
   expect_equal(
     filtered_by_api, filtered_locally
@@ -163,13 +146,11 @@ test_that("read_redcap works for a longitudinal, single arm database with a nonr
   expected_absent_cols <- c("redcap_form_instance", "redcap_arm")
 
   # Pull a nonrepeating table from a longitudinal, single arm database
-  httptest::with_mock_api({
-    out <-
-      read_redcap(creds$REDCAP_URI, creds$REDCAPTIDIER_LONGITUDINAL_NOARMS_API) %>%
-      filter(redcap_form_name == "nonrepeated") %>%
-      select(redcap_data) %>%
-      pluck(1, 1)
-  })
+  out <-
+    read_redcap(Sys.getenv("REDCAP_URI"), Sys.getenv("REDCAPTIDIER_LONGITUDINAL_NOARMS_API")) %>%
+    filter(redcap_form_name == "nonrepeated") %>%
+    select(redcap_data) %>%
+    pluck(1, 1)
 
   expect_true(
     all(expected_present_cols %in% names(out))
@@ -187,13 +168,11 @@ test_that("read_redcap works for a longitudinal, single arm database with a repe
   expected_absent_cols <- c("redcap_arm")
 
   # Pull a repeating table from a longitudinal, single arm database
-  httptest::with_mock_api({
-    out <-
-      read_redcap(creds$REDCAP_URI, creds$REDCAPTIDIER_LONGITUDINAL_NOARMS_API) %>%
-      filter(redcap_form_name == "repeated") %>%
-      select(redcap_data) %>%
-      pluck(1, 1)
-  })
+  out <-
+    read_redcap(Sys.getenv("REDCAP_URI"), Sys.getenv("REDCAPTIDIER_LONGITUDINAL_NOARMS_API")) %>%
+    filter(redcap_form_name == "repeated") %>%
+    select(redcap_data) %>%
+    pluck(1, 1)
 
   expect_true(
     all(expected_present_cols %in% names(out))
@@ -211,13 +190,11 @@ test_that("read_redcap works for a longitudinal, multi-arm database with a nonre
   expected_absent_cols <- c("redcap_form_instance")
 
   # Pull a nonrepeating table from a longitudinal, multi arm database
-  httptest::with_mock_api({
-    out <-
-      read_redcap(creds$REDCAP_URI, creds$REDCAPTIDIER_LONGITUDINAL_API) %>%
-      filter(redcap_form_name == "nonrepeated") %>%
-      select(redcap_data) %>%
-      pluck(1, 1)
-  })
+  out <-
+    read_redcap(Sys.getenv("REDCAP_URI"), Sys.getenv("REDCAPTIDIER_LONGITUDINAL_API")) %>%
+    filter(redcap_form_name == "nonrepeated") %>%
+    select(redcap_data) %>%
+    pluck(1, 1)
 
   expect_true(
     all(expected_present_cols %in% names(out))
@@ -234,13 +211,11 @@ test_that("read_redcap works for a longitudinal, multi-arm database with a repea
   expected_present_cols <- c("record_id", "redcap_form_instance", "redcap_event", "redcap_arm")
 
   # Pull a repeating table from a longitudinal, multi arm database
-  httptest::with_mock_api({
-    out <-
-      read_redcap(creds$REDCAP_URI, creds$REDCAPTIDIER_LONGITUDINAL_API) %>%
-      filter(redcap_form_name == "repeated") %>%
-      select(redcap_data) %>%
-      pluck(1, 1)
-  })
+  out <-
+    read_redcap(Sys.getenv("REDCAP_URI"), Sys.getenv("REDCAPTIDIER_LONGITUDINAL_API")) %>%
+    filter(redcap_form_name == "repeated") %>%
+    select(redcap_data) %>%
+    pluck(1, 1)
 
   expect_true(
     all(expected_present_cols %in% names(out))
@@ -248,23 +223,19 @@ test_that("read_redcap works for a longitudinal, multi-arm database with a repea
 })
 
 test_that("errors when non-existent form is supplied alone", {
-  httptest::with_mock_api({
-    read_redcap(creds$REDCAP_URI,
-      creds$REDCAPTIDIER_CLASSIC_API,
-      forms = "fake-form"
-    ) %>%
-      expect_error(class = "form_does_not_exist")
-  })
+  read_redcap(Sys.getenv("REDCAP_URI"),
+    Sys.getenv("REDCAPTIDIER_CLASSIC_API"),
+    forms = "fake-form"
+  ) %>%
+    expect_error(class = "form_does_not_exist")
 })
 
 test_that("errors when non-existent form is supplied with existing forms", {
-  httptest::with_mock_api({
-    read_redcap(creds$REDCAP_URI,
-      creds$REDCAPTIDIER_CLASSIC_API,
-      forms = c("fake-form", "repeated")
-    ) %>%
-      expect_error(class = "form_does_not_exist")
-  })
+  read_redcap(Sys.getenv("REDCAP_URI"),
+    Sys.getenv("REDCAPTIDIER_CLASSIC_API"),
+    forms = c("fake-form", "repeated")
+  ) %>%
+    expect_error(class = "form_does_not_exist")
 })
 
 test_that("get_fields_to_drop handles checkboxes", {
@@ -284,9 +255,7 @@ test_that("get_fields_to_drop handles checkboxes", {
 })
 
 test_that("read_redcap returns metadata", {
-  httptest::with_mock_api({
-    out <- read_redcap(creds$REDCAP_URI, creds$REDCAPTIDIER_LONGITUDINAL_API)
-  })
+  out <- read_redcap(Sys.getenv("REDCAP_URI"), Sys.getenv("REDCAPTIDIER_LONGITUDINAL_API"))
 
   expected_cols <- c(
     "redcap_form_name", "redcap_form_label", "redcap_data", "redcap_metadata",
@@ -337,50 +306,44 @@ test_that("read_redcap returns metadata", {
 })
 
 test_that("read_redcap suppresses events metadata for non-longitudinal database", {
-  httptest::with_mock_api({
-    out <- read_redcap(creds$REDCAP_URI, creds$REDCAPTIDIER_CLASSIC_API) %>%
-      suppressWarnings(classes = c(
-        "field_missing_categories",
-        "empty_parse_warning",
-        "duplicate_labels"
-      ))
-  })
+  out <- read_redcap(Sys.getenv("REDCAP_URI"), Sys.getenv("REDCAPTIDIER_CLASSIC_API")) %>%
+    suppressWarnings(classes = c(
+      "field_missing_categories",
+      "empty_parse_warning",
+      "duplicate_labels"
+    ))
 
   expect_false("redcap_events" %in% names(out))
 })
 
 test_that("read_redcap preserves form_name order mirroring original REDCapR metadata order", {
-  httptest::with_mock_api({
-    expected_order <- REDCapR::redcap_metadata_read(creds$REDCAP_URI,
-      creds$REDCAPTIDIER_CLASSIC_API,
-      verbose = FALSE
-    )$data %>%
-      pull(form_name) %>%
-      unique()
+  expected_order <- REDCapR::redcap_metadata_read(Sys.getenv("REDCAP_URI"),
+    Sys.getenv("REDCAPTIDIER_CLASSIC_API"),
+    verbose = FALSE
+  )$data %>%
+    pull(form_name) %>%
+    unique()
 
-    out <- read_redcap(creds$REDCAP_URI, creds$REDCAPTIDIER_CLASSIC_API) %>%
-      suppressWarnings(classes = c(
-        "field_missing_categories",
-        "empty_parse_warning",
-        "duplicate_labels"
-      ))
-  })
+  out <- read_redcap(Sys.getenv("REDCAP_URI"), Sys.getenv("REDCAPTIDIER_CLASSIC_API")) %>%
+    suppressWarnings(classes = c(
+      "field_missing_categories",
+      "empty_parse_warning",
+      "duplicate_labels"
+    ))
 
   expect_equal(expected_order, out$redcap_form_name)
 })
 
 test_that("read_redcap returns expected survey fields", {
-  httptest::with_mock_api({
-    out <- read_redcap(creds$REDCAP_URI,
-      creds$REDCAPTIDIER_CLASSIC_API,
-      export_survey_fields = TRUE
-    ) %>%
-      suppressWarnings(classes = c(
-        "field_missing_categories",
-        "empty_parse_warning",
-        "duplicate_labels"
-      ))
-  })
+  out <- read_redcap(Sys.getenv("REDCAP_URI"),
+    Sys.getenv("REDCAPTIDIER_CLASSIC_API"),
+    export_survey_fields = TRUE
+  ) %>%
+    suppressWarnings(classes = c(
+      "field_missing_categories",
+      "empty_parse_warning",
+      "duplicate_labels"
+    ))
 
   survey_data <- out$redcap_data[out$redcap_form_name == "survey"][[1]]
   repeat_survey_data <- out$redcap_data[out$redcap_form_name == "repeat_survey"][[1]]
@@ -402,108 +365,96 @@ test_that("read_redcap errors with bad inputs", {
   ## TODO
 
   # redcap uri
-  expect_error(read_redcap(123, creds$REDCAPTIDIER_CLASSIC_API), class = "check_character")
-  expect_error(read_redcap(letters[1:3], creds$REDCAPTIDIER_CLASSIC_API), class = "check_character")
-  expect_error(read_redcap("https://www.google.com", creds$REDCAPTIDIER_CLASSIC_API), class = "cannot_post")
-  expect_error(read_redcap("https://www.google.comm", creds$REDCAPTIDIER_CLASSIC_API), class = "cannot_resolve_host")
+  expect_error(read_redcap(123, Sys.getenv("REDCAPTIDIER_CLASSIC_API")), class = "check_character")
+  expect_error(read_redcap(letters[1:3], Sys.getenv("REDCAPTIDIER_CLASSIC_API")), class = "check_character")
+  expect_error(read_redcap("https://www.google.com", Sys.getenv("REDCAPTIDIER_CLASSIC_API")), class = "cannot_post")
+  expect_error(read_redcap("https://www.google.comm", Sys.getenv("REDCAPTIDIER_CLASSIC_API")), class = "cannot_resolve_host")
 
   # token
-  expect_error(read_redcap(creds$REDCAP_URI, 123), class = "check_character")
-  expect_error(read_redcap(creds$REDCAP_URI, letters[1:3]), class = "check_character")
-  expect_error(read_redcap(creds$REDCAP_URI, "abc"), class = "invalid_token")
-  expect_error(read_redcap(creds$REDCAP_URI, ""), class = "invalid_token")
+  expect_error(read_redcap(Sys.getenv("REDCAP_URI"), 123), class = "check_character")
+  expect_error(read_redcap(Sys.getenv("REDCAP_URI"), letters[1:3]), class = "check_character")
+  expect_error(read_redcap(Sys.getenv("REDCAP_URI"), "abc"), class = "invalid_token")
+  expect_error(read_redcap(Sys.getenv("REDCAP_URI"), ""), class = "invalid_token")
   expect_error(
-    read_redcap(creds$REDCAP_URI, "CC0CE44238EF65C5DA26A55DD749AF7"), # 31 hex characters
+    read_redcap(Sys.getenv("REDCAP_URI"), "CC0CE44238EF65C5DA26A55DD749AF7"), # 31 hex characters
     class = "invalid_token"
   )
-  httptest::with_mock_api({
-    expect_error(
-      read_redcap(creds$REDCAP_URI, "CC0CE44238EF65C5DA26A55DD749AF7A"), # will be rejected
-      class = "api_token_rejected"
-    )
-  })
+  expect_error(
+    read_redcap(Sys.getenv("REDCAP_URI"), "CC0CE44238EF65C5DA26A55DD749AF7A"), # will be rejected
+    class = "api_token_rejected"
+  )
 
   # raw_or_label
   expect_error(
-    read_redcap(creds$REDCAP_URI, creds$REDCAPTIDIER_CLASSIC_API, raw_or_label = "bad option"),
+    read_redcap(Sys.getenv("REDCAP_URI"), Sys.getenv("REDCAPTIDIER_CLASSIC_API"), raw_or_label = "bad option"),
     class = "check_choice"
   )
 
   # forms
   expect_error(
-    read_redcap(creds$REDCAP_URI, creds$REDCAPTIDIER_CLASSIC_API, forms = 123),
+    read_redcap(Sys.getenv("REDCAP_URI"), Sys.getenv("REDCAPTIDIER_CLASSIC_API"), forms = 123),
     class = "check_character"
   )
 
   # export_survey_fields
   expect_error(
-    read_redcap(creds$REDCAP_URI, creds$REDCAPTIDIER_CLASSIC_API, export_survey_fields = 123),
+    read_redcap(Sys.getenv("REDCAP_URI"), Sys.getenv("REDCAPTIDIER_CLASSIC_API"), export_survey_fields = 123),
     class = "check_logical"
   )
   expect_error(
-    read_redcap(creds$REDCAP_URI, creds$REDCAPTIDIER_CLASSIC_API, export_survey_fields = c(TRUE, TRUE)),
+    read_redcap(Sys.getenv("REDCAP_URI"), Sys.getenv("REDCAPTIDIER_CLASSIC_API"), export_survey_fields = c(TRUE, TRUE)),
     class = "check_logical"
   )
 
   # suppress_redcapr_messages
   expect_error(
-    read_redcap(creds$REDCAP_URI, creds$REDCAPTIDIER_CLASSIC_API, suppress_redcapr_messages = 123),
+    read_redcap(Sys.getenv("REDCAP_URI"), Sys.getenv("REDCAPTIDIER_CLASSIC_API"), suppress_redcapr_messages = 123),
     class = "check_logical"
   )
   expect_error(
-    read_redcap(creds$REDCAP_URI, creds$REDCAPTIDIER_CLASSIC_API, suppress_redcapr_messages = c(TRUE, TRUE)),
+    read_redcap(Sys.getenv("REDCAP_URI"), Sys.getenv("REDCAPTIDIER_CLASSIC_API"), suppress_redcapr_messages = c(TRUE, TRUE)),
     class = "check_logical"
   )
 
   # export_data_access_group
   expect_error(
-    read_redcap(creds$REDCAP_URI, creds$REDCAPTIDIER_DAG_API, export_data_access_groups = "TRUE"),
+    read_redcap(Sys.getenv("REDCAP_URI"), Sys.getenv("REDCAPTIDIER_DAG_API"), export_data_access_groups = "TRUE"),
     class = "check_logical"
   )
   expect_error(
-    read_redcap(creds$REDCAP_URI, creds$REDCAPTIDIER_DAG_API, export_data_access_groups = 123),
+    read_redcap(Sys.getenv("REDCAP_URI"), Sys.getenv("REDCAPTIDIER_DAG_API"), export_data_access_groups = 123),
     class = "check_logical"
   )
   expect_error(
-    read_redcap(creds$REDCAP_URI, creds$REDCAPTIDIER_DAG_API, export_data_access_groups = c(TRUE, TRUE)),
+    read_redcap(Sys.getenv("REDCAP_URI"), Sys.getenv("REDCAPTIDIER_DAG_API"), export_data_access_groups = c(TRUE, TRUE)),
     class = "check_logical"
   )
 })
 
 test_that("read_redcap returns S3 object", {
-  httptest::with_mock_api({
-    out <- read_redcap(creds$REDCAP_URI, creds$REDCAPTIDIER_LONGITUDINAL_API)
-  })
+  out <- read_redcap(Sys.getenv("REDCAP_URI"), Sys.getenv("REDCAPTIDIER_LONGITUDINAL_API"))
 
   expect_s3_class(out, "redcap_supertbl")
 })
 
 test_that("read_redcap handles access restrictions", {
   # Warns due to partial data access
-  httptest::with_mock_api({
-    read_redcap(creds$REDCAP_URI, creds$REDCAPTIDIER_RESTRICTED_ACCESS_API) %>%
-      expect_warning(class = "partial_data_access")
-  })
+  read_redcap(Sys.getenv("REDCAP_URI"), Sys.getenv("REDCAPTIDIER_RESTRICTED_ACCESS_API")) %>%
+    expect_warning(class = "partial_data_access")
 
-  httptest::with_mock_api({
-    out <- read_redcap(creds$REDCAP_URI, creds$REDCAPTIDIER_RESTRICTED_ACCESS_API) %>%
-      suppressWarnings(classes = "redcap_user_rights")
-  })
+  out <- read_redcap(Sys.getenv("REDCAP_URI"), Sys.getenv("REDCAPTIDIER_RESTRICTED_ACCESS_API")) %>%
+    suppressWarnings(classes = "redcap_user_rights")
 
   # Response has expected instruments
   expect_equal(out$redcap_form_name, c("full_access", "remove_phi_access", "deidentify_phi_access"))
 
   # Errors if only instruments with no access were requested
-  httptest::with_mock_api({
-    read_redcap(creds$REDCAP_URI, creds$REDCAPTIDIER_RESTRICTED_ACCESS_API, forms = "no_access") %>%
-      expect_error(class = "no_data_access")
-  })
+  read_redcap(Sys.getenv("REDCAP_URI"), Sys.getenv("REDCAPTIDIER_RESTRICTED_ACCESS_API"), forms = "no_access") %>%
+    expect_error(class = "no_data_access")
 })
 
 test_that("read_redcap returns expected vals from repeating events databases", {
-  httptest::with_mock_api({
-    out <- read_redcap(creds$REDCAP_URI, creds$REDCAPTIDIER_REPEATING_EVENT_API)
-  })
+  out <- read_redcap(Sys.getenv("REDCAP_URI"), Sys.getenv("REDCAPTIDIER_REPEATING_EVENT_API"))
 
   nonrepeat_out <- out %>%
     filter(redcap_form_name == "nr_instrument") %>%
@@ -539,9 +490,7 @@ test_that("read_redcap returns expected vals from repeating events databases", {
 })
 
 test_that("read_redcap works for a large sparse database", {
-  httptest::with_mock_api({
-    out <- read_redcap(creds$REDCAP_URI, creds$REDCAPTIDIER_LARGE_SPARSE_API)
-  })
+  out <- read_redcap(Sys.getenv("REDCAP_URI"), Sys.getenv("REDCAPTIDIER_LARGE_SPARSE_API"))
 
   expected_col_types <- c(
     "numeric",
@@ -572,12 +521,10 @@ test_that("read_redcap works for a large sparse database", {
     vapply(class, character(1)) %>%
     expect_equal(expected_col_types)
 
-  httptest::with_mock_api({
-    out_low_max <- read_redcap(creds$REDCAP_URI,
-      creds$REDCAPTIDIER_LARGE_SPARSE_API,
-      guess_max = 500
-    )
-  })
+  out_low_max <- read_redcap(Sys.getenv("REDCAP_URI"),
+    Sys.getenv("REDCAPTIDIER_LARGE_SPARSE_API"),
+    guess_max = 500
+  )
 
   out_low_max %>%
     extract_tibble("form_1") %>%
@@ -586,12 +533,10 @@ test_that("read_redcap works for a large sparse database", {
 })
 
 test_that("read_redcap works with non-longitudinal Data Access Groups", {
-  httptest::with_mock_api({
-    out_dag <- read_redcap(
-      creds$REDCAP_URI,
-      creds$REDCAPTIDIER_DAG_API
-    )
-  })
+  out_dag <- read_redcap(
+    Sys.getenv("REDCAP_URI"),
+    Sys.getenv("REDCAPTIDIER_DAG_API")
+  )
 
   # Check for expected column and data
   dag_data <- out_dag$redcap_data[[1]]
@@ -610,12 +555,10 @@ test_that("read_redcap works with non-longitudinal Data Access Groups", {
 })
 
 test_that("read_redcap works with longitudinal Data Access Groups", {
-  httptest::with_mock_api({
-    out_dag_long <- read_redcap(
-      creds$REDCAP_URI,
-      creds$REDCAPTIDIER_LONGITUDINAL_DAG_API
-    )
-  })
+  out_dag_long <- read_redcap(
+    Sys.getenv("REDCAP_URI"),
+    Sys.getenv("REDCAPTIDIER_LONGITUDINAL_DAG_API")
+  )
 
   # Check for expected column and data
   dag_data_long <- out_dag_long$redcap_data[[1]]
@@ -634,18 +577,16 @@ test_that("read_redcap works with longitudinal Data Access Groups", {
 })
 
 test_that("read_redcap doesn't return the redcap_data_access_group column for non DAG databases", {
-  httptest::with_mock_api({
-    out_no_dag <- read_redcap(
-      creds$REDCAP_URI,
-      creds$REDCAPTIDIER_CLASSIC_API
-    ) %>%
-      # suppress expected warning
-      suppressWarnings(classes = c(
-        "field_missing_categories",
-        "empty_parse_warning",
-        "duplicate_labels"
-      ))
-  })
+  out_no_dag <- read_redcap(
+    Sys.getenv("REDCAP_URI"),
+    Sys.getenv("REDCAPTIDIER_CLASSIC_API")
+  ) %>%
+    # suppress expected warning
+    suppressWarnings(classes = c(
+      "field_missing_categories",
+      "empty_parse_warning",
+      "duplicate_labels"
+    ))
 
   # retrieve all names from all redcap_data list elements
   no_dag_all_names <- lapply(out_no_dag$redcap_data, names) %>% unlist()
@@ -654,22 +595,18 @@ test_that("read_redcap doesn't return the redcap_data_access_group column for no
 
 test_that("read_redcap fails if DAG or survey columns are explicitly requested but don't exist", {
   expect_error(
-    httptest::with_mock_api({
-      out_no_dag <- read_redcap(creds$REDCAP_URI,
-        creds$REDCAPTIDIER_CLASSIC_API,
-        export_data_access_groups = TRUE
-      )
-    }),
+    out_no_dag <- read_redcap(Sys.getenv("REDCAP_URI"),
+      Sys.getenv("REDCAPTIDIER_CLASSIC_API"),
+      export_data_access_groups = TRUE
+    ),
     class = "nonexistent_arg_requested"
   )
 
   expect_error(
-    httptest::with_mock_api({
-      out_no_dag <- read_redcap(creds$REDCAP_URI,
-        creds$REDCAPTIDIER_DAG_API,
-        export_survey_fields = TRUE
-      )
-    }),
+    out_no_dag <- read_redcap(Sys.getenv("REDCAP_URI"),
+      Sys.getenv("REDCAPTIDIER_DAG_API"),
+      export_survey_fields = TRUE
+    ),
     class = "nonexistent_arg_requested"
   )
 })
