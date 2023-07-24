@@ -9,6 +9,9 @@ on:
     types: [published]
   workflow_dispatch:
 
+env:
+  NOT_CRAN: true
+
 name: pkgdown
 
 jobs:

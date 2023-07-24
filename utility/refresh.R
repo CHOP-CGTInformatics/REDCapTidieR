@@ -13,8 +13,10 @@ devtools::document()
 devtools::check_man() #Should return NULL
 # Dont use clean_vignettes, does not work with Mock APIs from httptest
 # Therefore set clean = F
-# devtools::clean_vignettes()
-devtools::build_vignettes(clean = F)
+withr::with_envvar(
+  new = c("NOT_CRAN" = "true"),
+  devtools::build_vignettes(clean = FALSE)
+)
 
 checks_to_exclude <- c(
   "covr",
@@ -33,7 +35,11 @@ gp
 
 devtools::document()
 pkgdown::clean_site()
-pkgdown::build_site()
+withr::with_envvar(
+  new = c("NOT_CRAN" = "true"),
+  pkgdown::build_site()
+)
+
 
 devtools::run_examples(); #dev.off() #This overwrites the NAMESPACE file too
 # pkgload::load_all()
@@ -44,6 +50,8 @@ source("utility/test_creds.R")
 
 # devtools::check(force_suggests = FALSE)
 devtools::check(cran=TRUE)
+# check as CRAN
+devtools::check(cran=TRUE, env_vars = c(NOT_CRAN = ""))
 devtools::check( # Equivalent of R-hub
   manual    = TRUE,
   remote    = TRUE,

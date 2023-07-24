@@ -1,31 +1,48 @@
-structure(list(url = "https://my.institution.edu/redcap/api/", 
-    status_code = 403L, headers = structure(list(date = "Mon, 17 Jul 2023 16:11:17 GMT", 
-        server = "Apache", expires = "0", `cache-control` = "no-store, no-cache, must-revalidate", 
-        pragma = "no-cache", `x-xss-protection` = "1;  mode=block", 
-        `x-content-type-options` = "nosniff", `access-control-allow-origin` = "*", 
-        `strict-transport-security` = "max-age=31536000; includeSubdomains;", 
-        `redcap-random-text` = "c", `content-encoding` = "gzip", 
-        vary = "Accept-Encoding", `x-frame-options` = "SAMEORIGIN", 
-        `access-control-allow-headers` = "Origin, X-Requested-With, Content-Type, Accept", 
-        `x-ua-compatible` = "IE=edge,chrome=1", connection = "close", 
-        `transfer-encoding` = "chunked", `content-type` = "application/json; charset=utf-8"), class = c("insensitive", 
-    "list")), all_headers = list(list(status = 403L, version = "HTTP/1.1", 
-        headers = structure(list(date = "Mon, 17 Jul 2023 16:11:17 GMT", 
-            server = "Apache", expires = "0", `cache-control` = "no-store, no-cache, must-revalidate", 
-            pragma = "no-cache", `x-xss-protection` = "1;  mode=block", 
-            `x-content-type-options` = "nosniff", `access-control-allow-origin` = "*", 
-            `strict-transport-security` = "max-age=31536000; includeSubdomains;", 
-            `redcap-random-text` = "c", `content-encoding` = "gzip", 
-            vary = "Accept-Encoding", `x-frame-options` = "SAMEORIGIN", 
-            `access-control-allow-headers` = "Origin, X-Requested-With, Content-Type, Accept", 
-            `x-ua-compatible` = "IE=edge,chrome=1", connection = "close", 
-            `transfer-encoding` = "chunked", `content-type` = "application/json; charset=utf-8"), class = c("insensitive", 
-        "list")))), cookies = structure(list(domain = logical(0), 
-        flag = logical(0), path = logical(0), secure = logical(0), 
-        expiration = structure(numeric(0), class = c("POSIXct", 
-        "POSIXt")), name = logical(0), value = logical(0)), row.names = integer(0), class = "data.frame"), 
-    content = charToRaw("{\"error\":\"You do not have permissions to use the API\"}"), 
-    date = structure(1689610277, class = c("POSIXct", "POSIXt"
-    ), tzone = "GMT"), times = c(redirect = 0, namelookup = 1.4e-05, 
-    connect = 0.007789, pretransfer = 0.023498, starttransfer = 0.157976, 
-    total = 0.15808)), class = "response")
+structure(list(
+  url = "https://my.institution.edu/redcap/api/",
+  status_code = 403L, headers = structure(list(
+    date = "Mon, 17 Jul 2023 16:11:17 GMT",
+    server = "Apache", expires = "0", `cache-control` = "no-store, no-cache, must-revalidate",
+    pragma = "no-cache", `x-xss-protection` = "1;  mode=block",
+    `x-content-type-options` = "nosniff", `access-control-allow-origin` = "*",
+    `strict-transport-security` = "max-age=31536000; includeSubdomains;",
+    `redcap-random-text` = "c", `content-encoding` = "gzip",
+    vary = "Accept-Encoding", `x-frame-options` = "SAMEORIGIN",
+    `access-control-allow-headers` = "Origin, X-Requested-With, Content-Type, Accept",
+    `x-ua-compatible` = "IE=edge,chrome=1", connection = "close",
+    `transfer-encoding` = "chunked", `content-type` = "application/json; charset=utf-8"
+  ), class = c(
+    "insensitive",
+    "list"
+  )), all_headers = list(list(
+    status = 403L, version = "HTTP/1.1",
+    headers = structure(list(
+      date = "Mon, 17 Jul 2023 16:11:17 GMT",
+      server = "Apache", expires = "0", `cache-control` = "no-store, no-cache, must-revalidate",
+      pragma = "no-cache", `x-xss-protection` = "1;  mode=block",
+      `x-content-type-options` = "nosniff", `access-control-allow-origin` = "*",
+      `strict-transport-security` = "max-age=31536000; includeSubdomains;",
+      `redcap-random-text` = "c", `content-encoding` = "gzip",
+      vary = "Accept-Encoding", `x-frame-options` = "SAMEORIGIN",
+      `access-control-allow-headers` = "Origin, X-Requested-With, Content-Type, Accept",
+      `x-ua-compatible` = "IE=edge,chrome=1", connection = "close",
+      `transfer-encoding` = "chunked", `content-type` = "application/json; charset=utf-8"
+    ), class = c(
+      "insensitive",
+      "list"
+    ))
+  )), cookies = structure(list(
+    domain = logical(0),
+    flag = logical(0), path = logical(0), secure = logical(0),
+    expiration = structure(numeric(0), class = c(
+      "POSIXct",
+      "POSIXt"
+    )), name = logical(0), value = logical(0)
+  ), row.names = integer(0), class = "data.frame"),
+  content = charToRaw("{\"error\":\"You do not have permissions to use the API\"}"),
+  date = structure(1689610277, class = c("POSIXct", "POSIXt"), tzone = "GMT"), times = c(
+    redirect = 0, namelookup = 1.4e-05,
+    connect = 0.007789, pretransfer = 0.023498, starttransfer = 0.157976,
+    total = 0.15808
+  )
+), class = "response")

@@ -566,7 +566,7 @@ check_arg_is_valid_extension <- function(x,
 
 
 #' @title
-#' Check requested data arg exists in REDCap data
+#' Check requested data argument exists in REDCap data
 #'
 #' @description
 #' Provide an error message when an argument is requested, but is not found in

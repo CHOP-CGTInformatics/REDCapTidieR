@@ -1,3 +1,5 @@
+skip_on_cran()
+
 # Tell httptest where to looks for mocks
 # Need this here since devtools::test_path doesn't work in helper.R
 # https://github.com/r-lib/testthat/issues/1270
