@@ -42,7 +42,7 @@ test_that("extract_tibbles works with a vector and tidyselect selectors", {
     expected_traditional_out
   )
   expect_error(redcaptidier_longitudintal_db %>%
-    extract_tibbles(tbls = c("repeated", "fake_instrument_name")))
+                 extract_tibbles(tbls = c("repeated", "fake_instrument_name")))
 
   expect_error(extract_tibbles(123), class = "check_supertbl")
 })

@@ -125,11 +125,11 @@ check_repeat_and_nonrepeat <- function(db_data, call = caller_env()) {
   check_data <- function(db_data, check_col) {
     # Repeating Check
     rep <- any(!is.na(db_data[{{ check_col }}]) &
-      !is.na(db_data["redcap_repeat_instrument"]))
+                 !is.na(db_data["redcap_repeat_instrument"]))
 
     # Nonrepeating Check
     nonrep <- any(!is.na(db_data[{{ check_col }}]) &
-      is.na(db_data["redcap_repeat_instrument"]))
+                    is.na(db_data["redcap_repeat_instrument"]))
 
     rep & nonrep
   }

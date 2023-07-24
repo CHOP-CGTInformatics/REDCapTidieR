@@ -4,10 +4,8 @@
 classic_token <- Sys.getenv(
   "REDCAPTIDIER_CLASSIC_API"
 )
-classic_norepeat_token <- Sys.getenv(
-  "REDCAPTIDIER_CLASSIC_NOREPEAT_API")
-longitudinal_token <- Sys.getenv("REDCAPTIDIER_LONGITUDINAL_API"
-)
+classic_norepeat_token <- Sys.getenv("REDCAPTIDIER_CLASSIC_NOREPEAT_API")
+longitudinal_token <- Sys.getenv("REDCAPTIDIER_LONGITUDINAL_API")
 longitudinal_norepeat_token <- Sys.getenv(
   "REDCAPTIDIER_LONGITUDINAL_NOREPEAT_API"
 )
@@ -131,6 +129,5 @@ linked_arms_long_noarms <- link_arms(redcap_uri = redcap_uri,
 saveRDS(linked_arms_long_noarms, "inst/testdata/linked_arms_long_noarms.RDS")
 
 # REDCapTidieR Longitudinal Output ----
-read_redcap(redcap_uri = redcap_uri,
-                 token = longitudinal_token) %>%
+read_redcap(redcap_uri = redcap_uri, token = longitudinal_token) %>%
   saveRDS("inst/testdata/redcaptidier_longitudinal_db.RDS")

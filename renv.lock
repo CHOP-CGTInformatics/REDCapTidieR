@@ -901,18 +901,16 @@
     },
     "lintr": {
       "Package": "lintr",
-      "Version": "3.0.1",
+      "Version": "3.1.0",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "41ca4b419351698a49c3a74f0281ffbd",
+      "Hash": "2b4b803af6017e93b67ddaf0eacba918",
       "Requirements": [
         "backports",
         "codetools",
-        "crayon",
         "cyclocomp",
         "digest",
         "glue",
-        "jsonlite",
         "knitr",
         "rex",
         "xml2",
@@ -1558,10 +1556,10 @@
     },
     "styler": {
       "Package": "styler",
-      "Version": "1.9.0",
+      "Version": "1.10.1",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "1c038945a5e14cce208f5214c1dd167c",
+      "Hash": "b0911fdb2c682f526f6e9c131fd40a1f",
       "Requirements": [
         "R.cache",
         "cli",
