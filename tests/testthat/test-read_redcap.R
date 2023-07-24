@@ -368,7 +368,10 @@ test_that("read_redcap errors with bad inputs", {
   expect_error(read_redcap(123, Sys.getenv("REDCAPTIDIER_CLASSIC_API")), class = "check_character")
   expect_error(read_redcap(letters[1:3], Sys.getenv("REDCAPTIDIER_CLASSIC_API")), class = "check_character")
   expect_error(read_redcap("https://www.google.com", Sys.getenv("REDCAPTIDIER_CLASSIC_API")), class = "cannot_post")
-  expect_error(read_redcap("https://www.google.comm", Sys.getenv("REDCAPTIDIER_CLASSIC_API")), class = "cannot_resolve_host")
+  expect_error(
+    read_redcap("https://www.google.comm", Sys.getenv("REDCAPTIDIER_CLASSIC_API")),
+    class = "cannot_resolve_host"
+  )
 
   # token
   expect_error(read_redcap(Sys.getenv("REDCAP_URI"), 123), class = "check_character")
@@ -412,7 +415,11 @@ test_that("read_redcap errors with bad inputs", {
     class = "check_logical"
   )
   expect_error(
-    read_redcap(Sys.getenv("REDCAP_URI"), Sys.getenv("REDCAPTIDIER_CLASSIC_API"), suppress_redcapr_messages = c(TRUE, TRUE)),
+    read_redcap(
+      Sys.getenv("REDCAP_URI"),
+      Sys.getenv("REDCAPTIDIER_CLASSIC_API"),
+      suppress_redcapr_messages = c(TRUE, TRUE)
+    ),
     class = "check_logical"
   )
 
@@ -426,7 +433,11 @@ test_that("read_redcap errors with bad inputs", {
     class = "check_logical"
   )
   expect_error(
-    read_redcap(Sys.getenv("REDCAP_URI"), Sys.getenv("REDCAPTIDIER_DAG_API"), export_data_access_groups = c(TRUE, TRUE)),
+    read_redcap(
+      Sys.getenv("REDCAP_URI"),
+      Sys.getenv("REDCAPTIDIER_DAG_API"),
+      export_data_access_groups = c(TRUE, TRUE)
+    ),
     class = "check_logical"
   )
 })
