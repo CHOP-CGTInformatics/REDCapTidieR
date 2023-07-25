@@ -11,8 +11,10 @@ styler::style_pkg()
 
 devtools::document()
 devtools::check_man() #Should return NULL
-# Dont use clean_vignettes, does not work with Mock APIs from httptest
-# Therefore set clean = F
+
+# Run as not CRAN to build full vignettes
+# devtools::check() sets NOT_CRAN = "true" by default but must set it manually
+# as needed for other devtools functions
 withr::with_envvar(
   new = c("NOT_CRAN" = "true"),
   devtools::build_vignettes()
@@ -35,11 +37,11 @@ gp
 
 devtools::document()
 pkgdown::clean_site()
+# Run as not CRAN to build full vignettes
 withr::with_envvar(
   new = c("NOT_CRAN" = "true"),
   pkgdown::build_site()
 )
-
 
 devtools::run_examples(); #dev.off() #This overwrites the NAMESPACE file too
 # pkgload::load_all()
@@ -61,4 +63,9 @@ devtools::check( # Equivalent of R-hub
 # devtools::check_win_devel(email = "richardshanna91@gmail.com") # CRAN submission policies encourage the development version
 # Note: Must be off of VPN
 revdepcheck::revdep_check(num_workers = 4)
-# devtools::release(check=FALSE) #Careful, the last question ultimately uploads it to CRAN, where you can't delete/reverse your decision.
+# Careful, the last question ultimately uploads it to CRAN, where you can't delete/reverse your decision.
+# Run as not CRAN to build full vignettes
+# withr::with_envvar(
+#   new = c("NOT_CRAN" = "true"),
+#   devtools::release(check=FALSE)
+# )
