@@ -1,24 +1,17 @@
 # Description
 
-Thank you for taking the time to review this submission and please reach out to either Stephan Kadauke or Richard Hanna for any questions, comments, or concerns.
+Thank you for taking the time to review this submission and please reach out to either Stephan Kadauke, Richard Hanna, or Ezra Porter for any questions, comments, or concerns.
 
-This submission includes new features, optimizations, and bug fixes. It also addresses feedback requesting the tarball size be reduced.
-
-### New Features
-
-* `read_redcap()` now supports REDCap projects with Data Access Groups
-* Two new functions are introduced: `write_redcap_xlsx()` and `add_skimr_metadata()` with associated documentation
-* Improved error message suite
-* Bug fixes
+This submission makes modifications to the test suite to be compatible with the upcoming release of REDCapR 1.2.0. There are no user-facing changes to functionality.
 
 ## Test environments
 
-1. Local macOS Ventura 13.2.1, R 4.2.0
+1. Local macOS Ventura 13.4, R 4.2.1
 2. R-hub
-    1. [Ubuntu Linux 20.04.1 LTS, R-release, GCC](https://builder.r-hub.io/status/REDCapTidieR_0.4.0.tar.gz-1567c0031be04352b70fb485f44e2b93)
-    2. [Fedora Linux, R-devel, clang, gfortran](https://builder.r-hub.io/status/REDCapTidieR_0.4.0.tar.gz-7e580ca7c42f47d79fc6b02b7777fbf6)
-    3. [Windows Server](https://builder.r-hub.io/status/REDCapTidieR_0.4.0.tar.gz-6a7b69a606ac45da97d9f5d5f6d6c1ff)
-3.  [win-builder](https://win-builder.r-project.org/d8dmbgX197E5/), development version.
+    1. [Ubuntu Linux 20.04.1 LTS, R-release, GCC](https://builder.r-hub.io/status/REDCapTidieR_0.4.0.9001.tar.gz-f853e048ec7949ed8b7de8b21bef7846)
+    2. [Fedora Linux, R-devel, clang, gfortran](https://builder.r-hub.io/status/REDCapTidieR_0.4.0.9001.tar.gz-cb2489664ff740b6a2f751757feb6c55)
+    3. [Windows Server](https://builder.r-hub.io/status/REDCapTidieR_0.4.0.9001.tar.gz-71108297d2fb4e5ea9a80e4eec49946d)
+3.  [win-builder](https://win-builder.r-project.org/EFDoel1TQ0VI/), development version.
 4.  [GiHub Actions](https://github.com/CHOP-CGTInformatics/REDCapTidieR/actions), Ubuntu 20.04.02 LTS
 
 ## R CMD check results:

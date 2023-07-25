@@ -35,7 +35,7 @@ vignette in \link[openxlsx2]{wb_add_data_table}). Default "tableStyleLight8".}
 A dataframe
 }
 \description{
-Internal helper function. Adds appropriate elements to wb object. Returns
+Internal helper function. Adds appropriate elements to \code{wb} object. Returns
 a dataframe.
 }
 \keyword{internal}

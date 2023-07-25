@@ -14,31 +14,17 @@ knitr::opts_chunk$set(
 )
 ```
 
+```{r, eval=!(Sys.getenv("NOT_CRAN") == "true"), include=FALSE}
+knitr::knit_exit()
+```
+
 ```{r, include = FALSE}
-library(httptest)
-# Make sure REDCapTidieR is loaded so httptest can find redact.R
-library(REDCapTidieR)
-
-# Use fake credentials if mocks exist, otherwise use real credentials to create mocks
-fake <- dir.exists("diving_deeper")
-
-creds <- REDCapTidieR:::get_credentials(
-  c(
-    "REDCAP_URI", "SUPERHEROES_REDCAP_API",
-    "REDCAPTIDIER_DEEP_DIVE_VIGNETTE_API",
-    "REDCAPTIDIER_CLASSIC_API",
-    "REDCAPTIDIER_DAG_API"
-  ),
-  fake = fake
-)
-
-redcap_uri <- creds$REDCAP_URI
-superheroes_token <- creds$SUPERHEROES_REDCAP_API
-longitudinal_token <- creds$REDCAPTIDIER_DEEP_DIVE_VIGNETTE_API
-survey_token <- creds$REDCAPTIDIER_CLASSIC_API
-dag_token <- creds$REDCAPTIDIER_DAG_API
-
-start_vignette("diving_deeper")
+# Load credentials
+redcap_uri <- Sys.getenv("REDCAP_URI")
+superheroes_token <- Sys.getenv("SUPERHEROES_REDCAP_API")
+longitudinal_token <- Sys.getenv("REDCAPTIDIER_DEEP_DIVE_VIGNETTE_API")
+survey_token <- Sys.getenv("REDCAPTIDIER_CLASSIC_API")
+dag_token <- Sys.getenv("REDCAPTIDIER_DAG_API")
 ```
 
 ## The Block Matrix
@@ -291,7 +277,3 @@ In summary, here are the rules by which REDCapTidieR constructs data tibbles:
 5.  Next, [data columns](glossary.html#data-column) appear in the same order as in the REDCap instrument. True/false [type](glossary.html#field-type) fields are converted to logical columns. Single-answer categorical fields are converted to [factor](glossary.html#factor) columns. Multi-answer checkbox fields are expanded to a set of logical columns, one for each [choice](glossary.html#choice).
 6.  If the instrument is used as a [survey](glossary.html#survey), the survey timestamp and identifier columns will appear next.
 7.  The final column is always `form_status_complete`.
-
-```{r, include=FALSE}
-end_vignette()
-```

@@ -38,10 +38,6 @@ read_redcap(redcap_uri, "CC0CE44238EF65C5DA26A55DD749AF7") # 31 hex characters
 
 read_redcap(redcap_uri, "CC0CE44238EF65C5DA26A55DD749AF7A") # will be rejected by server
 
-## deleted project
-
-read_redcap(redcap_uri, "AC1759E5D3E10EF64350B05F5A96DB5F")
-
 ## unexpected REDCapR error
 
 try_redcapr(list(success = FALSE, status_code = "", outcome_message = "This is an error message from REDCapR!"))

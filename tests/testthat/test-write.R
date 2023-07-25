@@ -1,9 +1,3 @@
-# Tell httptest where to looks for mocks
-# Need this here since devtools::test_path doesn't work in helper.R
-# https://github.com/r-lib/testthat/issues/1270
-# For use with snapshot tests at end of file
-httptest::.mockPaths(test_path("fixtures"))
-
 redcap_data_a <- tibble::tribble(
   ~record_id, ~col_a,
   1,          "A"
@@ -346,17 +340,16 @@ test_that("bind_supertbl_metadata works", {
 
 
 test_that("Combining skimr, labelled, and xlsx returns expected snapshot", {
-  httptest::with_mock_api({
-    out <-
-      read_redcap(creds$REDCAP_URI, creds$REDCAPTIDIER_CLASSIC_API) %>%
-      # Suppress expected warnings from the REDCapTidieR Classic database.
-      # Warnings here are meant to validate checks in other tests.
-      suppressWarnings(classes = c(
-        "field_missing_categories",
-        "empty_parse_warning",
-        "duplicate_labels"
-      ))
-  })
+  skip_on_cran()
+  out <-
+    read_redcap(Sys.getenv("REDCAP_URI"), Sys.getenv("REDCAPTIDIER_CLASSIC_API")) %>%
+    # Suppress expected warnings from the REDCapTidieR Classic database.
+    # Warnings here are meant to validate checks in other tests.
+    suppressWarnings(classes = c(
+      "field_missing_categories",
+      "empty_parse_warning",
+      "duplicate_labels"
+    ))
 
   withr::with_tempdir({
     wb_obj <- out %>%

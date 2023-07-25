@@ -2,7 +2,7 @@
 % Please edit documentation in R/checks.R
 \name{check_data_arg_exists}
 \alias{check_data_arg_exists}
-\title{Check requested data arg exists in REDCap data}
+\title{Check requested data argument exists in REDCap data}
 \usage{
 check_data_arg_exists(db_data, col, arg, call = caller_env())
 }

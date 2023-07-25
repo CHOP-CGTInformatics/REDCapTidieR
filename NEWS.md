@@ -1,3 +1,12 @@
+# REDCapTidieR 0.4.1
+
+Version 0.4.1 (Unreleased)
+==========================================================
+
+## Miscellaneous
+
+* Updated test suite to be compatible with REDCapR 1.2.0
+
 # REDCapTidieR 0.4.0
 
 Version 0.4.0 (Released 2023-06-02)
