@@ -2,7 +2,13 @@
 
 Thank you for taking the time to review this submission and please reach out to either Stephan Kadauke, Richard Hanna, or Ezra Porter for any questions, comments, or concerns.
 
-This submission makes modifications to the test suite to be compatible with the upcoming release of REDCapR 1.2.0. There are no user-facing changes to functionality.
+This submission makes modifications to the test suite to be compatible with the upcoming release of REDCapR 1.2.0. Our current test suite resulted in reverse dependency check failures
+when a new version of REDCapR was submitted to CRAN. We have coordinated with the author of
+REDCapR to resolve the reverse dependency check failures in this submission.
+
+## New Features
+
+There are no user-facing changes in this release.
 
 ## Test environments
 
