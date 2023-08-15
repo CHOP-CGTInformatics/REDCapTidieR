@@ -1,6 +1,6 @@
 # REDCapTidieR 0.4.1
 
-Version 0.4.1 (Unreleased)
+Version 0.4.1 (Released 2023-08-15)
 ==========================================================
 
 ## Miscellaneous
