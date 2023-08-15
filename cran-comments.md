@@ -17,7 +17,7 @@ There are no user-facing changes in this release.
     1. [Ubuntu Linux 20.04.1 LTS, R-release, GCC](https://builder.r-hub.io/status/REDCapTidieR_0.4.0.9001.tar.gz-f853e048ec7949ed8b7de8b21bef7846)
     2. [Fedora Linux, R-devel, clang, gfortran](https://builder.r-hub.io/status/REDCapTidieR_0.4.0.9001.tar.gz-cb2489664ff740b6a2f751757feb6c55)
     3. [Windows Server](https://builder.r-hub.io/status/REDCapTidieR_0.4.0.9001.tar.gz-71108297d2fb4e5ea9a80e4eec49946d)
-3.  [win-builder](https://win-builder.r-project.org/EFDoel1TQ0VI/), development version.
+3.  [win-builder](https://win-builder.r-project.org/9L4v1qQ3188p/), development version.
 4.  [GiHub Actions](https://github.com/CHOP-CGTInformatics/REDCapTidieR/actions), Ubuntu 20.04.02 LTS
 
 ## R CMD check results:

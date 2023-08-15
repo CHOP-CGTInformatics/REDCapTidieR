@@ -124,12 +124,10 @@ check_repeat_and_nonrepeat <- function(db_data, call = caller_env()) {
   # behavior in a given column and returns a boolean
   check_data <- function(db_data, check_col) {
     # Repeating Check
-    rep <- any(!is.na(db_data[{{ check_col }}]) &
-                 !is.na(db_data["redcap_repeat_instrument"]))
+    rep <- any(!is.na(db_data[{{ check_col }}]) & !is.na(db_data["redcap_repeat_instrument"]))
 
     # Nonrepeating Check
-    nonrep <- any(!is.na(db_data[{{ check_col }}]) &
-                    is.na(db_data["redcap_repeat_instrument"]))
+    nonrep <- any(!is.na(db_data[{{ check_col }}]) & is.na(db_data["redcap_repeat_instrument"]))
 
     rep & nonrep
   }
@@ -299,8 +297,9 @@ check_req_labelled_metadata_fields <- function(supertbl, call = caller_env()) {
 #' @importFrom cli cli_warn qty
 #' @importFrom rlang caller_env
 #'
-#' @param parsed_labs a vector of parsed labels produced by `parse_labels()`
+#' @param parsed_labels_output a vector of parsed labels produced by `parse_labels()`
 #' @param field_name the name of the field associated with the labels to use in the warning message
+#' @param warn_stripped_text logical for whether to include a note about HTML tag stripping in the message
 #' @param call the calling environment to use in the error message. The parent of calling environment
 #' by default because this check usually occurs 2 frames below the relevant context for the user
 #'

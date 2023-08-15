@@ -12,12 +12,14 @@ check_parsed_labels(
 )
 }
 \arguments{
+\item{parsed_labels_output}{a vector of parsed labels produced by \code{parse_labels()}}
+
 \item{field_name}{the name of the field associated with the labels to use in the warning message}
+
+\item{warn_stripped_text}{logical for whether to include a note about HTML tag stripping in the message}
 
 \item{call}{the calling environment to use in the error message. The parent of calling environment
 by default because this check usually occurs 2 frames below the relevant context for the user}
-
-\item{parsed_labs}{a vector of parsed labels produced by \code{parse_labels()}}
 }
 \value{
 a warning message alerting specifying the duplicate labels and REDCap field affected

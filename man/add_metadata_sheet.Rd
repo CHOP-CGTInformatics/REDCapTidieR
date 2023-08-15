@@ -17,6 +17,8 @@ add_metadata_sheet(
 \arguments{
 \item{supertbl}{a supertibble generated using \code{read_redcap()}}
 
+\item{supertbl_meta}{an \code{unnest}-ed metadata tibble from the supertibble}
+
 \item{wb}{An \code{openxlsx2} workbook object}
 
 \item{add_labelled_column_headers}{Whether or not to include labelled outputs.}
@@ -28,8 +30,6 @@ vignette in \link[openxlsx2]{wb_add_data_table}). Default "tableStyleLight8".}
 "auto", otherwise a numeric value. Standard Excel is 8.43.}
 
 \item{na_replace}{The value used to replace \code{NA} values in \code{supertbl}. The default is "".}
-
-\item{superbl_meta}{an \code{unnest}-ed metadata tibble from the supertibble}
 }
 \value{
 A dataframe

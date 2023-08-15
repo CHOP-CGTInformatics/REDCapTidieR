@@ -417,7 +417,7 @@ add_supertbl_toc <- function(wb,
 #' a dataframe.
 #'
 #' @param supertbl a supertibble generated using `read_redcap()`
-#' @param superbl_meta an `unnest`-ed metadata tibble from the supertibble
+#' @param supertbl_meta an `unnest`-ed metadata tibble from the supertibble
 #' @param wb An `openxlsx2` workbook object
 #' @param add_labelled_column_headers Whether or not to include labelled outputs.
 #' @param table_style Any excel table style name or "none" (see "formatting"
@@ -524,7 +524,7 @@ check_labelled <- function(supertbl, add_labelled_column_headers, call = caller_
 #' changes in supertbl tables.
 #'
 #' @param supertbl A supertibble generated using `read_redcap()`
-#' @param superbl_meta an `unnest`-ed metadata tibble from the supertibble
+#' @param supertbl_meta an `unnest`-ed metadata tibble from the supertibble
 #' @param add_labelled_column_headers Whether or not to include labelled outputs
 #'
 #' @importFrom dplyr mutate across case_when filter pull
