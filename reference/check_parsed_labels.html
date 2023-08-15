@@ -72,17 +72,21 @@
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-    <dl><dt>field_name</dt>
+    <dl><dt>parsed_labels_output</dt>
+<dd><p>a vector of parsed labels produced by <code><a href="parse_labels.html">parse_labels()</a></code></p></dd>
+
+
+<dt>field_name</dt>
 <dd><p>the name of the field associated with the labels to use in the warning message</p></dd>
+
+
+<dt>warn_stripped_text</dt>
+<dd><p>logical for whether to include a note about HTML tag stripping in the message</p></dd>
 
 
 <dt>call</dt>
 <dd><p>the calling environment to use in the error message. The parent of calling environment
 by default because this check usually occurs 2 frames below the relevant context for the user</p></dd>
-
-
-<dt>parsed_labs</dt>
-<dd><p>a vector of parsed labels produced by <code><a href="parse_labels.html">parse_labels()</a></code></p></dd>
 
 </dl></div>
     <div class="section level2">
