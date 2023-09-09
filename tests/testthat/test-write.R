@@ -35,12 +35,12 @@ test_that("write_redcap_xlsx without labels works", {
       include_toc_sheet = FALSE,
       recode_logical = FALSE
     )
-    sheet_1 <- openxlsx2::read_xlsx(xlsxFile = "supertbl_wb.xlsx", sheet = 1, startRow = 1)
+    sheet_1 <- openxlsx2::read_xlsx(file = "supertbl_wb.xlsx", sheet = 1, start_row = 1)
     # For some reason, read_xlsx resets row names and starts at 2, likely due
     # to reading the column names as a row
     rownames(sheet_1) <- seq_len(nrow(sheet_1))
 
-    sheet_2 <- openxlsx2::read_xlsx(xlsxFile = "supertbl_wb.xlsx", sheet = 2)
+    sheet_2 <- openxlsx2::read_xlsx(file = "supertbl_wb.xlsx", sheet = 2)
     rownames(sheet_2) <- seq_len(nrow(sheet_2))
 
     # Ignore attr applied by openxlsx2 read_xlsx
@@ -73,8 +73,8 @@ test_that("write_redcap_xlsx with labels works", {
       include_metadata_sheet = FALSE,
       recode_logical = FALSE
     )
-    sheet_1 <- openxlsx2::read_xlsx(xlsxFile = "labelled_supertbl_wb.xlsx", sheet = 1)
-    sheet_2 <- openxlsx2::read_xlsx(xlsxFile = "labelled_supertbl_wb.xlsx", sheet = 2)
+    sheet_1 <- openxlsx2::read_xlsx(file = "labelled_supertbl_wb.xlsx", sheet = 1)
+    sheet_2 <- openxlsx2::read_xlsx(file = "labelled_supertbl_wb.xlsx", sheet = 2)
 
     expect_equal(tibble::tibble(sheet_1), labelled_sheet_1, ignore_attr = TRUE)
     expect_equal(tibble::tibble(sheet_2), labelled_sheet_2, ignore_attr = TRUE)
@@ -107,10 +107,10 @@ test_that("write_redcap_xlsx has expected supertibble and metadata outputs", {
       include_metadata_sheet = TRUE,
       recode_logical = FALSE
     )
-    sheet_1 <- openxlsx2::read_xlsx(xlsxFile = "default_supertbl_wb.xlsx", sheet = 1)
+    sheet_1 <- openxlsx2::read_xlsx(file = "default_supertbl_wb.xlsx", sheet = 1)
     # Address rowname discrepancies
     rownames(sheet_1) <- seq_len(nrow(sheet_1))
-    sheet_4 <- openxlsx2::read_xlsx(xlsxFile = "default_supertbl_wb.xlsx", sheet = 4)
+    sheet_4 <- openxlsx2::read_xlsx(file = "default_supertbl_wb.xlsx", sheet = 4)
     rownames(sheet_4) <- seq_len(nrow(sheet_4))
 
     expect_equal(sheet_1, expected_supertibble, ignore_attr = TRUE)
@@ -140,12 +140,12 @@ test_that("write_redcap_xlsx has expected supertibble and metadata outputs", {
       recode_logical = FALSE
     )
     sheet_1 <- openxlsx2::read_xlsx(
-      xlsxFile = "default_labelled_supertbl_wb.xlsx",
+      file = "default_labelled_supertbl_wb.xlsx",
       sheet = 1,
-      sep.names = " "
+      sep.names = " " # This argument is unused, may warn at some point.
     )
     sheet_4 <- openxlsx2::read_xlsx(
-      xlsxFile = "default_labelled_supertbl_wb.xlsx",
+      file = "default_labelled_supertbl_wb.xlsx",
       sheet = 4,
       sep.names = " "
     )

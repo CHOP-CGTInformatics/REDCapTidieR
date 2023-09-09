@@ -96,6 +96,8 @@ write_redcap_xlsx <- function(supertbl,
   # Create Sheet Names ----
   # Assign sheet values based on use of labels
   # Enforce max length of 31 per Excel restrictions
+  # openxlsx2 v0.8 fixes that (see janmarvin/openxlsx2#705),
+  # this is no longer required.
   sheet_vals <- if (use_labels_for_sheet_names) {
     # Remove special characters from labelled sheet names that cause
     # openxlsx2 worksheet failures
@@ -158,8 +160,8 @@ write_redcap_xlsx <- function(supertbl,
 
       wb$add_data_table(
         sheet = y, x = x,
-        startRow = ifelse(add_labelled_column_headers, 2, 1),
-        tableStyle = table_style,
+        start_row = ifelse(add_labelled_column_headers, 2, 1),
+        table_style = table_style,
         na.strings = na_replace
       )
     }
@@ -205,8 +207,8 @@ write_redcap_xlsx <- function(supertbl,
   }
 
   # Export workbook object ----
-  wb$set_bookview(windowHeight = 130000, windowWidth = 6000)
-  wb$save(path = file, overwrite = overwrite)
+  wb$set_bookview(window_height = 130000, window_width = 6000)
+  wb$save(file = file, overwrite = overwrite)
 }
 
 #' @title Add labelled features to write_redcap_xlsx
@@ -262,7 +264,7 @@ add_labelled_xlsx_features <- function(supertbl,
 
     wb$add_data(
       sheet = "Table of Contents",
-      x = supertbl_labels, colNames = FALSE
+      x = supertbl_labels, col_names = FALSE
     )
   }
 
@@ -292,7 +294,7 @@ add_labelled_xlsx_features <- function(supertbl,
 
     wb$add_data(
       sheet = "REDCap Metadata",
-      x = supertbl_meta_labs, colNames = FALSE
+      x = supertbl_meta_labs, col_names = FALSE
     )
   }
 
@@ -302,7 +304,7 @@ add_labelled_xlsx_features <- function(supertbl,
   for (i in seq_along(supertbl$redcap_form_name)) {
     wb$add_data(
       sheet = sheet_vals[i],
-      x = var_labels[[i]], colNames = FALSE
+      x = var_labels[[i]], col_names = FALSE
     )
   }
 
@@ -312,7 +314,7 @@ add_labelled_xlsx_features <- function(supertbl,
     wb$add_cell_style(
       sheet = i,
       dims = dims,
-      wrapText = "1"
+      wrap_text = "1"
     )
     wb$add_font(
       sheet = i,
@@ -355,6 +357,7 @@ add_supertbl_toc <- function(wb,
                              column_width,
                              na_replace) {
   # To avoid XLSX indicators of "Number stored as text", change class type
+  # There is also a possibility to use openxlsx2::wb_add_ignore_error()
   convert_percent <- function(x) {
     class(x) <- c("numeric", "percentage")
     x
@@ -396,8 +399,8 @@ add_supertbl_toc <- function(wb,
   wb$add_data_table(
     sheet = "Table of Contents",
     x = supertbl_toc,
-    startRow = ifelse(add_labelled_column_headers, 2, 1),
-    tableStyle = table_style,
+    start_row = ifelse(add_labelled_column_headers, 2, 1),
+    table_style = table_style,
     na.strings = na_replace
   )
   wb$set_col_widths(
@@ -444,8 +447,8 @@ add_metadata_sheet <- function(supertbl,
   wb$add_data_table(
     sheet = "REDCap Metadata",
     x = supertbl_meta,
-    startRow = ifelse(add_labelled_column_headers, 2, 1),
-    tableStyle = table_style,
+    start_row = ifelse(add_labelled_column_headers, 2, 1),
+    table_style = table_style,
     na.strings = na_replace
   )
   wb$set_col_widths(
