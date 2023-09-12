@@ -96,8 +96,6 @@ write_redcap_xlsx <- function(supertbl,
   # Create Sheet Names ----
   # Assign sheet values based on use of labels
   # Enforce max length of 31 per Excel restrictions
-  # openxlsx2 v0.8 fixes that (see janmarvin/openxlsx2#705),
-  # this is no longer required.
   sheet_vals <- if (use_labels_for_sheet_names) {
     # Remove special characters from labelled sheet names that cause
     # openxlsx2 worksheet failures
@@ -357,7 +355,6 @@ add_supertbl_toc <- function(wb,
                              column_width,
                              na_replace) {
   # To avoid XLSX indicators of "Number stored as text", change class type
-  # There is also a possibility to use openxlsx2::wb_add_ignore_error()
   convert_percent <- function(x) {
     class(x) <- c("numeric", "percentage")
     x
