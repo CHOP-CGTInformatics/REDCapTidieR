@@ -34,7 +34,7 @@ Suggests:
     knitr,
     labelled,
     lintr,
-    openxlsx2,
+    openxlsx2 (>= 0.8),
     prettyunits,
     readr,
     rmarkdown,
