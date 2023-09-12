@@ -141,13 +141,11 @@ test_that("write_redcap_xlsx has expected supertibble and metadata outputs", {
     )
     sheet_1 <- openxlsx2::read_xlsx(
       file = "default_labelled_supertbl_wb.xlsx",
-      sheet = 1,
-      sep.names = " " # This argument is unused, may warn at some point.
+      sheet = 1
     )
     sheet_4 <- openxlsx2::read_xlsx(
       file = "default_labelled_supertbl_wb.xlsx",
-      sheet = 4,
-      sep.names = " "
+      sheet = 4
     )
 
     expect_setequal(names(sheet_1), expected_supertibble_labels)
