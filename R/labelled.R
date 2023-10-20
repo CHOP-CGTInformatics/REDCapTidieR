@@ -22,11 +22,6 @@
 #' - A vector or list of label formatting functions or function names to be applied
 #'   in order. Note that ordering may affect results.
 #'
-#' @importFrom dplyr %>%
-#' @importFrom purrr map map2
-#' @importFrom rlang check_installed
-#' @importFrom checkmate assert_data_frame
-#'
 #' @return
 #' A labelled supertibble.
 #'
@@ -200,7 +195,6 @@ make_labelled <- function(supertbl, format_labels = NULL) {
 NULL
 
 #' @rdname format-helpers
-#' @importFrom stringr str_squish str_trim
 #' @export
 fmt_strip_whitespace <- function(x) {
   x %>%
@@ -209,28 +203,24 @@ fmt_strip_whitespace <- function(x) {
 }
 
 #' @rdname format-helpers
-#' @importFrom stringr str_replace
 #' @export
 fmt_strip_trailing_colon <- function(x) {
   str_replace(x, ":$", "")
 }
 
 #' @rdname format-helpers
-#' @importFrom stringr str_replace
 #' @export
 fmt_strip_trailing_punct <- function(x) {
   str_replace(x, "[:punct:]$", "")
 }
 
 #' @rdname format-helpers
-#' @importFrom stringr str_replace_all
 #' @export
 fmt_strip_html <- function(x) {
   str_replace_all(x, "<.+?\\>", "")
 }
 
 #' @rdname format-helpers
-#' @importFrom stringr str_replace_all
 #' @export
 fmt_strip_field_embedding <- function(x) {
   str_replace_all(x, "\\{.+?\\}", "")
@@ -245,10 +235,6 @@ fmt_strip_field_embedding <- function(x) {
 #' \code{caller_env(n = 2)}, uses the environment from which the user called
 #' \code{make_labelled()}
 #' @param call the calling environment to use in the error message
-#'
-#' @importFrom purrr map compose
-#' @importFrom rlang !!! as_closure caller_env is_bare_formula
-#' @importFrom cli cli_abort
 #'
 #' @return a function
 #'

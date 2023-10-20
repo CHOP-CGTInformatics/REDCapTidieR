@@ -18,12 +18,6 @@
 #' can access dataframes under the \code{redcap_data} column with reference to
 #' \code{form_name} and \code{structure} column details.
 #'
-#' @importFrom checkmate assert_data_frame
-#' @importFrom dplyr filter pull
-#' @importFrom purrr map
-#' @importFrom tibble tibble
-#' @importFrom rlang .data
-#'
 #' @keywords internal
 
 clean_redcap_long <- function(db_data_long,
@@ -117,12 +111,6 @@ clean_redcap_long <- function(db_data_long,
 #' \code{REDCapR::redcap_metadata_read()$data}
 #' @param linked_arms Output of \code{link_arms}, linking instruments to REDCap
 #' events/arms
-#'
-#' @importFrom dplyr filter pull select relocate rename
-#' @importFrom tidyselect all_of everything any_of
-#' @importFrom tibble tibble
-#' @importFrom stringr str_detect
-#' @importFrom rlang .data
 #'
 #' @keywords internal
 
@@ -248,11 +236,6 @@ distill_nonrepeat_table_long <- function(form_name,
 #' @param linked_arms Output of \code{link_arms}, linking instruments to REDCap
 #' events/arms
 #'
-#' @importFrom dplyr filter pull select relocate rename
-#' @importFrom tidyselect all_of everything any_of
-#' @importFrom tibble tibble
-#' @importFrom stringr str_detect
-#' @importFrom rlang .data
 #' @keywords internal
 
 distill_repeat_table_long <- function(form_name,

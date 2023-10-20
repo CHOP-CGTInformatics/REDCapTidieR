@@ -27,13 +27,6 @@
 #' @param na_replace The value used to replace `NA` values in `supertbl`. The default is "".
 #' @param overwrite If `FALSE`, will not overwrite `file` when it exists. The default is `FALSE`.
 #'
-#' @importFrom purrr map map2
-#' @importFrom stringr str_trunc str_replace_all str_squish
-#' @importFrom dplyr select pull
-#' @importFrom rlang check_installed
-#' @importFrom lubridate is.period is.difftime
-#' @importFrom tidyselect where
-#'
 #' @return
 #' An `openxlsx2` workbook object, invisibly
 #'
@@ -226,12 +219,6 @@ write_redcap_xlsx <- function(supertbl,
 #' @param supertbl_toc The table of contents supertibble defined in the parent
 #' function. Default `NULL`.
 #'
-#' @importFrom purrr map pluck
-#' @importFrom tidyr pivot_wider
-#' @importFrom dplyr select filter relocate mutate if_else
-#' @importFrom rlang check_installed .data
-#' @importFrom tidyselect any_of
-#'
 #' @keywords internal
 
 add_labelled_xlsx_features <- function(supertbl,
@@ -340,9 +327,6 @@ add_labelled_xlsx_features <- function(supertbl,
 #' "auto", otherwise a numeric value. Standard Excel is 8.43.
 #' @param na_replace The value used to replace `NA` values in `supertbl`. The default is "".
 #'
-#' @importFrom dplyr select mutate row_number across
-#' @importFrom tidyselect any_of
-#'
 #' @returns A dataframe
 #'
 #' @keywords internal
@@ -426,9 +410,6 @@ add_supertbl_toc <- function(wb,
 #' "auto", otherwise a numeric value. Standard Excel is 8.43.
 #' @param na_replace The value used to replace `NA` values in `supertbl`. The default is "".
 #'
-#' @importFrom dplyr select filter
-#' @importFrom tidyr unnest
-#'
 #' @returns A dataframe
 #'
 #' @keywords internal
@@ -464,10 +445,6 @@ add_metadata_sheet <- function(supertbl,
 #' @param supertbl a supertibble generated using `read_redcap()`
 #' @param add_labelled_column_headers Whether or not to include labelled outputs
 #' @param call the calling environment to use in the warning message
-#'
-#' @importFrom cli cli_abort
-#' @importFrom rlang caller_env is_installed
-#' @importFrom purrr some
 #'
 #' @returns A boolean
 #'
@@ -527,10 +504,6 @@ check_labelled <- function(supertbl, add_labelled_column_headers, call = caller_
 #' @param supertbl_meta an `unnest`-ed metadata tibble from the supertibble
 #' @param add_labelled_column_headers Whether or not to include labelled outputs
 #'
-#' @importFrom dplyr mutate across case_when filter pull
-#' @importFrom purrr map
-#' @importFrom tidyselect any_of
-#'
 #' @keywords internal
 supertbl_recode <- function(supertbl, supertbl_meta, add_labelled_column_headers) {
   # Recode yesno from TRUE/FALSE to "yes"/"no"
@@ -583,11 +556,6 @@ supertbl_recode <- function(supertbl, supertbl_meta, add_labelled_column_headers
 #' supports creating the metadata XLSX sheet as well as `supertbl_recode`.
 #'
 #' @param supertbl A supertibble generated using `read_redcap()`
-#'
-#' @importFrom dplyr filter select mutate case_when pull
-#' @importFrom tidyr unnest
-#' @importFrom lubridate is.period is.difftime
-#' @importFrom tidyselect where
 #'
 #' @keywords internal
 

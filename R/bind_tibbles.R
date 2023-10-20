@@ -17,10 +17,6 @@
 #' @param tbls A vector of the `redcap_form_name`s of the data tibbles to bind to
 #' the environment. Default is `NULL` which binds all data tibbles.
 #'
-#' @importFrom dplyr filter pull %>%
-#' @importFrom rlang env_poke current_env new_environment global_env .data
-#' @importFrom purrr map2 pluck
-#'
 #' @examples
 #' \dontrun{
 #' # Create an empty environment
