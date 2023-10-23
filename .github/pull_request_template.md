@@ -19,14 +19,13 @@ Before submitting this PR, please check and verify below that the submission mee
 
 - [ ] New/revised functions have associated tests
 - [ ] New/revised functions that update downstream outputs have associated static testing files (`.RDS`) updated under `inst/testdata/create_test_data.R`
-- [ ] New tests that make API calls use `httptest::with_mock_api` and any new mocks were added to `tests/testthat/fixtures/create_httptest_mocks.R`
 - [ ] New/revised functions use appropriate naming conventions
 - [ ] New/revised functions don't repeat code
 - [ ] Code changes are less than **250** lines total
 - [ ] Issues linked to the PR using [GitHub's list of keywords](https://docs.github.com/en/issues/tracking-your-work-with-issues/linking-a-pull-request-to-an-issue)
 - [ ] The appropriate reviewer is assigned to the PR
 - [ ] The appropriate developers are assigned to the PR
-- [ ] Pre-release package version incremented using `usethis::use_dev_version()`
+- [ ] Pre-release package version incremented using `usethis::use_version()`
 
 # Code Review
 This section to be used by the reviewer and developers during Code Review after PR submission

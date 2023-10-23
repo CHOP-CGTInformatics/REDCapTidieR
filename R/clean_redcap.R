@@ -16,14 +16,6 @@
 #' can access dataframes under the \code{redcap_data} column with reference to
 #' \code{form_name} and \code{structure} column details.
 #'
-#' @importFrom
-#' checkmate assert_data_frame expect_logical expect_factor expect_character
-#' expect_double
-#' @importFrom dplyr filter pull
-#' @importFrom purrr map
-#' @importFrom tibble tibble
-#' @importFrom rlang .data
-#'
 #' @keywords internal
 
 clean_redcap <- function(db_data,
@@ -107,11 +99,6 @@ clean_redcap <- function(db_data,
 #' \code{REDCapR::redcap_read_oneshot()$data}
 #' @param db_metadata The REDCap metadata output defined by
 #' \code{REDCapR::redcap_metadata_read()$data}
-#'
-#' @importFrom dplyr filter pull select relocate rename
-#' @importFrom tidyselect all_of everything starts_with any_of
-#' @importFrom tibble tibble
-#' @importFrom rlang .data
 #'
 #' @keywords internal
 
@@ -202,11 +189,6 @@ distill_nonrepeat_table <- function(form_name,
 #' \code{REDCapR::redcap_read_oneshot()$data}
 #' @param db_metadata The non-longitudinal REDCap metadata output defined by
 #' \code{REDCapR::redcap_metadata_read()$data}
-#'
-#' @importFrom dplyr filter pull select relocate rename
-#' @importFrom tidyselect all_of everything starts_with any_of
-#' @importFrom tibble tibble
-#' @importFrom rlang .data
 #'
 #' @keywords internal
 

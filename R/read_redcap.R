@@ -31,12 +31,6 @@
 #' * `data_na_pct`, the percentage of cells in the instrument's data columns that are `NA` excluding identifier and
 #'    form completion columns
 #'
-#' @importFrom REDCapR redcap_read_oneshot redcap_metadata_read
-#' @importFrom dplyr filter bind_rows %>% select slice
-#' @importFrom tidyselect any_of
-#' @importFrom rlang .data try_fetch abort current_call
-#' @importFrom cli cli_abort
-#'
 #' @param redcap_uri The
 #' URI/URL of the REDCap server (e.g.,
 #' "https://server.org/apps/redcap/api/"). Required.
@@ -319,9 +313,6 @@ read_redcap <- function(redcap_uri,
 #' A character vector of extra field names that can be used to filter the
 #' results of \code{REDCapR::redcap_read_oneshot}
 #'
-#' @importFrom dplyr filter pull %>%
-#' @importFrom rlang .data
-#'
 #' @keywords internal
 get_fields_to_drop <- function(db_metadata, form) {
   # Assume the first instrument in the metadata contains IDs
@@ -363,14 +354,6 @@ get_fields_to_drop <- function(db_metadata, form) {
 #' - \code{instrument_label} containing labels for each instrument
 #' - \code{redcap_metadata} containing metadata for the fields in each
 #' instrument as a list column
-#'
-#' @importFrom REDCapR redcap_instruments
-#' @importFrom dplyr left_join rename %>% select rename relocate mutate
-#' bind_rows filter
-#' @importFrom tidyr nest unnest_wider complete fill
-#' @importFrom tidyselect everything
-#' @importFrom rlang .data caller_env
-#' @importFrom purrr map
 #'
 #' @keywords internal
 
@@ -446,10 +429,6 @@ add_metadata <- function(supertbl, db_metadata, redcap_uri, token, suppress_redc
 #' @param linked_arms the tibble with event mappings created by
 #' \code{link_arms()}
 #'
-#' @importFrom rlang .data
-#' @importFrom dplyr select left_join relocate
-#' @importFrom tidyr nest
-#'
 #' @return
 #' The original supertibble with an events \code{redcap_events} list column
 #' containing arms and events associated with each instrument
@@ -473,11 +452,6 @@ add_event_mapping <- function(supertbl, linked_arms) {
 #'
 #' @param data a tibble of redcap data stored in the \code{redcap_data} column
 #' of a supertibble
-#'
-#' @importFrom dplyr select
-#' @importFrom tidyselect any_of
-#' @importFrom lobstr obj_size
-#' @importFrom formattable percent
 #'
 #' @return
 #' A list containing:

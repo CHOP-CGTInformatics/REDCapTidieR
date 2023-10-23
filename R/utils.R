@@ -13,9 +13,6 @@
 #' @param var The unquoted name of the field containing event and arm
 #' identifiers. Default \code{NULL}.
 #'
-#' @importFrom dplyr mutate
-#' @importFrom rlang enexpr
-#'
 #' @keywords internal
 
 add_partial_keys <- function(db_data,
@@ -52,8 +49,6 @@ add_partial_keys <- function(db_data,
 #'
 #' @return
 #' A dataframe.
-#'
-#' @importFrom dplyr rename mutate case_when pull relocate
 #'
 #' @keywords internal
 
@@ -121,10 +116,6 @@ create_repeat_instance_vars <- function(db_data) {
 #' @param suppress_redcapr_messages A logical to control whether to suppress messages
 #' from REDCapR API calls. Default `TRUE`.
 #'
-#' @importFrom dplyr rename left_join
-#' @importFrom REDCapR redcap_event_instruments redcap_arm_export
-#' @importFrom rlang caller_env
-#'
 #' @keywords internal
 
 link_arms <- function(redcap_uri,
@@ -175,10 +166,6 @@ link_arms <- function(redcap_uri,
 #' @param return_vector logical for whether to return result as a vector
 #' @param return_stripped_text_flag logical for whether to return a flag indicating whether or not
 #' text was stripped from labels
-#'
-#' @importFrom stringi stri_split_fixed
-#' @importFrom tibble as_tibble is_tibble
-#' @importFrom cli cli_abort cli_warn
 #'
 #' @keywords internal
 
@@ -291,12 +278,6 @@ parse_labels <- function(string, return_vector = FALSE, return_stripped_text_fla
 #'   \item contains \code{field_name} and \code{field_label} columns
 #' }
 #'
-#' @importFrom tidyr unnest
-#' @importFrom dplyr %>% select mutate
-#' @importFrom tibble tibble
-#' @importFrom rlang .data
-#' @importFrom stringr str_replace
-#'
 #' @keywords internal
 
 update_field_names <- function(db_metadata) {
@@ -377,10 +358,6 @@ update_field_names <- function(db_metadata) {
 #' @return Updated \code{db_data} column names for checkboxes where "-"s were
 #' replaced by "_"s.
 #'
-#' @importFrom rlang .data
-#' @importFrom stringr str_replace_all
-#' @importFrom dplyr %>% select filter
-#'
 #' @keywords internal
 
 update_data_col_names <- function(db_data, db_metadata) {
@@ -420,11 +397,6 @@ update_data_col_names <- function(db_data, db_metadata) {
 #'
 #' @param db_data A REDCap database object
 #' @param db_metadata A REDCap metadata object
-#'
-#' @importFrom dplyr select mutate across case_when filter pull recode
-#' @importFrom rlang .data
-#' @importFrom tidyselect any_of ends_with all_of
-#' @importFrom cli cli_warn
 #'
 #' @keywords internal
 
@@ -546,9 +518,6 @@ get_record_id_field <- function(data) {
 #'
 #' @param x vector of strings to format
 #'
-#' @importFrom dplyr %>%
-#' @importFrom stringr str_replace_all str_trim str_squish
-#'
 #' @return
 #' vector of strings with html tags, field embedding logic, and extra whitespace
 #' removed
@@ -568,11 +537,6 @@ strip_html_field_embedding <- function(x) {
 #'
 #' @param expr an expression making a `REDCapR` API call
 #' @param call the calling environment to use in the warning message
-#'
-#' @importFrom rlang caller_env enquo try_fetch eval_tidy get_env zap cnd_muffle
-#' catch_cnd abort quo_get_expr
-#' @importFrom stringr str_detect
-#' @importFrom cli cli_abort cli_warn
 #'
 #' @return
 #' If successful, the `data` element of the `REDCapR` result. Otherwise an error
@@ -720,9 +684,6 @@ db_has_repeat_forms <- function(db_data) {
 #' pre-processed within a `distill_*` function.
 #' @param my_record_id The record ID defined in the project.
 #'
-#' @importFrom dplyr filter if_any
-#' @importFrom tidyselect all_of
-#'
 #' @keywords internal
 
 remove_empty_rows <- function(data, my_record_id) {
@@ -758,8 +719,6 @@ remove_empty_rows <- function(data, my_record_id) {
 #' @returns A boolean
 #'
 #' @param obj An object to be tested for "label" attributes
-#'
-#' @importFrom purrr some
 #'
 #' @keywords internal
 

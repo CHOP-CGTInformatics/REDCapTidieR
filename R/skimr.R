@@ -12,10 +12,6 @@
 #'
 #' @param supertbl a supertibble generated using `read_redcap()`
 #'
-#' @importFrom dplyr left_join select
-#' @importFrom tidyselect any_of
-#' @importFrom purrr map2
-#'
 #' @return
 #' A supertibble with \link[skimr]{skimr} metadata metrics
 #'
@@ -60,9 +56,6 @@ add_skimr_metadata <- function(supertbl) {
 #' @description
 #' A helper function for `add_skimr_metadata()` which applies applicable
 #' skimmers to a given dataframe.
-#'
-#' @importFrom dplyr left_join select
-#' @importFrom tidyselect any_of
 #'
 #' @returns A dataframe
 #'
