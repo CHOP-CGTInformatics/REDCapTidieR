@@ -1,4 +1,5 @@
 test_that("add_skimr_metadata works", {
+  skip_if_not_installed(pkg = "skimr")
   # Test two data field types for proof of concept: character and numeric
   supertbl <- tibble::tribble(
     ~redcap_data, ~redcap_metadata,

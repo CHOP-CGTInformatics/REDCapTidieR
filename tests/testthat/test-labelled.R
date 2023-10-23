@@ -1,4 +1,5 @@
 test_that("make_labelled applies labels to all elements of supertibble", {
+  skip_if_not_installed(pkg = "labelled")
   supertbl <- tibble::tribble(
     ~redcap_data, ~redcap_metadata, ~redcap_events,
     tibble(x = letters[1:3]), tibble(field_name = "x", field_label = "X Label"), tibble(redcap_event = "event_a"),
@@ -48,6 +49,7 @@ test_that("make_labelled applies labels to all elements of supertibble", {
 })
 
 test_that("make_labelled applies all predefined labeles", {
+  skip_if_not_installed(pkg = "labelled")
   # Set up supertibble
   supertbl <- tibble(
     redcap_form_name = NA,
@@ -175,6 +177,8 @@ test_that("make_labelled applies all predefined labeles", {
 })
 
 test_that("make_labelled handles supertibble with extra columns", {
+  skip_if_not_installed(pkg = "labelled")
+
   supertbl <- tibble::tribble(
     ~redcap_form_name, ~redcap_data, ~redcap_metadata, ~extra_field,
     "form_1", tibble(x = letters[1:3]), tibble(field_name = "x", field_label = "X Label"), "extra"
@@ -224,6 +228,8 @@ test_that("make_labelled handles redcap_metadata tibbles of different sizes ", {
 })
 
 test_that("make_labelled handles supertibbles with NULL redcap_events", {
+  skip_if_not_installed(pkg = "labelled")
+
   supertbl <- tibble::tribble(
     ~redcap_data, ~redcap_metadata, ~redcap_events,
     tibble(x = letters[1:3]), tibble(field_name = "x", field_label = "X Label"), tibble(redcap_event = "event_a"),
@@ -249,8 +255,9 @@ test_that("format helpers work", {
 })
 
 test_that("make_labelled accepts all valid input types to format_labels", {
-  # This implicitly tests resolve_formatter
+  skip_if_not_installed(pkg = "labelled")
 
+  # This implicitly tests resolve_formatter
   supertbl <- tibble::tribble(
     ~redcap_data, ~redcap_metadata,
     tibble(x = letters[1:3]), tibble(field_name = "x", field_label = "X Label")
@@ -301,6 +308,7 @@ test_that("make_labelled errors with bad inputs", {
   # Input to format_labels is tested above
 
   expect_error(make_labelled(123), class = "check_supertbl")
+  skip_if_not_installed(pkg = "labelled")
 
   missing_col_supertbl <- tibble(redcap_data = list()) %>%
     as_supertbl()
@@ -318,6 +326,8 @@ test_that("make_labelled preserves S3 class", {
 })
 
 test_that("make_labelled returns expected skimr labels", {
+  skip_if_not_installed(pkg = "labelled")
+
   supertbl_skimr_meta <- make_skimr_labels() %>%
     names() %>%
     as_tibble() %>%
