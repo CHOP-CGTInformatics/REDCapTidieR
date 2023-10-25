@@ -1,10 +1,6 @@
 ---
 title: "Diving Deeper: Understanding REDCapTidieR Data Tibbles"
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{Diving Deeper: Understanding REDCapTidieR Data Tibbles}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+output: rmarkdown::html_document
 ---
 
 ```{r, include = FALSE}

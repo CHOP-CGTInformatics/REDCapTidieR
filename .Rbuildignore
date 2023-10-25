@@ -35,3 +35,4 @@ inst/testdata/create_test_data.R
 ^LICENSE\.md$
 ^CRAN-SUBMISSION$
 ^updating-mocks\.md$
+^vignettes/articles$
