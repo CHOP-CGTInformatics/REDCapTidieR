@@ -7,13 +7,22 @@ navbar:
   structure:
     left:  [intro, glossary, reference, articles]
     right: [search, github]
-  components:
-    intro:
-      text: Get Started
+  left:
+    - icon: fa-home
+      href: index.html
+    - text: Get Started
       href: articles/REDCapTidieR.html
-    glossary:
-      text: Glossary
+    - text: Glossary
       href: articles/glossary.html
+    - text: Reference
+      href: reference/index.html
+    - text: Articles
+      menu:
+      - text: "Diving Deeper: Understanding REDCapTidieR Data Tibbles"
+        href: articles/diving_deeper.html
+      - text: "Exporting to Excel"
+        desc: "Convert Data Tibbles to XLSX Sheets"
+        href: articles/export_to_xlsx.html
 
 template:
   bootstrap: 5
