@@ -3,9 +3,12 @@ Type: Package
 Title: Extract 'REDCap' Databases into Tidy 'Tibble's
 Version: 0.4.1.9001
 Authors@R: c(
-    person("Richard", "Hanna", , "richardshanna91@gmail.com", role = c("aut", "cre")),
-    person("Stephan", "Kadauke", , "kadaukes@chop.edu", role = "aut"),
-    person("Ezra", "Porter", , "ezrajporter@gmail.com", role = "aut")
+    person("Richard", "Hanna", , "richardshanna91@gmail.com", role = c("aut", "cre"),
+    comment = c(ORCID = "0009-0005-6496-8154")),
+    person("Stephan", "Kadauke", , "kadaukes@chop.edu", role = "aut",
+    comment = c(ORCID = "0000-0003-2996-8034")),
+    person("Ezra", "Porter", , "ezrajporter@gmail.com", role = "aut",
+    comment = c(ORCID = "0000-0002-4690-8343"))
   )
 Description: Convert 'REDCap' exports into tidy tables for easy handling of 'REDCap' repeat instruments and event arms.
 License: MIT + file LICENSE
