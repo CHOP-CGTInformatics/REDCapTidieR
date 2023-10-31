@@ -15,6 +15,7 @@
 ^cran-comments\.md$
 README.html$
 
+pkgdown/
 utility/
 lastMiKTeXException/
 inst/testdata/create_test_data.R

@@ -3,7 +3,15 @@ url: https://chop-cgtinformatics.github.io/REDCapTidieR/
 home:
   title: Import REDCap databases into tidy tibbles
 
+template:
+  bootstrap: 5
+  bslib:
+    code_font: {google: "Fira Code"}
+    primary: "#b22228"
+    text-muted: "#FFFFFF"
+
 navbar:
+  bg: primary
   structure:
     left:  [intro, glossary, reference, articles]
     right: [search, github]
@@ -23,11 +31,6 @@ navbar:
       - text: "Exporting to Excel"
         desc: "Convert Data Tibbles to XLSX Sheets"
         href: articles/export_to_xlsx.html
-
-template:
-  bootstrap: 5
-  bslib:
-    code_font: {google: "Fira Code"}
 
 search:
   exclude: ['news/index.html']

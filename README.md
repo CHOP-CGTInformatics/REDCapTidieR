@@ -1,13 +1,8 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# REDCapTidieR
+# REDCapTidieR <a href="https://chop-cgtinformatics.github.io/REDCapTidieR/"><img src="man/figures/logo.png" align="right" height="138" /></a>
 
-<p align="center">
-
-<img src="man/figures/REDCapTidieR.png" alt="REDCapTidieR hex logo" width="150" align="right"/>
-
-</p>
 <!-- badges: start -->
 
 [![Lifecycle:
