@@ -1,4 +1,4 @@
-# REDCapTidieR (development version)
+# REDCapTidieR 1.0.0
 
 # REDCapTidieR 0.4.1
 
