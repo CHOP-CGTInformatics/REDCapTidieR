@@ -60,6 +60,14 @@ As of 2023, the REDCap Consortium boasts nearly 3 million users across over 150 
 
 While there are a few existing REDCap tools for R documented by [`REDCap-tools`](https://redcap-tools.github.io/projects/), `REDCapTidieR` occupies a unique space by providing analysts with an opinionated framework that quickly prepares them for data analysis. Although some of the aforementioned tools also offer functions for data processing, such as the [`tidyREDCap`](https://raymondbalise.github.io/tidyREDCap/) and [`REDCapDM`](https://ubidi.github.io/REDCapDM/index.html) packages, `REDCapTidieR` is unique in how it restructures the Block Matrix into a format that is easily interpretable within the user's programmatic environment.
 
+| Package     | Functions for Data Exportation | Functions for Data Importation | Data Processing |
+|-------------|-------------------------------|-------------------------------|----------------|
+| redcapAPI   | x                             | x                             |                |
+| REDCapR     | x                             | x                             |                |
+| tidyREDCap  | x                             |                               | x              |
+| REDCapDM    | x                             |                               | x              |
+| REDCapTidieR| x                             |                               | x              |
+
 # Installation
 
 `REDCapTidieR` is available on [GitHub](https://github.com/CHOP-CGTInformatics/REDCapTidieR) and [CRAN](https://cran.r-project.org/web/packages/REDCapTidieR/index.html) and has been tested for functionality on all major operating systems.
