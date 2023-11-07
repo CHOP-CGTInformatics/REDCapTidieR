@@ -58,15 +58,21 @@ To address these challenges, we developed `REDCapTidieR` as an open source R pac
 
 As of 2023, the REDCap Consortium boasts nearly 3 million users across over 150 countries. REDCap databases exhibit significant variation in complexity, ranging from simple tables with easily identifiable records to more challenging scenarios where pinpointing a unique identifier is harder. This complexity often arises from the introduction of "repeating instruments" and "repeating events." For an in-depth exploration of this concept, refer to the [`REDCapTidieR` documentation](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/diving_deeper.html#longitudinal-redcap-projects). Fundamentally, repeating events and instruments support studies like clinical trials, where subjects may have distinct timelines with varying levels of record granularity. This is where the flattening of the database into the Block Matrix becomes a pain point for analysts.
 
-While there are a few existing REDCap tools for R documented by [`REDCap-tools`](https://redcap-tools.github.io/projects/), `REDCapTidieR` occupies a unique space by providing analysts with an opinionated framework that quickly prepares them for data analysis. Although some of the aforementioned tools also offer functions for data processing, such as the [`tidyREDCap`](https://raymondbalise.github.io/tidyREDCap/) and [`REDCapDM`](https://ubidi.github.io/REDCapDM/index.html) packages, `REDCapTidieR` is unique in how it restructures the Block Matrix into a format that is easily interpretable within the user's programmatic environment.
+While there are a few existing REDCap tools for R documented by [`REDCap-tools`](https://redcap-tools.github.io/projects/), `REDCapTidieR` occupies a unique space by providing analysts with an opinionated framework that quickly prepares them for data analysis. Although some of the aforementioned tools also offer functions for data processing, such as the [`tidyREDCap`](https://raymondbalise.github.io/tidyREDCap/) and [`REDCapDM`](https://ubidi.github.io/REDCapDM/index.html) packages, `REDCapTidieR` is unique in how it restructures the Block Matrix into a format that is easily interpretable within the user's programmatic environment. Of the tools available, `REDCapTidieR` is the only one that fundamentally restructures the Block Matrix in its entirety.
 
-| Package     | Functions for Data Exportation | Functions for Data Importation | Data Processing |
-|-------------|-------------------------------|-------------------------------|----------------|
-| redcapAPI   | x                             | x                             |                |
-| REDCapR     | x                             | x                             |                |
-| tidyREDCap  | x                             |                               | x              |
-| REDCapDM    | x                             |                               | x              |
-| REDCapTidieR| x                             |                               | x              |
+| Package     | Data Export Support | Data Import Support | Data Manipulation | Data Tidying |
+|-------------|--------------------|--------------------|------------------|--------------|
+| redcapAPI   | x                  | x                  |                  |              |
+| REDCapR     | x                  | x                  |                  |              |
+| tidyREDCap  | x                  |                    | x                |              |
+| REDCapDM    | x                  |                    | x                |              |
+| REDCapTidieR| x                  |                    | x                | x            |
+
+# Design
+
+Transformation of the Block Matrix into a friendlier structure is carried out by `REDCapTidieR` through a series of complex operations that result in the "supertibble." The supertibble, named after the [`tibble` package](https://tibble.tidyverse.org/), is presented as a table where each row corresponds to a REDCap instrument and each column corresponds to either that instrument's post-processed data, metadata, or useful information about that instrument itself. Below, we offer a conceptual model of how `REDCapTidieR` transforms the Block Matrix into the supertibble:
+
+> Image to be provided
 
 # Installation
 
