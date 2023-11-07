@@ -2,9 +2,7 @@
 
 Thank you for taking the time to review this submission and please reach out to either Stephan Kadauke, Richard Hanna, or Ezra Porter for any questions, comments, or concerns.
 
-This submission makes modifications to the test suite to be compatible with the upcoming release of REDCapR 1.2.0. Our current test suite resulted in reverse dependency check failures
-when a new version of REDCapR was submitted to CRAN. We have coordinated with the author of
-REDCapR to resolve the reverse dependency check failures in this submission.
+This submission confirms the stability of the package and updates it to 1.0 with a couple of minor updates that coincide with other dependencies.
 
 ## New Features
 
@@ -12,12 +10,12 @@ There are no user-facing changes in this release.
 
 ## Test environments
 
-1. Local macOS Ventura 13.4, R 4.2.1
+1. Local macOS Ventura 13.6, R 4.3.1
 2. R-hub
-    1. [Ubuntu Linux 20.04.1 LTS, R-release, GCC](https://builder.r-hub.io/status/REDCapTidieR_0.4.0.9001.tar.gz-f853e048ec7949ed8b7de8b21bef7846)
-    2. [Fedora Linux, R-devel, clang, gfortran](https://builder.r-hub.io/status/REDCapTidieR_0.4.0.9001.tar.gz-cb2489664ff740b6a2f751757feb6c55)
-    3. [Windows Server](https://builder.r-hub.io/status/REDCapTidieR_0.4.0.9001.tar.gz-71108297d2fb4e5ea9a80e4eec49946d)
-3.  [win-builder](https://win-builder.r-project.org/9L4v1qQ3188p/), development version.
+    1. [Ubuntu Linux 20.04.1 LTS, R-release, GCC](https://builder.r-hub.io/status/REDCapTidieR_1.0.0.tar.gz-6f5dd904875e43a080d23cf3a8b799db)
+    2. [Fedora Linux, R-devel, clang, gfortran](https://builder.r-hub.io/status/REDCapTidieR_1.0.0.tar.gz-23cd4a148dd84b9cb140246f8822495d)
+    3. [Windows Server](https://builder.r-hub.io/status/REDCapTidieR_1.0.0.tar.gz-f14b539514b44e6a972e5acf0d308f2a)
+3.  [win-builder](https://win-builder.r-project.org/kK4kk9U3E7QO/), development version.
 4.  [GiHub Actions](https://github.com/CHOP-CGTInformatics/REDCapTidieR/actions), Ubuntu 20.04.02 LTS
 
 ## R CMD check results:
