@@ -83,7 +83,7 @@ When you open the Excel document, you'll see multiple sheets. The first one is t
 
 The **Table of Contents** sheet provides an overview of the data present in the rest of the document. If you wish to exclude this sheet, set the `include_toc_sheet` argument of `write_redcap_xlsx()` to `FALSE`.
 
-Each instrument's data is contained in a separate sheet. For a better understanding of how REDCapTidieR represents REDCap data, refer to the [Diving Deeper](diving_deeper.html) vignette.
+Each instrument's data is contained in a separate sheet. For a better understanding of how REDCapTidieR represents REDCap data, refer to the **Diving Deeper** vignette.
 
 The column headers come with pre-applied filters (notice the arrow on the right side of each header cell), making data exploration straightforward.
 
