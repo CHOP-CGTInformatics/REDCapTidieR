@@ -1,4 +1,15 @@
-# REDCapTidieR (development version)
+# REDCapTidieR 1.0.0
+
+Version 1.0.0
+
+This package has been considered stable for months now with no new issues reported, and so should be reflected in the major version number.
+
+## Minor Updates
+
+- Updated `openxlsx2` API calls to coincide with v1.0
+- Internal cleaning and tidying of documentation
+- `pkgdown` site updates
+- Migration of some vignettes over to articles
 
 # REDCapTidieR 0.4.1
 

@@ -6,6 +6,8 @@
 \alias{_PACKAGE}
 \title{REDCapTidieR: Extract 'REDCap' Databases into Tidy 'Tibble's}
 \description{
+\if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
+
 Convert 'REDCap' exports into tidy tables for easy handling of 'REDCap' repeat instruments and event arms.
 }
 \seealso{
@@ -18,12 +20,12 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Richard Hanna \email{richardshanna91@gmail.com}
+\strong{Maintainer}: Richard Hanna \email{richardshanna91@gmail.com} (\href{https://orcid.org/0009-0005-6496-8154}{ORCID})
 
 Authors:
 \itemize{
-  \item Stephan Kadauke \email{kadaukes@chop.edu}
-  \item Ezra Porter \email{ezrajporter@gmail.com}
+  \item Stephan Kadauke \email{kadaukes@chop.edu} (\href{https://orcid.org/0000-0003-2996-8034}{ORCID})
+  \item Ezra Porter \email{ezrajporter@gmail.com} (\href{https://orcid.org/0000-0002-4690-8343}{ORCID})
 }
 
 }

@@ -1,14 +1,14 @@
 Package: REDCapTidieR
 Type: Package
 Title: Extract 'REDCap' Databases into Tidy 'Tibble's
-Version: 0.4.1.9001
+Version: 1.0.0
 Authors@R: c(
     person("Richard", "Hanna", , "richardshanna91@gmail.com", role = c("aut", "cre"),
-    comment = c(ORCID = "0009-0005-6496-8154")),
+           comment = c(ORCID = "0009-0005-6496-8154")),
     person("Stephan", "Kadauke", , "kadaukes@chop.edu", role = "aut",
-    comment = c(ORCID = "0000-0003-2996-8034")),
+           comment = c(ORCID = "0000-0003-2996-8034")),
     person("Ezra", "Porter", , "ezrajporter@gmail.com", role = "aut",
-    comment = c(ORCID = "0000-0002-4690-8343"))
+           comment = c(ORCID = "0000-0002-4690-8343"))
   )
 Description: Convert 'REDCap' exports into tidy tables for easy handling of 'REDCap' repeat instruments and event arms.
 License: MIT + file LICENSE
@@ -47,6 +47,7 @@ Suggests:
 VignetteBuilder: knitr
 Config/testthat/edition: 3
 Encoding: UTF-8
+Language: en-US
 LazyData: true
 RoxygenNote: 7.2.3
 Roxygen: list(markdown = TRUE)
