@@ -2,7 +2,7 @@
 
 Thank you for taking the time to review this submission and please reach out to either Stephan Kadauke, Richard Hanna, or Ezra Porter for any questions, comments, or concerns.
 
-This submission confirms the stability of the package and updates it to 1.0 with a couple of minor updates that coincide with other dependencies.
+This submission confirms the stability of the package and updates it to 1.0 with a couple of minor updates that coincide with other dependencies. It also addresses a request to fix a URL that gets missed in `.Rbuildignore` for an article.
 
 ## New Features
 
