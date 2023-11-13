@@ -60,13 +60,17 @@ As of 2023, the REDCap Consortium boasts nearly 3 million users across over 150 
 
 While there are a few existing REDCap tools for R documented by [`REDCap-tools`](https://redcap-tools.github.io/projects/), `REDCapTidieR` occupies a unique space by providing analysts with an opinionated framework that quickly prepares them for data analysis. Although some of the aforementioned tools also offer functions for data processing, such as the [`tidyREDCap`](https://raymondbalise.github.io/tidyREDCap/) and [`REDCapDM`](https://ubidi.github.io/REDCapDM/index.html) packages, `REDCapTidieR` is unique in how it restructures the block matrix into a format that is easily interpretable within the user's programmatic environment. Of the tools available, `REDCapTidieR` is the only one that fundamentally restructures the block matrix in its entirety.
 
-| Package     | Data Export Support | Data Import Support | Data Manipulation | Data Tidying |
-|-------------|--------------------|--------------------|------------------|--------------|
-| redcapAPI   | x                  | x                  |                  |              |
-| REDCapR     | x                  | x                  |                  |              |
-| tidyREDCap  | x                  |                    | x                |              |
-| REDCapDM    | x                  |                    | x                |              |
-| REDCapTidieR| x                  |                    | x                | x            |
+REDCapTidieR was developed with deployment in production environments as a key consideration. To ensure the utmost confidence in the handling of user data, we've implemented an extensive test suite that exhibits 98% code coverage, as of the package's version 1.0 release. Ample documentation is accessible through a collection of package vignettes and articles, offering detailed insights into the opinionated framework, design structure, and a comprehensive glossary of terms associated with the REDCapTidieR package. These considerations have earned the package an [OpenSSF Best Practices certification](https://www.bestpractices.dev/en/projects/6845) [@openssf_cit], which certifies open source projects that meet stringent criteria for delivering high-quality and secure software.
+
+| Package     | Data Export Support | Data Import Support | Data Manipulation | Data Tidying | Production Capability |
+|-------------|---------------------|---------------------|-------------------|--------------| --------------------- |
+| redcapAPI   | x                   | x                   |                   |              |                       |
+| REDCapR     | x                   | x                   |                   |              | x                     |
+| tidyREDCap  | x                   |                     | x                 |              |                       |
+| REDCapDM    | x                   |                     | x                 |              |                       |
+| REDCapTidieR| x                   |                     | x                 | x            | x                     |
+
+Table 1: Comparative breakdown of the landscape for REDCap tools in R.
 
 # Design
 
@@ -78,6 +82,8 @@ Unlike the block matrix, which combines all columns for record identification in
 Figure 1: Comparative model showing REDCap API export formats between the default behavior and `REDCapTidieR`.
 
 In this example, the supertibble displays three REDCap database instruments, with one repeating and two non-repeating. Below, one of each of these instrument types is expanded to show how `REDCapTidieR` separates these instruments into their own tabular list elements structured with only the identifiers necessary to pinpoint a specific record. This format makes tables easily joinable by analysts for whatever operations they may need later in their work.
+
+Additionally, REDCapTidieR comes equipped with features that address common requirements of analysts. Seamless integration with the `labelled` [@labelled_cit] package facilitates effortless application of variable labels to both data and metadata. An extension utilizing the `skimr` [@skimr_cit] package provides comprehensive metric summaries of metadata for exported REDCap databases. Lastly, through an extension leveraging the `openxlsx2` [@openxlsx2_cit] package, users can easily export REDCapTidieR data tibbles to individual XLSX sheets.
 
 # Installation
 
