@@ -7,26 +7,26 @@ tags:
 authors:
   - name: Richard Hanna
     orcid: 0009-0005-6496-8154
-    equal-contrib: true
+    equal-contrib: false
     affiliation: "1"
   - name: Ezra Porter
     orcid: 0000-0002-4690-8343
-    equal-contrib: true
+    equal-contrib: false
     affiliation: "1"
   - name: Stephany Romero
-    equal-contrib: true
+    equal-contrib: false
     affiliation: "1"
   - name: Paul Wildenhain
-    equal-contrib: true 
+    equal-contrib: false 
     affiliation: "6"
   - name: Wiliam Beasley
     orcid: 0000-0002-5613-5006
-    equal-contrib: true
+    equal-contrib: false
     affiliation: "7"
   - name: Stephan Kadauke
     orcid: 0000-0003-2996-8034
-    equal-contrib: true
-    affiliation: "1, 2, 3, 4, 5"
+    equal-contrib: false
+    affiliation: "2, 3, 4, 5"
 affiliations:
  - name: Division of Oncology, Children's Hospital of Philadelphia, Philadelphia, Pennsylvania
    index: 1
@@ -48,23 +48,25 @@ bibliography: paper.bib
 
 # Summary
 
-Capturing and storing electronic data is integral in the research world, yet often becomes a burden to the researchers themselves. [REDCap](https://www.project-redcap.org/) [@Harris2009; @Harris2019] alleviates this problem by offering a secure web application that lets users build databases and surveys with a robust front-end interface that can support data of any type, including data requiring compliance with standards for protected information.
+Capturing and storing electronic data is integral in the research world. [REDCap](https://www.project-redcap.org/) [@Harris2009; @Harris2019] offers a secure web application that lets users build databases and surveys with a robust front-end interface that can support data of any type, including data requiring compliance with standards for protected information.
 
-For many researchers who use REDCap, the R programming language [@r_cit] is a powerful tool for extracting and analyzing their data. To take advantage of REDCap's REST API, the [`REDCapR`](https://cran.r-project.org/web/packages/REDCapR/index.html) [@redcapr_cit] and [`redcapAPI`](https://cran.r-project.org/web/packages/redcapAPI/index.html) [@redcapapi_cit] packages allow R users to extract data directly into their programming environment. The default extraction structure for a given REDCap database is referred to as the "block matrix," and is a singular, unwieldy, and "untidy" data table. The concept of "[tidy data](https://www.jstatsoft.org/article/view/v059i10)" [@Wickham2014] describes a framework for standard mapping and structuring of data where each variable forms a column, each observation forms a row, and each type of observational unit forms a table. The block matrix structure breaks these tidy principles by obscuring the primary keys that identify individual records, leaving analysts with the arduous task of reformatting the matrix for usability.
+Many REDCap users use the R programming language [@r_cit] to extract and analyze their data. The [`REDCapR`](https://cran.r-project.org/web/packages/REDCapR/index.html) [@redcapr_cit] and [`redcapAPI`](https://cran.r-project.org/web/packages/redcapAPI/index.html) [@redcapapi_cit] packages allow R users to extract data directly into their programming environment. While this works well for simple REDCap databases, it becomes cumbersome for complex databases, because the REDCap API returns a single table with rows that represent different levels of granularity, termed the "block matrix". The concept of "[tidy data](https://www.jstatsoft.org/article/view/v059i10)" [@Wickham2014] describes a framework for a standardized data structure where each variable forms a column, each observation forms a row, and each type of observational unit forms a table. The block matrix structure is inconsistent with this standard. 
 
-To address these challenges, we developed `REDCapTidieR` as an open source R package that transforms the standard REDCap output into a format that adheres to tidy data principles. `REDCapTidieR` has the potential to save organizations and research staff immeasurable amounts of time, allowing them to quickly query their data without the need for intricate data parsing processes.
+We provide the open-source `REDCapTidieR` package as a solution for this problem. `REDCapTidieR` leverages the `REDCapR` package to query data and metadata through the REDCap API and returns a tidy data structure that is easy to explore in the RStudio Data Viewer, aiding users in data exploration. `REDCapTidieR` also provides utility functions to extract data from individual instruments, add summary statistics, and export collaborator-friendly Excel documents. We have developed and extensive automated test suite to ensure that `REDCapTidieR` can be used with any REDCap database of any complexity. However, we believe that researchers and analysts who work with complex databases, such as those used for longitudinal clinical trials, will benefit the most by eliminating the need for data parsing and pre-processing.
 
 # Statement of Need
 
-As of 2023, the REDCap Consortium boasts nearly 3 million users across over 150 countries. REDCap databases exhibit significant variation in complexity, ranging from simple tables to more comprehensive builds where determining unique record identifiers becomes challenging. This complexity often arises in databases that make use of "repeating instruments" and "repeating events." These concepts are explored in depth in the [`REDCapTidieR` documentation](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/diving_deeper.html#longitudinal-redcap-projects), but simply put repeating events and instruments support longitudinal studies where subjects may have distinct timelines with varying levels of record granularity. Repeating instruments and events are unavoidable for most clinical trial studies and reformatting the data that belongs to them from the block matrix can be a major pain point for analysts.
+As of 2023, the REDCap Consortium boasts nearly 3 million users across over 150 countries. REDCap databases range from single-instrument projects to complex builds that use both repeating instruments and repeating events. These data structures are needed to capture multiple items related to a specific visit, such as concomitant medications, or events that cannot be planned ahead of time, such as adverse events.
 
-While there are a few existing REDCap tools for R documented by [`REDCap-tools`](https://redcap-tools.github.io/projects/), `REDCapTidieR` occupies a unique space by providing analysts with an opinionated framework that quickly returns a tidy data structure regardless of the size or complexity of the extracted database. Although some of these tools also offer functions for data processing, such as the [`tidyREDCap`](https://raymondbalise.github.io/tidyREDCap/) [@tidyredcap_cit] and [`REDCapDM`](https://ubidi.github.io/REDCapDM/index.html) [@redcapdm_cit] packages, `REDCapTidieR` is unique in how it restructures the block matrix into an easily interpretable format within the user's programmatic environment. Of the tools available, `REDCapTidieR` is the only one that fundamentally restructures the block matrix in its entirety and subsequently the only one that gives a definitive tidy solution to the problem of repeating instruments and events.
+REDCap databases that contain repeating events and instruments require significant manual pre-processing, a major pain point for researchers and analysts. This is because the REDCap API returns a single table (Figure 1) that includes data from instruments that record data at different levels of granularity.
 
-REDCapTidieR was developed with production environment deployment in mind. To ensure package stability, we've implemented an extensive test suite that exhibits 98% code coverage as of the 1.0 version release. Ample documentation is accessible through a collection of package vignettes and articles, offering detailed insights into the opinionated framework, design structure, and a comprehensive glossary of terms associated with the `REDCapTidieR` package. The package was also developed in alignment with the [OpenSSF Best Practices Badging program](https://www.bestpractices.dev/en/projects/6845) [@openssf_cit], certifying open source projects adhering to criteria for delivering high-quality, secure software.
+While there are a few existing REDCap tools (Table 1), `REDCapTidieR` occupies a unique space by providing analysts with a framework returns a tidy data structure regardless of the size or complexity of the extracted database. Although some of these tools also offer functions for data processing, such as the [`tidyREDCap`](https://raymondbalise.github.io/tidyREDCap/) [@tidyredcap_cit] and [`REDCapDM`](https://ubidi.github.io/REDCapDM/index.html) [@redcapdm_cit] packages, only `REDCapTidieR` restructures the block matrix into an easy to use format. 
+
+`REDCapTidieR` is built with production readiness in mind. It builds upon REDCapR, which contains an excellent test suite, to make API calls, and includes an extensive automated test suite and ample documentation through a `pkgdown` site(https://chop-cgtinformatics.github.io/REDCapTidieR/index.html) [@redcaptidier_pkgdown_cit]. It meets the rigorous requirements of the [OpenSSF Best Practices Badge](https://www.bestpractices.dev/en/projects/6845) [@openssf_cit], which certifies open-source projects that adhere to criteria for delivering high-quality, robust, and secure software.
 
 | Package     | Data Export Support | Data Import Support | Data Manipulation | Tidy Reformatting | Production Ready |
-|-------------|---------------------|---------------------|-------------------|-------------------| ---------------- |
-| redcapAPI   | x                   | x                   |                   |                   |                  |
+|-------------|---------------------|---------------------|-------------------|-------------------|------------------|
+| redcapAPI   | x                   | x                   |                   |                   | x                |
 | REDCapR     | x                   | x                   |                   |                   | x                |
 | tidyREDCap  | x                   |                     | x                 |                   |                  |
 | REDCapDM    | x                   |                     | x                 |                   |                  |
@@ -74,36 +76,28 @@ Table 1: Comparative breakdown of the landscape for REDCap tools in R.
 
 # Design
 
-Transformation of the block matrix into a friendlier structure is carried out by `REDCapTidieR` through a series of complex operations that result in the "supertibble." The supertibble, named after the [`tibble` package](https://tibble.tidyverse.org/) [@tibble_cit], is presented as a table where each row corresponds to a REDCap instrument and each column corresponds to either that instrument's post-processed data (i.e. a nested "data tibble"), metadata, or useful information about that instrument itself.
+The `REDCapTidieR::read_redcap()` function leverages `REDCapR` to make API calls to query the data and metadata of a REDCap project and returns the supertibble (Figure 1). The supertibble, named after the [`tibble` package](https://tibble.tidyverse.org/) [@tibble_cit], is an alternative presentation of the data in which multiple tables are linked together in a single object in a fashion consistent with tidy data principles.
 
-Unlike the block matrix, which combines all columns for record identification into one table, `REDCapTidieR` separates instruments into individual data tibbles to include only the variables necessary for identification of a record within the instrument. Below, we provide a model that compares the standard output from a REDCap database with non-repeating and repeating instruments to one post-processed through `REDCapTidieR` using a sample of the open source [Superhero Database](https://www.superherodb.com/).
+![The REDCapTidieR Supertibble](images/Figure1.png)
 
-![Conceptual Model](/paper/images/REDCapTidieR%20JOSS%20-%20Superheroes.png)
-Figure 1: Comparative model showing REDCap API export formats between the default behavior and `REDCapTidieR`
+Figure 1: The REDCapTidieR Supertibble. The "Superhero" database[@superheroes_cit] contains two instruments, one nonrepeating and one repeating. A. The REDCap API returns a "Block Matrix". Note an abundance of `NA` values, which do not represent missing values but rather fields that do not apply due to the data structure. B. The `read_redcap()` function returns a "Supertibble". Note that each row represents one instrument, identified by the `redcap_form_name` column. The `redcap_data` column is a list column that links to tibbles containing the data from a specific instrument. Since each instrument has a consistent granularity, these tibbles can be tidy. Two data tibbles are shown, one from a nonrepeating and one from a repeating instrument. Note the differences in granularity between the instruments.
 
-In this example, the supertibble displays two REDCap database instruments, with demographic heroes information as non-repeating and corresponding hero powers as repeating. Each of these instrument types is expanded to show how `REDCapTidieR` separates these instruments into their own tabular list elements structured with only the identifiers necessary to pinpoint a specific record. This format makes tables easily joinable by analysts for whatever operations they may need later in their work.
+`REDCapTidieR` provides utility functions to work with the supertibble, all designed to work with the R pipe `|>`. The `extract_tibble()` function takes a supertibble object and returns a specific data tibble. The `make_labelled()` function leverages the `labelled` package [@labelled_cit] to apply variable labels to the supertibble. The `add_skimr_metadata()` function uses the `skimr` package [@skimr_cit] to add summary statistics. Using the `write_redcap_xlsx()` function, which leverages the `openxlsx2` [@openxlsx2_cit] package, users can easily export an the supertibble into a collaborator-friendly Excel document, in which each Excel sheet contains the data for an instrument.
 
-Additionally, REDCapTidieR comes equipped with features that address common requirements of analysts. Seamless integration with the `labelled` [@labelled_cit] package facilitates effortless application of variable labels to both data and metadata. An extension utilizing the `skimr` [@skimr_cit] package provides comprehensive metric summaries of metadata for exported REDCap databases. Lastly, through an extension leveraging the `openxlsx2` [@openxlsx2_cit] package, users can easily export REDCapTidieR data tibbles to individual XLSX sheets.
+`REDCapTidieR` cannot be used to write data to a REDCap project. We refer the reader to an excellent guide of how to accomplish this using `REDCapR` [@redcapr_write_cit].
 
 # Installation
 
-`REDCapTidieR` is available on [GitHub](https://github.com/CHOP-CGTInformatics/REDCapTidieR) and [CRAN](https://cran.r-project.org/web/packages/REDCapTidieR/index.html) and has been tested for functionality on all major operating systems.
+`REDCapTidieR` is available on [GitHub](https://github.com/CHOP-CGTInformatics/REDCapTidieR) and [CRAN](https://cran.r-project.org/web/packages/REDCapTidieR/index.html) and works on all major operating systems.
 
 # Acknowledgements
 
-`REDCapTidieR` is made possible in large part thanks to the `REDCapR` and `tidyverse` [@tidyverse_cit] packages.
+We would like to thank Will Beasley, Paul Wildenhain, and Jan Marvin for their feedback and support in development.
 
-The authors would also like to give special thanks to Will Beasley, Paul Wildenhain, and Jan Marvin for their feedback and support in development.
+This package was developed by the [Cell and Gene Therapy Informatics Team](https://www.chop.edu/centers-programs/cell-and-gene-therapy-informatics-team/our-team) of the [Children’s Hospital of Philadelphia](https://www.chop.edu).
 
 # Conflict of interest
 
-This package was developed by the [Children’s Hospital of
-Philadelphia](https://www.chop.edu) Cell and Gene Therapy Informatics
-Team to support the needs of the [Cellular Therapy and Transplant
-Section](https://www.chop.edu/centers-programs/cellular-therapy-and-transplant-section).
-The development was funded using the following sources:
+The authors declare no financial conflicts of interest.
 
-- *Stephan Kadauke Start-up funds.* Stephan Kadauke, PI, CHOP, 2018-2024
-
-- *CHOP-based GMP cell manufacturing (MFG) for CAR T clinical trials*.
-  Stephan Grupp, PI; Stephan Kadauke, co-PI, CHOP, 2021-2023
+# References
