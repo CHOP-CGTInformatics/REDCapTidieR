@@ -19,7 +19,7 @@ authors:
   - name: Paul Wildenhain
     equal-contrib: false 
     affiliation: "6"
-  - name: Wiliam Beasley
+  - name: William Beasley
     orcid: 0000-0002-5613-5006
     equal-contrib: false
     affiliation: "7"
@@ -50,9 +50,11 @@ bibliography: paper.bib
 
 Capturing and storing electronic data is integral in the research world. [REDCap](https://www.project-redcap.org/) [@Harris2009; @Harris2019] offers a secure web application that lets users build databases and surveys with a robust front-end interface that can support data of any type, including data requiring compliance with standards for protected information.
 
-Many REDCap users use the R programming language [@r_cit] to extract and analyze their data. The [`REDCapR`](https://cran.r-project.org/web/packages/REDCapR/index.html) [@redcapr_cit] and [`redcapAPI`](https://cran.r-project.org/web/packages/redcapAPI/index.html) [@redcapapi_cit] packages allow R users to extract data directly into their programming environment. While this works well for simple REDCap databases, it becomes cumbersome for complex databases, because the REDCap API returns a single table with rows that represent different levels of granularity, termed the "block matrix". The concept of "[tidy data](https://www.jstatsoft.org/article/view/v059i10)" [@Wickham2014] describes a framework for a standardized data structure where each variable forms a column, each observation forms a row, and each type of observational unit forms a table. The block matrix structure is inconsistent with this standard. 
+Many REDCap users use the R programming language [@r_cit] to extract and analyze their data. The [`REDCapR`](https://cran.r-project.org/web/packages/REDCapR/index.html) [@redcapr_cit] and [`redcapAPI`](https://cran.r-project.org/web/packages/redcapAPI/index.html) [@redcapapi_cit] packages allow R users to extract data directly into their programming environment. While this works well for simple REDCap databases, it becomes cumbersome for complex databases, because the REDCap API outputs a "block matrix"--a single table with varied granularity levels, which conflicts with the "tidy data" framework [@Wickham2014] that advocates for standardized data organization.
 
-We provide the open-source `REDCapTidieR` package as a solution for this problem. `REDCapTidieR` leverages the `REDCapR` package to query data and metadata through the REDCap API and returns a tidy data structure that is easy to explore in the RStudio Data Viewer, aiding users in data exploration. `REDCapTidieR` also provides utility functions to extract data from individual instruments, add summary statistics, and export collaborator-friendly Excel documents. We have developed and extensive automated test suite to ensure that `REDCapTidieR` can be used with any REDCap database of any complexity. However, we believe that researchers and analysts who work with complex databases, such as those used for longitudinal clinical trials, will benefit the most by eliminating the need for data parsing and pre-processing.
+To address this, we introduce `REDCapTidieR`, an open-source package that streamlines data extraction and restructures it into an intuitive format compatible with the tidy data principles. This facilitates seamless data analysis in R, especially for complex longitudinal studies.
+
+While there are several tools available for REDCap data management, REDCapTidieR introduces a unique solution by transforming the challenging block matrix into a standardized tidy data structure that we term the "supertibble". This approach not only aligns with good data science practice but also caters to databases of any complexity. By providing a suite of utility functions to work with the supertibble, REDCapTidieR provides a complete framework for extracting REDCap data designed with user-friendliness at its core.
 
 # Statement of Need
 
@@ -62,15 +64,15 @@ REDCap databases that contain repeating events and instruments require significa
 
 While there are a few existing REDCap tools (Table 1), `REDCapTidieR` occupies a unique space by providing analysts with a framework returns a tidy data structure regardless of the size or complexity of the extracted database. Although some of these tools also offer functions for data processing, such as the [`tidyREDCap`](https://raymondbalise.github.io/tidyREDCap/) [@tidyredcap_cit] and [`REDCapDM`](https://ubidi.github.io/REDCapDM/index.html) [@redcapdm_cit] packages, only `REDCapTidieR` restructures the block matrix into an easy to use format. 
 
-`REDCapTidieR` is built with production readiness in mind. It builds upon REDCapR, which contains an excellent test suite, to make API calls, and includes an extensive automated test suite and ample documentation through a `pkgdown` site(https://chop-cgtinformatics.github.io/REDCapTidieR/index.html) [@redcaptidier_pkgdown_cit]. It meets the rigorous requirements of the [OpenSSF Best Practices Badge](https://www.bestpractices.dev/en/projects/6845) [@openssf_cit], which certifies open-source projects that adhere to criteria for delivering high-quality, robust, and secure software.
+`REDCapTidieR` is built with production readiness in mind. It builds upon `REDCapR`, which contains an excellent test suite, to make API calls, and includes an extensive automated test suite and ample documentation through a `pkgdown` site(https://chop-cgtinformatics.github.io/REDCapTidieR/index.html) [@redcaptidier_pkgdown_cit]. It meets the rigorous requirements of the [OpenSSF Best Practices Badge](https://www.bestpractices.dev/en/projects/6845) [@openssf_cit], which certifies open-source projects that adhere to criteria for delivering high-quality, robust, and secure software.
 
-| Package     | Data Export Support | Data Import Support | Data Manipulation | Tidy Reformatting | Production Ready |
-|-------------|---------------------|---------------------|-------------------|-------------------|------------------|
-| redcapAPI   | x                   | x                   |                   |                   | x                |
-| REDCapR     | x                   | x                   |                   |                   | x                |
-| tidyREDCap  | x                   |                     | x                 |                   |                  |
-| REDCapDM    | x                   |                     | x                 |                   |                  |
-| REDCapTidieR| x                   |                     | x                 | x                 | x                |
+| Package     | Exports from REDCap | Imports into REDCap | Tidy Reformatting | Extensive Test Suite |
+|-------------|:-------------------:|:-------------------:|:-----------------:|:--------------------:|
+| redcapAPI   | x                   | x                   |                   | x                    |
+| REDCapR     | x                   | x                   |                   | x                    |
+| tidyREDCap  | x                   |                     |                   |                      |
+| REDCapDM    | x                   |                     |                   |                      |
+| REDCapTidieR| x                   |                     | x                 | x                    |
 
 Table 1: Comparative breakdown of the landscape for REDCap tools in R.
 
@@ -80,9 +82,9 @@ The `REDCapTidieR::read_redcap()` function leverages `REDCapR` to make API calls
 
 ![The REDCapTidieR Supertibble](images/Figure1.png)
 
-Figure 1: The REDCapTidieR Supertibble. The "Superhero" database[@superheroes_cit] contains two instruments, one nonrepeating and one repeating. A. The REDCap API returns a "Block Matrix". Note an abundance of `NA` values, which do not represent missing values but rather fields that do not apply due to the data structure. B. The `read_redcap()` function returns a "Supertibble". Note that each row represents one instrument, identified by the `redcap_form_name` column. The `redcap_data` column is a list column that links to tibbles containing the data from a specific instrument. Since each instrument has a consistent granularity, these tibbles can be tidy. Two data tibbles are shown, one from a nonrepeating and one from a repeating instrument. Note the differences in granularity between the instruments.
+Figure 1: The REDCapTidieR supertibble shown in the Data Viewer of the RStudio IDE. The "Superhero database" [@superheroes_cit] contains two instruments, one nonrepeating and one repeating. A. The REDCap API outputs a "Block Matrix". Note an abundance of `NA` values, which do not represent missing values but rather fields that do not apply due to the data structure. B. The `read_redcap()` function returns a "Supertibble". Note that each row represents one instrument, identified by the `redcap_form_name` column. The `redcap_data` column is a list column that links to tibbles containing the data from a specific instrument. The Data Viewer allows drilling down into individual tibbles by clicking on the table icon, allowing for rapid and intuitive data exploration without any preprocessing. Since each instrument has a consistent granularity, these tibbles can be tidy. Two data tibbles are shown, one from a nonrepeating and one from a repeating instrument. Note the differences in granularity between the instruments.
 
-`REDCapTidieR` provides utility functions to work with the supertibble, all designed to work with the R pipe `|>`. The `extract_tibble()` function takes a supertibble object and returns a specific data tibble. The `make_labelled()` function leverages the `labelled` package [@labelled_cit] to apply variable labels to the supertibble. The `add_skimr_metadata()` function uses the `skimr` package [@skimr_cit] to add summary statistics. Using the `write_redcap_xlsx()` function, which leverages the `openxlsx2` [@openxlsx2_cit] package, users can easily export an the supertibble into a collaborator-friendly Excel document, in which each Excel sheet contains the data for an instrument.
+`REDCapTidieR` provides utility functions to work with the supertibble, all designed to work with the R pipe operator `|>`. The `extract_tibble()` function takes a supertibble object and returns a specific data tibble. The `make_labelled()` function leverages the `labelled` package [@labelled_cit] to apply variable labels to the supertibble. The `add_skimr_metadata()` function uses the `skimr` package [@skimr_cit] to add summary statistics. Using the `write_redcap_xlsx()` function, which leverages the `openxlsx2` [@openxlsx2_cit] package, users can easily export an the supertibble into a collaborator-friendly Excel document, in which each Excel sheet contains the data for an instrument.
 
 `REDCapTidieR` cannot be used to write data to a REDCap project. We refer the reader to an excellent guide of how to accomplish this using `REDCapR` [@redcapr_write_cit].
 
