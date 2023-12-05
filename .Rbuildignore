@@ -15,6 +15,7 @@
 ^cran-comments\.md$
 README.html$
 
+paper/
 pkgdown/
 utility/
 lastMiKTeXException/
