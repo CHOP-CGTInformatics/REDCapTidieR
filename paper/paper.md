@@ -41,7 +41,7 @@ affiliations:
  - name: Division of Pediatrics, Children's Hospital of Philadelphia, Philadelphia, Pennsylvania
    index: 6
  - name: Department of Pediatrics, The University of Oklahoma Health Sciences Center, College of Medicine, Oklahoma City, Oklahoma, USA
- - index: 7
+   index: 7
 date: XX November 2023
 bibliography: paper.bib
 ---
