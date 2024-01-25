@@ -94,7 +94,7 @@ Figure 1: The REDCapTidieR supertibble shown in the Data Viewer of the RStudio I
 
 # Acknowledgements
 
-We would like to thank Will Beasley, Paul Wildenhain, and Jan Marvin for their feedback and support in development.
+We would like to thank Jan Marvin and Raymond Balise for their feedback and support in development.
 
 This package was developed by the [Cell and Gene Therapy Informatics Team](https://www.chop.edu/centers-programs/cell-and-gene-therapy-informatics-team/our-team) of the [Children’s Hospital of Philadelphia](https://www.chop.edu).
 
