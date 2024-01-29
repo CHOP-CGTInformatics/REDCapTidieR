@@ -62,7 +62,7 @@ As of 2023, the REDCap Consortium boasts nearly 3 million users across over 150 
 
 REDCap databases that contain repeating events and instruments require significant manual pre-processing, a major pain point for researchers and analysts. This is because the REDCap API returns a single table (Figure 1) that includes data from instruments that record data at different levels of granularity.
 
-While there are a few existing REDCap tools (Table 1), `REDCapTidieR` occupies a unique space by providing analysts with a framework returns a tidy data structure regardless of the size or complexity of the extracted database. Although some of these tools also offer functions for data processing, such as the [`tidyREDCap`](https://raymondbalise.github.io/tidyREDCap/) [@tidyredcap_cit] and [`REDCapDM`](https://ubidi.github.io/REDCapDM/index.html) [@redcapdm_cit] packages, only `REDCapTidieR` restructures the block matrix into an easy to use format.
+While several existing REDCap packages are available (Table 1), `REDCapTidieR` distinguishes itself by offering analysts a unique framework that returns a tidy data structure regardless of the size or complexity of the extracted database. Packages such as [`tidyREDCap`](https://raymondbalise.github.io/tidyREDCap/) [@tidyredcap_cit] and [`REDCapDM`](https://ubidi.github.io/REDCapDM/index.html) [@redcapdm_cit] also offer tools for data processing, while `redcapAPI` gives a wealth of options for data export in addition to features that break apart the block matrix using a base R framework. However, only `REDCapTidieR` deconstructs the block matrix into easily joinable tidy tables that form their own composite primary keys to preserve the relationships between each other in accordance with their unique granularity.
 
 `REDCapTidieR` is built with production readiness in mind. In addition to an extensive 98% coverage test suite, `REDCapTidieR` execution is evaluated against 15 test databases that cover many complex configuration scenarios. It also provides ample documentation through a `pkgdown` [site](https://chop-cgtinformatics.github.io/REDCapTidieR/index.html) [@redcaptidier_pkgdown_cit]. It is also built on top of `REDCapR`, which contains its own extensive test suite, and evaluated against an additional 26 test databases. `REDCapTidieR` meets the rigorous requirements of the [OpenSSF Best Practices Badge](https://www.bestpractices.dev/en/projects/6845) [@openssf_cit], which certifies open-source projects that adhere to criteria for delivering high-quality, robust, and secure software.
 
@@ -78,7 +78,7 @@ Table 1: Comparative breakdown of the landscape for REDCap tools in R.
 
 # Design
 
-The `REDCapTidieR::read_redcap()` function leverages `REDCapR` to make API calls to query the data and metadata of a REDCap project and returns the supertibble (Figure 1). The supertibble, named after the [`tibble` package](https://tibble.tidyverse.org/) [@tibble_cit], is an alternative presentation of the data in which multiple tables are linked together in a single object in a fashion consistent with tidy data principles.
+The `REDCapTidieR::read_redcap()` function leverages `REDCapR` to make API calls to query the data and metadata of a REDCap project and returns the supertibble (Figure 1). The supertibble, named after the [`tibble` package](https://tibble.tidyverse.org/) [@tibble_cit], is an alternative presentation of the data in which multiple tables are linked together in a single object in a fashion consistent with tidy data principles. Specific data tibbles within the supertibble, representing the data of individual REDCap instruments, can be easily joined using their composite primary keys.
 
 ![The REDCapTidieR Supertibble](images/Figure1.png)
 
@@ -94,7 +94,7 @@ Figure 1: The REDCapTidieR supertibble shown in the Data Viewer of the RStudio I
 
 # Acknowledgements
 
-We would like to thank Will Beasley, Paul Wildenhain, and Jan Marvin for their feedback and support in development.
+We would like to thank Jan Marvin and Raymond Balise for their feedback and support in development.
 
 This package was developed by the [Cell and Gene Therapy Informatics Team](https://www.chop.edu/centers-programs/cell-and-gene-therapy-informatics-team/our-team) of the [Children’s Hospital of Philadelphia](https://www.chop.edu).
 

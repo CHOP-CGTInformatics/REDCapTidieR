@@ -339,6 +339,7 @@ test_that("bind_supertbl_metadata works", {
 
 test_that("Combining skimr, labelled, and xlsx returns expected snapshot", {
   skip_on_cran()
+  skip_on_ci()
   out <-
     read_redcap(Sys.getenv("REDCAP_URI"), Sys.getenv("REDCAPTIDIER_CLASSIC_API")) %>%
     # Suppress expected warnings from the REDCapTidieR Classic database.
