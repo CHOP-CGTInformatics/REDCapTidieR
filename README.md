@@ -16,6 +16,7 @@ status](https://www.r-pkg.org/badges/version/REDCapTidieR)](https://CRAN.R-proje
 coverage](https://codecov.io/gh/CHOP-CGTInformatics/REDCapTidieR/branch/main/graph/badge.svg)](https://app.codecov.io/gh/CHOP-CGTInformatics/REDCapTidieR?branch=main)
 [![OpenSSF Best
 Practices](https://bestpractices.coreinfrastructure.org/projects/6845/badge)](https://bestpractices.coreinfrastructure.org/projects/6845)
+[![DOI](https://joss.theoj.org/papers/10.21105/joss.06277/status.svg)](https://doi.org/10.21105/joss.06277)
 <!-- badges: end -->
 
 The REDCapTidieR package provides an elegant way to
