@@ -208,3 +208,43 @@ test_that("distill_repeat_table_long no arms returns tables  for REDCap dbs with
     any(c("redcap_repeat_instrument", "redcap_arm") %in% names(out))
   )
 })
+
+test_that("get_mixed_structure_fields works", {
+  mixed_structure_db <- tibble::tribble(
+    ~record_id, ~redcap_repeat_instrument, ~redcap_repeat_instance, ~mixed_structure_variable,
+    1, NA, NA, "A",
+    2, "mixed_structure_form", 1, "B"
+  )
+
+  expected_out <- data.frame(
+    field_name = "mixed_structure_variable",
+    rep_and_nonrep = TRUE
+  )
+
+  out <- get_mixed_structure_fields(mixed_structure_db)
+
+  expect_equal(out, expected_out)
+})
+
+test_that("convert_mixed_instrument works", {
+  mixed_structure_db <- tibble::tribble(
+    ~record_id, ~redcap_repeat_instrument, ~redcap_repeat_instance, ~mixed_structure_variable,
+    1, NA, NA, "A",
+    2, "mixed_structure_form", 1, "B"
+  )
+
+  mixed_structure_meta <- tibble::tribble(
+    ~field_name, ~form_name,
+    "mixed_structure_variable", "mixed_structure_form"
+  )
+
+  expected_out <-tibble::tribble(
+    ~record_id, ~redcap_repeat_instrument, ~redcap_repeat_instance, ~mixed_structure_variable,
+    1, "mixed_structure_form", 1, "A",
+    2, "mixed_structure_form", 1, "B"
+  )
+
+  out <- convert_mixed_instrument(mixed_structure_db, mixed_structure_meta)
+
+  expect_equal(out, expected_out)
+})

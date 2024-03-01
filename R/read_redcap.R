@@ -53,6 +53,10 @@
 #' @param guess_max A positive [base::numeric] value
 #' passed to [readr::read_csv()] that specifies the maximum number of records to
 #' use for guessing column types. Default `.Machine$integer.max`.
+#' @param enable_repeat_nonrepeat A logical to allow for support of mixed repeating/non-repeating
+#' instruments. Setting to `TRUE` will treat the mixed instrument's non-repeating versions
+#' as repeating instruments with a single instance. Applies to longitudinal projects
+#' only Default `FALSE`.
 #'
 #' @examples
 #' \dontrun{
@@ -75,7 +79,8 @@ read_redcap <- function(redcap_uri,
                         export_survey_fields = NULL,
                         export_data_access_groups = NULL,
                         suppress_redcapr_messages = TRUE,
-                        guess_max = .Machine$integer.max) {
+                        guess_max = .Machine$integer.max,
+                        enable_repeat_nonrepeat = FALSE) {
   check_arg_is_character(redcap_uri, len = 1, any.missing = FALSE)
   check_arg_is_character(token, len = 1, any.missing = FALSE)
   check_arg_is_valid_token(token)
@@ -267,7 +272,8 @@ read_redcap <- function(redcap_uri,
     out <- clean_redcap_long(
       db_data_long = db_data,
       db_metadata_long = db_metadata,
-      linked_arms = linked_arms
+      linked_arms = linked_arms,
+      enable_repeat_nonrepeat = enable_repeat_nonrepeat
     )
   } else {
     out <- clean_redcap(

@@ -101,39 +101,7 @@ check_user_rights <- function(db_data,
 
 
 check_repeat_and_nonrepeat <- function(db_data, call = caller_env()) {
-  # Identify columns to check for repeat/nonrepeat behavior
-  safe_cols <- c(
-    names(db_data)[1], "redcap_event_name",
-    "redcap_repeat_instrument", "redcap_repeat_instance",
-    "redcap_data_access_group"
-  )
-
-  check_cols <- setdiff(names(db_data), safe_cols)
-
-  # Set up check_data function that looks for repeating and nonrepeating
-  # behavior in a given column and returns a boolean
-  check_data <- function(db_data, check_col) {
-    # Repeating Check
-    rep <- any(!is.na(db_data[{{ check_col }}]) & !is.na(db_data["redcap_repeat_instrument"]))
-
-    # Nonrepeating Check
-    nonrep <- any(!is.na(db_data[{{ check_col }}]) & is.na(db_data["redcap_repeat_instrument"]))
-
-    rep & nonrep
-  }
-
-  # Create a simple dataframe, loop through check columns and append
-  # dataframe with column being checked and the output of check_data
-  out <- data.frame()
-  for (i in seq_along(check_cols)) {
-    rep_and_nonrep <- db_data %>%
-      check_data(check_col = check_cols[i])
-
-    field <- check_cols[i]
-
-    out <- rbind(out, data.frame(field, rep_and_nonrep))
-    out
-  }
+  out <- get_mixed_structure_fields(db_data = db_data)
 
   # Filter for violations
   out <- out %>%
@@ -142,11 +110,16 @@ check_repeat_and_nonrepeat <- function(db_data, call = caller_env()) {
   # Produce error message if violations detected
   if (nrow(out) > 0) {
     cli_abort(c("x" = "Instrument{?s} detected that ha{?s/ve} both repeating and
-      nonrepeating instances defined in the project: {out$field}"),
-      class = c("repeat_nonrepeat_instrument", "REDCapTidieR_cond"),
-      call = call
+      nonrepeating instances defined in the project: {out$field}",
+                "i" = "Set {.code enable_repeat_nonrepeat} to {.code TRUE} to override.
+                See the
+                {.href [Diving Deeper vigentte](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/diving_deeper.html#longitudinal-redcap-projects)}
+                for more information."
+    ),
+    class = c("repeat_nonrepeat_instrument", "REDCapTidieR_cond"),
+    call = call
     )
-  }
+}
 }
 
 #' @title
