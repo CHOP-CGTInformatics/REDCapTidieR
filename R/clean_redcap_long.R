@@ -367,13 +367,13 @@ distill_repeat_table_long <- function(form_name,
 #' @keywords internal
 
 convert_mixed_instrument <- function(db_data_long, db_metadata_long) {
-
   mixed_structure_fields <- get_mixed_structure_fields(db_data_long) %>%
-    filter(rep_and_nonrep & !stringr::str_ends(field_name, "_form_complete")) %>%
-    left_join(db_metadata_long %>% select(field_name, form_name),
-              by = "field_name")
+    filter(rep_and_nonrep & !stringr::str_ends(field_name, "_form_complete")) %>% # nolint object_usage_linter
+    left_join(db_metadata_long %>% select(field_name, form_name), # nolint object_usage_linter
+      by = "field_name"
+    )
 
-  for (i in 1:nrow(mixed_structure_fields)) {
+  for (i in seq_len(nrow(mixed_structure_fields))) {
     field <- mixed_structure_fields$field_name[i]
     form <- mixed_structure_fields$form_name[i]
 

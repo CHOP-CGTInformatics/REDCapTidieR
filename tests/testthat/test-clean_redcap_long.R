@@ -238,7 +238,7 @@ test_that("convert_mixed_instrument works", {
     "mixed_structure_variable", "mixed_structure_form"
   )
 
-  expected_out <-tibble::tribble(
+  expected_out <- tibble::tribble(
     ~record_id, ~redcap_repeat_instrument, ~redcap_repeat_instance, ~mixed_structure_variable,
     1, "mixed_structure_form", 1, "A",
     2, "mixed_structure_form", 1, "B"

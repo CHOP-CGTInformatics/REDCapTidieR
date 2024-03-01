@@ -105,21 +105,25 @@ check_repeat_and_nonrepeat <- function(db_data, call = caller_env()) {
 
   # Filter for violations
   out <- out %>%
-    filter(rep_and_nonrep)
+    filter(rep_and_nonrep) # nolint object_usage_linter
 
   # Produce error message if violations detected
   if (nrow(out) > 0) {
-    cli_abort(c("x" = "Instrument{?s} detected that ha{?s/ve} both repeating and
+    cli_abort(
+      c(
+        "x" = "Instrument{?s} detected that ha{?s/ve} both repeating and
       nonrepeating instances defined in the project: {out$field}",
-                "i" = "Set {.code enable_repeat_nonrepeat} to {.code TRUE} to override.
-                See the
-                {.href [Diving Deeper vigentte](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/diving_deeper.html#longitudinal-redcap-projects)}
-                for more information."
-    ),
-    class = c("repeat_nonrepeat_instrument", "REDCapTidieR_cond"),
-    call = call
+        "i" = paste0(
+          "Set {.code enable_repeat_nonrepeat} to {.code TRUE} to override. ",
+          "See the ",
+          "{.href [Diving Deeper vigentte](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/diving_deeper.html#longitudinal-redcap-projects)} ", # nolint line_length_linter
+          "for more information."
+        )
+      ),
+      class = c("repeat_nonrepeat_instrument", "REDCapTidieR_cond"),
+      call = call
     )
-}
+  }
 }
 
 #' @title
