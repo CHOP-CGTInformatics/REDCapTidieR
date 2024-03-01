@@ -368,8 +368,8 @@ distill_repeat_table_long <- function(form_name,
 
 convert_mixed_instrument <- function(db_data_long, db_metadata_long) {
   mixed_structure_fields <- get_mixed_structure_fields(db_data_long) %>%
-    filter(rep_and_nonrep & !stringr::str_ends(field_name, "_form_complete")) %>% # nolint object_usage_linter
-    left_join(db_metadata_long %>% select(field_name, form_name), # nolint object_usage_linter
+    filter(.data$rep_and_nonrep & !str_ends(.data$field_name, "_form_complete")) %>%
+    left_join(db_metadata_long %>% select(.data$field_name, .data$form_name),
       by = "field_name"
     )
 

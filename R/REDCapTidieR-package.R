@@ -18,7 +18,7 @@
 #' is_installed new_environment quo_get_expr try_fetch zap as_label
 #' @importFrom stringi stri_split_fixed
 #' @importFrom stringr str_detect str_replace str_replace_all str_squish str_trunc
-#' str_trim
+#' str_trim str_ends
 #' @importFrom tibble as_tibble is_tibble tibble
 #' @importFrom tidyr complete fill pivot_wider nest unnest unnest_wider
 #' @importFrom tidyselect all_of any_of ends_with eval_select everything

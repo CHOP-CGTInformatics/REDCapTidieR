@@ -105,7 +105,7 @@ check_repeat_and_nonrepeat <- function(db_data, call = caller_env()) {
 
   # Filter for violations
   out <- out %>%
-    filter(rep_and_nonrep) # nolint object_usage_linter
+    filter(.data$rep_and_nonrep)
 
   # Produce error message if violations detected
   if (nrow(out) > 0) {
