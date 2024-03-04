@@ -42,7 +42,7 @@ creds <- rbind(ouhsc_creds, redcaptidier_creds)
 
 microbenchmark_fx <- function(redcap_uri, token, name, times = 1){
   microbenchmark(
-    name = read_redcap(redcap_uri = redcap_uri, token = token, enable_repeat_nonrepeat = TRUE),
+    name = read_redcap(redcap_uri = redcap_uri, token = token, enable_mixed_structure = TRUE),
     times = times
   )
 }

@@ -19,6 +19,7 @@ knitr::knit_exit()
 redcap_uri <- Sys.getenv("REDCAP_URI")
 superheroes_token <- Sys.getenv("SUPERHEROES_REDCAP_API")
 longitudinal_token <- Sys.getenv("REDCAPTIDIER_DEEP_DIVE_VIGNETTE_API")
+mixed_token <- Sys.getenv("REDCAPTIDIER_MIXED_STRUCTURE_API")
 survey_token <- Sys.getenv("REDCAPTIDIER_CLASSIC_API")
 dag_token <- Sys.getenv("REDCAPTIDIER_DAG_API")
 ```
@@ -80,7 +81,7 @@ super_hero_powers |>
   rmarkdown::paged_table()
 ```
 
-## Longitudinal REDCap projects
+## Longitudinal REDCap Projects
 
 REDCap supports two main mechanisms to allow collecting the same data multiple times: [**repeating instruments**](glossary.html#repeating-instrument) and [**longitudinal projects**](glossary.html#longitudinal-project). In addition, a longitudinal project may have [**arms**](glossary.html#arm) and/or [**repeating events**](glossary.html#repeating-event).
 
@@ -156,8 +157,6 @@ adverse_events |>
 
 It is possible to have a repeating instrument designated to multiple events, however this is an uncommon pattern. REDCapTidieR supports this scenario as well.
 
-REDCapTidieR does *not* allow you to have the same instrument designated both as a repeating and as a nonrepeating instrument in different events. It will throw an error if it detects this.
-
 The `unscheduled` **event** is a **repeating event**. Like adverse events, unscheduled visits aren't tied to a pre-determined study visit, and a patient could have zero, one, or multiple unscheduled visits. On the other hand, you might want to record the same kinds of data for an unscheduled visit as for a pre-determined regular visit and collect data in the same instruments, for example `physical_exam` and `hematology`. The granularity of these tables is one row per study subject per event per *event instance*. The subject had two unscheduled visits. `redcap_event_instance` allows us to match `physical_exam` and `hematology` responses which occurred on the same unscheduled visit.
 
 ```{r, results='hold'}
@@ -174,7 +173,30 @@ Note that REDCapTidieR allows for an instrument to be associated with both repea
 
 REDCapTidieR supports projects with multiple arms. If you have a project with multiple arms, there will be an additional column `redcap_arm` to identify the arm that the row is associated with.
 
-## Categorical variables
+### Mixed Structure Instruments
+
+By default, REDCapTidieR does not allow you to have the same instrument designated both as a repeating and as a nonrepeating instrument in different events (i.e. a "mixed structure instrument"), and will throw an error if this is detected: 
+
+```
+Error in `clean_redcap_long()` at REDCapTidieR/R/read_redcap.R:272:5:                            
+✖ Instruments detected that have both repeating and nonrepeating instances defined in the project: mixed_structure_1 and mixed_structure_form_complete
+ℹ Set `enable_mixed_structure` to `TRUE` to override. See Mixed Structure Instruments for more information.
+```
+
+This is because such a design inherently goes against [tidy](glossary.html#tidy) data principles. 
+
+However, as of REDCapTidieR v1.1.0 it is now possible to override this behavior by setting `enable_mixed_structure` in `read_redcap()` to `TRUE`. When enabled, nonrepeating variants of mixed structure instruments will be treated as repeating instruments with a single repeating instance. 
+
+Users are cautioned when enabling this feature, since it changes definitions in the original data output. To visually assist with this, you will see that `structure` in the [supertibble](glossary.html#supertibble) will say "mixed":
+
+```{r}
+read_redcap(redcap_uri,
+            mixed_token,
+            enable_mixed_structure = TRUE) |>
+  rmarkdown::paged_table()
+```
+
+## Categorical Variables
 
 REDCapTidieR performs a number of opinionated transformations on categorical [fields](glossary.html#field) to streamline exploring them and working with them.
 

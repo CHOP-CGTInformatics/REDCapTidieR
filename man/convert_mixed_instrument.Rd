@@ -19,7 +19,7 @@ can access dataframes under the \code{redcap_data} column with reference to
 \code{form_name} and \code{structure} column details.
 }
 \description{
-For longitudinal projects where users set \code{enable_repeat_nonrepeat} to \code{TRUE},
+For longitudinal projects where users set \code{enable_mixed_structure} to \code{TRUE},
 this function will handle the process of setting the nonrepeating parts of the
 instrument to repeating ones with a single instance.
 }

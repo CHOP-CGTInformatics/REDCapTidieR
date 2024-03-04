@@ -12,10 +12,10 @@
 #' \code{REDCapR::redcap_metadata_read()$data}
 #' @param linked_arms Output of \code{link_arms}, linking instruments to REDCap
 #' events/arms
-#' @param enable_repeat_nonrepeat A logical to allow for support of mixed repeating/non-repeating
+#' @param enable_mixed_structure A logical to allow for support of mixed repeating/non-repeating
 #' instruments. Setting to `TRUE` will treat the mixed instrument's non-repeating versions
 #' as repeating instruments with a single instance. Applies to longitudinal projects
-#' only Default `FALSE`.
+#' only. Default `FALSE`.
 #'
 #' @return
 #' Returns a \code{tibble} with list elements containing tidy dataframes. Users
@@ -27,7 +27,7 @@
 clean_redcap_long <- function(db_data_long,
                               db_metadata_long,
                               linked_arms,
-                              enable_repeat_nonrepeat = FALSE) {
+                              enable_mixed_structure = FALSE) {
   # Repeating Instrument Check ----
   # Check if database supplied contains any repeating instruments to map onto
   # `redcap_repeat_*` variables
@@ -40,7 +40,7 @@ clean_redcap_long <- function(db_data_long,
   assert_data_frame(db_metadata_long)
 
   if (has_repeat_forms) {
-    if (enable_repeat_nonrepeat) {
+    if (enable_mixed_structure) {
       db_data_long <- convert_mixed_instrument(db_data_long, db_metadata_long)
       mixed_structure_forms <- get_mixed_structure_fields(db_data_long)
       has_mixed_structure_forms <- ifelse(any(mixed_structure_forms$rep_and_nonrep), TRUE, has_mixed_structure_forms)
@@ -353,7 +353,7 @@ distill_repeat_table_long <- function(form_name,
 #' @title Convert Mixed Structure Instruments to Repeating Instruments
 #'
 #' @description
-#' For longitudinal projects where users set `enable_repeat_nonrepeat` to `TRUE`,
+#' For longitudinal projects where users set `enable_mixed_structure` to `TRUE`,
 #' this function will handle the process of setting the nonrepeating parts of the
 #' instrument to repeating ones with a single instance.
 #'
