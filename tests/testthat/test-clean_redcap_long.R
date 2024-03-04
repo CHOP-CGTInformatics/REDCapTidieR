@@ -102,7 +102,7 @@ test_that("clean_redcap_long with mixed structure works", {
 
   # Check general structure
   expect_true(is_tibble(out))
-  expect_true("repeating" %in% out$structure)
+  expect_true("mixed" %in% out$structure)
   expect_true("nonrepeating" %in% out$structure)
   expect_true(!is.null(out$redcap_data))
 })

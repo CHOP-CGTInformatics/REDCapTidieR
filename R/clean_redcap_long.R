@@ -33,6 +33,7 @@ clean_redcap_long <- function(db_data_long,
   # `redcap_repeat_*` variables
 
   has_repeat_forms <- "redcap_repeat_instance" %in% names(db_data_long)
+  has_mixed_structure_forms <- FALSE
 
   # Apply checkmate checks
   assert_data_frame(db_data_long)
@@ -41,6 +42,8 @@ clean_redcap_long <- function(db_data_long,
   if (has_repeat_forms) {
     if (enable_repeat_nonrepeat) {
       db_data_long <- convert_mixed_instrument(db_data_long, db_metadata_long)
+      mixed_structure_forms <- get_mixed_structure_fields(db_data_long)
+      has_mixed_structure_forms <- ifelse(any(mixed_structure_forms$rep_and_nonrep), TRUE, has_mixed_structure_forms)
     } else {
       check_repeat_and_nonrepeat(db_data_long)
     }
@@ -64,7 +67,7 @@ clean_redcap_long <- function(db_data_long,
           linked_arms
         )
       ),
-      structure = "repeating"
+      structure = ifelse(has_mixed_structure_forms, "mixed", "repeating")
     )
   }
 
