@@ -377,12 +377,14 @@ convert_mixed_instrument <- function(db_data_long, db_metadata_long) {
     field <- mixed_structure_fields$field_name[i]
     form <- mixed_structure_fields$form_name[i]
 
-    # Find column index in db_data_long with the specified field_name
-    col_index <- which(colnames(db_data_long) == field)
+    # Create a logical mask for rows needing update
+    update_mask <- is.na(db_data_long$redcap_repeat_instance) & !is.na(db_data_long[[field]])
 
-    # Update redcap_repeat_instance and redcap_repeat_instrument
-    db_data_long[, "redcap_repeat_instance"][!is.na(db_data_long[, col_index])] <- 1
-    db_data_long[, "redcap_repeat_instrument"][!is.na(db_data_long[, col_index])] <- form
+    # Update redcap_repeat_instance
+    db_data_long$redcap_repeat_instance <- if_else(update_mask, 1, db_data_long$redcap_repeat_instance)
+
+    # Update redcap_repeat_instrument
+    db_data_long$redcap_repeat_instrument <- if_else(update_mask, form, db_data_long$redcap_repeat_instrument)
   }
 
   db_data_long

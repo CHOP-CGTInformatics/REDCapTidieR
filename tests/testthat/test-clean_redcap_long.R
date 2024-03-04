@@ -265,7 +265,9 @@ test_that("convert_mixed_instrument works", {
   mixed_structure_db <- tibble::tribble(
     ~record_id, ~redcap_repeat_instrument, ~redcap_repeat_instance, ~mixed_structure_variable,
     1, NA, NA, "A",
-    2, "mixed_structure_form", 1, "B"
+    2, "mixed_structure_form", 1, "B",
+    3, "repeat_form", 1, "C",
+    4, "repeat_form", 2, "D"
   )
 
   mixed_structure_meta <- tibble::tribble(
@@ -276,7 +278,9 @@ test_that("convert_mixed_instrument works", {
   expected_out <- tibble::tribble(
     ~record_id, ~redcap_repeat_instrument, ~redcap_repeat_instance, ~mixed_structure_variable,
     1, "mixed_structure_form", 1, "A",
-    2, "mixed_structure_form", 1, "B"
+    2, "mixed_structure_form", 1, "B",
+    3, "repeat_form", 1, "C",
+    4, "repeat_form", 2, "D"
   )
 
   out <- convert_mixed_instrument(mixed_structure_db, mixed_structure_meta)
