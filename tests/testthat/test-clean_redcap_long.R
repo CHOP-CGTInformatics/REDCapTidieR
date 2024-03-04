@@ -28,6 +28,15 @@ db_metadata_long_noarms <- readRDS(
 linked_arms_long_noarms <- readRDS(
   system.file("testdata/linked_arms_long_noarms.RDS", package = "REDCapTidieR")
 )
+db_mixed_structure <- readRDS(
+  system.file("testdata/db_mixed_structure.RDS", package = "REDCapTidieR")
+)
+db_metadata_mixed_structure <- readRDS(
+  system.file("testdata/db_metadata_mixed_structure.RDS", package = "REDCapTidieR")
+)
+db_mixed_structure_linked_arms <- readRDS(
+  system.file("testdata/db_mixed_structure_linked_arms.RDS", package = "REDCapTidieR")
+)
 
 # Run Tests ----
 test_that("clean_redcap_long with arms works", {
@@ -69,6 +78,32 @@ test_that("clean_redcap_long without arms works", {
 
   expect_true(is_tibble(out))
   expect_true(all(c("repeating", "nonrepeating") %in% out$structure))
+  expect_true(!is.null(out$redcap_data))
+})
+
+test_that("clean_redcap_long with mixed structure works", {
+  # Required since amendments take place before clean_redcap_long call in read_redcap
+  db_metadata_mixed_structure <- update_field_names(db_metadata_mixed_structure)
+
+  expect_error(
+    clean_redcap_long(
+      db_data_long = db_mixed_structure,
+      db_metadata_long = db_metadata_mixed_structure
+    ),
+    class = "repeat_nonrepeat_instrument"
+  )
+
+  out <- clean_redcap_long(
+    db_data_long = db_mixed_structure,
+    db_metadata_long = db_metadata_mixed_structure,
+    linked_arms = db_mixed_structure_linked_arms,
+    enable_repeat_nonrepeat = TRUE
+  )
+
+  # Check general structure
+  expect_true(is_tibble(out))
+  expect_true("repeating" %in% out$structure)
+  expect_true("nonrepeating" %in% out$structure)
   expect_true(!is.null(out$redcap_data))
 })
 
