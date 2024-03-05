@@ -114,7 +114,7 @@ check_repeat_and_nonrepeat <- function(db_data, call = caller_env()) {
         "x" = "Instrument{?s} detected that ha{?s/ve} both repeating and
       nonrepeating instances defined in the project: {out$field}",
         "i" = paste0(
-          "Set {.code enable_mixed_structure} to {.code TRUE} to override. ",
+          "Set {.code allow_mixed_structure} to {.code TRUE} to override. ",
           "See ",
           "{.href [Mixed Structure Instruments](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/diving_deeper.html#mixed-structure-instruments)} ", # nolint line_length_linter
           "for more information."

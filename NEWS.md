@@ -1,6 +1,6 @@
 # REDCapTidieR 1.1.0
 
-- `read_redcap()` now supports instruments that follow a mixed repeating/non-repeating structure with the `enable_mixed_structure` parameter
+- `read_redcap()` now supports instruments that follow a mixed repeating/non-repeating structure with the `allow_mixed_structure` parameter
 - When enabled, instruments with mixed repeating/nonrepeating structure will be treated as single-instance repeating instruments
 
 # REDCapTidieR 1.0.0

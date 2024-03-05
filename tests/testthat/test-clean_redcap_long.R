@@ -97,7 +97,7 @@ test_that("clean_redcap_long with mixed structure works", {
     db_data_long = db_mixed_structure,
     db_metadata_long = db_metadata_mixed_structure,
     linked_arms = db_mixed_structure_linked_arms,
-    enable_mixed_structure = TRUE
+    allow_mixed_structure = TRUE
   )
 
   # Check general structure

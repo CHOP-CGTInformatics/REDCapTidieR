@@ -8,7 +8,7 @@ clean_redcap_long(
   db_data_long,
   db_metadata_long,
   linked_arms,
-  enable_mixed_structure = FALSE
+  allow_mixed_structure = FALSE
 )
 }
 \arguments{
@@ -21,7 +21,7 @@ clean_redcap_long(
 \item{linked_arms}{Output of \code{link_arms}, linking instruments to REDCap
 events/arms}
 
-\item{enable_mixed_structure}{A logical to allow for support of mixed repeating/non-repeating
+\item{allow_mixed_structure}{A logical to allow for support of mixed repeating/non-repeating
 instruments. Setting to \code{TRUE} will treat the mixed instrument's non-repeating versions
 as repeating instruments with a single instance. Applies to longitudinal projects
 only. Default \code{FALSE}.}

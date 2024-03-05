@@ -180,19 +180,19 @@ By default, REDCapTidieR does not allow you to have the same instrument designat
 ```
 Error in `clean_redcap_long()` at REDCapTidieR/R/read_redcap.R:272:5:                            
 ✖ Instruments detected that have both repeating and nonrepeating instances defined in the project: mixed_structure_1 and mixed_structure_form_complete
-ℹ Set `enable_mixed_structure` to `TRUE` to override. See Mixed Structure Instruments for more information.
+ℹ Set `allow_mixed_structure` to `TRUE` to override. See Mixed Structure Instruments for more information.
 ```
 
 This is because such a design inherently goes against [tidy](glossary.html#tidy) data principles. 
 
-However, as of REDCapTidieR v1.1.0 it is now possible to override this behavior by setting `enable_mixed_structure` in `read_redcap()` to `TRUE`. When enabled, nonrepeating variants of mixed structure instruments will be treated as repeating instruments with a single repeating instance. 
+However, as of REDCapTidieR v1.1.0 it is now possible to override this behavior by setting `allow_mixed_structure` in `read_redcap()` to `TRUE`. When enabled, nonrepeating variants of mixed structure instruments will be treated as repeating instruments with a single repeating instance. 
 
 Users are cautioned when enabling this feature, since it changes definitions in the original data output. To visually assist with this, you will see that `structure` in the [supertibble](glossary.html#supertibble) will say "mixed":
 
 ```{r}
 read_redcap(redcap_uri,
             mixed_token,
-            enable_mixed_structure = TRUE) |>
+            allow_mixed_structure = TRUE) |>
   rmarkdown::paged_table()
 ```
 
