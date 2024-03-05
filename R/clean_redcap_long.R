@@ -39,36 +39,13 @@ clean_redcap_long <- function(db_data_long,
   assert_data_frame(db_data_long)
   assert_data_frame(db_metadata_long)
 
-  if (has_repeat_forms) {
-    if (allow_mixed_structure) {
-      db_data_long <- convert_mixed_instrument(db_data_long, db_metadata_long)
-      mixed_structure_forms <- get_mixed_structure_fields(db_data_long)
-      has_mixed_structure_forms <- ifelse(any(mixed_structure_forms$rep_and_nonrep), TRUE, has_mixed_structure_forms)
-    } else {
-      check_repeat_and_nonrepeat(db_data_long)
-    }
-  }
-
-  ## Repeating Instruments Logic ----
+  ## Repeating Forms Assignment ----
+  # Needed first to inform nonrepeating forms logic
   if (has_repeat_forms) {
     repeated_forms <- db_data_long %>%
       filter(!is.na(.data$redcap_repeat_instrument)) %>%
       pull(.data$redcap_repeat_instrument) %>%
       unique()
-
-    repeated_forms_tibble <- tibble(
-      redcap_form_name = repeated_forms,
-      redcap_data = map(
-        .data$redcap_form_name,
-        ~ distill_repeat_table_long(
-          .x,
-          db_data_long,
-          db_metadata_long,
-          linked_arms
-        )
-      ),
-      structure = ifelse(has_mixed_structure_forms, "mixed", "repeating")
-    )
   }
 
   ## Nonrepeating Instruments Logic ----
@@ -97,6 +74,35 @@ clean_redcap_long <- function(db_data_long,
     ),
     structure = "nonrepeating"
   )
+
+  ## Repeating Instruments Logic ----
+  if (has_repeat_forms) {
+    # If mixed structure allowed, retrieve mixed structure forms
+    if (allow_mixed_structure) {
+      mixed_structure_fields <- get_mixed_structure_fields(db_data_long)
+      has_mixed_structure_forms <- ifelse(any(mixed_structure_fields$rep_and_nonrep), TRUE, has_mixed_structure_forms) # Update
+    } else {
+      check_repeat_and_nonrepeat(db_data_long)
+    }
+
+    if (has_mixed_structure_forms) {
+      db_data_long <- convert_mixed_instrument(db_data_long, db_metadata_long)
+    }
+
+    repeated_forms_tibble <- tibble(
+      redcap_form_name = repeated_forms,
+      redcap_data = map(
+        .data$redcap_form_name,
+        ~ distill_repeat_table_long(
+          .x,
+          db_data_long,
+          db_metadata_long,
+          linked_arms
+        )
+      ),
+      structure = "repeating" # TODO: Fix this so can be "repeating" / "mixed"
+    )
+  }
 
   if (has_repeat_forms) {
     rbind(repeated_forms_tibble, nonrepeated_forms_tibble)
@@ -254,6 +260,7 @@ distill_repeat_table_long <- function(form_name,
                                       db_data_long,
                                       db_metadata_long,
                                       linked_arms) {
+
   has_repeat_forms <- "redcap_repeat_instance" %in% names(db_data_long)
 
   my_record_id <- names(db_data_long)[1]
@@ -370,10 +377,11 @@ distill_repeat_table_long <- function(form_name,
 #' @keywords internal
 
 convert_mixed_instrument <- function(db_data_long, db_metadata_long) {
+
   mixed_structure_fields <- get_mixed_structure_fields(db_data_long) %>%
     filter(.data$rep_and_nonrep & !str_ends(.data$field_name, "_form_complete")) %>%
     left_join(db_metadata_long %>% select(.data$field_name, .data$form_name),
-      by = "field_name"
+              by = "field_name"
     )
 
   for (i in seq_len(nrow(mixed_structure_fields))) {
