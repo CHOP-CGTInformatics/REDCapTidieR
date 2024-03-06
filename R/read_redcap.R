@@ -56,7 +56,7 @@
 #' @param allow_mixed_structure A logical to allow for support of mixed repeating/non-repeating
 #' instruments. Setting to `TRUE` will treat the mixed instrument's non-repeating versions
 #' as repeating instruments with a single instance. Applies to longitudinal projects
-#' only. Default `FALSE`.
+#' only. Default `FALSE`. Can be set globally with `options(redcaptidier.allow.mixed.structure = FALSE)`.
 #'
 #' @examples
 #' \dontrun{
@@ -80,7 +80,7 @@ read_redcap <- function(redcap_uri,
                         export_data_access_groups = NULL,
                         suppress_redcapr_messages = TRUE,
                         guess_max = .Machine$integer.max,
-                        allow_mixed_structure = FALSE) {
+                        allow_mixed_structure = getOption("redcaptidier.allow.mixed.structure", FALSE)) {
   check_arg_is_character(redcap_uri, len = 1, any.missing = FALSE)
   check_arg_is_character(token, len = 1, any.missing = FALSE)
   check_arg_is_valid_token(token)

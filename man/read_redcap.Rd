@@ -13,7 +13,7 @@ read_redcap(
   export_data_access_groups = NULL,
   suppress_redcapr_messages = TRUE,
   guess_max = .Machine$integer.max,
-  allow_mixed_structure = FALSE
+  allow_mixed_structure = getOption("redcaptidier.allow.mixed.structure", FALSE)
 )
 }
 \arguments{
@@ -50,7 +50,7 @@ use for guessing column types. Default \code{.Machine$integer.max}.}
 \item{allow_mixed_structure}{A logical to allow for support of mixed repeating/non-repeating
 instruments. Setting to \code{TRUE} will treat the mixed instrument's non-repeating versions
 as repeating instruments with a single instance. Applies to longitudinal projects
-only. Default \code{FALSE}.}
+only. Default \code{FALSE}. Can be set globally with \code{options(redcaptidier.allow.mixed.structure = FALSE)}.}
 }
 \value{
 A \code{tibble} in which each row represents a REDCap instrument. It
