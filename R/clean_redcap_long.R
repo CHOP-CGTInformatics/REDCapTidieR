@@ -79,6 +79,8 @@ clean_redcap_long <- function(db_data_long,
   if (has_repeat_forms) {
     # If mixed structure allowed, retrieve mixed structure forms
 
+    mixed_structure_ref <- data.frame()
+
     if (allow_mixed_structure) {
       # Retrieve mixed structure fields and forms
       mixed_structure_ref <- get_mixed_structure_fields(db_data_long) %>%
