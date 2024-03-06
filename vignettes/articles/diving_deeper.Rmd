@@ -191,8 +191,9 @@ Users are cautioned when enabling this feature, since it changes definitions in 
 
 ```{r}
 read_redcap(redcap_uri,
-            mixed_token,
-            allow_mixed_structure = TRUE) |>
+  mixed_token,
+  allow_mixed_structure = TRUE
+) |>
   rmarkdown::paged_table()
 ```
 

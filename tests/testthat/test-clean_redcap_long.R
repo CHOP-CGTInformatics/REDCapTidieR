@@ -123,11 +123,15 @@ test_that("clean_redcap_long with mixed structure works", {
     1, "event_2", "Nonrepeat 2", 0
   )
 
-  expect_equal(out$redcap_data[out$redcap_form_name == "mixed_structure_form"][[1]],
-               expected_mixed_data)
+  expect_equal(
+    out$redcap_data[out$redcap_form_name == "mixed_structure_form"][[1]],
+    expected_mixed_data
+  )
 
-  expect_equal(out$redcap_data[out$redcap_form_name == "nonrepeat_form"][[1]],
-               expected_nonrepeat_data)
+  expect_equal(
+    out$redcap_data[out$redcap_form_name == "nonrepeat_form"][[1]],
+    expected_nonrepeat_data
+  )
 })
 
 test_that("distill_nonrepeat_table_long tibble contains expected columns for longitudinal REDCap databases with arms", {
