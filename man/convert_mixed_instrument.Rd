@@ -4,14 +4,14 @@
 \alias{convert_mixed_instrument}
 \title{Convert Mixed Structure Instruments to Repeating Instruments}
 \usage{
-convert_mixed_instrument(db_data_long, db_metadata_long)
+convert_mixed_instrument(db_data_long, mixed_structure_ref)
 }
 \arguments{
 \item{db_data_long}{The longitudinal REDCap database output defined by
 \code{REDCapR::redcap_read_oneshot()$data}}
 
-\item{db_metadata_long}{The longitudinal REDCap metadata output defined by
-\code{REDCapR::redcap_metadata_read()$data}}
+\item{mixed_structure_ref}{Reference dataframe containing mixed structure
+fields and forms.}
 }
 \value{
 Returns a \code{tibble} with list elements containing tidy dataframes. Users
