@@ -82,7 +82,7 @@ clean_redcap_long <- function(db_data_long,
     mixed_structure_ref <- data.frame()
 
     if (allow_mixed_structure) {
-      # Retrieve mixed structure fields and forms
+      # Retrieve mixed structure fields and forms in reference df
       mixed_structure_ref <- get_mixed_structure_fields(db_data_long) %>%
         filter(.data$rep_and_nonrep & !str_ends(.data$field_name, "_form_complete")) %>%
         left_join(db_metadata_long %>% select(.data$field_name, .data$form_name),
@@ -91,14 +91,11 @@ clean_redcap_long <- function(db_data_long,
 
       # Update if project actually has mixed structure
       has_mixed_structure_forms <- nrow(mixed_structure_ref) > 0
-
       # Convert mixed instruments to mixed structure format
-      if (has_mixed_structure_forms) {
-        db_data_long <- convert_mixed_instrument(db_data_long, mixed_structure_ref)
-      }
     } else {
-      # Throw error if mixed structure detected and not allowed
-      check_repeat_and_nonrepeat(db_data_long)
+      if (!has_mixed_structure_forms) {
+        check_repeat_and_nonrepeat(db_data_long)
+      }
     }
 
     repeated_forms_tibble <- tibble(
@@ -109,7 +106,9 @@ clean_redcap_long <- function(db_data_long,
           .x,
           db_data_long,
           db_metadata_long,
-          linked_arms
+          linked_arms,
+          has_mixed_structure_forms = has_mixed_structure_forms,
+          mixed_structure_ref = mixed_structure_ref
         )
       ),
       structure = case_when(
@@ -268,13 +267,19 @@ distill_nonrepeat_table_long <- function(form_name,
 #' \code{REDCapR::redcap_metadata_read()$data}
 #' @param linked_arms Output of \code{link_arms}, linking instruments to REDCap
 #' events/arms
+#' @param has_mixed_structure Whether the instrument under evaluation has a mixed
+#' structure. Default `FALSE`.
+#' @param name mixed_structure_ref A mixed structure reference dataframe supplied
+#' by `get_mixed_structure_fields()`.
 #'
 #' @keywords internal
 
 distill_repeat_table_long <- function(form_name,
                                       db_data_long,
                                       db_metadata_long,
-                                      linked_arms) {
+                                      linked_arms,
+                                      has_mixed_structure_forms = FALSE,
+                                      mixed_structure_ref = NULL) {
   has_repeat_forms <- "redcap_repeat_instance" %in% names(db_data_long)
 
   my_record_id <- names(db_data_long)[1]
@@ -306,6 +311,11 @@ distill_repeat_table_long <- function(form_name,
   # For projects containing DAGs, also pull redcap_data_access_group
   if ("redcap_data_access_group" %in% names(db_data_long)) {
     my_fields <- c(my_fields, "redcap_data_access_group")
+  }
+
+  # If has mixed structure, convert form
+  if (has_mixed_structure_forms) {
+    db_data_long <- convert_mixed_instrument(db_data_long, mixed_structure_ref %>% filter(form_name == my_form))
   }
 
   # Setup data for loop redcap_arm linking

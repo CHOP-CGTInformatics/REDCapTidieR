@@ -8,7 +8,9 @@ distill_repeat_table_long(
   form_name,
   db_data_long,
   db_metadata_long,
-  linked_arms
+  linked_arms,
+  has_mixed_structure_forms = FALSE,
+  mixed_structure_ref = NULL
 )
 }
 \arguments{
@@ -23,6 +25,12 @@ REDCap metadata.}
 
 \item{linked_arms}{Output of \code{link_arms}, linking instruments to REDCap
 events/arms}
+
+\item{has_mixed_structure}{Whether the instrument under evaluation has a mixed
+structure. Default \code{FALSE}.}
+
+\item{name}{mixed_structure_ref A mixed structure reference dataframe supplied
+by \code{get_mixed_structure_fields()}.}
 }
 \value{
 A \code{tibble} of all data related to a specified \code{form_name}
