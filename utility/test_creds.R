@@ -38,7 +38,7 @@ redcaptidier_creds <- tibble::tribble(
 )
 
 # Combine Credentials
-creds <- rbind(ouhsc_creds, redcaptidier_creds)
+creds <- rbind(ouhsc_creds %>% mutate(source = "ouhsc"), redcaptidier_creds %>% mutate(source = "redcaptidier"))
 
 microbenchmark_fx <- function(redcap_uri, token, name, times = 1){
   microbenchmark(
@@ -58,4 +58,5 @@ for (i in seq_along(microbenchmark_results)) {
 out %>%
   select(-expr) %>%
   mutate(across(tidyselect::everything(), ~round(., digits = 2))) %>%
+  cbind(., "description" = creds$comment, "source" = creds$source) %>%
   readr::write_csv("utility/microbenchmark_results.csv")
