@@ -14,7 +14,7 @@ a longitudinal REDCap database."><meta property="og:image" content="https://chop
     
     <a class="navbar-brand me-2" href="../index.html">REDCapTidieR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -73,7 +73,12 @@ a longitudinal REDCap database.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">clean_redcap_long</span><span class="op">(</span><span class="va">db_data_long</span>, <span class="va">db_metadata_long</span>, <span class="va">linked_arms</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">clean_redcap_long</span><span class="op">(</span></span>
+<span>  <span class="va">db_data_long</span>,</span>
+<span>  <span class="va">db_metadata_long</span>,</span>
+<span>  <span class="va">linked_arms</span>,</span>
+<span>  allow_mixed_structure <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -91,6 +96,13 @@ a longitudinal REDCap database.</p>
 <dt>linked_arms</dt>
 <dd><p>Output of <code>link_arms</code>, linking instruments to REDCap
 events/arms</p></dd>
+
+
+<dt>allow_mixed_structure</dt>
+<dd><p>A logical to allow for support of mixed repeating/non-repeating
+instruments. Setting to <code>TRUE</code> will treat the mixed instrument's non-repeating versions
+as repeating instruments with a single instance. Applies to longitudinal projects
+only. Default <code>FALSE</code>.</p></dd>
 
 </dl></div>
     <div class="section level2">

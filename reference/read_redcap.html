@@ -14,7 +14,7 @@ and metadata organized into tibbles, broken down by instrument.'><meta property=
     
     <a class="navbar-brand me-2" href="../index.html">REDCapTidieR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -81,7 +81,8 @@ and metadata organized into tibbles, broken down by instrument.</p>
 <span>  export_survey_fields <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  export_data_access_groups <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  suppress_redcapr_messages <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  guess_max <span class="op">=</span> <span class="va">.Machine</span><span class="op">$</span><span class="va">integer.max</span></span>
+<span>  guess_max <span class="op">=</span> <span class="va">.Machine</span><span class="op">$</span><span class="va">integer.max</span>,</span>
+<span>  allow_mixed_structure <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"redcaptidier.allow.mixed.structure"</span>, <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -131,6 +132,13 @@ from REDCapR API calls. Default <code>TRUE</code>.</p></dd>
 <dd><p>A positive <a href="https://rdrr.io/r/base/numeric.html" class="external-link">base::numeric</a> value
 passed to <code><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">readr::read_csv()</a></code> that specifies the maximum number of records to
 use for guessing column types. Default <code>.Machine$integer.max</code>.</p></dd>
+
+
+<dt>allow_mixed_structure</dt>
+<dd><p>A logical to allow for support of mixed repeating/non-repeating
+instruments. Setting to <code>TRUE</code> will treat the mixed instrument's non-repeating versions
+as repeating instruments with a single instance. Applies to longitudinal projects
+only. Default <code>FALSE</code>. Can be set globally with <code>options(redcaptidier.allow.mixed.structure = FALSE)</code>.</p></dd>
 
 </dl></div>
     <div class="section level2">

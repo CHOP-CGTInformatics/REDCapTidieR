@@ -34,7 +34,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">REDCapTidieR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -214,7 +214,7 @@ and finally the <code>form_status_complete</code> column.</p>
 </div>
 </div>
 <div class="section level2">
-<h2 id="longitudinal-redcap-projects">Longitudinal REDCap projects<a class="anchor" aria-label="anchor" href="#longitudinal-redcap-projects"></a>
+<h2 id="longitudinal-redcap-projects">Longitudinal REDCap Projects<a class="anchor" aria-label="anchor" href="#longitudinal-redcap-projects"></a>
 </h2>
 <p>REDCap supports two main mechanisms to allow collecting the same data
 multiple times: <a href="glossary.html#repeating-instrument"><strong>repeating
@@ -382,9 +382,6 @@ second subject has two.</p>
 <p>It is possible to have a repeating instrument designated to multiple
 events, however this is an uncommon pattern. REDCapTidieR supports this
 scenario as well.</p>
-<p>REDCapTidieR does <em>not</em> allow you to have the same instrument
-designated both as a repeating and as a nonrepeating instrument in
-different events. It will throw an error if it detects this.</p>
 <p>The <code>unscheduled</code> <strong>event</strong> is a
 <strong>repeating event</strong>. Like adverse events, unscheduled
 visits aren’t tied to a pre-determined study visit, and a patient could
@@ -424,9 +421,40 @@ nonrepeating event.</p>
 project with multiple arms, there will be an additional column
 <code>redcap_arm</code> to identify the arm that the row is associated
 with.</p>
+<div class="section level3">
+<h3 id="mixed-structure-instruments">Mixed Structure Instruments<a class="anchor" aria-label="anchor" href="#mixed-structure-instruments"></a>
+</h3>
+<p>By default, REDCapTidieR does not allow you to have the same
+instrument designated both as a repeating and as a nonrepeating
+instrument in different events (i.e. a “mixed structure instrument”),
+and will throw an error if this is detected:</p>
+<pre><code>Error in `clean_redcap_long()` at REDCapTidieR/R/read_redcap.R:272:5:                            
+✖ Instruments detected that have both repeating and nonrepeating instances defined in the project: mixed_structure_1 and mixed_structure_form_complete
+ℹ Set `allow_mixed_structure` to `TRUE` to override. See Mixed Structure Instruments for more information.</code></pre>
+<p>This is because such a design inherently goes against <a href="glossary.html#tidy">tidy</a> data principles.</p>
+<p>However, as of REDCapTidieR v1.1.0 it is now possible to override
+this behavior by setting <code>allow_mixed_structure</code> in
+<code><a href="../reference/read_redcap.html">read_redcap()</a></code> to <code>TRUE</code>. When enabled,
+nonrepeating variants of mixed structure instruments will be treated as
+repeating instruments with a single repeating instance.</p>
+<p>Users are cautioned when enabling this feature, since it changes
+definitions in the original data output. To visually assist with this,
+you will see that <code>structure</code> in the <a href="glossary.html#supertibble">supertibble</a> will say “mixed”:</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/read_redcap.html">read_redcap</a></span><span class="op">(</span><span class="va">redcap_uri</span>,</span>
+<span>  <span class="va">mixed_token</span>,</span>
+<span>  allow_mixed_structure <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">rmarkdown</span><span class="fu">::</span><span class="fu"><a href="https://pkgs.rstudio.com/rmarkdown/reference/paged_table.html" class="external-link">paged_table</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["redcap_form_name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["redcap_form_label"],"name":[2],"type":["chr"],"align":["left"]},{"label":["redcap_data"],"name":[3],"type":["list"],"align":["right"]},{"label":["redcap_metadata"],"name":[4],"type":["list"],"align":["right"]},{"label":["redcap_events"],"name":[5],"type":["list"],"align":["right"]},{"label":["structure"],"name":[6],"type":["chr"],"align":["left"]},{"label":["data_rows"],"name":[7],"type":["int"],"align":["right"]},{"label":["data_cols"],"name":[8],"type":["int"],"align":["right"]},{"label":["data_size"],"name":[9],"type":["lbstr_by"],"align":["right"]},{"label":["data_na_pct"],"name":[10],"type":["formttbl"],"align":["right"]}],"data":[{"1":"nonrepeat_form","2":"Nonrepeat Form","3":"<tibble[,4]>","4":"<tibble[,17]>","5":"<tibble[,3]>","6":"nonrepeating","7":"2","8":"4","9":"2.12 kB","10":"0%"},{"1":"repeat_form","2":"Repeat Form","3":"<tibble[,5]>","4":"<tibble[,17]>","5":"<tibble[,3]>","6":"repeating","7":"2","8":"5","9":"2.24 kB","10":"0%"},{"1":"mixed_structure_form","2":"Mixed Structure Form","3":"<tibble[,5]>","4":"<tibble[,17]>","5":"<tibble[,3]>","6":"mixed","7":"3","8":"5","9":"2.46 kB","10":"0%"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
 </div>
 <div class="section level2">
-<h2 id="categorical-variables">Categorical variables<a class="anchor" aria-label="anchor" href="#categorical-variables"></a>
+<h2 id="categorical-variables">Categorical Variables<a class="anchor" aria-label="anchor" href="#categorical-variables"></a>
 </h2>
 <p>REDCapTidieR performs a number of opinionated transformations on
 categorical <a href="glossary.html#field">fields</a> to streamline
@@ -434,7 +462,7 @@ exploring them and working with them.</p>
 <p>Fields that are of <a href="glossary.html#field-type">type</a>
 <code>yesno</code> or <code>truefalse</code> are converted to
 <strong>logical</strong> <a href="glossary.html#variable">variables</a>.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">adverse_events</span><span class="op">$</span><span class="va">adverse_event_serious</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;  logi [1:5] FALSE FALSE FALSE FALSE FALSE</span></span></code></pre></div>
@@ -453,9 +481,9 @@ values are <code>1</code>, <code>2</code>, <code>3</code>,
 are <code>Grade 1</code>, <code>Grade 2</code>, <code>Grade 3</code>,
 <code>Grade 4</code>, and <code>Grade 5</code>.</p>
 <center>
-<div class="figure">
-<img src="images/field-editor-ae-grade.png" alt=""><p class="caption">REDCap field editor showing the choices of a
-single-answer field</p>
+<div class="float">
+<img src="images/field-editor-ae-grade.png" alt="REDCap field editor showing the choices of a single-answer field"><div class="figcaption">REDCap field editor showing the choices of a
+single-answer field</div>
 </div>
 </center>
 <p>REDCapTidieR preserves all the possible choices as levels even if not
@@ -463,7 +491,7 @@ all of them are represented in the data. This makes it possible to
 discover all of the different choices. For example, even though we have
 only Grade 1 and 2 adverse events in the data, we can see that there are
 5 possible grades.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">adverse_events</span><span class="op">$</span><span class="va">adverse_event_grade</span></span>
 <span><span class="co">#&gt; [1] Grade 2 Grade 1 Grade 1 Grade 2 Grade 1</span></span>
 <span><span class="co">#&gt; Levels: Grade 1 Grade 2 Grade 3 Grade 4 Grade 5</span></span></code></pre></div>
@@ -472,7 +500,7 @@ choice field has intrinsically ordered choices, those choices are
 usually presented in the proper order. Since REDCapTidieR preserves the
 order of choices from REDCap, you can convert intrinsically ordered
 variables to ordered factors.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ae_grade</span> <span class="op">&lt;-</span> <span class="va">adverse_events</span><span class="op">$</span><span class="va">adverse_event_grade</span></span>
 <span></span>
 <span><span class="va">ae_grade</span> <span class="op">|&gt;</span></span>
@@ -491,9 +519,9 @@ the comma) are <code>apheresis</code>, <code>ld_chemo</code>,
 <code>other_research_proc</code>, <code>con_meds</code>, and
 <code>other</code>.</p>
 <center>
-<div class="figure">
-<img src="images/field-editor-contributing-factors.png" alt=""><p class="caption">REDCap field editor showing the choices of a
-multi-answer field</p>
+<div class="float">
+<img src="images/field-editor-contributing-factors.png" alt="REDCap field editor showing the choices of a multi-answer field"><div class="figcaption">REDCap field editor showing the choices of a
+multi-answer field</div>
 </div>
 </center>
 <blockquote>
@@ -506,7 +534,7 @@ of the field, followed by three underscores, followed by the
 <strong>raw</strong> value of the choice defined in REDCap. Here are the
 variables REDCapTidieR generates from the
 <code>adverse_event_relationship_other</code> field:</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">adverse_events</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">starts_with</a></span><span class="op">(</span><span class="st">"adverse_event_relationship_other___"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -535,7 +563,7 @@ enabled, by default a column named <code>redcap_data_access_group</code>
 will appear in each <a href="glossary.html#data-tibble">data tibble</a>
 after the <a href="glossary.html#identifier-column">identifier
 columns</a>.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">redcap_project_with_dags</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_redcap.html">read_redcap</a></span><span class="op">(</span><span class="va">redcap_uri</span>, <span class="va">dag_token</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">redcap_project_with_dags</span> <span class="op">|&gt;</span></span>
@@ -560,7 +588,7 @@ feature in REDCap is disabled.</p></li>
 </ul>
 <p>These columns are placed after all of the other data columns and
 prior to the <code>form_status_complete</code> column.</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">survey</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_redcap.html">read_redcap</a></span><span class="op">(</span><span class="va">redcap_uri</span>, <span class="va">survey_token</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/extract_tibble.html">extract_tibble</a></span><span class="op">(</span><span class="st">"survey"</span><span class="op">)</span></span>
 <span></span>

@@ -34,7 +34,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">REDCapTidieR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -607,9 +607,11 @@ Started vignette</a>.</p>
 <div class="section level3">
 <h3 id="structure">Structure<a class="anchor" aria-label="anchor" href="#structure"></a>
 </h3>
-<p>The structure of an <a href="#instrument">instrument</a> can be <a href="#repeating-instrument">repeating</a> or <a href="#nonrepeating-instrument">nonrepeating</a>. The <a href="#supertibble">supertibble</a> shows the instrument’s structure in
+<p>The structure of an <a href="#instrument">instrument</a> can be <a href="#repeating-instrument">repeating</a>, <a href="#nonrepeating-instrument">nonrepeating</a>, or mixed. The <a href="#supertibble">supertibble</a> shows the instrument’s structure in
 the <code>structure</code> column. The structure of a <a href="#project">project</a> can be <a href="#classic-project">classic</a>, <a href="#longitudinal-project">longitudinal</a>, or longitudinal with <a href="#arm">arms</a>. The structure of an <a href="#event">event</a> can
-be <a href="#repeating-event">repeating</a> or <a href="#nonrepeating-event">nonrepeating</a>. The <a href="#granularity">granularity</a> of a <a href="#data-tibble">data
+be <a href="#repeating-event">repeating</a> or <a href="#nonrepeating-event">nonrepeating</a>. As of REDCapTidier v1.1.0,
+<a href="https://chop-cgtinformatics.github.io/REDCapTidieR/articles/diving_deeper.html#mixed-structure-instruments">mixed
+structure instruments</a> are supported. The <a href="#granularity">granularity</a> of a <a href="#data-tibble">data
 tibble</a> depends on the structure of all three: the instrument, the
 project, and the events associated with the instrument. Note: REDCap
 does not allow repeating instruments inside a repeating event. See also:
