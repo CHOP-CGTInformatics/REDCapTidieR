@@ -93,9 +93,7 @@ clean_redcap_long <- function(db_data_long,
       has_mixed_structure_forms <- nrow(mixed_structure_ref) > 0
       # Convert mixed instruments to mixed structure format
     } else {
-      if (!has_mixed_structure_forms) {
-        check_repeat_and_nonrepeat(db_data_long)
-      }
+    check_repeat_and_nonrepeat(db_data_long)
     }
 
     repeated_forms_tibble <- tibble(
