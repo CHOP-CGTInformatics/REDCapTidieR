@@ -31,17 +31,18 @@ redcaptidier_creds <- tibble::tribble(
   Sys.getenv("REDCAP_URI"), Sys.getenv("REDCAPTIDIER_LARGE_SPARSE_API"), "large sparse db",
   Sys.getenv("REDCAP_URI"), Sys.getenv("REDCAPTIDIER_DAG_API"), "data access groups",
   Sys.getenv("REDCAP_URI"), Sys.getenv("REDCAPTIDIER_LONGITUDINAL_DAG_API"), "longitudinal data access groups",
+  Sys.getenv("REDCAP_URI"), Sys.getenv("REDCAPTIDIER_MIXED_STRUCTURE_API"), "mixed structure repeat no repeat",
   Sys.getenv("REDCAP_URI"), Sys.getenv("PRODIGY_REDCAP_API"), "prodigy db",
   Sys.getenv("REDCAP_URI"), Sys.getenv("CART_COMP_REDCAP_API"), "cart comprehensive db",
   Sys.getenv("REDCAP_URI"), Sys.getenv("BMT_OUTCOMES_REDCAP_API"), "bmt outcomes db"
 )
 
 # Combine Credentials
-creds <- rbind(ouhsc_creds, redcaptidier_creds)
+creds <- rbind(ouhsc_creds %>% mutate(source = "ouhsc"), redcaptidier_creds %>% mutate(source = "redcaptidier"))
 
 microbenchmark_fx <- function(redcap_uri, token, name, times = 1){
   microbenchmark(
-    name = read_redcap(redcap_uri = redcap_uri, token = token),
+    name = read_redcap(redcap_uri = redcap_uri, token = token, allow_mixed_structure = TRUE),
     times = times
   )
 }
@@ -57,4 +58,5 @@ for (i in seq_along(microbenchmark_results)) {
 out %>%
   select(-expr) %>%
   mutate(across(tidyselect::everything(), ~round(., digits = 2))) %>%
+  cbind(., "description" = creds$comment, "source" = creds$source) %>%
   readr::write_csv("utility/microbenchmark_results.csv")

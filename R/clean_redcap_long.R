@@ -12,6 +12,10 @@
 #' \code{REDCapR::redcap_metadata_read()$data}
 #' @param linked_arms Output of \code{link_arms}, linking instruments to REDCap
 #' events/arms
+#' @param allow_mixed_structure A logical to allow for support of mixed repeating/non-repeating
+#' instruments. Setting to `TRUE` will treat the mixed instrument's non-repeating versions
+#' as repeating instruments with a single instance. Applies to longitudinal projects
+#' only. Default `FALSE`.
 #'
 #' @return
 #' Returns a \code{tibble} with list elements containing tidy dataframes. Users
@@ -22,7 +26,8 @@
 
 clean_redcap_long <- function(db_data_long,
                               db_metadata_long,
-                              linked_arms) {
+                              linked_arms,
+                              allow_mixed_structure = FALSE) {
   # Repeating Instrument Check ----
   # Check if database supplied contains any repeating instruments to map onto
   # `redcap_repeat_*` variables
@@ -33,30 +38,13 @@ clean_redcap_long <- function(db_data_long,
   assert_data_frame(db_data_long)
   assert_data_frame(db_metadata_long)
 
-  if (has_repeat_forms) {
-    check_repeat_and_nonrepeat(db_data_long)
-  }
-
-  ## Repeating Instruments Logic ----
+  ## Repeating Forms Assignment ----
+  # Needed first to inform nonrepeating forms logic
   if (has_repeat_forms) {
     repeated_forms <- db_data_long %>%
       filter(!is.na(.data$redcap_repeat_instrument)) %>%
       pull(.data$redcap_repeat_instrument) %>%
       unique()
-
-    repeated_forms_tibble <- tibble(
-      redcap_form_name = repeated_forms,
-      redcap_data = map(
-        .data$redcap_form_name,
-        ~ distill_repeat_table_long(
-          .x,
-          db_data_long,
-          db_metadata_long,
-          linked_arms
-        )
-      ),
-      structure = "repeating"
-    )
   }
 
   ## Nonrepeating Instruments Logic ----
@@ -85,6 +73,47 @@ clean_redcap_long <- function(db_data_long,
     ),
     structure = "nonrepeating"
   )
+
+  ## Repeating Instruments Logic ----
+  if (has_repeat_forms) {
+    # If mixed structure allowed, retrieve mixed structure forms
+    has_mixed_structure_forms <- FALSE # nolint: object_usage_linter
+
+    mixed_structure_ref <- data.frame()
+
+    if (allow_mixed_structure) {
+      # Retrieve mixed structure fields and forms in reference df
+      mixed_structure_ref <- get_mixed_structure_fields(db_data_long) %>%
+        filter(.data$rep_and_nonrep & !str_ends(.data$field_name, "_form_complete")) %>%
+        left_join(db_metadata_long %>% select(.data$field_name, .data$form_name),
+          by = "field_name"
+        )
+
+      # Update if project actually has mixed structure
+      has_mixed_structure_forms <- nrow(mixed_structure_ref) > 0
+    } else {
+      check_repeat_and_nonrepeat(db_data_long)
+    }
+
+    repeated_forms_tibble <- tibble(
+      redcap_form_name = repeated_forms,
+      redcap_data = map(
+        .data$redcap_form_name,
+        ~ distill_repeat_table_long(
+          .x,
+          db_data_long,
+          db_metadata_long,
+          linked_arms,
+          has_mixed_structure_forms = has_mixed_structure_forms,
+          mixed_structure_ref = mixed_structure_ref
+        )
+      ),
+      structure = case_when(
+        has_mixed_structure_forms & redcap_form_name %in% mixed_structure_ref$form_name ~ "mixed",
+        TRUE ~ "repeating"
+      )
+    )
+  }
 
   if (has_repeat_forms) {
     rbind(repeated_forms_tibble, nonrepeated_forms_tibble)
@@ -235,13 +264,19 @@ distill_nonrepeat_table_long <- function(form_name,
 #' \code{REDCapR::redcap_metadata_read()$data}
 #' @param linked_arms Output of \code{link_arms}, linking instruments to REDCap
 #' events/arms
+#' @param has_mixed_structure Whether the instrument under evaluation has a mixed
+#' structure. Default `FALSE`.
+#' @param name mixed_structure_ref A mixed structure reference dataframe supplied
+#' by `get_mixed_structure_fields()`.
 #'
 #' @keywords internal
 
 distill_repeat_table_long <- function(form_name,
                                       db_data_long,
                                       db_metadata_long,
-                                      linked_arms) {
+                                      linked_arms,
+                                      has_mixed_structure_forms = FALSE,
+                                      mixed_structure_ref = NULL) {
   has_repeat_forms <- "redcap_repeat_instance" %in% names(db_data_long)
 
   my_record_id <- names(db_data_long)[1]
@@ -273,6 +308,11 @@ distill_repeat_table_long <- function(form_name,
   # For projects containing DAGs, also pull redcap_data_access_group
   if ("redcap_data_access_group" %in% names(db_data_long)) {
     my_fields <- c(my_fields, "redcap_data_access_group")
+  }
+
+  # If has mixed structure, convert form
+  if (has_mixed_structure_forms) {
+    db_data_long <- convert_mixed_instrument(db_data_long, mixed_structure_ref %>% filter(form_name == my_form))
   }
 
   # Setup data for loop redcap_arm linking
@@ -336,4 +376,90 @@ distill_repeat_table_long <- function(form_name,
 
   out %>%
     tibble()
+}
+
+#' @title Convert Mixed Structure Instruments to Repeating Instruments
+#'
+#' @description
+#' For longitudinal projects where users set `allow_mixed_structure` to `TRUE`,
+#' this function will handle the process of setting the nonrepeating parts of the
+#' instrument to repeating ones with a single instance.
+#'
+#' @param db_data_long The longitudinal REDCap database output defined by
+#' \code{REDCapR::redcap_read_oneshot()$data}
+#' @param mixed_structure_ref Reference dataframe containing mixed structure
+#' fields and forms.
+#'
+#' @return
+#' Returns a \code{tibble} with list elements containing tidy dataframes. Users
+#' can access dataframes under the \code{redcap_data} column with reference to
+#' \code{form_name} and \code{structure} column details.
+#'
+#' @keywords internal
+
+convert_mixed_instrument <- function(db_data_long, mixed_structure_ref) {
+  for (i in seq_len(nrow(mixed_structure_ref))) {
+    field <- mixed_structure_ref$field_name[i]
+    form <- mixed_structure_ref$form_name[i]
+
+    # Create a logical mask for rows needing update
+    update_mask <- is.na(db_data_long$redcap_repeat_instance) & !is.na(db_data_long[[field]])
+
+    # Update redcap_repeat_instance
+    db_data_long$redcap_repeat_instance <- if_else(update_mask, 1, db_data_long$redcap_repeat_instance)
+
+    # Update redcap_repeat_instrument
+    db_data_long$redcap_repeat_instrument <- if_else(update_mask, form, db_data_long$redcap_repeat_instrument)
+  }
+
+  db_data_long
+}
+
+#' @title Get Mixed Structure Instrument List
+#'
+#' @description
+#' Define fields in a given project that are used in both a repeating and
+#' nonrepeating manner.
+#'
+#' @param db_data The REDCap database output generated by
+#' \code{REDCapR::redcap_read_oneshot()$data}
+#'
+#' @returns a dataframe
+#'
+#' @keywords internal
+
+get_mixed_structure_fields <- function(db_data) {
+  # Identify columns to check for repeat/nonrepeat behavior
+  safe_cols <- c(
+    names(db_data)[1], "redcap_event_name",
+    "redcap_repeat_instrument", "redcap_repeat_instance",
+    "redcap_data_access_group"
+  )
+
+  check_cols <- setdiff(names(db_data), safe_cols)
+
+  # Set up check_data function that looks for repeating and nonrepeating
+  # behavior in a given column and returns a boolean
+  check_data <- function(db_data, check_col) {
+    # Repeating Check
+    rep <- any(!is.na(db_data[{{ check_col }}]) & !is.na(db_data["redcap_repeat_instrument"]))
+
+    # Nonrepeating Check
+    nonrep <- any(!is.na(db_data[{{ check_col }}]) & is.na(db_data["redcap_repeat_instrument"]))
+
+    rep & nonrep
+  }
+
+  # Create a simple dataframe, loop through check columns and append
+  # dataframe with column being checked and the output of check_data
+  out <- data.frame()
+  for (i in seq_along(check_cols)) {
+    rep_and_nonrep <- db_data %>%
+      check_data(check_col = check_cols[i])
+
+    field_name <- check_cols[i]
+
+    out <- rbind(out, data.frame(field_name, rep_and_nonrep))
+  }
+  out
 }

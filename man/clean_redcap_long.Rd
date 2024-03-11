@@ -4,7 +4,12 @@
 \alias{clean_redcap_long}
 \title{Extract longitudinal REDCap databases into tidy tibbles}
 \usage{
-clean_redcap_long(db_data_long, db_metadata_long, linked_arms)
+clean_redcap_long(
+  db_data_long,
+  db_metadata_long,
+  linked_arms,
+  allow_mixed_structure = FALSE
+)
 }
 \arguments{
 \item{db_data_long}{The longitudinal REDCap database output defined by
@@ -15,6 +20,11 @@ clean_redcap_long(db_data_long, db_metadata_long, linked_arms)
 
 \item{linked_arms}{Output of \code{link_arms}, linking instruments to REDCap
 events/arms}
+
+\item{allow_mixed_structure}{A logical to allow for support of mixed repeating/non-repeating
+instruments. Setting to \code{TRUE} will treat the mixed instrument's non-repeating versions
+as repeating instruments with a single instance. Applies to longitudinal projects
+only. Default \code{FALSE}.}
 }
 \value{
 Returns a \code{tibble} with list elements containing tidy dataframes. Users

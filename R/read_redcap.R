@@ -53,6 +53,10 @@
 #' @param guess_max A positive [base::numeric] value
 #' passed to [readr::read_csv()] that specifies the maximum number of records to
 #' use for guessing column types. Default `.Machine$integer.max`.
+#' @param allow_mixed_structure A logical to allow for support of mixed repeating/non-repeating
+#' instruments. Setting to `TRUE` will treat the mixed instrument's non-repeating versions
+#' as repeating instruments with a single instance. Applies to longitudinal projects
+#' only. Default `FALSE`. Can be set globally with `options(redcaptidier.allow.mixed.structure = FALSE)`.
 #'
 #' @examples
 #' \dontrun{
@@ -75,7 +79,8 @@ read_redcap <- function(redcap_uri,
                         export_survey_fields = NULL,
                         export_data_access_groups = NULL,
                         suppress_redcapr_messages = TRUE,
-                        guess_max = .Machine$integer.max) {
+                        guess_max = .Machine$integer.max,
+                        allow_mixed_structure = getOption("redcaptidier.allow.mixed.structure", FALSE)) {
   check_arg_is_character(redcap_uri, len = 1, any.missing = FALSE)
   check_arg_is_character(token, len = 1, any.missing = FALSE)
   check_arg_is_valid_token(token)
@@ -84,6 +89,7 @@ read_redcap <- function(redcap_uri,
   check_arg_is_logical(export_survey_fields, len = 1, any.missing = FALSE, null.ok = TRUE)
   check_arg_is_logical(export_data_access_groups, len = 1, any.missing = FALSE, null.ok = TRUE)
   check_arg_is_logical(suppress_redcapr_messages, len = 1, any.missing = FALSE)
+  check_arg_is_logical(allow_mixed_structure, len = 1, any.missing = FALSE)
 
   # Load REDCap Metadata ----
   # Capture unexpected metadata API call errors
@@ -267,7 +273,8 @@ read_redcap <- function(redcap_uri,
     out <- clean_redcap_long(
       db_data_long = db_data,
       db_metadata_long = db_metadata,
-      linked_arms = linked_arms
+      linked_arms = linked_arms,
+      allow_mixed_structure = allow_mixed_structure
     )
   } else {
     out <- clean_redcap(
