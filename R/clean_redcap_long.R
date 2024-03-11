@@ -33,7 +33,6 @@ clean_redcap_long <- function(db_data_long,
   # `redcap_repeat_*` variables
 
   has_repeat_forms <- "redcap_repeat_instance" %in% names(db_data_long)
-  has_mixed_structure_forms <- FALSE
 
   # Apply checkmate checks
   assert_data_frame(db_data_long)
@@ -78,6 +77,7 @@ clean_redcap_long <- function(db_data_long,
   ## Repeating Instruments Logic ----
   if (has_repeat_forms) {
     # If mixed structure allowed, retrieve mixed structure forms
+    has_mixed_structure_forms <- FALSE # nolint: object_usage_linter
 
     mixed_structure_ref <- data.frame()
 
@@ -91,9 +91,8 @@ clean_redcap_long <- function(db_data_long,
 
       # Update if project actually has mixed structure
       has_mixed_structure_forms <- nrow(mixed_structure_ref) > 0
-      # Convert mixed instruments to mixed structure format
     } else {
-    check_repeat_and_nonrepeat(db_data_long)
+      check_repeat_and_nonrepeat(db_data_long)
     }
 
     repeated_forms_tibble <- tibble(
