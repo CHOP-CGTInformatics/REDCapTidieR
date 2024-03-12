@@ -115,12 +115,12 @@
       4                  Unchecked                     Checked
       5                  Unchecked                   Unchecked
       6                  Unchecked                   Unchecked
-                                  NA    NA    NA                            NA
-      2 checkbox_multiple_2___4eeee5 yesno    NA                     signature
-      3                    Unchecked   yes FALSE signature_2022-08-02_1114.png
-      4                    Unchecked  <NA>    NA                          <NA>
-      5                    Unchecked  <NA>    NA                          <NA>
-      6                    Unchecked  <NA>    NA                          <NA>
+                                  NA    NA        NA                            NA
+      2 checkbox_multiple_2___4eeee5 yesno truefalse                     signature
+      3                    Unchecked   yes     FALSE signature_2022-08-02_1114.png
+      4                    Unchecked  <NA>      <NA>                          <NA>
+      5                    Unchecked  <NA>      <NA>                          <NA>
+      6                    Unchecked  <NA>      <NA>                          <NA>
                                NA     NA
       2                fileupload slider
       3 gas_receipt_20220729.jpeg     73
@@ -1246,73 +1246,73 @@
       67       <NA>            <NA>        <NA>            <NA>         <NA>
       68       <NA>            <NA>        <NA>            <NA>         <NA>
             Histogram Is the Categorical Value Ordered? Count of Unique Values
-      2  numeric.hist                                NA        factor.n_unique
-      3          <NA>                                NA                   <NA>
-      4          <NA>                                NA                   <NA>
-      5          <NA>                                NA                   <NA>
-      6         ▇▁▁▁▇                                NA                   <NA>
-      7         ▇▁▁▁▇                                NA                   <NA>
-      8          <NA>                                NA                   <NA>
-      9          <NA>                                NA                   <NA>
-      10         <NA>                                NA                   <NA>
-      11         <NA>                                NA                   <NA>
-      12        ▁▁▇▁▁                                NA                   <NA>
+      2  numeric.hist                    factor.ordered        factor.n_unique
+      3          <NA>                              <NA>                   <NA>
+      4          <NA>                              <NA>                   <NA>
+      5          <NA>                              <NA>                   <NA>
+      6         ▇▁▁▁▇                              <NA>                   <NA>
+      7         ▇▁▁▁▇                              <NA>                   <NA>
+      8          <NA>                              <NA>                   <NA>
+      9          <NA>                              <NA>                   <NA>
+      10         <NA>                              <NA>                   <NA>
+      11         <NA>                              <NA>                   <NA>
+      12        ▁▁▇▁▁                              <NA>                   <NA>
       13         <NA>                             FALSE                      2
       14         <NA>                             FALSE                      2
       15         <NA>                             FALSE                      0
-      16         <NA>                                NA                   <NA>
-      17         <NA>                                NA                   <NA>
-      18         <NA>                                NA                   <NA>
-      19         <NA>                                NA                   <NA>
-      20         <NA>                                NA                   <NA>
-      21         <NA>                                NA                   <NA>
-      22         <NA>                                NA                   <NA>
-      23         <NA>                                NA                   <NA>
-      24         <NA>                                NA                   <NA>
-      25         <NA>                                NA                   <NA>
-      26         <NA>                                NA                   <NA>
-      27         <NA>                                NA                   <NA>
-      28         <NA>                                NA                   <NA>
-      29         <NA>                                NA                   <NA>
-      30         <NA>                                NA                   <NA>
-      31         <NA>                                NA                   <NA>
-      32         <NA>                                NA                   <NA>
-      33         <NA>                                NA                   <NA>
-      34         <NA>                                NA                   <NA>
-      35         <NA>                                NA                   <NA>
-      36         <NA>                                NA                   <NA>
-      37        ▁▁▇▁▁                                NA                   <NA>
+      16         <NA>                              <NA>                   <NA>
+      17         <NA>                              <NA>                   <NA>
+      18         <NA>                              <NA>                   <NA>
+      19         <NA>                              <NA>                   <NA>
+      20         <NA>                              <NA>                   <NA>
+      21         <NA>                              <NA>                   <NA>
+      22         <NA>                              <NA>                   <NA>
+      23         <NA>                              <NA>                   <NA>
+      24         <NA>                              <NA>                   <NA>
+      25         <NA>                              <NA>                   <NA>
+      26         <NA>                              <NA>                   <NA>
+      27         <NA>                              <NA>                   <NA>
+      28         <NA>                              <NA>                   <NA>
+      29         <NA>                              <NA>                   <NA>
+      30         <NA>                              <NA>                   <NA>
+      31         <NA>                              <NA>                   <NA>
+      32         <NA>                              <NA>                   <NA>
+      33         <NA>                              <NA>                   <NA>
+      34         <NA>                              <NA>                   <NA>
+      35         <NA>                              <NA>                   <NA>
+      36         <NA>                              <NA>                   <NA>
+      37        ▁▁▇▁▁                              <NA>                   <NA>
       38         <NA>                             FALSE                      0
-      39         <NA>                                NA                   <NA>
-      40         <NA>                                NA                   <NA>
-      41         <NA>                                NA                   <NA>
-      42         <NA>                                NA                   <NA>
-      43         <NA>                                NA                   <NA>
-      44         <NA>                                NA                   <NA>
-      45         <NA>                                NA                   <NA>
-      46         <NA>                                NA                   <NA>
-      47         <NA>                                NA                   <NA>
-      48         <NA>                                NA                   <NA>
-      49         <NA>                                NA                   <NA>
-      50         <NA>                                NA                   <NA>
-      51         <NA>                                NA                   <NA>
-      52         <NA>                                NA                   <NA>
-      53         <NA>                                NA                   <NA>
-      54         <NA>                                NA                   <NA>
-      55         <NA>                                NA                   <NA>
-      56         <NA>                                NA                   <NA>
-      57         <NA>                                NA                   <NA>
-      58         <NA>                                NA                   <NA>
-      59         <NA>                                NA                   <NA>
+      39         <NA>                              <NA>                   <NA>
+      40         <NA>                              <NA>                   <NA>
+      41         <NA>                              <NA>                   <NA>
+      42         <NA>                              <NA>                   <NA>
+      43         <NA>                              <NA>                   <NA>
+      44         <NA>                              <NA>                   <NA>
+      45         <NA>                              <NA>                   <NA>
+      46         <NA>                              <NA>                   <NA>
+      47         <NA>                              <NA>                   <NA>
+      48         <NA>                              <NA>                   <NA>
+      49         <NA>                              <NA>                   <NA>
+      50         <NA>                              <NA>                   <NA>
+      51         <NA>                              <NA>                   <NA>
+      52         <NA>                              <NA>                   <NA>
+      53         <NA>                              <NA>                   <NA>
+      54         <NA>                              <NA>                   <NA>
+      55         <NA>                              <NA>                   <NA>
+      56         <NA>                              <NA>                   <NA>
+      57         <NA>                              <NA>                   <NA>
+      58         <NA>                              <NA>                   <NA>
+      59         <NA>                              <NA>                   <NA>
       60         <NA>                             FALSE                      2
-      61         <NA>                                NA                   <NA>
-      62         <NA>                                NA                   <NA>
-      63         <NA>                                NA                   <NA>
-      64         <NA>                                NA                   <NA>
+      61         <NA>                              <NA>                   <NA>
+      62         <NA>                              <NA>                   <NA>
+      63         <NA>                              <NA>                   <NA>
+      64         <NA>                              <NA>                   <NA>
       65         <NA>                             FALSE                      2
-      66         <NA>                                NA                   <NA>
-      67         <NA>                                NA                   <NA>
-      68         <NA>                                NA                   <NA>
+      66         <NA>                              <NA>                   <NA>
+      67         <NA>                              <NA>                   <NA>
+      68         <NA>                              <NA>                   <NA>
            Most Frequent Values Proportion of TRUE Values Count of Logical Values
       2       factor.top_counts              logical.mean           logical.count
       3                    <NA>                      <NA>                    <NA>
