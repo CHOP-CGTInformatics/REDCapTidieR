@@ -13,12 +13,14 @@ as_supertbl <- function(x) {
   x
 }
 
+#' @inherit vctrs::vec_ptype_abbr params return title description
 #' @export
-vec_ptype_abbr.redcap_supertbl <- function(x) {
+vec_ptype_abbr.redcap_supertbl <- function(x, ..., prefix_named, suffix_shape) {
   "suprtbl"
 }
 
+#' @inherit pillar::tbl_sum params return title description
 #' @export
 tbl_sum.redcap_supertbl <- function(x) {
-  paste("A REDCapTidier Supertibble with", nrow(x), "instruments")
+  paste("A REDCapTidieR Supertibble with", nrow(x), "instruments")
 }

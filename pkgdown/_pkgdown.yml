@@ -67,3 +67,7 @@ reference:
 - title: "Data"
   contents:
   - superheroes_supertbl
+- title: "S3 methods"
+  contents:
+  - tbl_sum.redcap_supertbl
+  - vec_ptype_abbr.redcap_supertbl

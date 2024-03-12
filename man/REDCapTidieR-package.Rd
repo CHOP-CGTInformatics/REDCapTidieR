@@ -2,8 +2,8 @@
 % Please edit documentation in R/REDCapTidieR-package.R
 \docType{package}
 \name{REDCapTidieR-package}
+\alias{REDCapTidieR}
 \alias{REDCapTidieR-package}
-\alias{_PACKAGE}
 \title{REDCapTidieR: Extract 'REDCap' Databases into Tidy 'Tibble's}
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
