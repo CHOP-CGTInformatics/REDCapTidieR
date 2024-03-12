@@ -31,7 +31,9 @@ Imports:
     tibble,
     tidyr,
     tidyselect,
-    formattable
+    formattable,
+    pillar,
+    vctrs
 Suggests: 
     covr,
     knitr,

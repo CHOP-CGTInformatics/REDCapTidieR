@@ -75,26 +75,9 @@ read_redcap(redcap_uri, "CC0CE44238EF65C5DA26A55DD749AF7A") # will be rejected b
 #> ℹ Are you sure this is the correct API token?
 #> ℹ API token: `CC0CE44238EF65C5DA26A55DD749AF7A`
 
-## deleted project
-
-read_redcap(redcap_uri, "AC1759E5D3E10EF64350B05F5A96DB5F")
-#> Error in `read_redcap()`:
-#> ✖ The REDCapR export operation was not successful.
-#> ! The REDCap project does not exist because it was deleted.
-#> ℹ Are you sure this is the correct API token?
-#> ℹ API token: `AC1759E5D3E10EF64350B05F5A96DB5F`
-
 ## unexpected REDCapR error
 
 try_redcapr(list(success = FALSE, status_code = "", outcome_message = "This is an error message from REDCapR!"))
-#> Called from: try_redcapr(list(success = FALSE, status_code = "", outcome_message = "This is an error message from REDCapR!"))
-#> debug at /Users/porterej/code/cgt-dataops/REDCapTidieR/R/utils.R#676: if (inherits(calling_fn, "{")) {
-#>     calling_fn <- calling_fn[[2]]
-#> }
-#> debug at /Users/porterej/code/cgt-dataops/REDCapTidieR/R/utils.R#680: condition$parent <- catch_cnd(abort(out$outcome_message, call = calling_fn))
-#> debug at /Users/porterej/code/cgt-dataops/REDCapTidieR/R/utils.R#684: cli_abort(c(condition$message, condition$info), call = condition$call, 
-#>     parent = condition$parent, class = condition$class, redcapr_status_code = out$status_code, 
-#>     redcapr_outcome_message = out$outcome_message)
 #> Error:
 #> ✖ The REDCapR export operation was not successful.
 #> ! An unexpected error occured.
@@ -129,8 +112,8 @@ read_redcap(redcap_uri, classic_token, export_survey_fields = 123)
 
 read_redcap(redcap_uri, classic_token, export_survey_fields = c(TRUE, TRUE))
 #> Error in `read_redcap()`:
-#> ✖ You've supplied `TRUE`, `TRUE` for `export_survey_fields` which is not
-#>   a valid value
+#> ✖ You've supplied `TRUE` and `TRUE` for `export_survey_fields` which is
+#>   not a valid value
 #> ! Must have length 1, but has length 2
 
 ## suppress_redcapr_messages
@@ -143,8 +126,8 @@ read_redcap(redcap_uri, classic_token, suppress_redcapr_messages = 123)
 
 read_redcap(redcap_uri, classic_token, suppress_redcapr_messages = c(TRUE, TRUE))
 #> Error in `read_redcap()`:
-#> ✖ You've supplied `TRUE`, `TRUE` for `suppress_redcapr_messages` which
-#>   is not a valid value
+#> ✖ You've supplied `TRUE` and `TRUE` for `suppress_redcapr_messages`
+#>   which is not a valid value
 #> ! Must have length 1, but has length 2
 
 # data access groups
@@ -231,7 +214,7 @@ missing_col_supertbl <- tibble(redcap_data = list()) %>%
   as_supertbl()
 make_labelled(missing_col_supertbl)
 #> Error in `make_labelled()`:
-#> ✖ You've supplied `<rdcp_spr[,1]>` for `supertbl` which is not a valid
+#> ✖ You've supplied `<suprtbl[,1]>` for `supertbl` which is not a valid
 #>   value
 #> ! Must contain `supertbl$redcap_metadata`
 #> ℹ `supertbl` must be a REDCapTidieR supertibble, generated using
@@ -241,7 +224,7 @@ missing_list_col_supertbl <- tibble(redcap_data = list(), redcap_metadata = 123)
   as_supertbl()
 make_labelled(missing_list_col_supertbl)
 #> Error in `make_labelled()`:
-#> ✖ You've supplied `<rdcp_spr[,2]>` for `supertbl` which is not a valid
+#> ✖ You've supplied `<suprtbl[,2]>` for `supertbl` which is not a valid
 #>   value
 #> ! `supertbl$redcap_metadata` must be of type 'list'
 #> ℹ `supertbl` must be a REDCapTidieR supertibble, generated using
@@ -272,7 +255,7 @@ withr::with_tempdir({
 })
 #> Error:
 #> ✖ File
-#>   ''/private/var/folders/qc/mmjjyjq50530z9r_7mfqcqfhxkkk67/T/RtmphYCCdg/file99c3302ff1f7/temp.csv''
+#>   ''/private/var/folders/9c/k1m0bzys7gb1v32g86hfn5sn5k86h1/T/RtmpHQI8WI/file135a1176243e2/temp.csv''
 #>   already exists.
 #> ℹ Overwriting files is disabled by default. Set `overwrite = TRUE` to overwrite
 #>   existing file.
@@ -313,8 +296,27 @@ withr::with_tempdir({
     write_redcap_xlsx(file = filepath)
 })
 #> Warning in write_redcap_xlsx(., file = filepath): ! No extension provided for `file`:
-#>   '/private/var/folders/qc/mmjjyjq50530z9r_7mfqcqfhxkkk67/T/RtmphYCCdg/file99c33e79f54b/temp'
+#>   '/private/var/folders/9c/k1m0bzys7gb1v32g86hfn5sn5k86h1/T/RtmpHQI8WI/file135a1324144c6/temp'
 #> ℹ The extension '.xlsx' will be appended to the file name.
+
+# Printed supertibble
+
+read_redcap(Sys.getenv("REDCAP_URI"), Sys.getenv("REDCAPTIDIER_CLASSIC_API")) %>%
+  suppressWarnings()
+#> # A REDCapTidier Supertibble with 9 instruments
+#>   redcap_form_name       redcap_form_label redcap_data redcap_metadata structure
+#>   <chr>                  <chr>             <list>      <list>          <chr>    
+#> 1 nonrepeated            Nonrepeated       <tibble>    <tibble>        nonrepea…
+#> 2 nonrepeated2           Nonrepeated2      <tibble>    <tibble>        nonrepea…
+#> 3 repeated               Repeated          <tibble>    <tibble>        repeating
+#> 4 data_field_types       Data Field Types  <tibble>    <tibble>        nonrepea…
+#> 5 text_input_validation… Text Input Valid… <tibble>    <tibble>        nonrepea…
+#> 6 api_no_access          API No Access     <tibble>    <tibble>        nonrepea…
+#> 7 api_no_access_2        API No Access 2   <tibble>    <tibble>        nonrepea…
+#> 8 survey                 Survey            <tibble>    <tibble>        nonrepea…
+#> 9 repeat_survey          Repeat Survey     <tibble>    <tibble>        repeating
+#> # ℹ 4 more variables: data_rows <int>, data_cols <int>, data_size <lbstr_by>,
+#> #   data_na_pct <formttbl>
 ```
 
-<sup>Created on 2023-06-01 with [reprex v2.0.2](https://reprex.tidyverse.org)</sup>
+<sup>Created on 2024-03-12 with [reprex v2.1.0](https://reprex.tidyverse.org)</sup>

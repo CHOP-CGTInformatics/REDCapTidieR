@@ -23,6 +23,8 @@
 #' @importFrom tidyr complete fill pivot_wider nest unnest unnest_wider
 #' @importFrom tidyselect all_of any_of ends_with eval_select everything
 #' starts_with where
+#' @importFrom vctrs vec_ptype_abbr
+#' @importFrom pillar tbl_sum
 "_PACKAGE"
 
 ## usethis namespace: start

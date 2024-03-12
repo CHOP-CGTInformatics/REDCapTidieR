@@ -489,18 +489,3 @@ calc_metadata_stats <- function(data) {
     data_na_pct = percent(na_pct, digits = 2, format = "fg")
   )
 }
-
-#' @title
-#' Add supertbl S3 class
-#'
-#' @param x an object to class
-#'
-#' @return
-#' The object with `redcaptidier_supertbl` S3 class
-#'
-#' @keywords internal
-#'
-as_supertbl <- function(x) {
-  class(x) <- c("redcap_supertbl", class(x))
-  x
-}

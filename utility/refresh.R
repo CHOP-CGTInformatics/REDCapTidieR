@@ -50,6 +50,10 @@ test_results_checked <- devtools::test()
 # Test Sample REDCap Databases - This takes a while
 source("utility/test_creds.R")
 
+# Generate cli examples
+reprex::reprex(input="utility/cli_message_examples.R", html_preview = FALSE)
+unlink("utility/cli_message_examples_reprex.R")
+
 # devtools::check(force_suggests = FALSE)
 devtools::check(cran=TRUE)
 # check as CRAN

@@ -142,3 +142,8 @@ withr::with_tempdir({
   read_redcap(redcap_uri, longitudinal_token) %>%
     write_redcap_xlsx(file = filepath)
 })
+
+# Printed supertibble
+
+read_redcap(Sys.getenv("REDCAP_URI"), Sys.getenv("REDCAPTIDIER_CLASSIC_API")) %>%
+  suppressWarnings()
