@@ -33,7 +33,8 @@ Imports:
     tidyselect,
     formattable,
     pillar,
-    vctrs
+    vctrs,
+    readr
 Suggests: 
     covr,
     knitr,
@@ -41,7 +42,6 @@ Suggests:
     lintr,
     openxlsx2 (>= 0.8),
     prettyunits,
-    readr,
     rmarkdown,
     skimr,
     testthat (>= 3.0.0),

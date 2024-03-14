@@ -4,12 +4,17 @@
 \alias{multi_choice_to_labels}
 \title{Update multiple choice fields with label data}
 \usage{
-multi_choice_to_labels(db_data, db_metadata)
+multi_choice_to_labels(db_data, db_metadata, raw_or_label = "label")
 }
 \arguments{
 \item{db_data}{A REDCap database object}
 
 \item{db_metadata}{A REDCap metadata object}
+
+\item{raw_or_label}{A string (either 'raw', 'label', or 'haven') that specifies whether
+to export the raw coded values or the labels for the options of categorical
+fields. Default is 'label'. If 'haven' is supplied, categorical fields are converted
+to \code{haven_labelled} vectors.}
 }
 \description{
 Update REDCap variables with multi-choice types to standard form labels taken

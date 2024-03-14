@@ -69,6 +69,29 @@ test_that("multi_choice_to_labels works", {
 
   expect_factor(out$data_field_types_complete)
   expect_equal(levels(out$data_field_types_complete), c("Incomplete", "Unverified", "Complete"))
+
+  # Haven option works
+  skip_if_not_installed("labelled")
+
+  out <- multi_choice_to_labels(
+    db_data = db_data_classic,
+    db_metadata = db_metadata_classic,
+    raw_or_label = "haven"
+  ) %>%
+    suppressWarnings(classes = c(
+      "empty_parse_warning",
+      "field_missing_categories",
+      "duplicate_labels"
+    ))
+
+  expect_s3_class(out$dropdown_single, "haven_labelled")
+  expect_equal(labelled::val_labels(out$dropdown_single), c("one" = "choice_1", "two" = "choice_2", "three" = "choice_3"))
+  expect_s3_class(out$radio_single, "haven_labelled")
+  expect_equal(labelled::val_labels(out$radio_single), c("A" = "choice_1", "B" = "choice_2", "C" = "choice_3"))
+  expect_s3_class(out$data_field_types_complete, "haven_labelled")
+  expect_equal(labelled::val_labels(out$data_field_types_complete), c("Incomplete" = 0, "Unverified" = 1, "Complete" = 2))
+  expect_s3_class(out$repeatsurvey_radio_v2, "haven_labelled")
+  expect_equal(labelled::val_labels(out$repeatsurvey_radio_v2), c("Choice 1" = 1, "Choice 2" = 2, "Choice 3" = 3))
 })
 
 test_that("parse_labels works", {
@@ -398,4 +421,37 @@ test_that("make_skimr_labels works", {
   expect_true(is.vector(skimr_labels))
   expect_true(is.character(skimr_labels))
   expect_true(!is.null(attr(skimr_labels, "name")))
+})
+
+test_that("invert_vec works", {
+  expect_equal(invert_vec(c("a" = 1, "b" = 2)), c("1" = "a", "2" = "b"))
+  expect_equal(invert_vec(1:2), 1:2)
+})
+
+test_that("apply_labs_haven works", {
+  skip_if_not_installed("labelled")
+
+  # Testing all classes where labelled has built in val_labels<- methods
+  out <- apply_labs_haven(1:3, c("1" = "a", "2" = "b", "3" = "c"), integer())
+  expect_s3_class(out, "haven_labelled")
+  expect_equal(labelled::val_labels(out), c(a = 1, b = 2, c = 3))
+
+  out <- apply_labs_haven(c(1.1, 2, 3.3), c("1.1" = "a", "2" = "b", "3.3" = "c"), numeric())
+  expect_s3_class(out, "haven_labelled")
+  expect_equal(labelled::val_labels(out), c(a = 1.1, b = 2.0, c = 3.3))
+
+  out <- apply_labs_haven(letters[1:3], c("a" = "x", "b" = "y", "c" = "z"), character())
+  expect_s3_class(out, "haven_labelled")
+  expect_equal(labelled::val_labels(out), c(x = "a", y = "b", z = "c"))
+
+  # Case with mismatching data types between labels from metadata and data values
+  out <- apply_labs_haven(1:2, c("1" = "a", "2" = "b", "3.3" = "c"), integer())
+  expect_s3_class(out, "haven_labelled")
+  expect_equal(labelled::val_labels(out), c(a = "1", b = "2", c = "3.3"))
+})
+
+test_that("apply_labs_factor works", {
+  out <- apply_labs_factor(1:3, c("1" = "a", "2" = "b", "3" = "c"))
+  expect_s3_class(out, "factor")
+  expect_equal(out, factor(letters[1:3]))
 })

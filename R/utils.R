@@ -397,10 +397,17 @@ update_data_col_names <- function(db_data, db_metadata) {
 #'
 #' @param db_data A REDCap database object
 #' @param db_metadata A REDCap metadata object
+#' @inheritParams read_redcap
 #'
 #' @keywords internal
 
-multi_choice_to_labels <- function(db_data, db_metadata) {
+multi_choice_to_labels <- function(db_data, db_metadata, raw_or_label = "label") {
+
+  if (raw_or_label == "label") {
+    label_handler <- apply_labs_factor
+  } else if (raw_or_label == "haven") {
+    label_handler <- apply_labs_haven
+  }
   # form_status_complete Column Handling ----
   # Must be done before the creation of form_status_complete
   # select columns that don't appear in field_name_updated and end with
@@ -411,28 +418,9 @@ multi_choice_to_labels <- function(db_data, db_metadata) {
 
   db_data <- db_data %>%
     mutate(
-      # Change double output of raw data to character
       across(
         .cols = all_of(form_status_cols),
-        .fns = ~ as.character(.)
-      ),
-      # Map constant values to raw values
-      across(
-        .cols = all_of(form_status_cols),
-        .fns = ~ case_when(
-          . == "0" ~ "Incomplete",
-          . == "1" ~ "Unverified",
-          . == "2" ~ "Complete"
-        )
-      ),
-      # Convert to factor
-      # Map constant values to raw values
-      across(
-        .cols = all_of(form_status_cols),
-        .fns = ~ factor(
-          .,
-          levels = c("Incomplete", "Unverified", "Complete")
-        )
+        .fns = ~ label_handler(., c("0" = "Incomplete", "1" = "Unverified", "2" = "Complete"), integer(0))
       )
     )
 
@@ -485,13 +473,118 @@ multi_choice_to_labels <- function(db_data, db_metadata) {
 
       # Replace values from db_data$(field_name) with label values from
       # parse_labels key
-      db_data[[field_name]] <- db_data[[field_name]] %>%
-        as.character() %>%
-        recode(!!!parse_labels_output) %>%
-        factor(levels = unique(parse_labels_output))
+
+      db_data[[field_name]] <- label_handler(
+        x = db_data[[field_name]],
+        labels = parse_labels_output,
+        ptype = db_data[[field_name]]
+      )
     }
   }
   db_data
+}
+
+#' @title
+#' Apply factor labels to a vector
+#'
+#' @param x a vector to label
+#' @param labels a named vector of labels in the format `c(value = label)`
+#' @param \dots unused
+#'
+#' @return
+#' factor
+#'
+#' @keywords internal
+apply_labs_factor <- function(x, labels, ...) {
+  as.character(x) %>%
+    recode(!!!labels) %>%
+    factor(levels = unique(labels))
+}
+
+#' @title
+#' Apply haven value labels to a vector
+#'
+#' @details
+#' Assumes a check_installed() has been run for `labelled`. Since `haven` preserves the
+#' underlying data values we need to make sure the data type of the value options in the metadata matches
+#' the data type of the values in the actual data. This function accepts a prototype, usually a column
+#' from db_data, and uses `force_cast()` to do a best-effort casting of the value options in the metadata
+#' to the same data type as `ptype`. The fallback is to convert `x` and the value labels to character.
+#'
+#' @param x a vector to label
+#' @param labels a named vector of labels in the format `c(value = label)`
+#' @param ptype vector to serve as prototype for label values
+#' @param \dots unused
+#'
+#' @return
+#' `haven_labelled` vector
+#'
+#' @keywords internal
+#'
+apply_labs_haven <- function(x, labels, ptype, ...) {
+  # set_value_labels expects labels in c(label = value) format so reverse them
+  labels <- invert_vec(labels)
+  # Try to cast values to match data type in data, catching any parsing warnings
+  cnd <- NULL
+  labels_cast <- withCallingHandlers({
+    force_cast(labels, ptype)
+  },
+  warning = function(w) {
+    cnd <- w
+    cnd_muffle(w)
+  })
+  if (!is.null(attr(labels_cast, "problems"))) {
+    # If there was parsing problem fall back to character
+    x <- as.character(x)
+    labels_cast <- force_cast(labels, character())
+  } else if (!is.null(cnd)) {
+    # If there was some other warning we didn't mean to catch it, so re-raise
+    cli_warn(cnd)
+  }
+
+  labelled::set_value_labels(x, .labels = labels_cast)
+}
+
+#' @title
+#' Swap vector names for values
+#'
+#' @param x a vector
+#'
+#' @return
+#' Vector with names and values reversed
+#'
+#' @keywords internal
+#'
+invert_vec <- function(x) {
+  out <- names(x)
+  # If there were no names do nothing
+  if (is.null(out)) {
+    return(x)
+  }
+  names(out) <- x
+  out
+}
+
+force_cast <- function(x, ptype) {
+  ptype <- vec_ptype(ptype)
+  if (is.logical(ptype)) {
+    out <- parse_logical(x)
+  } else if (is.integer(ptype)) {
+    out <- parse_integer(x)
+  } else if (is.numeric(ptype)) {
+    out <- parse_double(x)
+  } else if (is.Date(ptype)) {
+    out <- parse_date(x)
+  } else if (is.difftime(ptype)) {
+    out <- parse_time(x)
+  } else if (is.POSIXt(ptype)) {
+    out <- parse_datetime(x)
+  } else {
+    out <- parse_character(x)
+  }
+
+  names(out) <- names(x)
+  out
 }
 
 #' @title

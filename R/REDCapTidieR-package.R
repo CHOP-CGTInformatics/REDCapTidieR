@@ -8,7 +8,7 @@
 #' left_join mutate pull recode relocate rename row_number select slice summarise
 #' @importFrom formattable percent
 #' @importFrom lobstr obj_size
-#' @importFrom lubridate is.difftime is.period
+#' @importFrom lubridate is.difftime is.period is.POSIXt is.Date
 #' @importFrom purrr compose map map2 map_int map_lgl pluck pmap_chr some
 #' @importFrom REDCapR redcap_arm_export redcap_event_instruments redcap_instruments
 #' redcap_metadata_read redcap_read_oneshot sanitize_token
@@ -23,8 +23,10 @@
 #' @importFrom tidyr complete fill pivot_wider nest unnest unnest_wider
 #' @importFrom tidyselect all_of any_of ends_with eval_select everything
 #' starts_with where
-#' @importFrom vctrs vec_ptype_abbr
+#' @importFrom vctrs vec_ptype_abbr vec_ptype
 #' @importFrom pillar tbl_sum
+#' @importFrom readr parse_logical parse_integer parse_double parse_date parse_time
+#' parse_datetime parse_character
 "_PACKAGE"
 
 ## usethis namespace: start

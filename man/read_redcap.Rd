@@ -24,9 +24,10 @@ URI/URL of the REDCap server (e.g.,
 \item{token}{The user-specific string that serves as the password for a
 project. Required.}
 
-\item{raw_or_label}{A string (either 'raw' or 'label') that specifies whether
+\item{raw_or_label}{A string (either 'raw', 'label', or 'haven') that specifies whether
 to export the raw coded values or the labels for the options of categorical
-fields. Default is 'label'.}
+fields. Default is 'label'. If 'haven' is supplied, categorical fields are converted
+to \code{haven_labelled} vectors.}
 
 \item{forms}{A character vector of REDCap instrument names that specifies
 which instruments to import. Default is \code{NULL} which imports all instruments
