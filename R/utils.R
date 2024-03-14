@@ -402,7 +402,6 @@ update_data_col_names <- function(db_data, db_metadata) {
 #' @keywords internal
 
 multi_choice_to_labels <- function(db_data, db_metadata, raw_or_label = "label") {
-
   if (raw_or_label == "label") {
     label_handler <- apply_labs_factor
   } else if (raw_or_label == "haven") {
@@ -526,13 +525,15 @@ apply_labs_haven <- function(x, labels, ptype, ...) {
   labels <- invert_vec(labels)
   # Try to cast values to match data type in data, catching any parsing warnings
   cnd <- NULL
-  labels_cast <- withCallingHandlers({
-    force_cast(labels, ptype)
-  },
-  warning = function(w) {
-    cnd <- w
-    cnd_muffle(w)
-  })
+  labels_cast <- withCallingHandlers(
+    {
+      force_cast(labels, ptype)
+    },
+    warning = function(w) {
+      cnd <<- w
+      cnd_muffle(w)
+    }
+  )
   if (!is.null(attr(labels_cast, "problems"))) {
     # If there was parsing problem fall back to character
     x <- as.character(x)

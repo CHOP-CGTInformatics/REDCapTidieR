@@ -85,11 +85,16 @@ test_that("multi_choice_to_labels works", {
     ))
 
   expect_s3_class(out$dropdown_single, "haven_labelled")
-  expect_equal(labelled::val_labels(out$dropdown_single), c("one" = "choice_1", "two" = "choice_2", "three" = "choice_3"))
+  expect_equal(
+    labelled::val_labels(out$dropdown_single),
+    c("one" = "choice_1", "two" = "choice_2", "three" = "choice_3")
+  )
   expect_s3_class(out$radio_single, "haven_labelled")
   expect_equal(labelled::val_labels(out$radio_single), c("A" = "choice_1", "B" = "choice_2", "C" = "choice_3"))
   expect_s3_class(out$data_field_types_complete, "haven_labelled")
-  expect_equal(labelled::val_labels(out$data_field_types_complete), c("Incomplete" = 0, "Unverified" = 1, "Complete" = 2))
+  expect_equal(
+    labelled::val_labels(out$data_field_types_complete), c("Incomplete" = 0, "Unverified" = 1, "Complete" = 2)
+  )
   expect_s3_class(out$repeatsurvey_radio_v2, "haven_labelled")
   expect_equal(labelled::val_labels(out$repeatsurvey_radio_v2), c("Choice 1" = 1, "Choice 2" = 2, "Choice 3" = 3))
 })
