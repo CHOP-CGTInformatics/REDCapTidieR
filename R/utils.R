@@ -486,9 +486,13 @@ multi_choice_to_labels <- function(db_data, db_metadata, raw_or_label = "label")
 #' @title
 #' Apply factor labels to a vector
 #'
+#' @details
+#' Dots are needed to ignore `ptype` argument that may be passed to `apply_labs_haven`
+#'
+#'
 #' @param x a vector to label
 #' @param labels a named vector of labels in the format `c(value = label)`
-#' @param \dots unused
+#' @param \dots unused, needed to ignore extra arguments that may be passed
 #'
 #' @return
 #' factor
@@ -513,7 +517,7 @@ apply_labs_factor <- function(x, labels, ...) {
 #' @param x a vector to label
 #' @param labels a named vector of labels in the format `c(value = label)`
 #' @param ptype vector to serve as prototype for label values
-#' @param \dots unused
+#' @param \dots unused, needed to ignore extra arguments that may be passed
 #'
 #' @return
 #' `haven_labelled` vector
