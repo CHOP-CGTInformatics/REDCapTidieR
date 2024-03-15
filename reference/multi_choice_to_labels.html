@@ -70,7 +70,7 @@ from REDCap metadata.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">multi_choice_to_labels</span><span class="op">(</span><span class="va">db_data</span>, <span class="va">db_metadata</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">multi_choice_to_labels</span><span class="op">(</span><span class="va">db_data</span>, <span class="va">db_metadata</span>, raw_or_label <span class="op">=</span> <span class="st">"label"</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -81,6 +81,13 @@ from REDCap metadata.</p>
 
 <dt>db_metadata</dt>
 <dd><p>A REDCap metadata object</p></dd>
+
+
+<dt>raw_or_label</dt>
+<dd><p>A string (either 'raw', 'label', or 'haven') that specifies whether
+to export the raw coded values or the labels for the options of categorical
+fields. Default is 'label'. If 'haven' is supplied, categorical fields are converted
+to <code>haven_labelled</code> vectors.</p></dd>
 
 </dl></div>
     <div class="section level2">

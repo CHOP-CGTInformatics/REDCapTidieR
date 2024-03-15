@@ -64,6 +64,12 @@
     <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/add_supertbl_toc.html</loc>
   </url>
   <url>
+    <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/apply_labs_factor.html</loc>
+  </url>
+  <url>
+    <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/apply_labs_haven.html</loc>
+  </url>
+  <url>
     <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/as_supertbl.html</loc>
   </url>
   <url>
@@ -155,6 +161,9 @@
   </url>
   <url>
     <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/index.html</loc>
+  </url>
+  <url>
+    <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/invert_vec.html</loc>
   </url>
   <url>
     <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/is_labelled.html</loc>
