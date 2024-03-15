@@ -36,9 +36,10 @@
 #' "https://server.org/apps/redcap/api/"). Required.
 #' @param token The user-specific string that serves as the password for a
 #' project. Required.
-#' @param raw_or_label A string (either 'raw' or 'label') that specifies whether
+#' @param raw_or_label A string (either 'raw', 'label', or 'haven') that specifies whether
 #' to export the raw coded values or the labels for the options of categorical
-#' fields. Default is 'label'.
+#' fields. Default is 'label'. If 'haven' is supplied, categorical fields are converted
+#' to `haven_labelled` vectors.
 #' @param forms A character vector of REDCap instrument names that specifies
 #' which instruments to import. Default is `NULL` which imports all instruments
 #' in the project.
@@ -84,12 +85,16 @@ read_redcap <- function(redcap_uri,
   check_arg_is_character(redcap_uri, len = 1, any.missing = FALSE)
   check_arg_is_character(token, len = 1, any.missing = FALSE)
   check_arg_is_valid_token(token)
-  check_arg_choices(raw_or_label, choices = c("label", "raw"))
+  check_arg_choices(raw_or_label, choices = c("label", "raw", "haven"))
   check_arg_is_character(forms, min.len = 1, null.ok = TRUE, any.missing = FALSE)
   check_arg_is_logical(export_survey_fields, len = 1, any.missing = FALSE, null.ok = TRUE)
   check_arg_is_logical(export_data_access_groups, len = 1, any.missing = FALSE, null.ok = TRUE)
   check_arg_is_logical(suppress_redcapr_messages, len = 1, any.missing = FALSE)
   check_arg_is_logical(allow_mixed_structure, len = 1, any.missing = FALSE)
+
+  if (raw_or_label == "haven") {
+    check_installed("labelled", reason = "to use `read_redcap()` with `raw_or_label = 'haven'`")
+  }
 
   # Load REDCap Metadata ----
   # Capture unexpected metadata API call errors
@@ -251,8 +256,8 @@ read_redcap <- function(redcap_uri,
       filter(.data$field_name_updated %in% names(db_data))
   }
 
-  if (raw_or_label == "label") {
-    db_data <- multi_choice_to_labels(db_data, db_metadata)
+  if (raw_or_label != "raw") {
+    db_data <- multi_choice_to_labels(db_data, db_metadata, raw_or_label)
   }
 
   # Longitudinal Arms Check and Cleaning Application ----
