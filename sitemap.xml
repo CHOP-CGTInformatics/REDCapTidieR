@@ -85,6 +85,9 @@
     <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/check_data_arg_exists.html</loc>
   </url>
   <url>
+    <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/check_field_is_logical.html</loc>
+  </url>
+  <url>
     <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/check_file_exists.html</loc>
   </url>
   <url>
@@ -182,6 +185,9 @@
   </url>
   <url>
     <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/parse_labels.html</loc>
+  </url>
+  <url>
+    <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/parse_logical_cols.html</loc>
   </url>
   <url>
     <loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/read_redcap.html</loc>
