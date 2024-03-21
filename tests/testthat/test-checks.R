@@ -232,3 +232,11 @@ test_that("check_field_is_logical works", {
     suppressWarnings() |>
     expect_equal(c(TRUE, FALSE, NA))
 })
+
+test_that("check_extra_field_values works", {
+  check_extra_field_values(c(1, NA, 2), c("1", "2"), "") |>
+    expect_no_condition()
+
+  check_extra_field_values(c(1, NA, 2), "1", "") |>
+    expect_warning(class = "extra_field_values")
+})

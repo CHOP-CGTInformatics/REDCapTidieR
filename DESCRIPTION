@@ -34,7 +34,8 @@ Imports:
     formattable,
     pillar,
     vctrs,
-    readr
+    readr,
+    stats
 Suggests: 
     covr,
     knitr,
