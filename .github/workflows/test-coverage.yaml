@@ -29,6 +29,7 @@ jobs:
       REDCAPTIDIER_LARGE_SPARSE_API: ${{ secrets.REDCAPTIDIER_LARGE_SPARSE_API }}
       REDCAPTIDIER_DAG_API: ${{ secrets.REDCAPTIDIER_DAG_API }}
       REDCAPTIDIER_LONGITUDINAL_DAG_API: ${{ secrets.REDCAPTIDIER_LONGITUDINAL_DAG_API }}
+      REDCAPTIDIER_MDC_API: ${{ secrets.REDCAPTIDIER_MDC_API }}
     steps:
       - name: Update Ubuntu, Install cURL Headers, add Libraries
         run: |

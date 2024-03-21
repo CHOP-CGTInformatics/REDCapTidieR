@@ -397,11 +397,12 @@ update_data_col_names <- function(db_data, db_metadata) {
 #'
 #' @param db_data A REDCap database object
 #' @param db_metadata A REDCap metadata object
+#' @param call call for conditions
 #' @inheritParams read_redcap
 #'
 #' @keywords internal
 
-multi_choice_to_labels <- function(db_data, db_metadata, raw_or_label = "label") {
+multi_choice_to_labels <- function(db_data, db_metadata, raw_or_label = "label", call = caller_env()) {
   if (raw_or_label == "label") {
     label_handler <- apply_labs_factor
   } else if (raw_or_label == "haven") {
@@ -426,12 +427,7 @@ multi_choice_to_labels <- function(db_data, db_metadata, raw_or_label = "label")
 
   # Logical Column Handling ----
   # Handle columns where we change 0/1 to FALSE/TRUE (logical)
-  logical_cols <- db_metadata %>%
-    filter(.data$field_type %in% c("yesno", "truefalse", "checkbox")) %>%
-    pull(.data$field_name_updated)
-
-  db_data <- db_data %>%
-    mutate(across(.cols = all_of(logical_cols), as.logical))
+  db_data <- parse_logical_cols(db_data, db_metadata, call = call)
 
   for (i in seq_len(nrow(db_metadata))) {
     # Extract metadata field name and database corresponding column name
@@ -481,6 +477,35 @@ multi_choice_to_labels <- function(db_data, db_metadata, raw_or_label = "label")
     }
   }
   db_data
+}
+
+#' @title
+#' Convert yesno, truefalse, and checkbox fields to logical
+#'
+#' @inheritParams multi_choice_to_labels
+#'
+#' @keywords internal
+parse_logical_cols <- function(db_data, db_metadata, call = caller_env()) {
+  logical_cols <- db_metadata %>%
+    filter(.data$field_type %in% c("yesno", "truefalse", "checkbox"))
+
+  if (nrow(logical_cols) == 0) {
+    return(db_data)
+  }
+
+  out <- db_data
+
+  out[logical_cols$field_name_updated] <- pmap(
+    list(
+      select(db_data, all_of(logical_cols$field_name_updated)),
+      logical_cols$field_name_updated,
+      logical_cols$field_type
+    ),
+    check_field_is_logical,
+    call = call
+  )
+
+  out
 }
 
 #' @title

@@ -178,6 +178,36 @@ test_that("parse_labels works", {
     expect_equal(FALSE)
 })
 
+test_that("parse_logical_cols", {
+  db_data <- tibble::tibble(
+    record_id = 1:3,
+    yes_no = c("1", "0", "UNK"),
+    other_field = letters[1:3]
+  )
+  db_metadata <- tibble::tibble(
+    field_name_updated = c("yes_no", "other_field"),
+    field_type = c("yesno", "text")
+  )
+
+  out <- parse_logical_cols(db_data, db_metadata) |>
+    suppressWarnings(classes = "field_is_logical")
+
+  expect_equal(dim(out), dim(db_data))
+  expect_equal(out$record_id, db_data$record_id)
+  expect_equal(out$yes_no, c(TRUE, FALSE, NA))
+  expect_equal(out$other_field, db_data$other_field)
+
+  db_data <- tibble::tibble(
+    record_id = 1:3,
+    other_field = letters[1:3]
+  )
+  db_metadata <- tibble::tibble(
+    field_name_updated = "other_field",
+    field_type = "text"
+  )
+  expect_equal(parse_logical_cols(db_data, db_metadata), db_data)
+})
+
 test_that("link_arms works", {
   skip_on_cran()
 

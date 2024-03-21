@@ -577,3 +577,53 @@ check_file_exists <- function(file, overwrite, call = caller_env()) {
     )
   }
 }
+
+#' @title
+#' Parse logical field and warn if parsing errors occurred
+#'
+#' @param x vector to parse
+#' @param field_name field name for warning message
+#' @param field_type field type for warning message
+#' @param call call for warning message
+#'
+#' @keywords internal
+check_field_is_logical <- function(x, field_name, field_type, call = caller_env()) {
+  # If already logical just return it
+  if (is.logical(x)) {
+    return(x)
+  }
+  # Parse
+  cnd <- NULL
+  out <- withCallingHandlers(
+    {
+      parse_logical(as.character(x))
+    },
+    warning = function(w) {
+      cnd <<- w
+      cnd_muffle(w)
+    }
+  )
+  # Check for parsing failures and warn if found
+  probs <- attr(out, "problems")
+  if (!is.null(probs)) {
+    values <- unique(probs$actual)
+    msg <- c(
+      `!` = "{.code {field_name}} is type '{field_type}' but contains non-logical values: {values}",
+      i = "These were converted to {.code NA} resulting in possible data loss",
+      i = "Does your REDCap project utilize missing data codes?"
+    )
+    cli_warn(
+      msg,
+      class = c("field_is_logical", "REDCapTidieR_cond"),
+      call = call,
+      field = field_name,
+      field_type = field_type,
+      problems = probs
+    )
+    attr(out, "problems") <- NULL
+  } else if (!is.null(cnd)) {
+    # If there was some other warning we didn't mean to catch it, so re-raise
+    cli_warn(cnd)
+  }
+  out
+}

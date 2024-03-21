@@ -11,12 +11,15 @@ apply_labs_factor(x, labels, ...)
 
 \item{labels}{a named vector of labels in the format \code{c(value = label)}}
 
-\item{\dots}{unused}
+\item{\dots}{unused, needed to ignore extra arguments that may be passed}
 }
 \value{
 factor
 }
 \description{
 Apply factor labels to a vector
+}
+\details{
+Dots are needed to ignore \code{ptype} argument that may be passed to \code{apply_labs_haven}
 }
 \keyword{internal}
