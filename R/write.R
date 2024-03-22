@@ -349,7 +349,7 @@ add_supertbl_toc <- function(wb,
     select(-any_of(c("redcap_data", "redcap_metadata", "redcap_events"))) %>%
     # Necessary to avoid "Number stored as text" Excel dialogue warnings
     mutate(
-      across(any_of("data_na_pct"), convert_percent),
+      across(any_of(c("data_na_pct", "form_complete_pct")), convert_percent),
       across(any_of("data_size"), ~ prettyunits::pretty_bytes(as.numeric(.)))
     )
 
