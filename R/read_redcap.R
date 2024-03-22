@@ -489,8 +489,7 @@ calc_metadata_stats <- function(data) {
     mean()
 
   form_complete_pct <- data %>%
-    summarise(avg_complete = mean(form_status_complete == 2))
-
+    summarise(avg_complete = mean(.data$form_status_complete == 2))
 
   list(
     data_rows = nrow(data), data_cols = ncol(data),
