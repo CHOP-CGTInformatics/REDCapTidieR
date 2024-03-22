@@ -1,7 +1,10 @@
+# REDCapTidieR (development version)
+
 # REDCapTidieR 1.1.0
 
 - `read_redcap()` now supports instruments that follow a mixed repeating/non-repeating structure with the `allow_mixed_structure` parameter
 - When enabled, instruments with mixed repeating/nonrepeating structure will be treated as single-instance repeating instruments
+- A new metadata column, `form_complete_pct`, is now available when viewing the supertibble showing the percentage of a given instrument that has a form status marked as "Complete" (green)
 
 # REDCapTidieR 1.0.0
 

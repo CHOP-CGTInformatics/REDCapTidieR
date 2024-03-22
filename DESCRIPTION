@@ -1,7 +1,7 @@
 Package: REDCapTidieR
 Type: Package
 Title: Extract 'REDCap' Databases into Tidy 'Tibble's
-Version: 1.1.0
+Version: 1.1.0.9000
 Authors@R: c(
     person("Richard", "Hanna", , "richardshanna91@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0009-0005-6496-8154")),
