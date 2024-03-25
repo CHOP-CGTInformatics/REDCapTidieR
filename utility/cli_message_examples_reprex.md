@@ -1,6 +1,7 @@
 ``` r
 devtools::load_all()
 #> ℹ Loading REDCapTidieR
+#> Warning: package 'testthat' was built under R version 4.2.3
 
 options(rlang_backtrace_on_error_report = "none")
 
@@ -93,7 +94,7 @@ read_redcap(redcap_uri, classic_token, raw_or_label = "bad option")
 #> Error in `read_redcap()`:
 #> ✖ You've supplied `bad option` for `raw_or_label` which is not a valid
 #>   value
-#> ! Must be element of set {'label','raw'}, but is 'bad option'
+#> ! Must be element of set {'label','raw','haven'}, but is 'bad option'
 
 ## forms
 
@@ -255,7 +256,7 @@ withr::with_tempdir({
 })
 #> Error:
 #> ✖ File
-#>   ''/private/var/folders/9c/k1m0bzys7gb1v32g86hfn5sn5k86h1/T/RtmpHQI8WI/file135a1176243e2/temp.csv''
+#>   ''/private/var/folders/9c/k1m0bzys7gb1v32g86hfn5sn5k86h1/T/Rtmp677YHR/filec4216b6201a/temp.csv''
 #>   already exists.
 #> ℹ Overwriting files is disabled by default. Set `overwrite = TRUE` to overwrite
 #>   existing file.
@@ -296,14 +297,14 @@ withr::with_tempdir({
     write_redcap_xlsx(file = filepath)
 })
 #> Warning in write_redcap_xlsx(., file = filepath): ! No extension provided for `file`:
-#>   '/private/var/folders/9c/k1m0bzys7gb1v32g86hfn5sn5k86h1/T/RtmpHQI8WI/file135a1324144c6/temp'
+#>   '/private/var/folders/9c/k1m0bzys7gb1v32g86hfn5sn5k86h1/T/Rtmp677YHR/filec421a35fb3d/temp'
 #> ℹ The extension '.xlsx' will be appended to the file name.
 
 # Printed supertibble
 
 read_redcap(Sys.getenv("REDCAP_URI"), Sys.getenv("REDCAPTIDIER_CLASSIC_API")) %>%
   suppressWarnings()
-#> # A REDCapTidier Supertibble with 9 instruments
+#> # A REDCapTidieR Supertibble with 9 instruments
 #>   redcap_form_name       redcap_form_label redcap_data redcap_metadata structure
 #>   <chr>                  <chr>             <list>      <list>          <chr>    
 #> 1 nonrepeated            Nonrepeated       <tibble>    <tibble>        nonrepea…
@@ -317,6 +318,26 @@ read_redcap(Sys.getenv("REDCAP_URI"), Sys.getenv("REDCAPTIDIER_CLASSIC_API")) %>
 #> 9 repeat_survey          Repeat Survey     <tibble>    <tibble>        repeating
 #> # ℹ 4 more variables: data_rows <int>, data_cols <int>, data_size <lbstr_by>,
 #> #   data_na_pct <formttbl>
+
+# missing data codes
+
+read_redcap(redcap_uri, Sys.getenv("REDCAPTIDIER_MDC_API"))
+#> Warning in read_redcap(redcap_uri, Sys.getenv("REDCAPTIDIER_MDC_API")): ! `yesno` is type 'yesno' but contains non-logical values: UNK
+#> ℹ These were converted to `NA` resulting in possible data loss
+#> ℹ Does your REDCap project utilize missing data codes?
+#> ℹ Silence this warning with `options(redcaptidier.allow.mdc = TRUE)` or set
+#>   `raw_or_label = 'raw'` to access missing data codes
+#> Warning in read_redcap(redcap_uri, Sys.getenv("REDCAPTIDIER_MDC_API")): ! `dropdown` contains values with no labels: UNK
+#> ℹ These were converted to `NA` resulting in possible data loss
+#> ℹ Does your REDCap project utilize missing data codes?
+#> ℹ Silence this warning with `options(redcaptidier.allow.mdc = TRUE)` or set
+#>   `raw_or_label = 'raw'` to access missing data codes
+#> # A REDCapTidieR Supertibble with 1 instruments
+#>   redcap_form_name redcap_form_label redcap_data      redcap_metadata structure 
+#>   <chr>            <chr>             <list>           <list>          <chr>     
+#> 1 form_1           Form 1            <tibble [3 × 8]> <tibble>        nonrepeat…
+#> # ℹ 4 more variables: data_rows <int>, data_cols <int>, data_size <lbstr_by>,
+#> #   data_na_pct <formttbl>
 ```
 
-<sup>Created on 2024-03-12 with [reprex v2.1.0](https://reprex.tidyverse.org)</sup>
+<sup>Created on 2024-03-21 with [reprex v2.1.0](https://reprex.tidyverse.org)</sup>

@@ -13,7 +13,7 @@ apply_labs_haven(x, labels, ptype, ...)
 
 \item{ptype}{vector to serve as prototype for label values}
 
-\item{\dots}{unused}
+\item{\dots}{unused, needed to ignore extra arguments that may be passed}
 }
 \value{
 \code{haven_labelled} vector

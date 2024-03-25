@@ -577,3 +577,85 @@ check_file_exists <- function(file, overwrite, call = caller_env()) {
     )
   }
 }
+
+#' @title
+#' Parse logical field and compile data for warning if parsing errors occurred
+#'
+#' @param x vector to parse
+#'
+#' @keywords internal
+check_field_is_logical <- function(x) {
+  out <- list(parsed = NULL, problems = NULL)
+  # If already logical just return it
+  if (is.logical(x)) {
+    out$parsed <- x
+    return(out)
+  }
+  # Parse
+  cnd <- NULL
+  out$parsed <- withCallingHandlers(
+    {
+      parse_logical(as.character(x))
+    },
+    warning = function(w) {
+      cnd <<- w
+      cnd_muffle(w)
+    }
+  )
+  # Check for parsing failures and warn if found
+  probs <- attr(out$parsed, "problems")
+  if (!is.null(probs)) {
+    if (!getOption("redcaptidier.allow.mdc", FALSE)) {
+      out$problems <- unique(probs$actual)
+    }
+    attr(out$parsed, "problems") <- NULL
+  } else if (!is.null(cnd)) {
+    # If there was some other warning we didn't mean to catch it, so re-raise
+    cli_warn(cnd)
+  }
+  out
+}
+
+#' @title
+#' Check data field for field values not in metadata
+#'
+#' @param x data field
+#' @param values expected field values
+#'
+#' @keywords internal
+check_extra_field_values <- function(x, values) {
+  extra_vals <- setdiff(as.character(x), values) |> na.omit()
+  if (length(extra_vals) == 0) {
+    return(NULL)
+  }
+  as.character(extra_vals)
+}
+
+check_extra_field_values_message <- function(extra_field_values, call = caller_env()) {
+  extra_field_values <- extra_field_values |>
+    discard(is.null)
+
+  if (length(extra_field_values) == 0) {
+    return(NULL)
+  }
+
+  fields <- names(extra_field_values)
+  values <- flatten_chr(extra_field_values) |> unique()
+
+  msg <- c(
+    `!` = "{.code {fields}} contain{?s/} values with no labels: {values}",
+    i = "These were converted to {.code NA} resulting in possible data loss",
+    i = "Does your REDCap project utilize missing data codes?",
+    i = paste(
+      "Silence this warning with {.code options(redcaptidier.allow.mdc = TRUE)} or",
+      "set {.code raw_or_label = 'raw'} to access missing data codes"
+    )
+  )
+  cli_warn(
+    msg,
+    class = c("extra_field_values", "REDCapTidieR_cond"),
+    call = call,
+    fields = fields,
+    values = values
+  )
+}

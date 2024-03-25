@@ -397,11 +397,12 @@ update_data_col_names <- function(db_data, db_metadata) {
 #'
 #' @param db_data A REDCap database object
 #' @param db_metadata A REDCap metadata object
+#' @param call call for conditions
 #' @inheritParams read_redcap
 #'
 #' @keywords internal
 
-multi_choice_to_labels <- function(db_data, db_metadata, raw_or_label = "label") {
+multi_choice_to_labels <- function(db_data, db_metadata, raw_or_label = "label", call = caller_env()) {
   if (raw_or_label == "label") {
     label_handler <- apply_labs_factor
   } else if (raw_or_label == "haven") {
@@ -426,12 +427,11 @@ multi_choice_to_labels <- function(db_data, db_metadata, raw_or_label = "label")
 
   # Logical Column Handling ----
   # Handle columns where we change 0/1 to FALSE/TRUE (logical)
-  logical_cols <- db_metadata %>%
-    filter(.data$field_type %in% c("yesno", "truefalse", "checkbox")) %>%
-    pull(.data$field_name_updated)
+  db_data <- parse_logical_cols(db_data, db_metadata, call = call)
 
-  db_data <- db_data %>%
-    mutate(across(.cols = all_of(logical_cols), as.logical))
+  # Buffer for fields with extra field values to be populated by check_extra_field_values
+  extra_field_values <- vector("list", length = nrow(db_metadata))
+  names(extra_field_values) <- db_metadata$field_name_updated
 
   for (i in seq_len(nrow(db_metadata))) {
     # Extract metadata field name and database corresponding column name
@@ -470,6 +470,13 @@ multi_choice_to_labels <- function(db_data, db_metadata, raw_or_label = "label")
         warn_stripped_text = stripped_text_flag
       )
 
+      if (!getOption("redcaptidier.allow.mdc", FALSE)) {
+        extra_field_values[i] <- check_extra_field_values(
+          db_data[[field_name]],
+          names(parse_labels_output)
+        )
+      }
+
       # Replace values from db_data$(field_name) with label values from
       # parse_labels key
 
@@ -480,7 +487,61 @@ multi_choice_to_labels <- function(db_data, db_metadata, raw_or_label = "label")
       )
     }
   }
+
+  check_extra_field_values_message(extra_field_values, call = call)
+
   db_data
+}
+
+#' @title
+#' Convert yesno, truefalse, and checkbox fields to logical
+#'
+#' @inheritParams multi_choice_to_labels
+#'
+#' @keywords internal
+parse_logical_cols <- function(db_data, db_metadata, call = caller_env()) {
+  logical_cols <- db_metadata %>%
+    filter(.data$field_type %in% c("yesno", "truefalse", "checkbox"))
+
+  if (nrow(logical_cols) == 0) {
+    return(db_data)
+  }
+
+  parsed <- map(db_data[logical_cols$field_name_updated], check_field_is_logical)
+
+  out <- db_data
+
+  out[logical_cols$field_name_updated] <- map(parsed, "parsed")
+
+  if (!getOption("redcaptidier.allow.mdc", FALSE)) {
+    problems <- parsed |>
+      map("problems") |>
+      discard(is.null)
+
+    if (length(problems) > 0) {
+      fields <- names(problems)
+      values <- flatten_chr(problems) |> unique()
+
+      msg <- c(
+        `!` = "{.code {fields}} {?is/are} logical but contain{?s/} non-logical values: {values}",
+        i = "These were converted to {.code NA} resulting in possible data loss",
+        i = "Does your REDCap project utilize missing data codes?",
+        i = paste(
+          "Silence this warning with {.code options(redcaptidier.allow.mdc = TRUE)} or",
+          "set {.code raw_or_label = 'raw'} to access missing data codes"
+        )
+      )
+      cli_warn(
+        msg,
+        class = c("field_is_logical", "REDCapTidieR_cond"),
+        call = call,
+        fields = fields,
+        problems = values
+      )
+    }
+  }
+
+  out
 }
 
 #' @title

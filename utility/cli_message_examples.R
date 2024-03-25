@@ -147,3 +147,7 @@ withr::with_tempdir({
 
 read_redcap(Sys.getenv("REDCAP_URI"), Sys.getenv("REDCAPTIDIER_CLASSIC_API")) %>%
   suppressWarnings()
+
+# missing data codes
+
+read_redcap(redcap_uri, Sys.getenv("REDCAPTIDIER_MDC_API"))

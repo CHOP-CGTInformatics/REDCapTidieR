@@ -621,3 +621,21 @@ test_that("read_redcap fails if DAG or survey columns are explicitly requested b
     class = "nonexistent_arg_requested"
   )
 })
+
+test_that("read_redcap handles missing data codes", {
+  out <- read_redcap(Sys.getenv("REDCAP_URI"), Sys.getenv("REDCAPTIDIER_MDC_API")) |>
+    suppressWarnings(classes = c("field_is_logical", "extra_field_values")) |>
+    extract_tibble("form_1")
+
+  # logicals are not converted to NA
+  expect_type(out$yesno, "logical")
+  expect_true(!all(is.na(out$yesno)))
+  # categoricals remove missing data codes
+  expect_factor(out$dropdown)
+  expect_true(all(is.na(out$dropdown) | out$dropdown != "UNK"))
+
+  withr::with_options(list(redcaptidier.allow.mdc = TRUE), {
+    read_redcap(Sys.getenv("REDCAP_URI"), Sys.getenv("REDCAPTIDIER_MDC_API"))
+  }) |>
+    expect_no_warning()
+})

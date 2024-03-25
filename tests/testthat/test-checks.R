@@ -223,3 +223,26 @@ test_that("check_file_exists works", {
     )
   })
 })
+
+test_that("check_field_is_logical works", {
+  expect_equal(
+    check_field_is_logical(c(TRUE, FALSE, NA)),
+    list(parsed = c(TRUE, FALSE, NA), problems = NULL)
+  )
+  expect_equal(
+    check_field_is_logical(c(1, 0, NA)),
+    list(parsed = c(TRUE, FALSE, NA), problems = NULL)
+  )
+  expect_equal(
+    check_field_is_logical(c(1, 0, "x")),
+    list(parsed = c(TRUE, FALSE, NA), problems = "x")
+  )
+})
+
+test_that("check_extra_field_values works", {
+  check_extra_field_values(c(1, NA, 2), c("1", "2")) |>
+    expect_null()
+
+  check_extra_field_values(c(1, NA, 2), "1") |>
+    expect_equal("2")
+})
