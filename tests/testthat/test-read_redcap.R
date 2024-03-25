@@ -260,7 +260,7 @@ test_that("read_redcap returns metadata", {
   expected_cols <- c(
     "redcap_form_name", "redcap_form_label", "redcap_data", "redcap_metadata",
     "redcap_events", "structure", "data_rows", "data_cols", "data_size",
-    "data_na_pct"
+    "data_na_pct", "form_complete_pct"
   )
 
   # metadata fields exist and correctly ordered
@@ -278,6 +278,9 @@ test_that("read_redcap returns metadata", {
   expect_s3_class(out$data_size, "lobstr_bytes")
   expect_true(
     all(out$data_na_pct >= 0) && all(out$data_na_pct <= 100)
+  )
+  expect_true(
+    all(out$form_complete_pct >= 0) && all(out$form_complete_pct <= 100)
   )
 
   # check that for each tibble in out$redcap_data, all fields in the data are

@@ -429,7 +429,7 @@ add_metadata <- function(supertbl, db_metadata, redcap_uri, token, suppress_redc
     unnest_wider(summary) %>%
     relocate(
       "redcap_form_name", "redcap_form_label", "redcap_data", "redcap_metadata",
-      "structure", "data_rows", "data_cols", "data_size", "data_na_pct"
+      "structure", "data_rows", "data_cols", "data_size", "data_na_pct", "form_complete_pct"
     )
 }
 
@@ -488,9 +488,13 @@ calc_metadata_stats <- function(data) {
     is.na() %>%
     mean()
 
+  form_complete_pct <- data %>%
+    summarise(avg_complete = mean(.data$form_status_complete == 2))
+
   list(
     data_rows = nrow(data), data_cols = ncol(data),
     data_size = obj_size(data),
-    data_na_pct = percent(na_pct, digits = 2, format = "fg")
+    data_na_pct = percent(na_pct, digits = 2, format = "fg"),
+    form_complete_pct = percent(form_complete_pct, digits = 2, format = "fg")
   )
 }
