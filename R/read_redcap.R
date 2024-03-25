@@ -57,7 +57,7 @@
 #' @param allow_mixed_structure A logical to allow for support of mixed repeating/non-repeating
 #' instruments. Setting to `TRUE` will treat the mixed instrument's non-repeating versions
 #' as repeating instruments with a single instance. Applies to longitudinal projects
-#' only. Default `FALSE`. Can be set globally with `options(redcaptidier.allow.mixed.structure = FALSE)`.
+#' only. Default `FALSE`. Can be set globally with `options(redcaptidier.allow.mixed.structure = TRUE)`.
 #'
 #' @examples
 #' \dontrun{

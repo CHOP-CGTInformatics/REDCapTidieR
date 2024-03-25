@@ -173,7 +173,7 @@ Note that REDCapTidieR allows for an instrument to be associated with both repea
 
 REDCapTidieR supports projects with multiple arms. If you have a project with multiple arms, there will be an additional column `redcap_arm` to identify the arm that the row is associated with.
 
-### Mixed Structure Instruments
+### Mixed Structure Instruments {#mixed-structure-instruments}
 
 By default, REDCapTidieR does not allow you to have the same instrument designated both as a repeating and as a nonrepeating instrument in different events (i.e. a "mixed structure instrument"), and will throw an error if this is detected: 
 

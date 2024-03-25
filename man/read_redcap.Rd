@@ -51,7 +51,7 @@ use for guessing column types. Default \code{.Machine$integer.max}.}
 \item{allow_mixed_structure}{A logical to allow for support of mixed repeating/non-repeating
 instruments. Setting to \code{TRUE} will treat the mixed instrument's non-repeating versions
 as repeating instruments with a single instance. Applies to longitudinal projects
-only. Default \code{FALSE}. Can be set globally with \code{options(redcaptidier.allow.mixed.structure = FALSE)}.}
+only. Default \code{FALSE}. Can be set globally with \code{options(redcaptidier.allow.mixed.structure = TRUE)}.}
 }
 \value{
 A \code{tibble} in which each row represents a REDCap instrument. It

@@ -246,3 +246,21 @@ heroes_information_metadata |>
 ```
 
 This enables quick insights into data content and supports exploratory data analytics. The columns added by `add_skimr_metadata()` can also be [labelled](glossary.html#labelled).
+
+## Package Options
+
+REDCapTidieR allows you to set a couple options globally to avoid passing extra arguments to `read_redcap`.
+
+Globally allow [mixed structure instruments](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/diving_deeper.html#mixed-structure-instruments):
+
+```
+options(redcaptidier.allow.mixed.structure = TRUE)
+```
+
+Globally silence warnings related to [Missing Data Codes](https://kb.wisc.edu/smph/informatics/page.php?id=108107) (MDCs):
+
+```
+options(redcaptidier.allow.mdc = TRUE)
+```
+
+As of v1.1.0, REDCapTidieR has partial support for MDCs. MDCs in logical and categorical fields are converted to `NA` with a warning. MDCs in all other field types remain in the output. If you need greater support for MDCs, consider [opening an issue](https://github.com/CHOP-CGTInformatics/REDCapTidieR/issues)!
