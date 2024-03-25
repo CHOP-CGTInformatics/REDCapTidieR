@@ -579,22 +579,21 @@ check_file_exists <- function(file, overwrite, call = caller_env()) {
 }
 
 #' @title
-#' Parse logical field and warn if parsing errors occurred
+#' Parse logical field and compile data for warning if parsing errors occurred
 #'
 #' @param x vector to parse
-#' @param field_name field name for warning message
-#' @param field_type field type for warning message
-#' @param call call for warning message
 #'
 #' @keywords internal
-check_field_is_logical <- function(x, field_name, field_type, call = caller_env()) {
+check_field_is_logical <- function(x) {
+  out <- list(parsed = NULL, problems = NULL)
   # If already logical just return it
   if (is.logical(x)) {
-    return(x)
+    out$parsed <- x
+    return(out)
   }
   # Parse
   cnd <- NULL
-  out <- withCallingHandlers(
+  out$parsed <- withCallingHandlers(
     {
       parse_logical(as.character(x))
     },
@@ -604,27 +603,12 @@ check_field_is_logical <- function(x, field_name, field_type, call = caller_env(
     }
   )
   # Check for parsing failures and warn if found
-  probs <- attr(out, "problems")
+  probs <- attr(out$parsed, "problems")
   if (!is.null(probs)) {
     if (!getOption("redcaptidier.allow.mdc", FALSE)) {
-      values <- unique(probs$actual) # nolint: object_usage_linter
-      msg <- c(
-        `!` = "{.code {field_name}} is type '{field_type}' but contains non-logical values: {values}",
-        i = "These were converted to {.code NA} resulting in possible data loss",
-        i = "Does your REDCap project utilize missing data codes?",
-        i = paste("Silence this warning with {.code options(redcaptidier.allow.mdc = TRUE)} or",
-                  "set {.code raw_or_label = 'raw'} to access missing data codes")
-      )
-      cli_warn(
-        msg,
-        class = c("field_is_logical", "REDCapTidieR_cond"),
-        call = call,
-        field = field_name,
-        field_type = field_type,
-        problems = probs
-      )
+      out$problems <- unique(probs$actual)
     }
-    attr(out, "problems") <- NULL
+    attr(out$parsed, "problems") <- NULL
   } else if (!is.null(cnd)) {
     # If there was some other warning we didn't mean to catch it, so re-raise
     cli_warn(cnd)
@@ -636,28 +620,42 @@ check_field_is_logical <- function(x, field_name, field_type, call = caller_env(
 #' Check data field for field values not in metadata
 #'
 #' @param x data field
-#' @param field_name field name for warning message
-#' @param call call for warning message
+#' @param values expected field values
 #'
 #' @keywords internal
-check_extra_field_values <- function(x, values, field_name, call = caller_env()) {
+check_extra_field_values <- function(x, values) {
   extra_vals <- setdiff(as.character(x), values) |> na.omit()
   if (length(extra_vals) == 0) {
-    return(TRUE)
+    return(NULL)
   }
+  as.character(extra_vals)
+}
+
+check_extra_field_values_message <- function(extra_field_values, call = caller_env()) {
+  extra_field_values <- extra_field_values |>
+    discard(is.null)
+
+  if (length(extra_field_values) == 0) {
+    return(NULL)
+  }
+
+  fields <- names(extra_field_values)
+  values <- flatten_chr(extra_field_values) |> unique()
+
   msg <- c(
-    `!` = "{.code {field_name}} contains values with no labels: {extra_vals}",
+    `!` = "{.code {fields}} contain{?s/} values with no labels: {values}",
     i = "These were converted to {.code NA} resulting in possible data loss",
     i = "Does your REDCap project utilize missing data codes?",
-    i = paste("Silence this warning with {.code options(redcaptidier.allow.mdc = TRUE)} or",
-              "set {.code raw_or_label = 'raw'} to access missing data codes")
+    i = paste(
+      "Silence this warning with {.code options(redcaptidier.allow.mdc = TRUE)} or",
+      "set {.code raw_or_label = 'raw'} to access missing data codes"
+    )
   )
   cli_warn(
     msg,
     class = c("extra_field_values", "REDCapTidieR_cond"),
     call = call,
-    field = field_name,
-    values = extra_vals
+    fields = fields,
+    values = values
   )
-  FALSE
 }

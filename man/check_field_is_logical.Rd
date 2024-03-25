@@ -2,20 +2,14 @@
 % Please edit documentation in R/checks.R
 \name{check_field_is_logical}
 \alias{check_field_is_logical}
-\title{Parse logical field and warn if parsing errors occurred}
+\title{Parse logical field and compile data for warning if parsing errors occurred}
 \usage{
-check_field_is_logical(x, field_name, field_type, call = caller_env())
+check_field_is_logical(x)
 }
 \arguments{
 \item{x}{vector to parse}
-
-\item{field_name}{field name for warning message}
-
-\item{field_type}{field type for warning message}
-
-\item{call}{call for warning message}
 }
 \description{
-Parse logical field and warn if parsing errors occurred
+Parse logical field and compile data for warning if parsing errors occurred
 }
 \keyword{internal}

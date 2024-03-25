@@ -429,6 +429,10 @@ multi_choice_to_labels <- function(db_data, db_metadata, raw_or_label = "label",
   # Handle columns where we change 0/1 to FALSE/TRUE (logical)
   db_data <- parse_logical_cols(db_data, db_metadata, call = call)
 
+  # Buffer for fields with extra field values to be populated by check_extra_field_values
+  extra_field_values <- vector("list", length = nrow(db_metadata))
+  names(extra_field_values) <- db_metadata$field_name_updated
+
   for (i in seq_len(nrow(db_metadata))) {
     # Extract metadata field name and database corresponding column name
     field_name <- db_metadata$field_name_updated[i]
@@ -467,11 +471,9 @@ multi_choice_to_labels <- function(db_data, db_metadata, raw_or_label = "label",
       )
 
       if (!getOption("redcaptidier.allow.mdc", FALSE)) {
-        check_extra_field_values(
+        extra_field_values[i] <- check_extra_field_values(
           db_data[[field_name]],
-          names(parse_labels_output),
-          field_name,
-          call = call
+          names(parse_labels_output)
         )
       }
 
@@ -485,6 +487,9 @@ multi_choice_to_labels <- function(db_data, db_metadata, raw_or_label = "label",
       )
     }
   }
+
+  check_extra_field_values_message(extra_field_values, call = call)
+
   db_data
 }
 
@@ -502,17 +507,39 @@ parse_logical_cols <- function(db_data, db_metadata, call = caller_env()) {
     return(db_data)
   }
 
+  parsed <- map(db_data[logical_cols$field_name_updated], check_field_is_logical)
+
   out <- db_data
 
-  out[logical_cols$field_name_updated] <- pmap(
-    list(
-      select(db_data, all_of(logical_cols$field_name_updated)),
-      logical_cols$field_name_updated,
-      logical_cols$field_type
-    ),
-    check_field_is_logical,
-    call = call
-  )
+  out[logical_cols$field_name_updated] <- map(parsed, "parsed")
+
+  if (!getOption("redcaptidier.allow.mdc", FALSE)) {
+    problems <- parsed |>
+      map("problems") |>
+      discard(is.null)
+
+    if (length(problems) > 0) {
+      fields <- names(problems)
+      values <- flatten_chr(problems) |> unique()
+
+      msg <- c(
+        `!` = "{.code {fields}} {?is/are} logical but contain{?s/} non-logical values: {values}",
+        i = "These were converted to {.code NA} resulting in possible data loss",
+        i = "Does your REDCap project utilize missing data codes?",
+        i = paste(
+          "Silence this warning with {.code options(redcaptidier.allow.mdc = TRUE)} or",
+          "set {.code raw_or_label = 'raw'} to access missing data codes"
+        )
+      )
+      cli_warn(
+        msg,
+        class = c("field_is_logical", "REDCapTidieR_cond"),
+        call = call,
+        fields = fields,
+        problems = values
+      )
+    }
+  }
 
   out
 }

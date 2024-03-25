@@ -189,6 +189,8 @@ test_that("parse_logical_cols", {
     field_type = c("yesno", "text")
   )
 
+  expect_warning(parse_logical_cols(db_data, db_metadata), class = "field_is_logical")
+
   out <- parse_logical_cols(db_data, db_metadata) |>
     suppressWarnings(classes = "field_is_logical")
 

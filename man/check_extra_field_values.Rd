@@ -4,14 +4,12 @@
 \alias{check_extra_field_values}
 \title{Check data field for field values not in metadata}
 \usage{
-check_extra_field_values(x, values, field_name, call = caller_env())
+check_extra_field_values(x, values)
 }
 \arguments{
 \item{x}{data field}
 
-\item{field_name}{field name for warning message}
-
-\item{call}{call for warning message}
+\item{values}{expected field values}
 }
 \description{
 Check data field for field values not in metadata

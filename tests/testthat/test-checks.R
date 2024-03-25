@@ -225,18 +225,24 @@ test_that("check_file_exists works", {
 })
 
 test_that("check_field_is_logical works", {
-  expect_equal(check_field_is_logical(c(TRUE, FALSE, NA), "", ""), c(TRUE, FALSE, NA))
-  expect_equal(check_field_is_logical(c(1, 0, NA), "", ""), c(TRUE, FALSE, NA))
-  expect_warning(check_field_is_logical(c(1, 0, "x"), "", ""), class = "field_is_logical")
-  check_field_is_logical(c(1, 0, "x"), "", "") |>
-    suppressWarnings() |>
-    expect_equal(c(TRUE, FALSE, NA))
+  expect_equal(
+    check_field_is_logical(c(TRUE, FALSE, NA)),
+    list(parsed = c(TRUE, FALSE, NA), problems = NULL)
+  )
+  expect_equal(
+    check_field_is_logical(c(1, 0, NA)),
+    list(parsed = c(TRUE, FALSE, NA), problems = NULL)
+  )
+  expect_equal(
+    check_field_is_logical(c(1, 0, "x")),
+    list(parsed = c(TRUE, FALSE, NA), problems = "x")
+  )
 })
 
 test_that("check_extra_field_values works", {
-  check_extra_field_values(c(1, NA, 2), c("1", "2"), "") |>
-    expect_no_condition()
+  check_extra_field_values(c(1, NA, 2), c("1", "2")) |>
+    expect_null()
 
-  check_extra_field_values(c(1, NA, 2), "1", "") |>
-    expect_warning(class = "extra_field_values")
+  check_extra_field_values(c(1, NA, 2), "1") |>
+    expect_equal("2")
 })
