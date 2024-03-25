@@ -488,6 +488,23 @@ statistics:</p>
 exploratory data analytics. The columns added by
 <code><a href="../reference/add_skimr_metadata.html">add_skimr_metadata()</a></code> can also be <a href="glossary.html#labelled">labelled</a>.</p>
 </div>
+<div class="section level2">
+<h2 id="package-options">Package Options<a class="anchor" aria-label="anchor" href="#package-options"></a>
+</h2>
+<p>REDCapTidieR allows you to set a couple options globally to avoid
+passing extra arguments to <code>read_redcap</code>.</p>
+<p>Globally allow <a href="https://chop-cgtinformatics.github.io/REDCapTidieR/articles/diving_deeper.html#mixed-structure-instruments">mixed
+structure instruments</a>:</p>
+<pre><code><span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>redcaptidier.allow.mixed.structure <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre>
+<p>Globally silence warnings related to <a href="https://kb.wisc.edu/smph/informatics/page.php?id=108107" class="external-link">Missing
+Data Codes</a> (MDCs):</p>
+<pre><code><span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>redcaptidier.allow.mdc <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre>
+<p>As of v1.1.0, REDCapTidieR has partial support for MDCs. MDCs in
+logical and categorical fields are converted to <code>NA</code> with a
+warning. MDCs in all other field types remain in the output. If you need
+greater support for MDCs, consider <a href="https://github.com/CHOP-CGTInformatics/REDCapTidieR/issues" class="external-link">opening
+an issue</a>!</p>
+</div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
 </div>
