@@ -1,7 +1,6 @@
 ``` r
 devtools::load_all()
 #> ℹ Loading REDCapTidieR
-#> Warning: package 'testthat' was built under R version 4.2.3
 
 options(rlang_backtrace_on_error_report = "none")
 
@@ -256,7 +255,7 @@ withr::with_tempdir({
 })
 #> Error:
 #> ✖ File
-#>   ''/private/var/folders/9c/k1m0bzys7gb1v32g86hfn5sn5k86h1/T/Rtmp677YHR/filec4216b6201a/temp.csv''
+#>   ''/private/var/folders/qc/mmjjyjq50530z9r_7mfqcqfhxkkk67/T/RtmpQi1Xne/file52d750f31b3f/temp.csv''
 #>   already exists.
 #> ℹ Overwriting files is disabled by default. Set `overwrite = TRUE` to overwrite
 #>   existing file.
@@ -297,7 +296,7 @@ withr::with_tempdir({
     write_redcap_xlsx(file = filepath)
 })
 #> Warning in write_redcap_xlsx(., file = filepath): ! No extension provided for `file`:
-#>   '/private/var/folders/9c/k1m0bzys7gb1v32g86hfn5sn5k86h1/T/Rtmp677YHR/filec421a35fb3d/temp'
+#>   '/private/var/folders/qc/mmjjyjq50530z9r_7mfqcqfhxkkk67/T/RtmpQi1Xne/file52d72e91eb7b/temp'
 #> ℹ The extension '.xlsx' will be appended to the file name.
 
 # Printed supertibble
@@ -316,13 +315,13 @@ read_redcap(Sys.getenv("REDCAP_URI"), Sys.getenv("REDCAPTIDIER_CLASSIC_API")) %>
 #> 7 api_no_access_2        API No Access 2   <tibble>    <tibble>        nonrepea…
 #> 8 survey                 Survey            <tibble>    <tibble>        nonrepea…
 #> 9 repeat_survey          Repeat Survey     <tibble>    <tibble>        repeating
-#> # ℹ 4 more variables: data_rows <int>, data_cols <int>, data_size <lbstr_by>,
-#> #   data_na_pct <formttbl>
+#> # ℹ 5 more variables: data_rows <int>, data_cols <int>, data_size <lbstr_by>,
+#> #   data_na_pct <formttbl>, form_complete_pct <formttbl>
 
 # missing data codes
 
 read_redcap(redcap_uri, Sys.getenv("REDCAPTIDIER_MDC_API"))
-#> Warning in read_redcap(redcap_uri, Sys.getenv("REDCAPTIDIER_MDC_API")): ! `yesno` is type 'yesno' but contains non-logical values: UNK
+#> Warning in read_redcap(redcap_uri, Sys.getenv("REDCAPTIDIER_MDC_API")): ! `yesno` and `yesno2` are logical but contain non-logical values: UNK
 #> ℹ These were converted to `NA` resulting in possible data loss
 #> ℹ Does your REDCap project utilize missing data codes?
 #> ℹ Silence this warning with `options(redcaptidier.allow.mdc = TRUE)` or set
@@ -335,9 +334,9 @@ read_redcap(redcap_uri, Sys.getenv("REDCAPTIDIER_MDC_API"))
 #> # A REDCapTidieR Supertibble with 1 instruments
 #>   redcap_form_name redcap_form_label redcap_data      redcap_metadata structure 
 #>   <chr>            <chr>             <list>           <list>          <chr>     
-#> 1 form_1           Form 1            <tibble [3 × 8]> <tibble>        nonrepeat…
-#> # ℹ 4 more variables: data_rows <int>, data_cols <int>, data_size <lbstr_by>,
-#> #   data_na_pct <formttbl>
+#> 1 form_1           Form 1            <tibble [3 × 9]> <tibble>        nonrepeat…
+#> # ℹ 5 more variables: data_rows <int>, data_cols <int>, data_size <lbstr_by>,
+#> #   data_na_pct <formttbl>, form_complete_pct <formttbl>
 ```
 
-<sup>Created on 2024-03-21 with [reprex v2.1.0](https://reprex.tidyverse.org)</sup>
+<sup>Created on 2024-03-27 with [reprex v2.1.0](https://reprex.tidyverse.org)</sup>

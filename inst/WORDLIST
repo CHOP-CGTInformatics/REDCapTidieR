@@ -1,11 +1,12 @@
-CGTInformatics
 CMD
 Codecov
 DAGs
+DOI
 GMP
 Grupp
 Labelled
 Lifecycle
+MDCs
 Nonrepeating
 ORCID
 OpenSSF
@@ -34,7 +35,6 @@ dropdown
 edu
 ggeasy
 ggplot
-github
 gtsummary
 https
 httptest
@@ -49,6 +49,7 @@ recode
 recoded
 recodes
 skimr
+summarise
 supertbl
 supertibble
 supertibble's
