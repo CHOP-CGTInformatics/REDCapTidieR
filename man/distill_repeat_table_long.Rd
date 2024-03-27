@@ -26,10 +26,10 @@ REDCap metadata.}
 \item{linked_arms}{Output of \code{link_arms}, linking instruments to REDCap
 events/arms}
 
-\item{has_mixed_structure}{Whether the instrument under evaluation has a mixed
+\item{has_mixed_structure_forms}{Whether the instrument under evaluation has a mixed
 structure. Default \code{FALSE}.}
 
-\item{name}{mixed_structure_ref A mixed structure reference dataframe supplied
+\item{mixed_structure_ref}{A mixed structure reference dataframe supplied
 by \code{get_mixed_structure_fields()}.}
 }
 \value{

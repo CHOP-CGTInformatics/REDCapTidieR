@@ -2,7 +2,7 @@
 
 Thank you for taking the time to review this submission and please reach out to either Stephan Kadauke, Richard Hanna, or Ezra Porter for any questions, comments, or concerns.
 
-This submission confirms the stability of the package and updates it to 1.0 with a couple of minor updates that coincide with other dependencies. It also addresses a request to fix a URL that gets missed in `.Rbuildignore` for an article.
+This submission comes with several enhancements requested by the community and a couple of minor bug fixes.
 
 ## New Features
 
@@ -10,12 +10,12 @@ There are no user-facing changes in this release.
 
 ## Test environments
 
-1. Local macOS Ventura 13.6, R 4.3.1
+1. Local macOS Ventura 13.6.4, R 4.3.2
 2. R-hub
-    1. [Ubuntu Linux 20.04.1 LTS, R-release, GCC](https://builder.r-hub.io/status/REDCapTidieR_1.0.0.tar.gz-6f5dd904875e43a080d23cf3a8b799db)
-    2. [Fedora Linux, R-devel, clang, gfortran](https://builder.r-hub.io/status/REDCapTidieR_1.0.0.tar.gz-23cd4a148dd84b9cb140246f8822495d)
-    3. [Windows Server](https://builder.r-hub.io/status/REDCapTidieR_1.0.0.tar.gz-f14b539514b44e6a972e5acf0d308f2a)
-3.  [win-builder](https://win-builder.r-project.org/kK4kk9U3E7QO/), development version.
+    1. [Ubuntu Linux 20.04.1 LTS, R-release, GCC](https://builder.r-hub.io/status/REDCapTidieR_1.1.0.tar.gz-18c93ed60e0f4a17b4998388c6d916a3)
+    2. [Fedora Linux, R-devel, clang, gfortran](https://builder.r-hub.io/status/REDCapTidieR_1.1.0.tar.gz-dac5a12687d24d14abb8ed52955c3f45)
+    3. [Windows Server](https://builder.r-hub.io/status/REDCapTidieR_1.1.0.tar.gz-4faf798b994b43edaff81e82e33b8803)
+3.  [win-builder](https://win-builder.r-project.org/gS0Or11LlrAv/), development version.
 4.  [GiHub Actions](https://github.com/CHOP-CGTInformatics/REDCapTidieR/actions), Ubuntu 20.04.02 LTS
 
 ## R CMD check results:

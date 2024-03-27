@@ -1,14 +1,19 @@
-# REDCapTidieR (development version)
-
 # REDCapTidieR 1.1.0
 
+Version 1.1.0
+==========================================================
+
 - `read_redcap()` now supports instruments that follow a mixed repeating/non-repeating structure with the `allow_mixed_structure` parameter
-- When enabled, instruments with mixed repeating/nonrepeating structure will be treated as single-instance repeating instruments
+- Mixed structure instruments (those with both repeating and nonrepeating elements) can be supported by setting `allow_mixed_structure` to `TRUE` or `getOption("redcaptidier.allow.mixed.structure", FALSE)`.
+   - When allowed, nonrepeating elements of mixed structure insturments will be treated as repeating elements with a single instance.
+- Missing data codes from REDCap additional customization settings are now handled. Non-logical values are converted to `NA` in `yesno`, `truefalse`, and `checkbox` fields with a warning. 
+   - Warnings for MDCs can be silenced with `options(redcaptidier.allow.mdc = TRUE)`.
+- `raw_or_label` now accepts `"haven"` as an option, converting categorical fields to `haven_labelled` vectors instead of factors.
 - A new metadata column, `form_complete_pct`, is now available when viewing the supertibble showing the percentage of a given instrument that has a form status marked as "Complete" (green)
+- Fixed a bug causing supertibble labels to not print correctly
 
-# REDCapTidieR 1.0.0
-
-Version 1.0.0
+Version 1.0.0 (Released 2023-11-28)
+==========================================================
 
 This package has been considered stable for months now with no new issues reported, and so should be reflected in the major version number.
 
@@ -19,16 +24,12 @@ This package has been considered stable for months now with no new issues report
 - `pkgdown` site updates
 - Migration of some vignettes over to articles
 
-# REDCapTidieR 0.4.1
-
 Version 0.4.1 (Released 2023-08-15)
 ==========================================================
 
 ## Miscellaneous
 
 * Updated test suite to be compatible with REDCapR 1.2.0
-
-# REDCapTidieR 0.4.0
 
 Version 0.4.0 (Released 2023-06-02)
 ==========================================================
@@ -46,8 +47,6 @@ Version 0.4.0 (Released 2023-06-02)
 ## Miscellaneous
 
 * All deprecated functions have been officially retired and removed from the package
-
-# REDCapTidieR 0.3.0
 
 Version 0.3.0 (Released 2023-03-17)
 ==========================================================

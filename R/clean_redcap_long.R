@@ -264,9 +264,9 @@ distill_nonrepeat_table_long <- function(form_name,
 #' \code{REDCapR::redcap_metadata_read()$data}
 #' @param linked_arms Output of \code{link_arms}, linking instruments to REDCap
 #' events/arms
-#' @param has_mixed_structure Whether the instrument under evaluation has a mixed
+#' @param has_mixed_structure_forms Whether the instrument under evaluation has a mixed
 #' structure. Default `FALSE`.
-#' @param name mixed_structure_ref A mixed structure reference dataframe supplied
+#' @param mixed_structure_ref A mixed structure reference dataframe supplied
 #' by `get_mixed_structure_fields()`.
 #'
 #' @keywords internal
