@@ -61,18 +61,25 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="development version" id="redcaptidier-development-version">REDCapTidieR (development version)<a class="anchor" aria-label="anchor" href="#redcaptidier-development-version"></a></h2>
+<h2 class="pkg-version" data-toc-text="1.1.0" id="redcaptidier-110">REDCapTidieR 1.1.0<a class="anchor" aria-label="anchor" href="#redcaptidier-110"></a></h2>
 </div>
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="1.1.0" id="redcaptidier-110">REDCapTidieR 1.1.0<a class="anchor" aria-label="anchor" href="#redcaptidier-110"></a></h2>
+<h2 class="pkg-version" data-toc-text="1.1.0" id="version-110">Version 1.1.0<a class="anchor" aria-label="anchor" href="#version-110"></a></h2>
 <ul><li>
 <code><a href="../reference/read_redcap.html">read_redcap()</a></code> now supports instruments that follow a mixed repeating/non-repeating structure with the <code>allow_mixed_structure</code> parameter</li>
-<li>When enabled, instruments with mixed repeating/nonrepeating structure will be treated as single-instance repeating instruments</li>
+<li>Mixed structure instruments (those with both repeating and nonrepeating elements) can be supported by setting <code>allow_mixed_structure</code> to <code>TRUE</code> or <code>getOption("redcaptidier.allow.mixed.structure", FALSE)</code>.
+<ul><li>When allowed, nonrepeating elements of mixed structure insturments will be treated as repeating elements with a single instance.</li>
+</ul></li>
+<li>Missing data codes from REDCap additional customization settings are now handled. Non-logical values are converted to <code>NA</code> in <code>yesno</code>, <code>truefalse</code>, and <code>checkbox</code> fields with a warning.
+<ul><li>Warnings for MDCs can be silenced with <code>options(redcaptidier.allow.mdc = TRUE)</code>.</li>
+</ul></li>
+<li>
+<code>raw_or_label</code> now accepts <code>"haven"</code> as an option, converting categorical fields to <code>haven_labelled</code> vectors instead of factors.</li>
 <li>A new metadata column, <code>form_complete_pct</code>, is now available when viewing the supertibble showing the percentage of a given instrument that has a form status marked as “Complete” (green)</li>
+<li>Fixed a bug causing supertibble labels to not print correctly</li>
 </ul></div>
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="1.0.0" id="redcaptidier-100">REDCapTidieR 1.0.0<a class="anchor" aria-label="anchor" href="#redcaptidier-100"></a></h2><p class="text-muted">CRAN release: 2023-11-08</p>
-<p>Version 1.0.0</p>
+<h2 class="pkg-version" data-toc-text="1.0.0" id="version-100-released-2023-11-28">Version 1.0.0 (Released 2023-11-28)<a class="anchor" aria-label="anchor" href="#version-100-released-2023-11-28"></a></h2><p class="text-muted">CRAN release: 2023-11-08</p>
 <p>This package has been considered stable for months now with no new issues reported, and so should be reflected in the major version number.</p>
 <div class="section level3">
 <h3 id="minor-updates-1-0-0">Minor Updates<a class="anchor" aria-label="anchor" href="#minor-updates-1-0-0"></a></h3>
@@ -84,17 +91,11 @@
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.4.1" id="redcaptidier-041">REDCapTidieR 0.4.1<a class="anchor" aria-label="anchor" href="#redcaptidier-041"></a></h2><p class="text-muted">CRAN release: 2023-08-15</p>
-</div>
-    <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.4.1" id="version-041-released-2023-08-15">Version 0.4.1 (Released 2023-08-15)<a class="anchor" aria-label="anchor" href="#version-041-released-2023-08-15"></a></h2><p class="text-muted">CRAN release: 2023-08-15</p>
 <div class="section level3">
 <h3 id="miscellaneous-0-4-1">Miscellaneous<a class="anchor" aria-label="anchor" href="#miscellaneous-0-4-1"></a></h3>
 <ul><li>Updated test suite to be compatible with REDCapR 1.2.0</li>
 </ul></div>
-</div>
-    <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.4.0" id="redcaptidier-040">REDCapTidieR 0.4.0<a class="anchor" aria-label="anchor" href="#redcaptidier-040"></a></h2><p class="text-muted">CRAN release: 2023-06-03</p>
 </div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.4.0" id="version-040-released-2023-06-02">Version 0.4.0 (Released 2023-06-02)<a class="anchor" aria-label="anchor" href="#version-040-released-2023-06-02"></a></h2><p class="text-muted">CRAN release: 2023-06-03</p>
@@ -115,9 +116,6 @@
 <h3 id="miscellaneous-0-4-0">Miscellaneous<a class="anchor" aria-label="anchor" href="#miscellaneous-0-4-0"></a></h3>
 <ul><li>All deprecated functions have been officially retired and removed from the package</li>
 </ul></div>
-</div>
-    <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.3.0" id="redcaptidier-030">REDCapTidieR 0.3.0<a class="anchor" aria-label="anchor" href="#redcaptidier-030"></a></h2><p class="text-muted">CRAN release: 2023-03-17</p>
 </div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.3.0" id="version-030-released-2023-03-17">Version 0.3.0 (Released 2023-03-17)<a class="anchor" aria-label="anchor" href="#version-030-released-2023-03-17"></a></h2><p class="text-muted">CRAN release: 2023-03-17</p>
