@@ -1,12 +1,12 @@
 pandoc: 3.1.11
-pkgdown: 2.0.7
+pkgdown: 2.0.8
 pkgdown_sha: ~
 articles:
-  REDCapTidieR: REDCapTidieR.html
   diving_deeper: diving_deeper.html
   export_to_xlsx: export_to_xlsx.html
   glossary: glossary.html
-last_built: 2024-03-28T12:30Z
+  REDCapTidieR: REDCapTidieR.html
+last_built: 2024-04-10T18:11Z
 urls:
   reference: https://chop-cgtinformatics.github.io/REDCapTidieR/reference
   article: https://chop-cgtinformatics.github.io/REDCapTidieR/articles

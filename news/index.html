@@ -6,11 +6,11 @@
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
     
 
-    <nav class="navbar fixed-top navbar-dark navbar-expand-lg bg-primary"><div class="container">
+    <nav class="navbar fixed-top navbar-dark navbar-expand-lg bg-primary" data-bs-theme="dark"><div class="container">
     
     <a class="navbar-brand me-2" href="../index.html">REDCapTidieR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -61,10 +61,18 @@
     </div>
 
     <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.1.1" id="redcaptidier-111-development-version">REDCapTidieR 1.1.1 (development version)<a class="anchor" aria-label="anchor" href="#redcaptidier-111-development-version"></a></h2>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.1.1" id="version-111">Version 1.1.1<a class="anchor" aria-label="anchor" href="#version-111"></a></h2>
+<ul><li>
+<code>read_redcap(raw_or_label = "haven")</code> now correctly casts categorical data values to character when their type is not character or numeric.</li>
+</ul></div>
+    <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.1.0" id="redcaptidier-110">REDCapTidieR 1.1.0<a class="anchor" aria-label="anchor" href="#redcaptidier-110"></a></h2><p class="text-muted">CRAN release: 2024-03-28</p>
 </div>
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="1.1.0" id="version-110">Version 1.1.0<a class="anchor" aria-label="anchor" href="#version-110"></a></h2><p class="text-muted">CRAN release: 2024-03-28</p>
+<h2 class="pkg-version" data-toc-text="1.1.0" id="version-110-released-2024-03-28">Version 1.1.0 (Released 2024-03-28)<a class="anchor" aria-label="anchor" href="#version-110-released-2024-03-28"></a></h2><p class="text-muted">CRAN release: 2024-03-28</p>
 <ul><li>
 <code><a href="../reference/read_redcap.html">read_redcap()</a></code> now supports instruments that follow a mixed repeating/non-repeating structure with the <code>allow_mixed_structure</code> parameter</li>
 <li>Mixed structure instruments (those with both repeating and nonrepeating elements) can be supported by setting <code>allow_mixed_structure</code> to <code>TRUE</code> or <code>getOption("redcaptidier.allow.mixed.structure", FALSE)</code>.
@@ -261,7 +269,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.8.</p>
 </div>
 
     </footer></div>
