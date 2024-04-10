@@ -1,6 +1,6 @@
 # REDCapTidieR 1.1.1 (development version)
 
-Version 1.1.0
+Version 1.1.1
 ==========================================================
 
 - `read_redcap(raw_or_label = "haven")` now correctly casts categorical data values to character when their type is not character or numeric.
