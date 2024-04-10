@@ -624,7 +624,7 @@ check_field_is_logical <- function(x) {
 #'
 #' @keywords internal
 check_extra_field_values <- function(x, values) {
-  extra_vals <- setdiff(as.character(x), values) |> na.omit()
+  extra_vals <- setdiff(as.character(x), values) %>% na.omit()
   if (length(extra_vals) == 0) {
     return(NULL)
   }
@@ -632,7 +632,7 @@ check_extra_field_values <- function(x, values) {
 }
 
 check_extra_field_values_message <- function(extra_field_values, call = caller_env()) {
-  extra_field_values <- extra_field_values |>
+  extra_field_values <- extra_field_values %>%
     discard(is.null)
 
   if (length(extra_field_values) == 0) {
@@ -640,7 +640,7 @@ check_extra_field_values_message <- function(extra_field_values, call = caller_e
   }
 
   fields <- names(extra_field_values)
-  values <- flatten_chr(extra_field_values) |> unique()
+  values <- flatten_chr(extra_field_values) %>% unique()
 
   msg <- c(
     `!` = "{.code {fields}} contain{?s/} values with no labels: {values}",

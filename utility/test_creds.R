@@ -5,7 +5,7 @@ library(dplyr)
 library(microbenchmark)
 
 # Load REDCapR creds
-ouhsc_creds <- readr::read_csv(file = "utility/redcapr.example.credentials", skip = 5) %>%
+ouhsc_creds <- readr::read_csv(file = "utility/redcapr.example.credentials", skip = 5, show_col_types = FALSE) %>%
   select(redcap_uri, token, comment)
 
 # Remove identified APIs that don't work
@@ -38,11 +38,12 @@ redcaptidier_creds <- tibble::tribble(
 )
 
 # Combine Credentials
-creds <- rbind(ouhsc_creds %>% mutate(source = "ouhsc"), redcaptidier_creds %>% mutate(source = "redcaptidier"))
+creds <- rbind(ouhsc_creds %>% mutate(source = "ouhsc"), redcaptidier_creds %>% mutate(source = "redcaptidier")) %>%
+  filter(token != "")
 
 microbenchmark_fx <- function(redcap_uri, token, name, times = 1){
   microbenchmark(
-    name = read_redcap(redcap_uri = redcap_uri, token = token, allow_mixed_structure = TRUE),
+    name = suppressWarnings(read_redcap(redcap_uri = redcap_uri, token = token, allow_mixed_structure = TRUE)),
     times = times,
     unit = "seconds"
   )

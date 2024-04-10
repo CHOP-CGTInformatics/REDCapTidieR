@@ -34,9 +34,13 @@ read_redcap(letters[1:3], classic_token)
 read_redcap("https://www.google.com", classic_token)
 #> Error in `read_redcap()`:
 #> ✖ The REDCapR export operation was not successful.
-#> ! The URL returned the HTTP error code 405 (POST Method not allowed).
-#> ℹ Are you sure the URI points to an active REDCap API endpoint?
-#> ℹ URI: `https://www.google.com`
+#> ! An unexpected error occured.
+#> ℹ This means that you probably discovered a bug!
+#> ℹ Please consider submitting a bug report here:
+#>   <https://github.com/CHOP-CGTInformatics/REDCapTidieR/issues>.
+#> Caused by error in `redcap_metadata_read()`:
+#> ! The REDCapR metadata export operation was not successful.  The error message was:
+#> <html><body><h1>404 Not Found</h1></body></html>
 
 read_redcap("https://www.google.comm", classic_token)
 #> Error in `read_redcap()`:
@@ -255,7 +259,7 @@ withr::with_tempdir({
 })
 #> Error:
 #> ✖ File
-#>   ''/private/var/folders/qc/mmjjyjq50530z9r_7mfqcqfhxkkk67/T/RtmpQi1Xne/file52d750f31b3f/temp.csv''
+#>   ''/private/var/folders/9c/k1m0bzys7gb1v32g86hfn5sn5k86h1/T/Rtmp1QPC0p/file5c744dd73619/temp.csv''
 #>   already exists.
 #> ℹ Overwriting files is disabled by default. Set `overwrite = TRUE` to overwrite
 #>   existing file.
@@ -296,7 +300,7 @@ withr::with_tempdir({
     write_redcap_xlsx(file = filepath)
 })
 #> Warning in write_redcap_xlsx(., file = filepath): ! No extension provided for `file`:
-#>   '/private/var/folders/qc/mmjjyjq50530z9r_7mfqcqfhxkkk67/T/RtmpQi1Xne/file52d72e91eb7b/temp'
+#>   '/private/var/folders/9c/k1m0bzys7gb1v32g86hfn5sn5k86h1/T/Rtmp1QPC0p/file5c7456597c2b/temp'
 #> ℹ The extension '.xlsx' will be appended to the file name.
 
 # Printed supertibble
@@ -339,4 +343,4 @@ read_redcap(redcap_uri, Sys.getenv("REDCAPTIDIER_MDC_API"))
 #> #   data_na_pct <formttbl>, form_complete_pct <formttbl>
 ```
 
-<sup>Created on 2024-03-27 with [reprex v2.1.0](https://reprex.tidyverse.org)</sup>
+<sup>Created on 2024-04-10 with [reprex v2.1.0](https://reprex.tidyverse.org)</sup>

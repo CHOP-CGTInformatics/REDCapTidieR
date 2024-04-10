@@ -13,7 +13,7 @@ Version 1.1.0 (Released 2024-03-28)
 
 - `read_redcap()` now supports instruments that follow a mixed repeating/non-repeating structure with the `allow_mixed_structure` parameter
 - Mixed structure instruments (those with both repeating and nonrepeating elements) can be supported by setting `allow_mixed_structure` to `TRUE` or `getOption("redcaptidier.allow.mixed.structure", FALSE)`.
-   - When allowed, nonrepeating elements of mixed structure insturments will be treated as repeating elements with a single instance.
+   - When allowed, nonrepeating elements of mixed structure instruments will be treated as repeating elements with a single instance.
 - Missing data codes from REDCap additional customization settings are now handled. Non-logical values are converted to `NA` in `yesno`, `truefalse`, and `checkbox` fields with a warning. 
    - Warnings for MDCs can be silenced with `options(redcaptidier.allow.mdc = TRUE)`.
 - `raw_or_label` now accepts `"haven"` as an option, converting categorical fields to `haven_labelled` vectors instead of factors.

@@ -514,13 +514,13 @@ parse_logical_cols <- function(db_data, db_metadata, call = caller_env()) {
   out[logical_cols$field_name_updated] <- map(parsed, "parsed")
 
   if (!getOption("redcaptidier.allow.mdc", FALSE)) {
-    problems <- parsed |>
-      map("problems") |>
+    problems <- parsed %>%
+      map("problems") %>%
       discard(is.null)
 
     if (length(problems) > 0) {
       fields <- names(problems)
-      values <- flatten_chr(problems) |> unique()
+      values <- flatten_chr(problems) %>% unique()
 
       msg <- c(
         `!` = "{.code {fields}} {?is/are} logical but contain{?s/} non-logical values: {values}",

@@ -4,12 +4,12 @@ options(device = deviceType) #https://support.rstudio.org/help/discussions/probl
 
 spelling::spell_check_package()
 # spelling::update_wordlist()
-lintr::lint_package()
 urlchecker::url_check(); urlchecker::url_update()
 
 styler::style_pkg()
 
 devtools::document()
+lintr::lint_package()
 devtools::check_man() #Should return NULL
 
 # Run as not CRAN to build full vignettes
@@ -63,8 +63,8 @@ devtools::check( # Equivalent of R-hub
   remote    = TRUE,
   incoming  = TRUE
 )
-# devtools::check_rhub(email="richardshanna91@gmail.com")
-# devtools::check_win_devel(email = "richardshanna91@gmail.com") # CRAN submission policies encourage the development version
+devtools::check_rhub(email="porterej@chop.edu")
+devtools::check_win_devel(email = "porterej@chop.edu") # CRAN submission policies encourage the development version
 # Note: Must be off of VPN
 revdepcheck::revdep_check(num_workers = 4)
 # Careful, the last question ultimately uploads it to CRAN, where you can't delete/reverse your decision.
