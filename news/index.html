@@ -76,7 +76,7 @@
 <ul><li>
 <code><a href="../reference/read_redcap.html">read_redcap()</a></code> now supports instruments that follow a mixed repeating/non-repeating structure with the <code>allow_mixed_structure</code> parameter</li>
 <li>Mixed structure instruments (those with both repeating and nonrepeating elements) can be supported by setting <code>allow_mixed_structure</code> to <code>TRUE</code> or <code>getOption("redcaptidier.allow.mixed.structure", FALSE)</code>.
-<ul><li>When allowed, nonrepeating elements of mixed structure insturments will be treated as repeating elements with a single instance.</li>
+<ul><li>When allowed, nonrepeating elements of mixed structure instruments will be treated as repeating elements with a single instance.</li>
 </ul></li>
 <li>Missing data codes from REDCap additional customization settings are now handled. Non-logical values are converted to <code>NA</code> in <code>yesno</code>, <code>truefalse</code>, and <code>checkbox</code> fields with a warning.
 <ul><li>Warnings for MDCs can be silenced with <code>options(redcaptidier.allow.mdc = TRUE)</code>.</li>
