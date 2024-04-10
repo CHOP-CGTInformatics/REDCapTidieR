@@ -1,6 +1,14 @@
-# REDCapTidieR 1.1.0
+# REDCapTidieR 1.1.1
 
 Version 1.1.0
+==========================================================
+
+- `read_redcap(raw_or_label = "haven")` now correctly casts categorical data values to character when their type is not character or numeric.
+
+
+# REDCapTidieR 1.1.0
+
+Version 1.1.0 (Released 2024-03-28)
 ==========================================================
 
 - `read_redcap()` now supports instruments that follow a mixed repeating/non-repeating structure with the `allow_mixed_structure` parameter

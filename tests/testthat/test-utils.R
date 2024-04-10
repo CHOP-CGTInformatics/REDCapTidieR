@@ -493,8 +493,6 @@ test_that("apply_labs_factor works", {
   expect_equal(out, factor(letters[1:3]))
 })
 
-test_that("force_cast works", {
-  expect_s3_class(force_cast("2023-01-01", as.Date(NA)), "Date")
-  expect_s3_class(force_cast("12:00", as.difftime(0, units = "secs")), "difftime")
-  expect_s3_class(force_cast("2023-01-01 12:00", as.POSIXct(NA)), "POSIXct")
+test_that("force_cast converts non chr/numerics to chr", {
+  expect_character(force_cast("2023-01-01", as.Date(NA)))
 })

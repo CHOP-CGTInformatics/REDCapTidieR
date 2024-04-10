@@ -588,6 +588,7 @@ apply_labs_factor <- function(x, labels, ...) {
 apply_labs_haven <- function(x, labels, ptype, ...) {
   # set_value_labels expects labels in c(label = value) format so reverse them
   labels <- invert_vec(labels)
+  ptype <- vec_ptype(ptype)
   # Try to cast values to match data type in data, catching any parsing warnings
   cnd <- NULL
   labels_cast <- withCallingHandlers(
@@ -601,11 +602,16 @@ apply_labs_haven <- function(x, labels, ptype, ...) {
   )
   if (!is.null(attr(labels_cast, "problems"))) {
     # If there was parsing problem fall back to character
-    x <- as.character(x)
     labels_cast <- force_cast(labels, character())
   } else if (!is.null(cnd)) {
     # If there was some other warning we didn't mean to catch it, so re-raise
     cli_warn(cnd)
+  }
+
+  # If labels were parsed to something other than character it was based on ptype so we can assume x is the right type
+  # If labels are character it may have been a fallback to ensure x is character
+  if (is.character(labels_cast)) {
+    x <- as.character(x)
   }
 
   labelled::set_value_labels(x, .labels = labels_cast)
@@ -631,20 +637,12 @@ invert_vec <- function(x) {
   out
 }
 
+# Handling only integer and double since haven explicitly doesn't support other types
 force_cast <- function(x, ptype) {
-  ptype <- vec_ptype(ptype)
-  if (is.logical(ptype)) {
-    out <- parse_logical(x)
-  } else if (is.integer(ptype)) {
+  if (is.integer(ptype)) {
     out <- parse_integer(x)
   } else if (is.numeric(ptype)) {
     out <- parse_double(x)
-  } else if (is.Date(ptype)) {
-    out <- parse_date(x)
-  } else if (is.difftime(ptype)) {
-    out <- parse_time(x)
-  } else if (is.POSIXt(ptype)) {
-    out <- parse_datetime(x)
   } else {
     out <- parse_character(x)
   }

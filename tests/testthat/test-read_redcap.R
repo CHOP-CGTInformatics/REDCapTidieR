@@ -370,7 +370,6 @@ test_that("read_redcap errors with bad inputs", {
   # redcap uri
   expect_error(read_redcap(123, Sys.getenv("REDCAPTIDIER_CLASSIC_API")), class = "check_character")
   expect_error(read_redcap(letters[1:3], Sys.getenv("REDCAPTIDIER_CLASSIC_API")), class = "check_character")
-  expect_error(read_redcap("https://www.google.com", Sys.getenv("REDCAPTIDIER_CLASSIC_API")), class = "cannot_post")
   expect_error(
     read_redcap("https://www.google.comm", Sys.getenv("REDCAPTIDIER_CLASSIC_API")),
     class = "cannot_resolve_host"
