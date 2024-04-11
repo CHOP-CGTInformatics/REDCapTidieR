@@ -6,7 +6,7 @@ articles:
   export_to_xlsx: export_to_xlsx.html
   glossary: glossary.html
   REDCapTidieR: REDCapTidieR.html
-last_built: 2024-04-11T16:01Z
+last_built: 2024-04-11T17:57Z
 urls:
   reference: https://chop-cgtinformatics.github.io/REDCapTidieR/reference
   article: https://chop-cgtinformatics.github.io/REDCapTidieR/articles
