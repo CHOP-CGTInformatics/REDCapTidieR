@@ -64,7 +64,7 @@ devtools::check( # Equivalent of R-hub
   incoming  = TRUE
 )
 # Approx matches to https://cran.r-project.org/web/checks/check_flavors.html
-rhub::rhub_check(platforms = c("linux", "windows", "gcc13", "ubuntu-clang", "ubuntu-gcc12", "ubuntu-next", "ubuntu-release"))
+rhub::rhub_check(platforms = c("linux", "windows", "ubuntu-next", "ubuntu-release"))
 devtools::check_win_devel(email = "porterej@chop.edu") # CRAN submission policies encourage the development version
 # Note: Must be off of VPN
 revdepcheck::revdep_check(num_workers = 4)
