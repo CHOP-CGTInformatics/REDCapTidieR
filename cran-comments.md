@@ -2,47 +2,39 @@
 
 Thank you for taking the time to review this submission and please reach out to either Stephan Kadauke, Richard Hanna, or Ezra Porter for any questions, comments, or concerns.
 
-This submission comes with several enhancements requested by the community and a couple of minor bug fixes.
+This submission patches version 1.1.0 to fix a test failure introduced by an upcoming release of `labelled` 2.13.0. We have worked with the developer of `labelled` to ensure this patch resolves their reverse dependency check failures.
 
 ## New Features
 
-There are no user-facing changes in this release.
+There are no significant user-facing changes in this release.
+
+`read_redcap(raw_or_label = "haven")` now correctly casts categorical data values to character when their type is not character or numeric. This is a constraint of labels from the `haven` package which `labelled` will be checking for explicitly in their new release.
 
 ## Test environments
 
-1. Local macOS Ventura 13.6.4, R 4.3.2
+1. Local macOS Ventura 13.6.5, R 4.2.4
 2. R-hub
-    1. [Ubuntu Linux 20.04.1 LTS, R-release, GCC](https://builder.r-hub.io/status/REDCapTidieR_1.1.0.tar.gz-18c93ed60e0f4a17b4998388c6d916a3)
-    2. [Fedora Linux, R-devel, clang, gfortran](https://builder.r-hub.io/status/REDCapTidieR_1.1.0.tar.gz-dac5a12687d24d14abb8ed52955c3f45)
-    3. [Windows Server](https://builder.r-hub.io/status/REDCapTidieR_1.1.0.tar.gz-4faf798b994b43edaff81e82e33b8803)
-3.  [win-builder](https://win-builder.r-project.org/gS0Or11LlrAv/), development version.
+    1. [Ubuntu 22.04.4 LTS, R-next, GCC](https://github.com/CHOP-CGTInformatics/REDCapTidieR/actions/runs/8650642187/job/23719620675)
+    2. [Ubuntu 22.04.4 LTS, R-release, GCC](https://github.com/CHOP-CGTInformatics/REDCapTidieR/actions/runs/8650642187/job/23719621223)
+    3. [Ubuntu 22.04.4 LTS, R-devel, GCC](https://github.com/CHOP-CGTInformatics/REDCapTidieR/actions/runs/8650642187/job/23719620358)
+    4. [Windows Server](https://github.com/CHOP-CGTInformatics/REDCapTidieR/actions/runs/8650642187/job/23719620965)
+3.  [win-builder](https://win-builder.r-project.org/V4B5Ar22pIf5/), development version.
 4.  [GiHub Actions](https://github.com/CHOP-CGTInformatics/REDCapTidieR/actions), Ubuntu 20.04.02 LTS
 
 ## R CMD check results:
 
 - 0 ERRORs or WARNINGs on any builds
 
-- A NOTE is generated in R-hub Fedora Linux (R-devel, clang, gfortran) and R-hub Ubuntu Linux (20.04.1 LTS, R-release, GCC), but could not be reproduced locally. Based on [this discussion](https://groups.google.com/g/r-sig-mac/c/7u_ivEj4zhM?pli=1), it sounds like a problem with the testing environment, and not the package code.
+- A NOTE is generated in win-builder resulting from the package maintainer email address changing relative to the last CRAN release. This is an artifact of a different email address than the package maintainer's being used for the submission to win-builder.
 
 ```
-* checking HTML version of manual ... NOTE
-Skipping checking HTML validation: no command 'tidy' found
-```
+* checking CRAN incoming feasibility ... [14s] NOTE
+Maintainer: 'Richard Hanna <porterej@chop.edu>'
 
-- A NOTE is generated in R-hub Windows (Server 2022, R-devel 64-bit), a similar issue appears to arise in the `REDCapR` package and appears to be related to the R-hub test environment.
-
-```
-* checking for detritus in the temp directory ... NOTE
-Found the following files/directories:
-  'lastMiKTeXException'
-```
-
-- A NOTE is generated in R-hub Windows (Server 2022, R-devel 64-bit), and has been documented in an [`rhub` issue](https://github.com/r-hub/rhub/issues/560)
-
-```
-* checking for non-standard things in the check directory ... NOTE
-Found the following files/directories:
-  ''NULL''
+New maintainer:
+  Richard Hanna <porterej@chop.edu>
+Old maintainer(s):
+  Richard Hanna <richardshanna91@gmail.com>
 ```
 
 ## Downstream Dependencies:
