@@ -24,6 +24,7 @@ reduce_multi_to_single_column <- function(supertbl,
                                           cols_to,
                                           multi_val = "Multiple",
                                           raw_or_label = "label") {
+
   # Save user cols to enquosure
   cols_exp <- enquo(cols)
 
@@ -31,22 +32,20 @@ reduce_multi_to_single_column <- function(supertbl,
   data_tbl <- supertbl %>%
     extract_tibble(tbl)
 
+  # Get field names from cols_exp
+  field_names <- names(eval_select(cols_exp, data = data_tbl))
+
   # Assume the first instrument in the metadata contains IDs
   # REDCap enforces this constraints, we reflect this in read_redcap -> get_field_to_drop
   record_id_field <- supertbl$redcap_metadata[supertbl$redcap_form_name == tbl][[1]]$field_name[1]
 
   # Combine record identifier with remaining possible project identifiers
-  project_identifiers <- c(record_id_field, "redcap_form_instance", "redcap_form_name", "redcap_event", "redcap_event_instance")
-
-  out <- data_tbl %>%
-    select(any_of(project_identifiers), !!!eval_select(cols_exp, data_tbl))
-
-  # Define field names as remaining vars defined by the user that aren't identifiers
-  field_names <- names(out)[!names(out) %in% project_identifiers]
+  instrument_identifiers <- c(record_id_field, "redcap_form_instance", "redcap_form_name", "redcap_event", "redcap_event_instance")
 
   # Define cols_to as the count of TRUEs/1s for the given checkbox field
   # Assign TRUE if multiple selections made, and FALSE if one or zero made
-  out <- out %>%
+  out <- data_tbl %>%
+    select(any_of(instrument_identifiers), !!!eval_select(cols_exp, data_tbl)) %>%
     mutate(
       !!cols_to := case_when(rowSums(select(., eval_tidy(cols_exp))) > 1 ~ TRUE,
                        TRUE ~ FALSE)
@@ -54,11 +53,11 @@ reduce_multi_to_single_column <- function(supertbl,
     )
 
   # Get metadata reference table
-  metadata <- get_metadata_ref(out, supertbl, tbl, project_identifiers)
+  metadata <- get_metadata_ref(out, supertbl, tbl, instrument_identifiers)
 
   # Replace TRUEs/1s with raw/label values from metadata
   out <- out %>%
-    mutate(across(-c(any_of(project_identifiers), !!cols_to), ~ replace_true(.x,
+    mutate(across(-c(any_of(instrument_identifiers), !!cols_to), ~ replace_true(.x,
                                                                     cur_column(),
                                                                     metadata = metadata,
                                                                     raw_or_label = raw_or_label)))
@@ -75,22 +74,24 @@ reduce_multi_to_single_column <- function(supertbl,
                           coalesce(!!!syms(field_names)))
     ) %>%
     ungroup() %>%
-    select(any_of(project_identifiers), !!cols_to) %>%
+    select(any_of(instrument_identifiers), !!cols_to) %>%
     mutate(
       !!cols_to := factor(!!sym(cols_to), levels = c(metadata[[raw_or_label]], multi_val))
     )
 
   # Join back onto original data tbl
   out %>%
-    right_join(data_tbl, by = intersect(project_identifiers, names(out))) %>%
+    right_join(data_tbl, by = intersect(instrument_identifiers, names(out))) %>%
     relocate(!!cols_to, .after = everything())
 }
 
 #' @noRd
 #' @keywords internal
-get_metadata_ref <- function(data, supertbl, tbl, project_identifiers) {
+get_metadata_ref <- function(data, supertbl, tbl, instrument_identifiers) {
+
+  # Create a metadata reference table linking field name to raw and label values
   out <- supertbl$redcap_metadata[supertbl$redcap_form_name == tbl][[1]] %>%
-    filter(field_name %in% names(data)[!names(data) %in% project_identifiers]) %>%
+    filter(field_name %in% names(data)[!names(data) %in% instrument_identifiers]) %>%
     select(field_name, select_choices_or_calculations) %>%
     mutate(
       original_field = sub("___.*$", "", field_name)
@@ -105,11 +106,14 @@ get_metadata_ref <- function(data, supertbl, tbl, project_identifiers) {
   out %>%
     separate_wider_delim(label_value, delim = ", ", names = c("raw", "label")) %>%
     select(field_name, raw, label)
+
 }
 
 #' @noRd
 #' @keywords internal
 replace_true <- function(col, col_name, metadata, raw_or_label) {
+
+  # Replace TRUEs/1s with the appropriate raw or label value from the metadata
   replacement <- metadata %>% filter(field_name == col_name) %>% pull(raw_or_label)
   col <- ifelse(col == TRUE, replacement, NA) # col == TRUE works for raw or label because TRUE == 1 and 1 == TRUE
   # Convert non-TRUEs to NA, since values can be either "FALSE" or "0" for unchecked values
