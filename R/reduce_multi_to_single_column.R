@@ -15,6 +15,7 @@
 #' @param raw_or_label A string (either 'raw' or 'label') that specifies whether
 #' to export the raw coded values or the labels for the options of categorical
 #' fields. Default is 'label'.
+#' @param keep Whether or not to keep the original fields in the output. Default `TRUE`.
 #'
 #' @returns A `tibble`.
 #'
@@ -26,7 +27,8 @@ reduce_multi_to_single_column <- function(supertbl,
                                           cols_to,
                                           multi_val = "Multiple",
                                           no_val = NA,
-                                          raw_or_label = "label") {
+                                          raw_or_label = "label",
+                                          keep = TRUE) {
 
   # Save user cols to enquosure
   cols_exp <- enquo(cols)
@@ -84,9 +86,13 @@ reduce_multi_to_single_column <- function(supertbl,
     )
 
   # Join back onto original data tbl
-  out %>%
-    right_join(data_tbl, by = intersect(instrument_identifiers, names(out))) %>%
-    relocate(!!cols_to, .after = everything())
+  if (keep) {
+    out %>%
+      right_join(data_tbl, by = intersect(instrument_identifiers, names(out))) %>%
+      relocate(!!cols_to, .after = everything())
+  } else {
+    out
+  }
 }
 
 #' @noRd

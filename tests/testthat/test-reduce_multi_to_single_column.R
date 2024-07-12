@@ -57,6 +57,26 @@ test_that("reduce_multo_to_single works for nonrepeat instrument", {
   expect_equal(out, expected_out)
 })
 
+test_that("reduce_multo_to_single works for nonrepeat instrument and drop old values", {
+  out <- reduce_multi_to_single_column(supertbl = supertbl,
+                                       tbl = "nonrepeat_instrument",
+                                       cols = starts_with("multi"),
+                                       cols_to = "new_col",
+                                       keep = FALSE)
+
+  expected_out <- tibble::tribble(
+    ~"study_id", ~"new_col",
+    1, "Red",
+    2, "Multiple",
+    3, NA
+  ) %>%
+    mutate(
+      new_col = factor(new_col, levels = c("Red", "Yellow", "Blue", "Multiple"))
+    )
+
+  expect_equal(out, expected_out)
+})
+
 test_that("reduce_multo_to_single works for repeat instrument", {
   out <- reduce_multi_to_single_column(supertbl = supertbl,
                                        tbl = "repeat_instrument",
