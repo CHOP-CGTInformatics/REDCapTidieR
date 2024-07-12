@@ -10,6 +10,8 @@
 #' @param cols_to A string for the name of the column to consolidate values under. Required.
 #' @param multi_to A string to specify the placeholder value for rows where multiple
 #' checkboxes are selected. Default "Multiple".
+#' @param no_val A string indicating a value to use when no checkboxes are selected.
+#' Default `NA`.
 #' @param raw_or_label A string (either 'raw' or 'label') that specifies whether
 #' to export the raw coded values or the labels for the options of categorical
 #' fields. Default is 'label'.
@@ -23,6 +25,7 @@ reduce_multi_to_single_column <- function(supertbl,
                                           cols,
                                           cols_to,
                                           multi_val = "Multiple",
+                                          no_val = NA,
                                           raw_or_label = "label") {
 
   # Save user cols to enquosure
@@ -71,12 +74,13 @@ reduce_multi_to_single_column <- function(supertbl,
     mutate(
       !!cols_to := ifelse(!!sym(cols_to) == "TRUE",
                           multi_val,
-                          coalesce(!!!syms(field_names)))
+                          coalesce(!!!syms(field_names))),
+      !!cols_to := ifelse(is.na(!!sym(cols_to)), no_val, !!sym(cols_to))
     ) %>%
     ungroup() %>%
     select(any_of(instrument_identifiers), !!cols_to) %>%
     mutate(
-      !!cols_to := factor(!!sym(cols_to), levels = c(metadata[[raw_or_label]], multi_val))
+      !!cols_to := factor(!!sym(cols_to), levels = c(metadata[[raw_or_label]], multi_val, no_val))
     )
 
   # Join back onto original data tbl

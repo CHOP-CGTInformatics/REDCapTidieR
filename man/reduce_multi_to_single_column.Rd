@@ -10,6 +10,7 @@ reduce_multi_to_single_column(
   cols,
   cols_to,
   multi_val = "Multiple",
+  no_val = NA,
   raw_or_label = "label"
 )
 }
@@ -21,6 +22,9 @@ reduce_multi_to_single_column(
 \item{cols}{One or more columns to specify the checkbox field names for conversion. Required.}
 
 \item{cols_to}{A string for the name of the column to consolidate values under. Required.}
+
+\item{no_val}{A string indicating a value to use when no checkboxes are selected.
+Default \code{NA}.}
 
 \item{raw_or_label}{A string (either 'raw' or 'label') that specifies whether
 to export the raw coded values or the labels for the options of categorical
