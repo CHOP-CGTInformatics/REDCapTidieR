@@ -70,7 +70,7 @@ combine_checkboxes <- function(supertbl,
 
   # Define values_to as the count of TRUEs/1s for the given checkbox field
   # Assign TRUE if multiple selections made, and FALSE if one or zero made
-  out <- data_tbl %>%
+  data_tbl_mod <- data_tbl %>%
     select(any_of(instrument_identifiers), !!!eval_select(cols_exp, data_tbl)) %>%
     mutate(
       !!values_to := case_when(rowSums(select(., eval_tidy(cols_exp))) > 1 ~ TRUE,
@@ -79,10 +79,10 @@ combine_checkboxes <- function(supertbl,
     )
 
   # Get metadata reference table
-  metadata <- get_metadata_ref(out, supertbl, form_name, instrument_identifiers)
+  metadata <- get_metadata_ref(data_tbl_mod, supertbl, form_name, instrument_identifiers)
 
   # Replace TRUEs/1s with raw/label values from metadata
-  out <- out %>%
+  data_tbl_mod <- data_tbl_mod %>%
     mutate(across(-c(any_of(instrument_identifiers), !!values_to), ~ replace_true(.x,
                                                                     cur_column(),
                                                                     metadata = metadata,
@@ -90,7 +90,7 @@ combine_checkboxes <- function(supertbl,
 
 
   # Convert values_to from TRUE/FALSE to multi_value_label or identified single val
-  out <- out %>%
+  data_tbl_mod <- data_tbl_mod %>%
     mutate(across(field_names, as.character), # enforce to character strings
            across(!!values_to, ~as.character(.))) %>%
     rowwise() %>%
@@ -107,17 +107,20 @@ combine_checkboxes <- function(supertbl,
     )
 
   # Join back onto original data form_name
-  out <- out %>%
-    right_join(data_tbl, by = intersect(instrument_identifiers, names(out))) %>%
+  data_tbl_mod <- data_tbl_mod %>%
+    right_join(data_tbl, by = intersect(instrument_identifiers, names(data_tbl_mod))) %>%
     relocate(!!values_to, .after = everything())
 
   # Keep or remove original multi columns
-  if (keep) {
-    out
-  } else {
-    out %>%
+  if (!keep) {
+    data_tbl_mod <- data_tbl_mod %>%
       select(-field_names)
   }
+
+  # Update the supertbl data tibble
+  supertbl$redcap_data[supertbl$redcap_form_name == form_name][[1]] <- data_tbl_mod
+
+  supertbl
 }
 
 #' @noRd

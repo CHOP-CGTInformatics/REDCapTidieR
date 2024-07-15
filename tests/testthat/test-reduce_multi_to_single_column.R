@@ -36,13 +36,27 @@ supertbl <- tibble::tribble(
 
 class(supertbl) <- c("redcap_supertbl", class(supertbl))
 
-test_that("reduce_multo_to_single works for nonrepeat instrument", {
+test_that("combine_checkboxes returns an expected supertbl", {
   out <- combine_checkboxes(supertbl = supertbl,
-                                form_name = "nonrepeat_instrument",
-                                cols = starts_with("multi"),
-                                values_to = "new_col",
-                                multi_value_label = "multiple", # multi_value_label declared
-                                values_fill = "none") # values_fill declared
+                            form_name = "nonrepeat_instrument",
+                            cols = starts_with("multi"),
+                            values_to = "new_col") # values_fill declared
+
+  expect_setequal(class(out), c("redcap_supertbl", "tbl_df", "tbl", "data.frame"))
+  expect_equal(nrow(out), 2)
+})
+
+test_that("combine_checkboxes works for nonrepeat instrument", {
+  out <- combine_checkboxes(
+    supertbl = supertbl,
+    form_name = "nonrepeat_instrument",
+    cols = starts_with("multi"),
+    values_to = "new_col",
+    multi_value_label = "multiple", # multi_value_label declared
+    values_fill = "none" # values_fill declared
+  ) %>%
+    pull(redcap_data) %>%
+    dplyr::first()
 
   expected_out <- tibble::tribble(
     ~"study_id", ~"multi___1", ~"multi___2", ~"multi___3", ~"extra_data", ~"new_col",
@@ -57,12 +71,16 @@ test_that("reduce_multo_to_single works for nonrepeat instrument", {
   expect_equal(out, expected_out)
 })
 
-test_that("reduce_multo_to_single works for nonrepeat instrument and drop old values", {
-  out <- combine_checkboxes(supertbl = supertbl,
-                                       form_name = "nonrepeat_instrument",
-                                       cols = starts_with("multi"),
-                                       values_to = "new_col",
-                                       keep = FALSE) # Test keep = FALSE
+test_that("combine_checkboxes works for nonrepeat instrument and drop old values", {
+  out <- combine_checkboxes(
+    supertbl = supertbl,
+    form_name = "nonrepeat_instrument",
+    cols = starts_with("multi"),
+    values_to = "new_col",
+    keep = FALSE # Test keep = FALSE
+  ) %>%
+    pull(redcap_data) %>%
+    dplyr::first()
 
   expected_out <- tibble::tribble(
     ~"study_id", ~"extra_data", ~"new_col",
@@ -77,11 +95,13 @@ test_that("reduce_multo_to_single works for nonrepeat instrument and drop old va
   expect_equal(out, expected_out)
 })
 
-test_that("reduce_multo_to_single works for repeat instrument", {
+test_that("combine_checkboxes works for repeat instrument", {
   out <- combine_checkboxes(supertbl = supertbl,
-                                       form_name = "repeat_instrument",
-                                       cols = starts_with("repeat"),
-                                       values_to = "new_col")
+                            form_name = "repeat_instrument",
+                            cols = starts_with("repeat"),
+                            values_to = "new_col") %>%
+    pull(redcap_data) %>%
+    dplyr::nth(2)
 
   expected_out <- tibble::tribble(
     ~"study_id", ~"redcap_form_instance", ~"redcap_event", ~"repeat___1", ~"repeat___2", ~"new_col",
