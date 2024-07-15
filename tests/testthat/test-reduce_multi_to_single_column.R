@@ -37,12 +37,12 @@ supertbl <- tibble::tribble(
 class(supertbl) <- c("redcap_supertbl", class(supertbl))
 
 test_that("reduce_multo_to_single works for nonrepeat instrument", {
-  out <- reduce_multi_to_single_column(supertbl = supertbl,
-                                tbl = "nonrepeat_instrument",
+  out <- combine_checkboxes(supertbl = supertbl,
+                                form_name = "nonrepeat_instrument",
                                 cols = starts_with("multi"),
-                                cols_to = "new_col",
-                                multi_val = "multiple", # multi_val declared
-                                no_val = "none") # no_val declared
+                                values_to = "new_col",
+                                multi_value_label = "multiple", # multi_value_label declared
+                                values_fill = "none") # values_fill declared
 
   expected_out <- tibble::tribble(
     ~"study_id", ~"multi___1", ~"multi___2", ~"multi___3", ~"extra_data", ~"new_col",
@@ -58,10 +58,10 @@ test_that("reduce_multo_to_single works for nonrepeat instrument", {
 })
 
 test_that("reduce_multo_to_single works for nonrepeat instrument and drop old values", {
-  out <- reduce_multi_to_single_column(supertbl = supertbl,
-                                       tbl = "nonrepeat_instrument",
+  out <- combine_checkboxes(supertbl = supertbl,
+                                       form_name = "nonrepeat_instrument",
                                        cols = starts_with("multi"),
-                                       cols_to = "new_col",
+                                       values_to = "new_col",
                                        keep = FALSE) # Test keep = FALSE
 
   expected_out <- tibble::tribble(
@@ -78,10 +78,10 @@ test_that("reduce_multo_to_single works for nonrepeat instrument and drop old va
 })
 
 test_that("reduce_multo_to_single works for repeat instrument", {
-  out <- reduce_multi_to_single_column(supertbl = supertbl,
-                                       tbl = "repeat_instrument",
+  out <- combine_checkboxes(supertbl = supertbl,
+                                       form_name = "repeat_instrument",
                                        cols = starts_with("repeat"),
-                                       cols_to = "new_col")
+                                       values_to = "new_col")
 
   expected_out <- tibble::tribble(
     ~"study_id", ~"redcap_form_instance", ~"redcap_event", ~"repeat___1", ~"repeat___2", ~"new_col",
