@@ -6,12 +6,12 @@ nonrepeat_data <- tibble::tribble(
 )
 
 nonrepeat_metadata <- tibble::tribble(
-  ~"field_name", ~"select_choices_or_calculations",
-  "study_id", NA,
-  "multi___1", "1, Red | 2, Yellow | 3, Blue",
-  "multi___2", "1, Red | 2, Yellow | 3, Blue",
-  "multi___3", "1, Red | 2, Yellow | 3, Blue",
-  "extra_data", "1, 1 | 2, 2 | 3,3"
+  ~"field_name", ~"field_type", ~"select_choices_or_calculations",
+  "study_id", "text", NA,
+  "multi___1", "checkbox", "1, Red | 2, Yellow | 3, Blue",
+  "multi___2", "checkbox", "1, Red | 2, Yellow | 3, Blue",
+  "multi___3", "checkbox", "1, Red | 2, Yellow | 3, Blue",
+  "extra_data", "dropdown", "1, 1 | 2, 2 | 3,3"
 )
 
 repeat_data <- tibble::tribble(
@@ -22,10 +22,10 @@ repeat_data <- tibble::tribble(
 )
 
 repeat_metadata <- tibble::tribble(
-  ~"field_name", ~"select_choices_or_calculations",
-  "study_id", NA,
-  "repeat___1", "1, A | 2, B | 3, C",
-  "repeat___2", "1, A | 2, B | 3, C"
+  ~"field_name", ~"field_type", ~"select_choices_or_calculations",
+  "study_id", "text", NA,
+  "repeat___1", "checkbox", "1, A | 2, B | 3, C",
+  "repeat___2", "checkbox", "1, A | 2, B | 3, C"
 )
 
 supertbl <- tibble::tribble(
@@ -112,6 +112,42 @@ test_that("combine_checkboxes works for repeat instrument", {
     mutate(
       new_col = factor(new_col, levels = c("A", "B", "Multiple"))
     )
+
+  expect_equal(out, expected_out)
+})
+
+test_that("get_metadata_ref works", {
+  data <- nonrepeat_data %>%
+    select(study_id, contains("multi")) %>%
+    mutate(new_data = c(FALSE, TRUE, FALSE))
+
+  out <- get_metadata_ref(data = data, supertbl = supertbl, form_name = "nonrepeat_instrument", instrument_identifiers = "study_id")
+
+  expected_out <- tibble::tribble(
+    ~"field_name", ~"raw", ~"label",
+    "multi___1", "1", "Red",
+    "multi___2", "2", "Yellow",
+    "multi___3", "3", "Blue"
+  )
+
+  expect_equal(out, expected_out)
+})
+
+test_that("replace_true works", {
+  metadata <- tibble::tribble(
+    ~"field_name", ~"raw", ~"label",
+    "multi___1", "1", "Red",
+    "multi___2", "2", "Yellow",
+    "multi___3", "3", "Blue"
+  )
+
+  out <- replace_true(col = c(TRUE, TRUE, FALSE), col_name = "multi___1", metadata = metadata, raw_or_label = "raw")
+  expected_out <- c("1", "1", NA)
+
+  expect_equal(out, expected_out)
+
+  out <- replace_true(col = c(TRUE, TRUE, FALSE), col_name = "multi___1", metadata = metadata, raw_or_label = "label")
+  expected_out <- c("Red", "Red", NA)
 
   expect_equal(out, expected_out)
 })
