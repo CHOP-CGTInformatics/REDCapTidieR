@@ -86,12 +86,16 @@ reduce_multi_to_single_column <- function(supertbl,
     )
 
   # Join back onto original data tbl
+  out <- out %>%
+    right_join(data_tbl, by = intersect(instrument_identifiers, names(out))) %>%
+    relocate(!!cols_to, .after = everything())
+
+  # Keep or remove original multi columns
   if (keep) {
-    out %>%
-      right_join(data_tbl, by = intersect(instrument_identifiers, names(out))) %>%
-      relocate(!!cols_to, .after = everything())
-  } else {
     out
+  } else {
+    out %>%
+      select(-field_names)
   }
 }
 

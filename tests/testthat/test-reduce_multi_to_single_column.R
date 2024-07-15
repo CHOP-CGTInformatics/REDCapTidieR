@@ -1,8 +1,8 @@
 nonrepeat_data <- tibble::tribble(
-  ~"study_id", ~"multi___1", ~"multi___2", ~"multi___3",
-  1, TRUE, FALSE, FALSE,
-  2, TRUE, TRUE, FALSE,
-  3, FALSE, FALSE, FALSE
+  ~"study_id", ~"multi___1", ~"multi___2", ~"multi___3", ~"extra_data",
+  1, TRUE, FALSE, FALSE, 1,
+  2, TRUE, TRUE, FALSE, 2,
+  3, FALSE, FALSE, FALSE, 3
 )
 
 nonrepeat_metadata <- tibble::tribble(
@@ -10,7 +10,8 @@ nonrepeat_metadata <- tibble::tribble(
   "study_id", NA,
   "multi___1", "1, Red | 2, Yellow | 3, Blue",
   "multi___2", "1, Red | 2, Yellow | 3, Blue",
-  "multi___3", "1, Red | 2, Yellow | 3, Blue"
+  "multi___3", "1, Red | 2, Yellow | 3, Blue",
+  "extra_data", "1, 1 | 2, 2 | 3,3"
 )
 
 repeat_data <- tibble::tribble(
@@ -35,7 +36,6 @@ supertbl <- tibble::tribble(
 
 class(supertbl) <- c("redcap_supertbl", class(supertbl))
 
-
 test_that("reduce_multo_to_single works for nonrepeat instrument", {
   out <- reduce_multi_to_single_column(supertbl = supertbl,
                                 tbl = "nonrepeat_instrument",
@@ -45,10 +45,10 @@ test_that("reduce_multo_to_single works for nonrepeat instrument", {
                                 no_val = "none") # no_val declared
 
   expected_out <- tibble::tribble(
-    ~"study_id", ~"multi___1", ~"multi___2", ~"multi___3", ~"new_col",
-    1, TRUE, FALSE, FALSE, "Red",
-    2, TRUE, TRUE, FALSE, "multiple",
-    3, FALSE, FALSE, FALSE, "none"
+    ~"study_id", ~"multi___1", ~"multi___2", ~"multi___3", ~"extra_data", ~"new_col",
+    1, TRUE, FALSE, FALSE, 1, "Red",
+    2, TRUE, TRUE, FALSE, 2, "multiple",
+    3, FALSE, FALSE, FALSE, 3, "none"
   ) %>%
     mutate(
       new_col = factor(new_col, levels = c("Red", "Yellow", "Blue", "multiple", "none"))
@@ -62,13 +62,13 @@ test_that("reduce_multo_to_single works for nonrepeat instrument and drop old va
                                        tbl = "nonrepeat_instrument",
                                        cols = starts_with("multi"),
                                        cols_to = "new_col",
-                                       keep = FALSE)
+                                       keep = FALSE) # Test keep = FALSE
 
   expected_out <- tibble::tribble(
-    ~"study_id", ~"new_col",
-    1, "Red",
-    2, "Multiple",
-    3, NA
+    ~"study_id", ~"extra_data", ~"new_col",
+    1, 1, "Red",
+    2, 2, "Multiple",
+    3, 3, NA
   ) %>%
     mutate(
       new_col = factor(new_col, levels = c("Red", "Yellow", "Blue", "Multiple"))
