@@ -78,7 +78,7 @@ combine_checkboxes <- function(supertbl,
 
     )
 
-  # Get metadata reference table
+  # Get metadata reference table, check that chose fields are checkboxes
   metadata <- get_metadata_ref(data_tbl_mod, supertbl, form_name, instrument_identifiers)
 
   # Replace TRUEs/1s with raw/label values from metadata
@@ -129,7 +129,12 @@ get_metadata_ref <- function(data, supertbl, form_name, instrument_identifiers) 
 
   # Create a metadata reference table linking field name to raw and label values
   out <- supertbl$redcap_metadata[supertbl$redcap_form_name == form_name][[1]] %>%
-    filter(field_name %in% names(data)[!names(data) %in% instrument_identifiers]) %>%
+    filter(field_name %in% names(data)[!names(data) %in% instrument_identifiers])
+
+  # Make sure selection is checkbox metadata field type
+  check_fields_are_checkboxes(out)
+
+  out <- out %>%
     select(field_name, select_choices_or_calculations) %>%
     mutate(
       original_field = sub("___.*$", "", field_name)

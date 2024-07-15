@@ -53,10 +53,10 @@ test_that("check_repeat_and_nonrepeat works", {
   )
 
   expect_error(check_repeat_and_nonrepeat(db_data = test_data_longitudinal),
-    class = "repeat_nonrepeat_instrument"
+               class = "repeat_nonrepeat_instrument"
   )
   expect_error(check_repeat_and_nonrepeat(db_data = test_data_not_longitudinal),
-    class = "repeat_nonrepeat_instrument"
+               class = "repeat_nonrepeat_instrument"
   )
   expect_no_error(check_repeat_and_nonrepeat(db_data = test_repeating_event))
 })
@@ -151,10 +151,10 @@ test_that("checkmate wrappers work", {
 
   # extension
   expect_warning(check_arg_is_valid_extension("temp.docx", valid_extensions = "xlsx"),
-    class = "invalid_file_extension"
+                 class = "invalid_file_extension"
   )
   expect_warning(check_arg_is_valid_extension("xlsx.", valid_extensions = "xlsx"),
-    class = "invalid_file_extension"
+                 class = "invalid_file_extension"
   )
   expect_true(check_arg_is_valid_extension("temp.xlsx", valid_extensions = "xlsx"))
 })
@@ -253,4 +253,22 @@ test_that("check_fields_exist works", {
 
   check_fields_exist(fields = c(1,2,3), expr = expr(starts_with("temp"))) %>%
     expect_no_error()
+})
+
+test_that("check_fields_are_checkboxes works", {
+  metadata <- tibble::tribble(
+    ~field_name, ~field_type,
+    "record_id",  "text",
+    "text_field", "text",
+    "calc_field", "calc",
+    "checkbox___1", "checkbox",
+    "checkbox___2", "checkbox",
+    "checkbox___3", "checkbox"
+  )
+
+  metadata_filtered <- metadata %>%
+    filter("checkbox" %in% field_name)
+
+  expect_error(check_fields_are_checkboxes(metadata), class = "non_checkbox_fields")
+  expect_no_error(check_fields_are_checkboxes(metadata_filtered))
 })

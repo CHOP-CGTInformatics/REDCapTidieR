@@ -684,3 +684,35 @@ check_fields_exist <- function(fields, expr, call = caller_env()) {
     )
   }
 }
+
+
+#' @title
+#' Check fields are of checkbox field type
+#'
+#' @param metadata_tbl A metadata tibble from a supertibble
+#' @param call The calling environment to use in the error message
+#'
+#' @keywords internal
+
+check_fields_are_checkboxes <- function(metadata_tbl, call = caller_env()){
+
+  non_checkboxes <- metadata_tbl %>%
+    filter(field_type != "checkbox")
+
+  if (nrow(non_checkboxes) > 0) {
+
+    non_checkboxes <- non_checkboxes %>%
+      pull(field_name)
+
+    msg <- c(
+      x = "Non-checkbox fields selected for {.code form_name}",
+      `!` = "The following fields returned as non-checkbox field types: {.code {non_checkboxes}}"
+    )
+
+    cli_abort(
+      msg,
+      class = c("non_checkbox_fields", "REDCapTidieR_cond")
+    )
+  }
+
+}
