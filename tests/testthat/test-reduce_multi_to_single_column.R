@@ -39,7 +39,7 @@ class(supertbl) <- c("redcap_supertbl", class(supertbl))
 test_that("combine_checkboxes returns an expected supertbl", {
   out <- combine_checkboxes(
     supertbl = supertbl,
-    form_name = "nonrepeat_instrument",
+    tbl = "nonrepeat_instrument",
     cols = starts_with("multi"),
     values_to = "new_col"
   ) # values_fill declared
@@ -51,7 +51,7 @@ test_that("combine_checkboxes returns an expected supertbl", {
 test_that("combine_checkboxes works for nonrepeat instrument", {
   out <- combine_checkboxes(
     supertbl = supertbl,
-    form_name = "nonrepeat_instrument",
+    tbl = "nonrepeat_instrument",
     cols = starts_with("multi"),
     values_to = "new_col",
     multi_value_label = "multiple", # multi_value_label declared
@@ -76,7 +76,7 @@ test_that("combine_checkboxes works for nonrepeat instrument", {
 test_that("combine_checkboxes works for nonrepeat instrument and drop old values", {
   out <- combine_checkboxes(
     supertbl = supertbl,
-    form_name = "nonrepeat_instrument",
+    tbl = "nonrepeat_instrument",
     cols = starts_with("multi"),
     values_to = "new_col",
     keep = FALSE # Test keep = FALSE
@@ -100,7 +100,7 @@ test_that("combine_checkboxes works for nonrepeat instrument and drop old values
 test_that("combine_checkboxes works for repeat instrument", {
   out <- combine_checkboxes(
     supertbl = supertbl,
-    form_name = "repeat_instrument",
+    tbl = "repeat_instrument",
     cols = starts_with("repeat"),
     values_to = "new_col"
   ) %>%
@@ -128,7 +128,7 @@ test_that("get_metadata_ref works", {
   out <- get_metadata_ref(
     data = data,
     supertbl = supertbl,
-    form_name = "nonrepeat_instrument",
+    tbl = "nonrepeat_instrument",
     instrument_identifiers = "study_id"
   )
 
