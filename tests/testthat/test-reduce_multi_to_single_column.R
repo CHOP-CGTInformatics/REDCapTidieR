@@ -37,10 +37,12 @@ supertbl <- tibble::tribble(
 class(supertbl) <- c("redcap_supertbl", class(supertbl))
 
 test_that("combine_checkboxes returns an expected supertbl", {
-  out <- combine_checkboxes(supertbl = supertbl,
-                            form_name = "nonrepeat_instrument",
-                            cols = starts_with("multi"),
-                            values_to = "new_col") # values_fill declared
+  out <- combine_checkboxes(
+    supertbl = supertbl,
+    form_name = "nonrepeat_instrument",
+    cols = starts_with("multi"),
+    values_to = "new_col"
+  ) # values_fill declared
 
   expect_setequal(class(out), c("redcap_supertbl", "tbl_df", "tbl", "data.frame"))
   expect_equal(nrow(out), 2)
@@ -96,10 +98,12 @@ test_that("combine_checkboxes works for nonrepeat instrument and drop old values
 })
 
 test_that("combine_checkboxes works for repeat instrument", {
-  out <- combine_checkboxes(supertbl = supertbl,
-                            form_name = "repeat_instrument",
-                            cols = starts_with("repeat"),
-                            values_to = "new_col") %>%
+  out <- combine_checkboxes(
+    supertbl = supertbl,
+    form_name = "repeat_instrument",
+    cols = starts_with("repeat"),
+    values_to = "new_col"
+  ) %>%
     pull(redcap_data) %>%
     dplyr::nth(2)
 
@@ -121,7 +125,12 @@ test_that("get_metadata_ref works", {
     select(study_id, contains("multi")) %>%
     mutate(new_data = c(FALSE, TRUE, FALSE))
 
-  out <- get_metadata_ref(data = data, supertbl = supertbl, form_name = "nonrepeat_instrument", instrument_identifiers = "study_id")
+  out <- get_metadata_ref(
+    data = data,
+    supertbl = supertbl,
+    form_name = "nonrepeat_instrument",
+    instrument_identifiers = "study_id"
+  )
 
   expected_out <- tibble::tribble(
     ~"field_name", ~"raw", ~"label",

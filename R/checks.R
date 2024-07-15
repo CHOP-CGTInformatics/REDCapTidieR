@@ -669,7 +669,6 @@ check_extra_field_values_message <- function(extra_field_values, call = caller_e
 #'
 #' @keywords internal
 check_fields_exist <- function(fields, expr, call = caller_env()) {
-
   expr <- quo_name(expr)
 
   if (length(fields) == 0) {
@@ -694,15 +693,13 @@ check_fields_exist <- function(fields, expr, call = caller_env()) {
 #'
 #' @keywords internal
 
-check_fields_are_checkboxes <- function(metadata_tbl, call = caller_env()){
-
+check_fields_are_checkboxes <- function(metadata_tbl, call = caller_env()) {
   non_checkboxes <- metadata_tbl %>%
-    filter(field_type != "checkbox")
+    filter(.data$field_type != "checkbox")
 
   if (nrow(non_checkboxes) > 0) {
-
     non_checkboxes <- non_checkboxes %>%
-      pull(field_name)
+      pull(.data$field_name)
 
     msg <- c(
       x = "Non-checkbox fields selected for {.code form_name}",
@@ -714,5 +711,4 @@ check_fields_are_checkboxes <- function(metadata_tbl, call = caller_env()){
       class = c("non_checkbox_fields", "REDCapTidieR_cond")
     )
   }
-
 }

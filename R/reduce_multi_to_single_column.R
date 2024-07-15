@@ -46,7 +46,6 @@ combine_checkboxes <- function(supertbl,
                                values_fill = NA,
                                raw_or_label = "label",
                                keep = TRUE) {
-
   # Save user cols to enquosure
   cols_exp <- enquo(cols)
 
@@ -63,20 +62,23 @@ combine_checkboxes <- function(supertbl,
   record_id_field <- supertbl$redcap_metadata[supertbl$redcap_form_name == form_name][[1]]$field_name[1]
 
   # Combine record identifier with remaining possible project identifiers
-  instrument_identifiers <- c(record_id_field,
-                              "redcap_form_instance",
-                              "redcap_form_name",
-                              "redcap_event",
-                              "redcap_event_instance")
+  instrument_identifiers <- c(
+    record_id_field,
+    "redcap_form_instance",
+    "redcap_form_name",
+    "redcap_event",
+    "redcap_event_instance"
+  )
 
   # Define values_to as the count of TRUEs/1s for the given checkbox field
   # Assign TRUE if multiple selections made, and FALSE if one or zero made
   data_tbl_mod <- data_tbl %>%
     select(any_of(instrument_identifiers), !!!eval_select(cols_exp, data_tbl)) %>%
     mutate(
-      !!values_to := case_when(rowSums(select(., eval_tidy(cols_exp))) > 1 ~ TRUE,
-                       TRUE ~ FALSE)
-
+      !!values_to := case_when(
+        rowSums(select(., eval_tidy(cols_exp))) > 1 ~ TRUE,
+        TRUE ~ FALSE
+      )
     )
 
   # Get metadata reference table, check that chosen fields are checkboxes
@@ -84,21 +86,27 @@ combine_checkboxes <- function(supertbl,
 
   # Replace TRUEs/1s with raw/label values from metadata
   data_tbl_mod <- data_tbl_mod %>%
-    mutate(across(-c(any_of(instrument_identifiers), !!values_to), ~ replace_true(.x,
-                                                                    cur_column(),
-                                                                    metadata = metadata,
-                                                                    raw_or_label = raw_or_label)))
-
+    mutate(across(
+      -c(any_of(instrument_identifiers), !!values_to),
+      ~ replace_true(.x,
+        cur_column(),
+        metadata = metadata,
+        raw_or_label = raw_or_label
+      )
+    ))
 
   # Convert values_to from TRUE/FALSE to multi_value_label or identified single val
   data_tbl_mod <- data_tbl_mod %>%
-    mutate(across(field_names, as.character), # enforce to character strings
-           across(!!values_to, ~as.character(.))) %>%
+    mutate(
+      across(field_names, as.character), # enforce to character strings
+      across(!!values_to, ~ as.character(.))
+    ) %>%
     rowwise() %>%
     mutate(
       !!values_to := ifelse(!!sym(values_to) == "TRUE",
-                          multi_value_label,
-                          coalesce(!!!syms(field_names))),
+        multi_value_label,
+        coalesce(!!!syms(field_names))
+      ),
       !!values_to := ifelse(is.na(!!sym(values_to)), values_fill, !!sym(values_to))
     ) %>%
     ungroup() %>%
@@ -139,34 +147,36 @@ get_metadata_ref <- function(data,
                              supertbl,
                              form_name,
                              instrument_identifiers) {
-
   # Create a metadata reference table linking field name to raw and label values
   out <- supertbl$redcap_metadata[supertbl$redcap_form_name == form_name][[1]] %>%
-    filter(field_name %in% names(data)[!names(data) %in% instrument_identifiers])
+    filter(.data$field_name %in% names(data)[!names(data) %in% instrument_identifiers])
 
   # Make sure selection is checkbox metadata field type
   check_fields_are_checkboxes(out)
 
   out <- out %>%
-    select(field_name, select_choices_or_calculations) %>%
+    select(.data$field_name, .data$select_choices_or_calculations) %>%
     mutate(
-      original_field = sub("___.*$", "", field_name)
+      original_field = sub("___.*$", "", .data$field_name)
     ) %>%
-    mutate(pairs = strsplit(select_choices_or_calculations, " \\| "),
-           label_value = NA,
-           label_value = purrr::map2_chr(pairs, row_number(), \(.x, .y) .x[.y]))
+    mutate(
+      pairs = strsplit(.data$select_choices_or_calculations, " \\| "),
+      label_value = NA,
+      label_value = purrr::map2_chr(pairs, row_number(), \(.x, .y) .x[.y])
+    )
 
   out %>%
-    separate_wider_delim(label_value, delim = ", ", names = c("raw", "label")) %>%
-    select(field_name, raw, label)
+    separate_wider_delim(.data$label_value, delim = ", ", names = c("raw", "label")) %>%
+    select(.data$field_name, .data$raw, .data$label)
 }
 
 #' @noRd
 #' @keywords internal
 replace_true <- function(col, col_name, metadata, raw_or_label) {
-
   # Replace TRUEs/1s with the appropriate raw or label value from the metadata
-  replacement <- metadata %>% filter(field_name == col_name) %>% pull(raw_or_label)
+  replacement <- metadata %>%
+    filter(.data$field_name == col_name) %>%
+    pull(raw_or_label)
   col <- ifelse(col == TRUE, replacement, NA) # col == TRUE works for raw or label because TRUE == 1 & 1 == TRUE
   # Convert non-TRUEs to NA, since values can be either "FALSE" or "0" for unchecked values
   return(col)
