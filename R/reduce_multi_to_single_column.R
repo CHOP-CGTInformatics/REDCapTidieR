@@ -46,7 +46,6 @@ combine_checkboxes <- function(supertbl,
                                values_fill = NA,
                                raw_or_label = "label",
                                keep = TRUE) {
-
   # Save user cols to enquosure
   cols_exp <- enquo(cols)
 
@@ -54,8 +53,9 @@ combine_checkboxes <- function(supertbl,
   data_tbl <- supertbl %>%
     extract_tibble(form_name)
 
-  # Get field names from cols_exp
+  # Get field names from cols_exp, check that fields exist
   field_names <- names(eval_select(cols_exp, data = data_tbl))
+  check_fields_exist(fields = field_names, expr = cols_exp)
 
   # Assume the first instrument in the metadata contains IDs
   # REDCap enforces this constraints, we reflect this in read_redcap -> get_field_to_drop

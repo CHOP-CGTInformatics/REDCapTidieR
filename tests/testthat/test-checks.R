@@ -246,3 +246,11 @@ test_that("check_extra_field_values works", {
   check_extra_field_values(c(1, NA, 2), "1") |>
     expect_equal("2")
 })
+
+test_that("check_fields_exist works", {
+  check_fields_exist(fields = character(0), expr = expr(starts_with("temp"))) %>%
+    expect_error(class = "missing_checkbox_fields")
+
+  check_fields_exist(fields = c(1,2,3), expr = expr(starts_with("temp"))) %>%
+    expect_no_error()
+})

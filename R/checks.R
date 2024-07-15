@@ -659,3 +659,28 @@ check_extra_field_values_message <- function(extra_field_values, call = caller_e
     values = values
   )
 }
+
+#' @title
+#' Check fields exist for checkbox combination
+#'
+#' @param fields Vector of character strings to check the length of
+#' @param expr A quosure expression
+#' @param call The calling environment to use in the error message
+#'
+#' @keywords internal
+check_fields_exist <- function(fields, expr, call = caller_env()) {
+
+  expr <- quo_name(expr)
+
+  if (length(fields) == 0) {
+    msg <- c(
+      x = "No fields detected using `{expr}`.",
+      i = "Ensure that the column names specified in {.arg cols} match the columns in your data. Check for typos or use {.pkg tidyselect} helpers like {.code starts_with()}, `contains()`, etc." # nolint: line_length_linter
+    )
+
+    cli_abort(
+      msg,
+      class = c("missing_checkbox_fields", "REDCapTidieR_cond")
+    )
+  }
+}

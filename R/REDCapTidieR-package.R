@@ -15,8 +15,8 @@
 #' redcap_metadata_read redcap_read_oneshot sanitize_token
 #' @importFrom rlang .data !!! abort as_closure caller_arg caller_env catch_cnd
 #' check_installed cnd_muffle current_call current_env enexpr enquo env_poke
-#' eval_tidy get_env global_env is_atomic is_bare_formula is_bare_list
-#' is_installed new_environment quo_get_expr try_fetch zap as_label sym syms
+#' eval_tidy get_env global_env is_atomic is_bare_formula is_bare_list quo_name
+#' is_installed new_environment quo_get_expr try_fetch zap as_label sym syms expr
 #' @importFrom stringi stri_split_fixed
 #' @importFrom stringr str_detect str_replace str_replace_all str_squish str_trunc
 #' str_trim str_ends
