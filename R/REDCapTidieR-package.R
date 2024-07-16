@@ -2,7 +2,7 @@
 #' @aliases REDCapTidieR-package
 #' @importFrom checkmate assert_character assert_data_frame check_character
 #' check_choice check_environment check_logical expect_character expect_double
-#' expect_factor expect_logical
+#' expect_factor expect_logical check_list
 #' @importFrom cli cli_abort cli_fmt cli_text cli_vec cli_warn qty
 #' @importFrom dplyr %>% across bind_rows case_when filter group_by if_any if_else
 #' left_join mutate pull recode relocate rename right_join row_number rowwise

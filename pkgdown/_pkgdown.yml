@@ -69,6 +69,7 @@ reference:
     Helpful functions for supertibble data analytics.
   contents:
   - combine_checkboxes
+  - list_select
 - title: "Data"
   contents:
   - superheroes_supertbl

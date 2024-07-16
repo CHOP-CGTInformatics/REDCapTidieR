@@ -45,7 +45,6 @@ combine_checkboxes <- function(supertbl,
                                values_fill = NA,
                                raw_or_label = "label",
                                keep = TRUE) {
-
   # Check args ---
   check_arg_is_supertbl(supertbl, req_cols = c("redcap_data", "redcap_metadata"))
   check_arg_is_character(tbl, len = 1, any.missing = FALSE)

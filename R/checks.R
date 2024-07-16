@@ -428,6 +428,9 @@ check_arg_is_logical <- wrap_checkmate(check_logical)
 check_arg_choices <- wrap_checkmate(check_choice)
 
 #' @rdname checkmate
+check_arg_is_list <- wrap_checkmate(check_list)
+
+#' @rdname checkmate
 check_arg_is_valid_token <- function(x,
                                      arg = caller_arg(x),
                                      call = caller_env()) {
