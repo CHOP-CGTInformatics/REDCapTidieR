@@ -4,7 +4,7 @@
 \alias{get_metadata_ref}
 \title{Utility function for getting metadata raw and label values for checkboxes}
 \usage{
-get_metadata_ref(data, supertbl, tbl, instrument_identifiers)
+get_metadata_ref(data, supertbl, tbl, field_names)
 }
 \arguments{
 \item{data}{a data tibble}
@@ -14,7 +14,7 @@ get_metadata_ref(data, supertbl, tbl, instrument_identifiers)
 \item{tbl}{The name of the REDCap form (instrument) containing the checkbox
 fields.}
 
-\item{instrument_identifiers}{Character string vector of project record identifier vars}
+\item{field_names}{Character string vector of field names for checkbox combination}
 }
 \value{
 a tibble

@@ -108,10 +108,10 @@ test_that("combine_checkboxes works for repeat instrument", {
     dplyr::nth(2)
 
   expected_out <- tibble::tribble(
-    ~"study_id", ~"redcap_form_instance", ~"redcap_event", ~"repeat___1", ~"repeat___2", ~"new_col",
-    1, 1, "event_1", TRUE, FALSE, "A",
-    2, 1, "event_1", TRUE, TRUE, "Multiple",
-    2, 2, "event_1", FALSE, FALSE, NA
+    ~"study_id",  ~"redcap_event",~"redcap_form_instance", ~"repeat___1", ~"repeat___2", ~"new_col",
+    1, "event_1", 1, TRUE, FALSE, "A",
+    2, "event_1", 1, TRUE, TRUE, "Multiple",
+    2, "event_1", 2, FALSE, FALSE, NA
   ) %>%
     mutate(
       new_col = factor(new_col, levels = c("A", "B", "Multiple"))
@@ -129,7 +129,7 @@ test_that("get_metadata_ref works", {
     data = data,
     supertbl = supertbl,
     tbl = "nonrepeat_instrument",
-    instrument_identifiers = "study_id"
+    field_names = c("multi___1", "multi___2", "multi___3")
   )
 
   expected_out <- tibble::tribble(

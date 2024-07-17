@@ -6,7 +6,7 @@
 #' @importFrom cli cli_abort cli_fmt cli_text cli_vec cli_warn qty
 #' @importFrom dplyr %>% across bind_rows case_when filter group_by if_any if_else
 #' left_join mutate pull recode relocate rename right_join row_number rowwise
-#' select slice summarise ungroup coalesce cur_column
+#' select slice summarise ungroup coalesce cur_column bind_cols
 #' @importFrom formattable percent
 #' @importFrom lobstr obj_size
 #' @importFrom lubridate is.difftime is.period is.POSIXt is.Date
