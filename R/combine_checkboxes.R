@@ -45,7 +45,6 @@ combine_checkboxes <- function(supertbl,
                                values_fill = NA,
                                raw_or_label = "label",
                                keep = TRUE) {
-
   # Check args ---
   check_arg_is_supertbl(supertbl, req_cols = c("redcap_data", "redcap_metadata"))
   check_arg_is_character(tbl, len = 1, any.missing = FALSE)
@@ -66,9 +65,6 @@ combine_checkboxes <- function(supertbl,
   field_names <- names(eval_select(cols_exp, data = data_tbl))
   check_fields_exist(fields = field_names, expr = cols_exp)
 
-  # Identify record_id field
-  record_id_field <- get_record_id_field(supertbl$redcap_data[[1]])
-
   # Define values_to as the count of TRUEs/1s for the given checkbox field
   # Assign TRUE if multiple selections made, and FALSE if one or zero made
   data_tbl_mod <- data_tbl %>%
@@ -87,9 +83,9 @@ combine_checkboxes <- function(supertbl,
     mutate(across(
       field_names,
       ~ replace_true(.x,
-                     cur_column(),
-                     metadata = metadata,
-                     raw_or_label = raw_or_label
+        cur_column(),
+        metadata = metadata,
+        raw_or_label = raw_or_label
       )
     ))
 
@@ -102,20 +98,24 @@ combine_checkboxes <- function(supertbl,
     ) %>%
     mutate(
       !!values_to := ifelse(!!sym(values_to) == "TRUE",
-                            multi_value_label,
-                            coalesce(!!!syms(field_names))
+        multi_value_label,
+        coalesce(!!!syms(field_names))
       ),
       !!values_to := ifelse(is.na(!!sym(values_to)),
-                            values_fill,
-                            !!sym(values_to))
+        values_fill,
+        !!sym(values_to)
+      )
     ) %>%
     mutate(
       !!values_to := factor(!!sym(values_to),
-                            levels = c(metadata[[raw_or_label]], multi_value_label, values_fill))
+        levels = c(metadata[[raw_or_label]], multi_value_label, values_fill)
+      )
     )
 
-  final_tbl <- bind_cols(data_tbl,
-                         data_tbl_mod %>% select(!!values_to))
+  final_tbl <- bind_cols(
+    data_tbl,
+    data_tbl_mod %>% select(!!values_to)
+  )
 
   # Keep or remove original multi columns
   if (!keep) {
@@ -144,7 +144,6 @@ get_metadata_ref <- function(data,
                              supertbl,
                              tbl,
                              field_names) {
-
   # Create a metadata reference table linking field name to raw and label values
   out <- supertbl$redcap_metadata[supertbl$redcap_form_name == tbl][[1]] %>%
     filter(.data$field_name %in% field_names) %>%

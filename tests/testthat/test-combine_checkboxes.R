@@ -109,7 +109,7 @@ test_that("combine_checkboxes works for repeat instrument", {
     dplyr::nth(2)
 
   expected_out <- tibble::tribble(
-    ~"study_id",  ~"redcap_event",~"redcap_form_instance", ~"repeat___1", ~"repeat___2", ~"repeat___3", ~"new_col",
+    ~"study_id", ~"redcap_event", ~"redcap_form_instance", ~"repeat___1", ~"repeat___2", ~"repeat___3", ~"new_col",
     1, "event_1", 1, TRUE, FALSE, FALSE, "A",
     2, "event_1", 1, TRUE, TRUE, TRUE, "Multiple",
     2, "event_1", 2, FALSE, FALSE, FALSE, NA
