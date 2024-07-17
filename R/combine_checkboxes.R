@@ -66,9 +66,8 @@ combine_checkboxes <- function(supertbl,
   field_names <- names(eval_select(cols_exp, data = data_tbl))
   check_fields_exist(fields = field_names, expr = cols_exp)
 
-  # Assume the first instrument in the metadata contains IDs
-  # REDCap enforces this constraints, we reflect this in read_redcap -> get_field_to_drop
-  record_id_field <- supertbl$redcap_metadata[supertbl$redcap_form_name == tbl][[1]]$field_name[1]
+  # Identify record_id field
+  record_id_field <- get_record_id_field(supertbl$redcap_data[[1]])
 
   # Combine record identifier with remaining possible project identifiers
   instrument_identifiers <- c(
@@ -110,7 +109,6 @@ combine_checkboxes <- function(supertbl,
       across(field_names, as.character), # enforce to character strings
       across(!!values_to, ~ as.character(.))
     ) %>%
-    rowwise() %>%
     mutate(
       !!values_to := ifelse(!!sym(values_to) == "TRUE",
         multi_value_label,
@@ -118,7 +116,6 @@ combine_checkboxes <- function(supertbl,
       ),
       !!values_to := ifelse(is.na(!!sym(values_to)), values_fill, !!sym(values_to))
     ) %>%
-    ungroup() %>%
     select(any_of(instrument_identifiers), !!values_to) %>%
     mutate(
       !!values_to := factor(!!sym(values_to), levels = c(metadata[[raw_or_label]], multi_value_label, values_fill))
