@@ -15,17 +15,18 @@ nonrepeat_metadata <- tibble::tribble(
 )
 
 repeat_data <- tibble::tribble(
-  ~"study_id", ~"redcap_event", ~"redcap_form_instance", ~"repeat___1", ~"repeat___2",
-  1, "event_1", 1, TRUE, FALSE,
-  2, "event_1", 1, TRUE, TRUE,
-  2, "event_1", 2, FALSE, FALSE
+  ~"study_id", ~"redcap_event", ~"redcap_form_instance", ~"repeat___1", ~"repeat___2", ~"repeat___3",
+  1, "event_1", 1, TRUE, FALSE, FALSE,
+  2, "event_1", 1, TRUE, TRUE, TRUE,
+  2, "event_1", 2, FALSE, FALSE, FALSE
 )
 
 repeat_metadata <- tibble::tribble(
   ~"field_name", ~"field_type", ~"select_choices_or_calculations",
   "study_id", "text", NA,
   "repeat___1", "checkbox", "1, A | 2, B | 3, C",
-  "repeat___2", "checkbox", "1, A | 2, B | 3, C"
+  "repeat___2", "checkbox", "1, A | 2, B | 3, C",
+  "repeat___3", "checkbox", "1, A | 2, B | 3, C"
 )
 
 supertbl <- tibble::tribble(
@@ -108,13 +109,13 @@ test_that("combine_checkboxes works for repeat instrument", {
     dplyr::nth(2)
 
   expected_out <- tibble::tribble(
-    ~"study_id", ~"redcap_form_instance", ~"redcap_event", ~"repeat___1", ~"repeat___2", ~"new_col",
-    1, 1, "event_1", TRUE, FALSE, "A",
-    2, 1, "event_1", TRUE, TRUE, "Multiple",
-    2, 2, "event_1", FALSE, FALSE, NA
+    ~"study_id",  ~"redcap_event",~"redcap_form_instance", ~"repeat___1", ~"repeat___2", ~"repeat___3", ~"new_col",
+    1, "event_1", 1, TRUE, FALSE, FALSE, "A",
+    2, "event_1", 1, TRUE, TRUE, TRUE, "Multiple",
+    2, "event_1", 2, FALSE, FALSE, FALSE, NA
   ) %>%
     mutate(
-      new_col = factor(new_col, levels = c("A", "B", "Multiple"))
+      new_col = factor(new_col, levels = c("A", "B", "C", "Multiple"))
     )
 
   expect_equal(out, expected_out)
@@ -129,7 +130,7 @@ test_that("get_metadata_ref works", {
     data = data,
     supertbl = supertbl,
     tbl = "nonrepeat_instrument",
-    instrument_identifiers = "study_id"
+    field_names = c("multi___1", "multi___2", "multi___3")
   )
 
   expected_out <- tibble::tribble(

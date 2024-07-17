@@ -93,6 +93,7 @@ combine_checkboxes <- function(supertbl,
       )
     ))
 
+
   # Convert values_to from TRUE/FALSE to multi_value_label or identified single val
   data_tbl_mod <- data_tbl_mod %>%
     mutate(
@@ -104,14 +105,17 @@ combine_checkboxes <- function(supertbl,
                             multi_value_label,
                             coalesce(!!!syms(field_names))
       ),
-      !!values_to := ifelse(is.na(!!sym(values_to)), values_fill, !!sym(values_to))
+      !!values_to := ifelse(is.na(!!sym(values_to)),
+                            values_fill,
+                            !!sym(values_to))
     ) %>%
-    # select(any_of(instrument_identifiers), !!values_to) %>%
     mutate(
-      !!values_to := factor(!!sym(values_to), levels = c(metadata[[raw_or_label]], multi_value_label, values_fill))
+      !!values_to := factor(!!sym(values_to),
+                            levels = c(metadata[[raw_or_label]], multi_value_label, values_fill))
     )
 
-  final_tbl <- bind_cols(data_tbl, data_tbl_mod %>% select(!!values_to))
+  final_tbl <- bind_cols(data_tbl,
+                         data_tbl_mod %>% select(!!values_to))
 
   # Keep or remove original multi columns
   if (!keep) {
@@ -143,24 +147,19 @@ get_metadata_ref <- function(data,
 
   # Create a metadata reference table linking field name to raw and label values
   out <- supertbl$redcap_metadata[supertbl$redcap_form_name == tbl][[1]] %>%
-    filter(.data$field_name %in% field_names)
+    filter(.data$field_name %in% field_names) %>%
+    # TODO: original_field a temporary placeholder for future multi-field and mapping dev
+    mutate(
+      original_field = sub("___.*$", "", .data$field_name)
+    )
 
   # Make sure selection is checkbox metadata field type
   check_fields_are_checkboxes(out)
 
-  out <- out %>%
-    select(.data$field_name, .data$select_choices_or_calculations) %>%
-    mutate(
-      original_field = sub("___.*$", "", .data$field_name)
-    ) %>%
-    mutate(
-      pairs = strsplit(.data$select_choices_or_calculations, " \\| "),
-      label_value = NA,
-      label_value = purrr::map2_chr(pairs, row_number(), \(.x, .y) .x[.y])
-    )
+  # TODO: Make more robust for multi-field and mapping, using original_field above
+  parsed_vals <- parse_labels(first(out$select_choices_or_calculations))
 
-  out %>%
-    separate_wider_delim(.data$label_value, delim = ", ", names = c("raw", "label")) %>%
+  bind_cols(out, parsed_vals) %>%
     select(.data$field_name, .data$raw, .data$label)
 }
 
