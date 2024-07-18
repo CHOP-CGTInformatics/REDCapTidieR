@@ -122,14 +122,8 @@ test_that("combine_checkboxes works for repeat instrument", {
 })
 
 test_that("get_metadata_ref works", {
-  data <- nonrepeat_data %>%
-    select(study_id, contains("multi")) %>%
-    mutate(new_data = c(FALSE, TRUE, FALSE))
-
   out <- get_metadata_ref(
-    data = data,
-    supertbl = supertbl,
-    tbl = "nonrepeat_instrument",
+    metadata_tbl = supertbl$redcap_metadata[[1]],
     field_names = c("multi___1", "multi___2", "multi___3")
   )
 
