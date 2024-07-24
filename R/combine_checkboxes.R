@@ -48,68 +48,81 @@ combine_checkboxes <- function(supertbl,
   # Check args ---
   check_arg_is_supertbl(supertbl, req_cols = c("redcap_data", "redcap_metadata"))
   check_arg_is_character(tbl, len = 1, any.missing = FALSE)
-  check_arg_is_character(values_to, len = 1, any.missing = FALSE)
+  check_arg_is_character(values_to, any.missing = FALSE)
   check_arg_is_character(multi_value_label, len = 1, any.missing = TRUE)
   check_arg_is_character(values_fill, len = 1, any.missing = TRUE)
   check_arg_choices(raw_or_label, choices = c("label", "raw"))
   check_arg_is_logical(keep, len = 1, any.missing = FALSE)
 
-  # Save user cols to enquosure
-  cols_exp <- enquo(cols)
-
   # Extract tbl from supertbl
   data_tbl <- supertbl %>%
     extract_tibble(tbl)
 
-  # Get field names from cols_exp, check that fields exist
-  field_names <- names(eval_select(cols_exp, data = data_tbl))
-  check_fields_exist(fields = field_names, expr = cols_exp)
+  # Save user cols to quosure
+  cols_exp <- enquo(cols)
 
-  # Define values_to as the count of TRUEs/1s for the given checkbox field
-  # Assign TRUE if multiple selections made, and FALSE if one or zero made
-  data_tbl_mod <- data_tbl %>%
-    mutate(
-      !!values_to := case_when(
-        rowSums(select(., eval_tidy(cols_exp))) > 1 ~ TRUE,
-        TRUE ~ FALSE
-      )
-    )
+  # Evaluate the cols expression to get the selected column names
+  selected_cols <- names(eval_select(cols_exp, data = data_tbl))
+  check_fields_exist(fields = selected_cols, expr = cols_exp) # Check supplied fields exist
+
+  # Extract the prefix of each selected column
+  prefixes <- sub("___.*", "", selected_cols)
+
+  # Split the selected columns based on their prefixes
+  col_groups <- split(selected_cols, prefixes)
+  check_values_to_length(col_groups, values_to) # Check values_to columns match length of fields
 
   # Get metadata reference table, check that chosen fields are checkboxes
   metadata_tbl <- supertbl$redcap_metadata[supertbl$redcap_form_name == tbl][[1]]
-  metadata_ref <- get_metadata_ref(metadata_tbl, field_names)
+  metadata_ref <- get_metadata_ref(metadata_tbl, selected_cols)
+
+  # Define values_to as the count of TRUEs/1s for the given checkbox field
+  # Assign TRUE if multiple selections made, and FALSE if one or zero made
+  data_tbl_mod <- data_tbl
+
+  for (i in seq_along(values_to)) {
+    data_tbl_mod <- data_tbl_mod %>%
+      mutate(
+        !!values_to[i] := case_when(
+          rowSums(select(., col_groups[[i]])) > 1 ~ TRUE,
+          .default = FALSE
+        )
+      )
+  }
 
   # Replace TRUEs/1s with raw/label values from metadata
   data_tbl_mod <- data_tbl_mod %>%
     mutate(across(
-      field_names,
+      selected_cols,
       ~ replace_true(.x,
-        cur_column(),
-        metadata = metadata_ref,
-        raw_or_label = raw_or_label
+                     cur_column(),
+                     metadata = metadata_ref,
+                     raw_or_label = raw_or_label
       )
-    ))
-
-  # Convert values_to from TRUE/FALSE to multi_value_label or identified single val
-  data_tbl_mod <- data_tbl_mod %>%
-    mutate(
-      across(field_names, as.character) # enforce to character strings
-    ) %>%
-    mutate(
-      !!values_to := ifelse(!!sym(values_to),
-        multi_value_label,
-        coalesce(!!!syms(field_names))
-      ),
-      !!values_to := ifelse(is.na(!!sym(values_to)),
-        values_fill,
-        !!sym(values_to)
-      )
-    ) %>%
-    mutate(
-      !!values_to := factor(!!sym(values_to),
-        levels = c(metadata_ref[[raw_or_label]], multi_value_label, values_fill)
-      )
+    ),
+    across(selected_cols, as.character) # enforce to character strings
     )
+
+  for (i in seq_along(values_to)) {
+    metadata_overwrite <- metadata_ref %>% filter(field_name %in% col_groups[[i]]) %>% pull(raw_or_label)
+
+    data_tbl_mod <- data_tbl_mod %>%
+      mutate(
+        !!values_to[i] := ifelse(!!sym(values_to[i]),
+                                 multi_value_label,
+                                 coalesce(!!!syms(col_groups[[i]]))
+        ),
+        !!values_to[i] := ifelse(is.na(!!sym(values_to[i])),
+                                 values_fill,
+                                 !!sym(values_to[i])
+        )
+      ) %>%
+      mutate(
+        !!values_to[i] := factor(!!sym(values_to[i]),
+                                 levels = c(metadata_overwrite, multi_value_label, values_fill)
+        )
+      )
+  }
 
   final_tbl <- bind_cols(
     data_tbl,
@@ -119,7 +132,7 @@ combine_checkboxes <- function(supertbl,
   # Keep or remove original multi columns
   if (!keep) {
     final_tbl <- final_tbl %>%
-      select(-field_names)
+      select(-selected_cols)
   }
 
   # Update the supertbl data tibble
@@ -131,17 +144,16 @@ combine_checkboxes <- function(supertbl,
 #' @title Utility function for getting metadata raw and label values for checkboxes
 #'
 #' @param metadata_tbl A metadata tibble from the supertibble generated by [read_redcap()].
-#' @param field_names Character string vector of field names for checkbox combination
+#' @param selected_cols Character string vector of field names for checkbox combination
 #'
 #' @returns a tibble
 #'
 #' @keywords internal
 get_metadata_ref <- function(metadata_tbl,
-                             field_names) {
+                             selected_cols) {
   # Create a metadata reference table linking field name to raw and label values
   out <- metadata_tbl %>%
-    filter(.data$field_name %in% field_names) %>%
-    # TODO: original_field a temporary placeholder for future multi-field and mapping dev
+    filter(.data$field_name %in% selected_cols) %>%
     mutate(
       original_field = sub("___.*$", "", .data$field_name)
     )
@@ -149,11 +161,19 @@ get_metadata_ref <- function(metadata_tbl,
   # Make sure selection is checkbox metadata field type
   check_fields_are_checkboxes(out)
 
-  # TODO: Make more robust for multi-field and mapping, using original_field above
-  parsed_vals <- parse_labels(first(out$select_choices_or_calculations))
+  # Bind raw/label values per original field grouping
+  parsed_vals <- tibble()
+
+  for (i in seq_along(unique(out$original_field))) {
+    index <- unique(out$original_field)[i]
+    out_filtered <- out %>% filter(original_field == index)
+
+    parsed_vals <- rbind(parsed_vals, parse_labels(first(out_filtered$select_choices_or_calculations)))
+  }
 
   bind_cols(out, parsed_vals) %>%
-    select(.data$field_name, .data$raw, .data$label)
+    select(.data$field_name, .data$raw, .data$label, original_field) %>%
+    relocate(original_field, .after = field_name)
 }
 
 #' @noRd

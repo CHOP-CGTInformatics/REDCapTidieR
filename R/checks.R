@@ -712,3 +712,32 @@ check_fields_are_checkboxes <- function(metadata_tbl, call = caller_env()) {
     )
   }
 }
+
+#' @title
+#' Check values_to length against detected number of checkbox fields
+#'
+#' @param col_groups a list of column groups identified by checkbox field detection
+#' @param values_to a user defined character vector passed from [combine_checkboxes()]
+#' @param call The calling environment to use in the error message
+#'
+#' @keywords internal
+check_values_to_length <- function(col_groups, values_to, call = caller_env()) {
+  if (length(values_to) < length(names(col_groups))) {
+    cli_warn(
+      message = c(
+        `!` = "Detected fewer {.code values_to} arguments than the number of checkbox fields. Only the first {length(values_to)} will be used."
+      ),
+      class = c("checkbox_value_to_length", "REDCapTidieR_cond")
+    )
+  }
+
+  if (length(values_to) > length(names(col_groups))) {
+    cli_abort(
+      message = c(
+        `x` = "The number of {.code values_to} arguments supplied is greater than the number of checkbox fields detected.",
+        `i` = "{length(values_to)} {.code values_to} supplied, {length(names(col_groups))} checkbox fields detected."
+      ),
+      class = c("checkbox_value_to_length", "REDCapTidieR_cond")
+    )
+  }
+}
