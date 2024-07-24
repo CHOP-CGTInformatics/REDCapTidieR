@@ -92,34 +92,37 @@ combine_checkboxes <- function(supertbl,
 
   # Replace TRUEs/1s with raw/label values from metadata
   data_tbl_mod <- data_tbl_mod %>%
-    mutate(across(
-      selected_cols,
-      ~ replace_true(.x,
-                     cur_column(),
-                     metadata = metadata_ref,
-                     raw_or_label = raw_or_label
-      )
-    ),
-    across(selected_cols, as.character) # enforce to character strings
+    mutate(
+      across(
+        selected_cols,
+        ~ replace_true(.x,
+          cur_column(),
+          metadata = metadata_ref,
+          raw_or_label = raw_or_label
+        )
+      ),
+      across(selected_cols, as.character) # enforce to character strings
     )
 
   for (i in seq_along(values_to)) {
-    metadata_overwrite <- metadata_ref %>% filter(field_name %in% col_groups[[i]]) %>% pull(raw_or_label)
+    metadata_overwrite <- metadata_ref %>%
+      filter(.data$field_name %in% col_groups[[i]]) %>%
+      pull(raw_or_label)
 
     data_tbl_mod <- data_tbl_mod %>%
       mutate(
         !!values_to[i] := ifelse(!!sym(values_to[i]),
-                                 multi_value_label,
-                                 coalesce(!!!syms(col_groups[[i]]))
+          multi_value_label,
+          coalesce(!!!syms(col_groups[[i]]))
         ),
         !!values_to[i] := ifelse(is.na(!!sym(values_to[i])),
-                                 values_fill,
-                                 !!sym(values_to[i])
+          values_fill,
+          !!sym(values_to[i])
         )
       ) %>%
       mutate(
         !!values_to[i] := factor(!!sym(values_to[i]),
-                                 levels = c(metadata_overwrite, multi_value_label, values_fill)
+          levels = c(metadata_overwrite, multi_value_label, values_fill)
         )
       )
   }
@@ -166,14 +169,14 @@ get_metadata_ref <- function(metadata_tbl,
 
   for (i in seq_along(unique(out$original_field))) {
     index <- unique(out$original_field)[i]
-    out_filtered <- out %>% filter(original_field == index)
+    out_filtered <- out %>% filter(.data$original_field == index)
 
     parsed_vals <- rbind(parsed_vals, parse_labels(first(out_filtered$select_choices_or_calculations)))
   }
 
   bind_cols(out, parsed_vals) %>%
-    select(.data$field_name, .data$raw, .data$label, original_field) %>%
-    relocate(original_field, .after = field_name)
+    select(.data$field_name, .data$raw, .data$label, .data$original_field) %>%
+    relocate(.data$original_field, .after = .data$field_name)
 }
 
 #' @noRd

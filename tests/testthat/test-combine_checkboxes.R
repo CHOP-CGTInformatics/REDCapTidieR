@@ -169,7 +169,7 @@ test_that("combine_checkboxes works for multiple checkbox fields", {
     dplyr::first()
 
   expected_out <- tibble::tribble(
-    ~"study_id",~"extra_data", ~"new_col1", ~"new_col2",
+    ~"study_id", ~"extra_data", ~"new_col1", ~"new_col2",
     1, 1, "Red", "Green",
     2, 2, "Multiple", "Green",
     3, 3, NA, NA
@@ -186,7 +186,7 @@ test_that("combine_checkboxes works for multiple checkbox fields with logicals",
   out <- combine_checkboxes(
     supertbl = supertbl,
     tbl = "nonrepeat_instrument",
-    cols = c(starts_with("multi")| starts_with("single_checkbox")),
+    cols = c(starts_with("multi") | starts_with("single_checkbox")),
     values_to = c("new_col1", "new_col2"),
     keep = FALSE
   ) %>%
@@ -194,7 +194,7 @@ test_that("combine_checkboxes works for multiple checkbox fields with logicals",
     dplyr::first()
 
   expected_out <- tibble::tribble(
-    ~"study_id",~"extra_data", ~"new_col1", ~"new_col2",
+    ~"study_id", ~"extra_data", ~"new_col1", ~"new_col2",
     1, 1, "Red", "Green",
     2, 2, "Multiple", "Green",
     3, 3, NA, NA
