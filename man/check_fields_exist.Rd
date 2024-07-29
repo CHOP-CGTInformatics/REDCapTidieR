@@ -9,7 +9,7 @@ check_fields_exist(fields, expr, call = caller_env())
 \arguments{
 \item{fields}{Vector of character strings to check the length of}
 
-\item{expr}{A quosure expression}
+\item{expr}{An expression}
 
 \item{call}{The calling environment to use in the error message}
 }

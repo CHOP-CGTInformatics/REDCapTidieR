@@ -42,8 +42,7 @@ test_that("combine_checkboxes returns an expected supertbl", {
   out <- combine_checkboxes(
     supertbl = supertbl,
     tbl = "nonrepeat_instrument",
-    cols = starts_with("multi"),
-    values_to = "new_col"
+    cols = starts_with("multi")
   ) # values_fill declared
 
   expect_setequal(class(out), c("redcap_supertbl", "tbl_df", "tbl", "data.frame"))
@@ -55,7 +54,6 @@ test_that("combine_checkboxes works for nonrepeat instrument", {
     supertbl = supertbl,
     tbl = "nonrepeat_instrument",
     cols = starts_with("multi"),
-    values_to = "new_col",
     multi_value_label = "multiple", # multi_value_label declared
     values_fill = "none" # values_fill declared
   ) %>%
@@ -63,13 +61,13 @@ test_that("combine_checkboxes works for nonrepeat instrument", {
     dplyr::first()
 
   expected_out <- tibble::tribble(
-    ~"study_id", ~"multi___1", ~"multi___2", ~"multi___3", ~"single_checkbox___1", ~"extra_data", ~"new_col",
+    ~"study_id", ~"multi___1", ~"multi___2", ~"multi___3", ~"single_checkbox___1", ~"extra_data", ~"_multi",
     1, TRUE, FALSE, FALSE, TRUE, 1, "Red",
     2, TRUE, TRUE, FALSE, TRUE, 2, "multiple",
     3, FALSE, FALSE, FALSE, FALSE, 3, "none"
   ) %>%
     mutate(
-      new_col = factor(new_col, levels = c("Red", "Yellow", "Blue", "multiple", "none"))
+      `_multi` = factor(`_multi`, levels = c("Red", "Yellow", "Blue", "multiple", "none"))
     )
 
   expect_equal(out, expected_out)
@@ -80,20 +78,19 @@ test_that("combine_checkboxes works for nonrepeat instrument and drop old values
     supertbl = supertbl,
     tbl = "nonrepeat_instrument",
     cols = starts_with("multi"),
-    values_to = "new_col",
     keep = FALSE # Test keep = FALSE
   ) %>%
     pull(redcap_data) %>%
     dplyr::first()
 
   expected_out <- tibble::tribble(
-    ~"study_id", ~"single_checkbox___1", ~"extra_data", ~"new_col",
+    ~"study_id", ~"single_checkbox___1", ~"extra_data", ~"_multi",
     1, TRUE, 1, "Red",
     2, TRUE, 2, "Multiple",
     3, FALSE, 3, NA
   ) %>%
     mutate(
-      new_col = factor(new_col, levels = c("Red", "Yellow", "Blue", "Multiple"))
+      `_multi` = factor(`_multi`, levels = c("Red", "Yellow", "Blue", "Multiple"))
     )
 
   expect_equal(out, expected_out)
@@ -103,36 +100,36 @@ test_that("combine_checkboxes works for repeat instrument", {
   out <- combine_checkboxes(
     supertbl = supertbl,
     tbl = "repeat_instrument",
-    cols = starts_with("repeat"),
-    values_to = "new_col"
+    cols = starts_with("repeat")
   ) %>%
     pull(redcap_data) %>%
     dplyr::nth(2)
 
   expected_out <- tibble::tribble(
-    ~"study_id", ~"redcap_event", ~"redcap_form_instance", ~"repeat___1", ~"repeat___2", ~"repeat___3", ~"new_col",
+    ~"study_id", ~"redcap_event", ~"redcap_form_instance", ~"repeat___1", ~"repeat___2", ~"repeat___3", ~"_repeat",
     1, "event_1", 1, TRUE, FALSE, FALSE, "A",
     2, "event_1", 1, TRUE, TRUE, TRUE, "Multiple",
     2, "event_1", 2, FALSE, FALSE, FALSE, NA
   ) %>%
     mutate(
-      new_col = factor(new_col, levels = c("A", "B", "C", "Multiple"))
+      `_repeat` = factor(`_repeat`, levels = c("A", "B", "C", "Multiple"))
     )
 
   expect_equal(out, expected_out)
 })
 
-test_that("get_metadata_ref works", {
-  out <- get_metadata_ref(
+test_that("get_metadata_spec works", {
+  out <- get_metadata_spec(
     metadata_tbl = supertbl$redcap_metadata[[1]],
-    selected_cols = c("multi___1", "multi___2", "multi___3")
+    selected_cols = c("multi___1", "multi___2", "multi___3"),
+    names_prefix = "", names_suffix = NULL, names_sep = "_" # Mimic defaults
   )
 
   expected_out <- tibble::tribble(
-    ~"field_name", ~"original_field", ~"raw", ~"label",
-    "multi___1", "multi", "1", "Red",
-    "multi___2", "multi", "2", "Yellow",
-    "multi___3", "multi", "3", "Blue"
+    ~"field_name", ~".value", ~".new_value", ~"raw", ~"label",
+    "multi___1", "multi", "_multi", "1", "Red",
+    "multi___2", "multi", "_multi", "2", "Yellow",
+    "multi___3", "multi", "_multi", "3", "Blue"
   )
 
   expect_equal(out, expected_out)
@@ -162,21 +159,20 @@ test_that("combine_checkboxes works for multiple checkbox fields", {
     supertbl = supertbl,
     tbl = "nonrepeat_instrument",
     cols = c(starts_with("multi"), starts_with("single_checkbox")),
-    values_to = c("new_col1", "new_col2"),
     keep = FALSE
   ) %>%
     pull(redcap_data) %>%
     dplyr::first()
 
   expected_out <- tibble::tribble(
-    ~"study_id", ~"extra_data", ~"new_col1", ~"new_col2",
+    ~"study_id", ~"extra_data", ~"_multi", ~"_single_checkbox",
     1, 1, "Red", "Green",
     2, 2, "Multiple", "Green",
     3, 3, NA, NA
   ) %>%
     mutate(
-      new_col1 = factor(new_col1, levels = c("Red", "Yellow", "Blue", "Multiple")),
-      new_col2 = factor(new_col2, levels = c("Green", "Multiple"))
+      `_multi` = factor(`_multi`, levels = c("Red", "Yellow", "Blue", "Multiple")),
+      `_single_checkbox` = factor(`_single_checkbox`, levels = c("Green", "Multiple"))
     )
 
   expect_equal(out, expected_out)
@@ -187,21 +183,53 @@ test_that("combine_checkboxes works for multiple checkbox fields with logicals",
     supertbl = supertbl,
     tbl = "nonrepeat_instrument",
     cols = c(starts_with("multi") | starts_with("single_checkbox")),
-    values_to = c("new_col1", "new_col2"),
     keep = FALSE
   ) %>%
     pull(redcap_data) %>%
     dplyr::first()
 
   expected_out <- tibble::tribble(
-    ~"study_id", ~"extra_data", ~"new_col1", ~"new_col2",
+    ~"study_id", ~"extra_data", ~"_multi", ~"_single_checkbox",
     1, 1, "Red", "Green",
     2, 2, "Multiple", "Green",
     3, 3, NA, NA
   ) %>%
     mutate(
-      new_col1 = factor(new_col1, levels = c("Red", "Yellow", "Blue", "Multiple")),
-      new_col2 = factor(new_col2, levels = c("Green", "Multiple"))
+      `_multi` = factor(`_multi`, levels = c("Red", "Yellow", "Blue", "Multiple")),
+      `_single_checkbox` = factor(`_single_checkbox`, levels = c("Green", "Multiple"))
+    )
+
+  expect_equal(out, expected_out)
+})
+
+test_that("convert_metadata_spec works", {
+  .new_col_item <- "_multi"
+  metadata_spec <- get_metadata_spec(
+    metadata_tbl = supertbl$redcap_metadata[[1]],
+    selected_cols = c("multi___1", "multi___2", "multi___3"),
+    names_prefix = "", names_suffix = NULL, names_sep = "_" # Mimic defaults
+  )
+
+  data_tbl_mod <- tibble::tribble(
+    ~"study_id", ~"multi___1", ~"multi___2", ~"multi___3", ~"single_checkbox___1",
+    ~"extra_data", ~"_multi", ~"_single_checkbox",
+    1, "Red", NA, NA, NA, 1, FALSE, FALSE,
+    2, "Red", "Yellow", NA, "Green", 2, TRUE, FALSE,
+    3, NA, NA, NA, NA, 3, FALSE, FALSE
+  )
+
+  out <- convert_metadata_spec(.new_col_item, metadata_spec, data_tbl_mod,
+                               raw_or_label = "label", multi_value_label = "Multiple", values_fill = NA)
+
+  expected_out <- tibble::tribble(
+    ~"study_id", ~"multi___1", ~"multi___2", ~"multi___3", ~"single_checkbox___1",
+    ~"extra_data", ~"_multi", ~"_single_checkbox",
+    1, "Red", NA, NA, NA, 1, "Red", FALSE,
+    2, "Red", "Yellow", NA, "Green", 2, "Multiple", FALSE,
+    3, NA, NA, NA, NA, 3, NA, FALSE
+  ) %>%
+    mutate(
+      `_multi` = factor(`_multi`, levels = c("Red", "Yellow", "Blue", "Multiple"))
     )
 
   expect_equal(out, expected_out)

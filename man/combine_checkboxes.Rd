@@ -8,7 +8,9 @@ combine_checkboxes(
   supertbl,
   tbl,
   cols,
-  values_to,
+  names_prefix = "",
+  names_suffix = NULL,
+  names_sep = "_",
   multi_value_label = "Multiple",
   values_fill = NA,
   raw_or_label = "label",
@@ -20,11 +22,15 @@ combine_checkboxes(
 
 \item{tbl}{The \code{redcap_form_name} of the data tibble to extract. Required.}
 
-\item{cols}{<\code{\link[=tidyr_tidy_select]{tidy-select}}> Checbox columns to combine to
+\item{cols}{<\code{\link[=tidyr_tidy_select]{tidy-select}}> Checkbox columns to combine to
 single column. Required.}
 
-\item{values_to}{A string specifying the name of the column to combine checkbox
-values under. Required.}
+\item{names_prefix}{String added to the start of every variable name.}
+
+\item{names_suffix}{String added to the end of every variable name.}
+
+\item{names_sep}{String to separate new column names from \code{names_prefix} and/or
+\code{names_suffix}.}
 
 \item{multi_value_label}{A string specifying the value to be used when multiple
 checkbox fields are selected. Default "Multiple".}
@@ -49,11 +55,10 @@ factor column.
 \examples{
 \dontrun{
 supertbl <- read_redcap(redcap_uri, token)
-combined_tbl <- combine_checkboxes(
+combine_checkboxes(
   supertbl = supertbl,
   tbl = "demographics",
   cols = starts_with("race"),
-  values_to = "race_combined",
   multi_value_label = "Multiple",
   values_fill = NA
 )

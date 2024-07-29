@@ -272,22 +272,3 @@ test_that("check_fields_are_checkboxes works", {
   expect_error(check_fields_are_checkboxes(metadata), class = "non_checkbox_fields")
   expect_no_error(check_fields_are_checkboxes(metadata_filtered))
 })
-
-test_that("check_values_to_length length works", {
-  col_groups <- list(
-    checkbox_1 = c("checkbox1___1", "checkbox1___2"),
-    checkbox_2 = c("checkbox2___1")
-  )
-
-  values_to <- c("new_col1", "new_col2")
-
-  expect_no_message(check_values_to_length(col_groups, values_to))
-
-  values_to_warn <- "new_col1"
-
-  expect_warning(check_values_to_length(col_groups, values_to_warn), class = "checkbox_value_to_length")
-
-  values_to_error <- c("new_col1", "new_col2", "new_col3")
-
-  expect_error(check_values_to_length(col_groups, values_to_error), class = "checkbox_value_to_length")
-})
