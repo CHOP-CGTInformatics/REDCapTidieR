@@ -219,7 +219,8 @@ test_that("convert_metadata_spec works", {
   )
 
   out <- convert_metadata_spec(.new_col_item, metadata_spec, data_tbl_mod,
-                               raw_or_label = "label", multi_value_label = "Multiple", values_fill = NA)
+    raw_or_label = "label", multi_value_label = "Multiple", values_fill = NA
+  )
 
   expected_out <- tibble::tribble(
     ~"study_id", ~"multi___1", ~"multi___2", ~"multi___3", ~"single_checkbox___1",

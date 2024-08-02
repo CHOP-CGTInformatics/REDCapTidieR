@@ -52,6 +52,16 @@ tibble into a single column. This transformation simplifies analysis by
 combining multiple binary columns into a singular and informative labelled
 factor column.
 }
+\details{
+\code{\link[=combine_checkboxes]{combine_checkboxes()}} makes use of the output names of \code{\link[=read_redcap]{read_redcap()}}
+data tibbles and metadata tibbles. Changes to checkbox data names or
+metadata \code{field_name}s may result in errors.
+
+Checkbox fields are expanded to be a variable per checkbox option, separated
+by underscores. For example, \code{checkbox_var} with 2 options becomes
+\code{checkbox_var___1} and \code{checkbox_var___2}. \code{\link[=combine_checkboxes]{combine_checkboxes()}} looks for
+these and may give a error if it cannot find them.
+}
 \examples{
 \dontrun{
 supertbl <- read_redcap(redcap_uri, token)

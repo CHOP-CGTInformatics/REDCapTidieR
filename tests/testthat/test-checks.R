@@ -255,6 +255,27 @@ test_that("check_fields_exist works", {
     expect_no_error()
 })
 
+test_that("check_metadata_fields_exist works", {
+  metadata_valid <- tibble(
+    field_name = c("var1", "var2", "var_3"),
+  )
+  valid_cols <- c("var1", "var2", "var_3")
+
+  metadata_invalid <- tibble(
+    field_name = c("var1", "var2", "var_3_edited"),
+  )
+  invalid_cols <- c("var1", "var2", "var_3_edited")
+
+  check_metadata_fields_exist(metadata_valid, valid_cols) %>%
+    expect_no_error()
+
+  check_metadata_fields_exist(metadata_invalid, valid_cols) %>%
+    expect_error(class = "missing_metadata_checkbox_fields")
+
+  check_metadata_fields_exist(metadata_valid, invalid_cols) %>%
+    expect_error(class = "missing_metadata_checkbox_fields")
+})
+
 test_that("check_fields_are_checkboxes works", {
   metadata <- tibble::tribble(
     ~field_name, ~field_type,
