@@ -202,36 +202,30 @@ test_that("combine_checkboxes works for multiple checkbox fields with logicals",
   expect_equal(out, expected_out)
 })
 
-test_that("convert_metadata_spec works", {
-  .new_col_item <- "_multi"
-  metadata_spec <- get_metadata_spec(
-    metadata_tbl = supertbl$redcap_metadata[[1]],
-    selected_cols = c("multi___1", "multi___2", "multi___3"),
-    names_prefix = "", names_suffix = NULL, names_sep = "_" # Mimic defaults
+test_that("convert_checkbox_vals works()", {
+  metadata <- tibble::tribble(
+    ~"field_name", ~".value", ~"raw", ~"label",
+    "multi___1", "multi", "1", "Red",
+    "multi___2", "multi", "2", "Yellow",
+    "multi___3", "multi", "3", "Blue"
   )
 
-  data_tbl_mod <- tibble::tribble(
-    ~"study_id", ~"multi___1", ~"multi___2", ~"multi___3", ~"single_checkbox___1",
-    ~"extra_data", ~"_multi", ~"_single_checkbox",
-    1, "Red", NA, NA, NA, 1, FALSE, FALSE,
-    2, "Red", "Yellow", NA, "Green", 2, TRUE, FALSE,
-    3, NA, NA, NA, NA, 3, FALSE, FALSE
+  # Same as nonrepeat data tbl but with NAs for FALSEs, post processed with metadata spec vals
+  data_tbl <- tibble::tribble(
+    ~"study_id", ~"multi___1", ~"multi___2", ~"multi___3", ~"single_checkbox___1", ~"extra_data",
+    1, "Red", NA, NA, "Green", 1,
+    2, "Red", "Yellow", NA, "Green", 2,
+    3, NA, NA, NA, NA, 3
   )
 
-  out <- convert_metadata_spec(.new_col_item, metadata_spec, data_tbl_mod,
-    raw_or_label = "label", multi_value_label = "Multiple", values_fill = NA
+  out <- convert_checkbox_vals(
+    metadata = metadata, .new_value = "_multi", data_tbl = data_tbl,
+    raw_or_label = "label", multi_value_label = "multi", values_fill = NA
   )
 
-  expected_out <- tibble::tribble(
-    ~"study_id", ~"multi___1", ~"multi___2", ~"multi___3", ~"single_checkbox___1",
-    ~"extra_data", ~"_multi", ~"_single_checkbox",
-    1, "Red", NA, NA, NA, 1, "Red", FALSE,
-    2, "Red", "Yellow", NA, "Green", 2, "Multiple", FALSE,
-    3, NA, NA, NA, NA, 3, NA, FALSE
-  ) %>%
-    mutate(
-      `_multi` = factor(`_multi`, levels = c("Red", "Yellow", "Blue", "Multiple"))
-    )
+  expected_out <- tibble(
+    `_multi` = factor(c("Red", "multi", NA), levels = c("Red", "Yellow", "Blue", "multi"))
+  )
 
   expect_equal(out, expected_out)
 })

@@ -89,19 +89,6 @@ combine_checkboxes <- function(supertbl,
   data_tbl_mod <- data_tbl
   .new_col <- unique(metadata_spec$.new_value)
 
-  for (i in seq_along(.new_col)) {
-    cols_to_sum <- metadata_spec$field_name[metadata_spec$.new_value == .new_col[i]] # nolint: object_usage_linter
-
-    data_tbl_mod <- data_tbl_mod %>%
-      mutate(
-        !!.new_col[i] := case_when(
-          rowSums(select(., cols_to_sum)) > 1 ~ TRUE,
-          .default = FALSE
-        )
-      )
-  }
-
-  # Replace TRUEs/1s with raw/label values from metadata
   data_tbl_mod <- data_tbl_mod %>%
     mutate(
       across(
@@ -115,10 +102,14 @@ combine_checkboxes <- function(supertbl,
       across(selected_cols, as.character) # enforce to character strings
     )
 
-  # Use the metadata_spec table to fill values in .new_col
-  data_tbl_mod <- reduce(.new_col, function(tbl, col_item) {
-    convert_metadata_spec(col_item, metadata_spec, tbl, raw_or_label, multi_value_label, values_fill)
-  }, .init = data_tbl_mod)
+  new_cols <- metadata_spec %>%
+    nest(.by = .data$.new_value, .key = "metadata") %>%
+    pmap(convert_checkbox_vals,
+      data_tbl = data_tbl_mod,
+      raw_or_label = raw_or_label, multi_value_label = multi_value_label, values_fill = values_fill
+    )
+
+  data_tbl_mod <- bind_cols(data_tbl_mod, new_cols)
 
   final_tbl <- bind_cols(
     data_tbl,
@@ -204,52 +195,35 @@ replace_true <- function(col, col_name, metadata, raw_or_label) {
   return(col)
 }
 
-#' @title Use metadata_spec to convert new column values
+#' @title Convert a new checkbox column's values
 #'
-#' @description
-#' [convert_metadata_spec()] uses the `metadata_spec` table provided by [get_metadata_spec()]
-#' to automatically convert new column values to either:
+#' @description This function takes a single column of data and converts the values
+#' based on the overall data tibble cross referenced with a nested section of the
+#' metadata tibble.
 #'
-#' - A `raw_or_label` checkbox value when only a single value is detected
-#' - `mult_value_label` when multiple values are detected
-#' - `values_fill` when `NA` is detected
+#' [case_when()] logic helps determine whether the value is a coalesced singular
+#' value or a user-specified one via `multi_value_label` or `values_fill`.
 #'
-#' @inheritParams combine_checkboxes
-#' @param .new_col_item A character string
-#' @param metadata_spec A tibble output from [convert_metadata_spec()]
-#' @param data_tbl_mod A modified data tibble
-#'
-#' @returns a tibble
+#' @details
+#' This function is used in conjunction with [pmap()].
 #'
 #' @keywords internal
-convert_metadata_spec <- function(.new_col_item,
-                                  metadata_spec,
-                                  data_tbl_mod,
-                                  raw_or_label,
-                                  multi_value_label,
-                                  values_fill) {
-  .col_group <- metadata_spec$field_name[metadata_spec$.new_value == .new_col_item]
-
-  metadata_overwrite <- metadata_spec %>%
-    filter(.data$field_name %in% .col_group) %>%
-    pull(raw_or_label)
-
-  data_tbl_mod <- data_tbl_mod %>%
+#'
+#' @param metadata A nested portion of the overall metadata tibble
+#' @param data_tbl The data tibble from the original supertibble
+#' @param .new_value The new column values made by [combine_checkboxes()]
+#' @inheritParams combine_checkboxes
+convert_checkbox_vals <- function(metadata, .new_value, data_tbl, raw_or_label, multi_value_label, values_fill) {
+  tibble(
+    !!.new_value := rowSums(!is.na(data_tbl[names(data_tbl) %in% metadata$field_name]))
+  ) %>%
     mutate(
-      !!.new_col_item := ifelse(!!sym(.new_col_item),
-        multi_value_label,
-        coalesce(!!!syms(.col_group))
+      !!.new_value := case_when(. > 1 ~ multi_value_label,
+        . == 1 ~ coalesce(!!!data_tbl[, names(data_tbl) %in% metadata$field_name]),
+        .default = values_fill
       ),
-      !!.new_col_item := ifelse(is.na(!!sym(.new_col_item)),
-        values_fill,
-        !!sym(.new_col_item)
-      )
-    ) %>%
-    mutate(
-      !!.new_col_item := factor(!!sym(.new_col_item),
-        levels = c(metadata_overwrite, multi_value_label, values_fill)
+      !!.new_value := factor(!!sym(.new_value),
+        levels = c(metadata[[raw_or_label]], multi_value_label, values_fill)
       )
     )
-
-  return(data_tbl_mod)
 }
