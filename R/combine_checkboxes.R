@@ -54,6 +54,8 @@ combine_checkboxes <- function(supertbl,
                                names_prefix = "",
                                names_suffix = NULL,
                                names_sep = "_",
+                               names_glue = NULL,
+                               names_repair = "check_unique",
                                multi_value_label = "Multiple",
                                values_fill = NA,
                                raw_or_label = "label",
@@ -84,10 +86,8 @@ combine_checkboxes <- function(supertbl,
   metadata_tbl <- supertbl$redcap_metadata[supertbl$redcap_form_name == tbl][[1]]
   metadata_spec <- get_metadata_spec(metadata_tbl, selected_cols, names_prefix, names_suffix, names_sep)
 
-  # Define .new_col as the count of TRUEs/1s for the given checkbox field
-  # Assign TRUE if multiple selections made, and FALSE if one or zero made
+  # Copy data_tbl to mod, data_tbl to be referenced later
   data_tbl_mod <- data_tbl
-  .new_col <- unique(metadata_spec$.new_value)
 
   data_tbl_mod <- data_tbl_mod %>%
     mutate(
@@ -109,12 +109,7 @@ combine_checkboxes <- function(supertbl,
       raw_or_label = raw_or_label, multi_value_label = multi_value_label, values_fill = values_fill
     )
 
-  data_tbl_mod <- bind_cols(data_tbl_mod, new_cols)
-
-  final_tbl <- bind_cols(
-    data_tbl,
-    data_tbl_mod %>% select(!!.new_col)
-  )
+  final_tbl <- combine_and_repair_tbls(data_tbl, data_tbl_mod, new_cols, names_repair = names_repair)
 
   # Keep or remove original multi columns
   if (!keep) {
@@ -226,4 +221,49 @@ convert_checkbox_vals <- function(metadata, .new_value, data_tbl, raw_or_label, 
         levels = c(metadata[[raw_or_label]], multi_value_label, values_fill)
       )
     )
+}
+
+#' @title Combine checkbox fields with respect to repaired outputs
+#'
+#' @description
+#' This function seeks to preserve the original data columns and types from the
+#' originally supplied data_tbl and add on the new columns from data_tbl_mod.
+#'
+#' If `names_repair` presents a repair strategy, the output columns will be
+#' captured and updated here while dropping the original columns.
+#'
+#' @param data_tbl The original data table given to [combine_checkboxes()]
+#' @param data_tbl_mod A modified data table from `data_tbl`
+#' @param new_cols The new columns created for checkbox combination
+#' @inheritParams combine_checkboxes
+#'
+#' @keywords internal
+#'
+#' @returns a tibble
+combine_and_repair_tbls <- function(data_tbl, data_tbl_mod, new_cols, names_repair) {
+  # Perform initial column bind with repair strategy
+  data_tbl_mod <- bind_cols(data_tbl_mod, new_cols, .name_repair = names_repair)
+
+  # Get the column names of each table
+  cols_data_tbl <- names(data_tbl)
+  cols_data_tbl_mod <- names(data_tbl_mod)
+
+  # Identify common columns
+  common_cols <- intersect(cols_data_tbl, cols_data_tbl_mod)
+
+  # Identify unique columns in data_tbl_mod
+  unique_cols_mod <- setdiff(cols_data_tbl_mod, cols_data_tbl)
+
+  # Select common columns from data_tbl
+  common_data <- data_tbl %>%
+    select(all_of(common_cols))
+
+  # Select unique columns from data_tbl_mod
+  unique_data_mod <- data_tbl_mod %>%
+    select(all_of(unique_cols_mod))
+
+  # Combine the selected columns
+  combined_data <- bind_cols(common_data, unique_data_mod)
+
+  return(combined_data)
 }

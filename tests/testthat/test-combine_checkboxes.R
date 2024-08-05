@@ -229,3 +229,39 @@ test_that("convert_checkbox_vals works()", {
 
   expect_equal(out, expected_out)
 })
+
+test_that("combine_and_repair_tbls works", {
+  data_tbl <- tibble(
+    id = 1,
+    x___1 = TRUE,
+    x___2 = FALSE,
+    x = "val"
+  )
+
+  data_tbl_mod <- tibble(
+    id = 1,
+    x___1 = "A",
+    x___2 = NA,
+    x = "val"
+  )
+
+  new_cols <- list(x = "A")
+
+  expect_error(combine_and_repair_tbls(data_tbl, data_tbl_mod, new_cols, names_repair = "check_unique"))
+  expect_no_error(combine_and_repair_tbls(data_tbl, data_tbl_mod, new_cols, names_repair = "unique")) %>%
+    suppressMessages()
+
+  expected_out <- tibble(
+    id = 1,
+    x___1 = TRUE,
+    x___2 = FALSE,
+    x...4 = "val",
+    x...5 = "A"
+  )
+
+  expect_equal(
+    expected_out,
+    combine_and_repair_tbls(data_tbl, data_tbl_mod, new_cols, names_repair = "unique")
+  ) %>%
+    suppressMessages()
+})

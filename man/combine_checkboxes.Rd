@@ -11,6 +11,8 @@ combine_checkboxes(
   names_prefix = "",
   names_suffix = NULL,
   names_sep = "_",
+  names_glue = NULL,
+  names_repair = "check_unique",
   multi_value_label = "Multiple",
   values_fill = NA,
   raw_or_label = "label",
