@@ -33,6 +33,11 @@ single column. Required.}
 \item{names_glue}{Instead of \code{names_sep} and \code{names_prefix}, you can supply
 a glue specification and the unique \code{.value} to create custom column names.}
 
+\item{names_repair}{What happens if the output has invalid column names?
+The default, "check_unique" is to error if the columns are duplicated.
+Use "minimal" to allow duplicates in the output, or "unique" to de-duplicated
+by adding numeric suffixes. See \code{\link[vctrs:vec_as_names]{vctrs::vec_as_names()}} for more options.}
+
 \item{multi_value_label}{A string specifying the value to be used when multiple
 checkbox fields are selected. Default "Multiple".}
 

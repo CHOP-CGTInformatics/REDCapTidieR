@@ -12,6 +12,11 @@ combine_and_repair_tbls(data_tbl, data_tbl_mod, new_cols, names_repair)
 \item{data_tbl_mod}{A modified data table from \code{data_tbl}}
 
 \item{new_cols}{The new columns created for checkbox combination}
+
+\item{names_repair}{What happens if the output has invalid column names?
+The default, "check_unique" is to error if the columns are duplicated.
+Use "minimal" to allow duplicates in the output, or "unique" to de-duplicated
+by adding numeric suffixes. See \code{\link[vctrs:vec_as_names]{vctrs::vec_as_names()}} for more options.}
 }
 \value{
 a tibble

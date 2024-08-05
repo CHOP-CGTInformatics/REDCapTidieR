@@ -38,6 +38,7 @@ Imports:
     stats
 Suggests: 
     covr,
+    glue,
     knitr,
     labelled,
     lintr,

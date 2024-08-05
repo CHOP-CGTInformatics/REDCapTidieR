@@ -24,6 +24,10 @@
 #' @param names_sep String to separate new column names from `names_prefix`.
 #' @param names_glue Instead of `names_sep` and `names_prefix`, you can supply
 #' a glue specification and the unique `.value` to create custom column names.
+#' @param names_repair What happens if the output has invalid column names?
+#' The default, "check_unique" is to error if the columns are duplicated.
+#' Use "minimal" to allow duplicates in the output, or "unique" to de-duplicated
+#' by adding numeric suffixes. See [vctrs::vec_as_names()] for more options.
 #' @param multi_value_label A string specifying the value to be used when multiple
 #' checkbox fields are selected. Default "Multiple".
 #' @param values_fill Value to use when no checkboxes are selected. Default `NA`.
@@ -63,6 +67,8 @@ combine_checkboxes <- function(supertbl,
   check_arg_is_supertbl(supertbl, req_cols = c("redcap_data", "redcap_metadata"))
   check_arg_is_character(names_prefix, len = 1)
   check_arg_is_character(names_sep, len = 1, any.missing = TRUE)
+  check_arg_is_character(names_repair, len = 1, any.missing = FALSE)
+  check_arg_is_character(names_glue, len = 1, any.missing = FALSE, null.ok = TRUE)
   check_arg_is_character(tbl, len = 1, any.missing = FALSE)
   check_arg_is_character(multi_value_label, len = 1, any.missing = TRUE)
   check_arg_is_character(values_fill, len = 1, any.missing = TRUE)
@@ -139,6 +145,7 @@ get_metadata_spec <- function(metadata_tbl,
 
   # Create a metadata reference table linking field name to raw and label values
   if (!is.null(names_glue)) {
+    check_installed("glue", reason = "to use `names_glue` in `combine_checkboxes()`")
     # Similar to pivot_*, use of `names_glue` overrides use of names_prefix/sep
     out <- metadata_tbl %>%
       filter(.data$field_name %in% selected_cols) %>%
@@ -152,7 +159,7 @@ get_metadata_spec <- function(metadata_tbl,
       mutate(
         .value = sub("___.*$", "", .data$field_name),
         .new_value = case_when(names_prefix != "" ~ paste(names_prefix, .value, sep = names_sep),
-                               .default = paste(names_prefix, .data$.value, sep = "")
+          .default = paste(names_prefix, .data$.value, sep = "")
         )
       )
   }

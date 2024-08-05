@@ -74,13 +74,11 @@ test_that("combine_checkboxes works for nonrepeat instrument", {
 })
 
 test_that("combine_checkboxes glue spec works", {
-  name_appender <- "suffix"
-
   out <- combine_checkboxes(
     supertbl = supertbl,
     tbl = "nonrepeat_instrument",
     cols = starts_with("multi"),
-    names_glue = "{.value}_{name_appender}",
+    names_glue = "{.value}_suffix",
     multi_value_label = "multiple", # multi_value_label declared
     values_fill = "none" # values_fill declared
   ) %>%
@@ -149,7 +147,7 @@ test_that("get_metadata_spec works", {
   out <- get_metadata_spec(
     metadata_tbl = supertbl$redcap_metadata[[1]],
     selected_cols = c("multi___1", "multi___2", "multi___3"),
-    names_prefix = "", names_sep = "_" # Mimic defaults
+    names_prefix = "", names_sep = "_", names_glue = NULL # Mimic defaults
   )
 
   expected_out <- tibble::tribble(
