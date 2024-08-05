@@ -30,6 +30,9 @@ single column. Required.}
 
 \item{names_sep}{String to separate new column names from \code{names_prefix}.}
 
+\item{names_glue}{Instead of \code{names_sep} and \code{names_prefix}, you can supply
+a glue specification and the unique \code{.value} to create custom column names.}
+
 \item{multi_value_label}{A string specifying the value to be used when multiple
 checkbox fields are selected. Default "Multiple".}
 

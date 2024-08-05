@@ -22,6 +22,8 @@
 #' single column. Required.
 #' @param names_prefix String added to the start of every variable name.
 #' @param names_sep String to separate new column names from `names_prefix`.
+#' @param names_glue Instead of `names_sep` and `names_prefix`, you can supply
+#' a glue specification and the unique `.value` to create custom column names.
 #' @param multi_value_label A string specifying the value to be used when multiple
 #' checkbox fields are selected. Default "Multiple".
 #' @param values_fill Value to use when no checkboxes are selected. Default `NA`.
@@ -80,7 +82,7 @@ combine_checkboxes <- function(supertbl,
 
   # Get metadata reference table, check that chosen fields are checkboxes
   metadata_tbl <- supertbl$redcap_metadata[supertbl$redcap_form_name == tbl][[1]]
-  metadata_spec <- get_metadata_spec(metadata_tbl, selected_cols, names_prefix, names_sep)
+  metadata_spec <- get_metadata_spec(metadata_tbl, selected_cols, names_prefix, names_sep, names_glue)
 
   # Copy data_tbl to mod, data_tbl to be referenced later
   data_tbl_mod <- data_tbl
@@ -131,18 +133,29 @@ combine_checkboxes <- function(supertbl,
 get_metadata_spec <- function(metadata_tbl,
                               selected_cols,
                               names_prefix,
-                              names_sep) {
+                              names_sep,
+                              names_glue) {
   check_metadata_fields_exist(metadata_tbl, selected_cols)
 
   # Create a metadata reference table linking field name to raw and label values
-  out <- metadata_tbl %>%
-    filter(.data$field_name %in% selected_cols) %>%
-    mutate(
-      .value = sub("___.*$", "", .data$field_name),
-      .new_value = case_when(names_prefix != "" ~ paste(names_prefix, .value, sep = names_sep),
-        .default = paste(names_prefix, .data$.value, sep = "")
+  if (!is.null(names_glue)) {
+    # Similar to pivot_*, use of `names_glue` overrides use of names_prefix/sep
+    out <- metadata_tbl %>%
+      filter(.data$field_name %in% selected_cols) %>%
+      mutate(
+        .value = sub("___.*$", "", .data$field_name),
+        .new_value = as.character(glue::glue(names_glue))
       )
-    )
+  } else {
+    out <- metadata_tbl %>%
+      filter(.data$field_name %in% selected_cols) %>%
+      mutate(
+        .value = sub("___.*$", "", .data$field_name),
+        .new_value = case_when(names_prefix != "" ~ paste(names_prefix, .value, sep = names_sep),
+                               .default = paste(names_prefix, .data$.value, sep = "")
+        )
+      )
+  }
 
   # Make sure selection is checkbox metadata field type
   check_fields_are_checkboxes(out)
