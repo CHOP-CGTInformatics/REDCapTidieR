@@ -61,13 +61,13 @@ test_that("combine_checkboxes works for nonrepeat instrument", {
     dplyr::first()
 
   expected_out <- tibble::tribble(
-    ~"study_id", ~"multi___1", ~"multi___2", ~"multi___3", ~"single_checkbox___1", ~"extra_data", ~"_multi",
+    ~"study_id", ~"multi___1", ~"multi___2", ~"multi___3", ~"single_checkbox___1", ~"extra_data", ~"multi",
     1, TRUE, FALSE, FALSE, TRUE, 1, "Red",
     2, TRUE, TRUE, FALSE, TRUE, 2, "multiple",
     3, FALSE, FALSE, FALSE, FALSE, 3, "none"
   ) %>%
     mutate(
-      `_multi` = factor(`_multi`, levels = c("Red", "Yellow", "Blue", "multiple", "none"))
+      multi = factor(multi, levels = c("Red", "Yellow", "Blue", "multiple", "none"))
     )
 
   expect_equal(out, expected_out)
@@ -84,13 +84,13 @@ test_that("combine_checkboxes works for nonrepeat instrument and drop old values
     dplyr::first()
 
   expected_out <- tibble::tribble(
-    ~"study_id", ~"single_checkbox___1", ~"extra_data", ~"_multi",
+    ~"study_id", ~"single_checkbox___1", ~"extra_data", ~"multi",
     1, TRUE, 1, "Red",
     2, TRUE, 2, "Multiple",
     3, FALSE, 3, NA
   ) %>%
     mutate(
-      `_multi` = factor(`_multi`, levels = c("Red", "Yellow", "Blue", "Multiple"))
+      multi = factor(multi, levels = c("Red", "Yellow", "Blue", "Multiple"))
     )
 
   expect_equal(out, expected_out)
@@ -106,13 +106,13 @@ test_that("combine_checkboxes works for repeat instrument", {
     dplyr::nth(2)
 
   expected_out <- tibble::tribble(
-    ~"study_id", ~"redcap_event", ~"redcap_form_instance", ~"repeat___1", ~"repeat___2", ~"repeat___3", ~"_repeat",
+    ~"study_id", ~"redcap_event", ~"redcap_form_instance", ~"repeat___1", ~"repeat___2", ~"repeat___3", ~"repeat",
     1, "event_1", 1, TRUE, FALSE, FALSE, "A",
     2, "event_1", 1, TRUE, TRUE, TRUE, "Multiple",
     2, "event_1", 2, FALSE, FALSE, FALSE, NA
   ) %>%
     mutate(
-      `_repeat` = factor(`_repeat`, levels = c("A", "B", "C", "Multiple"))
+      `repeat` = factor(`repeat`, levels = c("A", "B", "C", "Multiple"))
     )
 
   expect_equal(out, expected_out)
@@ -122,14 +122,14 @@ test_that("get_metadata_spec works", {
   out <- get_metadata_spec(
     metadata_tbl = supertbl$redcap_metadata[[1]],
     selected_cols = c("multi___1", "multi___2", "multi___3"),
-    names_prefix = "", names_suffix = NULL, names_sep = "_" # Mimic defaults
+    names_prefix = "", names_sep = "_" # Mimic defaults
   )
 
   expected_out <- tibble::tribble(
     ~"field_name", ~".value", ~".new_value", ~"raw", ~"label",
-    "multi___1", "multi", "_multi", "1", "Red",
-    "multi___2", "multi", "_multi", "2", "Yellow",
-    "multi___3", "multi", "_multi", "3", "Blue"
+    "multi___1", "multi", "multi", "1", "Red",
+    "multi___2", "multi", "multi", "2", "Yellow",
+    "multi___3", "multi", "multi", "3", "Blue"
   )
 
   expect_equal(out, expected_out)
@@ -165,14 +165,14 @@ test_that("combine_checkboxes works for multiple checkbox fields", {
     dplyr::first()
 
   expected_out <- tibble::tribble(
-    ~"study_id", ~"extra_data", ~"_multi", ~"_single_checkbox",
+    ~"study_id", ~"extra_data", ~"multi", ~"single_checkbox",
     1, 1, "Red", "Green",
     2, 2, "Multiple", "Green",
     3, 3, NA, NA
   ) %>%
     mutate(
-      `_multi` = factor(`_multi`, levels = c("Red", "Yellow", "Blue", "Multiple")),
-      `_single_checkbox` = factor(`_single_checkbox`, levels = c("Green", "Multiple"))
+      multi = factor(multi, levels = c("Red", "Yellow", "Blue", "Multiple")),
+      single_checkbox = factor(single_checkbox, levels = c("Green", "Multiple"))
     )
 
   expect_equal(out, expected_out)
@@ -189,14 +189,14 @@ test_that("combine_checkboxes works for multiple checkbox fields with logicals",
     dplyr::first()
 
   expected_out <- tibble::tribble(
-    ~"study_id", ~"extra_data", ~"_multi", ~"_single_checkbox",
+    ~"study_id", ~"extra_data", ~"multi", ~"single_checkbox",
     1, 1, "Red", "Green",
     2, 2, "Multiple", "Green",
     3, 3, NA, NA
   ) %>%
     mutate(
-      `_multi` = factor(`_multi`, levels = c("Red", "Yellow", "Blue", "Multiple")),
-      `_single_checkbox` = factor(`_single_checkbox`, levels = c("Green", "Multiple"))
+      multi = factor(multi, levels = c("Red", "Yellow", "Blue", "Multiple")),
+      single_checkbox = factor(single_checkbox, levels = c("Green", "Multiple"))
     )
 
   expect_equal(out, expected_out)

@@ -9,7 +9,6 @@ combine_checkboxes(
   tbl,
   cols,
   names_prefix = "",
-  names_suffix = NULL,
   names_sep = "_",
   names_glue = NULL,
   names_repair = "check_unique",
@@ -29,10 +28,7 @@ single column. Required.}
 
 \item{names_prefix}{String added to the start of every variable name.}
 
-\item{names_suffix}{String added to the end of every variable name.}
-
-\item{names_sep}{String to separate new column names from \code{names_prefix} and/or
-\code{names_suffix}.}
+\item{names_sep}{String to separate new column names from \code{names_prefix}.}
 
 \item{multi_value_label}{A string specifying the value to be used when multiple
 checkbox fields are selected. Default "Multiple".}

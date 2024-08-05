@@ -21,9 +21,7 @@
 #' @param cols <[`tidy-select`][tidyr_tidy_select]> Checkbox columns to combine to
 #' single column. Required.
 #' @param names_prefix String added to the start of every variable name.
-#' @param names_suffix String added to the end of every variable name.
-#' @param names_sep String to separate new column names from `names_prefix` and/or
-#' `names_suffix`.
+#' @param names_sep String to separate new column names from `names_prefix`.
 #' @param multi_value_label A string specifying the value to be used when multiple
 #' checkbox fields are selected. Default "Multiple".
 #' @param values_fill Value to use when no checkboxes are selected. Default `NA`.
@@ -52,7 +50,6 @@ combine_checkboxes <- function(supertbl,
                                tbl,
                                cols,
                                names_prefix = "",
-                               names_suffix = NULL,
                                names_sep = "_",
                                names_glue = NULL,
                                names_repair = "check_unique",
@@ -63,7 +60,6 @@ combine_checkboxes <- function(supertbl,
   # Check args ---
   check_arg_is_supertbl(supertbl, req_cols = c("redcap_data", "redcap_metadata"))
   check_arg_is_character(names_prefix, len = 1)
-  check_arg_is_character(names_suffix, len = 1, null.ok = TRUE)
   check_arg_is_character(names_sep, len = 1, any.missing = TRUE)
   check_arg_is_character(tbl, len = 1, any.missing = FALSE)
   check_arg_is_character(multi_value_label, len = 1, any.missing = TRUE)
@@ -84,7 +80,7 @@ combine_checkboxes <- function(supertbl,
 
   # Get metadata reference table, check that chosen fields are checkboxes
   metadata_tbl <- supertbl$redcap_metadata[supertbl$redcap_form_name == tbl][[1]]
-  metadata_spec <- get_metadata_spec(metadata_tbl, selected_cols, names_prefix, names_suffix, names_sep)
+  metadata_spec <- get_metadata_spec(metadata_tbl, selected_cols, names_prefix, names_sep)
 
   # Copy data_tbl to mod, data_tbl to be referenced later
   data_tbl_mod <- data_tbl
@@ -135,7 +131,6 @@ combine_checkboxes <- function(supertbl,
 get_metadata_spec <- function(metadata_tbl,
                               selected_cols,
                               names_prefix,
-                              names_suffix,
                               names_sep) {
   check_metadata_fields_exist(metadata_tbl, selected_cols)
 
@@ -144,8 +139,8 @@ get_metadata_spec <- function(metadata_tbl,
     filter(.data$field_name %in% selected_cols) %>%
     mutate(
       .value = sub("___.*$", "", .data$field_name),
-      .new_value = case_when(!is.null(names_suffix) ~ paste(names_prefix, .value, names_suffix, sep = names_sep),
-        .default = paste(names_prefix, .data$.value, sep = names_sep)
+      .new_value = case_when(names_prefix != "" ~ paste(names_prefix, .value, sep = names_sep),
+        .default = paste(names_prefix, .data$.value, sep = "")
       )
     )
 
