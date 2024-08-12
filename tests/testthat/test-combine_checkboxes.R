@@ -96,6 +96,32 @@ test_that("combine_checkboxes glue spec works", {
     )
 
   expect_equal(out, expected_out)
+
+  # glue spec with multiple values
+  out <- combine_checkboxes(
+    supertbl = supertbl,
+    tbl = "nonrepeat_instrument",
+    cols = c(starts_with("multi"), starts_with("single_checkbox")),
+    names_glue = "{.value}_suffix",
+    multi_value_label = "multiple", # multi_value_label declared
+    values_fill = "none" # values_fill declared
+  ) %>%
+    pull(redcap_data) %>%
+    dplyr::first()
+
+  expected_out <- tibble::tribble(
+    ~"study_id", ~"multi___1", ~"multi___2", ~"multi___3", ~"single_checkbox___1",
+    ~"extra_data", ~"multi_suffix", ~"single_checkbox_suffix",
+    1, TRUE, FALSE, FALSE, TRUE, 1, "Red", "Green",
+    2, TRUE, TRUE, FALSE, TRUE, 2, "multiple", "Green",
+    3, FALSE, FALSE, FALSE, FALSE, 3, "none", "none"
+  ) %>%
+    mutate(
+      multi_suffix = factor(multi_suffix, levels = c("Red", "Yellow", "Blue", "multiple", "none")),
+      single_checkbox_suffix = factor(single_checkbox_suffix, levels = c("Green", "multiple", "none"))
+    )
+
+  expect_equal(out, expected_out)
 })
 
 test_that("combine_checkboxes works for nonrepeat instrument and drop old values", {

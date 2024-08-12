@@ -144,19 +144,36 @@ get_metadata_spec <- function(metadata_tbl,
   check_metadata_fields_exist(metadata_tbl, selected_cols)
 
   # Create a metadata reference table linking field name to raw and label values
+  out <- metadata_tbl %>%
+    filter(.data$field_name %in% selected_cols) %>%
+    mutate(
+      .value = sub("___.*$", "", .data$field_name)
+    )
+
   if (!is.null(names_glue)) {
     # Similar to pivot_*, use of `names_glue` overrides use of names_prefix/sep
-    out <- metadata_tbl %>%
-      filter(.data$field_name %in% selected_cols) %>%
-      mutate(
-        .value = sub("___.*$", "", .data$field_name),
-        .new_value = as.character(glue::glue(names_glue))
-      )
+    glue_env <- out %>%
+      select(.data$.value) %>%
+      mutate(.new_value = as.character(glue::glue_data(., names_glue))) %>% #nolint: object_usage_linter
+      select(.data$.new_value)
+
+    out <- cbind(out, glue_env)
+
+    # Enforce .new_value to be the same within each level of .value
+    values <- factor(out$.value, levels = unique(out$.value))
+
+    # Create a mapping of old levels to new levels
+    level_mapping <- setNames(unique(glue_env$.new_value), levels(values))
+
+    # Ensure new_values matches the levels of values
+    new_values <- factor(level_mapping[as.character(values)],
+      levels = unique(level_mapping)
+    )
+
+    out$.new_value <- as.character(new_values)
   } else {
-    out <- metadata_tbl %>%
-      filter(.data$field_name %in% selected_cols) %>%
+    out <- out %>%
       mutate(
-        .value = sub("___.*$", "", .data$field_name),
         .new_value = case_when(names_prefix != "" ~ paste(names_prefix, .value, sep = names_sep),
           .default = paste(names_prefix, .data$.value, sep = "")
         )
