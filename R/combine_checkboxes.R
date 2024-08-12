@@ -154,23 +154,10 @@ get_metadata_spec <- function(metadata_tbl,
     # Similar to pivot_*, use of `names_glue` overrides use of names_prefix/sep
     glue_env <- out %>%
       select(.data$.value) %>%
-      mutate(.new_value = as.character(glue::glue_data(., names_glue))) %>% #nolint: object_usage_linter
+      mutate(.new_value = as.character(glue::glue_data(., names_glue))) %>% # nolint: object_usage_linter
       select(.data$.new_value)
 
     out <- cbind(out, glue_env)
-
-    # Enforce .new_value to be the same within each level of .value
-    values <- factor(out$.value, levels = unique(out$.value))
-
-    # Create a mapping of old levels to new levels
-    level_mapping <- setNames(unique(glue_env$.new_value), levels(values))
-
-    # Ensure new_values matches the levels of values
-    new_values <- factor(level_mapping[as.character(values)],
-      levels = unique(level_mapping)
-    )
-
-    out$.new_value <- as.character(new_values)
   } else {
     out <- out %>%
       mutate(
@@ -179,6 +166,9 @@ get_metadata_spec <- function(metadata_tbl,
         )
       )
   }
+
+  # Check that for each unique value of .value there is one unique value of .new_value
+  check_equal_col_summaries(out, .value, .new_value) # nolint: object_usage_linter
 
   # Make sure selection is checkbox metadata field type
   check_fields_are_checkboxes(out)

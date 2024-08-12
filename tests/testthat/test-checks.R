@@ -293,3 +293,24 @@ test_that("check_fields_are_checkboxes works", {
   expect_error(check_fields_are_checkboxes(metadata), class = "non_checkbox_fields")
   expect_no_error(check_fields_are_checkboxes(metadata_filtered))
 })
+
+test_that("check_equal_col_summaries works", {
+  data <- tibble::tribble(
+    ~"id", ~"col1", ~"col2",
+    1, "A", "A1",
+    2, "B", "B1",
+    3, "C", "C1"
+  )
+
+  expect_no_error(check_equal_col_summaries(data, col1, col2))
+
+  error_data <- tibble::tribble(
+    ~"id", ~"col1", ~"col2",
+    1, "A", "A1",
+    2, "B", "B1",
+    3, "B", "B2"
+  )
+
+  check_equal_col_summaries(error_data, col1, col2) %>%
+    expect_error(class = "unequal_col_summary")
+})

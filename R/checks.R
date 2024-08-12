@@ -741,3 +741,39 @@ check_fields_are_checkboxes <- function(metadata_tbl, call = caller_env()) {
     )
   }
 }
+
+#' @title Check equal distinct values between two columns
+#'
+#' @description
+#' Takes a dataframe and two columns and checks if [n_distinct()] of the second
+#' column is all unique based on grouping of the first column.
+#'
+#' @param data a dataframe
+#' @param col1 a column to group by
+#' @param col2 a column to check for uniqueness
+#'
+#' @keywords internal
+
+check_equal_col_summaries <- function(data, col1, col2, call = caller_env()) {
+  check <- data %>%
+    summarise(
+      .by = {{ col1 }},
+      n = n_distinct({{ col2 }})
+    ) %>%
+    pull(.data$n)
+
+  if (!all(check == 1)) {
+    values1 <- data[[eval_select(enquo(col1), data)]] # nolint: object_usage_linter
+    values2 <- data[[eval_select(enquo(col2), data)]] # nolint: object_usage_linter
+
+    msg <- c(
+      x = "Encountered unequal naming outputs.",
+      `!` = "{.code combine_checkboxes()} call resulted in column output: {.code {values1}} and new column output: {.code {values2}}." # nolint: line_length_linter
+    )
+
+    cli_abort(
+      msg,
+      class = c("unequal_col_summary", "REDCapTidieR_cond")
+    )
+  }
+}
