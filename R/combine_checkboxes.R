@@ -145,7 +145,6 @@ get_metadata_spec <- function(metadata_tbl,
 
   # Create a metadata reference table linking field name to raw and label values
   if (!is.null(names_glue)) {
-    check_installed("glue", reason = "to use `names_glue` in `combine_checkboxes()`")
     # Similar to pivot_*, use of `names_glue` overrides use of names_prefix/sep
     out <- metadata_tbl %>%
       filter(.data$field_name %in% selected_cols) %>%

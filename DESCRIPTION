@@ -21,6 +21,7 @@ Imports:
     checkmate,
     cli,
     dplyr,
+    glue,
     lobstr,
     lubridate,
     purrr,
@@ -38,7 +39,6 @@ Imports:
     stats
 Suggests: 
     covr,
-    glue,
     knitr,
     labelled,
     lintr,
