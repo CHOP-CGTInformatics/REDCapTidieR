@@ -64,6 +64,11 @@ reference:
     Export a supertibble to other usable formats.
   contents:
   - write_redcap_xlsx
+- title: "Supertibble Post-Processing"
+  desc: >
+    Helpful functions for supertibble data analytics.
+  contents:
+  - combine_checkboxes
 - title: "Data"
   contents:
   - superheroes_supertbl

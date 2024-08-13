@@ -496,3 +496,38 @@ test_that("apply_labs_factor works", {
 test_that("force_cast converts non chr/numerics to chr", {
   expect_character(force_cast("2023-01-01", as.Date(NA)))
 })
+
+test_that("get_record_id_field works", {
+  data_tbl <- tibble::tribble(
+    ~"test_name", ~"test_value",
+    1, 2
+  )
+
+  expect_equal(get_record_id_field(data_tbl), "test_name")
+})
+
+test_that("extract_metadata_tibble works", {
+  inst_1_metadata <- tibble::tribble(
+    ~"field_name", ~"field_type",
+    "study_id", "text",
+    "text", "text",
+  )
+
+  inst_2_metadata <- tibble::tribble(
+    ~"field_name", ~"field_type",
+    "study_id", "text",
+    "calulated", "calc",
+  )
+
+  supertbl <- tibble::tribble(
+    ~"redcap_form_name", ~"redcap_metadata",
+    "inst_1", inst_1_metadata,
+    "inst_2", inst_2_metadata
+  )
+
+  class(supertbl) <- c("redcap_supertbl", class(supertbl))
+
+  out <- extract_metadata_tibble(supertbl = supertbl, redcap_form_name = "inst_1")
+
+  expect_equal(out, inst_1_metadata)
+})
