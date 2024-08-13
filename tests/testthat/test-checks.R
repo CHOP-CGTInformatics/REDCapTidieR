@@ -307,10 +307,11 @@ test_that("check_equal_col_summaries works", {
   error_data <- tibble::tribble(
     ~"id", ~"col1", ~"col2",
     1, "A", "A1",
-    2, "B", "B1",
-    3, "B", "B2"
+    2, "A", "A2",
+    3, "B", "B1",
+    4, "B", "B2"
   )
 
   check_equal_col_summaries(error_data, col1, col2) %>%
-    expect_error(class = "unequal_col_summary")
+    expect_error(class = "names_glue_multi_checkbox")
 })

@@ -168,6 +168,7 @@ get_metadata_spec <- function(metadata_tbl,
   }
 
   # Check that for each unique value of .value there is one unique value of .new_value
+  # May be removed in the future
   check_equal_col_summaries(out, .value, .new_value) # nolint: object_usage_linter
 
   # Make sure selection is checkbox metadata field type

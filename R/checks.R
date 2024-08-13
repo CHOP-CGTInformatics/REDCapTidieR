@@ -755,25 +755,32 @@ check_fields_are_checkboxes <- function(metadata_tbl, call = caller_env()) {
 #' @keywords internal
 
 check_equal_col_summaries <- function(data, col1, col2, call = caller_env()) {
-  check <- data %>%
+  summary <- data %>%
     summarise(
       .by = {{ col1 }},
       n = n_distinct({{ col2 }})
-    ) %>%
+    )
+
+  total_n <- summary %>%
     pull(.data$n)
 
-  if (!all(check == 1)) {
-    values1 <- data[[eval_select(enquo(col1), data)]] # nolint: object_usage_linter
-    values2 <- data[[eval_select(enquo(col2), data)]] # nolint: object_usage_linter
+  if (!all(total_n == 1)) {
+    col1_n_vals <- summary %>%
+      filter(.data$n > 1) %>%
+      pull(col1)
+
+    col2_n_vals <- data %>% # nolint: object_usage_linter
+      filter(col1 %in% col1_n_vals) %>%
+      pull(col2)
 
     msg <- c(
-      x = "Encountered unequal naming outputs.",
-      `!` = "{.code combine_checkboxes()} call resulted in column output: {.code {values1}} and new column output: {.code {values2}}." # nolint: line_length_linter
+      x = "{.code {col1_n_vals}} checkbox field{?s} resulted in multiple output columns: {.code {col2_n_vals}}.",
+      `!` = "Check that {.code names_glue} defines only 1 output column for each checkbox field." # nolint: line_length_linter
     )
 
     cli_abort(
       msg,
-      class = c("unequal_col_summary", "REDCapTidieR_cond")
+      class = c("names_glue_multi_checkbox", "REDCapTidieR_cond")
     )
   }
 }
