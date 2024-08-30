@@ -421,7 +421,7 @@ convert_mixed_instrument <- function(db_data_long, mixed_structure_ref) {
           update_mask & is.na(redcap_repeat_instance) ~ 1,
           # Keep repeat event instance vals when they already exist
           update_mask & !is.na(redcap_repeat_instance) ~ redcap_repeat_instance,
-          .default = .data$redcap_repeat_instance
+          TRUE ~ .data$redcap_repeat_instance
         ),
         redcap_repeat_instrument = case_when(
           update_mask ~ form,
