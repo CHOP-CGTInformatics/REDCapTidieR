@@ -409,7 +409,7 @@ convert_mixed_instrument <- function(db_data_long, mixed_structure_ref) {
           !is.na({{ field }}) & is.na(.data$redcap_repeat_instance) ~ TRUE,
           # repeat together instances
           !is.na({{ field }}) & !is.na(.data$redcap_repeat_instance) & is.na(.data$redcap_repeat_instrument) ~ TRUE,
-          .default = FALSE
+          TRUE ~ FALSE
         )
       )
 
