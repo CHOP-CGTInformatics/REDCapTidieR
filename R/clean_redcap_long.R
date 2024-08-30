@@ -425,7 +425,7 @@ convert_mixed_instrument <- function(db_data_long, mixed_structure_ref) {
         ),
         redcap_repeat_instrument = case_when(
           update_mask ~ form,
-          .default = .data$redcap_repeat_instrument
+          TRUE ~ .data$redcap_repeat_instrument
         )
       ) %>%
       select(-.data$update_mask)
