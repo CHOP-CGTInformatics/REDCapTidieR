@@ -1,5 +1,9 @@
 # REDCapTidieR 1.2.0
 
+- Added `combine_checkboxes()` analytics function
+   - Use `combine_checkboxes()` to consolidate multiple checkbox fields in a REDCap data tibble under a single column
+- Fixed bug for mixed structure databases resulting in data loss when some fields had dual repeating-separately/repeating-together behavior
+
 # REDCapTidieR 1.1.1 (development version)
 
 Version 1.1.1
