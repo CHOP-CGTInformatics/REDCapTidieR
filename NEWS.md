@@ -1,12 +1,12 @@
-# REDCapTidieR 1.2.0
+# REDCapTidieR 1.2.0 (development version)
 
 - Added `combine_checkboxes()` analytics function
    - Use `combine_checkboxes()` to consolidate multiple checkbox fields in a REDCap data tibble under a single column
-- Fixed bug for mixed structure databases resulting in data loss when some fields had dual repeating-separately/repeating-together behavior
+- Fixed a bug for mixed structure databases resulting in data loss when some fields had dual repeating-separately/repeating-together behavior
 
-# REDCapTidieR 1.1.1 (development version)
+# REDCapTidieR 1.1.1
 
-Version 1.1.1
+Version 1.1.1 (Released 2024-04-18)
 ==========================================================
 
 - `read_redcap(raw_or_label = "haven")` now correctly casts categorical data values to character when their type is not character or numeric.
