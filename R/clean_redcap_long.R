@@ -406,9 +406,12 @@ convert_mixed_instrument <- function(db_data_long, mixed_structure_ref) {
       mutate(
         update_mask = case_when(
           # repeat separately instances
-          !is.na({{ field }}) & is.na(.data$redcap_repeat_instance) ~ TRUE,
+          !is.na(!!as.symbol(field)) &
+            is.na(.data$redcap_repeat_instance) ~ TRUE,
           # repeat together instances
-          !is.na({{ field }}) & !is.na(.data$redcap_repeat_instance) & is.na(.data$redcap_repeat_instrument) ~ TRUE,
+          !is.na(!!as.symbol(field)) &
+            !is.na(.data$redcap_repeat_instance) &
+            is.na(.data$redcap_repeat_instrument) ~ TRUE,
           TRUE ~ FALSE
         )
       )
