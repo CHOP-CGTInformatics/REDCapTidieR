@@ -80,7 +80,6 @@ clean_redcap_long <- function(db_data_long,
     has_mixed_structure_forms <- FALSE # nolint: object_usage_linter
 
     mixed_structure_ref <- data.frame()
-
     if (allow_mixed_structure) {
       # Retrieve mixed structure fields and forms in reference df
       mixed_structure_ref <- get_mixed_structure_fields(db_data_long) %>%
@@ -399,17 +398,40 @@ distill_repeat_table_long <- function(form_name,
 
 convert_mixed_instrument <- function(db_data_long, mixed_structure_ref) {
   for (i in seq_len(nrow(mixed_structure_ref))) {
-    field <- mixed_structure_ref$field_name[i]
-    form <- mixed_structure_ref$form_name[i]
+    field <- mixed_structure_ref$field_name[i] # nolint: object_usage_linter
+    form <- mixed_structure_ref$form_name[i] # nolint: object_usage_linter
 
-    # Create a logical mask for rows needing update
-    update_mask <- is.na(db_data_long$redcap_repeat_instance) & !is.na(db_data_long[[field]])
+    # Create an update mask column to identify which mixed structure rows need updates
+    db_data_long <- db_data_long %>%
+      mutate(
+        update_mask = case_when(
+          # repeat separately instances
+          !is.na(!!as.symbol(field)) &
+            is.na(.data$redcap_repeat_instance) ~ TRUE,
+          # repeat together instances
+          !is.na(!!as.symbol(field)) &
+            !is.na(.data$redcap_repeat_instance) &
+            is.na(.data$redcap_repeat_instrument) ~ TRUE,
+          TRUE ~ FALSE
+        )
+      )
 
-    # Update redcap_repeat_instance
-    db_data_long$redcap_repeat_instance <- if_else(update_mask, 1, db_data_long$redcap_repeat_instance)
-
-    # Update redcap_repeat_instrument
-    db_data_long$redcap_repeat_instrument <- if_else(update_mask, form, db_data_long$redcap_repeat_instrument)
+    # Assign update data based on rules below
+    db_data_long <- db_data_long %>%
+      mutate(
+        redcap_repeat_instance = case_when(
+          # Add single instance repeat event instance vals when none exist
+          update_mask & is.na(redcap_repeat_instance) ~ 1,
+          # Keep repeat event instance vals when they already exist
+          update_mask & !is.na(redcap_repeat_instance) ~ redcap_repeat_instance,
+          TRUE ~ .data$redcap_repeat_instance
+        ),
+        redcap_repeat_instrument = case_when(
+          update_mask ~ form,
+          TRUE ~ .data$redcap_repeat_instrument
+        )
+      ) %>%
+      select(-.data$update_mask)
   }
 
   db_data_long
