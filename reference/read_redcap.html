@@ -59,7 +59,7 @@ and metadata organized into tibbles, broken down by instrument.</p>
 <span>  export_survey_fields <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  export_data_access_groups <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  suppress_redcapr_messages <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  guess_max <span class="op">=</span> <span class="va">.Machine</span><span class="op">$</span><span class="va">integer.max</span>,</span>
+<span>  guess_max <span class="op">=</span> <span class="cn">Inf</span>,</span>
 <span>  allow_mixed_structure <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"redcaptidier.allow.mixed.structure"</span>, <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -112,7 +112,7 @@ from REDCapR API calls. Default <code>TRUE</code>.</p></dd>
 <dt id="arg-guess-max">guess_max<a class="anchor" aria-label="anchor" href="#arg-guess-max"></a></dt>
 <dd><p>A positive <a href="https://rdrr.io/r/base/numeric.html" class="external-link">base::numeric</a> value
 passed to <code><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">readr::read_csv()</a></code> that specifies the maximum number of records to
-use for guessing column types. Default <code>.Machine$integer.max</code>.</p></dd>
+use for guessing column types. Default <code>Inf</code>.</p></dd>
 
 
 <dt id="arg-allow-mixed-structure">allow_mixed_structure<a class="anchor" aria-label="anchor" href="#arg-allow-mixed-structure"></a></dt>
