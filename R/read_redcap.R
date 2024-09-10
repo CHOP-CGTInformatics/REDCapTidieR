@@ -53,7 +53,7 @@
 #' from REDCapR API calls. Default `TRUE`.
 #' @param guess_max A positive [base::numeric] value
 #' passed to [readr::read_csv()] that specifies the maximum number of records to
-#' use for guessing column types. Default `.Machine$integer.max`.
+#' use for guessing column types. Default `Inf`.
 #' @param allow_mixed_structure A logical to allow for support of mixed repeating/non-repeating
 #' instruments. Setting to `TRUE` will treat the mixed instrument's non-repeating versions
 #' as repeating instruments with a single instance. Applies to longitudinal projects
@@ -80,7 +80,7 @@ read_redcap <- function(redcap_uri,
                         export_survey_fields = NULL,
                         export_data_access_groups = NULL,
                         suppress_redcapr_messages = TRUE,
-                        guess_max = .Machine$integer.max,
+                        guess_max = Inf,
                         allow_mixed_structure = getOption("redcaptidier.allow.mixed.structure", FALSE)) {
   check_arg_is_character(redcap_uri, len = 1, any.missing = FALSE)
   check_arg_is_character(token, len = 1, any.missing = FALSE)
