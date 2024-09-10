@@ -12,7 +12,7 @@ read_redcap(
   export_survey_fields = NULL,
   export_data_access_groups = NULL,
   suppress_redcapr_messages = TRUE,
-  guess_max = .Machine$integer.max,
+  guess_max = Inf,
   allow_mixed_structure = getOption("redcaptidier.allow.mixed.structure", FALSE)
 )
 }
@@ -46,7 +46,7 @@ from REDCapR API calls. Default \code{TRUE}.}
 
 \item{guess_max}{A positive \link[base:numeric]{base::numeric} value
 passed to \code{\link[readr:read_delim]{readr::read_csv()}} that specifies the maximum number of records to
-use for guessing column types. Default \code{.Machine$integer.max}.}
+use for guessing column types. Default \code{Inf}.}
 
 \item{allow_mixed_structure}{A logical to allow for support of mixed repeating/non-repeating
 instruments. Setting to \code{TRUE} will treat the mixed instrument's non-repeating versions

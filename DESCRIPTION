@@ -25,7 +25,7 @@ Imports:
     lobstr,
     lubridate,
     purrr,
-    REDCapR (>= 1.1.0),
+    REDCapR (>= 1.2.0),
     rlang,
     stringi,
     stringr,
