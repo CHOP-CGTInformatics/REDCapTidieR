@@ -142,7 +142,19 @@ link_arms <- function(redcap_uri,
     call = caller_env()
   )
 
-  left_join(db_event_instruments, arms, by = "arm_num")
+  db_event_labels <- try_redcapr(
+    {
+      redcap_event_read(
+        redcap_uri = redcap_uri,
+        token = token,
+        verbose = !suppress_redcapr_messages
+      )
+    },
+    call = caller_env()
+  )
+
+  left_join(db_event_instruments, arms, by = "arm_num") %>%
+    left_join(db_event_labels, by = c("arm_num", "unique_event_name"))
 }
 
 #' @title
