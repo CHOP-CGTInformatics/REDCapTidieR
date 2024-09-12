@@ -219,7 +219,8 @@ test_that("link_arms works", {
   expect_s3_class(out, "tbl")
 
   # output contains expected columns
-  expected_cols <- c("arm_num", "unique_event_name", "form", "arm_name")
+  expected_cols <- c("arm_num", "unique_event_name", "form", "arm_name",
+                     "event_name", "custom_event_label", "event_id")
   expect_setequal(expected_cols, names(out))
 
   # all arms are represented in output (test redcap has 2 arms)

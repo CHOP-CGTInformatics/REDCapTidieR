@@ -451,7 +451,7 @@ add_event_mapping <- function(supertbl, linked_arms) {
   event_info <- linked_arms %>%
     add_partial_keys(.data$unique_event_name) %>%
     select(
-      redcap_form_name = "form", "redcap_event", "redcap_arm", "arm_name"
+      redcap_form_name = "form", "redcap_event", "event_name", "redcap_arm", "arm_name"
     ) %>%
     nest(redcap_events = !"redcap_form_name")
 
