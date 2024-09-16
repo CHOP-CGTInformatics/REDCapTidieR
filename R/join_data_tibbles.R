@@ -1,4 +1,9 @@
-join_data_tibbles <- function(suprtbl, x, y, by = NULL, type = "left", name = "new_tibble", suffix = c(".x", ".y")) {
+join_data_tibbles <- function(suprtbl,
+                              x,
+                              y,
+                              by = NULL,
+                              type = "left",
+                              suffix = c(".x", ".y")) {
   record_id_field <- get_record_id_field(suprtbl$redcap_data[[1]])
   join_fn <- get_join_fn(type)
 
@@ -12,16 +17,20 @@ join_data_tibbles <- function(suprtbl, x, y, by = NULL, type = "left", name = "n
   tbl_y <- extract_tibble(suprtbl, y)
   tbl_y_type <- get_structure(suprtbl, y)
 
-  by <- build_by(suprtbl, x, y)
-
   # Mixed structure requires special handling
   is_mixed <- any(c(tbl_x_type, tbl_y_type) == "mixed")
 
   if (is_mixed) {
-    stop("Mixed structure table detected, this feature is not currently supported.") # TODO: Fix, this is the complicated part
-  } else {
-    join_fn(tbl_x, tbl_y, by = by, suffix = suffix)
+    required_columns <- c("redcap_event_instance", "redcap_form_instance")
+    tbl_x <- add_missing_columns(tbl_x, required_columns)
+    tbl_y <- add_missing_columns(tbl_y, required_columns)
   }
+
+  join_fn <- get_join_fn(type)
+  by <- build_by(suprtbl, x, y, is_mixed)
+
+  join_fn(tbl_x, tbl_y, by = by, suffix = suffix) %>%
+    relocate(starts_with("form_status_complete"), .after = everything())
 }
 
 extract_keys <- function(suprtbl, record_id_field) {
@@ -57,13 +66,27 @@ get_join_fn <- function(type) {
   join_functions[[type]]
 }
 
-build_by <- function(suprtbl, x, y) {
+build_by <- function(suprtbl, x, y, is_mixed) {
 
   x_pks <- suprtbl$pks[suprtbl$redcap_form_name == x] %>%
     stringr::str_split(", ", simplify = TRUE)
   y_pks <- suprtbl$pks[suprtbl$redcap_form_name == y] %>%
     stringr::str_split(", ", simplify = TRUE)
 
-  intersect(x_pks, y_pks)
+  out <- intersect(x_pks, y_pks)
 
+  if (is_mixed) {
+    out <- c(out, "redcap_event_instance", "redcap_form_instance") %>%
+      # TODO: Make standard, currently needed for repeat/mixed joins
+      unique()
+  }
+
+  out
 }
+
+add_missing_columns <- function(tbl, columns) {
+  missing_cols <- setdiff(columns, names(tbl))
+  tbl[missing_cols] <- NA
+  return(tbl)
+}
+
