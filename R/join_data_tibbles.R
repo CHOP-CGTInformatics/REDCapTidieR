@@ -4,13 +4,14 @@ join_data_tibbles <- function(suprtbl,
                               by = NULL,
                               type = "left",
                               suffix = c(".x", ".y")) {
-  record_id_field <- get_record_id_field(suprtbl$redcap_data[[1]])
+  record_id_field <- get_record_id_field(suprtbl$redcap_data[[1]]) # nolint: object_usage_linter
   join_fn <- get_join_fn(type)
 
   # Append the supertibble with the primary keys column
   suprtbl <- suprtbl |>
-    mutate(pks = purrr::map_chr(redcap_data, ~extract_keys(., record_id_field = record_id_field))) %>%
-    select(redcap_form_name, redcap_form_label, redcap_data, redcap_metadata, structure, pks)
+    mutate(pks = purrr::map_chr(.data$redcap_data, ~ extract_keys(., record_id_field = record_id_field))) %>%
+    select(.data$redcap_form_name, .data$redcap_form_label, .data$redcap_data,
+           .data$redcap_metadata, .data$structure, .data$pks)
 
   tbl_x <- extract_tibble(suprtbl, x)
   tbl_x_type <- get_structure(suprtbl, x)
@@ -34,8 +35,10 @@ join_data_tibbles <- function(suprtbl,
 }
 
 extract_keys <- function(suprtbl, record_id_field) {
-  redcap_keys <- c(record_id_field, "redcap_event", "redcap_form_instance",
-                   "redcap_event_instance", "redcap_arm")
+  redcap_keys <- c(
+    record_id_field, "redcap_event", "redcap_form_instance",
+    "redcap_event_instance", "redcap_arm"
+  )
 
   suprtbl |>
     colnames() |>
@@ -44,12 +47,10 @@ extract_keys <- function(suprtbl, record_id_field) {
 }
 
 get_structure <- function(suprtbl, tbl_name) {
-  tbl <- extract_tibble(suprtbl, tbl = tbl_name)
   suprtbl$structure[suprtbl$redcap_form_name == tbl_name]
 }
 
 get_join_fn <- function(type) {
-
   join_functions <- list(
     left = dplyr::left_join,
     right = dplyr::right_join,
@@ -67,7 +68,6 @@ get_join_fn <- function(type) {
 }
 
 build_by <- function(suprtbl, x, y, is_mixed) {
-
   x_pks <- suprtbl$pks[suprtbl$redcap_form_name == x] %>%
     stringr::str_split(", ", simplify = TRUE)
   y_pks <- suprtbl$pks[suprtbl$redcap_form_name == y] %>%
@@ -89,4 +89,3 @@ add_missing_columns <- function(tbl, columns) {
   tbl[missing_cols] <- NA
   return(tbl)
 }
-
