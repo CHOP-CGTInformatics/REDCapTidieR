@@ -5,13 +5,16 @@
 \title{Supplement a supertibble from a longitudinal database with information about
 the events associated with each instrument}
 \usage{
-add_event_mapping(supertbl, linked_arms)
+add_event_mapping(supertbl, linked_arms, repeat_event_types)
 }
 \arguments{
 \item{supertbl}{a supertibble object to supplement with metadata}
 
 \item{linked_arms}{the tibble with event mappings created by
 \code{link_arms()}}
+
+\item{repeat_event_types}{a dataframe output from \code{\link[=repeat_event_types]{repeat_event_types()}} which
+specifies NR, RS, and RT types for events}
 }
 \value{
 The original supertibble with an events \code{redcap_events} list column

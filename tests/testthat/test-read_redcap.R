@@ -641,3 +641,23 @@ test_that("read_redcap handles missing data codes", {
   }) |>
     expect_no_warning()
 })
+
+test_that("get_repeat_event_types() works", {
+  mixed_data_structure <- tibble::tribble(
+    ~"record_id", ~"redcap_event_name", ~"redcap_repeat_instrument", ~"redcap_repeat_instance",
+    1, "nonrepeat", NA, NA,
+    1, "repeat_together", NA, 1,
+    1, "repeat_separate", "mixed_structure_form", 1
+  )
+
+  expected_out <- tibble::tribble(
+    ~"redcap_event_name", ~"repeat_type",
+    "nonrepeat", "nonrepeating",
+    "repeat_together", "repeat_together",
+    "repeat_separate", "repeat_separate"
+  )
+
+  out <- get_repeat_event_types(mixed_data_structure)
+
+  expect_equal(out, expected_out)
+})

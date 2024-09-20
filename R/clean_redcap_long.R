@@ -84,7 +84,9 @@ clean_redcap_long <- function(db_data_long,
       # Retrieve mixed structure fields and forms in reference df
       mixed_structure_ref <- get_mixed_structure_fields(db_data_long) %>%
         filter(.data$rep_and_nonrep & !str_ends(.data$field_name, "_form_complete")) %>%
-        left_join(db_metadata_long %>% select("field_name", "form_name"),
+        left_join(
+          db_metadata_long %>%
+            select("field_name", "form_name"),
           by = "field_name"
         )
 
@@ -318,7 +320,10 @@ distill_repeat_table_long <- function(form_name,
   db_data_long <- db_data_long %>%
     add_partial_keys(var = .data$redcap_event_name) %>%
     filter(
-      (!is.na(.data$redcap_form_instance) | !is.na(redcap_event_instance)) &
+      (
+        !is.na(.data$redcap_form_instance) |
+          if_any(starts_with("redcap_event_instance"), ~ !is.na(.))
+      ) &
         .data$redcap_repeat_instrument == my_form
     )
 
@@ -416,14 +421,17 @@ convert_mixed_instrument <- function(db_data_long, mixed_structure_ref) {
         )
       )
 
-    repeat_together_present <- any(is.na(db_data_long$redcap_repeat_instrument) & !is.na(db_data_long$redcap_repeat_instance))
+    repeat_together_present <- any(
+      is.na(db_data_long$redcap_repeat_instrument) &
+        !is.na(db_data_long$redcap_repeat_instance)
+    )
 
-    if (!"redcap_event_instance" %in% names(db_data_long) & repeat_together_present) {
+    if (!"redcap_event_instance" %in% names(db_data_long) && repeat_together_present) {
       db_data_long <- db_data_long %>%
         mutate(
           redcap_event_instance = NA
         ) %>%
-        relocate(redcap_event_instance, .after = redcap_repeat_instance)
+        relocate(.data$redcap_event_instance, .after = .data$redcap_repeat_instance)
     }
 
     if (repeat_together_present) {
@@ -442,10 +450,8 @@ convert_mixed_instrument <- function(db_data_long, mixed_structure_ref) {
     db_data_long <- db_data_long %>%
       mutate(
         redcap_repeat_instance = case_when(
-          # Add single instance repeat event instance vals when none exist
-          # update_mask & is.na(redcap_repeat_instance) ~ 1,
-          # update_mask & !is.na(redcap_repeat_instance) ~ redcap_repeat_instance, # TODO: Remove
-          # If repeat-together type, remove values from redcap_repeat_instance (shifted and captured in redcap_event_instance)
+          # If repeat-together type, remove values from redcap_repeat_instance
+          # (shifted and captured in redcap_event_instance)
           update_mask & is.na(redcap_repeat_instrument) ~ NA,
           TRUE ~ .data$redcap_repeat_instance
         ),
