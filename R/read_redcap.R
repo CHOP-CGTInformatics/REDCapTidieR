@@ -544,10 +544,11 @@ get_repeat_event_types <- function(data) {
 
   # Check for instances where the same event is labelled as nonrepeating & repeating separate
   # If this is the case, it must be repeating separate (there is just data that qualifies as both)
+
   out %>%
     mutate(
-      is_duplicated = duplicated(.data$repeat_type) | duplicated(.data$repeat_type, fromLast = TRUE)
+      is_duplicated = (duplicated(.data$redcap_event_name) | duplicated(.data$redcap_event_name, fromLast = TRUE))
     ) %>%
-    filter(.data$is_duplicated == FALSE | (.data$is_duplicated == TRUE & .data$ repeat_type == "repeat_separate")) %>%
+    filter(!.data$is_duplicated | (.data$is_duplicated & .data$repeat_type == "repeat_separate")) %>%
     select(-.data$is_duplicated)
 }

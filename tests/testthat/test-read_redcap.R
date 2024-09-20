@@ -660,4 +660,25 @@ test_that("get_repeat_event_types() works", {
   out <- get_repeat_event_types(mixed_data_structure)
 
   expect_equal(out, expected_out)
+
+  # Example with nonrepeating arm that contains repeating and non repeating forms
+  mixed_data_structure <- tibble::tribble(
+    ~"record_id", ~"redcap_event_name", ~"redcap_repeat_instrument", ~"redcap_repeat_instance",
+    1, "nonrepeat", NA, NA,
+    1, "nonrepeat", "repeat_form", 1,
+    1, "repeat_together", NA, 1,
+    1, "repeat_separate", "mixed_structure_form", 1
+  )
+
+  out <- get_repeat_event_types(mixed_data_structure)
+
+  expected_out <- tibble::tribble(
+    ~"redcap_event_name", ~"repeat_type",
+    "nonrepeat", "repeat_separate",
+    "repeat_together", "repeat_together",
+    "repeat_separate", "repeat_separate"
+  )
+
+  expect_equal(out, expected_out)
+
 })
