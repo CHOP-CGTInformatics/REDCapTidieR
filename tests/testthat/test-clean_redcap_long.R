@@ -112,7 +112,7 @@ test_that("clean_redcap_long with mixed structure works", {
   # Check redcap_data contents for mixed and nonrepeating structure
   expected_mixed_data <- tibble::tribble(
     ~record_id, ~redcap_event, ~redcap_form_instance, ~mixed_structure_1, ~form_status_complete,
-    1, "event_1", NA, "Mixed Nonrepeat 1", 0,
+    1, "event_1", 1, "Mixed Nonrepeat 1", 0,
     1, "event_2", 1, "Mixed Repeat 1", 0,
     1, "event_2", 2, "Mixed Repeat 2", 0
   )
@@ -309,7 +309,7 @@ test_that("convert_mixed_instrument works", {
   expected_out <- tibble::tribble(
     ~record_id, ~redcap_repeat_instrument, ~redcap_repeat_instance, ~mixed_structure_variable,
     ~repeat_form_variable, ~mixed_repeat_var,
-    1, "mixed_structure_form", NA, "A", NA, NA,
+    1, "mixed_structure_form", 1, "A", NA, NA,
     2, "mixed_structure_form", 1, "B", NA, NA,
     3, "repeat_form", 1, NA, "C", NA,
     4, "repeat_form", 2, NA, "D", NA,

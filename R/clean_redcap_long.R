@@ -450,6 +450,9 @@ convert_mixed_instrument <- function(db_data_long, mixed_structure_ref) {
     db_data_long <- db_data_long %>%
       mutate(
         redcap_repeat_instance = case_when(
+          # Add single instance repeat event instance vals when none exist
+          # This handles nonrepeating data in events set to repeat separately
+          update_mask & is.na(redcap_repeat_instance) ~ 1,
           # If repeat-together type, remove values from redcap_repeat_instance
           # (shifted and captured in redcap_event_instance)
           update_mask & is.na(redcap_repeat_instrument) ~ NA,

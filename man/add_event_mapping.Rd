@@ -13,7 +13,7 @@ add_event_mapping(supertbl, linked_arms, repeat_event_types)
 \item{linked_arms}{the tibble with event mappings created by
 \code{link_arms()}}
 
-\item{repeat_event_types}{a dataframe output from \code{\link[=repeat_event_types]{repeat_event_types()}} which
+\item{repeat_event_types}{a dataframe output from \code{\link[=get_repeat_event_types]{get_repeat_event_types()}} which
 specifies NR, RS, and RT types for events}
 }
 \value{

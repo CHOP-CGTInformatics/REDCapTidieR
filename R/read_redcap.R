@@ -443,7 +443,7 @@ add_metadata <- function(supertbl, db_metadata, redcap_uri, token, suppress_redc
 #' @param supertbl a supertibble object to supplement with metadata
 #' @param linked_arms the tibble with event mappings created by
 #' \code{link_arms()}
-#' @param repeat_event_types a dataframe output from [repeat_event_types()] which
+#' @param repeat_event_types a dataframe output from [get_repeat_event_types()] which
 #' specifies NR, RS, and RT types for events
 #'
 #' @return
