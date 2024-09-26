@@ -21,4 +21,4 @@ a character vector
 \description{
 Intelligently retrieve the join by cols
 }
-\keyword{interal}
+\keyword{internal}

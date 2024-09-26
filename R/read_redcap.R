@@ -530,7 +530,7 @@ calc_metadata_stats <- function(data) {
 
 get_repeat_event_types <- function(data) {
   out <- data %>%
-    dplyr::distinct(.data$redcap_event_name, .data$redcap_repeat_instrument, .data$redcap_repeat_instance) %>%
+    distinct(.data$redcap_event_name, .data$redcap_repeat_instrument, .data$redcap_repeat_instance) %>%
     mutate(
       repeat_type = case_when(
         !is.na(redcap_event_name) & !is.na(redcap_repeat_instrument) & !is.na(redcap_repeat_instance) ~
@@ -540,7 +540,7 @@ get_repeat_event_types <- function(data) {
         TRUE ~ "nonrepeating"
       )
     ) %>%
-    dplyr::distinct(.data$redcap_event_name, .data$repeat_type)
+    distinct(.data$redcap_event_name, .data$repeat_type)
 
   # Check for instances where the same event is labelled as nonrepeating & repeating separate
   # If this is the case, it must be repeating separate (there is just data that qualifies as both)

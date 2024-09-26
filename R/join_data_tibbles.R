@@ -139,7 +139,7 @@ get_join_fn <- function(type) {
 #'
 #' @returns a character vector
 #'
-#' @keywords interal
+#' @keywords internal
 build_by <- function(supertbl, x, y, is_mixed) {
   x_pks <- supertbl$pks[supertbl$redcap_form_name == x] %>%
     stringr::str_split(", ", simplify = TRUE)
@@ -174,6 +174,14 @@ add_missing_columns <- function(tbl, columns) {
 #' the event of mixed structure data tibble joins, will seek to split data into
 #' three categories before performing the joins. The key identifiers here are
 #' `redcap_form_instance` and the added `.repeat_type` columns.
+#'
+#' @inheritParams join_data_tibbles
+#' @param join_fn the user specified join function type output by [get_join_fn()]
+#' @param is_mixed TRUE/FALSE mixed data structure
+#'
+#' @returns a dataframe
+#'
+#' @keywords internal
 
 join_tbls <- function(x, y, join_fn, by, suffix, is_mixed) {
   if (is_mixed) {

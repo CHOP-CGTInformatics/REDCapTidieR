@@ -322,7 +322,7 @@ distill_repeat_table_long <- function(form_name,
     filter(
       (
         !is.na(.data$redcap_form_instance) |
-          if_any(starts_with("redcap_event_instance"), ~ !is.na(.))
+          if_any(matches("redcap_event_instance"), ~ !is.na(.))
       ) &
         .data$redcap_repeat_instrument == my_form
     )
