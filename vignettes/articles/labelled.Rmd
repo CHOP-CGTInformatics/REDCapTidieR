@@ -1,0 +1,113 @@
+---
+title: "Using labelled vectors (`haven_labelled` class) with REDCapTidieR"
+output: rmarkdown::html_document
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r, eval=!(Sys.getenv("NOT_CRAN") == "true"), include=FALSE}
+knitr::knit_exit()
+```
+
+## Several options for importing categorical variables
+
+When importing data from REDCap using `read_redcap()`, you have several options determining how to import coded values.
+
+```{r, include = FALSE}
+# Load credentials
+redcap_uri <- Sys.getenv("REDCAP_URI")
+superheroes_token <- Sys.getenv("SUPERHEROES_REDCAP_API")
+library(REDCapTidieR)
+```
+
+``` r
+library(REDCapTidieR)
+superheroes_token <- "123456789ABCDEF123456789ABCDEF04"
+redcap_uri <- "https://my.institution.edu/redcap/api/"
+```
+
+If you use `raw_or_label = "raw"`, you will get the raw coded values for categorical variables, keeping the original coding of your data. However, you will use the information regarding the meaning of each code. You will have to get from REDCap a dictionary table explaining the meaning of each code.
+
+```{r}
+superheroes <- 
+  read_redcap(
+    redcap_uri,
+    superheroes_token,
+    raw_or_label = "raw"
+  ) |>
+  extract_tibble("heroes_information")
+superheroes
+```
+
+Alternatively, you could opt for `raw_or_label = "label"` (the default) where each code will be replaced the corresponding label and all categorical variables will be transformed into factors, ready to be used for analysis. But, here, you will lose the original coding of the data. It could be problematic if you need to keep a track of original codes (e.g. for data cleaning) or if you intend to re-export the data at a latter step (e.g. in Stata or SPSS format) where it would be relevant to keep the original coding.
+
+```{r}
+superheroes <- 
+  read_redcap(
+    redcap_uri,
+    superheroes_token,
+    raw_or_label = "label"
+  ) |>
+  extract_tibble("heroes_information")
+superheroes
+```
+
+A third and final option is to opt for `raw_or_label = "haven_labelled"`. In that case, categorical variables will be imported as labelled vectors, using the `"haven_labelled"` class introduced by the `{haven}` package (cf. `vignette("semantics", package = "haven")`). In this case, your categorical variables will be imported using their original coding and the corresponding value labels will be attached to them as meta-data.
+
+```{r}
+superheroes <- 
+  read_redcap(
+    redcap_uri,
+    superheroes_token,
+    raw_or_label = "haven_labelled"
+  ) |>
+  extract_tibble("heroes_information")
+superheroes
+```
+
+## Pros & Cons of labelled vectors
+
+The `"haven_labelled"` was initially developed for importing data from SPSS, Stata or SAS who use values labels to store categorical variables. This format allows to store both the original coding and the labels attached to each value.
+
+The `{labelled}` package provides several functions to manipulate value labels, such as `labelled::set_value_labels()`, `labelled::get_value_labels()`, `labelled::add_value_labels()` or `labelled::remove_value_labels()`.
+
+It is possible to search through the variables and/or to generate a variable dictionary using `labelled::look_for()` (cf. `vignette("look_for", package = "labelled")`).
+
+```{r}
+library(labelled)
+superheroes |> look_for()
+```
+
+However, labelled vectors are not intended for data analysis. For descriptive statistics, plots, or model computing, categorical variables should be coded as factors. It could be easily done with `labelled::to_factor()` or `labelled::unlabelled()` (both could be applied to a full data frame). If you opt for importing your data as labelled vectors, you should therefore chose one of the two following approaches.
+
+![](labelled_approaches.png)
+
+In **approach A**, `haven_labelled` vectors are converted into factors or into numeric/character vectors just after data import, using `labelled::unlabelled()`, `labelled::to_factor()` or `unclass()`. Then, data cleaning, recoding and analysis are performed using classic **R** vector types.
+
+In **approach B**, `haven_labelled` vectors are kept for data cleaning and coding, allowing to preserved original recoding, in particular if data should be re-exported after that step. Functions provided by `{labelled}` will be useful for managing value labels. However, as in approach A, `haven_labelled` vectors will have to be converted into classic factors or numeric vectors before data analysis (in particular modelling) as this is the way categorical and continuous variables should be coded for analysis functions.
+
+## Variable labels
+
+Variable labels should not be confounded with value labels. A variable label is a textual description of a variable and does not modify the class of the vector, while values labels are a textual description of certain values of a vector. Adding a value label modifies the class of the vector into `"haven_labelled"`.
+
+The `{labelled}` package also provides function to manipulate variable labels, such as `labelled::set_variable_labels()` or `labelled::get_variable_labels()`.
+
+The function `REDCapTidieR::make_labelled()` allows to add variable labels to data frames exported from REDCap.
+
+```{r}
+superheroes <- 
+  read_redcap(
+    redcap_uri,
+    superheroes_token,
+    raw_or_label = "haven_labelled"
+  ) |>
+  make_labelled() |>
+  extract_tibble("heroes_information")
+
+superheroes |> look_for()
+```
