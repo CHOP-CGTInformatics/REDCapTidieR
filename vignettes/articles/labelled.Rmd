@@ -34,7 +34,7 @@ redcap_uri <- "https://my.institution.edu/redcap/api/"
 If you use `raw_or_label = "raw"`, you will get the raw coded values for categorical variables, keeping the original coding of your data. However, you will use the information regarding the meaning of each code. You will have to get from REDCap a dictionary table explaining the meaning of each code.
 
 ```{r}
-superheroes <- 
+superheroes <-
   read_redcap(
     redcap_uri,
     superheroes_token,
@@ -47,7 +47,7 @@ superheroes
 Alternatively, you could opt for `raw_or_label = "label"` (the default) where each code will be replaced the corresponding label and all categorical variables will be transformed into factors, ready to be used for analysis. But, here, you will lose the original coding of the data. It could be problematic if you need to keep a track of original codes (e.g. for data cleaning) or if you intend to re-export the data at a latter step (e.g. in Stata or SPSS format) where it would be relevant to keep the original coding.
 
 ```{r}
-superheroes <- 
+superheroes <-
   read_redcap(
     redcap_uri,
     superheroes_token,
@@ -60,11 +60,11 @@ superheroes
 A third and final option is to opt for `raw_or_label = "haven_labelled"`. In that case, categorical variables will be imported as labelled vectors, using the `"haven_labelled"` class introduced by the `{haven}` package (cf. `vignette("semantics", package = "haven")`). In this case, your categorical variables will be imported using their original coding and the corresponding value labels will be attached to them as meta-data.
 
 ```{r}
-superheroes <- 
+superheroes <-
   read_redcap(
     redcap_uri,
     superheroes_token,
-    raw_or_label = "haven_labelled"
+    raw_or_label = "haven"
   ) |>
   extract_tibble("heroes_information")
 superheroes
@@ -100,11 +100,11 @@ The `{labelled}` package also provides function to manipulate variable labels, s
 The function `REDCapTidieR::make_labelled()` allows to add variable labels to data frames exported from REDCap.
 
 ```{r}
-superheroes <- 
+superheroes <-
   read_redcap(
     redcap_uri,
     superheroes_token,
-    raw_or_label = "haven_labelled"
+    raw_or_label = "haven"
   ) |>
   make_labelled() |>
   extract_tibble("heroes_information")
