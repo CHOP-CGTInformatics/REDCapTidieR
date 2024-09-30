@@ -16,7 +16,8 @@
       9              api_no_access_2               API No Access 2
       10                      survey                        Survey
       11               repeat_survey                 Repeat Survey
-      12             REDCap Metadata                          <NA>
+      12           labelled_vignette             Labelled Vignette
+      13             REDCap Metadata                          <NA>
          Repeating or Nonrepeating? # of Rows in Data # of Columns in Data
       2                   structure         data_rows            data_cols
       3                nonrepeating                 4                    4
@@ -28,19 +29,21 @@
       9                nonrepeating                 4                    5
       10               nonrepeating                 4                    9
       11                  repeating                 3                   10
-      12                       <NA>              <NA>                 <NA>
+      12               nonrepeating                 4                    7
+      13                       <NA>              <NA>                 <NA>
          Data size in Memory % of Data Missing                NA Sheet #
       2            data_size       data_na_pct form_complete_pct Sheet #
       3              2.28 kB              0.25                 0       1
       4              1.94 kB               0.5                 0       2
       5              2.58 kB                 0                 0       3
-      6              7.71 kB 0.293103448275862                 0       4
+      6              7.71 kB  0.28448275862069                 0       4
       7              7.40 kB              0.75                 0       5
       8              1.78 kB                 1                 0       6
       9              2.06 kB                 1                 0       7
       10             3.73 kB 0.392857142857143                 0       8
       11             3.94 kB 0.142857142857143                 0       9
-      12                <NA>              <NA>              <NA>      10
+      12             3.04 kB                 0                 0      10
+      13                <NA>              <NA>              <NA>      11
       
       [[1]][[2]]
         Record ID Text Box Input Text Box Input REDCap Instrument Completed?
@@ -77,7 +80,7 @@
       2 record_id text  note calculated dropdown_single radio_single
       3         1 text notes          2             one            B
       4         2 <NA>  <NA>          2           three            C
-      5         3 <NA>  <NA>       <NA>            <NA>         <NA>
+      5         3 <NA>  <NA>          2            <NA>         <NA>
       6         4 <NA>  <NA>          2            <NA>         <NA>
                            NA                    NA                    NA
       2 radio_duplicate_label checkbox_multiple___1 checkbox_multiple___2
@@ -225,6 +228,20 @@
       5     2022-11-09 12:21:04                     Complete
       
       [[1]][[11]]
+        Record ID   Text Box   Radio Buttons  Checkbox: A  Checkbox: B  Checkbox: C
+      2 record_id text_box_1 radio_buttons_1 checkbox___1 checkbox___2 checkbox___3
+      3         1   Record 1               A      Checked    Unchecked    Unchecked
+      4         2   Record 2               B      Checked      Checked    Unchecked
+      5         3   Record 3               C    Unchecked      Checked      Checked
+      6         4   Record 4               A    Unchecked    Unchecked    Unchecked
+        REDCap Instrument Completed?
+      2         form_status_complete
+      3                     Complete
+      4                     Complete
+      5                     Complete
+      6                     Complete
+      
+      [[1]][[12]]
               REDCap Instrument Name REDCap Instrument Description
       2             redcap_form_name             redcap_form_label
       3                         <NA>                          <NA>
@@ -293,6 +310,11 @@
       66               repeat_survey                 Repeat Survey
       67               repeat_survey                 Repeat Survey
       68               repeat_survey                 Repeat Survey
+      69           labelled_vignette             Labelled Vignette
+      70           labelled_vignette             Labelled Vignette
+      71           labelled_vignette             Labelled Vignette
+      72           labelled_vignette             Labelled Vignette
+      73           labelled_vignette             Labelled Vignette
                     Variable / Field Name
       2                        field_name
       3                         record_id
@@ -361,6 +383,11 @@
       66   repeatsurvey_checkbox_v2___one
       67   repeatsurvey_checkbox_v2___two
       68 repeatsurvey_checkbox_v2___three
+      69                       text_box_1
+      70                  radio_buttons_1
+      71                     checkbox___1
+      72                     checkbox___2
+      73                     checkbox___3
                                                              Field Label Field Type
       2                                                      field_label field_type
       3                                                        Record ID       text
@@ -429,6 +456,11 @@
       66                                        Checkbox Field: Choice 1   checkbox
       67                                        Checkbox Field: Choice 2   checkbox
       68                                        Checkbox Field: Choice 3   checkbox
+      69                                                        Text Box       text
+      70                                                   Radio Buttons      radio
+      71                                                     Checkbox: A   checkbox
+      72                                                     Checkbox: B   checkbox
+      73                                                     Checkbox: C   checkbox
          Section Header Prior to this Field
       2                      section_header
       3                                <NA>
@@ -497,6 +529,11 @@
       66                               <NA>
       67                               <NA>
       68                               <NA>
+      69                               <NA>
+      70                               <NA>
+      71                               <NA>
+      72                               <NA>
+      73                               <NA>
                                                                        Choices, Calculations, or Slider Labels
       2                                                                         select_choices_or_calculations
       3                                                                                                   <NA>
@@ -565,6 +602,11 @@
       66                                                       one, Choice 1 | two, Choice 2 | three, Choice 3
       67                                                       one, Choice 1 | two, Choice 2 | three, Choice 3
       68                                                       one, Choice 1 | two, Choice 2 | three, Choice 3
+      69                                                                                                  <NA>
+      70                                                                                    1, A | 2, B | 3, C
+      71                                                                                    1, A | 2, B | 3, C
+      72                                                                                    1, A | 2, B | 3, C
+      73                                                                                    1, A | 2, B | 3, C
          Field Note Text Validation Type OR Show Slider Number
       2  field_note text_validation_type_or_show_slider_number
       3        <NA>                                       <NA>
@@ -633,6 +675,11 @@
       66       <NA>                                       <NA>
       67       <NA>                                       <NA>
       68       <NA>                                       <NA>
+      69       <NA>                                       <NA>
+      70       <NA>                                       <NA>
+      71       <NA>                                       <NA>
+      72       <NA>                                       <NA>
+      73       <NA>                                       <NA>
          Minimum Accepted Value for Text Validation
       2                         text_validation_min
       3                                        <NA>
@@ -701,6 +748,11 @@
       66                                       <NA>
       67                                       <NA>
       68                                       <NA>
+      69                                       <NA>
+      70                                       <NA>
+      71                                       <NA>
+      72                                       <NA>
+      73                                       <NA>
          Maximum Accepted Value for Text Validation Is this Field an Identifier?
       2                         text_validation_max                   identifier
       3                                        <NA>                         <NA>
@@ -769,6 +821,11 @@
       66                                       <NA>                         <NA>
       67                                       <NA>                         <NA>
       68                                       <NA>                         <NA>
+      69                                       <NA>                         <NA>
+      70                                       <NA>                         <NA>
+      71                                       <NA>                         <NA>
+      72                                       <NA>                         <NA>
+      73                                       <NA>                         <NA>
          Branching Logic (Show field only if...) Is this Field Required?
       2                          branching_logic          required_field
       3                                     <NA>                    <NA>
@@ -837,6 +894,11 @@
       66                                    <NA>                    <NA>
       67                                    <NA>                    <NA>
       68                                    <NA>                    <NA>
+      69                                    <NA>                    <NA>
+      70                                    <NA>                    <NA>
+      71                                    <NA>                    <NA>
+      72                                    <NA>                    <NA>
+      73                                    <NA>                    <NA>
          Custom Alignment Question Number (surveys only) Matrix Group Name
       2  custom_alignment                question_number matrix_group_name
       3              <NA>                           <NA>              <NA>
@@ -905,6 +967,11 @@
       66             <NA>                           <NA>              <NA>
       67             <NA>                           <NA>              <NA>
       68             <NA>                           <NA>              <NA>
+      69             <NA>                           <NA>              <NA>
+      70             <NA>                           <NA>              <NA>
+      71             <NA>                           <NA>              <NA>
+      72             <NA>                           <NA>              <NA>
+      73             <NA>                           <NA>              <NA>
          Matrix Ranking? Field Annotation Data Type Count of Missing Values
       2   matrix_ranking field_annotation skim_type               n_missing
       3             <NA>             <NA>      <NA>                    <NA>
@@ -916,7 +983,7 @@
       9             <NA>             <NA> character                       0
       10            <NA>             <NA> character                       3
       11            <NA>             <NA> character                       3
-      12            <NA>             <NA>   numeric                       1
+      12            <NA>             <NA>   numeric                       0
       13            <NA>             <NA>    factor                       2
       14            <NA>             <NA>    factor                       2
       15            <NA>             <NA>    factor                       4
@@ -973,6 +1040,11 @@
       66            <NA>             <NA>   logical                       0
       67            <NA>             <NA>   logical                       0
       68            <NA>             <NA>   logical                       0
+      69            <NA>             <NA> character                       0
+      70            <NA>             <NA>    factor                       0
+      71            <NA>             <NA>   logical                       0
+      72            <NA>             <NA>   logical                       0
+      73            <NA>             <NA>   logical                       0
          Proportion of Non-Missing Values Shortest Value (Fewest Characters)
       2                     complete_rate                      character.min
       3                              <NA>                               <NA>
@@ -984,7 +1056,7 @@
       9                                 1                                  1
       10                             0.25                                  4
       11                             0.25                                  5
-      12                             0.75                               <NA>
+      12                                1                               <NA>
       13                              0.5                               <NA>
       14                              0.5                               <NA>
       15                                0                               <NA>
@@ -1041,6 +1113,11 @@
       66                                1                               <NA>
       67                                1                               <NA>
       68                                1                               <NA>
+      69                                1                                  8
+      70                                1                               <NA>
+      71                                1                               <NA>
+      72                                1                               <NA>
+      73                                1                               <NA>
          Longest Value (Most Characters) Count of Empty Values Count of Unique Values
       2                    character.max       character.empty     character.n_unique
       3                             <NA>                  <NA>                   <NA>
@@ -1109,6 +1186,11 @@
       66                            <NA>                  <NA>                   <NA>
       67                            <NA>                  <NA>                   <NA>
       68                            <NA>                  <NA>                   <NA>
+      69                               8                     0                      4
+      70                            <NA>                  <NA>                   <NA>
+      71                            <NA>                  <NA>                   <NA>
+      72                            <NA>                  <NA>                   <NA>
+      73                            <NA>                  <NA>                   <NA>
          Count of Values that are all Whitespace         Mean Standard Deviation 
       2                     character.whitespace numeric.mean          numeric.sd
       3                                     <NA>         <NA>                <NA>
@@ -1177,6 +1259,11 @@
       66                                    <NA>         <NA>                <NA>
       67                                    <NA>         <NA>                <NA>
       68                                    <NA>         <NA>                <NA>
+      69                                       0         <NA>                <NA>
+      70                                    <NA>         <NA>                <NA>
+      71                                    <NA>         <NA>                <NA>
+      72                                    <NA>         <NA>                <NA>
+      73                                    <NA>         <NA>                <NA>
             Minimum 25th Percentile      Median 75th Percentile      Maximum
       2  numeric.p0     numeric.p25 numeric.p50     numeric.p75 numeric.p100
       3        <NA>            <NA>        <NA>            <NA>         <NA>
@@ -1245,6 +1332,11 @@
       66       <NA>            <NA>        <NA>            <NA>         <NA>
       67       <NA>            <NA>        <NA>            <NA>         <NA>
       68       <NA>            <NA>        <NA>            <NA>         <NA>
+      69       <NA>            <NA>        <NA>            <NA>         <NA>
+      70       <NA>            <NA>        <NA>            <NA>         <NA>
+      71       <NA>            <NA>        <NA>            <NA>         <NA>
+      72       <NA>            <NA>        <NA>            <NA>         <NA>
+      73       <NA>            <NA>        <NA>            <NA>         <NA>
             Histogram Is the Categorical Value Ordered? Count of Unique Values
       2  numeric.hist                    factor.ordered        factor.n_unique
       3          <NA>                              <NA>                   <NA>
@@ -1313,6 +1405,11 @@
       66         <NA>                              <NA>                   <NA>
       67         <NA>                              <NA>                   <NA>
       68         <NA>                              <NA>                   <NA>
+      69         <NA>                              <NA>                   <NA>
+      70         <NA>                             FALSE                      3
+      71         <NA>                              <NA>                   <NA>
+      72         <NA>                              <NA>                   <NA>
+      73         <NA>                              <NA>                   <NA>
            Most Frequent Values Proportion of TRUE Values Count of Logical Values
       2       factor.top_counts              logical.mean           logical.count
       3                    <NA>                      <NA>                    <NA>
@@ -1381,6 +1478,11 @@
       66                   <NA>         0.666666666666667          TRU: 2, FAL: 1
       67                   <NA>         0.333333333333333          FAL: 2, TRU: 1
       68                   <NA>         0.333333333333333          FAL: 2, TRU: 1
+      69                   <NA>                      <NA>                    <NA>
+      70       A: 2, B: 1, C: 1                      <NA>                    <NA>
+      71                   <NA>                       0.5          FAL: 2, TRU: 2
+      72                   <NA>                       0.5          FAL: 2, TRU: 2
+      73                   <NA>                      0.25          FAL: 3, TRU: 1
            Earliest     Latest      Median Count of Unique Values            Earliest
       2    Date.min   Date.max Date.median          Date.n_unique         POSIXct.min
       3        <NA>       <NA>        <NA>                   <NA>                <NA>
@@ -1449,6 +1551,11 @@
       66       <NA>       <NA>        <NA>                   <NA>                <NA>
       67       <NA>       <NA>        <NA>                   <NA>                <NA>
       68       <NA>       <NA>        <NA>                   <NA>                <NA>
+      69       <NA>       <NA>        <NA>                   <NA>                <NA>
+      70       <NA>       <NA>        <NA>                   <NA>                <NA>
+      71       <NA>       <NA>        <NA>                   <NA>                <NA>
+      72       <NA>       <NA>        <NA>                   <NA>                <NA>
+      73       <NA>       <NA>        <NA>                   <NA>                <NA>
                       Latest              Median Count of Unique Values      Minimum
       2          POSIXct.max      POSIXct.median       POSIXct.n_unique difftime.min
       3                 <NA>                <NA>                   <NA>         <NA>
@@ -1517,6 +1624,11 @@
       66                <NA>                <NA>                   <NA>         <NA>
       67                <NA>                <NA>                   <NA>         <NA>
       68                <NA>                <NA>                   <NA>         <NA>
+      69                <NA>                <NA>                   <NA>         <NA>
+      70                <NA>                <NA>                   <NA>         <NA>
+      71                <NA>                <NA>                   <NA>         <NA>
+      72                <NA>                <NA>                   <NA>         <NA>
+      73                <NA>                <NA>                   <NA>         <NA>
               Maximum          Median Count of Unique Values
       2  difftime.max difftime.median      difftime.n_unique
       3          <NA>            <NA>                   <NA>
@@ -1585,11 +1697,16 @@
       66         <NA>            <NA>                   <NA>
       67         <NA>            <NA>                   <NA>
       68         <NA>            <NA>                   <NA>
+      69         <NA>            <NA>                   <NA>
+      70         <NA>            <NA>                   <NA>
+      71         <NA>            <NA>                   <NA>
+      72         <NA>            <NA>                   <NA>
+      73         <NA>            <NA>                   <NA>
       
       
       [[2]]
          tab_name tab_sheet tab_ref
-      1    Table1         1  A2:I12
+      1    Table1         1  A2:I13
       2    Table2         2   A2:D6
       3    Table3         3   A2:D6
       4    Table4         4   A2:E6
@@ -1599,9 +1716,10 @@
       8    Table8         8   A2:E6
       9    Table9         9   A2:I6
       10  Table10        10   A2:J5
-      11  Table11        11 A2:AZ68
+      11  Table11        11   A2:G6
+      12  Table12        12 A2:AZ73
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    tab_xml
-      1                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       <table xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" id="1" name="Table1" displayName="Table1" ref="A2:I12" totalsRowCount="0" totalsRowShown="0"><autoFilter ref="A2:I12"/><tableColumns count="9"><tableColumn id="1" name="redcap_form_name"/><tableColumn id="2" name="redcap_form_label"/><tableColumn id="3" name="structure"/><tableColumn id="4" name="data_rows"/><tableColumn id="5" name="data_cols"/><tableColumn id="6" name="data_size"/><tableColumn id="7" name="data_na_pct"/><tableColumn id="8" name="form_complete_pct"/><tableColumn id="9" name="Sheet #"/></tableColumns><tableStyleInfo name="TableStyleLight8" showFirstColumn="0" showLastColumn="0" showRowStripes="1" showColumnStripes="0"/></table>
+      1                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       <table xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" id="1" name="Table1" displayName="Table1" ref="A2:I13" totalsRowCount="0" totalsRowShown="0"><autoFilter ref="A2:I13"/><tableColumns count="9"><tableColumn id="1" name="redcap_form_name"/><tableColumn id="2" name="redcap_form_label"/><tableColumn id="3" name="structure"/><tableColumn id="4" name="data_rows"/><tableColumn id="5" name="data_cols"/><tableColumn id="6" name="data_size"/><tableColumn id="7" name="data_na_pct"/><tableColumn id="8" name="form_complete_pct"/><tableColumn id="9" name="Sheet #"/></tableColumns><tableStyleInfo name="TableStyleLight8" showFirstColumn="0" showLastColumn="0" showRowStripes="1" showColumnStripes="0"/></table>
       2                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               <table xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" id="2" name="Table2" displayName="Table2" ref="A2:D6" totalsRowCount="0" totalsRowShown="0"><autoFilter ref="A2:D6"/><tableColumns count="4"><tableColumn id="1" name="record_id"/><tableColumn id="2" name="nonrepeat_1"/><tableColumn id="3" name="nonrepeat_2"/><tableColumn id="4" name="form_status_complete"/></tableColumns><tableStyleInfo name="TableStyleLight8" showFirstColumn="0" showLastColumn="0" showRowStripes="1" showColumnStripes="0"/></table>
       3                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               <table xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" id="3" name="Table3" displayName="Table3" ref="A2:D6" totalsRowCount="0" totalsRowShown="0"><autoFilter ref="A2:D6"/><tableColumns count="4"><tableColumn id="1" name="record_id"/><tableColumn id="2" name="nonrepeat_3"/><tableColumn id="3" name="nonrepeat_4"/><tableColumn id="4" name="form_status_complete"/></tableColumns><tableStyleInfo name="TableStyleLight8" showFirstColumn="0" showLastColumn="0" showRowStripes="1" showColumnStripes="0"/></table>
       4                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <table xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" id="4" name="Table4" displayName="Table4" ref="A2:E6" totalsRowCount="0" totalsRowShown="0"><autoFilter ref="A2:E6"/><tableColumns count="5"><tableColumn id="1" name="record_id"/><tableColumn id="2" name="redcap_form_instance"/><tableColumn id="3" name="repeat_1"/><tableColumn id="4" name="repeat_2"/><tableColumn id="5" name="form_status_complete"/></tableColumns><tableStyleInfo name="TableStyleLight8" showFirstColumn="0" showLastColumn="0" showRowStripes="1" showColumnStripes="0"/></table>
@@ -1611,7 +1729,8 @@
       8                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          <table xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" id="8" name="Table8" displayName="Table8" ref="A2:E6" totalsRowCount="0" totalsRowShown="0"><autoFilter ref="A2:E6"/><tableColumns count="5"><tableColumn id="1" name="record_id"/><tableColumn id="2" name="api_text_2"/><tableColumn id="3" name="api_text_3"/><tableColumn id="4" name="api_text_4"/><tableColumn id="5" name="form_status_complete"/></tableColumns><tableStyleInfo name="TableStyleLight8" showFirstColumn="0" showLastColumn="0" showRowStripes="1" showColumnStripes="0"/></table>
       9                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <table xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" id="9" name="Table9" displayName="Table9" ref="A2:I6" totalsRowCount="0" totalsRowShown="0"><autoFilter ref="A2:I6"/><tableColumns count="9"><tableColumn id="1" name="record_id"/><tableColumn id="2" name="survey_yesno"/><tableColumn id="3" name="survey_radio"/><tableColumn id="4" name="survey_checkbox___one"/><tableColumn id="5" name="survey_checkbox___two"/><tableColumn id="6" name="survey_checkbox___three"/><tableColumn id="7" name="redcap_survey_identifier"/><tableColumn id="8" name="redcap_survey_timestamp"/><tableColumn id="9" name="form_status_complete"/></tableColumns><tableStyleInfo name="TableStyleLight8" showFirstColumn="0" showLastColumn="0" showRowStripes="1" showColumnStripes="0"/></table>
       10                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           <table xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" id="10" name="Table10" displayName="Table10" ref="A2:J5" totalsRowCount="0" totalsRowShown="0"><autoFilter ref="A2:J5"/><tableColumns count="10"><tableColumn id="1" name="record_id"/><tableColumn id="2" name="redcap_form_instance"/><tableColumn id="3" name="repeatsurvey_yesno"/><tableColumn id="4" name="repeatsurvey_radio_v2"/><tableColumn id="5" name="repeatsurvey_checkbox_v2___one"/><tableColumn id="6" name="repeatsurvey_checkbox_v2___two"/><tableColumn id="7" name="repeatsurvey_checkbox_v2___three"/><tableColumn id="8" name="redcap_survey_identifier"/><tableColumn id="9" name="redcap_survey_timestamp"/><tableColumn id="10" name="form_status_complete"/></tableColumns><tableStyleInfo name="TableStyleLight8" showFirstColumn="0" showLastColumn="0" showRowStripes="1" showColumnStripes="0"/></table>
-      11 <table xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" id="11" name="Table11" displayName="Table11" ref="A2:AZ68" totalsRowCount="0" totalsRowShown="0"><autoFilter ref="A2:AZ68"/><tableColumns count="52"><tableColumn id="1" name="redcap_form_name"/><tableColumn id="2" name="redcap_form_label"/><tableColumn id="3" name="field_name"/><tableColumn id="4" name="field_label"/><tableColumn id="5" name="field_type"/><tableColumn id="6" name="section_header"/><tableColumn id="7" name="select_choices_or_calculations"/><tableColumn id="8" name="field_note"/><tableColumn id="9" name="text_validation_type_or_show_slider_number"/><tableColumn id="10" name="text_validation_min"/><tableColumn id="11" name="text_validation_max"/><tableColumn id="12" name="identifier"/><tableColumn id="13" name="branching_logic"/><tableColumn id="14" name="required_field"/><tableColumn id="15" name="custom_alignment"/><tableColumn id="16" name="question_number"/><tableColumn id="17" name="matrix_group_name"/><tableColumn id="18" name="matrix_ranking"/><tableColumn id="19" name="field_annotation"/><tableColumn id="20" name="skim_type"/><tableColumn id="21" name="n_missing"/><tableColumn id="22" name="complete_rate"/><tableColumn id="23" name="character.min"/><tableColumn id="24" name="character.max"/><tableColumn id="25" name="character.empty"/><tableColumn id="26" name="character.n_unique"/><tableColumn id="27" name="character.whitespace"/><tableColumn id="28" name="numeric.mean"/><tableColumn id="29" name="numeric.sd"/><tableColumn id="30" name="numeric.p0"/><tableColumn id="31" name="numeric.p25"/><tableColumn id="32" name="numeric.p50"/><tableColumn id="33" name="numeric.p75"/><tableColumn id="34" name="numeric.p100"/><tableColumn id="35" name="numeric.hist"/><tableColumn id="36" name="factor.ordered"/><tableColumn id="37" name="factor.n_unique"/><tableColumn id="38" name="factor.top_counts"/><tableColumn id="39" name="logical.mean"/><tableColumn id="40" name="logical.count"/><tableColumn id="41" name="Date.min"/><tableColumn id="42" name="Date.max"/><tableColumn id="43" name="Date.median"/><tableColumn id="44" name="Date.n_unique"/><tableColumn id="45" name="POSIXct.min"/><tableColumn id="46" name="POSIXct.max"/><tableColumn id="47" name="POSIXct.median"/><tableColumn id="48" name="POSIXct.n_unique"/><tableColumn id="49" name="difftime.min"/><tableColumn id="50" name="difftime.max"/><tableColumn id="51" name="difftime.median"/><tableColumn id="52" name="difftime.n_unique"/></tableColumns><tableStyleInfo name="TableStyleLight8" showFirstColumn="0" showLastColumn="0" showRowStripes="1" showColumnStripes="0"/></table>
+      11                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             <table xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" id="11" name="Table11" displayName="Table11" ref="A2:G6" totalsRowCount="0" totalsRowShown="0"><autoFilter ref="A2:G6"/><tableColumns count="7"><tableColumn id="1" name="record_id"/><tableColumn id="2" name="text_box_1"/><tableColumn id="3" name="radio_buttons_1"/><tableColumn id="4" name="checkbox___1"/><tableColumn id="5" name="checkbox___2"/><tableColumn id="6" name="checkbox___3"/><tableColumn id="7" name="form_status_complete"/></tableColumns><tableStyleInfo name="TableStyleLight8" showFirstColumn="0" showLastColumn="0" showRowStripes="1" showColumnStripes="0"/></table>
+      12 <table xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" id="12" name="Table12" displayName="Table12" ref="A2:AZ73" totalsRowCount="0" totalsRowShown="0"><autoFilter ref="A2:AZ73"/><tableColumns count="52"><tableColumn id="1" name="redcap_form_name"/><tableColumn id="2" name="redcap_form_label"/><tableColumn id="3" name="field_name"/><tableColumn id="4" name="field_label"/><tableColumn id="5" name="field_type"/><tableColumn id="6" name="section_header"/><tableColumn id="7" name="select_choices_or_calculations"/><tableColumn id="8" name="field_note"/><tableColumn id="9" name="text_validation_type_or_show_slider_number"/><tableColumn id="10" name="text_validation_min"/><tableColumn id="11" name="text_validation_max"/><tableColumn id="12" name="identifier"/><tableColumn id="13" name="branching_logic"/><tableColumn id="14" name="required_field"/><tableColumn id="15" name="custom_alignment"/><tableColumn id="16" name="question_number"/><tableColumn id="17" name="matrix_group_name"/><tableColumn id="18" name="matrix_ranking"/><tableColumn id="19" name="field_annotation"/><tableColumn id="20" name="skim_type"/><tableColumn id="21" name="n_missing"/><tableColumn id="22" name="complete_rate"/><tableColumn id="23" name="character.min"/><tableColumn id="24" name="character.max"/><tableColumn id="25" name="character.empty"/><tableColumn id="26" name="character.n_unique"/><tableColumn id="27" name="character.whitespace"/><tableColumn id="28" name="numeric.mean"/><tableColumn id="29" name="numeric.sd"/><tableColumn id="30" name="numeric.p0"/><tableColumn id="31" name="numeric.p25"/><tableColumn id="32" name="numeric.p50"/><tableColumn id="33" name="numeric.p75"/><tableColumn id="34" name="numeric.p100"/><tableColumn id="35" name="numeric.hist"/><tableColumn id="36" name="factor.ordered"/><tableColumn id="37" name="factor.n_unique"/><tableColumn id="38" name="factor.top_counts"/><tableColumn id="39" name="logical.mean"/><tableColumn id="40" name="logical.count"/><tableColumn id="41" name="Date.min"/><tableColumn id="42" name="Date.max"/><tableColumn id="43" name="Date.median"/><tableColumn id="44" name="Date.n_unique"/><tableColumn id="45" name="POSIXct.min"/><tableColumn id="46" name="POSIXct.max"/><tableColumn id="47" name="POSIXct.median"/><tableColumn id="48" name="POSIXct.n_unique"/><tableColumn id="49" name="difftime.min"/><tableColumn id="50" name="difftime.max"/><tableColumn id="51" name="difftime.median"/><tableColumn id="52" name="difftime.n_unique"/></tableColumns><tableStyleInfo name="TableStyleLight8" showFirstColumn="0" showLastColumn="0" showRowStripes="1" showColumnStripes="0"/></table>
          tab_act
       1        1
       2        1
@@ -1624,6 +1743,7 @@
       9        1
       10       1
       11       1
+      12       1
       
       [[3]]
       [[3]]$fileVersion
@@ -1661,7 +1781,8 @@
        [8] "<sheet name=\"API No Access 2\" sheetId=\"8\" state=\"visible\" r:id=\"rId8\"/>"            
        [9] "<sheet name=\"Survey\" sheetId=\"9\" state=\"visible\" r:id=\"rId9\"/>"                     
       [10] "<sheet name=\"Repeat Survey\" sheetId=\"10\" state=\"visible\" r:id=\"rId10\"/>"            
-      [11] "<sheet name=\"REDCap Metadata\" sheetId=\"11\" state=\"visible\" r:id=\"rId11\"/>"          
+      [11] "<sheet name=\"Labelled Vignette\" sheetId=\"11\" state=\"visible\" r:id=\"rId11\"/>"        
+      [12] "<sheet name=\"REDCap Metadata\" sheetId=\"12\" state=\"visible\" r:id=\"rId12\"/>"          
       
       [[3]]$functionGroups
       NULL
@@ -1715,11 +1836,12 @@
        [9] "<Relationship Id=\"rId9\" Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet\" Target=\"worksheets/sheet9.xml\"/>"  
       [10] "<Relationship Id=\"rId10\" Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet\" Target=\"worksheets/sheet10.xml\"/>"
       [11] "<Relationship Id=\"rId11\" Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet\" Target=\"worksheets/sheet11.xml\"/>"
-      [12] "<Relationship Id=\"rId12\" Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/theme\" Target=\"theme/theme1.xml\"/>"          
-      [13] "<Relationship Id=\"rId13\" Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles\" Target=\"styles.xml\"/>"               
+      [12] "<Relationship Id=\"rId12\" Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet\" Target=\"worksheets/sheet12.xml\"/>"
+      [13] "<Relationship Id=\"rId13\" Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/theme\" Target=\"theme/theme1.xml\"/>"          
+      [14] "<Relationship Id=\"rId14\" Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles\" Target=\"styles.xml\"/>"               
       
       [[5]]
-       [1]  1  2  3  4  5  6  7  8  9 10 11
+       [1]  1  2  3  4  5  6  7  8  9 10 11 12
       
       [[6]]
        [1] "Table of Contents"           "Nonrepeated"                
@@ -1727,6 +1849,6 @@
        [5] "Data Field Types"            "Text Input Validation Types"
        [7] "API No Access"               "API No Access 2"            
        [9] "Survey"                      "Repeat Survey"              
-      [11] "REDCap Metadata"            
+      [11] "Labelled Vignette"           "REDCap Metadata"            
       
 

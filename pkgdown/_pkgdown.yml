@@ -31,6 +31,8 @@ navbar:
       - text: "Exporting to Excel"
         desc: "Convert Data Tibbles to XLSX Sheets"
         href: articles/export_to_xlsx.html
+      - text: "Using Labelled Vectors with REDCapTidieR"
+        href: articles/labelled.html
 
 search:
   exclude: ['news/index.html']
