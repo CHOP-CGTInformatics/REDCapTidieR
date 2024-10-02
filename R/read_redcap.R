@@ -270,8 +270,11 @@ read_redcap <- function(redcap_uri,
   }
 
   if (is_longitudinal) {
+    repeat_event_types <- get_repeat_event_types(db_data)
+
     linked_arms <- link_arms(
-      redcap_uri = redcap_uri, token = token,
+      redcap_uri = redcap_uri,
+      token = token,
       suppress_redcapr_messages = suppress_redcapr_messages
     )
 
@@ -292,7 +295,7 @@ read_redcap <- function(redcap_uri,
   out <- add_metadata(out, db_metadata, redcap_uri, token, suppress_redcapr_messages)
 
   if (is_longitudinal) {
-    out <- add_event_mapping(out, linked_arms)
+    out <- add_event_mapping(out, linked_arms, repeat_event_types)
   }
 
   out <- out %>%
@@ -440,18 +443,21 @@ add_metadata <- function(supertbl, db_metadata, redcap_uri, token, suppress_redc
 #' @param supertbl a supertibble object to supplement with metadata
 #' @param linked_arms the tibble with event mappings created by
 #' \code{link_arms()}
+#' @param repeat_event_types a dataframe output from [get_repeat_event_types()] which
+#' specifies NR, RS, and RT types for events
 #'
 #' @return
 #' The original supertibble with an events \code{redcap_events} list column
 #' containing arms and events associated with each instrument
 #'
 #' @keywords internal
-#'
-add_event_mapping <- function(supertbl, linked_arms) {
+
+add_event_mapping <- function(supertbl, linked_arms, repeat_event_types) {
   event_info <- linked_arms %>%
+    left_join(repeat_event_types, by = c("unique_event_name" = "redcap_event_name")) %>%
     add_partial_keys(.data$unique_event_name) %>%
     select(
-      redcap_form_name = "form", "redcap_event", "event_name", "redcap_arm", "arm_name"
+      redcap_form_name = "form", "redcap_event", "event_name", "redcap_arm", "arm_name", "repeat_type"
     ) %>%
     nest(redcap_events = !"redcap_form_name")
 
@@ -497,4 +503,52 @@ calc_metadata_stats <- function(data) {
     data_na_pct = percent(na_pct, digits = 2, format = "fg"),
     form_complete_pct = percent(form_complete_pct, digits = 2, format = "fg")
   )
+}
+
+#' @title
+#' Add identification for repeat event types
+#'
+#' @description
+#' To correctly assign repeat event types a few assumptions must be made:
+#'
+#' - There are only 3 behaviors: nonrepeating, repeat_separately, and repeat_together
+#' - If an event only shows `redcap_repeat_instance` and `redcap_repeat_instrument`
+#' as `NA`, it can be considered a nonrepeat event.
+#' - If an event is always `NA` for `redcap_repeat_instrument` and filled for `redcap_repeat_instance`
+#' it can be assumed to be a repeat_together event
+#' - repeat_separate and nonrepeating event types exhibit the same behavior along the
+#' primary keys of the data. nonrepeating event types can have data display with
+#' `redcap_repeat_instance`values both filled and as `NA`. If this is the case,
+#' it can be assumed the event is a repeating separate event.
+#'
+#' @param data the REDCap data
+#'
+#' @return
+#' A dataframe with unique event names mapped to their corresponding repeat types
+#'
+#' @keywords internal
+
+get_repeat_event_types <- function(data) {
+  out <- data %>%
+    distinct(.data$redcap_event_name, .data$redcap_repeat_instrument, .data$redcap_repeat_instance) %>%
+    mutate(
+      repeat_type = case_when(
+        !is.na(redcap_event_name) & !is.na(redcap_repeat_instrument) & !is.na(redcap_repeat_instance) ~
+          "repeat_separate",
+        !is.na(redcap_event_name) & is.na(redcap_repeat_instrument) & !is.na(redcap_repeat_instance) ~
+          "repeat_together",
+        TRUE ~ "nonrepeating"
+      )
+    ) %>%
+    distinct(.data$redcap_event_name, .data$repeat_type)
+
+  # Check for instances where the same event is labelled as nonrepeating & repeating separate
+  # If this is the case, it must be repeating separate (there is just data that qualifies as both)
+
+  out %>%
+    mutate(
+      is_duplicated = (duplicated(.data$redcap_event_name) | duplicated(.data$redcap_event_name, fromLast = TRUE))
+    ) %>%
+    filter(!.data$is_duplicated | (.data$is_duplicated & .data$repeat_type == "repeat_separate")) %>%
+    select(-.data$is_duplicated)
 }
