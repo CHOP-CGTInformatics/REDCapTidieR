@@ -3,6 +3,7 @@
 - Added `combine_checkboxes()` analytics function
    - Use `combine_checkboxes()` to consolidate multiple checkbox fields in a REDCap data tibble under a single column
 - Fixed a bug for mixed structure databases resulting in data loss when some fields had dual repeating-separately/repeating-together behavior
+- Fixed a bug where partial keys taken from REDCap arms could be incorrectly specified
 - Various improvements and additions with CRAN release of REDCapR 1.2.0:
    - `event_name` added as a column to the `redcap_event` column of longitudinal supertibbles
    - `guess_max` parameter in `read_redcap()` default updated to `Inf` 
