@@ -24,7 +24,7 @@ add_partial_keys <- function(db_data,
     db_data <- db_data %>%
       mutate(
         redcap_event = sub(pattern, "\\1", {{ var }}),
-        redcap_arm   = as.factor(sub(pattern, "\\2", {{ var }}))
+        redcap_arm   = as.character(sub(pattern, "\\2", {{ var }}))
       )
   }
 

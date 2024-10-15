@@ -369,7 +369,7 @@ test_that("add_partial_keys works", {
   expect_s3_class(out, "data.frame")
   expect_true(nrow(out) > 0)
 
-  expected_redcap_arm_col <- factor(c(1, 1, 1, 1, "1b"))
+  expected_redcap_arm_col <- c("1", "1", "1", "1", "1b")
   expect_equal(out$redcap_arm, expected_redcap_arm_col)
 })
 
