@@ -49,7 +49,7 @@ the events associated with each instrument</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">add_event_mapping</span><span class="op">(</span><span class="va">supertbl</span>, <span class="va">linked_arms</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">add_event_mapping</span><span class="op">(</span><span class="va">supertbl</span>, <span class="va">linked_arms</span>, <span class="va">repeat_event_types</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -63,6 +63,11 @@ the events associated with each instrument</p>
 <dt id="arg-linked-arms">linked_arms<a class="anchor" aria-label="anchor" href="#arg-linked-arms"></a></dt>
 <dd><p>the tibble with event mappings created by
 <code><a href="link_arms.html">link_arms()</a></code></p></dd>
+
+
+<dt id="arg-repeat-event-types">repeat_event_types<a class="anchor" aria-label="anchor" href="#arg-repeat-event-types"></a></dt>
+<dd><p>a dataframe output from <code><a href="get_repeat_event_types.html">get_repeat_event_types()</a></code> which
+specifies NR, RS, and RT types for events</p></dd>
 
 </dl></div>
     <div class="section level2">
