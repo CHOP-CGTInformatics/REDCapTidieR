@@ -151,9 +151,7 @@ build_by <- function(supertbl, x, y, is_mixed) {
   if (is_mixed) {
     # For mixed tables, depending on the .repeat_types present tables may not
     # have event and form instance columns and must be added
-    out <- c(out, "redcap_event_instance", "redcap_form_instance") %>%
-      # TODO: Make standard, currently needed for repeat/mixed joins
-      unique()
+    out <- union(out, c("redcap_event_instance", "redcap_form_instance"))
   }
 
   out
