@@ -58,7 +58,9 @@ join_data_tibbles <- function(supertbl,
   join_fn <- get_join_fn(type)
   by <- build_by(supertbl, x, y, is_mixed)
 
-  join_fn(tbl_x, tbl_y, by, suffix) %>%
+  # TODO: Finalize and remove commented code
+  # join_fn(tbl_x, tbl_y, by, suffix) %>%
+  join_tbls(tbl_x, tbl_y, join_fn, by, suffix, is_mixed) %>%
     relocate(starts_with("form_status_complete"), .after = everything()) %>%
     select(-starts_with(".repeat_type"))
 }
@@ -184,29 +186,29 @@ add_missing_columns <- function(tbl, columns) {
 join_tbls <- function(x, y, join_fn, by, suffix, is_mixed) {
   if (is_mixed) {
     # Filter based on .repeat_type
-    # If repeating together events, can use redcap_form_instance (NA) and redcap_event_instance
+
+    # Repeating Together Events
+    # Pks include can use redcap_form_instance (which is NA) and redcap_event_instance
     x_together <- x %>% filter(.data$.repeat_type == "repeat_together")
     y_together <- y %>% filter(.data$.repeat_type == "repeat_together")
-
-    # repeating instruments for separately repeating events shouldn't be joined by redcap_form_instance
-    x_separate_repeating <- x %>% filter(.data$.repeat_type == "repeat_separate"  & !is.na(.data$redcap_form_instance))
-    y_separate_repeating <- y %>% filter(.data$.repeat_type == "repeat_separate"  & !is.na(.data$redcap_form_instance))
-
-    # nonrepeating instruments for separately repeating events should be joined by redcap_form_instance
-    x_separate_nonrepeating <- x %>% filter(.data$.repeat_type == "repeat_separate" & is.na(.data$redcap_form_instance))
-    y_separate_nonrepeating <- y %>% filter(.data$.repeat_type == "repeat_separate" & is.na(.data$redcap_form_instance))
-
-    # Join together sets
     joined_together <- x_together %>%
       join_fn(y_together, by = by, suffix = suffix)
 
+    # Repeating Separate Events - Repeating Instruments
+    # Pks do not include redcap_form_instance, we want these to remain independent
+    x_separate_repeating <- x %>% filter(.data$.repeat_type == "repeat_separate"  & !is.na(.data$redcap_form_instance))
+    y_separate_repeating <- y %>% filter(.data$.repeat_type == "repeat_separate"  & !is.na(.data$redcap_form_instance))
     joined_separate_repeating <- x_separate_repeating %>%
       join_fn(y_separate_repeating, by = by[by != "redcap_form_instance"], suffix = suffix)
 
+    # Repeating Separate Events - Non Repeating Instruments
+    # Pks include redcap_form_instance, these should be remain linked together
+    x_separate_nonrepeating <- x %>% filter(.data$.repeat_type == "repeat_separate" & is.na(.data$redcap_form_instance))
+    y_separate_nonrepeating <- y %>% filter(.data$.repeat_type == "repeat_separate" & is.na(.data$redcap_form_instance))
     joined_separate_nonrepeating <- x_separate_nonrepeating %>%
       join_fn(y_separate_nonrepeating, by = by, suffix = suffix)
 
-    # Bind rows together, issue in arrangmenet of output
+    # Bind rows together, issue in arrangement of output
     result <- bind_rows(joined_together, joined_separate_repeating) %>%
       bind_rows(joined_separate_nonrepeating) %>%
       drop_non_suffix_columns()
