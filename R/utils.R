@@ -18,12 +18,13 @@
 add_partial_keys <- function(db_data,
                              var = NULL) {
   if (!is.null(enexpr(var))) {
-    pattern <- "^(\\w+?)_arm_(\\d)$"
+    # Include handling for instances where REDCap appends with "_1b" or similar
+    pattern <- "^(\\w+?)_arm_(\\d+\\w?)$"
 
     db_data <- db_data %>%
       mutate(
         redcap_event = sub(pattern, "\\1", {{ var }}),
-        redcap_arm   = as.integer(sub(pattern, "\\2", {{ var }}))
+        redcap_arm   = as.character(sub(pattern, "\\2", {{ var }}))
       )
   }
 
@@ -64,31 +65,38 @@ create_repeat_instance_vars <- function(db_data) {
   }
 
   # Detect if repeat events exist
-  #   Determined by non-NA vals in new "redcap_form_instance" alongside
-  #   NA vals in "redcap_repeat_instrument"
-  #   `has_repeat_forms` will always be TRUE for events to exist
-  if (has_repeat_forms) {
+  # First determined if redcap_event_instance added during mixed structure handling
+  # See: convert_mixed_instrument
+  has_repeat_events <- "redcap_event_instance" %in% names(out)
+
+  # Next determined by non-NA vals in new "redcap_form_instance" alongside
+  # NA vals in "redcap_repeat_instrument"
+  # `has_repeat_forms` will always be TRUE for events to exist
+  if (has_repeat_forms && !has_repeat_events) {
     has_repeat_events <- any(
       is.na(out$redcap_repeat_instrument) & !is.na(out$redcap_form_instance)
     )
-  } else {
-    has_repeat_events <- FALSE
   }
 
   if (has_repeat_events) {
-    out$redcap_event_instance <- ifelse(
-      is.na(out$redcap_repeat_instrument) &
-        !is.na(out$redcap_form_instance),
-      out$redcap_form_instance,
-      NA
-    )
+    # In cases where there are repeating events but they were not added by
+    # convert_mixed_instrument(), add an empty redcap_event_instance column
+    if (!"redcap_event_instance" %in% names(out)) {
+      out$redcap_event_instance <- NA
+    }
 
-    out$redcap_form_instance <- ifelse(
-      is.na(out$redcap_repeat_instrument) &
-        !is.na(out$redcap_form_instance),
-      NA,
-      out$redcap_form_instance
-    )
+    out <- out %>%
+      mutate(
+        redcap_event_instance = case_when(
+          is.na(redcap_repeat_instrument) & !is.na(redcap_form_instance) ~ redcap_form_instance,
+          # Else leave NA or the value given by conver_mixed_instrument()
+          TRUE ~ redcap_event_instance
+        ),
+        redcap_form_instance = case_when(
+          is.na(redcap_repeat_instrument) & !is.na(redcap_form_instance) ~ NA,
+          TRUE ~ redcap_form_instance
+        )
+      )
 
     out <- relocate(out,
       "redcap_event_instance",

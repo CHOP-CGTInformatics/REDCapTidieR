@@ -348,7 +348,8 @@ test_that("add_partial_keys works", {
     1, "nr_event_arm_1", NA, NA,
     1, "nr_event_arm_1", "r_instrument", 1,
     3, "nr_event_arm_1", "r_instrument", 1,
-    4, "r_event_arm_1", NA, 1
+    4, "r_event_arm_1", NA, 1,
+    5, "r_event_arm_1b", NA, 1
   )
 
   out <- test_data %>%
@@ -367,6 +368,9 @@ test_that("add_partial_keys works", {
   expect_true(all(expected_cols %in% names(out)))
   expect_s3_class(out, "data.frame")
   expect_true(nrow(out) > 0)
+
+  expected_redcap_arm_col <- c("1", "1", "1", "1", "1b")
+  expect_equal(out$redcap_arm, expected_redcap_arm_col)
 })
 
 test_that("create_repeat_instance_vars works", {
