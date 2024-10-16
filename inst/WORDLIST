@@ -17,8 +17,10 @@ REDCapTidieR's
 RStudio
 Recode
 Recoding
+Stata
 Supertibble
 Supertibbles
+TRUEs
 Tibble
 Tibble's
 Tibbles
@@ -30,6 +32,7 @@ analytics
 api
 appendings
 cli
+de
 dplyr
 dropdown
 edu
@@ -38,6 +41,7 @@ ggplot
 gtsummary
 https
 httptest
+interpretable
 labelled
 multiselection
 nonrepeat
@@ -48,12 +52,15 @@ preprocess
 recode
 recoded
 recodes
+recoding
 skimr
 summarise
 supertbl
 supertibble
 supertibble's
+supertibbles
 tableStyleLight
+tbl
 tibble
 tibble's
 tibbles
@@ -62,7 +69,6 @@ tidyverse
 truefalse
 undirected
 unlabelled
-wb
 xlsx
 yesno
 ︎

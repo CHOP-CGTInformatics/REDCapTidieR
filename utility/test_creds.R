@@ -9,12 +9,13 @@ ouhsc_creds <- readr::read_csv(file = "utility/redcapr.example.credentials", ski
   select(redcap_uri, token, comment)
 
 # Remove identified APIs that don't work
-ouhsc_creds <- ouhsc_creds[-c(5,6,10,15,19),]
+ouhsc_creds <- ouhsc_creds[-c(5,6,10,14,15,19),]
 # Empty rows (dataframe with 0 rows, 0 columns)
 # Single Column (dataframe with 0 rows, 0 columns)
 # Missing/invalid token, "---" (REDCapR errors as well)
 # Potentially problematic dictionary  (dataframe with 0 rows, 0 columns)
 # super-wide #2--5,785 columns (dataframe with 0 rows, 0 columns)
+# repeat instrument, no longer a working api key
 
 # Load REDCapTidieR and CGTI creds
 redcaptidier_creds <- tibble::tribble(

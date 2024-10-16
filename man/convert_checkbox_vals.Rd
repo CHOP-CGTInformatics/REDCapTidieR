@@ -33,10 +33,10 @@ This function takes a single column of data and converts the values
 based on the overall data tibble cross referenced with a nested section of the
 metadata tibble.
 
-\code{\link[=case_when]{case_when()}} logic helps determine whether the value is a coalesced singular
+\code{case_when} logic helps determine whether the value is a coalesced singular
 value or a user-specified one via \code{multi_value_label} or \code{values_fill}.
 }
 \details{
-This function is used in conjunction with \code{\link[=pmap]{pmap()}}.
+This function is used in conjunction with \code{pmap()}.
 }
 \keyword{internal}

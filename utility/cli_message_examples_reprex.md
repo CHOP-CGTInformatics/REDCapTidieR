@@ -34,13 +34,9 @@ read_redcap(letters[1:3], classic_token)
 read_redcap("https://www.google.com", classic_token)
 #> Error in `read_redcap()`:
 #> ✖ The REDCapR export operation was not successful.
-#> ! An unexpected error occured.
-#> ℹ This means that you probably discovered a bug!
-#> ℹ Please consider submitting a bug report here:
-#>   <https://github.com/CHOP-CGTInformatics/REDCapTidieR/issues>.
-#> Caused by error in `redcap_metadata_read()`:
-#> ! The REDCapR metadata export operation was not successful.  The error message was:
-#> <html><body><h1>404 Not Found</h1></body></html>
+#> ! The URL returned the HTTP error code 405 (POST Method not allowed).
+#> ℹ Are you sure the URI points to an active REDCap API endpoint?
+#> ℹ URI: `https://www.google.com`
 
 read_redcap("https://www.google.comm", classic_token)
 #> Error in `read_redcap()`:
@@ -63,13 +59,13 @@ read_redcap(redcap_uri, letters[1:3])
 
 read_redcap(redcap_uri, "")
 #> Error in `read_redcap()`:
-#> ✖ The token is an empty string, not a valid 32-character hexademical
-#>   value.
+#> ✖ The token is an empty string, which is not allowed.
 #> ℹ API token: ``
 
 read_redcap(redcap_uri, "CC0CE44238EF65C5DA26A55DD749AF7") # 31 hex characters
 #> Error in `read_redcap()`:
-#> ✖ The token is not a valid 32-character hexademical value.
+#> ✖ The token does not conform with the regex
+#>   `^([0-9A-Fa-f]{32})(?:\n)?$`.
 #> ℹ API token: `CC0CE44238EF65C5DA26A55DD749AF7`
 
 read_redcap(redcap_uri, "CC0CE44238EF65C5DA26A55DD749AF7A") # will be rejected by server
@@ -259,7 +255,7 @@ withr::with_tempdir({
 })
 #> Error:
 #> ✖ File
-#>   ''/private/var/folders/9c/k1m0bzys7gb1v32g86hfn5sn5k86h1/T/Rtmp1QPC0p/file5c744dd73619/temp.csv''
+#>   ''/private/var/folders/qc/mmjjyjq50530z9r_7mfqcqfhxkkk67/T/Rtmph4LQ3Z/filee5aa7b9bea48/temp.csv''
 #>   already exists.
 #> ℹ Overwriting files is disabled by default. Set `overwrite = TRUE` to overwrite
 #>   existing file.
@@ -300,25 +296,26 @@ withr::with_tempdir({
     write_redcap_xlsx(file = filepath)
 })
 #> Warning in write_redcap_xlsx(., file = filepath): ! No extension provided for `file`:
-#>   '/private/var/folders/9c/k1m0bzys7gb1v32g86hfn5sn5k86h1/T/Rtmp1QPC0p/file5c7456597c2b/temp'
+#>   '/private/var/folders/qc/mmjjyjq50530z9r_7mfqcqfhxkkk67/T/Rtmph4LQ3Z/filee5aa11455c98/temp'
 #> ℹ The extension '.xlsx' will be appended to the file name.
 
 # Printed supertibble
 
 read_redcap(Sys.getenv("REDCAP_URI"), Sys.getenv("REDCAPTIDIER_CLASSIC_API")) %>%
   suppressWarnings()
-#> # A REDCapTidieR Supertibble with 9 instruments
-#>   redcap_form_name       redcap_form_label redcap_data redcap_metadata structure
-#>   <chr>                  <chr>             <list>      <list>          <chr>    
-#> 1 nonrepeated            Nonrepeated       <tibble>    <tibble>        nonrepea…
-#> 2 nonrepeated2           Nonrepeated2      <tibble>    <tibble>        nonrepea…
-#> 3 repeated               Repeated          <tibble>    <tibble>        repeating
-#> 4 data_field_types       Data Field Types  <tibble>    <tibble>        nonrepea…
-#> 5 text_input_validation… Text Input Valid… <tibble>    <tibble>        nonrepea…
-#> 6 api_no_access          API No Access     <tibble>    <tibble>        nonrepea…
-#> 7 api_no_access_2        API No Access 2   <tibble>    <tibble>        nonrepea…
-#> 8 survey                 Survey            <tibble>    <tibble>        nonrepea…
-#> 9 repeat_survey          Repeat Survey     <tibble>    <tibble>        repeating
+#> # A REDCapTidieR Supertibble with 10 instruments
+#>    redcap_form_name      redcap_form_label redcap_data redcap_metadata structure
+#>    <chr>                 <chr>             <list>      <list>          <chr>    
+#>  1 nonrepeated           Nonrepeated       <tibble>    <tibble>        nonrepea…
+#>  2 nonrepeated2          Nonrepeated2      <tibble>    <tibble>        nonrepea…
+#>  3 repeated              Repeated          <tibble>    <tibble>        repeating
+#>  4 data_field_types      Data Field Types  <tibble>    <tibble>        nonrepea…
+#>  5 text_input_validatio… Text Input Valid… <tibble>    <tibble>        nonrepea…
+#>  6 api_no_access         API No Access     <tibble>    <tibble>        nonrepea…
+#>  7 api_no_access_2       API No Access 2   <tibble>    <tibble>        nonrepea…
+#>  8 survey                Survey            <tibble>    <tibble>        nonrepea…
+#>  9 repeat_survey         Repeat Survey     <tibble>    <tibble>        repeating
+#> 10 labelled_vignette     Labelled Vignette <tibble>    <tibble>        nonrepea…
 #> # ℹ 5 more variables: data_rows <int>, data_cols <int>, data_size <lbstr_by>,
 #> #   data_na_pct <formttbl>, form_complete_pct <formttbl>
 
@@ -343,4 +340,4 @@ read_redcap(redcap_uri, Sys.getenv("REDCAPTIDIER_MDC_API"))
 #> #   data_na_pct <formttbl>, form_complete_pct <formttbl>
 ```
 
-<sup>Created on 2024-04-10 with [reprex v2.1.0](https://reprex.tidyverse.org)</sup>
+<sup>Created on 2024-10-16 with [reprex v2.1.0](https://reprex.tidyverse.org)</sup>

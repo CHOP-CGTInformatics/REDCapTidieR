@@ -23,8 +23,7 @@ combine_checkboxes(
 
 \item{tbl}{The \code{redcap_form_name} of the data tibble to extract. Required.}
 
-\item{cols}{<\code{\link[=tidyr_tidy_select]{tidy-select}}> Checkbox columns to combine to
-single column. Required.}
+\item{cols}{Checkbox columns to combine to single column. Required.}
 
 \item{names_prefix}{String added to the start of every variable name.}
 
