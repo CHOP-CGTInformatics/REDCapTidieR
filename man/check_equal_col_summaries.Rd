@@ -14,7 +14,7 @@ check_equal_col_summaries(data, col1, col2, call = caller_env())
 \item{col2}{a column to check for uniqueness}
 }
 \description{
-Takes a dataframe and two columns and checks if \code{\link[=n_distinct]{n_distinct()}} of the second
+Takes a dataframe and two columns and checks if \code{n_distinct} of the second
 column is all unique based on grouping of the first column.
 }
 \keyword{internal}
