@@ -680,5 +680,4 @@ test_that("get_repeat_event_types() works", {
   )
 
   expect_equal(out, expected_out)
-
 })
