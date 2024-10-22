@@ -7,6 +7,8 @@ on:
         options:
         - strong
         - most
+env:
+  RENV_CONFIG_AUTOLOADER_ENABLED: false
 
 name: Reverse dependency check
 
@@ -16,5 +18,3 @@ jobs:
     uses: r-devel/recheck/.github/workflows/recheck.yml@v1
     with:
       which: ${{ inputs.which }}
-    env:
-      RENV_CONFIG_AUTOLOADER_ENABLED: false
