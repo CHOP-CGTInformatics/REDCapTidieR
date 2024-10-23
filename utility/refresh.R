@@ -64,10 +64,10 @@ devtools::check( # Equivalent of R-hub
   incoming  = TRUE
 )
 # Approx matches to https://cran.r-project.org/web/checks/check_flavors.html
-rhub::rhub_check(platforms = c("linux", "windows", "ubuntu-next", "ubuntu-release"))
-devtools::check_win_devel(email = "porterej@chop.edu") # CRAN submission policies encourage the development version
+rhub::rhub_check(platforms = c("linux", "windows", "ubuntu-next", "ubuntu-release")) # These will be available in GitHub Actions
+devtools::check_win_devel(email = "hannar1@chop.edu") # CRAN submission policies encourage the development version
 # Note: Must be off of VPN
-# revdepcheck::revdep_check(num_workers = 4) # Deprecated
+# To run reverse dependency check, manually trigger the "Revere dependency check" workflow in GitHub Actions
 # Careful, the last question ultimately uploads it to CRAN, where you can't delete/reverse your decision.
 # Run as not CRAN to build full vignettes
 # withr::with_envvar(

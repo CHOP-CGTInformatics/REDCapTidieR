@@ -2,41 +2,27 @@
 
 Thank you for taking the time to review this submission and please reach out to either Stephan Kadauke, Richard Hanna, or Ezra Porter for any questions, comments, or concerns.
 
-This submission patches version 1.1.0 to fix a test failure introduced by an upcoming release of `labelled` 2.13.0. We have worked with the developer of `labelled` to ensure this patch resolves their reverse dependency check failures.
+This submission for v1.2.0 adds new functionality, new documentation, and patches several minor bugs.
 
 ## New Features
 
-There are no significant user-facing changes in this release.
-
-`read_redcap(raw_or_label = "haven")` now correctly casts categorical data values to character when their type is not character or numeric. This is a constraint of labels from the `haven` package which `labelled` will be checking for explicitly in their new release.
+The only new feature in this release is an analytics function that exists in a silo away from the rest of the core package.
 
 ## Test environments
 
-1. Local macOS Ventura 13.6.5, R 4.2.4
-2. R-hub
-    1. [Ubuntu 22.04.4 LTS, R-next, GCC](https://github.com/CHOP-CGTInformatics/REDCapTidieR/actions/runs/8650642187/job/23719620675)
-    2. [Ubuntu 22.04.4 LTS, R-release, GCC](https://github.com/CHOP-CGTInformatics/REDCapTidieR/actions/runs/8650642187/job/23719621223)
-    3. [Ubuntu 22.04.4 LTS, R-devel, GCC](https://github.com/CHOP-CGTInformatics/REDCapTidieR/actions/runs/8650642187/job/23719620358)
-    4. [Windows Server](https://github.com/CHOP-CGTInformatics/REDCapTidieR/actions/runs/8650642187/job/23719620965)
-3.  [win-builder](https://win-builder.r-project.org/V4B5Ar22pIf5/), development version.
-4.  [GiHub Actions](https://github.com/CHOP-CGTInformatics/REDCapTidieR/actions), Ubuntu 20.04.02 LTS
+1.  Local macOS Sonoma 14.6.1, R 4.4.0
+2.  R-hub
+    1.  [Ubuntu 22.04.5 LTS, R-next, GCC](https://github.com/CHOP-CGTInformatics/REDCapTidieR/actions/runs/11486785018/job/31969845126)
+    2.  [Ubuntu 22.04.5 LTS, R-release, GCC](https://github.com/CHOP-CGTInformatics/REDCapTidieR/actions/runs/11486785018/job/31969845814)
+    3.  [Ubuntu 22.04.4 LTS, R-devel, GCC](https://github.com/CHOP-CGTInformatics/REDCapTidieR/actions/runs/11486785018/job/31969845504)
+    4.  [Microsoft Windows Server 2022, 10.0.20348](https://github.com/CHOP-CGTInformatics/REDCapTidieR/actions/runs/11486785018/job/31969846106)
+3.  [win-builder](https://win-builder.r-project.org/OQCea7cbW815/), development version.
+4.  [GiHub Actions](https://github.com/CHOP-CGTInformatics/REDCapTidieR/actions), Ubuntu 20.04.05 LTS
 
 ## R CMD check results:
 
-- 0 ERRORs or WARNINGs on any builds
-
-- A NOTE is generated in win-builder resulting from the package maintainer email address changing relative to the last CRAN release. This is an artifact of a different email address than the package maintainer's being used for the submission to win-builder.
-
-```
-* checking CRAN incoming feasibility ... [14s] NOTE
-Maintainer: 'Richard Hanna <porterej@chop.edu>'
-
-New maintainer:
-  Richard Hanna <porterej@chop.edu>
-Old maintainer(s):
-  Richard Hanna <richardshanna91@gmail.com>
-```
+-   0 ERRORs or WARNINGs on any builds
 
 ## Downstream Dependencies:
 
-No downstream packages are affected. No packages depend/import/suggest REDCapTidieR. Results: <https://github.com/CHOP-CGTInformatics/REDCapTidieR/blob/main/revdep/cran.md>
+All packages that depend/import/suggest REDCapTidieR pass the [Reverse dependency checks](https://github.com/CHOP-CGTInformatics/REDCapTidieR/actions/runs/11486797194).

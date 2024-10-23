@@ -745,7 +745,7 @@ check_fields_are_checkboxes <- function(metadata_tbl, call = caller_env()) {
 #' @title Check equal distinct values between two columns
 #'
 #' @description
-#' Takes a dataframe and two columns and checks if [n_distinct()] of the second
+#' Takes a dataframe and two columns and checks if `n_distinct` of the second
 #' column is all unique based on grouping of the first column.
 #'
 #' @param data a dataframe
@@ -757,8 +757,8 @@ check_fields_are_checkboxes <- function(metadata_tbl, call = caller_env()) {
 check_equal_col_summaries <- function(data, col1, col2, call = caller_env()) {
   summary <- data %>%
     summarise(
-      .by = {{ col1 }},
-      n = n_distinct({{ col2 }})
+      .by = col1,
+      n = n_distinct(col2)
     )
 
   total_n <- summary %>%

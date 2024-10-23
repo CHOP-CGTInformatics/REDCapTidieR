@@ -260,17 +260,24 @@ read_redcap <- function(redcap_uri,
     db_data <- multi_choice_to_labels(db_data, db_metadata, raw_or_label)
   }
 
-  # Longitudinal Arms Check and Cleaning Application ----
-  # Check if database supplied is longitudinal to determine appropriate function
-  # to use
-  is_longitudinal <- if ("redcap_event_name" %in% names(db_data)) {
-    TRUE
+  # Database structure checks and definitions ----
+  is_longitudinal <- "redcap_event_name" %in% names(db_data)
+  has_repeating_structure <- "redcap_repeat_instance" %in% names(db_data)
+  has_repeating_events <- if (is_longitudinal && has_repeating_structure) {
+    any(
+      is.na(db_data$redcap_repeat_instrument) &
+        !is.na(db_data$redcap_repeat_instance)
+    )
   } else {
     FALSE
   }
 
   if (is_longitudinal) {
-    repeat_event_types <- get_repeat_event_types(db_data)
+    repeat_event_types <- if (has_repeating_events) {
+      get_repeat_event_types(db_data)
+    } else {
+      NULL
+    }
 
     linked_arms <- link_arms(
       redcap_uri = redcap_uri,
@@ -453,11 +460,17 @@ add_metadata <- function(supertbl, db_metadata, redcap_uri, token, suppress_redc
 #' @keywords internal
 
 add_event_mapping <- function(supertbl, linked_arms, repeat_event_types) {
-  event_info <- linked_arms %>%
-    left_join(repeat_event_types, by = c("unique_event_name" = "redcap_event_name")) %>%
+  event_info <- linked_arms
+
+  if (!is.null(repeat_event_types)) {
+    event_info <- event_info %>%
+      left_join(repeat_event_types, by = c("unique_event_name" = "redcap_event_name"))
+  }
+
+  event_info <- event_info %>%
     add_partial_keys(.data$unique_event_name) %>%
     select(
-      redcap_form_name = "form", "redcap_event", "event_name", "redcap_arm", "arm_name", "repeat_type"
+      redcap_form_name = "form", "redcap_event", "event_name", "redcap_arm", "arm_name", any_of("repeat_type")
     ) %>%
     nest(redcap_events = !"redcap_form_name")
 
