@@ -48,7 +48,7 @@ bibliography: paper.bib
 
 # Summary
 
-Capturing and storing electronic data is integral in the research world. [REDCap](https://www.project-redcap.org/) [@Harris2009; @Harris2019] offers a secure web application that lets users build databases and surveys with a robust front-end interface that can support data of any type, including data requiring compliance with standards for protected information.
+Capturing and storing electronic data is integral in the research world. [REDCap](https://projectredcap.org/) [@Harris2009; @Harris2019] offers a secure web application that lets users build databases and surveys with a robust front-end interface that can support data of any type, including data requiring compliance with standards for protected information.
 
 Many REDCap users use the R programming language [@r_cit] to extract and analyze their data. The [`REDCapR`](https://cran.r-project.org/web/packages/REDCapR/index.html) [@redcapr_cit] and [`redcapAPI`](https://cran.r-project.org/web/packages/redcapAPI/index.html) [@redcapapi_cit] packages allow R users to extract data directly into their programming environment. While this works well for simple REDCap databases, it becomes cumbersome for complex databases, because the REDCap API outputs a "block matrix"--a single table with varied granularity levels, which conflicts with the "tidy data" framework [@Wickham2014] that advocates for standardized data organization.
 
