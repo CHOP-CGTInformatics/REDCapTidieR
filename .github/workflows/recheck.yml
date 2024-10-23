@@ -7,8 +7,6 @@ on:
         options:
         - strong
         - most
-env:
-  RENV_CONFIG_AUTOLOADER_ENABLED: false
 
 name: Reverse dependency check
 
