@@ -138,23 +138,23 @@ link_arms <- function(redcap_uri,
     # match field name of redcap_event_instruments() output
     rename(arm_num = "arm_number")
 
-  db_event_labels <- try_redcapr(
-    {
-      redcap_event_read(
-        redcap_uri = redcap_uri,
-        token = token,
-        verbose = !suppress_redcapr_messages
-      )
-    },
-    call = caller_env()
-  )
-
   db_event_instruments <- try_redcapr(
     {
       redcap_event_instruments(
         redcap_uri = redcap_uri,
         token = token,
         arms = NULL, # get all arms
+        verbose = !suppress_redcapr_messages
+      )
+    },
+    call = caller_env()
+  )
+
+  db_event_labels <- try_redcapr(
+    {
+      redcap_event_read(
+        redcap_uri = redcap_uri,
+        token = token,
         verbose = !suppress_redcapr_messages
       )
     },
