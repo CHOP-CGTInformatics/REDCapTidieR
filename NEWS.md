@@ -1,4 +1,8 @@
-# REDCapTidieR 1.2.0 (development version)
+# REDCapTidieR 1.2.1 (development version)
+
+- For longitudinal REDCap projects, the `redcap_events` column has been updated to give REDCap event factor levels and order for the `redcap_event` and `event_name` columns
+
+# REDCapTidieR 1.2.0
 
 - Added `combine_checkboxes()` analytics function
    - Use `combine_checkboxes()` to consolidate multiple checkbox fields in a REDCap data tibble under a single column
