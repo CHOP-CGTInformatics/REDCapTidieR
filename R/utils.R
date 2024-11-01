@@ -138,6 +138,17 @@ link_arms <- function(redcap_uri,
     # match field name of redcap_event_instruments() output
     rename(arm_num = "arm_number")
 
+  db_event_labels <- try_redcapr(
+    {
+      redcap_event_read(
+        redcap_uri = redcap_uri,
+        token = token,
+        verbose = !suppress_redcapr_messages
+      )
+    },
+    call = caller_env()
+  )
+
   db_event_instruments <- try_redcapr(
     {
       redcap_event_instruments(
@@ -150,19 +161,12 @@ link_arms <- function(redcap_uri,
     call = caller_env()
   )
 
-  db_event_labels <- try_redcapr(
-    {
-      redcap_event_read(
-        redcap_uri = redcap_uri,
-        token = token,
-        verbose = !suppress_redcapr_messages
-      )
-    },
-    call = caller_env()
-  )
-
   left_join(db_event_instruments, arms, by = "arm_num") %>%
-    left_join(db_event_labels, by = c("arm_num", "unique_event_name"))
+    left_join(db_event_labels, by = c("arm_num", "unique_event_name")) %>%
+    mutate(
+      across(any_of("unique_event_name"), ~ fct_inorder(.x, ordered = TRUE)),
+      across(any_of("event_name"), ~ fct_inorder(.x, ordered = TRUE))
+    )
 }
 
 #' @title

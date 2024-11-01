@@ -8,6 +8,7 @@
 #' left_join mutate pull recode relocate rename right_join row_number rowwise
 #' select slice summarise ungroup coalesce cur_column bind_cols first nth n_distinct
 #' first distinct
+#' @importFrom forcats fct_inorder
 #' @importFrom formattable percent
 #' @importFrom lobstr obj_size
 #' @importFrom lubridate is.difftime is.period is.POSIXt is.Date

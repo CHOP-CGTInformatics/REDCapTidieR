@@ -36,7 +36,8 @@ Imports:
     pillar,
     vctrs,
     readr,
-    stats
+    stats,
+    forcats
 Suggests: 
     covr,
     knitr,
