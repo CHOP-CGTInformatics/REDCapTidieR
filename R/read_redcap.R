@@ -177,7 +177,6 @@ read_redcap <- function(redcap_uri,
   export_survey_fields <- ifelse(is.null(export_survey_fields), TRUE, export_survey_fields)
 
   # Load REDCap Dataset output ----
-
   db_data <- try_redcapr({
     redcap_read_oneshot(
       redcap_uri = redcap_uri,
@@ -463,12 +462,20 @@ add_event_mapping <- function(supertbl, linked_arms, repeat_event_types) {
   event_info <- linked_arms
 
   if (!is.null(repeat_event_types)) {
+    # Preserve factor levels post-join by referencing level order from linked_arms
+    repeat_event_types$redcap_event_name <- factor(repeat_event_types$redcap_event_name,
+      levels = levels(event_info$unique_event_name)
+    )
+
     event_info <- event_info %>%
       left_join(repeat_event_types, by = c("unique_event_name" = "redcap_event_name"))
   }
 
   event_info <- event_info %>%
     add_partial_keys(.data$unique_event_name) %>%
+    mutate(
+      across(any_of("redcap_event"), ~ fct_inorder(redcap_event, ordered = TRUE))
+    ) %>%
     select(
       redcap_form_name = "form", "redcap_event", "event_name", "redcap_arm", "arm_name", any_of("repeat_type")
     ) %>%
