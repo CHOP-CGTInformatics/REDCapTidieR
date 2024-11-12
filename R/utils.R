@@ -164,8 +164,8 @@ link_arms <- function(redcap_uri,
   left_join(db_event_instruments, arms, by = "arm_num") %>%
     left_join(db_event_labels, by = c("arm_num", "unique_event_name")) %>%
     mutate(
-      across(any_of("unique_event_name"), ~ fct_inorder(.x, ordered = TRUE)),
-      across(any_of("event_name"), ~ fct_inorder(.x, ordered = TRUE))
+      across(any_of("unique_event_name"), ~ fct_inorder(.x)),
+      across(any_of("event_name"), ~ fct_inorder(.x))
     )
 }
 

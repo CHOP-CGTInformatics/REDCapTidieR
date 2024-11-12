@@ -228,8 +228,8 @@ test_that("link_arms works", {
   # all arms are represented in output (test redcap has 2 arms)
   n_unique_arms <- length(unique(out$arm_num))
   expect_equal(n_unique_arms, 2)
-  expect_s3_class(out$unique_event_name, "ordered")
-  expect_s3_class(out$event_name, "ordered")
+  expect_s3_class(out$unique_event_name, "factor")
+  expect_s3_class(out$event_name, "factor")
   expect_equal(
     levels(out$unique_event_name),
     c("event_1_arm_1", "event_2_arm_1", "event_1_arm_2", "event_3_arm_2")

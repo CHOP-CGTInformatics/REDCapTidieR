@@ -464,8 +464,7 @@ add_event_mapping <- function(supertbl, linked_arms, repeat_event_types) {
   if (!is.null(repeat_event_types)) {
     # Preserve factor levels post-join by referencing level order from linked_arms
     repeat_event_types$redcap_event_name <- factor(repeat_event_types$redcap_event_name,
-      levels = levels(event_info$unique_event_name),
-      ordered = TRUE
+      levels = levels(event_info$unique_event_name)
     )
 
     event_info <- event_info %>%
