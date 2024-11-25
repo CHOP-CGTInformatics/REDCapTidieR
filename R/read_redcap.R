@@ -571,5 +571,5 @@ get_repeat_event_types <- function(data) {
       is_duplicated = (duplicated(.data$redcap_event_name) | duplicated(.data$redcap_event_name, fromLast = TRUE))
     ) %>%
     filter(!.data$is_duplicated | (.data$is_duplicated & .data$repeat_type == "repeat_separate")) %>%
-    select(-.data$is_duplicated)
+    select(-"is_duplicated")
 }
