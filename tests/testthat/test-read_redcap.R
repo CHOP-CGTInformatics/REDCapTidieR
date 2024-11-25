@@ -242,7 +242,7 @@ test_that("get_fields_to_drop handles checkboxes", {
   # Example metadata
   test_meta <- tibble::tribble(
     ~field_name, ~form_name, ~field_type, ~select_choices_or_calculations, ~field_label,
-    "record_id", "my_form", "text", NA_character_, NA_character_,
+    "record_id", NA_character_, "text", NA_character_, NA_character_,
     "my_checkbox", "my_form", "checkbox", "1, 1 | -99, Unknown", NA_character_
   )
 
@@ -252,6 +252,18 @@ test_that("get_fields_to_drop handles checkboxes", {
     res,
     c("my_checkbox___1", "my_checkbox___-99", "my_form_complete")
   )
+})
+
+test_that("get_fields_to_drop handles record_id form with single field", {
+  # Example metadata
+  test_meta <- tibble::tribble(
+    ~field_name, ~form_name, ~field_type, ~select_choices_or_calculations, ~field_label,
+    "record_id", NA_character_, "text", NA_character_, NA_character_
+  )
+
+  res <- get_fields_to_drop(test_meta, "my_form")
+
+  expect_equal(res, "my_form_complete")
 })
 
 test_that("read_redcap returns metadata", {

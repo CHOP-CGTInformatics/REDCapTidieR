@@ -336,25 +336,26 @@ read_redcap <- function(redcap_uri,
 #'
 #' @keywords internal
 get_fields_to_drop <- function(db_metadata, form) {
-  # Assume the first instrument in the metadata contains IDs
-  # REDCap enforces this constraints
-  record_id_field <- db_metadata$field_name[[1]]
 
-  res <- db_metadata %>%
-    filter(.data$form_name == form) %>%
+  # Always drop form complete field which is not in metadata but should be removed from
+
+  res <- paste0(form, "_complete")
+
+  db_metadata <- db_metadata %>%
+    filter(.data$form_name == form)
+
+  # If there are no fields in the metadata we're done
+  if (nrow(db_metadata) == 0) {
+    return(res)
+  }
+
+  # Otherwise get the additional fields
+  additional_fields <- db_metadata %>%
     # Add checkbox field names to metadata
     update_field_names() %>%
     pull(.data$field_name_updated)
 
-  # Remove identifier since we want to keep it
-  res <- setdiff(res, record_id_field)
-
-  # Add form complete field which is not in metadata but should be removed from
-  # read_redcap output
-
-  res <- c(res, paste0(form, "_complete"))
-
-  res
+  c(additional_fields, res)
 }
 
 #' @title
