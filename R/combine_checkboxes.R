@@ -134,18 +134,18 @@ combine_checkboxes <- function(supertbl,
   data_tbl_mod <- data_tbl_mod %>%
     mutate(
       across(
-        selected_cols,
+        all_of(selected_cols),
         ~ replace_true(.x,
           cur_column(),
           metadata = metadata_spec,
           raw_or_label = raw_or_label
         )
       ),
-      across(selected_cols, as.character) # enforce to character strings
+      across(all_of(selected_cols), as.character) # enforce to character strings
     )
 
   new_cols <- metadata_spec %>%
-    nest(.by = .data$.new_value, .key = "metadata") %>%
+    nest(.by = ".new_value", .key = "metadata") %>%
     pmap(convert_checkbox_vals,
       data_tbl = data_tbl_mod,
       raw_or_label = raw_or_label, multi_value_label = multi_value_label, values_fill = values_fill
@@ -156,7 +156,7 @@ combine_checkboxes <- function(supertbl,
   # Keep or remove original multi columns
   if (!keep) {
     final_tbl <- final_tbl %>%
-      select(-selected_cols)
+      select(!all_of(selected_cols))
   }
 
   # Update the supertbl data tibble
@@ -191,12 +191,12 @@ get_metadata_spec <- function(metadata_tbl,
   if (!is.null(names_glue)) {
     # Similar to pivot_*, use of `names_glue` overrides use of names_prefix/sep
     glue_env <- out %>%
-      select(.data$.value)
+      select(".value")
 
     glue_env$.new_value <- as.character(glue::glue_data(glue_env, names_glue))
 
     glue_env <- glue_env %>%
-      select(.data$.new_value)
+      select(".new_value")
 
     out <- cbind(out, glue_env)
   } else {
@@ -210,7 +210,7 @@ get_metadata_spec <- function(metadata_tbl,
 
   # Check that for each unique value of .value there is one unique value of .new_value
   # May be removed in the future
-  check_equal_col_summaries(out, ".value", ".new_value") # nolint: object_usage_linter
+  check_equal_col_summaries(out, ".value", ".new_value")
 
   # Make sure selection is checkbox metadata field type
   check_fields_are_checkboxes(out)
@@ -226,8 +226,8 @@ get_metadata_spec <- function(metadata_tbl,
   }
 
   bind_cols(out, parsed_vals) %>%
-    select(.data$field_name, .data$raw, .data$label, .data$.value, .data$.new_value) %>%
-    relocate(c(.data$.value, .data$.new_value), .after = .data$field_name)
+    select("field_name", "raw", "label", ".value", ".new_value") %>%
+    relocate(".value", ".new_value", .after = "field_name")
 }
 
 #' @title Replace checkbox TRUEs with raw_or_label values

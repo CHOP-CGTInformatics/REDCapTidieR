@@ -757,8 +757,8 @@ check_fields_are_checkboxes <- function(metadata_tbl, call = caller_env()) {
 check_equal_col_summaries <- function(data, col1, col2, call = caller_env()) {
   summary <- data %>%
     summarise(
-      .by = col1,
-      n = n_distinct(col2)
+      .by = {{ col1 }},
+      n = n_distinct({{ col2 }})
     )
 
   total_n <- summary %>%
@@ -767,11 +767,11 @@ check_equal_col_summaries <- function(data, col1, col2, call = caller_env()) {
   if (!all(total_n == 1)) {
     col1_n_vals <- summary %>%
       filter(.data$n > 1) %>%
-      pull(col1)
+      pull({{ col1 }})
 
     col2_n_vals <- data %>% # nolint: object_usage_linter
-      filter(col1 %in% col1_n_vals) %>%
-      pull(col2)
+      filter({{ col1 }} %in% col1_n_vals) %>%
+      pull({{ col2 }})
 
     msg <- c(
       x = "{.code {col1_n_vals}} checkbox field{?s} resulted in multiple output columns: {.code {col2_n_vals}}.",

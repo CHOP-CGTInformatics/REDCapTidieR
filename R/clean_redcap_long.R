@@ -463,7 +463,7 @@ convert_mixed_instrument <- function(db_data_long, mixed_structure_ref) {
           TRUE ~ .data$redcap_repeat_instrument
         )
       ) %>%
-      select(-.data$update_mask)
+      select(-"update_mask")
   }
 
   db_data_long
