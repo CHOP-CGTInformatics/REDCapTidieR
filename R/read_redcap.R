@@ -336,7 +336,6 @@ read_redcap <- function(redcap_uri,
 #'
 #' @keywords internal
 get_fields_to_drop <- function(db_metadata, form) {
-
   # Always drop form complete field which is not in metadata but should be removed from
 
   res <- paste0(form, "_complete")

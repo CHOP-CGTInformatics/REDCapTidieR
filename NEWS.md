@@ -1,6 +1,7 @@
-# REDCapTidieR 1.2.1 (development version)
+# REDCapTidieR 1.2.1
 
 - For longitudinal REDCap projects, the `redcap_events` column has been updated to give REDCap event factor levels and order for the `redcap_event` and `event_name` columns
+- Fixed a bug where `read_redcap()` would fail for projects containing a stand-alone record ID instrument
 
 # REDCapTidieR 1.2.0
 
