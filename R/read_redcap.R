@@ -169,7 +169,6 @@ read_redcap <- function(redcap_uri,
   # Enforce NULL opinionated checks for select arguments supplied:
   # - export_data_access_groups
   # - export_survey_fields
-
   export_data_access_groups_original <- export_data_access_groups
   export_data_access_groups <- ifelse(is.null(export_data_access_groups), TRUE, export_data_access_groups)
 
@@ -199,6 +198,17 @@ read_redcap <- function(redcap_uri,
         col = "redcap_data_access_group",
         arg = "export_data_access_groups"
       )
+
+      # If DAGs requested in label format, trigger an API call and update column
+      # data for redcap_data_access_group
+      if (raw_or_label == "label") {
+        db_data <- update_dag_cols(
+          data = db_data,
+          redcap_uri = redcap_uri,
+          token = token,
+          suppress_redcapr_messages = !suppress_redcapr_messages
+        )
+      }
     }
   }
 
@@ -571,4 +581,54 @@ get_repeat_event_types <- function(data) {
     ) %>%
     filter(!.data$is_duplicated | (.data$is_duplicated & .data$repeat_type == "repeat_separate")) %>%
     select(-"is_duplicated")
+}
+
+#' @title Implement REDCapR DAG Data into Supertibble
+#'
+#' @description
+#' This helper function calls [redcap_dag_read] and applies the necessary
+#' raw/label values to the `redcap_data_access_group` column.
+#'
+#' This is done because REDCapTidieR retrieves raw data by default, then merges
+#' labels from the metadata. However, some columns like
+#' `redcap_data_access_group` are not in the metadata and so there is nothing by
+#' default to reference.
+#'
+#' @param data the REDCap data
+#' @inheritParams read_redcap
+#' @param test_data T/F. Solely used for testing purposes, default `FALSE`.
+#'
+#' @keywords internal
+
+update_dag_cols <- function(data,
+                            redcap_uri = NULL,
+                            token = NULL,
+                            suppress_redcapr_messages = NULL,
+                            test_data = FALSE) {
+
+  # Test dataset resembling REDCapTidieR redcap_dag_read output
+  if (test_data) {
+    dag_data <- tibble::tribble(
+      ~"data_access_group_name", ~"unique_group_name", ~"data_access_group_id",
+      "DAG1", "dag1", 28130,
+      "DAG2", "dag2", 28131,
+      "DAG3", "dag3", 28132
+    )
+  } else {
+    dag_data <- redcap_dag_read(redcap_uri = redcap_uri,
+                                token = token,
+                                verbose = suppress_redcapr_messages)$data
+  }
+
+  data %>%
+    left_join(dag_data,
+              by = c("redcap_data_access_group" = "unique_group_name")) %>%
+    mutate(
+      redcap_data_access_group = coalesce(
+        .data$data_access_group_name,
+        .data$redcap_data_access_group
+      )
+    ) %>%
+    select(-any_of(names(dag_data)))
+
 }

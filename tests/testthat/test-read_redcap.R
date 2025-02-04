@@ -693,3 +693,22 @@ test_that("get_repeat_event_types() works", {
 
   expect_equal(out, expected_out)
 })
+
+test_that("get_repeat_event_types() works", {
+  data <- tibble::tribble(
+    ~record_id, ~redcap_data_access_group,
+    1, "dag1",
+    2, "dag2",
+    3, "dag3"
+  )
+
+  out <- update_dag_cols(data, test_data = TRUE)
+  expected_out <- tibble::tribble(
+    ~record_id, ~redcap_data_access_group,
+    1, "DAG1",
+    2, "DAG2",
+    3, "DAG3"
+  )
+
+  expect_equal(out, expected_out)
+})
