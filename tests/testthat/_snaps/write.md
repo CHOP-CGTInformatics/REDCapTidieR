@@ -31,19 +31,19 @@
       11                  repeating                 3                   10
       12               nonrepeating                 4                    7
       13                       <NA>              <NA>                 <NA>
-         Data size in Memory % of Data Missing                NA Sheet #
-      2            data_size       data_na_pct form_complete_pct Sheet #
-      3              2.28 kB              0.25                 0       1
-      4              1.94 kB               0.5                 0       2
-      5              2.58 kB                 0                 0       3
-      6              7.71 kB  0.28448275862069                 0       4
-      7              7.40 kB              0.75                 0       5
-      8              1.78 kB                 1                 0       6
-      9              2.06 kB                 1                 0       7
-      10             3.73 kB 0.392857142857143                 0       8
-      11             3.94 kB 0.142857142857143                 0       9
-      12             3.04 kB                 0                 0      10
-      13                <NA>              <NA>              <NA>      11
+         Data size in Memory % of Data Missing % of Instrument Complete Sheet #
+      2            data_size       data_na_pct        form_complete_pct Sheet #
+      3              2.28 kB              0.25                        0       1
+      4              1.94 kB               0.5                        0       2
+      5              2.58 kB                 0                        0       3
+      6              7.71 kB  0.28448275862069                        0       4
+      7              7.40 kB              0.75                        0       5
+      8              1.78 kB                 1                        0       6
+      9              2.06 kB                 1                        0       7
+      10             3.73 kB 0.392857142857143                        0       8
+      11             3.94 kB 0.142857142857143                        0       9
+      12             3.04 kB                 0                        0      10
+      13                <NA>              <NA>                     <NA>      11
       
       [[1]][[2]]
         Record ID Text Box Input Text Box Input REDCap Instrument Completed?
