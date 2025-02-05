@@ -742,7 +742,8 @@ test_that("update_dag_cols() works for haven labels", {
   names(labelled_vec) <- dag_data$data_access_group_name
 
   expected_vec <- labelled::set_value_labels(data$redcap_data_access_group,
-                                             .labels = labelled_vec)
+    .labels = labelled_vec
+  )
 
   expected_out <- tibble::tibble(
     record_id = c(1, 2, 3),

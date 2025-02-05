@@ -195,18 +195,19 @@ read_redcap <- function(redcap_uri,
   if (!is.null(export_data_access_groups_original)) {
     if (export_data_access_groups_original) {
       check_data_arg_exists(db_data,
-                            col = "redcap_data_access_group",
-                            arg = "export_data_access_groups"
+        col = "redcap_data_access_group",
+        arg = "export_data_access_groups"
       )
     }
 
     # If DAGs requested in label format, trigger an API call and update column
     # data for redcap_data_access_group
-    if (export_data_access_groups_original & raw_or_label != "raw") {
-
-      dag_data <- redcap_dag_read(redcap_uri = redcap_uri,
-                                  token = token,
-                                  verbose = !suppress_redcapr_messages)$data
+    if (export_data_access_groups_original && raw_or_label != "raw") {
+      dag_data <- redcap_dag_read(
+        redcap_uri = redcap_uri,
+        token = token,
+        verbose = !suppress_redcapr_messages
+      )$data
 
       db_data <- update_dag_cols(
         data = db_data,
@@ -219,8 +220,8 @@ read_redcap <- function(redcap_uri,
   if (!is.null(export_survey_fields_original)) {
     if (export_survey_fields_original) {
       check_data_arg_exists(db_data,
-                            col = "redcap_survey_identifier",
-                            arg = "export_survey_fields"
+        col = "redcap_survey_identifier",
+        arg = "export_survey_fields"
       )
     }
   }
@@ -478,7 +479,7 @@ add_event_mapping <- function(supertbl, linked_arms, repeat_event_types) {
   if (!is.null(repeat_event_types)) {
     # Preserve factor levels post-join by referencing level order from linked_arms
     repeat_event_types$redcap_event_name <- factor(repeat_event_types$redcap_event_name,
-                                                   levels = levels(event_info$unique_event_name)
+      levels = levels(event_info$unique_event_name)
     )
 
     event_info <- event_info %>%
@@ -622,7 +623,8 @@ update_dag_cols <- function(data,
   } else {
     data %>%
       left_join(dag_data,
-                by = c("redcap_data_access_group" = "unique_group_name")) %>%
+        by = c("redcap_data_access_group" = "unique_group_name")
+      ) %>%
       mutate(
         redcap_data_access_group = coalesce(
           .data$data_access_group_name,
@@ -631,5 +633,4 @@ update_dag_cols <- function(data,
       ) %>%
       select(-any_of(names(dag_data)))
   }
-
 }
