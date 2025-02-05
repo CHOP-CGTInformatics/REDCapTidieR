@@ -195,28 +195,32 @@ read_redcap <- function(redcap_uri,
   if (!is.null(export_data_access_groups_original)) {
     if (export_data_access_groups_original) {
       check_data_arg_exists(db_data,
-        col = "redcap_data_access_group",
-        arg = "export_data_access_groups"
+                            col = "redcap_data_access_group",
+                            arg = "export_data_access_groups"
       )
+    }
 
-      # If DAGs requested in label format, trigger an API call and update column
-      # data for redcap_data_access_group
-      if (raw_or_label == "label") {
-        db_data <- update_dag_cols(
-          data = db_data,
-          redcap_uri = redcap_uri,
-          token = token,
-          suppress_redcapr_messages = !suppress_redcapr_messages
-        )
-      }
+    # If DAGs requested in label format, trigger an API call and update column
+    # data for redcap_data_access_group
+    if (export_data_access_groups_original & raw_or_label != "raw") {
+
+      dag_data <- redcap_dag_read(redcap_uri = redcap_uri,
+                                  token = token,
+                                  verbose = !suppress_redcapr_messages)$data
+
+      db_data <- update_dag_cols(
+        data = db_data,
+        dag_data = dag_data,
+        raw_or_label = raw_or_label
+      )
     }
   }
 
   if (!is.null(export_survey_fields_original)) {
     if (export_survey_fields_original) {
       check_data_arg_exists(db_data,
-        col = "redcap_survey_identifier",
-        arg = "export_survey_fields"
+                            col = "redcap_survey_identifier",
+                            arg = "export_survey_fields"
       )
     }
   }
@@ -474,7 +478,7 @@ add_event_mapping <- function(supertbl, linked_arms, repeat_event_types) {
   if (!is.null(repeat_event_types)) {
     # Preserve factor levels post-join by referencing level order from linked_arms
     repeat_event_types$redcap_event_name <- factor(repeat_event_types$redcap_event_name,
-      levels = levels(event_info$unique_event_name)
+                                                   levels = levels(event_info$unique_event_name)
     )
 
     event_info <- event_info %>%
@@ -586,7 +590,7 @@ get_repeat_event_types <- function(data) {
 #' @title Implement REDCapR DAG Data into Supertibble
 #'
 #' @description
-#' This helper function calls [redcap_dag_read] and applies the necessary
+#' This helper function uses output from [redcap_dag_read] and applies the necessary
 #' raw/label values to the `redcap_data_access_group` column.
 #'
 #' This is done because REDCapTidieR retrieves raw data by default, then merges
@@ -595,40 +599,37 @@ get_repeat_event_types <- function(data) {
 #' default to reference.
 #'
 #' @param data the REDCap data
+#' @param dag_data a DAG dataset exported from [REDCapR::redcap_dag_read]
 #' @inheritParams read_redcap
-#' @param test_data T/F. Solely used for testing purposes, default `FALSE`.
 #'
 #' @keywords internal
 
 update_dag_cols <- function(data,
-                            redcap_uri = NULL,
-                            token = NULL,
-                            suppress_redcapr_messages = NULL,
-                            test_data = FALSE) {
+                            dag_data,
+                            raw_or_label) {
+  if (raw_or_label == "haven") {
+    named_vec <- dag_data$data_access_group_name
+    names(named_vec) <- dag_data$unique_group_name
 
-  # Test dataset resembling REDCapTidieR redcap_dag_read output
-  if (test_data) {
-    dag_data <- tibble::tribble(
-      ~"data_access_group_name", ~"unique_group_name", ~"data_access_group_id",
-      "DAG1", "dag1", 28130,
-      "DAG2", "dag2", 28131,
-      "DAG3", "dag3", 28132
-    )
-  } else {
-    dag_data <- redcap_dag_read(redcap_uri = redcap_uri,
-                                token = token,
-                                verbose = suppress_redcapr_messages)$data
-  }
-
-  data %>%
-    left_join(dag_data,
-              by = c("redcap_data_access_group" = "unique_group_name")) %>%
-    mutate(
-      redcap_data_access_group = coalesce(
-        .data$data_access_group_name,
-        .data$redcap_data_access_group
+    data %>%
+      mutate(
+        redcap_data_access_group = apply_labs_haven(
+          .data$redcap_data_access_group,
+          named_vec,
+          integer(0)
+        )
       )
-    ) %>%
-    select(-any_of(names(dag_data)))
+  } else {
+    data %>%
+      left_join(dag_data,
+                by = c("redcap_data_access_group" = "unique_group_name")) %>%
+      mutate(
+        redcap_data_access_group = coalesce(
+          .data$data_access_group_name,
+          .data$redcap_data_access_group
+        )
+      ) %>%
+      select(-any_of(names(dag_data)))
+  }
 
 }

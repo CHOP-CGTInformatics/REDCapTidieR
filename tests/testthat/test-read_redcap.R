@@ -694,7 +694,14 @@ test_that("get_repeat_event_types() works", {
   expect_equal(out, expected_out)
 })
 
-test_that("get_repeat_event_types() works", {
+test_that("update_dag_cols() works for labels", {
+  dag_data <- tibble::tribble(
+    ~"data_access_group_name", ~"unique_group_name", ~"data_access_group_id",
+    "DAG1", "dag1", 28130,
+    "DAG2", "dag2", 28131,
+    "DAG3", "dag3", 28132
+  )
+
   data <- tibble::tribble(
     ~record_id, ~redcap_data_access_group,
     1, "dag1",
@@ -702,7 +709,8 @@ test_that("get_repeat_event_types() works", {
     3, "dag3"
   )
 
-  out <- update_dag_cols(data, test_data = TRUE)
+  out <- update_dag_cols(data, dag_data, raw_or_label = "label")
+
   expected_out <- tibble::tribble(
     ~record_id, ~redcap_data_access_group,
     1, "DAG1",
@@ -710,5 +718,39 @@ test_that("get_repeat_event_types() works", {
     3, "DAG3"
   )
 
+  expect_equal(out, expected_out)
+})
+
+test_that("update_dag_cols() works for haven labels", {
+  dag_data <- tibble::tribble(
+    ~"data_access_group_name", ~"unique_group_name", ~"data_access_group_id",
+    "DAG1", "dag1", 28130,
+    "DAG2", "dag2", 28131,
+    "DAG3", "dag3", 28132
+  )
+
+  data <- tibble::tribble(
+    ~record_id, ~redcap_data_access_group,
+    1, "dag1",
+    2, "dag2",
+    3, "dag3"
+  )
+
+  out <- update_dag_cols(data, dag_data, raw_or_label = "haven")
+
+  labelled_vec <- data$redcap_data_access_group
+  names(labelled_vec) <- dag_data$data_access_group_name
+
+  expected_vec <- labelled::set_value_labels(data$redcap_data_access_group,
+                                             .labels = labelled_vec)
+
+  expected_out <- tibble::tibble(
+    record_id = c(1, 2, 3),
+    redcap_data_access_group = expected_vec
+  )
+
+  expected_out$redcap_data_access_group <- expected_vec
+
+  expect_equal(out$redcap_data_access_group, expected_vec)
   expect_equal(out, expected_out)
 })

@@ -4,31 +4,20 @@
 \alias{update_dag_cols}
 \title{Implement REDCapR DAG Data into Supertibble}
 \usage{
-update_dag_cols(
-  data,
-  redcap_uri = NULL,
-  token = NULL,
-  suppress_redcapr_messages = NULL,
-  test_data = FALSE
-)
+update_dag_cols(data, dag_data, raw_or_label)
 }
 \arguments{
 \item{data}{the REDCap data}
 
-\item{redcap_uri}{The
-URI/URL of the REDCap server (e.g.,
-"https://server.org/apps/redcap/api/"). Required.}
+\item{dag_data}{a DAG dataset exported from \link[REDCapR:redcap_dag_read]{REDCapR::redcap_dag_read}}
 
-\item{token}{The user-specific string that serves as the password for a
-project. Required.}
-
-\item{suppress_redcapr_messages}{A logical to control whether to suppress messages
-from REDCapR API calls. Default \code{TRUE}.}
-
-\item{test_data}{T/F. Solely used for testing purposes, default \code{FALSE}.}
+\item{raw_or_label}{A string (either 'raw', 'label', or 'haven') that specifies whether
+to export the raw coded values or the labels for the options of categorical
+fields. Default is 'label'. If 'haven' is supplied, categorical fields are converted
+to \code{haven_labelled} vectors.}
 }
 \description{
-This helper function calls \link{redcap_dag_read} and applies the necessary
+This helper function uses output from \link{redcap_dag_read} and applies the necessary
 raw/label values to the \code{redcap_data_access_group} column.
 
 This is done because REDCapTidieR retrieves raw data by default, then merges
