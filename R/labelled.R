@@ -100,7 +100,7 @@ make_labelled <- function(supertbl, format_labels = NULL) {
     event_name = "Event Description",
     redcap_arm = "Arm Name",
     arm_name = "Arm Description",
-    repeat_type = "Repetition Type"
+    repeat_type = "Repeat Type"
   )
 
   # Define skimr labels ----
