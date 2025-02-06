@@ -59,7 +59,8 @@ make_labelled <- function(supertbl, format_labels = NULL) {
     data_rows = "# of Rows in Data",
     data_cols = "# of Columns in Data",
     data_size = "Data size in Memory",
-    data_na_pct = "% of Data Missing"
+    data_na_pct = "% of Data Missing",
+    form_complete_pct = "% of Instrument Complete"
   )
 
   metadata_labels <- c(
@@ -96,8 +97,10 @@ make_labelled <- function(supertbl, format_labels = NULL) {
 
   event_labels <- c(
     redcap_event = "Event Name",
+    event_name = "Event Description",
     redcap_arm = "Arm Name",
-    arm_name = "Arm Description"
+    arm_name = "Arm Description",
+    repeat_type = "Repeat Type"
   )
 
   # Define skimr labels ----
