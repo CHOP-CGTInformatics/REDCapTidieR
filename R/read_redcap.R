@@ -169,7 +169,6 @@ read_redcap <- function(redcap_uri,
   # Enforce NULL opinionated checks for select arguments supplied:
   # - export_data_access_groups
   # - export_survey_fields
-
   export_data_access_groups_original <- export_data_access_groups
   export_data_access_groups <- ifelse(is.null(export_data_access_groups), TRUE, export_data_access_groups)
 
@@ -200,6 +199,22 @@ read_redcap <- function(redcap_uri,
         arg = "export_data_access_groups"
       )
     }
+  }
+
+  # If DAGs detected and requested in label format, trigger an API call and
+  # update column data for redcap_data_access_group
+  if ("redcap_data_access_group" %in% names(db_data) && raw_or_label != "raw") {
+    dag_data <- redcap_dag_read(
+      redcap_uri = redcap_uri,
+      token = token,
+      verbose = !suppress_redcapr_messages
+    )$data
+
+    db_data <- update_dag_cols(
+      data = db_data,
+      dag_data = dag_data,
+      raw_or_label = raw_or_label
+    )
   }
 
   if (!is.null(export_survey_fields_original)) {
@@ -571,4 +586,51 @@ get_repeat_event_types <- function(data) {
     ) %>%
     filter(!.data$is_duplicated | (.data$is_duplicated & .data$repeat_type == "repeat_separate")) %>%
     select(-"is_duplicated")
+}
+
+#' @title Implement REDCapR DAG Data into Supertibble
+#'
+#' @description
+#' This helper function uses output from [redcap_dag_read] and applies the necessary
+#' raw/label values to the `redcap_data_access_group` column.
+#'
+#' This is done because REDCapTidieR retrieves raw data by default, then merges
+#' labels from the metadata. However, some columns like
+#' `redcap_data_access_group` are not in the metadata and so there is nothing by
+#' default to reference.
+#'
+#' @param data the REDCap data
+#' @param dag_data a DAG dataset exported from [REDCapR::redcap_dag_read]
+#' @inheritParams read_redcap
+#'
+#' @keywords internal
+
+update_dag_cols <- function(data,
+                            dag_data,
+                            raw_or_label) {
+  if (raw_or_label == "haven") {
+    named_vec <- dag_data$data_access_group_name
+    names(named_vec) <- dag_data$unique_group_name
+
+    data %>%
+      mutate(
+        redcap_data_access_group = apply_labs_haven(
+          .data$redcap_data_access_group,
+          named_vec,
+          integer(0)
+        )
+      )
+  } else {
+    data %>%
+      left_join(dag_data,
+        by = c("redcap_data_access_group" = "unique_group_name")
+      ) %>%
+      mutate(
+        redcap_data_access_group = coalesce(
+          .data$data_access_group_name,
+          .data$redcap_data_access_group
+        )
+      ) %>%
+      select(-any_of(names(dag_data)))
+  }
 }

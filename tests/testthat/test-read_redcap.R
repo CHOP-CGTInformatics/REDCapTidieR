@@ -568,7 +568,7 @@ test_that("read_redcap works with non-longitudinal Data Access Groups", {
 
   expect_true("redcap_data_access_group" %in% names(dag_data))
   expect_true(is.character(dag_data$redcap_data_access_group))
-  expect_equal(dag_data$redcap_data_access_group, c("dag1", "dag2", "dag3", NA))
+  expect_equal(dag_data$redcap_data_access_group, c("DAG1", "DAG2", "DAG3", NA))
 
   # Check for expected label
   out_dag_labelled <- out_dag %>% make_labelled()
@@ -590,7 +590,7 @@ test_that("read_redcap works with longitudinal Data Access Groups", {
 
   expect_true("redcap_data_access_group" %in% names(dag_data_long))
   expect_true(is.character(dag_data_long$redcap_data_access_group))
-  expect_equal(dag_data_long$redcap_data_access_group, c("dag1", "dag1", "dag2", "dag2", "dag3"))
+  expect_equal(dag_data_long$redcap_data_access_group, c("DAG1", "DAG1", "DAG2", "DAG2", "DAG3"))
 
   # Check for expected label
   out_dag_long_labelled <- out_dag_long %>% make_labelled()
@@ -691,5 +691,67 @@ test_that("get_repeat_event_types() works", {
     "repeat_separate", "repeat_separate"
   )
 
+  expect_equal(out, expected_out)
+})
+
+test_that("update_dag_cols() works for labels", {
+  dag_data <- tibble::tribble(
+    ~"data_access_group_name", ~"unique_group_name", ~"data_access_group_id",
+    "DAG1", "dag1", 28130,
+    "DAG2", "dag2", 28131,
+    "DAG3", "dag3", 28132
+  )
+
+  data <- tibble::tribble(
+    ~record_id, ~redcap_data_access_group,
+    1, "dag1",
+    2, "dag2",
+    3, "dag3"
+  )
+
+  out <- update_dag_cols(data, dag_data, raw_or_label = "label")
+
+  expected_out <- tibble::tribble(
+    ~record_id, ~redcap_data_access_group,
+    1, "DAG1",
+    2, "DAG2",
+    3, "DAG3"
+  )
+
+  expect_equal(out, expected_out)
+})
+
+test_that("update_dag_cols() works for haven labels", {
+  dag_data <- tibble::tribble(
+    ~"data_access_group_name", ~"unique_group_name", ~"data_access_group_id",
+    "DAG1", "dag1", 28130,
+    "DAG2", "dag2", 28131,
+    "DAG3", "dag3", 28132
+  )
+
+  data <- tibble::tribble(
+    ~record_id, ~redcap_data_access_group,
+    1, "dag1",
+    2, "dag2",
+    3, "dag3"
+  )
+
+  out <- update_dag_cols(data, dag_data, raw_or_label = "haven")
+
+  labelled_vec <- data$redcap_data_access_group
+  names(labelled_vec) <- dag_data$data_access_group_name
+
+  expected_vec <- labelled::set_value_labels(data$redcap_data_access_group,
+    .labels = labelled_vec
+  )
+
+  expected_out <- tibble::tibble(
+    record_id = c(1, 2, 3),
+    redcap_data_access_group = expected_vec
+  )
+
+  expected_out$redcap_data_access_group <- expected_vec
+
+  expect_equal(out$redcap_data_access_group, expected_vec)
   expect_equal(out, expected_out)
 })

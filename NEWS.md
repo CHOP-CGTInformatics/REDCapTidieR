@@ -1,3 +1,7 @@
+# REDCapTidieR 1.2.2
+
+- Fixed a bug where, when using `raw_or_label = "label"` and requesting DAGs, only raw values for DAGs would be retrieved
+
 # REDCapTidieR 1.2.1
 
 - For longitudinal REDCap projects, the `redcap_events` column has been updated to give REDCap event factor levels and order for the `redcap_event` and `event_name` columns
