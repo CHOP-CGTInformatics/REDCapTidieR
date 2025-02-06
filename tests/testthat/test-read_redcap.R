@@ -568,7 +568,7 @@ test_that("read_redcap works with non-longitudinal Data Access Groups", {
 
   expect_true("redcap_data_access_group" %in% names(dag_data))
   expect_true(is.character(dag_data$redcap_data_access_group))
-  expect_equal(dag_data$redcap_data_access_group, c("dag1", "dag2", "dag3", NA))
+  expect_equal(dag_data$redcap_data_access_group, c("DAG1", "DAG2", "DAG3", NA))
 
   # Check for expected label
   out_dag_labelled <- out_dag %>% make_labelled()
@@ -590,7 +590,7 @@ test_that("read_redcap works with longitudinal Data Access Groups", {
 
   expect_true("redcap_data_access_group" %in% names(dag_data_long))
   expect_true(is.character(dag_data_long$redcap_data_access_group))
-  expect_equal(dag_data_long$redcap_data_access_group, c("dag1", "dag1", "dag2", "dag2", "dag3"))
+  expect_equal(dag_data_long$redcap_data_access_group, c("DAG1", "DAG1", "DAG2", "DAG2", "DAG3"))
 
   # Check for expected label
   out_dag_long_labelled <- out_dag_long %>% make_labelled()
