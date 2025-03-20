@@ -2,11 +2,7 @@
 
 Thank you for taking the time to review this submission and please reach out to either Stephan Kadauke, Richard Hanna, or Ezra Porter for any questions, comments, or concerns.
 
-This submission for v1.2.1 patches one bug and adds one new feature update.
-
-## New Features
-
-The only new feature in this release allows for factor levels to be passed in part of the package output.
+This submission for v1.2.2 patches two minor bugs related to data access group handling and labels.
 
 ## Test environments
 

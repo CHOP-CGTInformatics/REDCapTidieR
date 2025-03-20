@@ -7,7 +7,7 @@
 supertbl_recode(supertbl, supertbl_meta, add_labelled_column_headers)
 }
 \arguments{
-\item{supertbl}{A supertibble generated using \code{read_redcap()}}
+\item{supertbl}{A supertibble generated using \code{\link[=read_redcap]{read_redcap()}}}
 
 \item{supertbl_meta}{an \code{unnest}-ed metadata tibble from the supertibble}
 

@@ -69,6 +69,7 @@ etc. \code{\link[=combine_checkboxes]{combine_checkboxes()}} detects these varia
 single column. If the expected variables are not found, an error is returned.
 }
 \examples{
+library(dplyr)
 # Set up sample data tibble
 data_tbl <- tibble::tribble(
   ~"study_id", ~"multi___1", ~"multi___2", ~"multi___3",
@@ -99,8 +100,8 @@ combine_checkboxes(
   supertbl = supertbl,
   tbl = "tbl",
   cols = starts_with("multi")
-) |>
-  dplyr::pull(redcap_data) |>
+) \%>\%
+  dplyr::pull(redcap_data) \%>\%
   dplyr::first()
 
 \dontrun{
