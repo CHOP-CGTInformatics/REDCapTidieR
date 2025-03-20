@@ -251,7 +251,7 @@ replace_true <- function(col, col_name, metadata, raw_or_label) {
     pull(raw_or_label)
   col <- ifelse(col == TRUE, replacement, NA) # col == TRUE works for raw or label because TRUE == 1 & 1 == TRUE
   # Convert non-TRUEs to NA, since values can be either "FALSE" or "0" for unchecked values
-  return(col)
+  col
 }
 
 #' @title Convert a new checkbox column's values
@@ -329,5 +329,5 @@ combine_and_repair_tbls <- function(data_tbl, data_tbl_mod, new_cols, names_repa
   # Combine the selected columns
   combined_data <- bind_cols(common_data, unique_data_mod)
 
-  return(combined_data)
+  combined_data
 }
