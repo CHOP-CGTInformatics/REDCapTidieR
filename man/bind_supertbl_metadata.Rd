@@ -7,7 +7,7 @@
 bind_supertbl_metadata(supertbl)
 }
 \arguments{
-\item{supertbl}{A supertibble generated using \code{read_redcap()}}
+\item{supertbl}{A supertibble generated using \code{\link[=read_redcap]{read_redcap()}}}
 }
 \description{
 Simple helper function for binding supertbl metadata into one table. This

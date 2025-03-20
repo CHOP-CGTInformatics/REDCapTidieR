@@ -17,7 +17,7 @@ add_supertbl_toc(
 \arguments{
 \item{wb}{An \code{openxlsx2} workbook object}
 
-\item{supertbl}{a supertibble generated using \code{read_redcap()}}
+\item{supertbl}{a supertibble generated using \code{\link[=read_redcap]{read_redcap()}}}
 
 \item{include_metadata_sheet}{Include a sheet capturing the combined output of the
 supertibble \code{redcap_metadata}.}

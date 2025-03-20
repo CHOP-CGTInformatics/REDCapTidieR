@@ -17,7 +17,7 @@ fields. Default is 'label'. If 'haven' is supplied, categorical fields are conve
 to \code{haven_labelled} vectors.}
 }
 \description{
-This helper function uses output from \link{redcap_dag_read} and applies the necessary
+This helper function uses output from \link[REDCapR:redcap_dag_read]{REDCapR::redcap_dag_read} and applies the necessary
 raw/label values to the \code{redcap_data_access_group} column.
 
 This is done because REDCapTidieR retrieves raw data by default, then merges

@@ -3,7 +3,7 @@ Type: Package
 Title: Extract 'REDCap' Databases into Tidy 'Tibble's
 Version: 1.2.2
 Authors@R: c(
-    person("Richard", "Hanna", , "richardshanna91@gmail.com", role = c("aut", "cre"),
+    person("Richard", "Hanna", , "hannar1@chop.edu", role = c("aut", "cre"),
            comment = c(ORCID = "0009-0005-6496-8154")),
     person("Stephan", "Kadauke", , "kadaukes@chop.edu", role = "aut",
            comment = c(ORCID = "0000-0003-2996-8034")),

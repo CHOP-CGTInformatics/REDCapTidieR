@@ -39,6 +39,7 @@
 #' @return A modified supertibble.
 #'
 #' @examples
+#' library(dplyr)
 #' # Set up sample data tibble
 #' data_tbl <- tibble::tribble(
 #'   ~"study_id", ~"multi___1", ~"multi___2", ~"multi___3",
@@ -69,8 +70,8 @@
 #'   supertbl = supertbl,
 #'   tbl = "tbl",
 #'   cols = starts_with("multi")
-#' ) |>
-#'   dplyr::pull(redcap_data) |>
+#' ) %>%
+#'   dplyr::pull(redcap_data) %>%
 #'   dplyr::first()
 #'
 #' \dontrun{

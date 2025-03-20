@@ -19,7 +19,7 @@ write_redcap_xlsx(
 )
 }
 \arguments{
-\item{supertbl}{A supertibble generated using \code{read_redcap()}.}
+\item{supertbl}{A supertibble generated using \code{\link[=read_redcap]{read_redcap()}}.}
 
 \item{file}{The name of the file to which the output will be written.}
 

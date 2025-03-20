@@ -1,6 +1,7 @@
 # REDCapTidieR 1.2.2
 
 - Fixed a bug where, when using `raw_or_label = "label"` and requesting DAGs, only raw values for DAGs would be retrieved
+- Adds variable labels for `form_complete_pct`, `event_name`, and `repeat_type` when `make_labelled()` is called
 
 # REDCapTidieR 1.2.1
 

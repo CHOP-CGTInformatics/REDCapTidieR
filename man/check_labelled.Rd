@@ -7,7 +7,7 @@
 check_labelled(supertbl, add_labelled_column_headers, call = caller_env())
 }
 \arguments{
-\item{supertbl}{a supertibble generated using \code{read_redcap()}}
+\item{supertbl}{a supertibble generated using \code{\link[=read_redcap]{read_redcap()}}}
 
 \item{add_labelled_column_headers}{Whether or not to include labelled outputs}
 

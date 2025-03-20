@@ -20,7 +20,7 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Richard Hanna \email{richardshanna91@gmail.com} (\href{https://orcid.org/0009-0005-6496-8154}{ORCID})
+\strong{Maintainer}: Richard Hanna \email{hannar1@chop.edu} (\href{https://orcid.org/0009-0005-6496-8154}{ORCID})
 
 Authors:
 \itemize{

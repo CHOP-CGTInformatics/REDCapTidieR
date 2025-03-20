@@ -591,7 +591,7 @@ get_repeat_event_types <- function(data) {
 #' @title Implement REDCapR DAG Data into Supertibble
 #'
 #' @description
-#' This helper function uses output from [redcap_dag_read] and applies the necessary
+#' This helper function uses output from [REDCapR::redcap_dag_read] and applies the necessary
 #' raw/label values to the `redcap_data_access_group` column.
 #'
 #' This is done because REDCapTidieR retrieves raw data by default, then merges

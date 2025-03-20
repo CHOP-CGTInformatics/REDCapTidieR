@@ -15,7 +15,7 @@ add_metadata_sheet(
 )
 }
 \arguments{
-\item{supertbl}{a supertibble generated using \code{read_redcap()}}
+\item{supertbl}{a supertibble generated using \code{\link[=read_redcap]{read_redcap()}}}
 
 \item{supertbl_meta}{an \code{unnest}-ed metadata tibble from the supertibble}
 
