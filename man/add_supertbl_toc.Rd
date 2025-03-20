@@ -25,7 +25,7 @@ supertibble \code{redcap_metadata}.}
 \item{add_labelled_column_headers}{Whether or not to include labelled outputs.}
 
 \item{table_style}{Any excel table style name or "none" (see "formatting"
-vignette in \link[openxlsx2]{wb_add_data_table}). Default "tableStyleLight8".}
+in \code{\link[openxlsx2:wb_add_data_table]{openxlsx2::wb_add_data_table()}}). Default "tableStyleLight8".}
 
 \item{column_width}{Width to set columns across the workbook. Default
 "auto", otherwise a numeric value. Standard Excel is 8.43.}

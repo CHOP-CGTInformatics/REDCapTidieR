@@ -322,7 +322,7 @@ add_labelled_xlsx_features <- function(supertbl,
 #' supertibble `redcap_metadata`.
 #' @param add_labelled_column_headers Whether or not to include labelled outputs.
 #' @param table_style Any excel table style name or "none" (see "formatting"
-#' vignette in \link[openxlsx2]{wb_add_data_table}). Default "tableStyleLight8".
+#' in [openxlsx2::wb_add_data_table()]). Default "tableStyleLight8".
 #' @param column_width Width to set columns across the workbook. Default
 #' "auto", otherwise a numeric value. Standard Excel is 8.43.
 #' @param na_replace The value used to replace `NA` values in `supertbl`. The default is "".
@@ -405,7 +405,7 @@ add_supertbl_toc <- function(wb,
 #' @param wb An `openxlsx2` workbook object
 #' @param add_labelled_column_headers Whether or not to include labelled outputs.
 #' @param table_style Any excel table style name or "none" (see "formatting"
-#' vignette in \link[openxlsx2]{wb_add_data_table}). Default "tableStyleLight8".
+#' in [openxlsx2::wb_add_data_table()]). Default "tableStyleLight8".
 #' @param column_width Width to set columns across the workbook. Default
 #' "auto", otherwise a numeric value. Standard Excel is 8.43.
 #' @param na_replace The value used to replace `NA` values in `supertbl`. The default is "".
