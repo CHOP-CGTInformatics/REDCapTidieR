@@ -49,7 +49,7 @@ and return a named list of data tibbles.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">extract_tibbles</span><span class="op">(</span><span class="va">supertbl</span>, tbls <span class="op">=</span> <span class="fu">everything</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">extract_tibbles</span><span class="op">(</span><span class="va">supertbl</span>, tbls <span class="op">=</span> <span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html" class="external-link">everything</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -126,7 +126,7 @@ or <code><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Only extract data tibbles starting with "heroes"</span></span></span>
-<span class="r-in"><span><span class="fu">extract_tibbles</span><span class="op">(</span><span class="va">superheroes_supertbl</span>, <span class="fu">starts_with</span><span class="op">(</span><span class="st">"heroes"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">extract_tibbles</span><span class="op">(</span><span class="va">superheroes_supertbl</span>, <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">starts_with</a></span><span class="op">(</span><span class="st">"heroes"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $heroes_information</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 734 × 12</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    record_id name      gender eye_color race  hair_color height weight publisher</span>

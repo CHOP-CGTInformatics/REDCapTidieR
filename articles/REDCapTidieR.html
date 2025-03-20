@@ -242,7 +242,7 @@ returned by <code><a href="../reference/extract_tibbles.html">extract_tibbles()<
 selectors</a> to select specific data tibbles.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">superheroes</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="../reference/extract_tibbles.html">extract_tibbles</a></span><span class="op">(</span><span class="fu">ends_with</span><span class="op">(</span><span class="st">"powers"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/extract_tibbles.html">extract_tibbles</a></span><span class="op">(</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">ends_with</a></span><span class="op">(</span><span class="st">"powers"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span>max.level <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="co">#&gt; List of 1</span></span>
 <span><span class="co">#&gt;  $ super_hero_powers: tibble [5,966 × 4] (S3: tbl_df/tbl/data.frame)</span></span></code></pre></div>
@@ -427,7 +427,7 @@ statistics:</p>
 <span></span>
 <span><span class="co"># Highlight the numeric summaries created by add_skimr_metadata()</span></span>
 <span><span class="va">heroes_information_metadata</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">field_name</span>, <span class="va">skim_type</span><span class="op">:</span><span class="va">complete_rate</span>, <span class="fu">starts_with</span><span class="op">(</span><span class="st">"numeric"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">field_name</span>, <span class="va">skim_type</span><span class="op">:</span><span class="va">complete_rate</span>, <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">starts_with</a></span><span class="op">(</span><span class="st">"numeric"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">rmarkdown</span><span class="fu">::</span><span class="fu"><a href="https://pkgs.rstudio.com/rmarkdown/reference/paged_table.html" class="external-link">paged_table</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">

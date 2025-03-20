@@ -143,7 +143,16 @@ single column. If the expected variables are not found, an error is returned.</p
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Set up sample data tibble</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Attaching package: ‘dplyr’</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> The following objects are masked from ‘package:stats’:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>     filter, lag</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> The following objects are masked from ‘package:base’:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>     intersect, setdiff, setequal, union</span>
+<span class="r-in"><span><span class="co"># Set up sample data tibble</span></span></span>
 <span class="r-in"><span><span class="va">data_tbl</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tribble.html" class="external-link">tribble</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  <span class="op">~</span><span class="st">"study_id"</span>, <span class="op">~</span><span class="st">"multi___1"</span>, <span class="op">~</span><span class="st">"multi___2"</span>, <span class="op">~</span><span class="st">"multi___3"</span>,</span></span>
 <span class="r-in"><span>  <span class="fl">1</span>, <span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">FALSE</span>,</span></span>
@@ -172,9 +181,9 @@ single column. If the expected variables are not found, an error is returned.</p
 <span class="r-in"><span><span class="fu">combine_checkboxes</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  supertbl <span class="op">=</span> <span class="va">supertbl</span>,</span></span>
 <span class="r-in"><span>  tbl <span class="op">=</span> <span class="st">"tbl"</span>,</span></span>
-<span class="r-in"><span>  cols <span class="op">=</span> <span class="fu">starts_with</span><span class="op">(</span><span class="st">"multi"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html" class="external-link">pull</a></span><span class="op">(</span><span class="va">redcap_data</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  cols <span class="op">=</span> <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">starts_with</a></span><span class="op">(</span><span class="st">"multi"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html" class="external-link">pull</a></span><span class="op">(</span><span class="va">redcap_data</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/nth.html" class="external-link">first</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 3 × 5</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   study_id multi___1 multi___2 multi___3 multi   </span>
@@ -192,7 +201,7 @@ single column. If the expected variables are not found, an error is returned.</p
 <span class="r-in"><span><span class="fu">combine_checkboxes</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  supertbl <span class="op">=</span> <span class="va">supertbl</span>,</span></span>
 <span class="r-in"><span>  tbl <span class="op">=</span> <span class="st">"tbl"</span>,</span></span>
-<span class="r-in"><span>  cols <span class="op">=</span> <span class="fu">starts_with</span><span class="op">(</span><span class="st">"col"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  cols <span class="op">=</span> <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">starts_with</a></span><span class="op">(</span><span class="st">"col"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  multi_value_label <span class="op">=</span> <span class="st">"Multiple"</span>,</span></span>
 <span class="r-in"><span>  values_fill <span class="op">=</span> <span class="cn">NA</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
