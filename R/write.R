@@ -230,7 +230,7 @@ add_labelled_xlsx_features <- function(supertbl,
                                        supertbl_toc = NULL) {
   check_installed("labelled", reason = "to make use of labelled features in `write_redcap_xlsx`")
   # Generate variable labels off of labelled dictionary objects ----
-  generate_dictionaries <- function(x) {
+  generate_dictionaries <- function(x) { #nolint: object_usage_linter
     labelled::generate_dictionary(x) %>%
       select("variable", "label") %>%
       mutate(label = if_else(is.na(.data$label), "", .data$label)) %>%
