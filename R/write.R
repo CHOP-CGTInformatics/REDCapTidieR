@@ -284,7 +284,7 @@ add_labelled_xlsx_features <- function(supertbl,
   }
 
   # Define redcap_data variable labels
-  var_labels <- supertbl$redcap_data %>% map(\(x) generate_dictionaries(x))
+  var_labels <- map(.x = supertbl$redcap_data, ~generate_dictionaries(.x))
 
   for (i in seq_along(supertbl$redcap_form_name)) {
     wb$add_data(
