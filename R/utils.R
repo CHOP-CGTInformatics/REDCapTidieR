@@ -495,10 +495,14 @@ multi_choice_to_labels <- function(db_data, db_metadata, raw_or_label = "label",
       )
 
       if (!getOption("redcaptidier.allow.mdc", FALSE)) {
-        extra_field_values[i] <- check_extra_field_values(
+        check_extra_field_values_res <- check_extra_field_values(
           db_data[[field_name]],
           names(parse_labels_output)
         )
+
+        if (!is.null(check_extra_field_values_res)) {
+          extra_field_values[i] <- check_extra_field_values_res
+        }
       }
 
       # Replace values from db_data$(field_name) with label values from
