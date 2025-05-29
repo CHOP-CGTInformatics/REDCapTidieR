@@ -204,11 +204,13 @@ read_redcap <- function(redcap_uri,
   # If DAGs detected and requested in label format, trigger an API call and
   # update column data for redcap_data_access_group
   if ("redcap_data_access_group" %in% names(db_data) && raw_or_label != "raw") {
-    dag_data <- redcap_dag_read(
-      redcap_uri = redcap_uri,
-      token = token,
-      verbose = !suppress_redcapr_messages
-    )$data
+    dag_data <- try_redcapr({
+      redcap_dag_read(
+        redcap_uri = redcap_uri,
+        token = token,
+        verbose = !suppress_redcapr_messages
+      )
+    })
 
     db_data <- update_dag_cols(
       data = db_data,

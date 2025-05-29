@@ -805,19 +805,22 @@ try_redcapr <- function(expr, call = caller_env()) {
         "i" = "URI: `{condition$redcap_uri}`"
       )
       condition$class <- c("cannot_post", condition$class)
+    } else if (str_detect(
+      out$outcome_message,
+      "You must have 'API Export' privileges and 'Data Access Groups' privileges"
+    )
+    ) {
+      condition$info <- c(
+        "!" = "You do not have sufficient privileges to export data access groups.",
+        "i" = "Set `export_data_access_groups = FALSE` if you do not intend to export data access groups."
+      )
+      condition$class <- c("dag_access_error", condition$class)
+      condition$parent <- append_outcome_message(quo, out$outcome_message)
     } else {
       condition$class <- c("unexpected_error", condition$class)
 
       if (!is.null(out$outcome_message)) {
-        # Throw error containing outcome message and attach that as the parent
-        # Get the name of the function called inside try_redcapr so it can be mentioned in the error message
-        calling_fn <- quo_get_expr(quo)
-        # Handle case where try_redcapr had multiline expr
-        if (inherits(calling_fn, "{")) {
-          calling_fn <- calling_fn[[2]]
-        }
-
-        condition$parent <- catch_cnd(abort(out$outcome_message, call = calling_fn))
+        condition$parent <- append_outcome_message(quo, out$outcome_message)
       }
     }
     cli_abort(
@@ -832,6 +835,18 @@ try_redcapr <- function(expr, call = caller_env()) {
 
   # If we made it here return the data
   out$data
+}
+
+append_outcome_message <- function(quo, outcome_message) {
+  # Throw error containing outcome message and attach that as the parent
+  # Get the name of the function called inside try_redcapr so it can be mentioned in the error message
+  calling_fn <- quo_get_expr(quo)
+  # Handle case where try_redcapr had multiline expr
+  if (inherits(calling_fn, "{")) {
+    calling_fn <- calling_fn[[2]]
+  }
+
+  catch_cnd(abort(outcome_message, call = calling_fn))
 }
 
 
