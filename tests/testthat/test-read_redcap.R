@@ -755,3 +755,18 @@ test_that("update_dag_cols() works for haven labels", {
   expect_equal(out$redcap_data_access_group, expected_vec)
   expect_equal(out, expected_out)
 })
+
+test_that("read_redcap() handles insufficient DAG access", {
+  read_redcap(
+    Sys.getenv("REDCAP_URI"),
+    Sys.getenv("REDCAPTIDIER_DAG_ACCESS_API")
+  ) |>
+    expect_error(class = "dag_access_error")
+
+  read_redcap(
+    Sys.getenv("REDCAP_URI"),
+    Sys.getenv("REDCAPTIDIER_DAG_ACCESS_API"),
+    export_data_access_groups = FALSE
+  ) |>
+    expect_no_error()
+})

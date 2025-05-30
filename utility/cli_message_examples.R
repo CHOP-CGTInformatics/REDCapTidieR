@@ -151,3 +151,7 @@ read_redcap(Sys.getenv("REDCAP_URI"), Sys.getenv("REDCAPTIDIER_CLASSIC_API")) %>
 # missing data codes
 
 read_redcap(redcap_uri, Sys.getenv("REDCAPTIDIER_MDC_API"))
+
+# No DAG export access
+
+read_redcap(Sys.getenv("REDCAP_URI"), Sys.getenv("REDCAPTIDIER_DAG_ACCESS_API"))
