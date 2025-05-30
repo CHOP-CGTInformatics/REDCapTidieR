@@ -255,7 +255,7 @@ withr::with_tempdir({
 })
 #> Error:
 #> ✖ File
-#>   ''/private/var/folders/9c/k1m0bzys7gb1v32g86hfn5sn5k86h1/T/RtmpQCmzPP/file1411b189a9c52/temp.csv''
+#>   ''/private/var/folders/9c/k1m0bzys7gb1v32g86hfn5sn5k86h1/T/Rtmpj47vZR/file1866d316efdeb/temp.csv''
 #>   already exists.
 #> ℹ Overwriting files is disabled by default. Set `overwrite = TRUE` to overwrite
 #>   existing file.
@@ -296,7 +296,7 @@ withr::with_tempdir({
     write_redcap_xlsx(file = filepath)
 })
 #> Warning in write_redcap_xlsx(., file = filepath): ! No extension provided for `file`:
-#>   '/private/var/folders/9c/k1m0bzys7gb1v32g86hfn5sn5k86h1/T/RtmpQCmzPP/file1411b1319086f/temp'
+#>   '/private/var/folders/9c/k1m0bzys7gb1v32g86hfn5sn5k86h1/T/Rtmpj47vZR/file1866d20d182be/temp'
 #> ℹ The extension '.xlsx' will be appended to the file name.
 
 # Printed supertibble

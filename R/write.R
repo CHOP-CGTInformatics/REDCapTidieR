@@ -230,7 +230,7 @@ add_labelled_xlsx_features <- function(supertbl,
                                        supertbl_toc = NULL) {
   check_installed("labelled", reason = "to make use of labelled features in `write_redcap_xlsx`")
   # Generate variable labels off of labelled dictionary objects ----
-  generate_dictionaries <- function(x) { #nolint: object_usage_linter
+  generate_dictionaries <- function(x) { # nolint: object_usage_linter
     labelled::generate_dictionary(x) %>%
       select("variable", "label") %>%
       mutate(label = if_else(is.na(.data$label), "", .data$label)) %>%
@@ -284,7 +284,7 @@ add_labelled_xlsx_features <- function(supertbl,
   }
 
   # Define redcap_data variable labels
-  var_labels <- map(.x = supertbl$redcap_data, ~generate_dictionaries(.x))
+  var_labels <- map(.x = supertbl$redcap_data, ~ generate_dictionaries(.x))
 
   for (i in seq_along(supertbl$redcap_form_name)) {
     wb$add_data(

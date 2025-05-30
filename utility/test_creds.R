@@ -44,7 +44,13 @@ creds <- rbind(ouhsc_creds %>% mutate(source = "ouhsc"), redcaptidier_creds %>% 
 
 microbenchmark_fx <- function(redcap_uri, token, name, times = 1){
   microbenchmark(
-    name = suppressWarnings(read_redcap(redcap_uri = redcap_uri, token = token, allow_mixed_structure = TRUE)),
+    name = suppressWarnings(read_redcap(
+      redcap_uri = redcap_uri,
+      token = token,
+      allow_mixed_structure = TRUE,
+      export_data_access_groups = FALSE
+      )
+    ),
     times = times,
     unit = "seconds"
   )
