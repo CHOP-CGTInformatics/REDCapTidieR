@@ -112,8 +112,8 @@ read_redcap(redcap_uri, classic_token, export_survey_fields = 123)
 
 read_redcap(redcap_uri, classic_token, export_survey_fields = c(TRUE, TRUE))
 #> Error in `read_redcap()`:
-#> ✖ You've supplied `TRUE` and `TRUE` for `export_survey_fields` which is
-#>   not a valid value
+#> ✖ You've supplied `TRUE` `TRUE` for `export_survey_fields` which is not
+#>   a valid value
 #> ! Must have length 1, but has length 2
 
 ## suppress_redcapr_messages
@@ -126,8 +126,8 @@ read_redcap(redcap_uri, classic_token, suppress_redcapr_messages = 123)
 
 read_redcap(redcap_uri, classic_token, suppress_redcapr_messages = c(TRUE, TRUE))
 #> Error in `read_redcap()`:
-#> ✖ You've supplied `TRUE` and `TRUE` for `suppress_redcapr_messages`
-#>   which is not a valid value
+#> ✖ You've supplied `TRUE` `TRUE` for `suppress_redcapr_messages` which is
+#>   not a valid value
 #> ! Must have length 1, but has length 2
 
 # data access groups
@@ -255,7 +255,7 @@ withr::with_tempdir({
 })
 #> Error:
 #> ✖ File
-#>   ''/private/var/folders/qc/mmjjyjq50530z9r_7mfqcqfhxkkk67/T/Rtmph4LQ3Z/filee5aa7b9bea48/temp.csv''
+#>   ''/private/var/folders/9c/k1m0bzys7gb1v32g86hfn5sn5k86h1/T/RtmpQCmzPP/file1411b189a9c52/temp.csv''
 #>   already exists.
 #> ℹ Overwriting files is disabled by default. Set `overwrite = TRUE` to overwrite
 #>   existing file.
@@ -296,7 +296,7 @@ withr::with_tempdir({
     write_redcap_xlsx(file = filepath)
 })
 #> Warning in write_redcap_xlsx(., file = filepath): ! No extension provided for `file`:
-#>   '/private/var/folders/qc/mmjjyjq50530z9r_7mfqcqfhxkkk67/T/Rtmph4LQ3Z/filee5aa11455c98/temp'
+#>   '/private/var/folders/9c/k1m0bzys7gb1v32g86hfn5sn5k86h1/T/RtmpQCmzPP/file1411b1319086f/temp'
 #> ℹ The extension '.xlsx' will be appended to the file name.
 
 # Printed supertibble
@@ -338,6 +338,18 @@ read_redcap(redcap_uri, Sys.getenv("REDCAPTIDIER_MDC_API"))
 #> 1 form_1           Form 1            <tibble [3 × 9]> <tibble>        nonrepeat…
 #> # ℹ 5 more variables: data_rows <int>, data_cols <int>, data_size <lbstr_by>,
 #> #   data_na_pct <formttbl>, form_complete_pct <formttbl>
+
+# No DAG export access
+
+read_redcap(Sys.getenv("REDCAP_URI"), Sys.getenv("REDCAPTIDIER_DAG_ACCESS_API"))
+#> Error in `read_redcap()`:
+#> ✖ The REDCapR export operation was not successful.
+#> ! You do not have sufficient privileges to export data access groups.
+#> ℹ Set `export_data_access_groups = FALSE` if you do not intend to export data
+#>   access groups.
+#> Caused by error in `redcap_dag_read()`:
+#> ! The REDCapR read/export operation was not successful.  The error message was:
+#> ERROR: Insufficient user privileges: You must have 'API Export' privileges and 'Data Access Groups' privileges in the project.
 ```
 
-<sup>Created on 2024-10-16 with [reprex v2.1.0](https://reprex.tidyverse.org)</sup>
+<sup>Created on 2025-05-30 with [reprex v2.1.0](https://reprex.tidyverse.org)</sup>

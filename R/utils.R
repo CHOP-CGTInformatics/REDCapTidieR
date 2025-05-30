@@ -805,7 +805,7 @@ try_redcapr <- function(expr, call = caller_env()) {
         "i" = "URI: `{condition$redcap_uri}`"
       )
       condition$class <- c("cannot_post", condition$class)
-    } else if (str_detect(
+    } else if (!is.null(out$outcome_message) && str_detect(
       out$outcome_message,
       "You must have 'API Export' privileges and 'Data Access Groups' privileges"
     )
