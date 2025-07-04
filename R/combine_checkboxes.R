@@ -38,6 +38,7 @@
 #' values or labels for the options. Default 'label'.
 #' @param keep Logical indicating whether to keep the original checkbox fields in
 #' the output. Default `TRUE`.
+#'
 #' @return A modified supertibble.
 #'
 #' @examples
@@ -104,8 +105,7 @@ combine_checkboxes <- function(supertbl,
                                multi_value_sep = ", ",
                                values_fill = NA,
                                raw_or_label = "label",
-                               keep = TRUE,
-                               ...) {
+                               keep = TRUE) {
   # Check args ---
   check_arg_is_supertbl(supertbl, req_cols = c("redcap_data", "redcap_metadata"))
   check_arg_is_character(names_prefix, len = 1)
