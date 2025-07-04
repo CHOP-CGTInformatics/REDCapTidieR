@@ -30,8 +30,8 @@
 #' by adding numeric suffixes. See [vctrs::vec_as_names()] for more options.
 #' @param multi_value_label A string specifying the value to be used when multiple
 #' checkbox fields are selected. Default "Multiple".
-#' If `NULL`, multiple selections will be pasted together.
-#' @param multi_values_sep (if `multi_value_label` is `NULL`) a string
+#' If `NULL`, multiple selections will be pasted together
+#' @param multi_value_sep (if `multi_value_label` is `NULL`) a string
 #' specifying the separator to use to paste multiple selections together.
 #' @param values_fill Value to use when no checkboxes are selected. Default `NA`.
 #' @param raw_or_label Either 'raw' or 'label' to specify whether to use raw coded
@@ -101,7 +101,7 @@ combine_checkboxes <- function(supertbl,
                                names_glue = NULL,
                                names_repair = "check_unique",
                                multi_value_label = "Multiple",
-                               multi_values_sep = ", ",
+                               multi_value_sep = ", ",
                                values_fill = NA,
                                raw_or_label = "label",
                                keep = TRUE,
@@ -113,7 +113,7 @@ combine_checkboxes <- function(supertbl,
   check_arg_is_character(names_repair, len = 1, any.missing = FALSE)
   check_arg_is_character(names_glue, len = 1, any.missing = FALSE, null.ok = TRUE)
   check_arg_is_character(tbl, len = 1, any.missing = FALSE)
-  check_arg_is_character(multi_value_label, len = 1, any.missing = TRUE)
+  check_arg_is_character(multi_value_label, len = 1, any.missing = TRUE, null.ok = TRUE)
   check_arg_is_character(values_fill, len = 1, any.missing = TRUE)
   check_arg_choices(raw_or_label, choices = c("label", "raw"))
   check_arg_is_logical(keep, len = 1, any.missing = FALSE)
@@ -153,7 +153,7 @@ combine_checkboxes <- function(supertbl,
     nest(.by = ".new_value", .key = "metadata") %>%
     pmap(convert_checkbox_vals,
       data_tbl = data_tbl_mod,
-      raw_or_label = raw_or_label, multi_value_label = multi_value_label, multi_values_sep = multi_values_sep, values_fill = values_fill
+      raw_or_label = raw_or_label, multi_value_label = multi_value_label, multi_value_sep = multi_value_sep, values_fill = values_fill
     )
 
   final_tbl <- combine_and_repair_tbls(data_tbl, data_tbl_mod, new_cols, names_repair = names_repair)
@@ -277,7 +277,7 @@ replace_true <- function(col, col_name, metadata, raw_or_label) {
 #' @param data_tbl The data tibble from the original supertibble
 #' @param .new_value The new column values made by [combine_checkboxes()]
 #' @inheritParams combine_checkboxes
-convert_checkbox_vals <- function(metadata, .new_value, data_tbl, raw_or_label, multi_value_label, values_fill, multi_values_sep) {
+convert_checkbox_vals <- function(metadata, .new_value, data_tbl, raw_or_label, multi_value_label, values_fill, multi_value_sep) {
   if (!is.null(multi_value_label)) {
     tibble(
       !!.new_value := rowSums(!is.na(data_tbl[names(data_tbl) %in% metadata$field_name]))
@@ -296,7 +296,7 @@ convert_checkbox_vals <- function(metadata, .new_value, data_tbl, raw_or_label, 
       tidyr::unite(
         !!.new_value,
         any_of(metadata$field_name),
-        sep = multi_values_sep,
+        sep = multi_value_sep,
         na.rm = TRUE
       ) %>%
       mutate(

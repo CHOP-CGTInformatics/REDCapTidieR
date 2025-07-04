@@ -11,7 +11,7 @@ convert_checkbox_vals(
   raw_or_label,
   multi_value_label,
   values_fill,
-  multi_values_sep
+  multi_value_sep
 )
 }
 \arguments{
@@ -30,7 +30,7 @@ If \code{NULL}, multiple selections will be pasted together.}
 
 \item{values_fill}{Value to use when no checkboxes are selected. Default \code{NA}.}
 
-\item{multi_values_sep}{(if \code{multi_value_label} is \code{NULL}) a string
+\item{multi_value_sep}{(if \code{multi_value_label} is \code{NULL}) a string
 specifying the separator to use to paste multiple selections together.}
 }
 \description{

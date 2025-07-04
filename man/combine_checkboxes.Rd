@@ -13,7 +13,7 @@ combine_checkboxes(
   names_glue = NULL,
   names_repair = "check_unique",
   multi_value_label = "Multiple",
-  multi_values_sep = ", ",
+  multi_value_sep = ", ",
   values_fill = NA,
   raw_or_label = "label",
   keep = TRUE,
@@ -43,7 +43,7 @@ by adding numeric suffixes. See \code{\link[vctrs:vec_as_names]{vctrs::vec_as_na
 checkbox fields are selected. Default "Multiple".
 If \code{NULL}, multiple selections will be pasted together.}
 
-\item{multi_values_sep}{(if \code{multi_value_label} is \code{NULL}) a string
+\item{multi_value_sep}{(if \code{multi_value_label} is \code{NULL}) a string
 specifying the separator to use to paste multiple selections together.}
 
 \item{values_fill}{Value to use when no checkboxes are selected. Default \code{NA}.}
