@@ -273,18 +273,43 @@ replace_true <- function(col, col_name, metadata, raw_or_label) {
 #' @param .new_value The new column values made by [combine_checkboxes()]
 #' @inheritParams combine_checkboxes
 convert_checkbox_vals <- function(metadata, .new_value, data_tbl, raw_or_label, multi_value_label, values_fill) {
-  tibble(
-    !!.new_value := rowSums(!is.na(data_tbl[names(data_tbl) %in% metadata$field_name]))
-  ) %>%
-    mutate(
-      !!.new_value := case_when(. > 1 ~ multi_value_label,
-        . == 1 ~ coalesce(!!!data_tbl[, names(data_tbl) %in% metadata$field_name]),
-        .default = values_fill
-      ),
-      !!.new_value := factor(!!sym(.new_value),
-        levels = c(metadata[[raw_or_label]], multi_value_label, values_fill)
+  if (!is.null(multi_value_label)) {
+    tibble(
+      !!.new_value := rowSums(!is.na(data_tbl[names(data_tbl) %in% metadata$field_name]))
+    ) %>%
+      mutate(
+        !!.new_value := case_when(. > 1 ~ multi_value_label,
+                                  . == 1 ~ coalesce(!!!data_tbl[, names(data_tbl) %in% metadata$field_name]),
+                                  .default = values_fill
+        ),
+        !!.new_value := factor(!!sym(.new_value),
+                               levels = c(metadata[[raw_or_label]], multi_value_label, values_fill)
+        )
       )
-    )
+  } else {
+    data_tbl %>%
+      tidyr::unite(
+        !!.new_value,
+        any_of(metadata$field_name),
+        sep = ", ",
+        na.rm = TRUE
+      ) %>%
+      mutate(
+        !!.new_value := !!sym(.new_value) %>%
+          dplyr::case_match(
+            "" ~ values_fill,
+            .default = !!sym(.new_value)
+          ),
+        !!.new_value := !!sym(.new_value) %>%
+          factor(
+            levels =
+              metadata[[raw_or_label]] %>%
+              union(setdiff(!!sym(.new_value), values_fill)) %>%
+              union(values_fill)
+          )
+      ) %>%
+      select(all_of(.new_value))
+  }
 }
 
 #' @title Combine checkbox fields with respect to repaired outputs

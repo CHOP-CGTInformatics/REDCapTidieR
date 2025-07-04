@@ -279,6 +279,17 @@ test_that("convert_checkbox_vals works()", {
   )
 
   expect_equal(out, expected_out)
+
+  out_paste <- convert_checkbox_vals(
+    metadata = metadata, .new_value = "_multi", data_tbl = data_tbl,
+    raw_or_label = "label", multi_value_label = NULL, values_fill = NA
+  )
+
+  expected_out_paste <- tibble(
+    `_multi` = factor(c("Red", "Red, Yellow", NA), levels = c("Red", "Yellow", "Blue", "Red, Yellow"))
+  )
+
+  expect_equal(out_paste, expected_out_paste)
 })
 
 test_that("combine_and_repair_tbls works", {
