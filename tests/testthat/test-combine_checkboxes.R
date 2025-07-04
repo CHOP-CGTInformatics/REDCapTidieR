@@ -233,7 +233,7 @@ test_that("combine_checkboxes works for multiple checkbox fields with concatenat
   out <- combine_checkboxes(
     supertbl = supertbl,
     tbl = "nonrepeat_instrument",
-    cols = starts_with("multi"),
+    cols = c(starts_with("multi"), starts_with("single_checkbox")),
     keep = FALSE,
     multi_value_label = NULL
   ) %>%
@@ -241,13 +241,14 @@ test_that("combine_checkboxes works for multiple checkbox fields with concatenat
     dplyr::first()
 
   expected_out <- tibble::tribble(
-    ~"study_id", ~"single_checkbox___1", ~"extra_data", ~"multi",
-    1, TRUE,  1, "Red",
-    2, TRUE,  2, "Red, Yellow",
-    3, FALSE, 3,  NA
+    ~"study_id", ~"extra_data", ~"multi", ~"single_checkbox",
+    1, 1, "Red", "Green",
+    2, 2, "Red, Yellow", "Green",
+    3, 3, NA, NA
   ) %>%
     mutate(
-      multi = factor(multi, levels = c("Red", "Yellow", "Blue", "Red, Yellow"))
+      multi = factor(multi, levels = c("Red", "Yellow", "Blue", "Red, Yellow")),
+      single_checkbox = factor(single_checkbox, levels = "Green")
     )
 
   expect_equal(out, expected_out)

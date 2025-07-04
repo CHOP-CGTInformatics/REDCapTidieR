@@ -30,7 +30,7 @@
 #' by adding numeric suffixes. See [vctrs::vec_as_names()] for more options.
 #' @param multi_value_label A string specifying the value to be used when multiple
 #' checkbox fields are selected. Default "Multiple".
-#' If `NULL`, multiple selections will be pasted together
+#' If `NULL`, multiple selections will be pasted together.
 #' @param multi_value_sep (if `multi_value_label` is `NULL`) a string
 #' specifying the separator to use to paste multiple selections together.
 #' @param values_fill Value to use when no checkboxes are selected. Default `NA`.
