@@ -296,7 +296,8 @@ test_that("convert_checkbox_vals works()", {
 
   out <- convert_checkbox_vals(
     metadata = metadata, .new_value = "_multi", data_tbl = data_tbl,
-    raw_or_label = "label", multi_value_label = "multi", values_fill = NA
+    raw_or_label = "label", multi_value_label = "multi", values_fill = NA,
+    multi_value_sep = ", "
   )
 
   expected_out <- tibble(

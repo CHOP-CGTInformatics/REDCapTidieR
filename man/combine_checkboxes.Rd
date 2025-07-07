@@ -16,8 +16,7 @@ combine_checkboxes(
   multi_value_sep = ", ",
   values_fill = NA,
   raw_or_label = "label",
-  keep = TRUE,
-  ...
+  keep = TRUE
 )
 }
 \arguments{
@@ -40,11 +39,12 @@ Use "minimal" to allow duplicates in the output, or "unique" to de-duplicated
 by adding numeric suffixes. See \code{\link[vctrs:vec_as_names]{vctrs::vec_as_names()}} for more options.}
 
 \item{multi_value_label}{A string specifying the value to be used when multiple
-checkbox fields are selected. Default "Multiple".
-If \code{NULL}, multiple selections will be pasted together.}
+checkbox fields are selected. Default "Multiple". If \code{NULL}, multiple
+selections will be pasted together using \code{multi_value_sep} specification.}
 
-\item{multi_value_sep}{(if \code{multi_value_label} is \code{NULL}) a string
-specifying the separator to use to paste multiple selections together.}
+\item{multi_value_sep}{A string specifying the separator to use to paste
+multiple selections together when \code{multi_value_label} is \code{NULL}. Default
+\code{", "}.}
 
 \item{values_fill}{Value to use when no checkboxes are selected. Default \code{NA}.}
 

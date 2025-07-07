@@ -29,10 +29,11 @@
 #' Use "minimal" to allow duplicates in the output, or "unique" to de-duplicated
 #' by adding numeric suffixes. See [vctrs::vec_as_names()] for more options.
 #' @param multi_value_label A string specifying the value to be used when multiple
-#' checkbox fields are selected. Default "Multiple".
-#' If `NULL`, multiple selections will be pasted together.
-#' @param multi_value_sep (if `multi_value_label` is `NULL`) a string
-#' specifying the separator to use to paste multiple selections together.
+#' checkbox fields are selected. Default "Multiple". If `NULL`, multiple
+#' selections will be pasted together using `multi_value_sep` specification.
+#' @param multi_value_sep A string specifying the separator to use to paste
+#' multiple selections together when `multi_value_label` is `NULL`. Default
+#' `", "`.
 #' @param values_fill Value to use when no checkboxes are selected. Default `NA`.
 #' @param raw_or_label Either 'raw' or 'label' to specify whether to use raw coded
 #' values or labels for the options. Default 'label'.
@@ -153,7 +154,10 @@ combine_checkboxes <- function(supertbl,
     nest(.by = ".new_value", .key = "metadata") %>%
     pmap(convert_checkbox_vals,
       data_tbl = data_tbl_mod,
-      raw_or_label = raw_or_label, multi_value_label = multi_value_label, multi_value_sep = multi_value_sep, values_fill = values_fill
+      raw_or_label = raw_or_label,
+      multi_value_label = multi_value_label,
+      multi_value_sep = multi_value_sep,
+      values_fill = values_fill
     )
 
   final_tbl <- combine_and_repair_tbls(data_tbl, data_tbl_mod, new_cols, names_repair = names_repair)
@@ -266,7 +270,8 @@ replace_true <- function(col, col_name, metadata, raw_or_label) {
 #'
 #' `case_when` logic helps determine whether the value is a coalesced singular
 #' value or a user-specified one via `multi_value_label` or `values_fill`.
-#' If `multi_value_label` is `NULL`, multiple checkbox selections are pasted together.
+#' If `multi_value_label` is `NULL`, multiple checkbox selections are pasted
+#' together using `multi_value_sep` specification.
 #'
 #' @details
 #' This function is used in conjunction with `pmap()`.
@@ -277,44 +282,50 @@ replace_true <- function(col, col_name, metadata, raw_or_label) {
 #' @param data_tbl The data tibble from the original supertibble
 #' @param .new_value The new column values made by [combine_checkboxes()]
 #' @inheritParams combine_checkboxes
-convert_checkbox_vals <- function(metadata, .new_value, data_tbl, raw_or_label, multi_value_label, values_fill, multi_value_sep) {
-  if (!is.null(multi_value_label)) {
-    tibble(
-      !!.new_value := rowSums(!is.na(data_tbl[names(data_tbl) %in% metadata$field_name]))
+convert_checkbox_vals <- function(metadata,
+                                  .new_value,
+                                  data_tbl,
+                                  raw_or_label,
+                                  multi_value_label,
+                                  values_fill,
+                                  multi_value_sep) {
+  use_multi_value_label <- !is.null(multi_value_label)
+  multi_value_label <- if (use_multi_value_label) multi_value_label else NA_character_
+
+  out <- data_tbl %>%
+    unite(
+      ".combined",
+      any_of(metadata$field_name),
+      sep = multi_value_sep,
+      na.rm = TRUE,
+      remove = FALSE
     ) %>%
-      mutate(
-        !!.new_value := case_when(. > 1 ~ multi_value_label,
-                                  . == 1 ~ coalesce(!!!data_tbl[, names(data_tbl) %in% metadata$field_name]),
-                                  .default = values_fill
-        ),
-        !!.new_value := factor(!!sym(.new_value),
-                               levels = c(metadata[[raw_or_label]], multi_value_label, values_fill)
+    mutate(
+      .rowsum = rowSums(!is.na(data_tbl[names(data_tbl) %in% metadata$field_name])),
+      !!.new_value := case_when(
+        .rowsum > 1 & !use_multi_value_label ~ .combined,
+        .rowsum > 1 & use_multi_value_label ~ multi_value_label,
+        .rowsum == 1 ~ coalesce(!!!data_tbl[, names(data_tbl) %in% metadata$field_name]),
+        .default = values_fill
+      ),
+      !!.new_value := !!sym(.new_value) %>%
+        factor(
+          levels = metadata[[raw_or_label]] %>%
+            union(
+              if (use_multi_value_label) multi_value_label else character(0)
+            ) %>%
+            union(
+              setdiff(
+                unique(.data[[.new_value]]),
+                values_fill
+              )
+            ) %>%
+            union(values_fill)
         )
-      )
-  } else {
-    data_tbl %>%
-      tidyr::unite(
-        !!.new_value,
-        any_of(metadata$field_name),
-        sep = multi_value_sep,
-        na.rm = TRUE
-      ) %>%
-      mutate(
-        !!.new_value := !!sym(.new_value) %>%
-          dplyr::case_match(
-            "" ~ values_fill,
-            .default = !!sym(.new_value)
-          ),
-        !!.new_value := !!sym(.new_value) %>%
-          factor(
-            levels =
-              metadata[[raw_or_label]] %>%
-              union(setdiff(!!sym(.new_value), values_fill)) %>%
-              union(values_fill)
-          )
-      ) %>%
-      select(all_of(.new_value))
-  }
+    ) %>%
+    select(all_of(.new_value))
+
+  out
 }
 
 #' @title Combine checkbox fields with respect to repaired outputs
