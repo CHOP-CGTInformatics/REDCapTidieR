@@ -307,25 +307,30 @@ convert_checkbox_vals <- function(metadata,
         .rowsum > 1 & use_multi_value_label ~ multi_value_label,
         .rowsum == 1 ~ coalesce(!!!data_tbl[, names(data_tbl) %in% metadata$field_name]),
         .default = values_fill
-      ),
-      !!.new_value := !!sym(.new_value) %>%
-        factor(
-          levels = metadata[[raw_or_label]] %>%
-            union(
-              if (use_multi_value_label) multi_value_label else character(0)
-            ) %>%
-            union(
-              setdiff(
-                unique(.data[[.new_value]]),
-                values_fill
-              )
-            ) %>%
-            union(values_fill)
-        )
-    ) %>%
-    select(all_of(.new_value))
+      )
+    )
 
-  out
+  # If using multi_value_label, preserve factor levels
+  # Otherwise leave as character with concatenated values
+  if (use_multi_value_label) {
+    lvl_vec <- unique(c(
+      metadata[[raw_or_label]],
+      multi_value_label,
+      out[[.new_value]],
+      values_fill
+    ))
+
+    out <- out %>%
+      mutate(
+        !!.new_value := factor(
+          .data[[.new_value]],
+          levels = lvl_vec
+        )
+      )
+  }
+
+  out %>%
+    select(all_of(.new_value))
 }
 
 #' @title Combine checkbox fields with respect to repaired outputs

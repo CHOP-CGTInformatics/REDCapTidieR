@@ -245,11 +245,7 @@ test_that("combine_checkboxes works for multiple checkbox fields with concatenat
     1, 1, "Red", "Green",
     2, 2, "Red, Yellow", "Green",
     3, 3, NA, NA
-  ) %>%
-    mutate(
-      multi = factor(multi, levels = c("Red", "Yellow", "Blue", "Red, Yellow")),
-      single_checkbox = factor(single_checkbox, levels = "Green")
-    )
+  )
 
   expect_equal(out, expected_out)
 })
@@ -312,7 +308,7 @@ test_that("convert_checkbox_vals works()", {
   )
 
   expected_out_paste <- tibble(
-    `_multi` = factor(c("Red", "Red, Yellow", NA), levels = c("Red", "Yellow", "Blue", "Red, Yellow"))
+    `_multi` = c("Red", "Red, Yellow", NA)
   )
 
   expect_equal(out_paste, expected_out_paste)
