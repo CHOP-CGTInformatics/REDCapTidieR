@@ -229,6 +229,27 @@ test_that("combine_checkboxes works for multiple checkbox fields", {
   expect_equal(out, expected_out)
 })
 
+test_that("combine_checkboxes works for multiple checkbox fields with concatenation", {
+  out <- combine_checkboxes(
+    supertbl = supertbl,
+    tbl = "nonrepeat_instrument",
+    cols = c(starts_with("multi"), starts_with("single_checkbox")),
+    keep = FALSE,
+    multi_value_label = NULL
+  ) %>%
+    pull(redcap_data) %>%
+    dplyr::first()
+
+  expected_out <- tibble::tribble(
+    ~"study_id", ~"extra_data", ~"multi", ~"single_checkbox",
+    1, 1, "Red", "Green",
+    2, 2, "Red, Yellow", "Green",
+    3, 3, NA, NA
+  )
+
+  expect_equal(out, expected_out)
+})
+
 test_that("combine_checkboxes works for multiple checkbox fields with logicals", {
   out <- combine_checkboxes(
     supertbl = supertbl,
@@ -271,7 +292,8 @@ test_that("convert_checkbox_vals works()", {
 
   out <- convert_checkbox_vals(
     metadata = metadata, .new_value = "_multi", data_tbl = data_tbl,
-    raw_or_label = "label", multi_value_label = "multi", values_fill = NA
+    raw_or_label = "label", multi_value_label = "multi", values_fill = NA,
+    multi_value_sep = ", "
   )
 
   expected_out <- tibble(
@@ -279,6 +301,17 @@ test_that("convert_checkbox_vals works()", {
   )
 
   expect_equal(out, expected_out)
+
+  out_paste <- convert_checkbox_vals(
+    metadata = metadata, .new_value = "_multi", data_tbl = data_tbl,
+    raw_or_label = "label", multi_value_label = NULL, multi_value_sep = ", ", values_fill = NA
+  )
+
+  expected_out_paste <- tibble(
+    `_multi` = c("Red", "Red, Yellow", NA)
+  )
+
+  expect_equal(out_paste, expected_out_paste)
 })
 
 test_that("combine_and_repair_tbls works", {

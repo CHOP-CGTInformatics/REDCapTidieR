@@ -10,7 +10,8 @@ convert_checkbox_vals(
   data_tbl,
   raw_or_label,
   multi_value_label,
-  values_fill
+  values_fill,
+  multi_value_sep
 )
 }
 \arguments{
@@ -24,9 +25,14 @@ convert_checkbox_vals(
 values or labels for the options. Default 'label'.}
 
 \item{multi_value_label}{A string specifying the value to be used when multiple
-checkbox fields are selected. Default "Multiple".}
+checkbox fields are selected. Default "Multiple". If \code{NULL}, multiple
+selections will be pasted together using \code{multi_value_sep} specification.}
 
 \item{values_fill}{Value to use when no checkboxes are selected. Default \code{NA}.}
+
+\item{multi_value_sep}{A string specifying the separator to use to paste
+multiple selections together when \code{multi_value_label} is \code{NULL}. Default
+\code{", "}.}
 }
 \description{
 This function takes a single column of data and converts the values
@@ -35,6 +41,8 @@ metadata tibble.
 
 \code{case_when} logic helps determine whether the value is a coalesced singular
 value or a user-specified one via \code{multi_value_label} or \code{values_fill}.
+If \code{multi_value_label} is \code{NULL}, multiple checkbox selections are pasted
+together using \code{multi_value_sep} specification.
 }
 \details{
 This function is used in conjunction with \code{pmap()}.

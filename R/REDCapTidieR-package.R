@@ -26,7 +26,7 @@
 #' @importFrom stringr str_detect str_replace str_replace_all str_squish str_trunc
 #' str_trim str_ends
 #' @importFrom tibble as_tibble is_tibble tibble
-#' @importFrom tidyr complete fill pivot_wider nest separate_wider_delim unnest
+#' @importFrom tidyr complete fill pivot_wider nest separate_wider_delim unite unnest
 #' unnest_wider
 #' @importFrom tidyselect all_of any_of ends_with eval_select everything
 #' starts_with where matches
