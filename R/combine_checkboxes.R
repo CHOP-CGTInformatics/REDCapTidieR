@@ -316,7 +316,6 @@ convert_checkbox_vals <- function(metadata,
     lvl_vec <- unique(c(
       metadata[[raw_or_label]],
       multi_value_label,
-      out[[.new_value]],
       values_fill
     ))
 
