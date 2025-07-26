@@ -7,13 +7,13 @@
 #'
 #' @details
 #' For more information on the default metrics provided, check the
-#' \link[skimr]{get_default_skimmer_names}
+#' \link[skimr:get_default_skimmer_names]{skimr::get_default_skimmer_names}
 #' documentation.
 #'
 #' @param supertbl a supertibble generated using `read_redcap()`
 #'
 #' @return
-#' A supertibble with \link[skimr]{skimr} metadata metrics
+#' A supertibble with \link[skimr:skimr]{skimr} metadata metrics
 #'
 #' @examples
 #' superheroes_supertbl
