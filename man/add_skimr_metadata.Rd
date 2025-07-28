@@ -10,7 +10,7 @@ add_skimr_metadata(supertbl)
 \item{supertbl}{a supertibble generated using \code{read_redcap()}}
 }
 \value{
-A supertibble with \link[skimr]{skimr} metadata metrics
+A supertibble with \link[skimr:skimr]{skimr} metadata metrics
 }
 \description{
 Add default \link[skimr]{skim} metrics to the \code{redcap_data} list elements of
@@ -18,7 +18,7 @@ a supertibble output from \code{read_readcap}.
 }
 \details{
 For more information on the default metrics provided, check the
-\link[skimr]{get_default_skimmer_names}
+\link[skimr:get_default_skimmer_names]{skimr::get_default_skimmer_names}
 documentation.
 }
 \examples{
