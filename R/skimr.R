@@ -1,19 +1,18 @@
 #' @title
-#' Add \link[skimr]{skimr} metrics to a supertibble's metadata
+#' Add [skimr::skimr] metrics to a supertibble's metadata
 #'
 #' @description
-#' Add default \link[skimr]{skim} metrics to the `redcap_data` list elements of
+#' Add default [skimr::skim] metrics to the `redcap_data` list elements of
 #' a supertibble output from `read_readcap`.
 #'
 #' @details
 #' For more information on the default metrics provided, check the
-#' \link[skimr::get_default_skimmer_names]{skimr::get_default_skimmer_names}
-#' documentation.
+#' [skimr::get_default_skimmer_names] documentation.
 #'
 #' @param supertbl a supertibble generated using `read_redcap()`
 #'
 #' @return
-#' A supertibble with \link[skimr::skimr]{skimr} metadata metrics
+#' A supertibble with [skimr::skimr] metadata metrics
 #'
 #' @examples
 #' superheroes_supertbl
