@@ -99,7 +99,7 @@ write_redcap_xlsx <- function(supertbl,
     supertbl$redcap_form_name
   }
 
-  sheet_vals <- excel_trunc_unique(sheet_vals, width = 31)
+  sheet_vals <- sheet_trunc_unique(sheet_vals, width = 31)
 
   # Construct default supertibble sheet ----
   if (include_toc_sheet) {
@@ -620,7 +620,7 @@ bind_supertbl_metadata <- function(supertbl) {
 #'
 #' @keywords internal
 
-excel_trunc_unique <- function(x, width = 31) {
+sheet_trunc_unique <- function(x, width = 31) {
   stopifnot(width > 4) # Minimum required width for adding on suffixes
 
   # Check if vals greater than `width` and alert user to changes

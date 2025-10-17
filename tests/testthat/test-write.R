@@ -404,8 +404,8 @@ test_that("excel_trunc_unique works", {
     "Really Really Long Form Na.(11)"
   )
 
-  expect_warning(excel_trunc_unique(sheet_vals))
-  out <- suppressWarnings(excel_trunc_unique(sheet_vals))
+  expect_warning(sheet_trunc_unique(sheet_vals))
+  out <- suppressWarnings(sheet_trunc_unique(sheet_vals))
 
   expect_equal(out, expected_out)
 })
