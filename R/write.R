@@ -99,7 +99,7 @@ write_redcap_xlsx <- function(supertbl,
     supertbl$redcap_form_name
   }
 
-  sheet_vals <- str_trunc(sheet_vals, width = 31)
+  sheet_vals <- excel_trunc_unique(sheet_vals, width = 31)
 
   # Construct default supertibble sheet ----
   if (include_toc_sheet) {
@@ -594,4 +594,96 @@ bind_supertbl_metadata <- function(supertbl) {
       across(where(is.period), as.character)
     ) %>%
     unique()
+}
+
+#' @title
+#' Make Excel-safe unique sheet names with truncation and numbering
+#'
+#' @description
+#' Produces sheet names that:
+#'
+#' - respect Excel's 31-character limit
+#' - are unique, even when the first 31 characters are identical
+#'
+#' The first occurrence of each name is truncated with an ellipsis via
+#' [stringr::str_trunc()] (so it ends with `"..."` if needed). Any collisions
+#' (including with pre-existing user-provided names) are resolved by appending
+#' a numeric suffix like `".(2)"`, `".(3)"`, … while re-truncating the base so
+#' the total length never exceeds `width`. If the base already ends with a dot,
+#' the extra dot in the suffix is omitted to avoid `"..(n)"`.
+#'
+#' @param x A character vector of proposed sheet names.
+#' @param width Integer scalar, maximum allowed length (default `31` for Excel).
+#'
+#' @return A character vector the same length as `x`, with unique names of length
+#'   `<= width`.
+#'
+#' @keywords internal
+
+excel_trunc_unique <- function(x, width = 31) {
+  stopifnot(width > 4) # Minimum required width for adding on suffixes
+
+  # Check if vals greater than `width` and alert user to changes
+  too_long <- !is.na(x) & nchar(x, type = "chars") > width
+  if (any(too_long)) {
+    examples <- utils::head(unique(x[too_long]), 5) # nolint: object_usage_linter
+    cli_warn(
+      c(
+        "!" = "{sum(too_long)} sheet name{?s} exceeded the {.val {width}} max character limit and will be truncated.",
+        "i" = "Examples: {paste0('\"', examples, '\"', collapse = ', ')}."
+      )
+    )
+  }
+
+  # First pass truncation (keeps "..." for long ones)
+  tr <- str_trunc(x, width = width) # nolint: object_usage_linter
+
+  # Preserve location of names in case truncated names already exist
+  freq <- table(x, useNA = "ifany")
+  is_singleton <- (freq[x] == 1L) # per-element lookup
+  in_bounds     <- !is.na(x) & nchar(x, "chars") <= width
+  locked_idx    <- which(in_bounds & is_singleton) # positions to keep verbatim
+  locked_names  <- unique(x[locked_idx])
+
+  used   <- locked_names # pre-seed used with reserved names # nolint: object_usage_linter
+  counts <- new.env(parent = emptyenv()) # per truncated-key counters # nolint: object_usage_linter
+
+  map_chr(seq_along(x), ~{
+    i    <- .x
+    orig <- x[i]
+    key  <- tr[i]
+
+    # If this position is locked, keep the user-provided name in-place
+    if (i %in% locked_idx) {
+      # also initialize a counter for its truncated key if helpful later
+      if (!exists(key, envir = counts, inherits = FALSE)) assign(key, 1L, envir = counts)
+      return(orig)
+    }
+
+    # If the truncated name isn't taken (and not blocked by locked names), use it
+    if (!(key %in% used)) {
+      used <<- c(used, key)
+      if (!exists(key, envir = counts, inherits = FALSE)) assign(key, 1L, envir = counts)
+      return(key)
+    }
+
+    # Otherwise, add .(n) while re-truncating from the ORIGINAL string
+    n <- if (exists(key, envir = counts, inherits = FALSE)) get(key, envir = counts) + 1L else 2L
+
+    repeat {
+      suffix <- paste0(".(", n, ")")
+      allow  <- width - nchar(suffix)
+
+      base <- str_trim(str_trunc(orig, width = allow, ellipsis = ""), side = "right")
+      suf  <- if (str_ends(base, "\\.")) paste0("(", n, ")") else suffix
+      cand <- paste0(base, suf)
+
+      if (!(cand %in% used)) {
+        used <<- c(used, cand)
+        assign(key, n, envir = counts)
+        return(cand)
+      }
+      n <- n + 1L
+    }
+  })
 }

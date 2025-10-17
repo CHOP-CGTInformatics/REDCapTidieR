@@ -372,3 +372,40 @@ test_that("Combining skimr, labelled, and xlsx returns expected snapshot", {
 
   expect_snapshot(wb_list, cran = FALSE) # Not to be checked on CRAN
 })
+
+test_that("excel_trunc_unique works", {
+  sheet_vals <- c(
+    "A",
+    "Really Really Long Form Name 111",
+    "Really Really Long Form Name 1110",
+    "Really Really Long Form Name 112",
+    "Really Really Long Form Nam.(2)",
+    "Really Really Long Form Name 113",
+    "Really Really Long Form Name 114",
+    "Really Really Long Form Name 115",
+    "Really Really Long Form Name 116",
+    "Really Really Long Form Name 117",
+    "Really Really Long Form Name 118",
+    "Really Really Long Form Name 119"
+  )
+
+  expected_out <- c(
+    "A", # Regular cols handled the same
+    "Really Really Long Form Name...", # Initial appended with ...
+    "Really Really Long Form Nam.(3)",
+    "Really Really Long Form Nam.(4)",
+    "Really Really Long Form Nam.(2)", # Position locked
+    "Really Really Long Form Nam.(5)",
+    "Really Really Long Form Nam.(6)",
+    "Really Really Long Form Nam.(7)",
+    "Really Really Long Form Nam.(8)",
+    "Really Really Long Form Nam.(9)",
+    "Really Really Long Form Na.(10)", # Additional magnitudes of characters handled
+    "Really Really Long Form Na.(11)"
+  )
+
+  expect_warning(excel_trunc_unique(sheet_vals))
+  out <- suppressWarnings(excel_trunc_unique(sheet_vals))
+
+  expect_equal(out, expected_out)
+})
