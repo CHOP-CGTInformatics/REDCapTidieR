@@ -645,7 +645,7 @@ excel_trunc_unique <- function(x, width = 31) {
   locked_idx    <- which(in_bounds & is_singleton) # positions to keep verbatim
   locked_names  <- unique(x[locked_idx])
 
-  used   <- locked_names # pre-seed used with reserved names # nolint: object_usage_linter
+  used <- locked_names # pre-seed used with reserved names # nolint: object_usage_linter
   counts <- new.env(parent = emptyenv()) # per truncated-key counters # nolint: object_usage_linter
 
   map_chr(seq_along(x), ~{
