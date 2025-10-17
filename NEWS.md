@@ -1,3 +1,5 @@
+# REDCapTidieR (development version)
+
 # REDCapTidieR 1.2.4
 
 - Added an option in `combine_checkboxes()` to concatenate checkbox values when multiple are selected. (#225)
