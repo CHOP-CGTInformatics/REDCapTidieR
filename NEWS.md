@@ -1,3 +1,9 @@
+# REDCapTidieR (development version)
+
+### Bug Fixes
+
+* Fixed a bug where `write_redcap_xlsx()` could fail on REDCap forms with long form labels (discovered and fix suggested by @pbchase)
+
 # REDCapTidieR 1.2.4
 
 - Added an option in `combine_checkboxes()` to concatenate checkbox values when multiple are selected. (#225)

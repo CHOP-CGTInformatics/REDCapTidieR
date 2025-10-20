@@ -372,3 +372,28 @@ test_that("Combining skimr, labelled, and xlsx returns expected snapshot", {
 
   expect_snapshot(wb_list, cran = FALSE) # Not to be checked on CRAN
 })
+
+test_that("write_redcap_xlsx handles long sheet names", {
+  long_name_supertbl <- tibble::tribble(
+    ~redcap_form_name, ~redcap_form_label, ~redcap_data, ~redcap_metadata,
+    "a", "Really Really Long Form Name AAA", redcap_data_a, redcap_metadata_a,
+    "b", "Really Really Long Form Name AAB", redcap_data_b, redcap_metadata_b
+  ) %>%
+    as_supertbl()
+
+  withr::with_tempdir({
+    wb_obj_data <- write_redcap_xlsx(long_name_supertbl,
+      file = "long_name_supertbl_wb.xlsx",
+      include_metadata_sheet = FALSE,
+      include_toc_sheet = FALSE,
+      recode_logical = FALSE
+    )
+    sheet_names <- wb_obj_data$sheet_names
+    expected_sheet_names <- c(
+      "Really Really Long Form N...",
+      "Really Really Long Form N...1"
+    )
+
+    expect_equal(sheet_names, expected_sheet_names)
+  })
+})

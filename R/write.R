@@ -99,7 +99,8 @@ write_redcap_xlsx <- function(supertbl,
     supertbl$redcap_form_name
   }
 
-  sheet_vals <- str_trunc(sheet_vals, width = 31)
+  # Set max length to 28char to accommodate long names >31 (Excel sheet max)
+  sheet_vals <- make.unique(str_trunc(sheet_vals, width = 28), sep = "")
 
   # Construct default supertibble sheet ----
   if (include_toc_sheet) {
