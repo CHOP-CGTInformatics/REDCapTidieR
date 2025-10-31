@@ -73,8 +73,12 @@ test_that("multi_choice_to_labels works", {
   # Haven option works
   skip_if_not_installed("labelled")
 
+  db_data_classic_complete_na <- db_data_classic
+
+  db_data_classic_complete_na$repeated_complete <- NA
+
   out <- multi_choice_to_labels(
-    db_data = db_data_classic,
+    db_data = db_data_classic_complete_na,
     db_metadata = db_metadata_classic,
     raw_or_label = "haven"
   ) %>%
@@ -97,6 +101,9 @@ test_that("multi_choice_to_labels works", {
   )
   expect_s3_class(out$repeatsurvey_radio_v2, "haven_labelled")
   expect_equal(labelled::val_labels(out$repeatsurvey_radio_v2), c("Choice 1" = 1, "Choice 2" = 2, "Choice 3" = 3))
+
+  expect_s3_class(out$repeated_complete, "haven_labelled")
+  expect_equal(labelled::val_labels(out$repeated_complete), c("Incomplete" = 0, "Unverified" = 1, "Complete" = 2))
 })
 
 test_that("parse_labels works", {
