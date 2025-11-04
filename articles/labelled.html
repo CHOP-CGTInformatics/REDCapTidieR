@@ -26,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">REDCapTidieR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.4.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.4.9001</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -156,7 +156,7 @@ attaches the corresponding value labels to them as metadata.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>         2 Record 2   2<span style="color: #949494;"> [B]</span>           TRUE         TRUE         FALSE       </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>         3 Record 3   3<span style="color: #949494;"> [C]</span>           FALSE        TRUE         TRUE        </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>         4 Record 4   1<span style="color: #949494;"> [A]</span>           FALSE        FALSE        FALSE       </span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 1 more variable: form_status_complete &lt;dbl+lbl&gt;</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 1 more variable: form_status_complete &lt;int+lbl&gt;</span></span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="pros-cons-of-labelled-vectors">Pros &amp; Cons of Labelled Vectors<a class="anchor" aria-label="anchor" href="#pros-cons-of-labelled-vectors"></a>
@@ -200,7 +200,7 @@ dictionary with <code><a href="https://larmarange.github.io/labelled/reference/l
 <span><span class="co">#&gt;  4   checkbox___1         —     lgl      0                     </span></span>
 <span><span class="co">#&gt;  5   checkbox___2         —     lgl      0                     </span></span>
 <span><span class="co">#&gt;  6   checkbox___3         —     lgl      0                     </span></span>
-<span><span class="co">#&gt;  7   form_status_complete —     dbl+lbl  0       [0] Incomplete</span></span>
+<span><span class="co">#&gt;  7   form_status_complete —     int+lbl  0       [0] Incomplete</span></span>
 <span><span class="co">#&gt;                                                  [1] Unverified</span></span>
 <span><span class="co">#&gt;                                                  [2] Complete</span></span></code></pre></div>
 </div>
@@ -274,7 +274,7 @@ variable labels to data frames exported from REDCap:</p>
 <span><span class="co">#&gt;  4   checkbox___1         Checkbox: A          lgl      0                     </span></span>
 <span><span class="co">#&gt;  5   checkbox___2         Checkbox: B          lgl      0                     </span></span>
 <span><span class="co">#&gt;  6   checkbox___3         Checkbox: C          lgl      0                     </span></span>
-<span><span class="co">#&gt;  7   form_status_complete REDCap Instrument C~ dbl+lbl  0       [0] Incomplete</span></span>
+<span><span class="co">#&gt;  7   form_status_complete REDCap Instrument C~ int+lbl  0       [0] Incomplete</span></span>
 <span><span class="co">#&gt;                                                                 [1] Unverified</span></span>
 <span><span class="co">#&gt;                                                                 [2] Complete</span></span></code></pre></div>
 <p>This ensures that your data not only retains value labels but also
