@@ -444,7 +444,7 @@ multi_choice_to_labels <- function(db_data, db_metadata, raw_or_label = "label",
     mutate(
       across(
         .cols = all_of(form_status_cols),
-        .fns = ~ label_handler(., c("0" = "Incomplete", "1" = "Unverified", "2" = "Complete"), integer(0))
+        .fns = ~ label_handler(as.integer(.), c("0" = "Incomplete", "1" = "Unverified", "2" = "Complete"), integer(0))
       )
     )
 
