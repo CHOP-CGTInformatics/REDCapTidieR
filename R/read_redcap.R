@@ -26,8 +26,7 @@
 #' assumed data types.
 #'
 #' To help with correcting these behaviors, `col_types` wraps [readr::cols]
-#' lets users specify the expected data type. This feature is to be employed at
-#' the users discretion.
+#' lets users specify the expected data type. This is an advanced feature for users with an understanding of the REDCap API and block matrix.
 #'
 #' @return
 #' A `tibble` in which each row represents a REDCap instrument. It
