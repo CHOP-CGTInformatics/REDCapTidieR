@@ -7,6 +7,9 @@
 #' and metadata organized into tibbles, broken down by instrument.
 #'
 #' @details
+#'
+#' ## The block matrix
+#'
 #' This function uses the [REDCapR](https://ouhscbbmc.github.io/REDCapR/index.html)
 #' package to query the REDCap API. The REDCap API returns a
 #' [block matrix](https://en.wikipedia.org/wiki/Block_matrix) that mashes
@@ -14,6 +17,17 @@
 #' together. The `read_redcap()` function
 #' deconstructs the block matrix and splices the data into individual tibbles,
 #' where one tibble represents the data from one instrument.
+#'
+#' ## Using `col_types`
+#'
+#' REDCapR and REDCapTidieR use [readr::read_csv] to to intelligently guess the data types of the
+#' block matrix. While REDCapTidieR makes some minor assumptions and manipulations to
+#' the final outputs, in some scenarios fringe issues may result in incorrectly
+#' assumed data types.
+#'
+#' To help with correcting these behaviors, `col_types` wraps [readr::cols]
+#' lets users specify the expected data type. This is an advanced feature for
+#' users with an understanding of the REDCap API and block matrix.
 #'
 #' @return
 #' A `tibble` in which each row represents a REDCap instrument. It
@@ -58,6 +72,8 @@
 #' instruments. Setting to `TRUE` will treat the mixed instrument's non-repeating versions
 #' as repeating instruments with a single instance. Applies to longitudinal projects
 #' only. Default `FALSE`. Can be set globally with `options(redcaptidier.allow.mixed.structure = TRUE)`.
+#' @param col_types A [readr::cols()] object passed internally to [readr::read_csv()]. Optional.
+#' See "Using `col_types`" for more information.
 #'
 #' @examples
 #' \dontrun{
@@ -80,6 +96,7 @@ read_redcap <- function(redcap_uri,
                         export_survey_fields = NULL,
                         export_data_access_groups = NULL,
                         suppress_redcapr_messages = TRUE,
+                        col_types = NULL,
                         guess_max = Inf,
                         allow_mixed_structure = getOption("redcaptidier.allow.mixed.structure", FALSE)) {
   check_arg_is_character(redcap_uri, len = 1, any.missing = FALSE)
@@ -184,7 +201,8 @@ read_redcap <- function(redcap_uri,
       export_survey_fields = export_survey_fields,
       export_data_access_groups = export_data_access_groups,
       verbose = !suppress_redcapr_messages,
-      guess_max = guess_max
+      guess_max = guess_max,
+      col_types = col_types
     )
   })
 

@@ -4,6 +4,7 @@
 
 * Fixed a bug where `write_redcap_xlsx()` could fail on REDCap forms with long form labels (discovered and fix suggested by @pbchase)
 * Fixed a bug where `read_redcap()` failed with `raw_or_label = "haven"` when a form contains no data (discovered by @mrkskk).
+* Exposed `col_types` param from REDCapR to allow for manual specification of expected data type outputs
 
 # REDCapTidieR 1.2.4
 

@@ -60,5 +60,5 @@ bind_tibbles <- function(supertbl,
       value = .y
     )
   )
-  return(invisible(NULL))
+  invisible(NULL)
 }

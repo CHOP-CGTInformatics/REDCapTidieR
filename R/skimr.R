@@ -1,5 +1,5 @@
 #' @title
-#' Add [skimr::skimr] metrics to a supertibble's metadata
+#' Add [skimr::skim] metrics to a supertibble's metadata
 #'
 #' @description
 #' Add default [skimr::skim] metrics to the `redcap_data` list elements of
@@ -12,7 +12,7 @@
 #' @param supertbl a supertibble generated using `read_redcap()`
 #'
 #' @return
-#' A supertibble with [skimr::skimr] metadata metrics
+#' A supertibble with [skimr::skim] metadata metrics
 #'
 #' @examples
 #' superheroes_supertbl
