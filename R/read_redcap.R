@@ -7,6 +7,9 @@
 #' and metadata organized into tibbles, broken down by instrument.
 #'
 #' @details
+#'
+#' ## The block matrix
+#'
 #' This function uses the [REDCapR](https://ouhscbbmc.github.io/REDCapR/index.html)
 #' package to query the REDCap API. The REDCap API returns a
 #' [block matrix](https://en.wikipedia.org/wiki/Block_matrix) that mashes
@@ -14,6 +17,17 @@
 #' together. The `read_redcap()` function
 #' deconstructs the block matrix and splices the data into individual tibbles,
 #' where one tibble represents the data from one instrument.
+#'
+#' ## Using `col_types`
+#'
+#' REDCapR and REDCapTidieR use [readr::read_csv] to to intelligently guess the data types of the
+#' block matrix. While REDCapTidieR makes some minor assumptions and manipulations to
+#' the final outputs, in some scenarios fringe issues may result in incorrectly
+#' assumed data types.
+#'
+#' To help with correcting these behaviors, `col_types` wraps [readr::cols]
+#' lets users specify the expected data type. This feature is to be employed at
+#' the users discretion.
 #'
 #' @return
 #' A `tibble` in which each row represents a REDCap instrument. It
@@ -59,6 +73,7 @@
 #' as repeating instruments with a single instance. Applies to longitudinal projects
 #' only. Default `FALSE`. Can be set globally with `options(redcaptidier.allow.mixed.structure = TRUE)`.
 #' @param col_types A [readr::cols()] object passed internally to [readr::read_csv()]. Optional.
+#' See "Using `col_types`" for more information.
 #'
 #' @examples
 #' \dontrun{

@@ -628,10 +628,12 @@ check_extra_field_values <- function(x, values) {
   if (length(extra_vals) == 0) {
     return(NULL)
   }
+
   as.character(extra_vals)
 }
 
 check_extra_field_values_message <- function(extra_field_values, call = caller_env()) {
+
   extra_field_values <- extra_field_values %>%
     discard(is.null)
 
@@ -649,6 +651,10 @@ check_extra_field_values_message <- function(extra_field_values, call = caller_e
     i = paste(
       "Silence this warning with {.code options(redcaptidier.allow.mdc = TRUE)} or",
       "set {.code raw_or_label = 'raw'} to access missing data codes"
+    ),
+    i = paste(
+      "Do the fields in question display their expected data types?",
+      "Use {.code col_types} to correct any unexpected outputs."
     )
   )
   cli_warn(

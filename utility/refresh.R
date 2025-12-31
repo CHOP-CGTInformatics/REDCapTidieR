@@ -23,7 +23,8 @@ withr::with_envvar(
 checks_to_exclude <- c(
   "covr",
   "cyclocomp",
-  "lintr_line_length_linter"
+  "lintr_line_length_linter",
+  "pipe_consistency_linter"
 )
 gp <-
   goodpractice::all_checks() |>

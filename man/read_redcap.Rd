@@ -45,7 +45,8 @@ access group field exists and returns it if available.}
 \item{suppress_redcapr_messages}{A logical to control whether to suppress messages
 from REDCapR API calls. Default \code{TRUE}.}
 
-\item{col_types}{A \code{\link[readr:cols]{readr::cols()}} object passed internally to \code{\link[readr:read_delim]{readr::read_csv()}}. Optional.}
+\item{col_types}{A \code{\link[readr:cols]{readr::cols()}} object passed internally to \code{\link[readr:read_delim]{readr::read_csv()}}. Optional.
+See "Using \code{col_types}" for more information.}
 
 \item{guess_max}{A positive \link[base:numeric]{base::numeric} value
 passed to \code{\link[readr:read_delim]{readr::read_csv()}} that specifies the maximum number of records to
@@ -80,6 +81,8 @@ and transform the output into a "supertibble" that contains data
 and metadata organized into tibbles, broken down by instrument.
 }
 \details{
+\subsection{The block matrix}{
+
 This function uses the \href{https://ouhscbbmc.github.io/REDCapR/index.html}{REDCapR}
 package to query the REDCap API. The REDCap API returns a
 \href{https://en.wikipedia.org/wiki/Block_matrix}{block matrix} that mashes
@@ -87,6 +90,19 @@ data from all data collection instruments
 together. The \code{read_redcap()} function
 deconstructs the block matrix and splices the data into individual tibbles,
 where one tibble represents the data from one instrument.
+}
+
+\subsection{Using \code{col_types}}{
+
+REDCapR and REDCapTidieR use \link[readr:read_delim]{readr::read_csv} to to intelligently guess the data types of the
+block matrix. While REDCapTidieR makes some minor assumptions and manipulations to
+the final outputs, in some scenarios fringe issues may result in incorrectly
+assumed data types.
+
+To help with correcting these behaviors, \code{col_types} wraps \link[readr:cols]{readr::cols}
+lets users specify the expected data type. This feature is to be employed at
+the users discretion.
+}
 }
 \examples{
 \dontrun{
