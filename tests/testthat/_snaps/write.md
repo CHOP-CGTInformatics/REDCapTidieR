@@ -76,55 +76,55 @@
       6                   Incomplete
       
       [[1]][[5]]
-        Record ID   NA    NA         NA              NA           NA
+        Record ID <NA>  <NA>       <NA>            <NA>         <NA>
       2 record_id text  note calculated dropdown_single radio_single
       3         1 text notes          2             one            B
       4         2 <NA>  <NA>          2           three            C
       5         3 <NA>  <NA>          2            <NA>         <NA>
       6         4 <NA>  <NA>          2            <NA>         <NA>
-                           NA                    NA                    NA
+                         <NA>                  <NA>                  <NA>
       2 radio_duplicate_label checkbox_multiple___1 checkbox_multiple___2
       3                  <NA>               Checked             Unchecked
       4                  <NA>               Checked             Unchecked
       5                  <NA>             Unchecked             Unchecked
       6                  <NA>             Unchecked             Unchecked
-                           NA                    NA                    NA
+                         <NA>                  <NA>                  <NA>
       2 checkbox_multiple___3 checkbox_multiple___4 checkbox_multiple___5
       3             Unchecked               Checked             Unchecked
       4             Unchecked               Checked             Unchecked
       5             Unchecked             Unchecked             Unchecked
       6             Unchecked             Unchecked             Unchecked
-                           NA                    NA                    NA
+                         <NA>                  <NA>                  <NA>
       2 checkbox_multiple___6 checkbox_multiple___7 checkbox_multiple___8
       3             Unchecked             Unchecked               Checked
       4             Unchecked               Checked             Unchecked
       5             Unchecked             Unchecked             Unchecked
       6             Unchecked             Unchecked             Unchecked
-                           NA                     NA                      NA
+                         <NA>                   <NA>                    <NA>
       2 checkbox_multiple___9 checkbox_multiple___10 checkbox_multiple___-99
       3             Unchecked              Unchecked               Unchecked
       4             Unchecked                Checked                 Checked
       5             Unchecked              Unchecked               Unchecked
       6             Unchecked              Unchecked               Unchecked
-                             NA                       NA                        NA
+                           <NA>                     <NA>                      <NA>
       2 checkbox_multiple___-98 checkbox_multiple_2___aa checkbox_multiple_2___b1b
       3               Unchecked                Unchecked                 Unchecked
       4               Unchecked                Unchecked                   Checked
       5               Unchecked                Unchecked                 Unchecked
       6               Unchecked                Unchecked                 Unchecked
-                                NA                          NA
+                              <NA>                        <NA>
       2 checkbox_multiple_2___ccc2 checkbox_multiple_2___3dddd
       3                  Unchecked                   Unchecked
       4                  Unchecked                     Checked
       5                  Unchecked                   Unchecked
       6                  Unchecked                   Unchecked
-                                  NA    NA        NA                            NA
+                                <NA>  <NA>      <NA>                          <NA>
       2 checkbox_multiple_2___4eeee5 yesno truefalse                     signature
       3                    Unchecked   yes     FALSE signature_2022-08-02_1114.png
       4                    Unchecked  <NA>      <NA>                          <NA>
       5                    Unchecked  <NA>      <NA>                          <NA>
       6                    Unchecked  <NA>      <NA>                          <NA>
-                               NA     NA
+                             <NA>   <NA>
       2                fileupload slider
       3 gas_receipt_20220729.jpeg     73
       4                      <NA>   <NA>

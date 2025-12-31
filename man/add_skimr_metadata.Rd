@@ -2,7 +2,7 @@
 % Please edit documentation in R/skimr.R
 \name{add_skimr_metadata}
 \alias{add_skimr_metadata}
-\title{Add \link[skimr:skimr-package]{skimr::skimr} metrics to a supertibble's metadata}
+\title{Add \link[skimr:skim]{skimr::skim} metrics to a supertibble's metadata}
 \usage{
 add_skimr_metadata(supertbl)
 }
@@ -10,7 +10,7 @@ add_skimr_metadata(supertbl)
 \item{supertbl}{a supertibble generated using \code{read_redcap()}}
 }
 \value{
-A supertibble with \link[skimr:skimr-package]{skimr::skimr} metadata metrics
+A supertibble with \link[skimr:skim]{skimr::skim} metadata metrics
 }
 \description{
 Add default \link[skimr:skim]{skimr::skim} metrics to the \code{redcap_data} list elements of

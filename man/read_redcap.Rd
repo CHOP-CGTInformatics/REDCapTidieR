@@ -12,6 +12,7 @@ read_redcap(
   export_survey_fields = NULL,
   export_data_access_groups = NULL,
   suppress_redcapr_messages = TRUE,
+  col_types = NULL,
   guess_max = Inf,
   allow_mixed_structure = getOption("redcaptidier.allow.mixed.structure", FALSE)
 )
@@ -43,6 +44,8 @@ access group field exists and returns it if available.}
 
 \item{suppress_redcapr_messages}{A logical to control whether to suppress messages
 from REDCapR API calls. Default \code{TRUE}.}
+
+\item{col_types}{A \code{\link[readr:cols]{readr::cols()}} object passed internally to \code{\link[readr:read_delim]{readr::read_csv()}}. Optional.}
 
 \item{guess_max}{A positive \link[base:numeric]{base::numeric} value
 passed to \code{\link[readr:read_delim]{readr::read_csv()}} that specifies the maximum number of records to

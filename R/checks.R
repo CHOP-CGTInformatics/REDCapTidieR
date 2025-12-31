@@ -412,7 +412,7 @@ check_arg_is_supertbl <- function(x,
     )
   }
 
-  return(TRUE)
+  TRUE
 }
 
 #' @rdname checkmate
@@ -445,7 +445,7 @@ check_arg_is_valid_token <- function(x,
     }
   )
 
-  return(TRUE)
+  TRUE
 }
 
 #' @title
@@ -493,7 +493,7 @@ check_arg_is_valid_extension <- function(x,
     )
   }
 
-  return(TRUE)
+  TRUE
 }
 
 

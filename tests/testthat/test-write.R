@@ -336,7 +336,6 @@ test_that("bind_supertbl_metadata works", {
 })
 
 
-
 test_that("Combining skimr, labelled, and xlsx returns expected snapshot", {
   skip_on_cran()
   skip_on_ci()

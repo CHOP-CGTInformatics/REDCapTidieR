@@ -58,6 +58,7 @@
 #' instruments. Setting to `TRUE` will treat the mixed instrument's non-repeating versions
 #' as repeating instruments with a single instance. Applies to longitudinal projects
 #' only. Default `FALSE`. Can be set globally with `options(redcaptidier.allow.mixed.structure = TRUE)`.
+#' @param col_types A [readr::cols()] object passed internally to [readr::read_csv()]. Optional.
 #'
 #' @examples
 #' \dontrun{
@@ -80,6 +81,7 @@ read_redcap <- function(redcap_uri,
                         export_survey_fields = NULL,
                         export_data_access_groups = NULL,
                         suppress_redcapr_messages = TRUE,
+                        col_types = NULL,
                         guess_max = Inf,
                         allow_mixed_structure = getOption("redcaptidier.allow.mixed.structure", FALSE)) {
   check_arg_is_character(redcap_uri, len = 1, any.missing = FALSE)
@@ -184,7 +186,8 @@ read_redcap <- function(redcap_uri,
       export_survey_fields = export_survey_fields,
       export_data_access_groups = export_data_access_groups,
       verbose = !suppress_redcapr_messages,
-      guess_max = guess_max
+      guess_max = guess_max,
+      col_types = col_types
     )
   })
 
