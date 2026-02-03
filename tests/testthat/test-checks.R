@@ -320,7 +320,7 @@ test_that("check_metadata_field_types works", {
   db_data <- tibble::tibble(
     record_id = c(1L, 2L),
     text_field = c(TRUE, NA),
-    checkbox___1 = c(1, 0),
+    checkbox___1 = Sys.Date(),
     file_field = c(100, 200),
     slider_field = c("50", NA)
   )

@@ -686,9 +686,10 @@ check_metadata_field_types <- function(db_data, db_metadata, call = caller_env()
       c("character", "double", "integer", "factor", "date", "time", "datetime"),
       c("character", "double", "integer", "factor", "date", "time", "datetime"),
       c("character", "double", "integer", "factor", "date", "time", "datetime"),
-      "logical",
-      "logical",
-      "logical",
+      # expected logicals are checked in parse_logical_cols
+      c("character", "logical", "double", "integer"),
+      c("character", "logical", "double", "integer"),
+      c("character", "logical", "double", "integer"),
       "character",
       c("double", "integer")
     ),
@@ -739,9 +740,10 @@ check_metadata_field_types <- function(db_data, db_metadata, call = caller_env()
 }
 
 get_field_type_mismatch_message <- function(field_name, field_type, r_type, allowed_types) {
-  allowed_code <- paste0("{.code ", allowed_types, "}") # nolint: object_usage_linter
+  allowed_code <- paste0("{.code ", allowed_types, "}")
+  allowed_code <- cli_vec(allowed_code, list("vec-last" = ", or "))
   cli_text(
-    "{.code {field_name}} ({.code {field_type}}) was parsed as {.code {r_type}} rather than {qty(allowed_types)}{? /one of }{cli_vec(allowed_code)}." # nolint: line_length_linter
+    "{.code {field_name}} ({.code {field_type}}) was parsed as {.code {r_type}} rather than {qty(allowed_types)}{? /one of }{allowed_code}." # nolint: line_length_linter
   ) %>%
     cli_fmt(collapse = TRUE, strip_newline = TRUE)
 }
