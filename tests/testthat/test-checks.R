@@ -315,3 +315,75 @@ test_that("check_equal_col_summaries works", {
   check_equal_col_summaries(error_data, col1, col2) %>%
     expect_error(class = "names_glue_multi_checkbox")
 })
+
+test_that("check_metadata_field_types works", {
+  db_data <- tibble::tibble(
+    record_id = c(1L, 2L),
+    text_field = c(TRUE, NA),
+    checkbox___1 = c(1, 0),
+    file_field = c(100, 200),
+    slider_field = c("50", NA)
+  )
+
+  db_metadata <- tibble::tibble(
+    form_name = "form_a",
+    field_name = c("record_id", "text_field", "checkbox", "file_field", "slider_field"),
+    field_label = c("Record ID", "Text", "Checkbox", "File", "Slider"),
+    field_type = c("text", "text", "checkbox", "file", "slider"),
+    select_choices_or_calculations = c(NA, NA, "1, Yes | 0, No", NA, NA)
+  )
+
+  cnd <- rlang::catch_cnd(
+    check_metadata_field_types(db_data, db_metadata),
+    classes = "field_type_mismatch"
+  )
+
+  expect_true(tibble::is_tibble(cnd$mismatches))
+  expect_true(all(
+    c("field_name", "field_type", "r_type", "allowed_types") %in% names(cnd$mismatches)
+  ))
+  expect_true(is.list(cnd$mismatches$allowed_types))
+  expect_true(all(vapply(cnd$mismatches$allowed_types, is.character, logical(1))))
+
+  expect_equal(
+    sort(cnd$mismatches$field_name),
+    sort(c("text_field", "checkbox___1", "file_field", "slider_field"))
+  )
+
+  ok_data <- tibble::tibble(
+    record_id = c(1L, 2L),
+    text_field = c("a", NA),
+    checkbox___1 = c(TRUE, FALSE),
+    slider_field = c(10, 20)
+  )
+
+  check_metadata_field_types(
+    ok_data,
+    db_metadata = tibble::tibble(
+      form_name = "form_a",
+      field_name = c("record_id", "text_field", "checkbox", "slider_field"),
+      field_label = c("Record ID", "Text", "Checkbox", "Slider"),
+      field_type = c("text", "text", "checkbox", "slider"),
+      select_choices_or_calculations = c(NA, NA, "1, Yes | 0, No", NA)
+    )
+  ) |>
+    expect_no_warning()
+})
+
+test_that("check_metadata_field_types only warns on logical for some types when non-NA is present", {
+  db_data <- tibble::tibble(
+    record_id = c(1L, 2L),
+    empty_text = c(NA, NA)
+  )
+
+  db_metadata <- tibble::tibble(
+    form_name = "form_a",
+    field_name = c("record_id", "empty_text"),
+    field_label = c("Record ID", "Empty text field"),
+    field_type = c("text", "text"),
+    select_choices_or_calculations = c(NA, NA)
+  )
+
+  check_metadata_field_types(db_data, db_metadata) |>
+    expect_no_warning()
+})

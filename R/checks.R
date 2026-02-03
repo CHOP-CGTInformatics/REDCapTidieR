@@ -633,7 +633,6 @@ check_extra_field_values <- function(x, values) {
 }
 
 check_extra_field_values_message <- function(extra_field_values, call = caller_env()) {
-
   extra_field_values <- extra_field_values %>%
     discard(is.null)
 
@@ -664,6 +663,154 @@ check_extra_field_values_message <- function(extra_field_values, call = caller_e
     fields = fields,
     values = values
   )
+}
+
+#' @title
+#' Check metadata field types against parsed data types
+#'
+#' @param db_data A REDCap database object
+#' @param db_metadata A REDCap metadata object
+#' @param call The calling environment to use in the warning message
+#'
+#' @keywords internal
+check_metadata_field_types <- function(db_data, db_metadata, call = caller_env()) {
+  type_rules <- tibble(
+    field_type = c(
+      "text", "notes", "calc", "dropdown", "radio",
+      "checkbox", "yesno", "truefalse",
+      "file", "slider"
+    ),
+    allowed_types = list(
+      c("character", "double", "integer", "factor", "date", "time", "datetime"),
+      c("character", "double", "integer", "factor", "date", "time", "datetime"),
+      c("character", "double", "integer", "factor", "date", "time", "datetime"),
+      c("character", "double", "integer", "factor", "date", "time", "datetime"),
+      c("character", "double", "integer", "factor", "date", "time", "datetime"),
+      "logical",
+      "logical",
+      "logical",
+      "character",
+      c("double", "integer")
+    ),
+    # If a field is entirely empty, readr can interpret it as a logical column of NAs.
+    # We only want to warn for these field types when the column has at least one
+    # non-NA value.
+    logical_warn_requires_non_na = c(
+      TRUE, # text
+      TRUE, # notes
+      TRUE, # calc
+      TRUE, # dropdown
+      TRUE, # radio
+      FALSE, # checkbox
+      FALSE, # yesno
+      FALSE, # truefalse
+      TRUE, # file
+      TRUE # slider
+    )
+  )
+
+  mismatches <- detect_field_type_mismatches(
+    db_data = db_data,
+    db_metadata = db_metadata,
+    type_rules = type_rules
+  )
+
+  if (nrow(mismatches) == 0) {
+    return(NULL)
+  }
+
+  mismatch_msg <- pmap_chr(
+    mismatches[c("field_name", "field_type", "r_type", "allowed_types")],
+    get_field_type_mismatch_message
+  )
+
+  msg <- c(
+    "!" = "{qty(mismatches$field_name)}Field type mismatch{?es} detected between REDCap metadata and parsed data.",
+    setNames(mismatch_msg, rep("i", length(mismatch_msg))),
+    "i" = "Consider using {.arg col_types} to enforce expected types and avoid data loss."
+  )
+
+  cli_warn(
+    msg,
+    class = c("field_type_mismatch", "REDCapTidieR_cond"),
+    call = call,
+    mismatches = mismatches
+  )
+}
+
+get_field_type_mismatch_message <- function(field_name, field_type, r_type, allowed_types) {
+  allowed_code <- paste0("{.code ", allowed_types, "}") # nolint: object_usage_linter
+  cli_text(
+    "{.code {field_name}} ({.code {field_type}}) was parsed as {.code {r_type}} rather than {qty(allowed_types)}{? /one of }{cli_vec(allowed_code)}." # nolint: line_length_linter
+  ) %>%
+    cli_fmt(collapse = TRUE, strip_newline = TRUE)
+}
+
+detect_field_type_mismatches <- function(db_data,
+                                         db_metadata,
+                                         type_rules) {
+  metadata <- db_metadata %>%
+    update_field_names() %>%
+    select("field_name_updated", "field_type") %>%
+    rename(field_name = "field_name_updated") %>%
+    filter(
+      .data$field_name %in% names(db_data),
+      .data$field_type %in% type_rules$field_type
+    )
+
+  if (nrow(metadata) == 0) {
+    return(tibble())
+  }
+
+  data_cols <- db_data[metadata$field_name]
+
+  metadata %>%
+    mutate(
+      r_type = map_chr(data_cols, get_redcap_col_type),
+      any_non_na = map_lgl(data_cols, ~ any(!is.na(.x)))
+    ) %>%
+    left_join(type_rules, by = "field_type") %>%
+    mutate(
+      is_allowed = map_lgl(
+        seq_along(.data$r_type),
+        ~ .data$r_type[[.x]] %in% .data$allowed_types[[.x]]
+      ),
+      warn = !.data$is_allowed & if_else(
+        .data$r_type == "logical" & .data$logical_warn_requires_non_na,
+        .data$any_non_na,
+        TRUE
+      )
+    ) %>%
+    filter(.data$warn) %>%
+    select("field_name", "field_type", "r_type", "allowed_types")
+}
+
+get_redcap_col_type <- function(x) {
+  if (inherits(x, "Date")) {
+    return("date")
+  }
+  if (inherits(x, "POSIXct") || inherits(x, "POSIXlt")) {
+    return("datetime")
+  }
+  if (inherits(x, "difftime")) {
+    return("time")
+  }
+  if (is.logical(x)) {
+    return("logical")
+  }
+  if (is.factor(x)) {
+    return("factor")
+  }
+  if (is.integer(x)) {
+    return("integer")
+  }
+  if (is.numeric(x)) {
+    return("double")
+  }
+  if (is.character(x)) {
+    return("character")
+  }
+  "other"
 }
 
 #' @title
