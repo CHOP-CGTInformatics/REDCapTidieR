@@ -65,7 +65,7 @@ write_redcap_xlsx <- function(supertbl,
   # Enforce checks ----
   check_arg_is_supertbl(supertbl)
   check_arg_is_character(file, any.missing = FALSE)
-  check_arg_is_valid_extension(file, valid_extensions = c("xlsx"))
+  is_valid_extension <- check_arg_is_valid_extension(file, valid_extensions = c("xlsx"))
   check_arg_is_logical(add_labelled_column_headers, null.ok = TRUE)
   check_arg_is_logical(use_labels_for_sheet_names, any.missing = FALSE)
   check_arg_is_logical(include_toc_sheet, any.missing = FALSE)
@@ -200,7 +200,26 @@ write_redcap_xlsx <- function(supertbl,
 
   # Export workbook object ----
   wb$set_bookview(window_height = 130000, window_width = 6000)
-  wb$save(file = file, overwrite = overwrite)
+  # If extension triggered a warning from us, muffle openxlsx2's warning
+  if (!is_valid_extension) {
+    withCallingHandlers(
+      wb$save(file = file, overwrite = overwrite),
+      warning = function(w) {
+        msg <- conditionMessage(w)
+        # Brittle check for the warning to muffle but worst case is it creeps through
+        # and the use gets a double warning
+        if (
+          grepl("^The file extension '", msg) &&
+            grepl("Expected one of:", msg, fixed = TRUE) &&
+            grepl("\\bxlsx\\b", msg)
+        ) {
+          cnd_muffle(w)
+        }
+      }
+    )
+  } else {
+    wb$save(file = file, overwrite = overwrite)
+  }
 }
 
 #' @title Add labelled features to write_redcap_xlsx

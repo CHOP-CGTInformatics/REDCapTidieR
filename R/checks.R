@@ -471,11 +471,13 @@ format_error_val <- function(x) {
 }
 
 #' @rdname checkmate
+# Returns `TRUE` if the extension was valid or added and `FALSE` otherwise
 check_arg_is_valid_extension <- function(x,
                                          valid_extensions,
                                          arg = caller_arg(x),
                                          call = caller_env()) {
   ext <- sub(".*\\.", "", x)
+  out <- TRUE
 
   if (ext == x) {
     msg_x <- "No extension provided for {.arg file}: '{x}'"
@@ -483,6 +485,7 @@ check_arg_is_valid_extension <- function(x,
   } else {
     msg_x <- "Invalid file extension provided for {.arg file}: {ext}"
     msg_i <- "The file extension should be '.xlsx'"
+    out <- FALSE
   }
 
   if (!ext %in% valid_extensions) {
@@ -494,6 +497,7 @@ check_arg_is_valid_extension <- function(x,
       class = c("invalid_file_extension", "REDCapTidieR_cond"),
       call = call
     )
+    return(out)
   }
 
   TRUE
