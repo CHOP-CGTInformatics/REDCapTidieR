@@ -320,6 +320,7 @@ test_that("check_metadata_field_types works", {
   db_data <- tibble::tibble(
     record_id = c(1L, 2L),
     text_field = c(TRUE, NA),
+    dropdown_field = c(TRUE, FALSE),
     checkbox___1 = Sys.Date(),
     file_field = c(100, 200),
     slider_field = c("50", NA)
@@ -327,10 +328,10 @@ test_that("check_metadata_field_types works", {
 
   db_metadata <- tibble::tibble(
     form_name = "form_a",
-    field_name = c("record_id", "text_field", "checkbox", "file_field", "slider_field"),
-    field_label = c("Record ID", "Text", "Checkbox", "File", "Slider"),
-    field_type = c("text", "text", "checkbox", "file", "slider"),
-    select_choices_or_calculations = c(NA, NA, "1, Yes | 0, No", NA, NA)
+    field_name = c("record_id", "text_field", "dropdown_field", "checkbox", "file_field", "slider_field"),
+    field_label = c("Record ID", "Text", "Dropdown", "Checkbox", "File", "Slider"),
+    field_type = c("text", "text", "dropdown", "checkbox", "file", "slider"),
+    select_choices_or_calculations = c(NA, NA, "1, A | 2, B", "1, Yes | 0, No", NA, NA)
   )
 
   cnd <- rlang::catch_cnd(
@@ -347,12 +348,13 @@ test_that("check_metadata_field_types works", {
 
   expect_equal(
     sort(cnd$mismatches$field_name),
-    sort(c("text_field", "checkbox___1", "file_field", "slider_field"))
+    sort(c("text_field", "dropdown_field", "checkbox___1", "file_field", "slider_field"))
   )
 
   ok_data <- tibble::tibble(
     record_id = c(1L, 2L),
     text_field = c("a", NA),
+    dropdown_field = c("1", "2"),
     checkbox___1 = c(TRUE, FALSE),
     slider_field = c(10, 20)
   )
@@ -361,10 +363,10 @@ test_that("check_metadata_field_types works", {
     ok_data,
     db_metadata = tibble::tibble(
       form_name = "form_a",
-      field_name = c("record_id", "text_field", "checkbox", "slider_field"),
-      field_label = c("Record ID", "Text", "Checkbox", "Slider"),
-      field_type = c("text", "text", "checkbox", "slider"),
-      select_choices_or_calculations = c(NA, NA, "1, Yes | 0, No", NA)
+      field_name = c("record_id", "text_field", "dropdown_field", "checkbox", "slider_field"),
+      field_label = c("Record ID", "Text", "Dropdown", "Checkbox", "Slider"),
+      field_type = c("text", "text", "dropdown", "checkbox", "slider"),
+      select_choices_or_calculations = c(NA, NA, "1, A | 2, B", "1, Yes | 0, No", NA)
     )
   ) |>
     expect_no_warning()
