@@ -209,7 +209,6 @@ get_metadata_spec <- function(metadata_tbl,
 
     out <- cbind(out, glue_env)
   } else {
-
     if (names_prefix != "") {
       out <- out %>%
         mutate(.new_value = paste(names_prefix, .data$.value, sep = names_sep))
