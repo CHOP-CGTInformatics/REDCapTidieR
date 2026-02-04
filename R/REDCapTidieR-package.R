@@ -34,7 +34,7 @@
 #' @importFrom pillar tbl_sum
 #' @importFrom readr parse_logical parse_integer parse_double parse_date parse_time
 #' parse_datetime parse_character
-#' @importFrom stats na.omit
+#' @importFrom stats na.omit setNames
 "_PACKAGE"
 
 ## usethis namespace: start
