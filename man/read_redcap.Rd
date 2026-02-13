@@ -11,6 +11,8 @@ read_redcap(
   forms = NULL,
   export_survey_fields = NULL,
   export_data_access_groups = NULL,
+  datetime_range_begin = as.POSIXct(NA),
+  datetime_range_end = as.POSIXct(NA),
   suppress_redcapr_messages = TRUE,
   col_types = NULL,
   guess_max = Inf,
@@ -41,6 +43,14 @@ tries to determine if survey fields exist and returns them if available.}
 \item{export_data_access_groups}{A logical that specifies whether to export
 the data access group field. The default, \code{NULL}, tries to determine if a data
 access group field exists and returns it if available.}
+
+\item{datetime_range_begin}{A \link[base:DateTimeClasses]{base::POSIXct} value used to export only
+records created or modified on/after this datetime.
+Defaults to \code{as.POSIXct(NA)}.}
+
+\item{datetime_range_end}{A \link[base:DateTimeClasses]{base::POSIXct} value used to export only records
+created or modified on/before this datetime.
+Defaults to \code{as.POSIXct(NA)}.}
 
 \item{suppress_redcapr_messages}{A logical to control whether to suppress messages
 from REDCapR API calls. Default \code{TRUE}.}

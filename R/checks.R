@@ -425,6 +425,9 @@ check_arg_is_character <- wrap_checkmate(check_character)
 check_arg_is_logical <- wrap_checkmate(check_logical)
 
 #' @rdname checkmate
+check_arg_is_posixct <- wrap_checkmate(check_posixct)
+
+#' @rdname checkmate
 check_arg_choices <- wrap_checkmate(check_choice)
 
 #' @rdname checkmate
@@ -633,7 +636,6 @@ check_extra_field_values <- function(x, values) {
 }
 
 check_extra_field_values_message <- function(extra_field_values, call = caller_env()) {
-
   extra_field_values <- extra_field_values %>%
     discard(is.null)
 
