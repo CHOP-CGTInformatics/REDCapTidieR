@@ -44,13 +44,17 @@ tries to determine if survey fields exist and returns them if available.}
 the data access group field. The default, \code{NULL}, tries to determine if a data
 access group field exists and returns it if available.}
 
-\item{datetime_range_begin}{A \link[base:DateTimeClasses]{base::POSIXct} value used to export only
-records created or modified on/after this datetime.
-Defaults to \code{as.POSIXct(NA)}.}
+\item{datetime_range_begin}{To return only records that have been created or
+modified \emph{after} a given datetime, provide a
+\href{https://stat.ethz.ch/R-manual/R-devel/library/base/html/as.POSIXlt.html}{POSIXct}
+value.
+If not specified, REDCap will assume no begin time.}
 
-\item{datetime_range_end}{A \link[base:DateTimeClasses]{base::POSIXct} value used to export only records
-created or modified on/before this datetime.
-Defaults to \code{as.POSIXct(NA)}.}
+\item{datetime_range_end}{To return only records that have been created or
+modified \emph{before} a given datetime, provide a
+\href{https://stat.ethz.ch/R-manual/R-devel/library/base/html/as.POSIXlt.html}{POSIXct}
+value.
+If not specified, REDCap will assume no end time.}
 
 \item{suppress_redcapr_messages}{A logical to control whether to suppress messages
 from REDCapR API calls. Default \code{TRUE}.}

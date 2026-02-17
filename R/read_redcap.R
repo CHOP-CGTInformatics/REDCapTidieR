@@ -63,12 +63,6 @@
 #' @param export_data_access_groups A logical that specifies whether to export
 #' the data access group field. The default, `NULL`, tries to determine if a data
 #' access group field exists and returns it if available.
-#' @param datetime_range_begin A [base::POSIXct] value used to export only
-#' records created or modified on/after this datetime.
-#' Defaults to `as.POSIXct(NA)`.
-#' @param datetime_range_end A [base::POSIXct] value used to export only records
-#' created or modified on/before this datetime.
-#' Defaults to `as.POSIXct(NA)`.
 #' @param suppress_redcapr_messages A logical to control whether to suppress messages
 #' from REDCapR API calls. Default `TRUE`.
 #' @param guess_max A positive [base::numeric] value
@@ -80,6 +74,7 @@
 #' only. Default `FALSE`. Can be set globally with `options(redcaptidier.allow.mixed.structure = TRUE)`.
 #' @param col_types A [readr::cols()] object passed internally to [readr::read_csv()]. Optional.
 #' See "Using `col_types`" for more information.
+#' @inheritParams REDCapR::redcap_read_oneshot
 #'
 #' @examples
 #' \dontrun{
