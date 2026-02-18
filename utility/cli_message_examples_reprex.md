@@ -4,6 +4,40 @@ devtools::load_all()
 
 options(rlang_backtrace_on_error_report = "none")
 
+# warnings
+
+# check_metadata_field_types
+
+db_data <- tibble::tibble(
+  record_id = c(1L, 2L),
+  text_field = c(TRUE, NA),
+  dropdown_field = c(TRUE, FALSE),
+  checkbox___1 = Sys.Date(),
+  file_field = c(100, 200),
+  slider_field = c("50", NA)
+)
+
+db_metadata <- tibble::tibble(
+  form_name = "form_a",
+  field_name = c("record_id", "text_field", "dropdown_field", "checkbox", "file_field", "slider_field"),
+  field_label = c("Record ID", "Text", "Dropdown", "Checkbox", "File", "Slider"),
+  field_type = c("text", "text", "dropdown", "checkbox", "file", "slider"),
+  select_choices_or_calculations = c(NA, NA, "1, A | 2, B", "1, Yes | 0, No", NA, NA)
+)
+
+check_metadata_field_types(db_data, db_metadata)
+#> Warning: ! Field type mismatches detected between REDCap metadata and parsed data.
+#> ℹ `text_field` (`text`) was parsed as `logical` rather than one of `character`,
+#>   `double`, `integer`, `factor`, `date`, `time`, or `datetime`.
+#> ℹ `dropdown_field` (`dropdown`) was parsed as `logical` rather than one of
+#>   `character`, `double`, `integer`, `factor`, `date`, `time`, or `datetime`.
+#> ℹ `checkbox___1` (`checkbox`) was parsed as `date` rather than one of
+#>   `character`, `logical`, `double`, or `integer`.
+#> ℹ `file_field` (`file`) was parsed as `double` rather than `character`.
+#> ℹ `slider_field` (`slider`) was parsed as `character` rather than one of
+#>   `double` or `integer`.
+#> ℹ Consider using `col_types` to enforce expected types and avoid data loss.
+
 # read_redcap
 
 classic_token <- Sys.getenv("REDCAPTIDIER_CLASSIC_API")
@@ -255,7 +289,7 @@ withr::with_tempdir({
 })
 #> Error:
 #> ✖ File
-#>   ''/private/var/folders/9c/k1m0bzys7gb1v32g86hfn5sn5k86h1/T/Rtmpj47vZR/file1866d316efdeb/temp.csv''
+#>   ''/private/var/folders/9c/k1m0bzys7gb1v32g86hfn5sn5k86h1/T/RtmpWNYxxZ/filed65969aa14e2/temp.csv''
 #>   already exists.
 #> ℹ Overwriting files is disabled by default. Set `overwrite = TRUE` to overwrite
 #>   existing file.
@@ -288,6 +322,7 @@ withr::with_tempdir({
 })
 #> Warning in write_redcap_xlsx(., file = filepath): ! Invalid file extension provided for `file`: pdf
 #> ℹ The file extension should be '.xlsx'
+#> [1] FALSE
 
 withr::with_tempdir({
   dir <- getwd()
@@ -296,7 +331,7 @@ withr::with_tempdir({
     write_redcap_xlsx(file = filepath)
 })
 #> Warning in write_redcap_xlsx(., file = filepath): ! No extension provided for `file`:
-#>   '/private/var/folders/9c/k1m0bzys7gb1v32g86hfn5sn5k86h1/T/Rtmpj47vZR/file1866d20d182be/temp'
+#>   '/private/var/folders/9c/k1m0bzys7gb1v32g86hfn5sn5k86h1/T/RtmpWNYxxZ/filed65967a5fb15/temp'
 #> ℹ The extension '.xlsx' will be appended to the file name.
 
 # Printed supertibble
@@ -332,6 +367,8 @@ read_redcap(redcap_uri, Sys.getenv("REDCAPTIDIER_MDC_API"))
 #> ℹ Does your REDCap project utilize missing data codes?
 #> ℹ Silence this warning with `options(redcaptidier.allow.mdc = TRUE)` or set
 #>   `raw_or_label = 'raw'` to access missing data codes
+#> ℹ Do the fields in question display their expected data types? Use `col_types`
+#>   to correct any unexpected outputs.
 #> # A REDCapTidieR Supertibble with 1 instruments
 #>   redcap_form_name redcap_form_label redcap_data      redcap_metadata structure 
 #>   <chr>            <chr>             <list>           <list>          <chr>     
@@ -352,4 +389,4 @@ read_redcap(Sys.getenv("REDCAP_URI"), Sys.getenv("REDCAPTIDIER_DAG_ACCESS_API"))
 #> ERROR: Insufficient user privileges: You must have 'API Export' privileges and 'Data Access Groups' privileges in the project.
 ```
 
-<sup>Created on 2025-05-30 with [reprex v2.1.0](https://reprex.tidyverse.org)</sup>
+<sup>Created on 2026-02-04 with [reprex v2.1.1](https://reprex.tidyverse.org)</sup>

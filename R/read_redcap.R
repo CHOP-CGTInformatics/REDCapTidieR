@@ -206,6 +206,8 @@ read_redcap <- function(redcap_uri,
     )
   })
 
+  check_metadata_field_types(db_data, db_metadata)
+
   # Check that results were returned
   check_redcap_populated(db_data)
 

@@ -2,6 +2,29 @@ devtools::load_all()
 
 options(rlang_backtrace_on_error_report = "none")
 
+# warnings
+
+# check_metadata_field_types
+
+db_data <- tibble::tibble(
+  record_id = c(1L, 2L),
+  text_field = c(TRUE, NA),
+  dropdown_field = c(TRUE, FALSE),
+  checkbox___1 = Sys.Date(),
+  file_field = c(100, 200),
+  slider_field = c("50", NA)
+)
+
+db_metadata <- tibble::tibble(
+  form_name = "form_a",
+  field_name = c("record_id", "text_field", "dropdown_field", "checkbox", "file_field", "slider_field"),
+  field_label = c("Record ID", "Text", "Dropdown", "Checkbox", "File", "Slider"),
+  field_type = c("text", "text", "dropdown", "checkbox", "file", "slider"),
+  select_choices_or_calculations = c(NA, NA, "1, A | 2, B", "1, Yes | 0, No", NA, NA)
+)
+
+check_metadata_field_types(db_data, db_metadata)
+
 # read_redcap
 
 classic_token <- Sys.getenv("REDCAPTIDIER_CLASSIC_API")

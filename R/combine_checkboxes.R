@@ -209,12 +209,13 @@ get_metadata_spec <- function(metadata_tbl,
 
     out <- cbind(out, glue_env)
   } else {
-    out <- out %>%
-      mutate(
-        .new_value = case_when(names_prefix != "" ~ paste(names_prefix, .data$.value, sep = names_sep),
-          .default = paste(names_prefix, .data$.value, sep = "")
-        )
-      )
+    if (names_prefix != "") {
+      out <- out %>%
+        mutate(.new_value = paste(names_prefix, .data$.value, sep = names_sep))
+    } else {
+      out <- out %>%
+        mutate(.new_value = paste(names_prefix, .data$.value, sep = ""))
+    }
   }
 
   # Check that for each unique value of .value there is one unique value of .new_value
