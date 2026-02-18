@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">REDCapTidieR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.4.9002</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.4.9003</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -46,6 +46,7 @@
 <ul><li>Fixed a bug where <code><a href="../reference/write_redcap_xlsx.html">write_redcap_xlsx()</a></code> could fail on REDCap forms with long form labels (discovered and fix suggested by <a href="https://github.com/pbchase" class="external-link">@pbchase</a>)</li>
 <li>Fixed a bug where <code><a href="../reference/read_redcap.html">read_redcap()</a></code> failed with <code>raw_or_label = "haven"</code> when a form contains no data (discovered by <a href="https://github.com/mrkskk" class="external-link">@mrkskk</a>).</li>
 <li>Exposed <code>col_types</code> param from REDCapR to allow for manual specification of expected data type outputs</li>
+<li>Exposed <code>datetime_range_begin</code> and <code>datetime_range_end</code> params from REDCapR in <code><a href="../reference/read_redcap.html">read_redcap()</a></code> to support date-bounded record exports</li>
 </ul></div>
 </div>
     <div class="section level2">

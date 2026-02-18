@@ -18,6 +18,8 @@ check_arg_is_character(x, ..., arg = caller_arg(x), call = caller_env())
 
 check_arg_is_logical(x, ..., arg = caller_arg(x), call = caller_env())
 
+check_arg_is_posixct(x, ..., arg = caller_arg(x), call = caller_env())
+
 check_arg_choices(x, ..., arg = caller_arg(x), call = caller_env())
 
 check_arg_is_valid_token(x, arg = caller_arg(x), call = caller_env())

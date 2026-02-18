@@ -14,6 +14,10 @@
   (discovered by [@mrkskk](https://github.com/mrkskk)).
 - Exposed `col_types` param from REDCapR to allow for manual
   specification of expected data type outputs
+- Exposed `datetime_range_begin` and `datetime_range_end` params from
+  REDCapR in
+  [`read_redcap()`](https://chop-cgtinformatics.github.io/REDCapTidieR/reference/read_redcap.md)
+  to support date-bounded record exports
 
 ## REDCapTidieR 1.2.4
 

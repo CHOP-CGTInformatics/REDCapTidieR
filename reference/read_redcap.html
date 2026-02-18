@@ -11,7 +11,7 @@ and metadata organized into tibbles, broken down by instrument.'><meta property=
 
     <a class="navbar-brand me-2" href="../index.html">REDCapTidieR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.4.9002</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.4.9003</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -59,6 +59,8 @@ and metadata organized into tibbles, broken down by instrument.</p>
 <span>  forms <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  export_survey_fields <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  export_data_access_groups <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  datetime_range_begin <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">as.POSIXct</a></span><span class="op">(</span><span class="cn">NA</span><span class="op">)</span>,</span>
+<span>  datetime_range_end <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">as.POSIXct</a></span><span class="op">(</span><span class="cn">NA</span><span class="op">)</span>,</span>
 <span>  suppress_redcapr_messages <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  col_types <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  guess_max <span class="op">=</span> <span class="cn">Inf</span>,</span>
@@ -104,6 +106,22 @@ tries to determine if survey fields exist and returns them if available.</p></dd
 <dd><p>A logical that specifies whether to export
 the data access group field. The default, <code>NULL</code>, tries to determine if a data
 access group field exists and returns it if available.</p></dd>
+
+
+<dt id="arg-datetime-range-begin">datetime_range_begin<a class="anchor" aria-label="anchor" href="#arg-datetime-range-begin"></a></dt>
+<dd><p>To return only records that have been created or
+modified <em>after</em> a given datetime, provide a
+<a href="https://stat.ethz.ch/R-manual/R-devel/library/base/html/as.POSIXlt.html" class="external-link">POSIXct</a>
+value.
+If not specified, REDCap will assume no begin time.</p></dd>
+
+
+<dt id="arg-datetime-range-end">datetime_range_end<a class="anchor" aria-label="anchor" href="#arg-datetime-range-end"></a></dt>
+<dd><p>To return only records that have been created or
+modified <em>before</em> a given datetime, provide a
+<a href="https://stat.ethz.ch/R-manual/R-devel/library/base/html/as.POSIXlt.html" class="external-link">POSIXct</a>
+value.
+If not specified, REDCap will assume no end time.</p></dd>
 
 
 <dt id="arg-suppress-redcapr-messages">suppress_redcapr_messages<a class="anchor" aria-label="anchor" href="#arg-suppress-redcapr-messages"></a></dt>

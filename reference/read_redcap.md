@@ -14,6 +14,8 @@ read_redcap(
   forms = NULL,
   export_survey_fields = NULL,
   export_data_access_groups = NULL,
+  datetime_range_begin = as.POSIXct(NA),
+  datetime_range_end = as.POSIXct(NA),
   suppress_redcapr_messages = TRUE,
   col_types = NULL,
   guess_max = Inf,
@@ -57,6 +59,20 @@ read_redcap(
   A logical that specifies whether to export the data access group
   field. The default, `NULL`, tries to determine if a data access group
   field exists and returns it if available.
+
+- datetime_range_begin:
+
+  To return only records that have been created or modified *after* a
+  given datetime, provide a
+  [POSIXct](https://stat.ethz.ch/R-manual/R-devel/library/base/html/as.POSIXlt.html)
+  value. If not specified, REDCap will assume no begin time.
+
+- datetime_range_end:
+
+  To return only records that have been created or modified *before* a
+  given datetime, provide a
+  [POSIXct](https://stat.ethz.ch/R-manual/R-devel/library/base/html/as.POSIXlt.html)
+  value. If not specified, REDCap will assume no end time.
 
 - suppress_redcapr_messages:
 
