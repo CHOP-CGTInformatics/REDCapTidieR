@@ -1,7 +1,7 @@
 #' @keywords internal
 #' @aliases REDCapTidieR-package
 #' @importFrom checkmate assert_character assert_data_frame check_character
-#' check_choice check_environment check_logical expect_character expect_double
+#' check_choice check_environment check_logical check_posixct expect_character expect_double
 #' expect_factor expect_logical
 #' @importFrom cli cli_abort cli_fmt cli_text cli_vec cli_warn qty
 #' @importFrom dplyr %>% across bind_rows case_when filter group_by if_any if_else

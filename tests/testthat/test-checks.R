@@ -141,6 +141,10 @@ test_that("checkmate wrappers work", {
   expect_error(check_arg_is_logical(123), class = "check_logical")
   expect_true(check_arg_is_logical(TRUE))
 
+  # posixct
+  expect_error(check_arg_is_posixct("2026-01-01 00:00:00"), class = "check_posixct")
+  expect_true(check_arg_is_posixct(as.POSIXct("2026-01-01 00:00:00", tz = "UTC")))
+
   # choices
   expect_error(check_arg_choices(123, choices = letters[1:3]), class = "check_choice")
   expect_true(check_arg_choices("a", choices = letters[1:3]))

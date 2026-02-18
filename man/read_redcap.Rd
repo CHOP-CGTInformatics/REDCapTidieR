@@ -11,6 +11,8 @@ read_redcap(
   forms = NULL,
   export_survey_fields = NULL,
   export_data_access_groups = NULL,
+  datetime_range_begin = as.POSIXct(NA),
+  datetime_range_end = as.POSIXct(NA),
   suppress_redcapr_messages = TRUE,
   col_types = NULL,
   guess_max = Inf,
@@ -41,6 +43,18 @@ tries to determine if survey fields exist and returns them if available.}
 \item{export_data_access_groups}{A logical that specifies whether to export
 the data access group field. The default, \code{NULL}, tries to determine if a data
 access group field exists and returns it if available.}
+
+\item{datetime_range_begin}{To return only records that have been created or
+modified \emph{after} a given datetime, provide a
+\href{https://stat.ethz.ch/R-manual/R-devel/library/base/html/as.POSIXlt.html}{POSIXct}
+value.
+If not specified, REDCap will assume no begin time.}
+
+\item{datetime_range_end}{To return only records that have been created or
+modified \emph{before} a given datetime, provide a
+\href{https://stat.ethz.ch/R-manual/R-devel/library/base/html/as.POSIXlt.html}{POSIXct}
+value.
+If not specified, REDCap will assume no end time.}
 
 \item{suppress_redcapr_messages}{A logical to control whether to suppress messages
 from REDCapR API calls. Default \code{TRUE}.}

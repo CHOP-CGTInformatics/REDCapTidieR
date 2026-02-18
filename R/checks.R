@@ -425,6 +425,9 @@ check_arg_is_character <- wrap_checkmate(check_character)
 check_arg_is_logical <- wrap_checkmate(check_logical)
 
 #' @rdname checkmate
+check_arg_is_posixct <- wrap_checkmate(check_posixct)
+
+#' @rdname checkmate
 check_arg_choices <- wrap_checkmate(check_choice)
 
 #' @rdname checkmate
@@ -468,11 +471,13 @@ format_error_val <- function(x) {
 }
 
 #' @rdname checkmate
+# Returns `TRUE` if the extension was valid or added and `FALSE` otherwise
 check_arg_is_valid_extension <- function(x,
                                          valid_extensions,
                                          arg = caller_arg(x),
                                          call = caller_env()) {
   ext <- sub(".*\\.", "", x)
+  out <- TRUE
 
   if (ext == x) {
     msg_x <- "No extension provided for {.arg file}: '{x}'"
@@ -480,6 +485,7 @@ check_arg_is_valid_extension <- function(x,
   } else {
     msg_x <- "Invalid file extension provided for {.arg file}: {ext}"
     msg_i <- "The file extension should be '.xlsx'"
+    out <- FALSE
   }
 
   if (!ext %in% valid_extensions) {
@@ -491,6 +497,7 @@ check_arg_is_valid_extension <- function(x,
       class = c("invalid_file_extension", "REDCapTidieR_cond"),
       call = call
     )
+    return(out)
   }
 
   TRUE
@@ -633,7 +640,6 @@ check_extra_field_values <- function(x, values) {
 }
 
 check_extra_field_values_message <- function(extra_field_values, call = caller_env()) {
-
   extra_field_values <- extra_field_values %>%
     discard(is.null)
 
