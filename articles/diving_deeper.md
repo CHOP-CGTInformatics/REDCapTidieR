@@ -428,6 +428,40 @@ adverse_events |>
 #> $ adverse_event_relationship_other___none                <lgl> FALSE, TRUE, FA…
 ```
 
+## Parsed Data Type Validation
+
+REDCap returns export data in a format where column types must be
+inferred. In sparse projects (for example, columns with many missing
+values), automatic parsing may occasionally infer an unexpected R type
+for a field.
+
+[`read_redcap()`](https://chop-cgtinformatics.github.io/REDCapTidieR/reference/read_redcap.md)
+checks parsed column types against REDCap metadata and warns if there is
+a likely mismatch. This warning is intended to flag cases where a field
+may have been parsed in a way that could affect downstream analysis.
+
+| REDCap field type                            | Allowed R type                                                         | Notes                                                                |
+|----------------------------------------------|------------------------------------------------------------------------|----------------------------------------------------------------------|
+| `text`, `notes`, `calc`, `dropdown`, `radio` | `character`, `double`, `integer`, `factor`, `date`, `time`, `datetime` | When parsed as `logical`, warns only when non-`NA` value is present. |
+| `file`                                       | `character`                                                            | When parsed as `logical`, warns only when non-`NA` value is present. |
+| `slider`                                     | `double`, `integer`                                                    | When parsed as `logical`, warns only when non-`NA` value is present. |
+| `checkbox`, `yesno`, `truefalse`             | `character`, `logical`, `double`, `integer`                            |                                                                      |
+
+When this occurs, use `col_types` to explicitly enforce expected parsing
+behavior:
+
+``` r
+read_redcap(
+  redcap_uri,
+  superheroes_token,
+  col_types = readr::cols(
+    weight = readr::col_integer()
+  )
+) |>
+  extract_tibble("heroes_information") |>
+  rmarkdown::paged_table()
+```
+
 ## Data Access Groups
 
 Some REDCap
