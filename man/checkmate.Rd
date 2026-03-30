@@ -6,6 +6,7 @@
 \alias{check_arg_is_env}
 \alias{check_arg_is_character}
 \alias{check_arg_is_logical}
+\alias{check_arg_is_posixct}
 \alias{check_arg_choices}
 \alias{check_arg_is_valid_token}
 \alias{check_arg_is_valid_extension}
@@ -23,6 +24,8 @@ check_arg_is_env(x, ..., arg = caller_arg(x), call = caller_env())
 check_arg_is_character(x, ..., arg = caller_arg(x), call = caller_env())
 
 check_arg_is_logical(x, ..., arg = caller_arg(x), call = caller_env())
+
+check_arg_is_posixct(x, ..., arg = caller_arg(x), call = caller_env())
 
 check_arg_choices(x, ..., arg = caller_arg(x), call = caller_env())
 

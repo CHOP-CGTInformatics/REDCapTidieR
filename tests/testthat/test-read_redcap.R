@@ -73,6 +73,40 @@ test_that("read_redcap returns checkbox fields", {
   expect_true("checkbox_multiple___1" %in% names(out))
 })
 
+test_that("read_redcap accepts datetime range arguments for classic projects", {
+  out <- read_redcap(
+    Sys.getenv("REDCAP_URI"),
+    Sys.getenv("REDCAPTIDIER_CLASSIC_API"),
+    datetime_range_begin = as.POSIXct("1900-01-01 00:00:00", tz = "UTC"),
+    datetime_range_end = as.POSIXct("2100-01-01 00:00:00", tz = "UTC")
+  ) |>
+    # suppress expected warning
+    suppressWarnings(classes = c(
+      "field_missing_categories",
+      "empty_parse_warning",
+      "duplicate_labels"
+    ))
+
+  expect_s3_class(out, "redcap_supertbl")
+  expect_true(nrow(out) > 0)
+
+  expect_error(
+    read_redcap(
+      Sys.getenv("REDCAP_URI"),
+      Sys.getenv("REDCAPTIDIER_CLASSIC_API"),
+      datetime_range_begin = as.POSIXct("1900-01-01 00:00:00", tz = "UTC"),
+      datetime_range_end = as.POSIXct("1900-12-31 23:59:59", tz = "UTC")
+    ) |>
+      # suppress expected warning
+      suppressWarnings(classes = c(
+        "field_missing_categories",
+        "empty_parse_warning",
+        "duplicate_labels"
+      )),
+    class = "redcap_unpopulated"
+  )
+})
+
 test_that("supplying forms is equivalent to post-hoc filtering for a classic database", {
   # Explicitly testing form that doesn't contain identifiers
   filtered_by_api <-

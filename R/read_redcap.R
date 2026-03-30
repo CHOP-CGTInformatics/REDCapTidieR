@@ -74,6 +74,7 @@
 #' only. Default `FALSE`. Can be set globally with `options(redcaptidier.allow.mixed.structure = TRUE)`.
 #' @param col_types A [readr::cols()] object passed internally to [readr::read_csv()]. Optional.
 #' See "Using `col_types`" for more information.
+#' @inheritParams REDCapR::redcap_read_oneshot
 #'
 #' @examples
 #' \dontrun{
@@ -95,6 +96,8 @@ read_redcap <- function(redcap_uri,
                         forms = NULL,
                         export_survey_fields = NULL,
                         export_data_access_groups = NULL,
+                        datetime_range_begin = as.POSIXct(NA),
+                        datetime_range_end = as.POSIXct(NA),
                         suppress_redcapr_messages = TRUE,
                         col_types = NULL,
                         guess_max = Inf,
@@ -106,6 +109,8 @@ read_redcap <- function(redcap_uri,
   check_arg_is_character(forms, min.len = 1, null.ok = TRUE, any.missing = FALSE)
   check_arg_is_logical(export_survey_fields, len = 1, any.missing = FALSE, null.ok = TRUE)
   check_arg_is_logical(export_data_access_groups, len = 1, any.missing = FALSE, null.ok = TRUE)
+  check_arg_is_posixct(datetime_range_begin, len = 1, any.missing = TRUE)
+  check_arg_is_posixct(datetime_range_end, len = 1, any.missing = TRUE)
   check_arg_is_logical(suppress_redcapr_messages, len = 1, any.missing = FALSE)
   check_arg_is_logical(allow_mixed_structure, len = 1, any.missing = FALSE)
 
@@ -200,6 +205,8 @@ read_redcap <- function(redcap_uri,
       forms = forms_for_api_call,
       export_survey_fields = export_survey_fields,
       export_data_access_groups = export_data_access_groups,
+      datetime_range_begin = datetime_range_begin,
+      datetime_range_end = datetime_range_end,
       verbose = !suppress_redcapr_messages,
       guess_max = guess_max,
       col_types = col_types

@@ -6,6 +6,7 @@
 * Fixed a bug where `read_redcap()` failed with `raw_or_label = "haven"` when a form contains no data (discovered by @mrkskk).
 * Exposed `col_types` param from REDCapR to allow for manual specification of expected data type outputs
 * Added additional validation warnings to alert users when parsed R data types conflict with data types in REDCap metadata.
+* Exposed `datetime_range_begin` and `datetime_range_end` params from REDCapR in `read_redcap()` to support date-bounded record exports
 
 # REDCapTidieR 1.2.4
 
