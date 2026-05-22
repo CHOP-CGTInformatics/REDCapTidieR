@@ -72,8 +72,9 @@ rhub::rhub_check(
   platforms = c("linux", "windows", "ubuntu-next", "ubuntu-release"),
   gh_url = "https://github.com/CHOP-CGTInformatics/REDCapTidieR"
 ) # These will be available in GitHub Actions
-devtools::check_win_devel(email = "hannar1@chop.edu") # CRAN submission policies encourage the development version
+# CRAN submission policies encourage the development version
 # Note: Must be off of VPN
+devtools::check_win_devel(email = "hannar1@chop.edu")
 # To run reverse dependency check, manually trigger the "Revere dependency check" workflow in GitHub Actions
 # Careful, the last question ultimately uploads it to CRAN, where you can't delete/reverse your decision.
 # Run as not CRAN to build full vignettes
