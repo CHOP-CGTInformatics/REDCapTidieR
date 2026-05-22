@@ -63,8 +63,11 @@ add_skimr_metadata <- function(supertbl) {
 skim_data <- function(redcap_data, redcap_metadata, is_labelled) {
   excluded_fields <- c(
     get_record_id_field(redcap_data),
-    "redcap_form_instance", "redcap_event_instance", "redcap_event",
-    "redcap_arm", "form_status_complete"
+    "redcap_form_instance",
+    "redcap_event_instance",
+    "redcap_event",
+    "redcap_arm",
+    "form_status_complete"
   )
 
   skimmed_data <- redcap_data %>%

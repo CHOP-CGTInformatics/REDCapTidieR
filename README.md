@@ -10,8 +10,10 @@ stable](https://img.shields.io/badge/lifecycle-stable-greeen.svg)](https://lifec
 [![R-CMD-check](https://github.com/CHOP-CGTInformatics/REDCapTidieR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/CHOP-CGTInformatics/REDCapTidieR/actions/workflows/R-CMD-check.yaml)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/REDCapTidieR)](https://CRAN.R-project.org/package=REDCapTidieR)
-[![](https://cranlogs.r-pkg.org/badges/REDCapTidieR)](https://cran.r-project.org/package=REDCapTidieR)
-[![](https://cranlogs.r-pkg.org/badges/grand-total/REDCapTidieR)](https://cran.r-project.org/package=REDCapTidieR)
+[![Downloads Per
+Month](https://cranlogs.r-pkg.org/badges/REDCapTidieR)](https://cran.r-project.org/package=REDCapTidieR)
+[![Total
+Downloads](https://cranlogs.r-pkg.org/badges/grand-total/REDCapTidieR)](https://cran.r-project.org/package=REDCapTidieR)
 [![Codecov test
 coverage](https://codecov.io/gh/CHOP-CGTInformatics/REDCapTidieR/branch/main/graph/badge.svg)](https://app.codecov.io/gh/CHOP-CGTInformatics/REDCapTidieR?branch=main)
 [![OpenSSF Best
@@ -51,7 +53,7 @@ You can install the development version of REDCapTidieR from
 [GitHub](https://github.com/CHOP-CGTInformatics/REDCapTidieR):
 
 ``` r
-devtools::install_github("CHOP-CGTInformatics/REDCapTidieR")
+pak::pak("CHOP-CGTInformatics/REDCapTidieR")
 ```
 
 ## Usage

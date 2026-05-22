@@ -1,7 +1,6 @@
 CMD
 Codecov
 DAGs
-DOI
 GMP
 Grupp
 Labelled
@@ -10,6 +9,7 @@ MDCs
 Nonrepeating
 ORCID
 OpenSSF
+POSIXct
 REDCap
 REDCapR
 REDCapR's
@@ -32,6 +32,7 @@ analytics
 api
 appendings
 cli
+datetime
 de
 dplyr
 dropdown
@@ -47,6 +48,8 @@ multiselection
 nonrepeat
 nonrepeating
 openxlsx
+param
+params
 pre
 preprocess
 recode

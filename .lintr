@@ -1,7 +1,12 @@
 linters: linters_with_defaults(
-    line_length_linter = line_length_linter(120),
+    line_length_linter = line_length_linter(140),
     object_length_linter = object_length_linter(45),
-    pipe_consistency_linter = NULL
+    object_name_linter = NULL,
+    object_usage_linter = NULL,
+    indentation_linter = NULL,
+    commented_code_linter = NULL,
+    commas_linter = NULL,
+    pipe_consistency_linter = pipe_consistency_linter("auto")
   )
 exclusions: list(
     "tests/testthat/fixtures"

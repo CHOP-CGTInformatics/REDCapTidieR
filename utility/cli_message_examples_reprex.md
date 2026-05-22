@@ -289,7 +289,7 @@ withr::with_tempdir({
 })
 #> Error:
 #> ✖ File
-#>   ''/private/var/folders/9c/k1m0bzys7gb1v32g86hfn5sn5k86h1/T/RtmpWNYxxZ/filed65969aa14e2/temp.csv''
+#>   ''/private/var/folders/9c/k1m0bzys7gb1v32g86hfn5sn5k86h1/T/RtmpFvyVfH/file3485781f742c/temp.csv''
 #>   already exists.
 #> ℹ Overwriting files is disabled by default. Set `overwrite = TRUE` to overwrite
 #>   existing file.
@@ -322,7 +322,6 @@ withr::with_tempdir({
 })
 #> Warning in write_redcap_xlsx(., file = filepath): ! Invalid file extension provided for `file`: pdf
 #> ℹ The file extension should be '.xlsx'
-#> [1] FALSE
 
 withr::with_tempdir({
   dir <- getwd()
@@ -331,7 +330,7 @@ withr::with_tempdir({
     write_redcap_xlsx(file = filepath)
 })
 #> Warning in write_redcap_xlsx(., file = filepath): ! No extension provided for `file`:
-#>   '/private/var/folders/9c/k1m0bzys7gb1v32g86hfn5sn5k86h1/T/RtmpWNYxxZ/filed65967a5fb15/temp'
+#>   '/private/var/folders/9c/k1m0bzys7gb1v32g86hfn5sn5k86h1/T/RtmpFvyVfH/file348515805935/temp'
 #> ℹ The extension '.xlsx' will be appended to the file name.
 
 # Printed supertibble
@@ -389,4 +388,4 @@ read_redcap(Sys.getenv("REDCAP_URI"), Sys.getenv("REDCAPTIDIER_DAG_ACCESS_API"))
 #> ERROR: Insufficient user privileges: You must have 'API Export' privileges and 'Data Access Groups' privileges in the project.
 ```
 
-<sup>Created on 2026-02-04 with [reprex v2.1.1](https://reprex.tidyverse.org)</sup>
+<sup>Created on 2026-05-22 with [reprex v2.1.1](https://reprex.tidyverse.org)</sup>

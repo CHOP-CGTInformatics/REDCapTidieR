@@ -24,10 +24,7 @@
 #'
 #' @keywords internal
 
-clean_redcap_long <- function(db_data_long,
-                              db_metadata_long,
-                              linked_arms,
-                              allow_mixed_structure = FALSE) {
+clean_redcap_long <- function(db_data_long, db_metadata_long, linked_arms, allow_mixed_structure = FALSE) {
   # Repeating Instrument Check ----
   # Check if database supplied contains any repeating instruments to map onto
   # `redcap_repeat_*` variables
@@ -144,10 +141,7 @@ clean_redcap_long <- function(db_data_long,
 #'
 #' @keywords internal
 
-distill_nonrepeat_table_long <- function(form_name,
-                                         db_data_long,
-                                         db_metadata_long,
-                                         linked_arms) {
+distill_nonrepeat_table_long <- function(form_name, db_data_long, db_metadata_long, linked_arms) {
   # Repeating Instrument Check ----
   # Check if database supplied contains any repeating instruments to map onto
   # `redcap_repeat_*` variables
@@ -272,12 +266,14 @@ distill_nonrepeat_table_long <- function(form_name,
 #'
 #' @keywords internal
 
-distill_repeat_table_long <- function(form_name,
-                                      db_data_long,
-                                      db_metadata_long,
-                                      linked_arms,
-                                      has_mixed_structure_forms = FALSE,
-                                      mixed_structure_ref = NULL) {
+distill_repeat_table_long <- function(
+  form_name,
+  db_data_long,
+  db_metadata_long,
+  linked_arms,
+  has_mixed_structure_forms = FALSE,
+  mixed_structure_ref = NULL
+) {
   has_repeat_forms <- "redcap_repeat_instance" %in% names(db_data_long)
 
   my_record_id <- names(db_data_long)[1]
@@ -320,10 +316,8 @@ distill_repeat_table_long <- function(form_name,
   db_data_long <- db_data_long %>%
     add_partial_keys(var = .data$redcap_event_name) %>%
     filter(
-      (
-        !is.na(.data$redcap_form_instance) |
-          if_any(matches("redcap_event_instance"), ~ !is.na(.))
-      ) &
+      (!is.na(.data$redcap_form_instance) |
+        if_any(matches("redcap_event_instance"), ~ !is.na(.))) &
         .data$redcap_repeat_instrument == my_form
     )
 
@@ -485,8 +479,10 @@ convert_mixed_instrument <- function(db_data_long, mixed_structure_ref) {
 get_mixed_structure_fields <- function(db_data) {
   # Identify columns to check for repeat/nonrepeat behavior
   safe_cols <- c(
-    names(db_data)[1], "redcap_event_name",
-    "redcap_repeat_instrument", "redcap_repeat_instance",
+    names(db_data)[1],
+    "redcap_event_name",
+    "redcap_repeat_instrument",
+    "redcap_repeat_instance",
     "redcap_data_access_group"
   )
 

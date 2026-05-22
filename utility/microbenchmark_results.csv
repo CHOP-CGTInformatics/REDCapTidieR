@@ -1,41 +1,41 @@
 min,lq,mean,median,uq,max,neval,description,source
-1.34,1.34,1.34,1.34,1.34,1.34,1,simple static (read-only) test project,ouhsc
-1.89,1.89,1.89,1.89,1.89,1.89,1,longitudinal (read-only) ARM test project,ouhsc
-0.73,0.73,0.73,0.73,0.73,0.73,1,simple write data,ouhsc
-2.38,2.38,2.38,2.38,2.38,2.38,1,Russian Characters,ouhsc
-4.63,4.63,4.63,4.63,4.63,4.63,1,"super-wide --3,000 columns",ouhsc
-1.12,1.12,1.12,1.12,1.12,1.12,1,static (not longitudinal) survey test project,ouhsc
-0.98,0.98,0.98,0.98,0.98,0.98,1,"Clinical Trial (Fake) --Read-only, contributed by @higgi13425",ouhsc
-0.88,0.88,0.88,0.88,0.88,0.88,1,nonnumeric record_id,ouhsc
-0.98,0.98,0.98,0.98,0.98,0.98,1,DAG Read,ouhsc
-0.91,0.91,0.91,0.91,0.91,0.91,1,potentially problematic values,ouhsc
-0.97,0.97,0.97,0.97,0.97,0.97,1,simple write metadata,ouhsc
-0.94,0.94,0.94,0.94,0.94,0.94,1,DAG Write -admin,ouhsc
-0.66,0.66,0.66,0.66,0.66,0.66,1,DAG Write -group A,ouhsc
-149.66,149.66,149.66,149.66,149.66,149.66,1,"super-wide #3--35,000 columns",ouhsc
-0.9,0.9,0.9,0.9,0.9,0.9,1,Repeating Instruments --Sparse,ouhsc
-0.87,0.87,0.87,0.87,0.87,0.87,1,Delete Single Arm,ouhsc
-1.48,1.48,1.48,1.48,1.48,1.48,1,Delete Multiple Arm,ouhsc
-1.67,1.67,1.67,1.67,1.67,1.67,1,longitudinal single arm,ouhsc
-0.91,0.91,0.91,0.91,0.91,0.91,1,decimal comma and dot,ouhsc
-0.9,0.9,0.9,0.9,0.9,0.9,1,decimal comma,ouhsc
-0.9,0.9,0.9,0.9,0.9,0.9,1,decimal dot,ouhsc
-1.03,1.03,1.03,1.03,1.03,1.03,1,Validation Types,ouhsc
-1.07,1.07,1.07,1.07,1.07,1.07,1,Blank for Gray Status,ouhsc
-0.86,0.86,0.86,0.86,0.86,0.86,1,Checkboxes 1,ouhsc
-1.04,1.04,1.04,1.04,1.04,1.04,1,Vignette: Longitudinal & Repeating Measures,ouhsc
-1.32,1.32,1.32,1.32,1.32,1.32,1,classic,redcaptidier
-2.07,2.07,2.07,2.07,2.07,2.07,1,classic no repeat,redcaptidier
-2.35,2.35,2.35,2.35,2.35,2.35,1,longitudinal,redcaptidier
-2.35,2.35,2.35,2.35,2.35,2.35,1,longitudinal no arms,redcaptidier
-4.16,4.16,4.16,4.16,4.16,4.16,1,longitudinal no repeat,redcaptidier
-2.72,2.72,2.72,2.72,2.72,2.72,1,deep dive vignette,redcaptidier
-1.18,1.18,1.18,1.18,1.18,1.18,1,repeat first instrument,redcaptidier
-2.31,2.31,2.31,2.31,2.31,2.31,1,repeat event,redcaptidier
-1.23,1.23,1.23,1.23,1.23,1.23,1,restricted access,redcaptidier
-1.36,1.36,1.36,1.36,1.36,1.36,1,large sparse db,redcaptidier
-1.22,1.22,1.22,1.22,1.22,1.22,1,data access groups,redcaptidier
-2.31,2.31,2.31,2.31,2.31,2.31,1,longitudinal data access groups,redcaptidier
-2.38,2.38,2.38,2.38,2.38,2.38,1,mixed structure repeat no repeat,redcaptidier
-8.12,8.12,8.12,8.12,8.12,8.12,1,prodigy db,redcaptidier
-6.22,6.22,6.22,6.22,6.22,6.22,1,cart comprehensive db,redcaptidier
+NA,NA,NA,NA,NA,NA,NA,simple static (read-only) test project,ouhsc
+NA,NA,NA,NA,NA,NA,NA,longitudinal (read-only) ARM test project,ouhsc
+NA,NA,NA,NA,NA,NA,NA,simple write data,ouhsc
+NA,NA,NA,NA,NA,NA,NA,Russian Characters,ouhsc
+NA,NA,NA,NA,NA,NA,NA,"super-wide --3,000 columns",ouhsc
+NA,NA,NA,NA,NA,NA,NA,static (not longitudinal) survey test project,ouhsc
+NA,NA,NA,NA,NA,NA,NA,"Clinical Trial (Fake) --Read-only, contributed by @higgi13425",ouhsc
+NA,NA,NA,NA,NA,NA,NA,nonnumeric record_id,ouhsc
+NA,NA,NA,NA,NA,NA,NA,DAG Read,ouhsc
+NA,NA,NA,NA,NA,NA,NA,potentially problematic values,ouhsc
+NA,NA,NA,NA,NA,NA,NA,simple write metadata,ouhsc
+NA,NA,NA,NA,NA,NA,NA,DAG Write -admin,ouhsc
+NA,NA,NA,NA,NA,NA,NA,DAG Write -group A,ouhsc
+NA,NA,NA,NA,NA,NA,NA,"super-wide #3--35,000 columns",ouhsc
+NA,NA,NA,NA,NA,NA,NA,Repeating Instruments --Sparse,ouhsc
+NA,NA,NA,NA,NA,NA,NA,Delete Single Arm,ouhsc
+NA,NA,NA,NA,NA,NA,NA,Delete Multiple Arm,ouhsc
+NA,NA,NA,NA,NA,NA,NA,longitudinal single arm,ouhsc
+NA,NA,NA,NA,NA,NA,NA,decimal comma and dot,ouhsc
+NA,NA,NA,NA,NA,NA,NA,decimal comma,ouhsc
+NA,NA,NA,NA,NA,NA,NA,decimal dot,ouhsc
+NA,NA,NA,NA,NA,NA,NA,Validation Types,ouhsc
+NA,NA,NA,NA,NA,NA,NA,Blank for Gray Status,ouhsc
+NA,NA,NA,NA,NA,NA,NA,Checkboxes 1,ouhsc
+NA,NA,NA,NA,NA,NA,NA,Vignette: Longitudinal & Repeating Measures,ouhsc
+2.19,2.19,2.19,2.19,2.19,2.19,1,classic,redcaptidier
+2.15,2.15,2.15,2.15,2.15,2.15,1,classic no repeat,redcaptidier
+3.81,3.81,3.81,3.81,3.81,3.81,1,longitudinal,redcaptidier
+4.76,4.76,4.76,4.76,4.76,4.76,1,longitudinal no arms,redcaptidier
+7.19,7.19,7.19,7.19,7.19,7.19,1,longitudinal no repeat,redcaptidier
+4.65,4.65,4.65,4.65,4.65,4.65,1,deep dive vignette,redcaptidier
+2.48,2.48,2.48,2.48,2.48,2.48,1,repeat first instrument,redcaptidier
+4.5,4.5,4.5,4.5,4.5,4.5,1,repeat event,redcaptidier
+2.69,2.69,2.69,2.69,2.69,2.69,1,restricted access,redcaptidier
+2.76,2.76,2.76,2.76,2.76,2.76,1,large sparse db,redcaptidier
+2.6,2.6,2.6,2.6,2.6,2.6,1,data access groups,redcaptidier
+4.43,4.43,4.43,4.43,4.43,4.43,1,longitudinal data access groups,redcaptidier
+3.7,3.7,3.7,3.7,3.7,3.7,1,mixed structure repeat no repeat,redcaptidier
+10.98,10.98,10.98,10.98,10.98,10.98,1,prodigy db,redcaptidier
+7.39,7.39,7.39,7.39,7.39,7.39,1,cart comprehensive db,redcaptidier

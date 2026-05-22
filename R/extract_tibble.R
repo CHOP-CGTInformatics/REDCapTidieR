@@ -21,8 +21,7 @@
 #'
 #' @export
 
-extract_tibble <- function(supertbl,
-                           tbl) {
+extract_tibble <- function(supertbl, tbl) {
   # Check args ----
   check_arg_is_supertbl(supertbl, req_cols = "redcap_data")
   check_arg_is_character(tbl, len = 1, any.missing = FALSE)
@@ -63,8 +62,7 @@ extract_tibble <- function(supertbl,
 #'
 #' @export
 
-extract_tibbles <- function(supertbl,
-                            tbls = everything()) {
+extract_tibbles <- function(supertbl, tbls = everything()) {
   check_arg_is_supertbl(supertbl, req_cols = "redcap_data")
 
   # Extract specified table ----

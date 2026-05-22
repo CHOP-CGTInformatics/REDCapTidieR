@@ -110,7 +110,7 @@ A [tibble](#tibble) that contains data that were entered into the [fields](#fiel
 
 ### Data viewer {#data-viewer}
 
-A part of the [RStudio IDE](https://posit.co/download/rstudio-desktop/) functionality that allows you to inspect data frames, [tibbles](#tibble), and some other data structures. It includes [features to perform basic exploratory data analysis](https://docs.posit.co/ide/user/ide/guide/data/data-viewer.html) such as sorting, filtering, and searching. [The supertibble is designed to work well with the data viewer](REDCapTidieR.html#exploring-the-contents-of-the-supertibble). <a onclick="history.back()">↩︎</a>
+A part of the [RStudio IDE](https://posit.co/download/rstudio-desktop) functionality that allows you to inspect data frames, [tibbles](#tibble), and some other data structures. It includes [features to perform basic exploratory data analysis](https://docs.posit.co/ide/user/ide/guide/data/data-viewer.html) such as sorting, filtering, and searching. [The supertibble is designed to work well with the data viewer](REDCapTidieR.html#exploring-the-contents-of-the-supertibble). <a onclick="history.back()">↩︎</a>
 
 ### Environment {#environment}
 

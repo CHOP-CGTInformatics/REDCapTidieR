@@ -15,8 +15,7 @@
 #'
 #' @keywords internal
 
-add_partial_keys <- function(db_data,
-                             var = NULL) {
+add_partial_keys <- function(db_data, var = NULL) {
   if (!is.null(enexpr(var))) {
     # Include handling for instances where REDCap appends with "_1b" or similar
     pattern <- "^(\\w+?)_arm_(\\d+\\w?)$"
@@ -24,7 +23,7 @@ add_partial_keys <- function(db_data,
     db_data <- db_data %>%
       mutate(
         redcap_event = sub(pattern, "\\1", {{ var }}),
-        redcap_arm   = as.character(sub(pattern, "\\2", {{ var }}))
+        redcap_arm = as.character(sub(pattern, "\\2", {{ var }}))
       )
   }
 
@@ -98,10 +97,7 @@ create_repeat_instance_vars <- function(db_data) {
         )
       )
 
-    out <- relocate(out,
-      "redcap_event_instance",
-      .after = "redcap_form_instance"
-    )
+    out <- relocate(out, "redcap_event_instance", .after = "redcap_form_instance")
   }
 
   # return
@@ -126,9 +122,7 @@ create_repeat_instance_vars <- function(db_data) {
 #'
 #' @keywords internal
 
-link_arms <- function(redcap_uri,
-                      token,
-                      suppress_redcapr_messages = TRUE) {
+link_arms <- function(redcap_uri, token, suppress_redcapr_messages = TRUE) {
   arms <- try_redcapr(
     {
       redcap_arm_export(redcap_uri, token, verbose = !suppress_redcapr_messages)
@@ -196,9 +190,7 @@ link_arms <- function(redcap_uri,
 parse_labels <- function(string, return_vector = FALSE, return_stripped_text_flag = FALSE) {
   # If string is empty/NA, throw a warning
   if (is.na(string)) {
-    cli_warn("Empty string detected for a given multiple choice label.",
-      class = c("empty_parse_warning", "REDCapTidieR_cond")
-    )
+    cli_warn("Empty string detected for a given multiple choice label.", class = c("empty_parse_warning", "REDCapTidieR_cond"))
   }
 
   out <- string %>%
@@ -391,7 +383,9 @@ update_data_col_names <- function(db_data, db_metadata) {
   # conventions for checkboxes.
   db_metadata$checkbox_conversion <- db_metadata$field_name_updated
   db_metadata$checkbox_conversion <- str_replace_all(
-    db_metadata$checkbox_conversion, "-", "_"
+    db_metadata$checkbox_conversion,
+    "-",
+    "_"
   )
 
   changed_names <- db_metadata %>%
@@ -447,7 +441,6 @@ multi_choice_to_labels <- function(db_data, db_metadata, raw_or_label = "label",
         .fns = ~ label_handler(as.integer(.), c("0" = "Incomplete", "1" = "Unverified", "2" = "Complete"), integer(0))
       )
     )
-
 
   # Logical Column Handling ----
   # Handle columns where we change 0/1 to FALSE/TRUE (logical)
@@ -805,10 +798,12 @@ try_redcapr <- function(expr, call = caller_env()) {
         "i" = "URI: `{condition$redcap_uri}`"
       )
       condition$class <- c("cannot_post", condition$class)
-    } else if (!is.null(out$outcome_message) && str_detect(
-      out$outcome_message,
-      "You must have 'API Export' privileges and 'Data Access Groups' privileges"
-    )
+    } else if (
+      !is.null(out$outcome_message) &&
+        str_detect(
+          out$outcome_message,
+          "You must have 'API Export' privileges and 'Data Access Groups' privileges"
+        )
     ) {
       condition$info <- c(
         "!" = "You do not have sufficient privileges to export data access groups.",

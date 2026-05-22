@@ -9,7 +9,7 @@ ouhsc_creds <- readr::read_csv(file = "utility/redcapr.example.credentials", ski
   select(redcap_uri, token, comment)
 
 # Remove identified APIs that don't work
-ouhsc_creds <- ouhsc_creds[-c(5,6,10,14,15,19),]
+ouhsc_creds <- ouhsc_creds[-c(5, 6, 10, 14, 15, 19), ]
 # Empty rows (dataframe with 0 rows, 0 columns)
 # Single Column (dataframe with 0 rows, 0 columns)
 # Missing/invalid token, "---" (REDCapR errors as well)
@@ -19,53 +19,71 @@ ouhsc_creds <- ouhsc_creds[-c(5,6,10,14,15,19),]
 
 # Load REDCapTidieR and CGTI creds
 redcaptidier_creds <- tibble::tribble(
-  ~redcap_uri, ~token, ~comment,
-  Sys.getenv("REDCAP_URI"), Sys.getenv("REDCAPTIDIER_CLASSIC_API"), "classic",
-  Sys.getenv("REDCAP_URI"), Sys.getenv("REDCAPTIDIER_CLASSIC_NOREPEAT_API"), "classic no repeat",
-  Sys.getenv("REDCAP_URI"), Sys.getenv("REDCAPTIDIER_LONGITUDINAL_API"), "longitudinal",
-  Sys.getenv("REDCAP_URI"), Sys.getenv("REDCAPTIDIER_LONGITUDINAL_NOARMS_API"), "longitudinal no arms",
-  Sys.getenv("REDCAP_URI"), Sys.getenv("REDCAPTIDIER_LONGITUDINAL_NOREPEAT_API"), "longitudinal no repeat",
-  Sys.getenv("REDCAP_URI"), Sys.getenv("REDCAPTIDIER_DEEP_DIVE_VIGNETTE_API"), "deep dive vignette",
-  Sys.getenv("REDCAP_URI"), Sys.getenv("REDCAPTIDIER_REPEAT_FIRST_INSTRUMENT_API"), "repeat first instrument",
-  Sys.getenv("REDCAP_URI"), Sys.getenv("REDCAPTIDIER_REPEATING_EVENT_API"), "repeat event",
-  Sys.getenv("REDCAP_URI"), Sys.getenv("REDCAPTIDIER_RESTRICTED_ACCESS_API"), "restricted access",
-  Sys.getenv("REDCAP_URI"), Sys.getenv("REDCAPTIDIER_LARGE_SPARSE_API"), "large sparse db",
-  Sys.getenv("REDCAP_URI"), Sys.getenv("REDCAPTIDIER_DAG_API"), "data access groups",
-  Sys.getenv("REDCAP_URI"), Sys.getenv("REDCAPTIDIER_LONGITUDINAL_DAG_API"), "longitudinal data access groups",
-  Sys.getenv("REDCAP_URI"), Sys.getenv("REDCAPTIDIER_MIXED_STRUCTURE_API"), "mixed structure repeat no repeat",
-  Sys.getenv("REDCAP_URI"), Sys.getenv("PRODIGY_REDCAP_API"), "prodigy db",
-  Sys.getenv("REDCAP_URI"), Sys.getenv("CART_COMP_REDCAP_API"), "cart comprehensive db",
-  Sys.getenv("REDCAP_URI"), Sys.getenv("BMT_OUTCOMES_REDCAP_API"), "bmt outcomes db"
+  ~redcap_uri              , ~token                                                 , ~comment                           ,
+  Sys.getenv("REDCAP_URI") , Sys.getenv("REDCAPTIDIER_CLASSIC_API")                 , "classic"                          ,
+  Sys.getenv("REDCAP_URI") , Sys.getenv("REDCAPTIDIER_CLASSIC_NOREPEAT_API")        , "classic no repeat"                ,
+  Sys.getenv("REDCAP_URI") , Sys.getenv("REDCAPTIDIER_LONGITUDINAL_API")            , "longitudinal"                     ,
+  Sys.getenv("REDCAP_URI") , Sys.getenv("REDCAPTIDIER_LONGITUDINAL_NOARMS_API")     , "longitudinal no arms"             ,
+  Sys.getenv("REDCAP_URI") , Sys.getenv("REDCAPTIDIER_LONGITUDINAL_NOREPEAT_API")   , "longitudinal no repeat"           ,
+  Sys.getenv("REDCAP_URI") , Sys.getenv("REDCAPTIDIER_DEEP_DIVE_VIGNETTE_API")      , "deep dive vignette"               ,
+  Sys.getenv("REDCAP_URI") , Sys.getenv("REDCAPTIDIER_REPEAT_FIRST_INSTRUMENT_API") , "repeat first instrument"          ,
+  Sys.getenv("REDCAP_URI") , Sys.getenv("REDCAPTIDIER_REPEATING_EVENT_API")         , "repeat event"                     ,
+  Sys.getenv("REDCAP_URI") , Sys.getenv("REDCAPTIDIER_RESTRICTED_ACCESS_API")       , "restricted access"                ,
+  Sys.getenv("REDCAP_URI") , Sys.getenv("REDCAPTIDIER_LARGE_SPARSE_API")            , "large sparse db"                  ,
+  Sys.getenv("REDCAP_URI") , Sys.getenv("REDCAPTIDIER_DAG_API")                     , "data access groups"               ,
+  Sys.getenv("REDCAP_URI") , Sys.getenv("REDCAPTIDIER_LONGITUDINAL_DAG_API")        , "longitudinal data access groups"  ,
+  Sys.getenv("REDCAP_URI") , Sys.getenv("REDCAPTIDIER_MIXED_STRUCTURE_API")         , "mixed structure repeat no repeat" ,
+  Sys.getenv("REDCAP_URI") , Sys.getenv("PRODIGY_REDCAP_API")                       , "prodigy db"                       ,
+  Sys.getenv("REDCAP_URI") , Sys.getenv("CART_COMP_REDCAP_API")                     , "cart comprehensive db"            ,
+  Sys.getenv("REDCAP_URI") , Sys.getenv("BMT_OUTCOMES_REDCAP_API")                  , "bmt outcomes db"
 )
 
 # Combine Credentials
+
+# NOTE: ouhsc no longer work. Remove?
 creds <- rbind(ouhsc_creds %>% mutate(source = "ouhsc"), redcaptidier_creds %>% mutate(source = "redcaptidier")) %>%
   filter(token != "")
 
-microbenchmark_fx <- function(redcap_uri, token, name, times = 1){
+microbenchmark_fx <- function(redcap_uri, token, name, times = 1) {
   microbenchmark(
     name = suppressWarnings(read_redcap(
       redcap_uri = redcap_uri,
       token = token,
       allow_mixed_structure = TRUE,
       export_data_access_groups = FALSE
-      )
-    ),
+    )),
     times = times,
     unit = "seconds"
   )
 }
 
-microbenchmark_results <- purrr::map2(creds$redcap_uri, creds$token, ~microbenchmark_fx(.x, .y, "name", 1))
+microbenchmark_results <- purrr::map2(
+  creds$redcap_uri,
+  creds$token,
+  purrr::safely(~ microbenchmark_fx(.x, .y, "name", 1))
+) |>
+  purrr::transpose()
+
+microbenchmark_results$error |>
+  setNames(seq_along(microbenchmark_results$error)) |>
+  purrr::compact()
 
 out <- tibble::tibble()
 
-for (i in seq_along(microbenchmark_results)) {
-  out <- rbind(out, summary(microbenchmark_results[[i]]))
+for (i in seq_along(microbenchmark_results$result)) {
+  result <- microbenchmark_results$result[[i]]
+  if (!is.null(result)) {
+    out <- rbind(out, summary(result))
+  } else {
+    out <- rbind(
+      out,
+      tibble::tibble(expr = NA, min = NA, lq = NA, mean = NA, median = NA, uq = NA, max = NA, neval = NA)
+    )
+  }
 }
 
 out %>%
   select(-expr) %>%
-  mutate(across(tidyselect::everything(), ~round(., digits = 2))) %>%
+  mutate(across(tidyselect::everything(), ~ round(., digits = 2))) %>%
   cbind(., "description" = creds$comment, "source" = creds$source) %>%
   readr::write_csv("utility/microbenchmark_results.csv")
