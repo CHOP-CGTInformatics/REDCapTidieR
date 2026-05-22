@@ -69,7 +69,7 @@ devtools::check(
 )
 # Approx matches to https://cran.r-project.org/web/checks/check_flavors.html
 rhub::rhub_check(
-  platforms = c("linux", "windows", "ubuntu-next", "ubuntu-release"),
+  platforms = c("linux", "windows", "macos", "ubuntu-next", "ubuntu-release"),
   gh_url = "https://github.com/CHOP-CGTInformatics/REDCapTidieR"
 ) # These will be available in GitHub Actions
 # CRAN submission policies encourage the development version
