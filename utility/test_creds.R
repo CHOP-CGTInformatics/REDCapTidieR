@@ -8,15 +8,6 @@ library(microbenchmark)
 ouhsc_creds <- readr::read_csv(file = "utility/redcapr.example.credentials", skip = 5, show_col_types = FALSE) %>%
   select(redcap_uri, token, comment)
 
-# Remove identified APIs that don't work
-ouhsc_creds <- ouhsc_creds[-c(5, 6, 10, 14, 15, 19), ]
-# Empty rows (dataframe with 0 rows, 0 columns)
-# Single Column (dataframe with 0 rows, 0 columns)
-# Missing/invalid token, "---" (REDCapR errors as well)
-# Potentially problematic dictionary  (dataframe with 0 rows, 0 columns)
-# super-wide #2--5,785 columns (dataframe with 0 rows, 0 columns)
-# repeat instrument, no longer a working api key
-
 # Load REDCapTidieR and CGTI creds
 redcaptidier_creds <- tibble::tribble(
   ~redcap_uri              , ~token                                                 , ~comment                           ,
@@ -40,9 +31,14 @@ redcaptidier_creds <- tibble::tribble(
 
 # Combine Credentials
 
-# NOTE: ouhsc no longer work. Remove?
-creds <- rbind(ouhsc_creds %>% mutate(source = "ouhsc"), redcaptidier_creds %>% mutate(source = "redcaptidier")) %>%
-  filter(token != "")
+creds <- rbind(
+  ouhsc_creds %>% mutate(source = "ouhsc"),
+  redcaptidier_creds %>% mutate(source = "redcaptidier")
+) %>%
+  filter(
+    !token %in% c("", "---"),
+    !comment %in% c("empty-rows", "single-column", "potentially-problematic-dictionary", "super-wide-2")
+  )
 
 microbenchmark_fx <- function(redcap_uri, token, name, times = 1) {
   microbenchmark(
