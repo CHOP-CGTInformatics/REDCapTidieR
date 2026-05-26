@@ -24,10 +24,7 @@
 #'
 #' @keywords internal
 
-clean_redcap_long <- function(db_data_long,
-                              db_metadata_long,
-                              linked_arms,
-                              allow_mixed_structure = FALSE) {
+clean_redcap_long <- function(db_data_long, db_metadata_long, linked_arms, allow_mixed_structure = FALSE) {
   # Repeating Instrument Check ----
   # Check if database supplied contains any repeating instruments to map onto
   # `redcap_repeat_*` variables
@@ -77,7 +74,7 @@ clean_redcap_long <- function(db_data_long,
   ## Repeating Instruments Logic ----
   if (has_repeat_forms) {
     # If mixed structure allowed, retrieve mixed structure forms
-    has_mixed_structure_forms <- FALSE # nolint: object_usage_linter
+    has_mixed_structure_forms <- FALSE
 
     mixed_structure_ref <- data.frame()
     if (allow_mixed_structure) {
@@ -144,10 +141,7 @@ clean_redcap_long <- function(db_data_long,
 #'
 #' @keywords internal
 
-distill_nonrepeat_table_long <- function(form_name,
-                                         db_data_long,
-                                         db_metadata_long,
-                                         linked_arms) {
+distill_nonrepeat_table_long <- function(form_name, db_data_long, db_metadata_long, linked_arms) {
   # Repeating Instrument Check ----
   # Check if database supplied contains any repeating instruments to map onto
   # `redcap_repeat_*` variables
@@ -219,7 +213,7 @@ distill_nonrepeat_table_long <- function(form_name,
     relocate(any_of("redcap_survey_timestamp"), .after = everything()) %>%
     rename("form_status_complete" = paste0(my_form, "_complete")) %>%
     relocate("form_status_complete", .after = everything()) %>%
-    remove_empty_rows(my_record_id) # nolint: object_usage_linter
+    remove_empty_rows(my_record_id)
 
   # Remove arms column if necessary
   if (!any(linked_arms$unique_event_name %>% str_detect("arm_2"))) {
@@ -272,12 +266,14 @@ distill_nonrepeat_table_long <- function(form_name,
 #'
 #' @keywords internal
 
-distill_repeat_table_long <- function(form_name,
-                                      db_data_long,
-                                      db_metadata_long,
-                                      linked_arms,
-                                      has_mixed_structure_forms = FALSE,
-                                      mixed_structure_ref = NULL) {
+distill_repeat_table_long <- function(
+  form_name,
+  db_data_long,
+  db_metadata_long,
+  linked_arms,
+  has_mixed_structure_forms = FALSE,
+  mixed_structure_ref = NULL
+) {
   has_repeat_forms <- "redcap_repeat_instance" %in% names(db_data_long)
 
   my_record_id <- names(db_data_long)[1]
@@ -320,10 +316,8 @@ distill_repeat_table_long <- function(form_name,
   db_data_long <- db_data_long %>%
     add_partial_keys(var = .data$redcap_event_name) %>%
     filter(
-      (
-        !is.na(.data$redcap_form_instance) |
-          if_any(matches("redcap_event_instance"), ~ !is.na(.))
-      ) &
+      (!is.na(.data$redcap_form_instance) |
+        if_any(matches("redcap_event_instance"), ~ !is.na(.))) &
         .data$redcap_repeat_instrument == my_form
     )
 
@@ -354,7 +348,7 @@ distill_repeat_table_long <- function(form_name,
     relocate(any_of("redcap_survey_timestamp"), .after = everything()) %>%
     rename("form_status_complete" = paste0(my_form, "_complete")) %>%
     relocate("form_status_complete", .after = everything()) %>%
-    remove_empty_rows(my_record_id) # nolint: object_usage_linter
+    remove_empty_rows(my_record_id)
 
   # Remove arms column if necessary
   if (!any(linked_arms$unique_event_name %>% str_detect("arm_2"))) {
@@ -403,8 +397,8 @@ distill_repeat_table_long <- function(form_name,
 
 convert_mixed_instrument <- function(db_data_long, mixed_structure_ref) {
   for (i in seq_len(nrow(mixed_structure_ref))) {
-    field <- mixed_structure_ref$field_name[i] # nolint: object_usage_linter
-    form <- mixed_structure_ref$form_name[i] # nolint: object_usage_linter
+    field <- mixed_structure_ref$field_name[i]
+    form <- mixed_structure_ref$form_name[i]
 
     # Create an update mask column to identify which mixed structure rows need updates
     db_data_long <- db_data_long %>%
@@ -485,8 +479,10 @@ convert_mixed_instrument <- function(db_data_long, mixed_structure_ref) {
 get_mixed_structure_fields <- function(db_data) {
   # Identify columns to check for repeat/nonrepeat behavior
   safe_cols <- c(
-    names(db_data)[1], "redcap_event_name",
-    "redcap_repeat_instrument", "redcap_repeat_instance",
+    names(db_data)[1],
+    "redcap_event_name",
+    "redcap_repeat_instrument",
+    "redcap_repeat_instance",
     "redcap_data_access_group"
   )
 

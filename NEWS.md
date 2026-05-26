@@ -1,4 +1,4 @@
-# REDCapTidieR (development version)
+# REDCapTidieR 1.2.5
 
 ### Bug Fixes
 

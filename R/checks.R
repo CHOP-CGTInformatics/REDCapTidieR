@@ -16,12 +16,12 @@
 #'
 #' @keywords internal
 
-check_user_rights <- function(db_data,
-                              db_metadata,
-                              call = caller_env()) {
+check_user_rights <- function(db_data, db_metadata, call = caller_env()) {
   # Set condition components used in both error and warning
-  msg_info <- c("i" = "This can happen when the user privileges are not set to allow exporting certain
-    instruments via the API.")
+  msg_info <- c(
+    "i" = "This can happen when the user privileges are not set to allow exporting certain
+    instruments via the API."
+  )
   cond_class <- c("redcap_user_rights", "REDCapTidieR_cond")
 
   db_fields <- names(db_data)
@@ -58,8 +58,10 @@ check_user_rights <- function(db_data,
         cli_text("Instrument {.code {form_name}} returned no data and will be removed from the output.") %>%
           cli_fmt(collapse = TRUE, strip_newline = TRUE)
       } else {
-        cli_text("Instrument {.code {form_name}} is missing {qty(missing_fields)} field{?s}
-                 {.code {missing_fields}}.") %>%
+        cli_text(
+          "Instrument {.code {form_name}} is missing {qty(missing_fields)} field{?s}
+                 {.code {missing_fields}}."
+        ) %>%
           cli_fmt(collapse = TRUE, strip_newline = TRUE)
       }
     }
@@ -98,7 +100,6 @@ check_user_rights <- function(db_data,
 #' @param call the calling environment to use in the error message
 #'
 #' @keywords internal
-
 
 check_repeat_and_nonrepeat <- function(db_data, call = caller_env()) {
   out <- get_mixed_structure_fields(db_data = db_data)
@@ -178,8 +179,10 @@ check_forms_exist <- function(db_metadata, forms, call = caller_env()) {
 
   if (length(missing_forms) > 0) {
     cli_abort(
-      c("x" = "Instrument{?s} {missing_forms} {?does/do} not exist in REDCap
-        project"),
+      c(
+        "x" = "Instrument{?s} {missing_forms} {?does/do} not exist in REDCap
+        project"
+      ),
       class = c("form_does_not_exist", "REDCapTidieR_cond"),
       call = call
     )
@@ -198,7 +201,7 @@ check_forms_exist <- function(db_metadata, forms, call = caller_env()) {
 #'
 #' @keywords internal
 check_req_labelled_metadata_fields <- function(supertbl, call = caller_env()) {
-  req_fields <- c("field_name", "field_label") # nolint: object_usage_linter
+  req_fields <- c("field_name", "field_label")
 
   # map over each metadata tibble and return list element with missing fields
   missing_fields <- supertbl$redcap_metadata %>%
@@ -216,7 +219,9 @@ check_req_labelled_metadata_fields <- function(supertbl, call = caller_env()) {
       msg_data$form <- supertbl$redcap_form_name
     } else {
       msg_data$form <- paste0(
-        "supertbl$redcap_metadata[[", seq_along(missing_fields), "]]"
+        "supertbl$redcap_metadata[[",
+        seq_along(missing_fields),
+        "]]"
       )
     }
 
@@ -226,8 +231,12 @@ check_req_labelled_metadata_fields <- function(supertbl, call = caller_env()) {
 
     # Create vector of messages and apply 'x' label
     msg <- paste0(
-      "{.code {msg_data$form[[", seq_len(nrow(msg_data)), "]]}} ",
-      "is missing {.code {msg_data$missing_fields[[", seq_len(nrow(msg_data)), "]]}}"
+      "{.code {msg_data$form[[",
+      seq_len(nrow(msg_data)),
+      "]]}} ",
+      "is missing {.code {msg_data$missing_fields[[",
+      seq_len(nrow(msg_data)),
+      "]]}}"
     )
 
     names(msg) <- rep("x", length(msg))
@@ -260,10 +269,7 @@ check_req_labelled_metadata_fields <- function(supertbl, call = caller_env()) {
 #' a warning message alerting specifying the duplicate labels and REDCap field affected
 #'
 #' @keywords internal
-check_parsed_labels <- function(parsed_labels_output,
-                                field_name,
-                                warn_stripped_text = FALSE,
-                                call = caller_env(n = 2)) {
+check_parsed_labels <- function(parsed_labels_output, field_name, warn_stripped_text = FALSE, call = caller_env(n = 2)) {
   # Are any labels ""
   blank_labs <- any(parsed_labels_output == "", na.rm = TRUE)
   # Are any labels duplicated
@@ -276,7 +282,7 @@ check_parsed_labels <- function(parsed_labels_output,
 
   # Only issue duplicate label warning if not issuing blank label warning
   if (blank_labs) {
-    vals <- names(parsed_labels_output[parsed_labels_output == ""]) # nolint: object_usage_linter
+    vals <- names(parsed_labels_output[parsed_labels_output == ""])
 
     msg <- c(
       "!" = "The {qty(vals)} value{?s} {.code {vals}} in field {.code {field_name}} are mapped to a blank label `''`"
@@ -288,7 +294,7 @@ check_parsed_labels <- function(parsed_labels_output,
 
     class <- "blank_labels"
   } else {
-    dups <- parsed_labels_output[duplicated(parsed_labels_output)] # nolint: object_usage_linter
+    dups <- parsed_labels_output[duplicated(parsed_labels_output)]
 
     msg <- c(
       "!" = "Multiple values are mapped to the {qty(dups)} label{?s} {.code {dups}} in field {.code {field_name}}"
@@ -359,10 +365,7 @@ wrap_checkmate <- function(f) {
 }
 
 #' @rdname checkmate
-check_arg_is_supertbl <- function(x,
-                                  req_cols = c("redcap_data", "redcap_metadata"),
-                                  arg = caller_arg(x),
-                                  call = caller_env()) {
+check_arg_is_supertbl <- function(x, req_cols = c("redcap_data", "redcap_metadata"), arg = caller_arg(x), call = caller_env()) {
   # shared data for all messages
   msg_x <- "You've supplied {.code {format_error_val(x)}} for {.arg {arg}} which is not a valid value"
   msg_info <- "{.arg {arg}} must be a {.pkg REDCapTidieR} supertibble, generated using {.code read_redcap()}"
@@ -431,9 +434,7 @@ check_arg_is_posixct <- wrap_checkmate(check_posixct)
 check_arg_choices <- wrap_checkmate(check_choice)
 
 #' @rdname checkmate
-check_arg_is_valid_token <- function(x,
-                                     arg = caller_arg(x),
-                                     call = caller_env()) {
+check_arg_is_valid_token <- function(x, arg = caller_arg(x), call = caller_env()) {
   try_fetch(
     sanitize_token(x),
     error = function(cnd) {
@@ -472,10 +473,7 @@ format_error_val <- function(x) {
 
 #' @rdname checkmate
 # Returns `TRUE` if the extension was valid or added and `FALSE` otherwise
-check_arg_is_valid_extension <- function(x,
-                                         valid_extensions,
-                                         arg = caller_arg(x),
-                                         call = caller_env()) {
+check_arg_is_valid_extension <- function(x, valid_extensions, arg = caller_arg(x), call = caller_env()) {
   ext <- sub(".*\\.", "", x)
   out <- TRUE
 
@@ -683,9 +681,16 @@ check_extra_field_values_message <- function(extra_field_values, call = caller_e
 check_metadata_field_types <- function(db_data, db_metadata, call = caller_env()) {
   type_rules <- tibble(
     field_type = c(
-      "text", "notes", "calc", "dropdown", "radio",
-      "checkbox", "yesno", "truefalse",
-      "file", "slider"
+      "text",
+      "notes",
+      "calc",
+      "dropdown",
+      "radio",
+      "checkbox",
+      "yesno",
+      "truefalse",
+      "file",
+      "slider"
     ),
     allowed_types = list(
       c("character", "double", "integer", "factor", "date", "time", "datetime"),
@@ -755,9 +760,7 @@ get_field_type_mismatch_message <- function(field_name, field_type, r_type, allo
     cli_fmt(collapse = TRUE, strip_newline = TRUE)
 }
 
-detect_field_type_mismatches <- function(db_data,
-                                         db_metadata,
-                                         type_rules) {
+detect_field_type_mismatches <- function(db_data, db_metadata, type_rules) {
   metadata <- db_metadata %>%
     update_field_names() %>%
     select("field_name_updated", "field_type") %>%
@@ -784,11 +787,12 @@ detect_field_type_mismatches <- function(db_data,
         seq_along(.data$r_type),
         ~ .data$r_type[[.x]] %in% .data$allowed_types[[.x]]
       ),
-      warn = !.data$is_allowed & if_else(
-        .data$r_type == "logical" & .data$logical_warn_requires_non_na,
-        .data$any_non_na,
-        TRUE
-      )
+      warn = !.data$is_allowed &
+        if_else(
+          .data$r_type == "logical" & .data$logical_warn_requires_non_na,
+          .data$any_non_na,
+          TRUE
+        )
     ) %>%
     filter(.data$warn) %>%
     select("field_name", "field_type", "r_type", "allowed_types")
@@ -931,7 +935,7 @@ check_equal_col_summaries <- function(data, col1, col2, call = caller_env()) {
       filter(.data$n > 1) %>%
       pull({{ col1 }})
 
-    col2_n_vals <- data %>% # nolint: object_usage_linter
+    col2_n_vals <- data %>%
       filter({{ col1 }} %in% col1_n_vals) %>%
       pull({{ col2 }})
 

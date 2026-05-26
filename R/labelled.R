@@ -43,7 +43,7 @@
 make_labelled <- function(supertbl, format_labels = NULL) {
   check_installed("labelled", reason = "to use `make_labelled()`")
 
-  formatter <- resolve_formatter(format_labels) # nolint: object_usage_linter
+  formatter <- resolve_formatter(format_labels)
 
   check_arg_is_supertbl(supertbl)
   check_req_labelled_metadata_fields(supertbl)
@@ -84,7 +84,7 @@ make_labelled <- function(supertbl, format_labels = NULL) {
   )
 
   ## Set some predefined labels for data fields that aren't in the metadata
-  data_labels <- c( # nolint: object_usage_linter
+  data_labels <- c(
     redcap_form_instance = "REDCap Form Instance",
     redcap_event_instance = "REDCap Event Instance",
     redcap_data_access_group = "REDCap Data Access Group",
@@ -266,7 +266,7 @@ resolve_formatter <- function(format_labels, env = caller_env(n = 2), call = cal
     return(compose(!!!fns, .dir = "forward"))
   }
 
-  supported_classes <- c("NULL", "list", "function", "character") # nolint: object_usage_linter
+  supported_classes <- c("NULL", "list", "function", "character")
   cli_abort(
     c(
       "!" = "{.arg format_labels} must be of class {.cls {supported_classes}}",

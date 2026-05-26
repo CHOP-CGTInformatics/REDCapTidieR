@@ -4,16 +4,16 @@ db_metadata_classic <- readRDS(system.file("testdata/db_metadata_classic.RDS", p
 
 test_that("update_data_field_names works", {
   test_data <- tibble::tribble(
-    ~`checkbox____99`,   ~`checkbox____98`,
-    0,                   1,
-    1,                   0,
-    1,                   0
+    ~`checkbox____99` , ~`checkbox____98` ,
+                    0 ,                 1 ,
+                    1 ,                 0 ,
+                    1 ,                 0
   )
 
   test_meta <- tibble::tribble(
-    ~field_name_updated,
-    "checkbox___-99",
-    "checkbox___-98",
+    ~field_name_updated ,
+    "checkbox___-99"    ,
+    "checkbox___-98"    ,
     "test_column"
   )
 
@@ -46,11 +46,13 @@ test_that("multi_choice_to_labels works", {
     db_data = db_data_classic,
     db_metadata = db_metadata_classic
   ) %>%
-    suppressWarnings(classes = c(
-      "empty_parse_warning",
-      "field_missing_categories",
-      "duplicate_labels"
-    ))
+    suppressWarnings(
+      classes = c(
+        "empty_parse_warning",
+        "field_missing_categories",
+        "duplicate_labels"
+      )
+    )
 
   # Test general structure
   expect_true(is.data.frame(out))
@@ -82,11 +84,13 @@ test_that("multi_choice_to_labels works", {
     db_metadata = db_metadata_classic,
     raw_or_label = "haven"
   ) %>%
-    suppressWarnings(classes = c(
-      "empty_parse_warning",
-      "field_missing_categories",
-      "duplicate_labels"
-    ))
+    suppressWarnings(
+      classes = c(
+        "empty_parse_warning",
+        "field_missing_categories",
+        "duplicate_labels"
+      )
+    )
 
   expect_s3_class(out$dropdown_single, "haven_labelled")
   expect_equal(
@@ -97,7 +101,8 @@ test_that("multi_choice_to_labels works", {
   expect_equal(labelled::val_labels(out$radio_single), c("A" = "choice_1", "B" = "choice_2", "C" = "choice_3"))
   expect_s3_class(out$data_field_types_complete, "haven_labelled")
   expect_equal(
-    labelled::val_labels(out$data_field_types_complete), c("Incomplete" = 0, "Unverified" = 1, "Complete" = 2)
+    labelled::val_labels(out$data_field_types_complete),
+    c("Incomplete" = 0, "Unverified" = 1, "Complete" = 2)
   )
   expect_s3_class(out$repeatsurvey_radio_v2, "haven_labelled")
   expect_equal(labelled::val_labels(out$repeatsurvey_radio_v2), c("Choice 1" = 1, "Choice 2" = 2, "Choice 3" = 3))
@@ -111,10 +116,10 @@ test_that("parse_labels works", {
   # parse_labels successfully stips html tags and field embedding logic
   valid_string <- "choice_1, one | choice_2, two {abc} | choice_3, <b>three</b>"
   valid_tibble_output <- tibble::tribble(
-    ~raw,       ~label,
-    "choice_1", "one",
-    "choice_2", "two",
-    "choice_3", "three"
+    ~raw       , ~label  ,
+    "choice_1" , "one"   ,
+    "choice_2" , "two"   ,
+    "choice_3" , "three"
   )
   valid_vector_output <- c("one", "two", "three")
   names(valid_vector_output) <- c("choice_1", "choice_2", "choice_3")
@@ -179,9 +184,9 @@ test_that("parse_labels works", {
   )
 
   ## Flag returns FALSE when there were no labels
-  parse_labels(warning_string_1, return_stripped_text_flag = TRUE) |>
-    suppressWarnings(classes = "empty_parse_warning") |>
-    purrr::pluck(2) |>
+  parse_labels(warning_string_1, return_stripped_text_flag = TRUE) %>%
+    suppressWarnings(classes = "empty_parse_warning") %>%
+    purrr::pluck(2) %>%
     expect_equal(FALSE)
 })
 
@@ -198,7 +203,7 @@ test_that("parse_logical_cols", {
 
   expect_warning(parse_logical_cols(db_data, db_metadata), class = "field_is_logical")
 
-  out <- parse_logical_cols(db_data, db_metadata) |>
+  out <- parse_logical_cols(db_data, db_metadata) %>%
     suppressWarnings(classes = "field_is_logical")
 
   expect_equal(dim(out), dim(db_data))
@@ -227,8 +232,13 @@ test_that("link_arms works", {
 
   # output contains expected columns
   expected_cols <- c(
-    "arm_num", "unique_event_name", "form", "arm_name",
-    "event_name", "custom_event_label", "event_id"
+    "arm_num",
+    "unique_event_name",
+    "form",
+    "arm_name",
+    "event_name",
+    "custom_event_label",
+    "event_id"
   )
   expect_setequal(expected_cols, names(out))
 
@@ -246,13 +256,13 @@ test_that("link_arms works", {
 test_that("update_field_names works", {
   # nolint start: line_length_linter
   test_meta <- tibble::tribble(
-    ~field_name,         ~form_name,    ~field_type, ~field_label,                          ~select_choices_or_calculations,
-    "record_id",         NA_character_, "text",      NA_character_,                         NA_character_,
-    "checkbox",          "my_form",     "checkbox",  "Field Label",                         "1, 1 | -99, <b>Unknown</b> {embedded logic}",
-    "checkbox_no_label", "my_form",     "checkbox",  NA_character_,                         "1, 1",
-    "checkbox_w_colon",  "my_form",     "checkbox",  "Field Label:",                        "1, 1",
-    "checkbox_no_opts",  "my_form",     "checkbox",  "Field Label:",                        NA_character_,
-    "field",             "my_form",     "text",      "<b>Field Label</b> {embedded logic}", NA_character_
+    ~field_name         , ~form_name    , ~field_type , ~field_label                          , ~select_choices_or_calculations               ,
+    "record_id"         , NA_character_ , "text"      , NA_character_                         , NA_character_                                 ,
+    "checkbox"          , "my_form"     , "checkbox"  , "Field Label"                         , "1, 1 | -99, <b>Unknown</b> {embedded logic}" ,
+    "checkbox_no_label" , "my_form"     , "checkbox"  , NA_character_                         , "1, 1"                                        ,
+    "checkbox_w_colon"  , "my_form"     , "checkbox"  , "Field Label:"                        , "1, 1"                                        ,
+    "checkbox_no_opts"  , "my_form"     , "checkbox"  , "Field Label:"                        , NA_character_                                 ,
+    "field"             , "my_form"     , "text"      , "<b>Field Label</b> {embedded logic}" , NA_character_
   )
   # nolint end: line_length_linter
 
@@ -261,8 +271,12 @@ test_that("update_field_names works", {
 
   # Check cols are present and correctly ordered
   expected_cols <- c(
-    "field_name", "form_name", "field_type", "field_label",
-    "select_choices_or_calculations", "field_name_updated"
+    "field_name",
+    "form_name",
+    "field_type",
+    "field_label",
+    "select_choices_or_calculations",
+    "field_name_updated"
   )
 
   expect_equal(colnames(out), expected_cols)
@@ -273,8 +287,12 @@ test_that("update_field_names works", {
   expect_equal(
     field_name_updated,
     c(
-      "checkbox___1", "checkbox___-99", "checkbox_no_label___1",
-      "checkbox_w_colon___1", "checkbox_no_opts___NA", "field"
+      "checkbox___1",
+      "checkbox___-99",
+      "checkbox_no_label___1",
+      "checkbox_w_colon___1",
+      "checkbox_no_opts___NA",
+      "field"
     )
   )
 
@@ -288,17 +306,21 @@ test_that("update_field_names works", {
   expect_equal(
     field_label,
     c(
-      "Field Label: 1", "Field Label: Unknown", NA_character_,
-      "Field Label: 1", NA_character_, "Field Label"
+      "Field Label: 1",
+      "Field Label: Unknown",
+      NA_character_,
+      "Field Label: 1",
+      NA_character_,
+      "Field Label"
     )
   )
 })
 
 test_that("update_field_names handles metadata without checkbox fields", {
   test_meta <- tibble::tribble(
-    ~field_name, ~form_name,    ~field_type, ~field_label,  ~select_choices_or_calculations,
-    "record_id", NA_character_, "text",      NA_character_, NA_character_,
-    "my_radio",  NA_character_, "radio",     "xyz",         "abc"
+    ~field_name , ~form_name    , ~field_type , ~field_label  , ~select_choices_or_calculations ,
+    "record_id" , NA_character_ , "text"      , NA_character_ , NA_character_                   ,
+    "my_radio"  , NA_character_ , "radio"     , "xyz"         , "abc"
   )
 
   out <- update_field_names(test_meta)
@@ -357,12 +379,12 @@ test_that("try_redcapr works", {
 
 test_that("add_partial_keys works", {
   test_data <- tibble::tribble(
-    ~record_id, ~redcap_event_name, ~redcap_repeat_instrument, ~redcap_repeat_instance,
-    1, "nr_event_arm_1", NA, NA,
-    1, "nr_event_arm_1", "r_instrument", 1,
-    3, "nr_event_arm_1", "r_instrument", 1,
-    4, "r_event_arm_1", NA, 1,
-    5, "r_event_arm_1b", NA, 1
+    ~record_id , ~redcap_event_name , ~redcap_repeat_instrument , ~redcap_repeat_instance ,
+             1 , "nr_event_arm_1"   , NA                        , NA                      ,
+             1 , "nr_event_arm_1"   , "r_instrument"            ,                       1 ,
+             3 , "nr_event_arm_1"   , "r_instrument"            ,                       1 ,
+             4 , "r_event_arm_1"    , NA                        ,                       1 ,
+             5 , "r_event_arm_1b"   , NA                        ,                       1
   )
 
   out <- test_data %>%
@@ -388,18 +410,18 @@ test_that("add_partial_keys works", {
 
 test_that("create_repeat_instance_vars works", {
   repeat_events <- tibble::tribble(
-    ~record_id, ~redcap_event, ~redcap_arm, ~redcap_repeat_instrument, ~redcap_repeat_instance,
-    1, "nr_event", 1, NA, NA,
-    1, "nr_event", 1, "r_instrument", 1,
-    3, "nr_event", 1, "r_instrument", 1,
-    4, "r_event", 1, NA, 1
+    ~record_id , ~redcap_event , ~redcap_arm , ~redcap_repeat_instrument , ~redcap_repeat_instance ,
+             1 , "nr_event"    ,           1 , NA                        , NA                      ,
+             1 , "nr_event"    ,           1 , "r_instrument"            ,                       1 ,
+             3 , "nr_event"    ,           1 , "r_instrument"            ,                       1 ,
+             4 , "r_event"     ,           1 , NA                        ,                       1
   )
 
   no_repeat_events <- tibble::tribble(
-    ~record_id, ~redcap_event, ~redcap_arm, ~redcap_repeat_instrument, ~redcap_repeat_instance,
-    1, "nr_event", 1, NA, NA,
-    1, "nr_event", 1, "r_instrument", 1,
-    3, "nr_event", 1, "r_instrument", 1
+    ~record_id , ~redcap_event , ~redcap_arm , ~redcap_repeat_instrument , ~redcap_repeat_instance ,
+             1 , "nr_event"    ,           1 , NA                        , NA                      ,
+             1 , "nr_event"    ,           1 , "r_instrument"            ,                       1 ,
+             3 , "nr_event"    ,           1 , "r_instrument"            ,                       1
   )
 
   expected_cols <- c(
@@ -427,10 +449,10 @@ test_that("remove_empty_rows works", {
   my_record_id <- "record_id"
 
   complete_out <- tibble::tribble(
-    ~record_id, ~redcap_event, ~redcap_event_instance, ~data, ~form_status_complete,
-    1, "event1", 1, "A", "Complete",
-    1, "event2", 2, "B", "Incomplete",
-    2, "event1", 1, "C", "Complete",
+    ~record_id , ~redcap_event , ~redcap_event_instance , ~data , ~form_status_complete ,
+             1 , "event1"      ,                      1 , "A"   , "Complete"            ,
+             1 , "event2"      ,                      2 , "B"   , "Incomplete"          ,
+             2 , "event1"      ,                      1 , "C"   , "Complete"            ,
   )
 
   complete_out %>%
@@ -438,16 +460,16 @@ test_that("remove_empty_rows works", {
     expect_equal(complete_out)
 
   empty_out <- tibble::tribble(
-    ~record_id, ~redcap_event, ~redcap_event_instance, ~data, ~form_status_complete,
-    1, "event1", 1, "A", "Complete",
-    1, "event2", 2, NA, "Incomplete",
-    2, "event1", 1, "C", "Complete",
+    ~record_id , ~redcap_event , ~redcap_event_instance , ~data , ~form_status_complete ,
+             1 , "event1"      ,                      1 , "A"   , "Complete"            ,
+             1 , "event2"      ,                      2 , NA    , "Incomplete"          ,
+             2 , "event1"      ,                      1 , "C"   , "Complete"            ,
   )
 
   expected_out <- tibble::tribble(
-    ~record_id, ~redcap_event, ~redcap_event_instance, ~data, ~form_status_complete,
-    1, "event1", 1, "A", "Complete",
-    2, "event1", 1, "C", "Complete",
+    ~record_id , ~redcap_event , ~redcap_event_instance , ~data , ~form_status_complete ,
+             1 , "event1"      ,                      1 , "A"   , "Complete"            ,
+             2 , "event1"      ,                      1 , "C"   , "Complete"            ,
   )
 
   empty_out %>%
@@ -457,8 +479,8 @@ test_that("remove_empty_rows works", {
 
 test_that("is_labelled works", {
   df <- tibble::tribble(
-    ~"one", ~"two", ~"three",
-    1, 2, 3
+    ~"one" , ~"two" , ~"three" ,
+         1 ,      2 ,        3
   )
 
   is_labelled <- is_labelled(df)
@@ -519,8 +541,8 @@ test_that("force_cast converts non chr/numerics to chr", {
 
 test_that("get_record_id_field works", {
   data_tbl <- tibble::tribble(
-    ~"test_name", ~"test_value",
-    1, 2
+    ~"test_name" , ~"test_value" ,
+               1 ,             2
   )
 
   expect_equal(get_record_id_field(data_tbl), "test_name")
@@ -528,21 +550,21 @@ test_that("get_record_id_field works", {
 
 test_that("extract_metadata_tibble works", {
   inst_1_metadata <- tibble::tribble(
-    ~"field_name", ~"field_type",
-    "study_id", "text",
-    "text", "text",
+    ~"field_name" , ~"field_type" ,
+    "study_id"    , "text"        ,
+    "text"        , "text"        ,
   )
 
   inst_2_metadata <- tibble::tribble(
-    ~"field_name", ~"field_type",
-    "study_id", "text",
-    "calulated", "calc",
+    ~"field_name" , ~"field_type" ,
+    "study_id"    , "text"        ,
+    "calulated"   , "calc"        ,
   )
 
   supertbl <- tibble::tribble(
-    ~"redcap_form_name", ~"redcap_metadata",
-    "inst_1", inst_1_metadata,
-    "inst_2", inst_2_metadata
+    ~"redcap_form_name" , ~"redcap_metadata" ,
+    "inst_1"            , inst_1_metadata    ,
+    "inst_2"            , inst_2_metadata
   )
 
   class(supertbl) <- c("redcap_supertbl", class(supertbl))

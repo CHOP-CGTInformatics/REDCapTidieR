@@ -18,6 +18,7 @@ navbar:
   left:
     - icon: fa-home
       href: index.html
+      aria-label: Home
     - text: Get Started
       href: articles/REDCapTidieR.html
     - text: Glossary

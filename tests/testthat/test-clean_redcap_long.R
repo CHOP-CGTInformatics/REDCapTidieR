@@ -111,16 +111,16 @@ test_that("clean_redcap_long with mixed structure works", {
 
   # Check redcap_data contents for mixed and nonrepeating structure
   expected_mixed_data <- tibble::tribble(
-    ~record_id, ~redcap_event, ~redcap_form_instance, ~mixed_structure_1, ~form_status_complete,
-    1, "event_1", 1, "Mixed Nonrepeat 1", 0,
-    1, "event_2", 1, "Mixed Repeat 1", 0,
-    1, "event_2", 2, "Mixed Repeat 2", 0
+    ~record_id , ~redcap_event , ~redcap_form_instance , ~mixed_structure_1  , ~form_status_complete ,
+             1 , "event_1"     ,                     1 , "Mixed Nonrepeat 1" ,                     0 ,
+             1 , "event_2"     ,                     1 , "Mixed Repeat 1"    ,                     0 ,
+             1 , "event_2"     ,                     2 , "Mixed Repeat 2"    ,                     0
   )
 
   expected_nonrepeat_data <- tibble::tribble(
-    ~record_id, ~redcap_event, ~nonrepeat_1, ~form_status_complete,
-    1, "event_1", "Nonrepeat 1", 0,
-    1, "event_2", "Nonrepeat 2", 0
+    ~record_id , ~redcap_event , ~nonrepeat_1  , ~form_status_complete ,
+             1 , "event_1"     , "Nonrepeat 1" ,                     0 ,
+             1 , "event_2"     , "Nonrepeat 2" ,                     0
   )
 
   expect_equal(
@@ -167,41 +167,44 @@ test_that("distill_nonrepeat_table_long tibble contains expected columns for lon
   )
 })
 
-test_that(paste(
-  "distill_nonrepeat_table_long tibble contains expected columns",
-  "for longitudinal REDCap databases without arms"
-), {
-  ## Check longitudinal structure without arms ----
-  out <- distill_nonrepeat_table_long(
-    form_name = "nonrepeated",
-    db_data_long = db_data_long_noarms,
-    db_metadata_long = db_metadata_long_noarms,
-    linked_arms = linked_arms_long_noarms
-  )
+test_that(
+  paste(
+    "distill_nonrepeat_table_long tibble contains expected columns",
+    "for longitudinal REDCap databases without arms"
+  ),
+  {
+    ## Check longitudinal structure without arms ----
+    out <- distill_nonrepeat_table_long(
+      form_name = "nonrepeated",
+      db_data_long = db_data_long_noarms,
+      db_metadata_long = db_metadata_long_noarms,
+      linked_arms = linked_arms_long_noarms
+    )
 
-  # Check general structure
-  expect_true(is_tibble(out))
+    # Check general structure
+    expect_true(is_tibble(out))
 
-  # Check last columns are form_status_complete
-  expect_true(
-    names(out[, ncol(out)]) == "form_status_complete"
-  )
+    # Check last columns are form_status_complete
+    expect_true(
+      names(out[, ncol(out)]) == "form_status_complete"
+    )
 
-  # Check for expected longitudinal arms columns
-  expect_true(
-    "redcap_event" %in% names(out)
-  )
+    # Check for expected longitudinal arms columns
+    expect_true(
+      "redcap_event" %in% names(out)
+    )
 
-  # Check partial keys are filled out
-  expect_false(
-    any(is.na(c(out$record_id, out$redcap_event)))
-  )
+    # Check partial keys are filled out
+    expect_false(
+      any(is.na(c(out$record_id, out$redcap_event)))
+    )
 
-  # Check columns expected to be missing aren't included
-  expect_false(
-    any(c("redcap_repeat_instrument", "redcap_form_instance", "redcap_arm") %in% names(out))
-  )
-})
+    # Check columns expected to be missing aren't included
+    expect_false(
+      any(c("redcap_repeat_instrument", "redcap_form_instance", "redcap_arm") %in% names(out))
+    )
+  }
+)
 
 test_that("distill_repeat_table_long returns tables for REDCap dbs with arms", {
   ## Check longitudinal structure with arms ----
@@ -273,9 +276,9 @@ test_that("distill_repeat_table_long no arms returns tables  for REDCap dbs with
 
 test_that("get_mixed_structure_fields works", {
   mixed_structure_db <- tibble::tribble(
-    ~record_id, ~redcap_repeat_instrument, ~redcap_repeat_instance, ~mixed_structure_variable,
-    1, NA, NA, "A",
-    2, "mixed_structure_form", 1, "B"
+    ~record_id , ~redcap_repeat_instrument , ~redcap_repeat_instance , ~mixed_structure_variable ,
+             1 , NA                        , NA                      , "A"                       ,
+             2 , "mixed_structure_form"    ,                       1 , "B"
   )
 
   expected_out <- data.frame(
@@ -290,31 +293,31 @@ test_that("get_mixed_structure_fields works", {
 
 test_that("convert_mixed_instrument works", {
   mixed_structure_db <- tibble::tribble(
-    ~record_id, ~redcap_repeat_instrument, ~redcap_repeat_instance, ~mixed_structure_variable,
-    ~repeat_form_variable, ~mixed_repeat_var,
-    1, NA, NA, "A", NA, NA,
-    2, "mixed_structure_form", 1, "B", NA, NA,
-    3, "repeat_form", 1, NA, "C", NA,
-    4, "repeat_form", 2, NA, "D", NA,
-    5, "mixed_repeat_together", 1, NA, NA, "E",
-    5, "mixed_repeat_together", 2, NA, NA, "F"
+    ~record_id            , ~redcap_repeat_instrument , ~redcap_repeat_instance , ~mixed_structure_variable ,
+    ~repeat_form_variable , ~mixed_repeat_var         ,
+                        1 , NA                        , NA                      , "A"                       , NA  , NA  ,
+                        2 , "mixed_structure_form"    ,                       1 , "B"                       , NA  , NA  ,
+                        3 , "repeat_form"             ,                       1 , NA                        , "C" , NA  ,
+                        4 , "repeat_form"             ,                       2 , NA                        , "D" , NA  ,
+                        5 , "mixed_repeat_together"   ,                       1 , NA                        , NA  , "E" ,
+                        5 , "mixed_repeat_together"   ,                       2 , NA                        , NA  , "F"
   )
 
   mixed_structure_ref <- tibble::tribble(
-    ~field_name, ~rep_and_nonrep, ~form_name,
-    "mixed_structure_variable", TRUE, "mixed_structure_form",
-    "mixed_repeat_var", TRUE, "mixed_repeat_together"
+    ~field_name                , ~rep_and_nonrep , ~form_name              ,
+    "mixed_structure_variable" , TRUE            , "mixed_structure_form"  ,
+    "mixed_repeat_var"         , TRUE            , "mixed_repeat_together"
   )
 
   expected_out <- tibble::tribble(
-    ~record_id, ~redcap_repeat_instrument, ~redcap_repeat_instance, ~mixed_structure_variable,
-    ~repeat_form_variable, ~mixed_repeat_var,
-    1, "mixed_structure_form", 1, "A", NA, NA,
-    2, "mixed_structure_form", 1, "B", NA, NA,
-    3, "repeat_form", 1, NA, "C", NA,
-    4, "repeat_form", 2, NA, "D", NA,
-    5, "mixed_repeat_together", 1, NA, NA, "E",
-    5, "mixed_repeat_together", 2, NA, NA, "F"
+    ~record_id            , ~redcap_repeat_instrument , ~redcap_repeat_instance , ~mixed_structure_variable ,
+    ~repeat_form_variable , ~mixed_repeat_var         ,
+                        1 , "mixed_structure_form"    ,                       1 , "A"                       , NA  , NA  ,
+                        2 , "mixed_structure_form"    ,                       1 , "B"                       , NA  , NA  ,
+                        3 , "repeat_form"             ,                       1 , NA                        , "C" , NA  ,
+                        4 , "repeat_form"             ,                       2 , NA                        , "D" , NA  ,
+                        5 , "mixed_repeat_together"   ,                       1 , NA                        , NA  , "E" ,
+                        5 , "mixed_repeat_together"   ,                       2 , NA                        , NA  , "F"
   )
 
   out <- convert_mixed_instrument(mixed_structure_db, mixed_structure_ref)

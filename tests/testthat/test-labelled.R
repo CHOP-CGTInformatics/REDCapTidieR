@@ -1,9 +1,9 @@
 test_that("make_labelled applies labels to all elements of supertibble", {
   skip_if_not_installed(pkg = "labelled")
   supertbl <- tibble::tribble(
-    ~redcap_data, ~redcap_metadata, ~redcap_events,
-    tibble(x = letters[1:3]), tibble(field_name = "x", field_label = "X Label"), tibble(redcap_event = "event_a"),
-    tibble(y = letters[1:3]), tibble(field_name = "y", field_label = "Y Label"), tibble(redcap_event = "event_b")
+    ~redcap_data             , ~redcap_metadata                                  , ~redcap_events                   ,
+    tibble(x = letters[1:3]) , tibble(field_name = "x", field_label = "X Label") , tibble(redcap_event = "event_a") ,
+    tibble(y = letters[1:3]) , tibble(field_name = "y", field_label = "Y Label") , tibble(redcap_event = "event_b")
   ) %>%
     as_supertbl()
 
@@ -65,40 +65,39 @@ test_that("make_labelled applies all predefined labeles", {
   ) %>%
     as_supertbl()
 
-
   supertbl$redcap_data <- list(tibble::tribble(
-    ~redcap_form_instance,
-    ~redcap_event_instance,
-    ~redcap_event,
-    ~redcap_arm,
-    ~redcap_data_access_group,
-    ~redcap_survey_timestamp,
-    ~redcap_survey_identifier,
+    ~redcap_form_instance     ,
+    ~redcap_event_instance    ,
+    ~redcap_event             ,
+    ~redcap_arm               ,
+    ~redcap_data_access_group ,
+    ~redcap_survey_timestamp  ,
+    ~redcap_survey_identifier ,
     ~form_status_complete
   ))
 
   supertbl$redcap_metadata <- list(tibble::tribble(
-    ~field_name,
-    ~field_label,
-    ~field_type,
-    ~section_header,
-    ~field_note,
-    ~text_validation_type_or_show_slider_number,
-    ~text_validation_min,
-    ~text_validation_max,
-    ~identifier,
-    ~branching_logic,
-    ~required_field,
-    ~custom_alignment,
-    ~question_number,
-    ~matrix_group_name,
-    ~matrix_ranking,
+    ~field_name                                 ,
+    ~field_label                                ,
+    ~field_type                                 ,
+    ~section_header                             ,
+    ~field_note                                 ,
+    ~text_validation_type_or_show_slider_number ,
+    ~text_validation_min                        ,
+    ~text_validation_max                        ,
+    ~identifier                                 ,
+    ~branching_logic                            ,
+    ~required_field                             ,
+    ~custom_alignment                           ,
+    ~question_number                            ,
+    ~matrix_group_name                          ,
+    ~matrix_ranking                             ,
     ~field_annotation
   ))
 
   supertbl$redcap_events <- list(tibble::tribble(
-    ~redcap_event,
-    ~redcap_arm,
+    ~redcap_event ,
+    ~redcap_arm   ,
     ~arm_name
   ))
 
@@ -180,8 +179,8 @@ test_that("make_labelled handles supertibble with extra columns", {
   skip_if_not_installed(pkg = "labelled")
 
   supertbl <- tibble::tribble(
-    ~redcap_form_name, ~redcap_data, ~redcap_metadata, ~extra_field,
-    "form_1", tibble(x = letters[1:3]), tibble(field_name = "x", field_label = "X Label"), "extra"
+    ~redcap_form_name , ~redcap_data             , ~redcap_metadata                                  , ~extra_field ,
+    "form_1"          , tibble(x = letters[1:3]) , tibble(field_name = "x", field_label = "X Label") , "extra"
   ) %>%
     as_supertbl()
 
@@ -201,9 +200,9 @@ test_that("make_labelled handles supertibble with extra columns", {
 
 test_that("make_labelled handles redcap_metadata tibbles of different sizes ", {
   supertbl <- tibble::tribble(
-    ~redcap_form_name, ~redcap_data, ~redcap_metadata,
-    "form_1", tibble(x = letters[1:3]), tibble(field_name = "x", field_label = "X Label"),
-    "form_2", tibble(y = letters[1:3]), tibble(field_name = "y", field_label = "Y Label", some_extra_metadata = "123")
+    ~redcap_form_name , ~redcap_data             , ~redcap_metadata                                                               ,
+    "form_1"          , tibble(x = letters[1:3]) , tibble(field_name = "x", field_label = "X Label")                              ,
+    "form_2"          , tibble(y = letters[1:3]) , tibble(field_name = "y", field_label = "Y Label", some_extra_metadata = "123")
   ) %>%
     as_supertbl()
 
@@ -217,7 +216,8 @@ test_that("make_labelled handles redcap_metadata tibbles of different sizes ", {
   # Second instrument has normal metadata fields plus an additional field we
   # need to label correctly
   extra_metadata_labels <- c(
-    base_metadata_labels, list(some_extra_metadata = NULL)
+    base_metadata_labels,
+    list(some_extra_metadata = NULL)
   )
 
   metadata_labels1 <- labelled::var_label(out$redcap_metadata[[1]])
@@ -231,9 +231,9 @@ test_that("make_labelled handles supertibbles with NULL redcap_events", {
   skip_if_not_installed(pkg = "labelled")
 
   supertbl <- tibble::tribble(
-    ~redcap_data, ~redcap_metadata, ~redcap_events,
-    tibble(x = letters[1:3]), tibble(field_name = "x", field_label = "X Label"), tibble(redcap_event = "event_a"),
-    tibble(y = letters[1:3]), tibble(field_name = "y", field_label = "Y Label"), NULL
+    ~redcap_data             , ~redcap_metadata                                  , ~redcap_events                   ,
+    tibble(x = letters[1:3]) , tibble(field_name = "x", field_label = "X Label") , tibble(redcap_event = "event_a") ,
+    tibble(y = letters[1:3]) , tibble(field_name = "y", field_label = "Y Label") , NULL
   ) %>%
     as_supertbl()
 
@@ -259,8 +259,8 @@ test_that("make_labelled accepts all valid input types to format_labels", {
 
   # This implicitly tests resolve_formatter
   supertbl <- tibble::tribble(
-    ~redcap_data, ~redcap_metadata,
-    tibble(x = letters[1:3]), tibble(field_name = "x", field_label = "X Label")
+    ~redcap_data             , ~redcap_metadata                                  ,
+    tibble(x = letters[1:3]) , tibble(field_name = "x", field_label = "X Label")
   ) %>%
     as_supertbl()
 
@@ -337,9 +337,9 @@ test_that("make_labelled returns expected skimr labels", {
 
   # Add skimr metadata to a sample supertbl
   supertbl <- tibble::tribble(
-    ~redcap_data, ~redcap_metadata, ~redcap_events,
-    tibble(x = letters[1:3]),
-    tibble(field_name = "x", field_label = "X Label", supertbl_skimr_meta),
+    ~redcap_data                                                           , ~redcap_metadata , ~redcap_events ,
+    tibble(x = letters[1:3])                                               ,
+    tibble(field_name = "x", field_label = "X Label", supertbl_skimr_meta) ,
     tibble(redcap_event = "event_a")
   ) %>%
     as_supertbl()

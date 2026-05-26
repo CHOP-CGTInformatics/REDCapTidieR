@@ -18,8 +18,7 @@
 #'
 #' @keywords internal
 
-clean_redcap <- function(db_data,
-                         db_metadata) {
+clean_redcap <- function(db_data, db_metadata) {
   # Apply checkmate checks ---
   assert_data_frame(db_data)
   assert_data_frame(db_metadata)
@@ -28,7 +27,7 @@ clean_redcap <- function(db_data,
   # Check if database supplied contains any repeating instruments to map onto `
   # redcap_repeat_*` variables
 
-  has_repeat_forms <- db_has_repeat_forms(db_data) # nolint: object_usage_linter
+  has_repeat_forms <- db_has_repeat_forms(db_data)
 
   ## Repeating Instruments Logic ----
   if (has_repeat_forms) {
@@ -42,7 +41,8 @@ clean_redcap <- function(db_data,
       redcap_data = map(
         repeated_forms,
         ~ distill_repeat_table(
-          .x, db_data,
+          .x,
+          db_data,
           db_metadata
         )
       ),
@@ -102,13 +102,11 @@ clean_redcap <- function(db_data,
 #'
 #' @keywords internal
 
-distill_nonrepeat_table <- function(form_name,
-                                    db_data,
-                                    db_metadata) {
+distill_nonrepeat_table <- function(form_name, db_data, db_metadata) {
   # Repeating Instrument Check ----
   # Check if database supplied contains any repeating instruments to map onto
   # `redcap_repeat_*` variables
-  has_repeat_forms <- db_has_repeat_forms(db_data) # nolint: object_usage_linter
+  has_repeat_forms <- db_has_repeat_forms(db_data)
 
   my_record_id <- names(db_data)[1]
   my_form <- form_name
@@ -149,7 +147,8 @@ distill_nonrepeat_table <- function(form_name,
   out <- db_data %>%
     add_partial_keys() %>%
     select(
-      all_of(my_fields), any_of(c("redcap_form_instance"))
+      all_of(my_fields),
+      any_of(c("redcap_form_instance"))
     ) %>%
     relocate(
       any_of(c("redcap_event", "redcap_arm", "redcap_form_instance", "redcap_event_instance")),
@@ -192,9 +191,7 @@ distill_nonrepeat_table <- function(form_name,
 #'
 #' @keywords internal
 
-distill_repeat_table <- function(form_name,
-                                 db_data,
-                                 db_metadata) {
+distill_repeat_table <- function(form_name, db_data, db_metadata) {
   my_record_id <- names(db_data)[1]
   my_form <- form_name
 

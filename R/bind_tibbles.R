@@ -32,9 +32,7 @@
 #' }
 #' @export
 
-bind_tibbles <- function(supertbl,
-                         environment = global_env(),
-                         tbls = NULL) {
+bind_tibbles <- function(supertbl, environment = global_env(), tbls = NULL) {
   check_arg_is_supertbl(supertbl, req_cols = "redcap_data")
   check_arg_is_env(environment)
   check_arg_is_character(tbls, null.ok = TRUE, any.missing = FALSE, min.len = 1)

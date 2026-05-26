@@ -38,3 +38,4 @@ inst/testdata/create_test_data.R
 ^CRAN-SUBMISSION$
 ^updating-mocks\.md$
 ^vignettes/articles$
+^[.]?air[.]toml$

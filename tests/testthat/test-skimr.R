@@ -2,9 +2,9 @@ test_that("add_skimr_metadata works", {
   skip_if_not_installed(pkg = "skimr")
   # Test two data field types for proof of concept: character and numeric
   supertbl <- tibble::tribble(
-    ~redcap_data, ~redcap_metadata,
-    tibble(record_id = c(1, 2, 3), x = letters[1:3]), tibble(field_name = "x", field_label = "X Label"),
-    tibble(record_id = c(1, 2, 3), y = seq(1:3)), tibble(field_name = "y", field_label = "Y Label")
+    ~redcap_data                                     , ~redcap_metadata                                  ,
+    tibble(record_id = c(1, 2, 3), x = letters[1:3]) , tibble(field_name = "x", field_label = "X Label") ,
+    tibble(record_id = c(1, 2, 3), y = seq(1:3))     , tibble(field_name = "y", field_label = "Y Label")
   ) %>%
     as_supertbl()
 

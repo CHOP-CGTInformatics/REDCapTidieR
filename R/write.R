@@ -51,17 +51,19 @@
 #'
 #' @export
 
-write_redcap_xlsx <- function(supertbl,
-                              file,
-                              add_labelled_column_headers = NULL,
-                              use_labels_for_sheet_names = TRUE,
-                              include_toc_sheet = TRUE,
-                              include_metadata_sheet = TRUE,
-                              table_style = "tableStyleLight8",
-                              column_width = "auto",
-                              recode_logical = TRUE,
-                              na_replace = "",
-                              overwrite = FALSE) {
+write_redcap_xlsx <- function(
+  supertbl,
+  file,
+  add_labelled_column_headers = NULL,
+  use_labels_for_sheet_names = TRUE,
+  include_toc_sheet = TRUE,
+  include_metadata_sheet = TRUE,
+  table_style = "tableStyleLight8",
+  column_width = "auto",
+  recode_logical = TRUE,
+  na_replace = "",
+  overwrite = FALSE
+) {
   # Enforce checks ----
   check_arg_is_supertbl(supertbl)
   check_arg_is_character(file, any.missing = FALSE)
@@ -151,7 +153,8 @@ write_redcap_xlsx <- function(supertbl,
         )
 
       wb$add_data_table(
-        sheet = y, x = x,
+        sheet = y,
+        x = x,
         start_row = ifelse(add_labelled_column_headers, 2, 1),
         table_style = table_style,
         na.strings = na_replace
@@ -241,16 +244,18 @@ write_redcap_xlsx <- function(supertbl,
 #'
 #' @keywords internal
 
-add_labelled_xlsx_features <- function(supertbl,
-                                       supertbl_meta,
-                                       wb,
-                                       sheet_vals,
-                                       include_toc_sheet = TRUE,
-                                       include_metadata_sheet = TRUE,
-                                       supertbl_toc = NULL) {
+add_labelled_xlsx_features <- function(
+  supertbl,
+  supertbl_meta,
+  wb,
+  sheet_vals,
+  include_toc_sheet = TRUE,
+  include_metadata_sheet = TRUE,
+  supertbl_toc = NULL
+) {
   check_installed("labelled", reason = "to make use of labelled features in `write_redcap_xlsx`")
   # Generate variable labels off of labelled dictionary objects ----
-  generate_dictionaries <- function(x) { # nolint: object_usage_linter
+  generate_dictionaries <- function(x) {
     labelled::generate_dictionary(x) %>%
       select("variable", "label") %>%
       mutate(label = if_else(is.na(.data$label), "", .data$label)) %>%
@@ -269,7 +274,8 @@ add_labelled_xlsx_features <- function(supertbl,
 
     wb$add_data(
       sheet = "Table of Contents",
-      x = supertbl_labels, col_names = FALSE
+      x = supertbl_labels,
+      col_names = FALSE
     )
   }
 
@@ -299,7 +305,8 @@ add_labelled_xlsx_features <- function(supertbl,
 
     wb$add_data(
       sheet = "REDCap Metadata",
-      x = supertbl_meta_labs, col_names = FALSE
+      x = supertbl_meta_labs,
+      col_names = FALSE
     )
   }
 
@@ -309,7 +316,8 @@ add_labelled_xlsx_features <- function(supertbl,
   for (i in seq_along(supertbl$redcap_form_name)) {
     wb$add_data(
       sheet = sheet_vals[i],
-      x = var_labels[[i]], col_names = FALSE
+      x = var_labels[[i]],
+      col_names = FALSE
     )
   }
 
@@ -351,13 +359,7 @@ add_labelled_xlsx_features <- function(supertbl,
 #'
 #' @keywords internal
 
-add_supertbl_toc <- function(wb,
-                             supertbl,
-                             include_metadata_sheet,
-                             add_labelled_column_headers,
-                             table_style,
-                             column_width,
-                             na_replace) {
+add_supertbl_toc <- function(wb, supertbl, include_metadata_sheet, add_labelled_column_headers, table_style, column_width, na_replace) {
   # To avoid XLSX indicators of "Number stored as text", change class type
   convert_percent <- function(x) {
     class(x) <- c("numeric", "percentage")
@@ -434,13 +436,7 @@ add_supertbl_toc <- function(wb,
 #'
 #' @keywords internal
 
-add_metadata_sheet <- function(supertbl,
-                               supertbl_meta,
-                               wb,
-                               add_labelled_column_headers,
-                               table_style,
-                               column_width,
-                               na_replace) {
+add_metadata_sheet <- function(supertbl, supertbl_meta, wb, add_labelled_column_headers, table_style, column_width, na_replace) {
   wb$add_worksheet(sheet = "REDCap Metadata")
   wb$add_data_table(
     sheet = "REDCap Metadata",
@@ -528,11 +524,11 @@ check_labelled <- function(supertbl, add_labelled_column_headers, call = caller_
 supertbl_recode <- function(supertbl, supertbl_meta, add_labelled_column_headers) {
   # Recode yesno from TRUE/FALSE to "yes"/"no"
 
-  yesno_fields <- supertbl_meta %>% # nolint: object_usage_linter
+  yesno_fields <- supertbl_meta %>%
     filter(.data$field_type == "yesno") %>%
     pull(.data$field_name)
 
-  checkbox_fields <- supertbl_meta %>% # nolint: object_usage_linter
+  checkbox_fields <- supertbl_meta %>%
     filter(.data$field_type == "checkbox") %>%
     pull(.data$field_name)
 
@@ -547,16 +543,22 @@ supertbl_recode <- function(supertbl, supertbl_meta, add_labelled_column_headers
 
       out <- x %>%
         mutate(
-          across(any_of(yesno_fields), ~ case_when(
-            . == "TRUE" ~ "yes",
-            . == "FALSE" ~ "no",
-            TRUE ~ NA_character_
-          )),
-          across(any_of(checkbox_fields), ~ case_when(
-            . == "TRUE" ~ "Checked",
-            . == "FALSE" ~ "Unchecked",
-            TRUE ~ NA_character_
-          ))
+          across(
+            any_of(yesno_fields),
+            ~ case_when(
+              . == "TRUE" ~ "yes",
+              . == "FALSE" ~ "no",
+              TRUE ~ NA_character_
+            )
+          ),
+          across(
+            any_of(checkbox_fields),
+            ~ case_when(
+              . == "TRUE" ~ "Checked",
+              . == "FALSE" ~ "Unchecked",
+              TRUE ~ NA_character_
+            )
+          )
         )
 
       # set labs
@@ -581,14 +583,14 @@ supertbl_recode <- function(supertbl, supertbl_meta, add_labelled_column_headers
 
 bind_supertbl_metadata <- function(supertbl) {
   out <- supertbl %>%
-    select("redcap_form_name", "redcap_form_label", "redcap_metadata") %>% # nolint: object_usage_linter
+    select("redcap_form_name", "redcap_form_label", "redcap_metadata") %>%
     unnest(cols = c("redcap_form_name", "redcap_form_label", "redcap_metadata"))
 
   # Detect Record ID field by looking for duplicated field_names
   # Since no other fields in REDCap are allowed to be duplicated, we should only
   # ever expect to receive the record ID field (whatever it's named)
   if (any(duplicated(out$field_name))) {
-    record_id <- out %>% # nolint: object_usage_linter
+    record_id <- out %>%
       filter(duplicated(.data$field_name)) %>%
       pull(.data$field_name) %>%
       unique()
@@ -596,7 +598,6 @@ bind_supertbl_metadata <- function(supertbl) {
     # Edge case when there is only one instrument
     record_id <- out$field_name[1]
   }
-
 
   out %>%
     mutate(

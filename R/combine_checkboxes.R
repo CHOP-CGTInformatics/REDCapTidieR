@@ -95,18 +95,20 @@
 #'
 #' @export
 
-combine_checkboxes <- function(supertbl,
-                               tbl,
-                               cols,
-                               names_prefix = "",
-                               names_sep = "_",
-                               names_glue = NULL,
-                               names_repair = "check_unique",
-                               multi_value_label = "Multiple",
-                               multi_value_sep = ", ",
-                               values_fill = NA,
-                               raw_or_label = "label",
-                               keep = TRUE) {
+combine_checkboxes <- function(
+  supertbl,
+  tbl,
+  cols,
+  names_prefix = "",
+  names_sep = "_",
+  names_glue = NULL,
+  names_repair = "check_unique",
+  multi_value_label = "Multiple",
+  multi_value_sep = ", ",
+  values_fill = NA,
+  raw_or_label = "label",
+  keep = TRUE
+) {
   # Check args ---
   check_arg_is_supertbl(supertbl, req_cols = c("redcap_data", "redcap_metadata"))
   check_arg_is_character(names_prefix, len = 1)
@@ -141,18 +143,15 @@ combine_checkboxes <- function(supertbl,
     mutate(
       across(
         all_of(selected_cols),
-        ~ replace_true(.x,
-          cur_column(),
-          metadata = metadata_spec,
-          raw_or_label = raw_or_label
-        )
+        ~ replace_true(.x, cur_column(), metadata = metadata_spec, raw_or_label = raw_or_label)
       ),
       across(all_of(selected_cols), as.character) # enforce to character strings
     )
 
   new_cols <- metadata_spec %>%
     nest(.by = ".new_value", .key = "metadata") %>%
-    pmap(convert_checkbox_vals,
+    pmap(
+      convert_checkbox_vals,
       data_tbl = data_tbl_mod,
       raw_or_label = raw_or_label,
       multi_value_label = multi_value_label,
@@ -183,11 +182,7 @@ combine_checkboxes <- function(supertbl,
 #' @returns a tibble
 #'
 #' @keywords internal
-get_metadata_spec <- function(metadata_tbl,
-                              selected_cols,
-                              names_prefix,
-                              names_sep,
-                              names_glue) {
+get_metadata_spec <- function(metadata_tbl, selected_cols, names_prefix, names_sep, names_glue) {
   check_metadata_fields_exist(metadata_tbl, selected_cols)
 
   # Create a metadata reference table linking field name to raw and label values
@@ -283,13 +278,7 @@ replace_true <- function(col, col_name, metadata, raw_or_label) {
 #' @param data_tbl The data tibble from the original supertibble
 #' @param .new_value The new column values made by [combine_checkboxes()]
 #' @inheritParams combine_checkboxes
-convert_checkbox_vals <- function(metadata,
-                                  .new_value,
-                                  data_tbl,
-                                  raw_or_label,
-                                  multi_value_label,
-                                  values_fill,
-                                  multi_value_sep) {
+convert_checkbox_vals <- function(metadata, .new_value, data_tbl, raw_or_label, multi_value_label, values_fill, multi_value_sep) {
   use_multi_value_label <- !is.null(multi_value_label)
   multi_value_label <- if (use_multi_value_label) multi_value_label else NA_character_
 
