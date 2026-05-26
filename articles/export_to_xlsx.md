@@ -31,10 +31,12 @@ function:
 Below is a practical illustration:
 
 ``` r
+
 library(REDCapTidieR)
 ```
 
 ``` r
+
 redcap_uri <- "https://my.institution.edu/redcap/api/"
 token <- "123456789ABCDEF123456789ABCDEF04"
 
@@ -59,11 +61,13 @@ to create the `superheroes`
 [supertibble](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/glossary.html#supertibble):
 
 ``` r
+
 superheroes_token <- "123456789ABCDEF123456789ABCDEF04"
 redcap_uri <- "https://my.institution.edu/redcap/api/"
 ```
 
 ``` r
+
 superheroes <- read_redcap(redcap_uri, superheroes_token)
 
 superheroes |>
@@ -84,6 +88,7 @@ file.
 Let’s try it out!
 
 ``` r
+
 superheroes |>
   write_redcap_xlsx(file = "superheroes.xlsx")
 ```
@@ -144,6 +149,7 @@ can integrate these labels to the Excel sheets.
 Let’s add variable labels to `superheroes` and export it to Excel:
 
 ``` r
+
 superheroes |>
   make_labelled() |>
   write_redcap_xlsx("superheroes-labelled.xlsx")
@@ -164,6 +170,7 @@ recodes logical (`TRUE`/`FALSE`) columns into more human-friendly terms.
 You can adjust this behavior using the `recode_logical` argument:
 
 ``` r
+
 supertbl |>
   write_redcap_xlsx(recode_logical = TRUE)
 ```

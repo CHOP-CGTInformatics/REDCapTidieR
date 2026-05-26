@@ -54,6 +54,7 @@ a modified character vector
 ## Examples
 
 ``` r
+
 fmt_strip_whitespace("Poorly Spaced   Label ")
 #> [1] "Poorly Spaced Label"
 

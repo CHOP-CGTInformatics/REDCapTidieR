@@ -66,6 +66,7 @@ named `superheroes`. We use
 so you can explore this tibble.
 
 ``` r
+
 library(REDCapTidieR)
 superheroes <- read_redcap(redcap_uri, token)
 
@@ -185,6 +186,7 @@ the structure of the list returned by
 [`extract_tibbles()`](https://chop-cgtinformatics.github.io/REDCapTidieR/reference/extract_tibbles.md).
 
 ``` r
+
 superheroes_list <- superheroes |>
   extract_tibbles()
 
@@ -200,6 +202,7 @@ selectors](https://tidyselect.r-lib.org/reference/language.html) to
 select specific data tibbles.
 
 ``` r
+
 superheroes |>
   extract_tibbles(ends_with("powers")) |>
   str(max.level = 1)
@@ -214,6 +217,7 @@ The
 takes a supertibble and returns a single data tibble.
 
 ``` r
+
 superheroes |>
   extract_tibble("heroes_information") |>
   rmarkdown::paged_table()
@@ -230,6 +234,7 @@ demonstrate this, here we check the size of the `superheroes`
 supertibble:
 
 ``` r
+
 lobstr::obj_size(superheroes)
 #> 314.63 kB
 ```
@@ -239,6 +244,7 @@ combined size of the supertibble *and* the two data tibbles we get the
 following:
 
 ``` r
+
 superheroes |>
   bind_tibbles()
 
@@ -253,6 +259,7 @@ or
 functions:
 
 ``` r
+
 a <- superheroes |> extract_tibble("heroes_information")
 b <- superheroes |> extract_tibbles()
 
@@ -292,6 +299,7 @@ You can use the
 function to explore the variable labels of a tibble.
 
 ``` r
+
 superheroes |>
   make_labelled() |>
   bind_tibbles()
@@ -335,6 +343,7 @@ function has a `format_labels` argument that you can use to preprocess
 labels before applying them to variables.
 
 ``` r
+
 superheroes |>
   make_labelled(format_labels = ~ gsub(":", "", .)) |>
   bind_tibbles()
@@ -350,6 +359,7 @@ function](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/glossary.h
 that you can pass to the `format_labels` argument:
 
 ``` r
+
 fmt_strip_trailing_colon("Hero name:")
 #> [1] "Hero name"
 ```
@@ -368,6 +378,7 @@ and then make the labels lower case with
 [`base::tolower()`](https://rdrr.io/r/base/chartr.html).
 
 ``` r
+
 superheroes |>
   make_labelled(
     format_labels = c(
@@ -409,6 +420,7 @@ of missing values (`n_missing`), proportion of non-missing values
 (`complete_rate`), and various numeric statistics:
 
 ``` r
+
 # Extract the heroes_information metadata tibble and add metadata
 heroes_information_metadata <-
   superheroes |>

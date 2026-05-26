@@ -114,7 +114,7 @@ tibble](#metadata-tibble). ↩︎
 
 ### Data viewer
 
-A part of the [RStudio IDE](https://posit.co/download/rstudio-desktop/)
+A part of the [RStudio IDE](https://posit.co/download/rstudio-desktop)
 functionality that allows you to inspect data frames,
 [tibbles](#tibble), and some other data structures. It includes
 [features to perform basic exploratory data

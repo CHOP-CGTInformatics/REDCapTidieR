@@ -26,6 +26,7 @@ The release version can be installed from
 [CRAN](https://cran.r-project.org/package=REDCapTidieR).
 
 ``` r
+
 install.packages("REDCapTidieR")
 ```
 
@@ -33,7 +34,8 @@ You can install the development version of REDCapTidieR from
 [GitHub](https://github.com/CHOP-CGTInformatics/REDCapTidieR):
 
 ``` r
-devtools::install_github("CHOP-CGTInformatics/REDCapTidieR")
+
+pak::pak("CHOP-CGTInformatics/REDCapTidieR")
 ```
 
 ## Usage
@@ -68,6 +70,7 @@ using the
 function:
 
 ``` r
+
 redcap_uri <- "https://my.institution.edu/redcap/api/"
 token <- "123456789ABCDEF123456789ABCDEF04"
 

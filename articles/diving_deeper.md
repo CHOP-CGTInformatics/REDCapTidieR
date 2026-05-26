@@ -27,11 +27,13 @@ instrument**](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/glossa
 to allow you to explore this large data frame in the browser.
 
 ``` r
+
 superheroes_token <- "123456789ABCDEF123456789ABCDEF04"
 redcap_uri <- "https://my.institution.edu/redcap/api/"
 ```
 
 ``` r
+
 superheroes_ugly <- REDCapR::redcap_read_oneshot(redcap_uri, superheroes_token)$data
 
 superheroes_ugly |>
@@ -104,6 +106,7 @@ column of a REDCapTidieR data tibble is always `form_status_complete`
 which indicates whether the instrument has been marked as completed.
 
 ``` r
+
 library(REDCapTidieR)
 
 read_redcap(redcap_uri, superheroes_token) |>
@@ -125,6 +128,7 @@ followed by \[**data columns**\] and finally the `form_status_complete`
 column.
 
 ``` r
+
 super_hero_powers |>
   rmarkdown::paged_table()
 ```
@@ -196,10 +200,12 @@ repeating. This database has six nonrepeating and three repeating
 instruments.
 
 ``` r
+
 longitudinal_token <- "123456789ABCDEF123456789ABCDEF06"
 ```
 
 ``` r
+
 library(REDCapTidieR)
 
 longitudinal <- read_redcap(redcap_uri, longitudinal_token)
@@ -218,6 +224,7 @@ event with which the instrument is associated: `screening__enrollm`
 (Screening and Enrollment).
 
 ``` r
+
 longitudinal |>
   bind_tibbles()
 
@@ -234,6 +241,7 @@ rows. Each row is identified by the combination of `subject_id` and
 `redcap_event`.
 
 ``` r
+
 chemistry |>
   rmarkdown::paged_table()
 ```
@@ -249,6 +257,7 @@ per repeat instance. The first subject has three adverse events listed,
 and the second subject has two.
 
 ``` r
+
 adverse_events |>
   rmarkdown::paged_table()
 ```
@@ -269,6 +278,7 @@ per *event instance*. The subject had two unscheduled visits.
 `hematology` responses which occurred on the same unscheduled visit.
 
 ``` r
+
 physical_exam |>
   dplyr::filter(redcap_event == "unscheduled") |>
   rmarkdown::paged_table()
@@ -316,6 +326,7 @@ you will see that `structure` in the
 will say “mixed”:
 
 ``` r
+
 read_redcap(redcap_uri,
   mixed_token,
   allow_mixed_structure = TRUE
@@ -336,6 +347,7 @@ Fields that are of
 [variables](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/glossary.html#variable).
 
 ``` r
+
 adverse_events$adverse_event_serious |>
   dplyr::glimpse()
 #>  logi [1:5] FALSE FALSE FALSE FALSE FALSE
@@ -369,6 +381,7 @@ only Grade 1 and 2 adverse events in the data, we can see that there are
 5 possible grades.
 
 ``` r
+
 adverse_events$adverse_event_grade
 #> [1] Grade 2 Grade 1 Grade 1 Grade 2 Grade 1
 #> Levels: Grade 1 Grade 2 Grade 3 Grade 4 Grade 5
@@ -381,6 +394,7 @@ choices from REDCap, you can convert intrinsically ordered variables to
 ordered factors.
 
 ``` r
+
 ae_grade <- adverse_events$adverse_event_grade
 
 ae_grade |>
@@ -413,6 +427,7 @@ of the choice defined in REDCap. Here are the variables REDCapTidieR
 generates from the `adverse_event_relationship_other` field:
 
 ``` r
+
 adverse_events |>
   dplyr::select(dplyr::starts_with("adverse_event_relationship_other___")) |>
   dplyr::glimpse()
@@ -440,17 +455,18 @@ checks parsed column types against REDCap metadata and warns if there is
 a likely mismatch. This warning is intended to flag cases where a field
 may have been parsed in a way that could affect downstream analysis.
 
-| REDCap field type                            | Allowed R type                                                         | Notes                                                                |
-|----------------------------------------------|------------------------------------------------------------------------|----------------------------------------------------------------------|
+| REDCap field type | Allowed R type | Notes |
+|----|----|----|
 | `text`, `notes`, `calc`, `dropdown`, `radio` | `character`, `double`, `integer`, `factor`, `date`, `time`, `datetime` | When parsed as `logical`, warns only when non-`NA` value is present. |
-| `file`                                       | `character`                                                            | When parsed as `logical`, warns only when non-`NA` value is present. |
-| `slider`                                     | `double`, `integer`                                                    | When parsed as `logical`, warns only when non-`NA` value is present. |
-| `checkbox`, `yesno`, `truefalse`             | `character`, `logical`, `double`, `integer`                            |                                                                      |
+| `file` | `character` | When parsed as `logical`, warns only when non-`NA` value is present. |
+| `slider` | `double`, `integer` | When parsed as `logical`, warns only when non-`NA` value is present. |
+| `checkbox`, `yesno`, `truefalse` | `character`, `logical`, `double`, `integer` |  |
 
 When this occurs, use `col_types` to explicitly enforce expected parsing
 behavior:
 
 ``` r
+
 read_redcap(
   redcap_uri,
   superheroes_token,
@@ -486,6 +502,7 @@ after the [identifier
 columns](https://chop-cgtinformatics.github.io/REDCapTidieR/articles/glossary.html#identifier-column).
 
 ``` r
+
 redcap_project_with_dags <- read_redcap(redcap_uri, dag_token)
 
 redcap_project_with_dags |>
@@ -509,6 +526,7 @@ These columns are placed after all of the other data columns and prior
 to the `form_status_complete` column.
 
 ``` r
+
 survey <- read_redcap(redcap_uri, survey_token) |>
   extract_tibble("survey")
 

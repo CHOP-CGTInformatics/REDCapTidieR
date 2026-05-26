@@ -15,6 +15,7 @@ with a
 that comprises most common REDCap data types.
 
 ``` r
+
 library(REDCapTidieR)
 token <- "123456789ABCDEF123456789ABCDEF04"
 redcap_uri <- "https://my.institution.edu/redcap/api/"
@@ -26,6 +27,7 @@ you’ll need to separately reference the data dictionary from REDCap to
 interpret the meaning of each code.
 
 ``` r
+
 redcap_form <-
   read_redcap(
     redcap_uri,
@@ -52,6 +54,7 @@ which may be necessary for tasks like data cleaning or re-exporting to
 other formats (e.g., Stata or SPSS).
 
 ``` r
+
 redcap_form <-
   read_redcap(
     redcap_uri,
@@ -79,6 +82,7 @@ This method imports your categorical variables using their original
 coding and attaches the corresponding value labels to them as metadata.
 
 ``` r
+
 redcap_form <-
   read_redcap(
     redcap_uri,
@@ -125,6 +129,7 @@ dictionary with
 (cf. [`vignette("look_for", package = "labelled")`](https://larmarange.github.io/labelled/articles/look_for.html)):
 
 ``` r
+
 library(labelled)
 redcap_form |>
   look_for()
@@ -187,6 +192,7 @@ Using
 allows you to add variable labels to data frames exported from REDCap:
 
 ``` r
+
 redcap_form <-
   read_redcap(
     redcap_uri,
