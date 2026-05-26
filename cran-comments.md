@@ -8,7 +8,7 @@ This submission for v1.2.5 adds two new features to give users additional contro
 
 1.  Local macOS Tahoe 26.5, R 4.4.3
 2.  R-hub
-    1.  [macos-13, R-devel](https://github.com/CHOP-CGTInformatics/REDCapTidieR/actions/runs/26310366139/job/77457349979)
+    1.  [macOS 15.7.7, R-devel](https://github.com/CHOP-CGTInformatics/REDCapTidieR/actions/runs/26452558919/job/77877267328)
     2.  [Ubuntu 24.04.4 LTS, R-devel, GCC](https://github.com/CHOP-CGTInformatics/REDCapTidieR/actions/runs/26306948277/job/77446038556)
     3.  [Microsoft Windows Server 2025 Datacenter, 10.0.26100, R-devel](https://github.com/CHOP-CGTInformatics/REDCapTidieR/actions/runs/26306948277/job/77446038656)
 3.  [win-builder](https://win-builder.r-project.org/43m3hM1L84z4/00check.log), development version.
