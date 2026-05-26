@@ -15,10 +15,9 @@ devtools::check_man() #Should return NULL
 # devtools::check() sets NOT_CRAN = "true" by default but must set it manually
 # as needed for other devtools functions
 
-# NOTE: build_vignettes() was deprecated in devtools 2.5.0, build_article() recommended instead
 withr::with_envvar(
   new = c("NOT_CRAN" = "true"),
-  devtools::build_vignettes()
+  pkgdown::build_articles()
 )
 
 checks_to_exclude <- c(
@@ -69,7 +68,7 @@ devtools::check(
 )
 # Approx matches to https://cran.r-project.org/web/checks/check_flavors.html
 rhub::rhub_check(
-  platforms = c("linux", "windows", "macos", "ubuntu-next", "ubuntu-release"),
+  platforms = c("linux", "windows", "m1-san", "macos-arm64", "ubuntu-next", "ubuntu-release"),
   gh_url = "https://github.com/CHOP-CGTInformatics/REDCapTidieR"
 ) # These will be available in GitHub Actions
 # CRAN submission policies encourage the development version
