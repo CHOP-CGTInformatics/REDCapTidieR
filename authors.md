@@ -12,7 +12,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/CHOP-CGTInformatics/REDCapTidieR/blob/main/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/CHOP-CGTInformatics/REDCapTidieR/blob/v1.2.5/DESCRIPTION)
 
 Hanna R, Kadauke S, Porter E (2026). *REDCapTidieR: Extract 'REDCap'
 Databases into Tidy 'Tibble's*. R package version 1.2.5,
