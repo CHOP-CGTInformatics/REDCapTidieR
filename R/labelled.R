@@ -43,7 +43,7 @@
 make_labelled <- function(supertbl, format_labels = NULL) {
   check_installed("labelled", reason = "to use `make_labelled()`")
 
-  formatter <- resolve_formatter(format_labels) # nolint: object_usage_linter
+  formatter <- resolve_formatter(format_labels)
 
   check_arg_is_supertbl(supertbl)
   check_req_labelled_metadata_fields(supertbl)
@@ -266,7 +266,7 @@ resolve_formatter <- function(format_labels, env = caller_env(n = 2), call = cal
     return(compose(!!!fns, .dir = "forward"))
   }
 
-  supported_classes <- c("NULL", "list", "function", "character") # nolint: object_usage_linter
+  supported_classes <- c("NULL", "list", "function", "character")
   cli_abort(
     c(
       "!" = "{.arg format_labels} must be of class {.cls {supported_classes}}",

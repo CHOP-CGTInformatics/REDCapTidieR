@@ -27,7 +27,7 @@ clean_redcap <- function(db_data, db_metadata) {
   # Check if database supplied contains any repeating instruments to map onto `
   # redcap_repeat_*` variables
 
-  has_repeat_forms <- db_has_repeat_forms(db_data) # nolint: object_usage_linter
+  has_repeat_forms <- db_has_repeat_forms(db_data)
 
   ## Repeating Instruments Logic ----
   if (has_repeat_forms) {
@@ -106,7 +106,7 @@ distill_nonrepeat_table <- function(form_name, db_data, db_metadata) {
   # Repeating Instrument Check ----
   # Check if database supplied contains any repeating instruments to map onto
   # `redcap_repeat_*` variables
-  has_repeat_forms <- db_has_repeat_forms(db_data) # nolint: object_usage_linter
+  has_repeat_forms <- db_has_repeat_forms(db_data)
 
   my_record_id <- names(db_data)[1]
   my_form <- form_name

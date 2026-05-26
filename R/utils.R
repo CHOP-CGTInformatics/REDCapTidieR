@@ -899,7 +899,7 @@ remove_empty_rows <- function(data, my_record_id) {
 
   # Filter for rows where specified columns have any non-NA data
   data %>%
-    filter(if_any(all_of(data_cols), ~ !is.na(.))) # nolint: object_usage_linter
+    filter(if_any(all_of(data_cols), ~ !is.na(.)))
 }
 
 #' @title Determine if an object is labelled

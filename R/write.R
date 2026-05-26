@@ -256,7 +256,6 @@ add_labelled_xlsx_features <- function(
   check_installed("labelled", reason = "to make use of labelled features in `write_redcap_xlsx`")
   # Generate variable labels off of labelled dictionary objects ----
   generate_dictionaries <- function(x) {
-    # nolint: object_usage_linter
     labelled::generate_dictionary(x) %>%
       select("variable", "label") %>%
       mutate(label = if_else(is.na(.data$label), "", .data$label)) %>%
@@ -525,11 +524,11 @@ check_labelled <- function(supertbl, add_labelled_column_headers, call = caller_
 supertbl_recode <- function(supertbl, supertbl_meta, add_labelled_column_headers) {
   # Recode yesno from TRUE/FALSE to "yes"/"no"
 
-  yesno_fields <- supertbl_meta %>% # nolint: object_usage_linter
+  yesno_fields <- supertbl_meta %>%
     filter(.data$field_type == "yesno") %>%
     pull(.data$field_name)
 
-  checkbox_fields <- supertbl_meta %>% # nolint: object_usage_linter
+  checkbox_fields <- supertbl_meta %>%
     filter(.data$field_type == "checkbox") %>%
     pull(.data$field_name)
 
@@ -584,14 +583,14 @@ supertbl_recode <- function(supertbl, supertbl_meta, add_labelled_column_headers
 
 bind_supertbl_metadata <- function(supertbl) {
   out <- supertbl %>%
-    select("redcap_form_name", "redcap_form_label", "redcap_metadata") %>% # nolint: object_usage_linter
+    select("redcap_form_name", "redcap_form_label", "redcap_metadata") %>%
     unnest(cols = c("redcap_form_name", "redcap_form_label", "redcap_metadata"))
 
   # Detect Record ID field by looking for duplicated field_names
   # Since no other fields in REDCap are allowed to be duplicated, we should only
   # ever expect to receive the record ID field (whatever it's named)
   if (any(duplicated(out$field_name))) {
-    record_id <- out %>% # nolint: object_usage_linter
+    record_id <- out %>%
       filter(duplicated(.data$field_name)) %>%
       pull(.data$field_name) %>%
       unique()

@@ -201,7 +201,7 @@ check_forms_exist <- function(db_metadata, forms, call = caller_env()) {
 #'
 #' @keywords internal
 check_req_labelled_metadata_fields <- function(supertbl, call = caller_env()) {
-  req_fields <- c("field_name", "field_label") # nolint: object_usage_linter
+  req_fields <- c("field_name", "field_label")
 
   # map over each metadata tibble and return list element with missing fields
   missing_fields <- supertbl$redcap_metadata %>%
@@ -282,7 +282,7 @@ check_parsed_labels <- function(parsed_labels_output, field_name, warn_stripped_
 
   # Only issue duplicate label warning if not issuing blank label warning
   if (blank_labs) {
-    vals <- names(parsed_labels_output[parsed_labels_output == ""]) # nolint: object_usage_linter
+    vals <- names(parsed_labels_output[parsed_labels_output == ""])
 
     msg <- c(
       "!" = "The {qty(vals)} value{?s} {.code {vals}} in field {.code {field_name}} are mapped to a blank label `''`"
@@ -294,7 +294,7 @@ check_parsed_labels <- function(parsed_labels_output, field_name, warn_stripped_
 
     class <- "blank_labels"
   } else {
-    dups <- parsed_labels_output[duplicated(parsed_labels_output)] # nolint: object_usage_linter
+    dups <- parsed_labels_output[duplicated(parsed_labels_output)]
 
     msg <- c(
       "!" = "Multiple values are mapped to the {qty(dups)} label{?s} {.code {dups}} in field {.code {field_name}}"
@@ -935,7 +935,7 @@ check_equal_col_summaries <- function(data, col1, col2, call = caller_env()) {
       filter(.data$n > 1) %>%
       pull({{ col1 }})
 
-    col2_n_vals <- data %>% # nolint: object_usage_linter
+    col2_n_vals <- data %>%
       filter({{ col1 }} %in% col1_n_vals) %>%
       pull({{ col2 }})
 
