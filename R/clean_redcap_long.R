@@ -16,6 +16,7 @@
 #' instruments. Setting to `TRUE` will treat the mixed instrument's non-repeating versions
 #' as repeating instruments with a single instance. Applies to longitudinal projects
 #' only. Default `FALSE`.
+#' @inheritParams clean_redcap
 #'
 #' @return
 #' Returns a \code{tibble} with list elements containing tidy dataframes. Users
@@ -24,38 +25,22 @@
 #'
 #' @keywords internal
 
-clean_redcap_long <- function(db_data_long, db_metadata_long, linked_arms, allow_mixed_structure = FALSE) {
-  # Repeating Instrument Check ----
-  # Check if database supplied contains any repeating instruments to map onto
-  # `redcap_repeat_*` variables
-
-  has_repeat_forms <- "redcap_repeat_instance" %in% names(db_data_long)
-
+clean_redcap_long <- function(
+  db_data_long,
+  db_metadata_long,
+  linked_arms,
+  form_structure,
+  allow_mixed_structure = FALSE
+) {
   # Apply checkmate checks
   assert_data_frame(db_data_long)
   assert_data_frame(db_metadata_long)
 
   ## Repeating Forms Assignment ----
   # Needed first to inform nonrepeating forms logic
-  if (has_repeat_forms) {
-    repeated_forms <- db_data_long %>%
-      filter(!is.na(.data$redcap_repeat_instrument)) %>%
-      pull(.data$redcap_repeat_instrument) %>%
-      unique()
-  }
-
-  ## Nonrepeating Instruments Logic ----
-  nonrepeated_forms <- db_metadata_long %>%
-    filter(!is.na(.data$form_name)) %>%
-    pull(.data$form_name) %>%
-    unique()
-
-  if (has_repeat_forms) {
-    nonrepeated_forms <- setdiff(
-      nonrepeated_forms,
-      repeated_forms
-    )
-  }
+  repeated_forms <- form_structure$redcap_form_name[form_structure$structure %in% c("mixed", "repeating")]
+  nonrepeated_forms <- form_structure$redcap_form_name[form_structure$structure == "nonrepeating"]
+  has_repeat_forms <- length(repeated_forms) > 0
 
   nonrepeated_forms_tibble <- tibble(
     redcap_form_name = nonrepeated_forms,
@@ -87,7 +72,7 @@ clean_redcap_long <- function(db_data_long, db_metadata_long, linked_arms, allow
           by = "field_name"
         )
 
-      # Update if project actually has mixed structure
+      # Check if project has mixed structure fields requiring update
       has_mixed_structure_forms <- nrow(mixed_structure_ref) > 0
     } else {
       check_repeat_and_nonrepeat(db_data_long)
@@ -105,12 +90,9 @@ clean_redcap_long <- function(db_data_long, db_metadata_long, linked_arms, allow
           has_mixed_structure_forms = has_mixed_structure_forms,
           mixed_structure_ref = mixed_structure_ref
         )
-      ),
-      structure = case_when(
-        has_mixed_structure_forms & redcap_form_name %in% mixed_structure_ref$form_name ~ "mixed",
-        TRUE ~ "repeating"
       )
-    )
+    ) %>%
+      left_join(form_structure, by = "redcap_form_name")
   }
 
   if (has_repeat_forms) {
@@ -425,7 +407,7 @@ convert_mixed_instrument <- function(db_data_long, mixed_structure_ref) {
         mutate(
           redcap_event_instance = NA
         ) %>%
-        relocate(.data$redcap_event_instance, .after = .data$redcap_repeat_instance)
+        relocate("redcap_event_instance", .after = "redcap_repeat_instance")
     }
 
     if (repeat_together_present) {

@@ -4,7 +4,7 @@
 \alias{clean_redcap}
 \title{Extract non-longitudinal REDCap databases into tidy tibbles}
 \usage{
-clean_redcap(db_data, db_metadata)
+clean_redcap(db_data, db_metadata, form_structure)
 }
 \arguments{
 \item{db_data}{The REDCap database output defined by
@@ -12,6 +12,9 @@ clean_redcap(db_data, db_metadata)
 
 \item{db_metadata}{The REDCap metadata output defined by
 \code{REDCapR::redcap_metadata_read()$data}}
+
+\item{form_structure}{A tibble with cols \code{redcap_form_name} and
+\code{structure} with the structure of each form}
 }
 \value{
 Returns a \code{tibble} with list elements containing tidy dataframes. Users

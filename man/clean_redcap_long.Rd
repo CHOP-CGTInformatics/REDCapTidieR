@@ -8,6 +8,7 @@ clean_redcap_long(
   db_data_long,
   db_metadata_long,
   linked_arms,
+  form_structure,
   allow_mixed_structure = FALSE
 )
 }
@@ -20,6 +21,9 @@ clean_redcap_long(
 
 \item{linked_arms}{Output of \code{link_arms}, linking instruments to REDCap
 events/arms}
+
+\item{form_structure}{A tibble with cols \code{redcap_form_name} and
+\code{structure} with the structure of each form}
 
 \item{allow_mixed_structure}{A logical to allow for support of mixed repeating/non-repeating
 instruments. Setting to \code{TRUE} will treat the mixed instrument's non-repeating versions

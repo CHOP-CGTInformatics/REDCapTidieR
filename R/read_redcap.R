@@ -301,38 +301,68 @@ read_redcap <- function(
   # Database structure checks and definitions ----
   is_longitudinal <- "redcap_event_name" %in% names(db_data)
   has_repeating_structure <- "redcap_repeat_instance" %in% names(db_data)
-  has_repeating_events <- if (is_longitudinal && has_repeating_structure) {
-    any(
-      is.na(db_data$redcap_repeat_instrument) &
-        !is.na(db_data$redcap_repeat_instance)
+
+  # Default forms to nonrepeating, covers !has_repeating_structure
+  form_structure <- tibble(
+    # omit NA form from record id
+    redcap_form_name = unique(na.omit(db_metadata$form_name)),
+    structure = "nonrepeating"
+  )
+
+  # Update for has_repeating_structure and longitudinal
+  if (has_repeating_structure && is_longitudinal) {
+    db_instrument_repeating <- pull_instrument_repeating(
+      redcap_uri = redcap_uri,
+      token = token,
+      suppress_redcapr_messages = suppress_redcapr_messages
     )
-  } else {
-    FALSE
-  }
-
-  if (is_longitudinal) {
-    repeat_event_types <- if (has_repeating_events) {
-      get_repeat_event_types(db_data)
-    } else {
-      NULL
-    }
-
-    linked_arms <- link_arms(
+    db_event_instruments <- pull_event_instruments(
       redcap_uri = redcap_uri,
       token = token,
       suppress_redcapr_messages = suppress_redcapr_messages
     )
 
+    form_structure <- form_structure %>%
+      structure_from_events_and_repeating(
+        db_instrument_repeating,
+        db_event_instruments
+      )
+  }
+
+  # Update for has_repeating_structure and classic
+  if (has_repeating_structure && !is_longitudinal) {
+    db_instrument_repeating <- pull_instrument_repeating(
+      redcap_uri = redcap_uri,
+      token = token,
+      suppress_redcapr_messages = suppress_redcapr_messages
+    )
+    db_event_instruments <- NULL
+
+    form_structure <- form_structure %>%
+      structure_from_repeating(db_instrument_repeating)
+  }
+
+  if (is_longitudinal) {
+    linked_arms <- link_arms(
+      redcap_uri = redcap_uri,
+      token = token,
+      suppress_redcapr_messages = suppress_redcapr_messages,
+      db_event_instruments = db_event_instruments
+    ) %>%
+      add_form_event_structure(db_instrument_repeating)
+
     out <- clean_redcap_long(
       db_data_long = db_data,
       db_metadata_long = db_metadata,
       linked_arms = linked_arms,
+      form_structure = form_structure,
       allow_mixed_structure = allow_mixed_structure
     )
   } else {
     out <- clean_redcap(
       db_data = db_data,
-      db_metadata = db_metadata
+      db_metadata = db_metadata,
+      form_structure = form_structure
     )
   }
 
@@ -340,7 +370,7 @@ read_redcap <- function(
   out <- add_metadata(out, db_metadata, redcap_uri, token, suppress_redcapr_messages)
 
   if (is_longitudinal) {
-    out <- add_event_mapping(out, linked_arms, repeat_event_types)
+    out <- add_event_mapping(out, linked_arms)
   }
 
   out <- out %>%
@@ -499,8 +529,6 @@ add_metadata <- function(supertbl, db_metadata, redcap_uri, token, suppress_redc
 #' @param supertbl a supertibble object to supplement with metadata
 #' @param linked_arms the tibble with event mappings created by
 #' \code{link_arms()}
-#' @param repeat_event_types a dataframe output from [get_repeat_event_types()] which
-#' specifies NR, RS, and RT types for events
 #'
 #' @return
 #' The original supertibble with an events \code{redcap_events} list column
@@ -508,16 +536,8 @@ add_metadata <- function(supertbl, db_metadata, redcap_uri, token, suppress_redc
 #'
 #' @keywords internal
 
-add_event_mapping <- function(supertbl, linked_arms, repeat_event_types) {
+add_event_mapping <- function(supertbl, linked_arms) {
   event_info <- linked_arms
-
-  if (!is.null(repeat_event_types)) {
-    # Preserve factor levels post-join by referencing level order from linked_arms
-    repeat_event_types$redcap_event_name <- factor(repeat_event_types$redcap_event_name, levels = levels(event_info$unique_event_name))
-
-    event_info <- event_info %>%
-      left_join(repeat_event_types, by = c("unique_event_name" = "redcap_event_name"))
-  }
 
   event_info <- event_info %>%
     add_partial_keys(.data$unique_event_name) %>%
@@ -582,54 +602,6 @@ calc_metadata_stats <- function(data) {
   )
 }
 
-#' @title
-#' Add identification for repeat event types
-#'
-#' @description
-#' To correctly assign repeat event types a few assumptions must be made:
-#'
-#' - There are only 3 behaviors: nonrepeating, repeat_separately, and repeat_together
-#' - If an event only shows `redcap_repeat_instance` and `redcap_repeat_instrument`
-#' as `NA`, it can be considered a nonrepeat event.
-#' - If an event is always `NA` for `redcap_repeat_instrument` and filled for `redcap_repeat_instance`
-#' it can be assumed to be a repeat_together event
-#' - repeat_separate and nonrepeating event types exhibit the same behavior along the
-#' primary keys of the data. nonrepeating event types can have data display with
-#' `redcap_repeat_instance`values both filled and as `NA`. If this is the case,
-#' it can be assumed the event is a repeating separate event.
-#'
-#' @param data the REDCap data
-#'
-#' @return
-#' A dataframe with unique event names mapped to their corresponding repeat types
-#'
-#' @keywords internal
-
-get_repeat_event_types <- function(data) {
-  out <- data %>%
-    distinct(.data$redcap_event_name, .data$redcap_repeat_instrument, .data$redcap_repeat_instance) %>%
-    mutate(
-      repeat_type = case_when(
-        !is.na(redcap_event_name) & !is.na(redcap_repeat_instrument) & !is.na(redcap_repeat_instance) ~
-          "repeat_separate",
-        !is.na(redcap_event_name) & is.na(redcap_repeat_instrument) & !is.na(redcap_repeat_instance) ~
-          "repeat_together",
-        TRUE ~ "nonrepeating"
-      )
-    ) %>%
-    distinct(.data$redcap_event_name, .data$repeat_type)
-
-  # Check for instances where the same event is labelled as nonrepeating & repeating separate
-  # If this is the case, it must be repeating separate (there is just data that qualifies as both)
-
-  out %>%
-    mutate(
-      is_duplicated = (duplicated(.data$redcap_event_name) | duplicated(.data$redcap_event_name, fromLast = TRUE))
-    ) %>%
-    filter(!.data$is_duplicated | (.data$is_duplicated & .data$repeat_type == "repeat_separate")) %>%
-    select(-"is_duplicated")
-}
-
 #' @title Implement REDCapR DAG Data into Supertibble
 #'
 #' @description
@@ -671,4 +643,168 @@ update_dag_cols <- function(data, dag_data, raw_or_label) {
       ) %>%
       select(-any_of(names(dag_data)))
   }
+}
+
+#' @title
+#' Retrieve repeating instrument settings from REDCap
+#'
+#' @inheritParams read_redcap
+#'
+#' @return
+#' A tibble of repeating instrument settings with standardized column names,
+#' including `unique_event_name` and `form` when available.
+#'
+#' @keywords internal
+pull_instrument_repeating <- function(redcap_uri, token, suppress_redcapr_messages = TRUE) {
+  out <- try_redcapr(
+    {
+      redcap_instrument_repeating(
+        redcap_uri = redcap_uri,
+        token = token,
+        verbose = !suppress_redcapr_messages
+      )
+    },
+    call = caller_env()
+  )
+
+  out %>%
+    rename(unique_event_name = any_of("event_name"), form = "form_name")
+}
+
+#' @title
+#' Retrieve event-instrument mappings from REDCap
+#'
+#' @param call The calling environment to use when handling REDCapR errors.
+#' Default `NULL`.
+#'
+#' @inheritParams read_redcap
+#' @inheritParams try_redcapr
+#'
+#' @return
+#' A tibble containing REDCap event-instrument mappings for all arms.
+#'
+#' @keywords internal
+pull_event_instruments <- function(redcap_uri, token, suppress_redcapr_messages = TRUE, call = NULL) {
+  try_redcapr(
+    {
+      redcap_event_instruments(
+        redcap_uri = redcap_uri,
+        token = token,
+        arms = NULL, # get all arms
+        verbose = !suppress_redcapr_messages
+      )
+    },
+    call = if (is.null(call)) caller_env() else call
+  )
+}
+
+#' @title
+#' Determine instrument structure for a classic REDCap project
+#'
+#' @param form_structure a tibble containing one row per instrument and a
+#' \code{structure} column.
+#' @param db_instrument_repeating a tibble of repeating instrument settings
+#' created by [pull_instrument_repeating()].
+#'
+#' @return
+#' The original \code{form_structure} tibble with \code{structure} updated to
+#' 'repeating' if present in \code{db_instrument_repeating}
+#'
+#' @keywords internal
+structure_from_repeating <- function(form_structure, db_instrument_repeating) {
+  form_structure %>%
+    mutate(
+      structure = if_else(
+        .data$redcap_form_name %in% db_instrument_repeating$form,
+        "repeating",
+        "nonrepeating"
+      )
+    )
+}
+
+#' @title
+#' Add event-form level repeating structure to event mappings
+#'
+#' @details
+#' This function merges repeating instrument information from REDCap with
+#' event-instrument mappings. Repeating together vs. separate is inferred
+#' from whether \code{form} is populated.
+#'
+#' @param data a tibble containing event-instrument mappings.
+#' @param db_instrument_repeating a tibble of repeating instrument settings
+#' created by [pull_instrument_repeating()].
+#'
+#' @return
+#' The original event-instrument mapping tibble supplemented with
+#' \code{custom_form_label} and \code{repeat_structure} columns.
+#'
+#' @keywords internal
+add_form_event_structure <- function(data, db_instrument_repeating) {
+  db_instrument_repeating <- db_instrument_repeating %>%
+    mutate(repeat_structure = if_else(is.na(.data$form), "repeat_together", "repeat_separate"))
+
+  repeating_events <- db_instrument_repeating %>%
+    filter(is.na(.data$form)) %>%
+    select(
+      "unique_event_name",
+      custom_form_label_event = "custom_form_label",
+      repeat_structure_event = "repeat_structure"
+    )
+
+  repeating_forms <- db_instrument_repeating %>%
+    filter(!is.na(.data$form)) %>%
+    select(
+      "unique_event_name",
+      "form",
+      custom_form_label_form = "custom_form_label",
+      repeat_structure_form = "repeat_structure"
+    )
+
+  data %>%
+    left_join(repeating_events, by = "unique_event_name") %>%
+    left_join(repeating_forms, by = c("unique_event_name", "form")) %>%
+    mutate(
+      custom_form_label = coalesce(.data$custom_form_label_event, .data$custom_form_label_form),
+      repeat_structure = coalesce(.data$repeat_structure_event, .data$repeat_structure_form, "nonrepeating"),
+      .keep = "unused"
+    )
+}
+
+#' @title
+#' Determine form-level structure for a longitudinal REDCap project
+#'
+#' @param form_structure a tibble containing one row per instrument and a
+#' \code{structure} column.
+#' @param db_instrument_repeating a tibble of repeating instrument settings
+#' created by [pull_instrument_repeating()].
+#' @param db_event_instruments a tibble of event-instrument mappings created by
+#' [pull_event_instruments()].
+#'
+#' @return
+#' The original \code{form_structure} tibble with \code{structure} updated to
+#' 'repeating', 'nonrepeating', or 'mixed' based on form-event-level structure.
+#'
+#' @keywords internal
+structure_from_events_and_repeating <- function(
+  form_structure,
+  db_instrument_repeating,
+  db_event_instruments
+) {
+  new_form_structure <- db_event_instruments %>%
+    add_form_event_structure(db_instrument_repeating) %>%
+    summarise(new_structure = structure_to_form_level(.data$repeat_structure), .by = "form")
+
+  form_structure %>%
+    left_join(new_form_structure, by = c("redcap_form_name" = "form")) %>%
+    mutate(structure = coalesce(.data$new_structure, .data$structure), .keep = "unused")
+}
+
+structure_to_form_level <- function(x) {
+  if (all(x %in% c("repeat_together", "nonrepeating"))) {
+    return("nonrepeating")
+  }
+  if (all(x == "repeat_separate")) {
+    return("repeating")
+  }
+  "mixed"
 }

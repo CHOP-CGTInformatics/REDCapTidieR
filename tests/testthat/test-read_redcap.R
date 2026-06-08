@@ -695,46 +695,6 @@ test_that("read_redcap handles missing data codes", {
     expect_no_warning()
 })
 
-test_that("get_repeat_event_types() works", {
-  mixed_data_structure <- tibble::tribble(
-    ~"record_id" , ~"redcap_event_name" , ~"redcap_repeat_instrument" , ~"redcap_repeat_instance" ,
-               1 , "nonrepeat"          , NA                          , NA                        ,
-               1 , "repeat_together"    , NA                          ,                         1 ,
-               1 , "repeat_separate"    , "mixed_structure_form"      ,                         1
-  )
-
-  expected_out <- tibble::tribble(
-    ~"redcap_event_name" , ~"repeat_type"    ,
-    "nonrepeat"          , "nonrepeating"    ,
-    "repeat_together"    , "repeat_together" ,
-    "repeat_separate"    , "repeat_separate"
-  )
-
-  out <- get_repeat_event_types(mixed_data_structure)
-
-  expect_equal(out, expected_out)
-
-  # Example with nonrepeating arm that contains repeating and non repeating forms
-  mixed_data_structure <- tibble::tribble(
-    ~"record_id" , ~"redcap_event_name" , ~"redcap_repeat_instrument" , ~"redcap_repeat_instance" ,
-               1 , "nonrepeat"          , NA                          , NA                        ,
-               1 , "nonrepeat"          , "repeat_form"               ,                         1 ,
-               1 , "repeat_together"    , NA                          ,                         1 ,
-               1 , "repeat_separate"    , "mixed_structure_form"      ,                         1
-  )
-
-  out <- get_repeat_event_types(mixed_data_structure)
-
-  expected_out <- tibble::tribble(
-    ~"redcap_event_name" , ~"repeat_type"    ,
-    "nonrepeat"          , "repeat_separate" ,
-    "repeat_together"    , "repeat_together" ,
-    "repeat_separate"    , "repeat_separate"
-  )
-
-  expect_equal(out, expected_out)
-})
-
 test_that("update_dag_cols() works for labels", {
   dag_data <- tibble::tribble(
     ~"data_access_group_name" , ~"unique_group_name" , ~"data_access_group_id" ,
@@ -808,4 +768,105 @@ test_that("read_redcap() handles insufficient DAG access", {
     export_data_access_groups = FALSE
   ) %>%
     expect_no_error()
+})
+
+test_that("read_redcap returns correct form structure", {
+  out <- read_redcap(
+    Sys.getenv("REDCAP_URI"),
+    Sys.getenv("REDCAPTIDIER_MIXED_STRUCTURE_API"),
+    allow_mixed_structure = TRUE
+  )
+
+  expect_equal(
+    out$structure,
+    c("nonrepeating", "repeating", "mixed", "nonrepeating", "mixed")
+  )
+
+  out <- read_redcap(
+    Sys.getenv("REDCAP_URI"),
+    Sys.getenv("REDCAPTIDIER_NO_DATA_API"),
+    allow_mixed_structure = TRUE
+  )
+
+  expect_equal(
+    out$structure,
+    c("nonrepeating", "repeating", "mixed", "nonrepeating", "mixed")
+  )
+})
+
+test_that("add_form_event_structure works", {
+  data <- tibble::tribble(
+    ~unique_event_name , ~form          ,
+    "event_1_arm_1"    , "demographics" ,
+    "event_1_arm_1"    , "labs"         ,
+    "event_2_arm_1"    , "demographics" ,
+    "event_2_arm_1"    , "labs"         ,
+    "event_3_arm_1"    , "demographics"
+  )
+
+  db_instrument_repeating <- tibble::tribble(
+    ~unique_event_name , ~form         , ~custom_form_label ,
+    "event_1_arm_1"    , NA_character_ , "Event 1"          ,
+    "event_2_arm_1"    , "labs"        , "Labs repeat"      ,
+    "event_3_arm_1"    , NA_character_ , "Event 3"
+  )
+
+  out <- add_form_event_structure(data, db_instrument_repeating)
+
+  expect_equal(
+    out,
+    tibble::tribble(
+      ~unique_event_name , ~form          , ~custom_form_label , ~repeat_structure ,
+      "event_1_arm_1"    , "demographics" , "Event 1"          , "repeat_together" ,
+      "event_1_arm_1"    , "labs"         , "Event 1"          , "repeat_together" ,
+      "event_2_arm_1"    , "demographics" , NA_character_      , "nonrepeating"    ,
+      "event_2_arm_1"    , "labs"         , "Labs repeat"      , "repeat_separate" ,
+      "event_3_arm_1"    , "demographics" , "Event 3"          , "repeat_together"
+    )
+  )
+})
+
+test_that("structure_from_events_and_repeating works", {
+  form_structure <- tibble::tribble(
+    ~redcap_form_name , ~structure     ,
+    "demographics"    , "nonrepeating" ,
+    "labs"            , "nonrepeating" ,
+    "medications"     , "nonrepeating" ,
+    "notes"           , "nonrepeating"
+  )
+
+  db_event_instruments <- tibble::tribble(
+    ~unique_event_name , ~form          ,
+    "event_1_arm_1"    , "demographics" ,
+    "event_2_arm_1"    , "demographics" ,
+    "event_1_arm_1"    , "labs"         ,
+    "event_2_arm_1"    , "labs"         ,
+    "event_1_arm_1"    , "medications"  ,
+    "event_2_arm_1"    , "medications"  ,
+    "event_1_arm_1"    , "notes"
+  )
+
+  db_instrument_repeating <- tibble::tribble(
+    ~unique_event_name , ~form         , ~custom_form_label ,
+    "event_1_arm_1"    , "labs"        , NA_character_      ,
+    "event_2_arm_1"    , "labs"        , NA_character_      ,
+    "event_2_arm_1"    , "medications" , NA_character_
+  )
+
+  out <- structure_from_events_and_repeating(
+    form_structure,
+    db_instrument_repeating,
+    db_event_instruments
+  )
+
+  expect_equal(
+    out,
+    tibble::tribble(
+      ~redcap_form_name , ~structure     ,
+      "demographics"    , "nonrepeating" ,
+      "labs"            , "repeating"    ,
+      "medications"     , "mixed"        ,
+      "notes"           , "nonrepeating"
+    )
+  )
 })
