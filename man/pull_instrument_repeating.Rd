@@ -4,7 +4,12 @@
 \alias{pull_instrument_repeating}
 \title{Retrieve repeating instrument settings from REDCap}
 \usage{
-pull_instrument_repeating(redcap_uri, token, suppress_redcapr_messages = TRUE)
+pull_instrument_repeating(
+  redcap_uri,
+  token,
+  suppress_redcapr_messages = TRUE,
+  call = NULL
+)
 }
 \arguments{
 \item{redcap_uri}{The
@@ -16,6 +21,9 @@ project. Required.}
 
 \item{suppress_redcapr_messages}{A logical to control whether to suppress messages
 from REDCapR API calls. Default \code{TRUE}.}
+
+\item{call}{The calling environment to use when handling REDCapR errors.
+Default \code{NULL}.}
 }
 \value{
 A tibble of repeating instrument settings with standardized column names,

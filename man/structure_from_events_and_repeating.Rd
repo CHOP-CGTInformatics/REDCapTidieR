@@ -5,14 +5,13 @@
 \title{Determine form-level structure for a longitudinal REDCap project}
 \usage{
 structure_from_events_and_repeating(
-  form_structure,
+  forms,
   db_instrument_repeating,
   db_event_instruments
 )
 }
 \arguments{
-\item{form_structure}{a tibble containing one row per instrument and a
-\code{structure} column.}
+\item{forms}{a character vector of form names.}
 
 \item{db_instrument_repeating}{a tibble of repeating instrument settings
 created by \code{\link[=pull_instrument_repeating]{pull_instrument_repeating()}}.}
@@ -21,10 +20,14 @@ created by \code{\link[=pull_instrument_repeating]{pull_instrument_repeating()}}
 \code{\link[=pull_event_instruments]{pull_event_instruments()}}.}
 }
 \value{
-The original \code{form_structure} tibble with \code{structure} updated to
-'repeating', 'nonrepeating', or 'mixed' based on form-event-level structure.
+Tibble with \code{redcap_form_name} and \code{structure}
 }
 \description{
 Determine form-level structure for a longitudinal REDCap project
+}
+\details{
+\code{structure} is one of 'repeating', 'nonrepeating', or 'mixed' based on form-event-level
+structure. In cases where a form in \code{forms} is not \code{db_event_instruments}
+it will be reported as 'nonrepeating'.
 }
 \keyword{internal}

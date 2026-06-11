@@ -60,6 +60,44 @@ test_that("read_redcap works for a classic database with a repeating instrument"
   )
 })
 
+test_that("read_redcap works for a longitudinal database with no nonrepeating instruments", {
+  expected_present_cols <- c("record_id", "redcap_event", "redcap_arm")
+  expected_absent_cols <- "redcap_form_instance"
+
+  out <-
+    read_redcap(Sys.getenv("REDCAP_URI"), Sys.getenv("REDCAPTIDIER_LONGITUDINAL_NOREPEAT_API")) %>%
+    filter(redcap_form_name == "nonrepeated") %>%
+    select(redcap_data) %>%
+    pluck(1, 1)
+
+  expect_true(
+    all(expected_present_cols %in% names(out))
+  )
+
+  expect_false(
+    any(expected_absent_cols %in% names(out))
+  )
+})
+
+test_that("read_redcap works for a longitudinal database with repeating instruments", {
+  expected_present_cols <- c("record_id", "redcap_event", "redcap_form_instance")
+  expected_absent_cols <- "redcap_arm"
+
+  out <-
+    read_redcap(Sys.getenv("REDCAP_URI"), Sys.getenv("REDCAPTIDIER_LONGITUDINAL_NOARMS_API")) %>%
+    filter(redcap_form_name == "repeated") %>%
+    select(redcap_data) %>%
+    pluck(1, 1)
+
+  expect_true(
+    all(expected_present_cols %in% names(out))
+  )
+
+  expect_false(
+    any(expected_absent_cols %in% names(out))
+  )
+})
+
 test_that("read_redcap returns checkbox fields", {
   # Pull a nonrepeating table from a classic database
   out <-
@@ -827,13 +865,7 @@ test_that("add_form_event_structure works", {
 })
 
 test_that("structure_from_events_and_repeating works", {
-  form_structure <- tibble::tribble(
-    ~redcap_form_name , ~structure     ,
-    "demographics"    , "nonrepeating" ,
-    "labs"            , "nonrepeating" ,
-    "medications"     , "nonrepeating" ,
-    "notes"           , "nonrepeating"
-  )
+  forms <- c("demographics", "labs", "medications", "notes")
 
   db_event_instruments <- tibble::tribble(
     ~unique_event_name , ~form          ,
@@ -854,7 +886,7 @@ test_that("structure_from_events_and_repeating works", {
   )
 
   out <- structure_from_events_and_repeating(
-    form_structure,
+    forms,
     db_instrument_repeating,
     db_event_instruments
   )

@@ -4,18 +4,16 @@
 \alias{structure_from_repeating}
 \title{Determine instrument structure for a classic REDCap project}
 \usage{
-structure_from_repeating(form_structure, db_instrument_repeating)
+structure_from_repeating(forms, db_instrument_repeating)
 }
 \arguments{
-\item{form_structure}{a tibble containing one row per instrument and a
-\code{structure} column.}
+\item{forms}{a character vector of form names.}
 
 \item{db_instrument_repeating}{a tibble of repeating instrument settings
 created by \code{\link[=pull_instrument_repeating]{pull_instrument_repeating()}}.}
 }
 \value{
-The original \code{form_structure} tibble with \code{structure} updated to
-'repeating' if present in \code{db_instrument_repeating}
+Tibble with \code{redcap_form_name} and \code{structure}
 }
 \description{
 Determine instrument structure for a classic REDCap project

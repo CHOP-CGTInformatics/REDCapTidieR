@@ -294,6 +294,9 @@ read_redcap <- function(
       filter(.data$field_name_updated %in% names(db_data))
   }
 
+  # Final set of forms actually in the supertibble
+  returned_forms <- unique(na.omit(db_metadata$form_name))
+
   if (raw_or_label != "raw") {
     db_data <- multi_choice_to_labels(db_data, db_metadata, raw_or_label)
   }
@@ -302,15 +305,22 @@ read_redcap <- function(
   is_longitudinal <- "redcap_event_name" %in% names(db_data)
   has_repeating_structure <- "redcap_repeat_instance" %in% names(db_data)
 
-  # Default forms to nonrepeating, covers !has_repeating_structure
-  form_structure <- tibble(
-    # omit NA form from record id
-    redcap_form_name = unique(na.omit(db_metadata$form_name)),
-    structure = "nonrepeating"
-  )
+  # Ensure db_event_instruments always exists for longitudinal case since
+  # it will be consumed by link_arms()
+  if (is_longitudinal) {
+    db_event_instruments <- NULL
+  }
 
-  # Update for has_repeating_structure and longitudinal
-  if (has_repeating_structure && is_longitudinal) {
+  # Default forms to nonrepeating, covers !has_repeating_structure
+  if (!has_repeating_structure) {
+    # not repeating -> all forms are nonrepeating
+    form_structure <- tibble(
+      redcap_form_name = returned_forms,
+      structure = "nonrepeating"
+    )
+  } else if (is_longitudinal) {
+    # if repeating longitudinal -> get structure from event-instrument and repeating info
+
     db_instrument_repeating <- pull_instrument_repeating(
       redcap_uri = redcap_uri,
       token = token,
@@ -322,24 +332,24 @@ read_redcap <- function(
       suppress_redcapr_messages = suppress_redcapr_messages
     )
 
-    form_structure <- form_structure %>%
-      structure_from_events_and_repeating(
-        db_instrument_repeating,
-        db_event_instruments
-      )
-  }
+    form_structure <- structure_from_events_and_repeating(
+      forms = returned_forms,
+      db_instrument_repeating = db_instrument_repeating,
+      db_event_instruments = db_event_instruments
+    )
+  } else {
+    # Otherwise we're in the repeating non-longitudinal case -> get structure from repeating info alone
 
-  # Update for has_repeating_structure and classic
-  if (has_repeating_structure && !is_longitudinal) {
     db_instrument_repeating <- pull_instrument_repeating(
       redcap_uri = redcap_uri,
       token = token,
       suppress_redcapr_messages = suppress_redcapr_messages
     )
-    db_event_instruments <- NULL
 
-    form_structure <- form_structure %>%
-      structure_from_repeating(db_instrument_repeating)
+    form_structure <- structure_from_repeating(
+      form = returned_forms,
+      db_instrument_repeating = db_instrument_repeating
+    )
   }
 
   if (is_longitudinal) {
@@ -348,8 +358,14 @@ read_redcap <- function(
       token = token,
       suppress_redcapr_messages = suppress_redcapr_messages,
       db_event_instruments = db_event_instruments
-    ) %>%
-      add_form_event_structure(db_instrument_repeating)
+    )
+
+    if (has_repeating_structure) {
+      # Add repeating info if applicable
+
+      linked_arms <- linked_arms %>%
+        add_form_event_structure(db_instrument_repeating)
+    }
 
     out <- clean_redcap_long(
       db_data_long = db_data,
@@ -648,6 +664,9 @@ update_dag_cols <- function(data, dag_data, raw_or_label) {
 #' @title
 #' Retrieve repeating instrument settings from REDCap
 #'
+#' @param call The calling environment to use when handling REDCapR errors.
+#' Default `NULL`.
+#'
 #' @inheritParams read_redcap
 #'
 #' @return
@@ -655,7 +674,7 @@ update_dag_cols <- function(data, dag_data, raw_or_label) {
 #' including `unique_event_name` and `form` when available.
 #'
 #' @keywords internal
-pull_instrument_repeating <- function(redcap_uri, token, suppress_redcapr_messages = TRUE) {
+pull_instrument_repeating <- function(redcap_uri, token, suppress_redcapr_messages = TRUE, call = NULL) {
   out <- try_redcapr(
     {
       redcap_instrument_repeating(
@@ -664,7 +683,7 @@ pull_instrument_repeating <- function(redcap_uri, token, suppress_redcapr_messag
         verbose = !suppress_redcapr_messages
       )
     },
-    call = caller_env()
+    call = if (is.null(call)) caller_env() else call
   )
 
   out %>%
@@ -701,18 +720,18 @@ pull_event_instruments <- function(redcap_uri, token, suppress_redcapr_messages 
 #' @title
 #' Determine instrument structure for a classic REDCap project
 #'
-#' @param form_structure a tibble containing one row per instrument and a
-#' \code{structure} column.
+#' @param forms a character vector of form names.
 #' @param db_instrument_repeating a tibble of repeating instrument settings
 #' created by [pull_instrument_repeating()].
 #'
 #' @return
-#' The original \code{form_structure} tibble with \code{structure} updated to
-#' 'repeating' if present in \code{db_instrument_repeating}
+#' Tibble with \code{redcap_form_name} and \code{structure}
 #'
 #' @keywords internal
-structure_from_repeating <- function(form_structure, db_instrument_repeating) {
-  form_structure %>%
+structure_from_repeating <- function(forms, db_instrument_repeating) {
+  tibble(
+    redcap_form_name = forms
+  ) %>%
     mutate(
       structure = if_else(
         .data$redcap_form_name %in% db_instrument_repeating$form,
@@ -773,30 +792,38 @@ add_form_event_structure <- function(data, db_instrument_repeating) {
 #' @title
 #' Determine form-level structure for a longitudinal REDCap project
 #'
-#' @param form_structure a tibble containing one row per instrument and a
-#' \code{structure} column.
+#' @details
+#' \code{structure} is one of 'repeating', 'nonrepeating', or 'mixed' based on form-event-level
+#' structure. In cases where a form in \code{forms} is not \code{db_event_instruments}
+#' it will be reported as 'nonrepeating'.
+#'
+#' @param forms a character vector of form names.
 #' @param db_instrument_repeating a tibble of repeating instrument settings
 #' created by [pull_instrument_repeating()].
 #' @param db_event_instruments a tibble of event-instrument mappings created by
 #' [pull_event_instruments()].
 #'
 #' @return
-#' The original \code{form_structure} tibble with \code{structure} updated to
-#' 'repeating', 'nonrepeating', or 'mixed' based on form-event-level structure.
+#' Tibble with \code{redcap_form_name} and \code{structure}
 #'
 #' @keywords internal
 structure_from_events_and_repeating <- function(
-  form_structure,
+  forms,
   db_instrument_repeating,
   db_event_instruments
 ) {
-  new_form_structure <- db_event_instruments %>%
-    add_form_event_structure(db_instrument_repeating) %>%
-    summarise(new_structure = structure_to_form_level(.data$repeat_structure), .by = "form")
+  check_unmapped_repeating_forms(db_event_instruments, db_instrument_repeating, call = caller_env())
 
-  form_structure %>%
-    left_join(new_form_structure, by = c("redcap_form_name" = "form")) %>%
-    mutate(structure = coalesce(.data$new_structure, .data$structure), .keep = "unused")
+  form_structure <- db_event_instruments %>%
+    add_form_event_structure(db_instrument_repeating) %>%
+    summarise(structure = structure_to_form_level(.data$repeat_structure), .by = "form")
+
+  tibble(
+    redcap_form_name = forms
+  ) %>%
+    left_join(form_structure, by = c("redcap_form_name" = "form")) %>%
+    # Default to nonrepeating for forms not linked to events
+    mutate(structure = coalesce(.data$structure, "nonrepeating"))
 }
 
 structure_to_form_level <- function(x) {

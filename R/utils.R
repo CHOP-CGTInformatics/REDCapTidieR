@@ -119,8 +119,8 @@ create_repeat_instance_vars <- function(db_data) {
 #' @param token The REDCap API token
 #' @param suppress_redcapr_messages A logical to control whether to suppress messages
 #' from REDCapR API calls. Default `TRUE`.
-#' @param db_event_instruments result of [REDCapR::redcap_event_instruments()], retrieved from REDCap
-#' if \code{NULL}
+#' @param db_event_instruments result of [REDCapR::redcap_event_instruments()], pulled from REDCap if
+#' not supplied
 #'
 #' @keywords internal
 

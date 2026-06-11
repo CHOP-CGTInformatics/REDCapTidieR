@@ -289,7 +289,7 @@ withr::with_tempdir({
 })
 #> Error:
 #> ✖ File
-#>   ''/private/var/folders/9c/k1m0bzys7gb1v32g86hfn5sn5k86h1/T/RtmpFvyVfH/file3485781f742c/temp.csv''
+#>   ''/private/var/folders/9c/k1m0bzys7gb1v32g86hfn5sn5k86h1/T/RtmpCQgBvD/filed2c042f41544/temp.csv''
 #>   already exists.
 #> ℹ Overwriting files is disabled by default. Set `overwrite = TRUE` to overwrite
 #>   existing file.
@@ -330,7 +330,7 @@ withr::with_tempdir({
     write_redcap_xlsx(file = filepath)
 })
 #> Warning in write_redcap_xlsx(., file = filepath): ! No extension provided for `file`:
-#>   '/private/var/folders/9c/k1m0bzys7gb1v32g86hfn5sn5k86h1/T/RtmpFvyVfH/file348515805935/temp'
+#>   '/private/var/folders/9c/k1m0bzys7gb1v32g86hfn5sn5k86h1/T/RtmpCQgBvD/filed2c0605139d7/temp'
 #> ℹ The extension '.xlsx' will be appended to the file name.
 
 # Printed supertibble
@@ -386,6 +386,30 @@ read_redcap(Sys.getenv("REDCAP_URI"), Sys.getenv("REDCAPTIDIER_DAG_ACCESS_API"))
 #> Caused by error in `redcap_dag_read()`:
 #> ! The REDCapR read/export operation was not successful.  The error message was:
 #> ERROR: Insufficient user privileges: You must have 'API Export' privileges and 'Data Access Groups' privileges in the project.
+
+# Unmapped repeating instruments
+
+db_event_instruments <- tibble::tribble(
+  ~unique_event_name , ~form          ,
+  "baseline_arm_1"   , "demographics" ,
+  "followup_arm_1"   , "labs"
+)
+
+db_instrument_repeating <- tibble::tribble(
+  ~unique_event_name , ~form            ,
+  "baseline_arm_1"   , "demographics"   ,
+  "followup_arm_1"   , "vitals"         ,
+  "followup_arm_1"   , "adverse_events"
+)
+
+check_unmapped_repeating_forms(
+  db_event_instruments = db_event_instruments,
+  db_instrument_repeating = db_instrument_repeating
+)
+#> Warning: ! The `vitals` and `adverse_events` forms have repeating event information but
+#>   are not linked to any events. `structure` will be `nonrepeating`.
+#> ℹ This can occur when a previously previously repeating form was unlinked from
+#>   all event.
 ```
 
-<sup>Created on 2026-05-22 with [reprex v2.1.1](https://reprex.tidyverse.org)</sup>
+<sup>Created on 2026-06-11 with [reprex v2.1.1](https://reprex.tidyverse.org)</sup>

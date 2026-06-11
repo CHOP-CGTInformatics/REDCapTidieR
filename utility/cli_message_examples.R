@@ -178,3 +178,23 @@ read_redcap(redcap_uri, Sys.getenv("REDCAPTIDIER_MDC_API"))
 # No DAG export access
 
 read_redcap(Sys.getenv("REDCAP_URI"), Sys.getenv("REDCAPTIDIER_DAG_ACCESS_API"))
+
+# Unmapped repeating instruments
+
+db_event_instruments <- tibble::tribble(
+  ~unique_event_name , ~form          ,
+  "baseline_arm_1"   , "demographics" ,
+  "followup_arm_1"   , "labs"
+)
+
+db_instrument_repeating <- tibble::tribble(
+  ~unique_event_name , ~form            ,
+  "baseline_arm_1"   , "demographics"   ,
+  "followup_arm_1"   , "vitals"         ,
+  "followup_arm_1"   , "adverse_events"
+)
+
+check_unmapped_repeating_forms(
+  db_event_instruments = db_event_instruments,
+  db_instrument_repeating = db_instrument_repeating
+)

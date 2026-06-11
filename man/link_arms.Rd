@@ -19,8 +19,8 @@ link_arms(
 \item{suppress_redcapr_messages}{A logical to control whether to suppress messages
 from REDCapR API calls. Default \code{TRUE}.}
 
-\item{db_event_instruments}{result of \code{\link[REDCapR:redcap_event_instruments]{REDCapR::redcap_event_instruments()}}, retrieved from REDCap
-if \code{NULL}}
+\item{db_event_instruments}{result of \code{\link[REDCapR:redcap_event_instruments]{REDCapR::redcap_event_instruments()}}, pulled from REDCap if
+not supplied}
 }
 \value{
 Returns a \code{tibble} of \code{redcap_event_name}s with list elements
