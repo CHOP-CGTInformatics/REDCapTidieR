@@ -970,7 +970,7 @@ check_unmapped_repeating_forms <- function(db_event_instruments, db_instrument_r
 
   msg <- c(
     `!` = "The {.code {unmatched_forms}} form{?s} ha{?s/ve} repeating event information but {?is/are} not linked to any events. {.code structure} will be {.code nonrepeating}.", # nolint: line_length_linter
-    i = "This can occur when a previously previously repeating form was unlinked from all event."
+    i = "This can occur when a previously repeating form was unlinked from all events."
   )
 
   cli_warn(

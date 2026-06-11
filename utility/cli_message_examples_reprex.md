@@ -289,7 +289,7 @@ withr::with_tempdir({
 })
 #> Error:
 #> ✖ File
-#>   ''/private/var/folders/9c/k1m0bzys7gb1v32g86hfn5sn5k86h1/T/RtmpCQgBvD/filed2c042f41544/temp.csv''
+#>   ''/private/var/folders/9c/k1m0bzys7gb1v32g86hfn5sn5k86h1/T/Rtmpq4viaA/file1279e3e40b605/temp.csv''
 #>   already exists.
 #> ℹ Overwriting files is disabled by default. Set `overwrite = TRUE` to overwrite
 #>   existing file.
@@ -330,7 +330,7 @@ withr::with_tempdir({
     write_redcap_xlsx(file = filepath)
 })
 #> Warning in write_redcap_xlsx(., file = filepath): ! No extension provided for `file`:
-#>   '/private/var/folders/9c/k1m0bzys7gb1v32g86hfn5sn5k86h1/T/RtmpCQgBvD/filed2c0605139d7/temp'
+#>   '/private/var/folders/9c/k1m0bzys7gb1v32g86hfn5sn5k86h1/T/Rtmpq4viaA/file1279e7dbbbf81/temp'
 #> ℹ The extension '.xlsx' will be appended to the file name.
 
 # Printed supertibble
@@ -408,8 +408,7 @@ check_unmapped_repeating_forms(
 )
 #> Warning: ! The `vitals` and `adverse_events` forms have repeating event information but
 #>   are not linked to any events. `structure` will be `nonrepeating`.
-#> ℹ This can occur when a previously previously repeating form was unlinked from
-#>   all event.
+#> ℹ This can occur when a previously repeating form was unlinked from all events.
 ```
 
 <sup>Created on 2026-06-11 with [reprex v2.1.1](https://reprex.tidyverse.org)</sup>
