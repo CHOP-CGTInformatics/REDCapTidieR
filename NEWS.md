@@ -1,3 +1,7 @@
+# REDCapTidieR (development version)
+
+- Updated `read_redcap()` to infer form structure from REDCap project metadata
+
 # REDCapTidieR 1.2.5
 
 ### Bug Fixes
