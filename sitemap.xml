@@ -14,6 +14,7 @@
 <url><loc>https://chop-cgtinformatics.github.io/REDCapTidieR/news/index.html</loc></url>
 <url><loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/REDCapTidieR-package.html</loc></url>
 <url><loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/add_event_mapping.html</loc></url>
+<url><loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/add_form_event_structure.html</loc></url>
 <url><loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/add_labelled_xlsx_features.html</loc></url>
 <url><loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/add_metadata.html</loc></url>
 <url><loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/add_metadata_sheet.html</loc></url>
@@ -41,6 +42,7 @@
 <url><loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/check_redcap_populated.html</loc></url>
 <url><loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/check_repeat_and_nonrepeat.html</loc></url>
 <url><loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/check_req_labelled_metadata_fields.html</loc></url>
+<url><loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/check_unmapped_repeating_forms.html</loc></url>
 <url><loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/check_user_rights.html</loc></url>
 <url><loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/checkmate.html</loc></url>
 <url><loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/clean_redcap.html</loc></url>
@@ -64,7 +66,6 @@
 <url><loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/get_metadata_spec.html</loc></url>
 <url><loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/get_mixed_structure_fields.html</loc></url>
 <url><loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/get_record_id_field.html</loc></url>
-<url><loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/get_repeat_event_types.html</loc></url>
 <url><loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/index.html</loc></url>
 <url><loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/invert_vec.html</loc></url>
 <url><loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/is_labelled.html</loc></url>
@@ -74,6 +75,8 @@
 <url><loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/multi_choice_to_labels.html</loc></url>
 <url><loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/parse_labels.html</loc></url>
 <url><loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/parse_logical_cols.html</loc></url>
+<url><loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/pull_event_instruments.html</loc></url>
+<url><loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/pull_instrument_repeating.html</loc></url>
 <url><loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/read_redcap.html</loc></url>
 <url><loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/release_questions.html</loc></url>
 <url><loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/remove_empty_rows.html</loc></url>
@@ -82,6 +85,8 @@
 <url><loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/safe_set_variable_labels.html</loc></url>
 <url><loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/skim_data.html</loc></url>
 <url><loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/strip_html_field_embedding.html</loc></url>
+<url><loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/structure_from_events_and_repeating.html</loc></url>
+<url><loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/structure_from_repeating.html</loc></url>
 <url><loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/superheroes_supertbl.html</loc></url>
 <url><loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/supertbl_recode.html</loc></url>
 <url><loc>https://chop-cgtinformatics.github.io/REDCapTidieR/reference/tbl_sum.redcap_supertbl.html</loc></url>

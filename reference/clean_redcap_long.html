@@ -11,7 +11,7 @@ a longitudinal REDCap database."><meta property="og:image" content="https://chop
 
     <a class="navbar-brand me-2" href="../index.html">REDCapTidieR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.5.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -40,7 +40,7 @@ a longitudinal REDCap database."><meta property="og:image" content="https://chop
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Extract longitudinal REDCap databases into tidy tibbles</h1>
-      <small class="dont-index">Source: <a href="https://github.com/CHOP-CGTInformatics/REDCapTidieR/blob/v1.2.5/R/clean_redcap_long.R" class="external-link"><code>R/clean_redcap_long.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/CHOP-CGTInformatics/REDCapTidieR/blob/main/R/clean_redcap_long.R" class="external-link"><code>R/clean_redcap_long.R</code></a></small>
       <div class="d-none name"><code>clean_redcap_long.Rd</code></div>
     </div>
 
@@ -56,6 +56,7 @@ a longitudinal REDCap database.</p>
 <span>  <span class="va">db_data_long</span>,</span>
 <span>  <span class="va">db_metadata_long</span>,</span>
 <span>  <span class="va">linked_arms</span>,</span>
+<span>  <span class="va">form_structure</span>,</span>
 <span>  allow_mixed_structure <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -77,6 +78,11 @@ a longitudinal REDCap database.</p>
 <dt id="arg-linked-arms">linked_arms<a class="anchor" aria-label="anchor" href="#arg-linked-arms"></a></dt>
 <dd><p>Output of <code>link_arms</code>, linking instruments to REDCap
 events/arms</p></dd>
+
+
+<dt id="arg-form-structure">form_structure<a class="anchor" aria-label="anchor" href="#arg-form-structure"></a></dt>
+<dd><p>A tibble with cols <code>redcap_form_name</code> and
+<code>structure</code> with the structure of each form</p></dd>
 
 
 <dt id="arg-allow-mixed-structure">allow_mixed_structure<a class="anchor" aria-label="anchor" href="#arg-allow-mixed-structure"></a></dt>

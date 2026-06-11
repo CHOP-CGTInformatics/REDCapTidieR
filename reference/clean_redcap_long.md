@@ -11,6 +11,7 @@ clean_redcap_long(
   db_data_long,
   db_metadata_long,
   linked_arms,
+  form_structure,
   allow_mixed_structure = FALSE
 )
 ```
@@ -30,6 +31,11 @@ clean_redcap_long(
 - linked_arms:
 
   Output of `link_arms`, linking instruments to REDCap events/arms
+
+- form_structure:
+
+  A tibble with cols `redcap_form_name` and `structure` with the
+  structure of each form
 
 - allow_mixed_structure:
 

@@ -12,16 +12,16 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/CHOP-CGTInformatics/REDCapTidieR/blob/v1.2.5/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/CHOP-CGTInformatics/REDCapTidieR/blob/main/DESCRIPTION)
 
 Hanna R, Kadauke S, Porter E (2026). *REDCapTidieR: Extract 'REDCap'
-Databases into Tidy 'Tibble's*. R package version 1.2.5,
+Databases into Tidy 'Tibble's*. R package version 1.2.5.9000,
 <https://chop-cgtinformatics.github.io/REDCapTidieR/>.
 
     @Manual{,
       title = {REDCapTidieR: Extract 'REDCap' Databases into Tidy 'Tibble's},
       author = {Richard Hanna and Stephan Kadauke and Ezra Porter},
       year = {2026},
-      note = {R package version 1.2.5},
+      note = {R package version 1.2.5.9000},
       url = {https://chop-cgtinformatics.github.io/REDCapTidieR/},
     }

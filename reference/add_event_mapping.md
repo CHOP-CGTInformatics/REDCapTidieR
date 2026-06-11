@@ -6,7 +6,7 @@ about the events associated with each instrument
 ## Usage
 
 ``` r
-add_event_mapping(supertbl, linked_arms, repeat_event_types)
+add_event_mapping(supertbl, linked_arms)
 ```
 
 ## Arguments
@@ -19,12 +19,6 @@ add_event_mapping(supertbl, linked_arms, repeat_event_types)
 
   the tibble with event mappings created by
   [`link_arms()`](https://chop-cgtinformatics.github.io/REDCapTidieR/reference/link_arms.md)
-
-- repeat_event_types:
-
-  a dataframe output from
-  [`get_repeat_event_types()`](https://chop-cgtinformatics.github.io/REDCapTidieR/reference/get_repeat_event_types.md)
-  which specifies NR, RS, and RT types for events
 
 ## Value
 

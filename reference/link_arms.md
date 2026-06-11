@@ -6,7 +6,12 @@ determine how these are linked and what variables belong to them.
 ## Usage
 
 ``` r
-link_arms(redcap_uri, token, suppress_redcapr_messages = TRUE)
+link_arms(
+  redcap_uri,
+  token,
+  suppress_redcapr_messages = TRUE,
+  db_event_instruments = NULL
+)
 ```
 
 ## Arguments
@@ -23,6 +28,12 @@ link_arms(redcap_uri, token, suppress_redcapr_messages = TRUE)
 
   A logical to control whether to suppress messages from REDCapR API
   calls. Default `TRUE`.
+
+- db_event_instruments:
+
+  result of
+  [`REDCapR::redcap_event_instruments()`](https://ouhscbbmc.github.io/REDCapR/reference/redcap_event_instruments.html),
+  pulled from REDCap if not supplied
 
 ## Value
 

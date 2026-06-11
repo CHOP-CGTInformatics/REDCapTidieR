@@ -9,7 +9,7 @@ the events associated with each instrument"><meta property="og:image" content="h
 
     <a class="navbar-brand me-2" href="../index.html">REDCapTidieR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.5.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,7 +38,7 @@ the events associated with each instrument"><meta property="og:image" content="h
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Supplement a supertibble from a longitudinal database with information about the events associated with each instrument</h1>
-      <small class="dont-index">Source: <a href="https://github.com/CHOP-CGTInformatics/REDCapTidieR/blob/v1.2.5/R/read_redcap.R" class="external-link"><code>R/read_redcap.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/CHOP-CGTInformatics/REDCapTidieR/blob/main/R/read_redcap.R" class="external-link"><code>R/read_redcap.R</code></a></small>
       <div class="d-none name"><code>add_event_mapping.Rd</code></div>
     </div>
 
@@ -49,7 +49,7 @@ the events associated with each instrument</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">add_event_mapping</span><span class="op">(</span><span class="va">supertbl</span>, <span class="va">linked_arms</span>, <span class="va">repeat_event_types</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">add_event_mapping</span><span class="op">(</span><span class="va">supertbl</span>, <span class="va">linked_arms</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -63,11 +63,6 @@ the events associated with each instrument</p>
 <dt id="arg-linked-arms">linked_arms<a class="anchor" aria-label="anchor" href="#arg-linked-arms"></a></dt>
 <dd><p>the tibble with event mappings created by
 <code><a href="link_arms.html">link_arms()</a></code></p></dd>
-
-
-<dt id="arg-repeat-event-types">repeat_event_types<a class="anchor" aria-label="anchor" href="#arg-repeat-event-types"></a></dt>
-<dd><p>a dataframe output from <code><a href="get_repeat_event_types.html">get_repeat_event_types()</a></code> which
-specifies NR, RS, and RT types for events</p></dd>
 
 </dl></div>
     <div class="section level2">

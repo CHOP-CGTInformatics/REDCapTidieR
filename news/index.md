@@ -1,6 +1,14 @@
 # Changelog
 
+## REDCapTidieR (development version)
+
+- Updated
+  [`read_redcap()`](https://chop-cgtinformatics.github.io/REDCapTidieR/reference/read_redcap.md)
+  to infer form structure from REDCap project metadata
+
 ## REDCapTidieR 1.2.5
+
+CRAN release: 2026-05-26
 
 #### Bug Fixes
 

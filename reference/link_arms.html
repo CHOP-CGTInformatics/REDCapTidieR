@@ -9,7 +9,7 @@ how these are linked and what variables belong to them."><meta property="og:imag
 
     <a class="navbar-brand me-2" href="../index.html">REDCapTidieR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.5.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,7 +38,7 @@ how these are linked and what variables belong to them."><meta property="og:imag
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Link longitudinal REDCap instruments with their events/arms</h1>
-      <small class="dont-index">Source: <a href="https://github.com/CHOP-CGTInformatics/REDCapTidieR/blob/v1.2.5/R/utils.R" class="external-link"><code>R/utils.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/CHOP-CGTInformatics/REDCapTidieR/blob/main/R/utils.R" class="external-link"><code>R/utils.R</code></a></small>
       <div class="d-none name"><code>link_arms.Rd</code></div>
     </div>
 
@@ -49,7 +49,12 @@ how these are linked and what variables belong to them.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">link_arms</span><span class="op">(</span><span class="va">redcap_uri</span>, <span class="va">token</span>, suppress_redcapr_messages <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">link_arms</span><span class="op">(</span></span>
+<span>  <span class="va">redcap_uri</span>,</span>
+<span>  <span class="va">token</span>,</span>
+<span>  suppress_redcapr_messages <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  db_event_instruments <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -67,6 +72,11 @@ how these are linked and what variables belong to them.</p>
 <dt id="arg-suppress-redcapr-messages">suppress_redcapr_messages<a class="anchor" aria-label="anchor" href="#arg-suppress-redcapr-messages"></a></dt>
 <dd><p>A logical to control whether to suppress messages
 from REDCapR API calls. Default <code>TRUE</code>.</p></dd>
+
+
+<dt id="arg-db-event-instruments">db_event_instruments<a class="anchor" aria-label="anchor" href="#arg-db-event-instruments"></a></dt>
+<dd><p>result of <code><a href="https://ouhscbbmc.github.io/REDCapR/reference/redcap_event_instruments.html" class="external-link">REDCapR::redcap_event_instruments()</a></code>, pulled from REDCap if
+not supplied</p></dd>
 
 </dl></div>
     <div class="section level2">

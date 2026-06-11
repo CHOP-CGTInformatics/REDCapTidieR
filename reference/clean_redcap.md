@@ -7,7 +7,7 @@ REDCap database.
 ## Usage
 
 ``` r
-clean_redcap(db_data, db_metadata)
+clean_redcap(db_data, db_metadata, form_structure)
 ```
 
 ## Arguments
@@ -21,6 +21,11 @@ clean_redcap(db_data, db_metadata)
 
   The REDCap metadata output defined by
   `REDCapR::redcap_metadata_read()$data`
+
+- form_structure:
+
+  A tibble with cols `redcap_form_name` and `structure` with the
+  structure of each form
 
 ## Value
 
