@@ -119,10 +119,12 @@ create_repeat_instance_vars <- function(db_data) {
 #' @param token The REDCap API token
 #' @param suppress_redcapr_messages A logical to control whether to suppress messages
 #' from REDCapR API calls. Default `TRUE`.
+#' @param db_event_instruments result of [REDCapR::redcap_event_instruments()], pulled from REDCap if
+#' not supplied
 #'
 #' @keywords internal
 
-link_arms <- function(redcap_uri, token, suppress_redcapr_messages = TRUE) {
+link_arms <- function(redcap_uri, token, suppress_redcapr_messages = TRUE, db_event_instruments = NULL) {
   arms <- try_redcapr(
     {
       redcap_arm_export(redcap_uri, token, verbose = !suppress_redcapr_messages)
@@ -132,17 +134,14 @@ link_arms <- function(redcap_uri, token, suppress_redcapr_messages = TRUE) {
     # match field name of redcap_event_instruments() output
     rename(arm_num = "arm_number")
 
-  db_event_instruments <- try_redcapr(
-    {
-      redcap_event_instruments(
-        redcap_uri = redcap_uri,
-        token = token,
-        arms = NULL, # get all arms
-        verbose = !suppress_redcapr_messages
-      )
-    },
-    call = caller_env()
-  )
+  if (is.null(db_event_instruments)) {
+    db_event_instruments <- pull_event_instruments(
+      redcap_uri = redcap_uri,
+      token = token,
+      suppress_redcapr_messages = suppress_redcapr_messages,
+      call = caller_env()
+    )
+  }
 
   db_event_labels <- try_redcapr(
     {

@@ -12,9 +12,35 @@ test_that("clean_redcap works", {
   db_metadata_classic <- db_metadata_classic %>%
     filter(.data$field_name_updated %in% names(db_data_classic))
 
+  form_structure <- tibble(
+    redcap_form_name = c(
+      "nonrepeated",
+      "nonrepeated2",
+      "repeated",
+      "data_field_types",
+      "text_input_validation_types",
+      "api_no_access",
+      "api_no_access_2",
+      "survey",
+      "repeat_survey"
+    ),
+    structure = c(
+      "nonrepeating",
+      "nonrepeating",
+      "repeating",
+      "nonrepeating",
+      "nonrepeating",
+      "nonrepeating",
+      "nonrepeating",
+      "nonrepeating",
+      "repeating"
+    )
+  )
+
   out <- clean_redcap(
     db_data = db_data_classic,
-    db_metadata = db_metadata_classic
+    db_metadata = db_metadata_classic,
+    form_structure = form_structure
   )
 
   # Check general structure
@@ -27,9 +53,22 @@ test_that("clean_redcap works with databases containing no repeating instruments
   db_metadata_classic_norepeat <- db_metadata_classic_norepeat %>%
     filter(.data$field_name_updated %in% names(db_data_classic_norepeat))
 
+  form_structure <- tibble(
+    redcap_form_name = c(
+      "nonrepeated",
+      "nonrepeated2",
+      "data_field_types",
+      "text_input_validation_types",
+      "api_no_access",
+      "api_no_access_2"
+    ),
+    structure = "nonrepeating"
+  )
+
   out <- clean_redcap(
     db_data = db_data_classic_norepeat,
-    db_metadata = db_metadata_classic_norepeat
+    db_metadata = db_metadata_classic_norepeat,
+    form_structure = form_structure
   )
 
   # Check general structure

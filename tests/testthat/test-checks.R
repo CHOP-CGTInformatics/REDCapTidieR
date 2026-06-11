@@ -385,3 +385,42 @@ test_that("check_metadata_field_types only warns on logical for some types when 
   check_metadata_field_types(db_data, db_metadata) %>%
     expect_no_warning()
 })
+
+test_that("check_unmapped_repeating_forms warns for repeating forms not linked to events", {
+  db_event_instruments <- tibble::tribble(
+    ~unique_event_name , ~form          ,
+    "baseline_arm_1"   , "demographics" ,
+    "followup_arm_1"   , "labs"
+  )
+
+  db_instrument_repeating <- tibble::tribble(
+    ~unique_event_name  , ~form          ,
+    "baseline_arm_1"    , "demographics" ,
+    "followup_arm_1"    , "vitals"       ,
+    "unscheduled_arm_1" , NA_character_
+  )
+
+  cnd <- rlang::catch_cnd(
+    check_unmapped_repeating_forms(
+      db_event_instruments = db_event_instruments,
+      db_instrument_repeating = db_instrument_repeating
+    ),
+    classes = "unmapped_repeating_forms"
+  )
+
+  expect_equal(cnd$forms, "vitals")
+
+  db_instrument_repeating <- tibble::tribble(
+    ~unique_event_name  , ~form          ,
+    "baseline_arm_1"    , "demographics" ,
+    "followup_arm_1"    , "labs"         ,
+    "unscheduled_arm_1" , NA_character_
+  )
+
+  expect_no_warning(
+    check_unmapped_repeating_forms(
+      db_event_instruments = db_event_instruments,
+      db_instrument_repeating = db_instrument_repeating
+    )
+  )
+})

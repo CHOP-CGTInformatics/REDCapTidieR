@@ -10,6 +10,8 @@
 #' \code{REDCapR::redcap_read_oneshot()$data}
 #' @param db_metadata The REDCap metadata output defined by
 #' \code{REDCapR::redcap_metadata_read()$data}
+#' @param form_structure A tibble with cols \code{redcap_form_name} and
+#' \code{structure} with the structure of each form
 #'
 #' @return
 #' Returns a \code{tibble} with list elements containing tidy dataframes. Users
@@ -18,24 +20,18 @@
 #'
 #' @keywords internal
 
-clean_redcap <- function(db_data, db_metadata) {
+clean_redcap <- function(db_data, db_metadata, form_structure) {
   # Apply checkmate checks ---
   assert_data_frame(db_data)
   assert_data_frame(db_metadata)
 
   # Repeating Instrument Check ----
-  # Check if database supplied contains any repeating instruments to map onto `
-  # redcap_repeat_*` variables
-
-  has_repeat_forms <- db_has_repeat_forms(db_data)
+  repeated_forms <- form_structure$redcap_form_name[form_structure$structure == "repeating"]
+  nonrepeated_forms <- form_structure$redcap_form_name[form_structure$structure == "nonrepeating"]
+  has_repeat_forms <- length(repeated_forms) > 0
 
   ## Repeating Instruments Logic ----
   if (has_repeat_forms) {
-    repeated_forms <- db_data %>%
-      filter(!is.na(.data$redcap_repeat_instrument)) %>%
-      pull(.data$redcap_repeat_instrument) %>%
-      unique()
-
     repeated_forms_tibble <- tibble(
       redcap_form_name = repeated_forms,
       redcap_data = map(
@@ -51,18 +47,6 @@ clean_redcap <- function(db_data, db_metadata) {
   }
 
   ## Nonrepeating Instruments Logic ----
-  nonrepeated_forms <- db_metadata %>%
-    filter(!is.na(.data$form_name)) %>%
-    pull(.data$form_name) %>%
-    unique()
-
-  if (has_repeat_forms) {
-    nonrepeated_forms <- setdiff(
-      nonrepeated_forms,
-      repeated_forms
-    )
-  }
-
   nonrepeated_forms_tibble <- tibble(
     redcap_form_name = nonrepeated_forms,
     redcap_data = map(

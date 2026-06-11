@@ -40,11 +40,17 @@ db_mixed_structure_linked_arms <- readRDS(
 
 # Run Tests ----
 test_that("clean_redcap_long with arms works", {
+  form_structure <- tibble(
+    redcap_form_name = c("nonrepeated", "nonrepeated2", "repeated"),
+    structure = c("nonrepeating", "nonrepeating", "repeating")
+  )
+
   ## Check longitudinal structure with arms ----
   out <- clean_redcap_long(
     db_data_long = db_data_long,
     db_metadata_long = db_metadata_long,
-    linked_arms = linked_arms_long
+    linked_arms = linked_arms_long,
+    form_structure = form_structure
   )
 
   expect_true(is_tibble(out))
@@ -53,11 +59,17 @@ test_that("clean_redcap_long with arms works", {
 })
 
 test_that("clean_redcap_long works with databases containing no repeating instruments and arms", {
+  form_structure <- tibble(
+    redcap_form_name = c("nonrepeated", "nonrepeated2"),
+    structure = "nonrepeating"
+  )
+
   ## Check longitudinal structure with arms ----
   out <- clean_redcap_long(
     db_data_long = db_data_long_norepeat,
     db_metadata_long = db_metadata_long_norepeat,
-    linked_arms = linked_arms_long_norepeat
+    linked_arms = linked_arms_long_norepeat,
+    form_structure = form_structure
   )
 
   # Check general structure
@@ -69,11 +81,17 @@ test_that("clean_redcap_long works with databases containing no repeating instru
 
 
 test_that("clean_redcap_long without arms works", {
+  form_structure <- tibble(
+    redcap_form_name = c("nonrepeated", "nonrepeated2", "repeated"),
+    structure = c("nonrepeating", "nonrepeating", "repeating")
+  )
+
   ## Check longitudinal structure without arms ----
   out <- clean_redcap_long(
     db_data_long = db_data_long_noarms,
     db_metadata_long = db_metadata_long_noarms,
-    linked_arms = linked_arms_long_noarms
+    linked_arms = linked_arms_long_noarms,
+    form_structure = form_structure
   )
 
   expect_true(is_tibble(out))
@@ -82,6 +100,11 @@ test_that("clean_redcap_long without arms works", {
 })
 
 test_that("clean_redcap_long with mixed structure works", {
+  form_structure <- tibble(
+    redcap_form_name = c("nonrepeat_form", "repeat_form", "mixed_structure_form"),
+    structure = c("nonrepeating", "repeating", "mixed")
+  )
+
   # Required since amendments take place before clean_redcap_long call in read_redcap
   db_metadata_mixed_structure <- update_field_names(db_metadata_mixed_structure)
 
@@ -90,7 +113,8 @@ test_that("clean_redcap_long with mixed structure works", {
     clean_redcap_long(
       db_data_long = db_mixed_structure,
       db_metadata_long = db_metadata_mixed_structure,
-      linked_arms = db_mixed_structure_linked_arms
+      linked_arms = db_mixed_structure_linked_arms,
+      form_structure = form_structure
     ),
     class = "repeat_nonrepeat_instrument"
   )
@@ -99,6 +123,7 @@ test_that("clean_redcap_long with mixed structure works", {
     db_data_long = db_mixed_structure,
     db_metadata_long = db_metadata_mixed_structure,
     linked_arms = db_mixed_structure_linked_arms,
+    form_structure = form_structure,
     allow_mixed_structure = TRUE
   )
 

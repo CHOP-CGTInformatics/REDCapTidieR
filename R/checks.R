@@ -950,3 +950,33 @@ check_equal_col_summaries <- function(data, col1, col2, call = caller_env()) {
     )
   }
 }
+
+#' @title Check for repeating forms not mapped to events
+#'
+#' @param call The calling environment to use in the error message
+#' @inheritParams structure_from_events_and_repeating
+#'
+#' @keywords internal
+check_unmapped_repeating_forms <- function(db_event_instruments, db_instrument_repeating, call = caller_env()) {
+  unmatched_forms <- db_instrument_repeating %>%
+    filter(!is.na(.data$form)) %>%
+    anti_join(db_event_instruments, by = c("unique_event_name", "form")) %>%
+    pull("form") %>%
+    unique()
+
+  if (length(unmatched_forms) == 0) {
+    return()
+  }
+
+  msg <- c(
+    `!` = "The {.code {unmatched_forms}} form{?s} ha{?s/ve} repeating event information but {?is/are} not linked to any events. {.code structure} will be {.code nonrepeating}.", # nolint: line_length_linter
+    i = "This can occur when a previously repeating form was unlinked from all events."
+  )
+
+  cli_warn(
+    msg,
+    call = call,
+    class = c("unmapped_repeating_forms", "REDCapTidieR_cond"),
+    forms = unmatched_forms
+  )
+}

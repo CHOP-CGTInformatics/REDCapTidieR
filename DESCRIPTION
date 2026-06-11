@@ -1,7 +1,7 @@
 Package: REDCapTidieR
 Type: Package
 Title: Extract 'REDCap' Databases into Tidy 'Tibble's
-Version: 1.2.5
+Version: 1.2.5.9000
 Authors@R: c(
     person("Richard", "Hanna", , "hannar1@chop.edu", role = c("aut", "cre"),
            comment = c(ORCID = "0009-0005-6496-8154")),
@@ -25,7 +25,7 @@ Imports:
     lobstr,
     lubridate,
     purrr,
-    REDCapR (>= 1.2.0),
+    REDCapR (>= 1.6.0.9001),
     rlang,
     stringi,
     stringr,
@@ -56,3 +56,5 @@ Language: en-US
 LazyData: true
 RoxygenNote: 7.3.3
 Roxygen: list(markdown = TRUE)
+Remotes:
+    OuhscBbmc/REDCapR

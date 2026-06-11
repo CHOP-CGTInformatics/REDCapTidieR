@@ -7,7 +7,7 @@
 #' @importFrom dplyr %>% across bind_rows case_when filter group_by if_any if_else
 #' left_join mutate pull recode relocate rename right_join row_number rowwise
 #' select slice summarise ungroup coalesce cur_column bind_cols first nth n_distinct
-#' first distinct
+#' first distinct anti_join
 #' @importFrom forcats fct_inorder
 #' @importFrom formattable percent
 #' @importFrom lobstr obj_size
@@ -16,7 +16,7 @@
 #' discard flatten_chr map_chr map2_chr reduce
 #' @importFrom REDCapR redcap_arm_export redcap_event_instruments redcap_instruments
 #' redcap_metadata_read redcap_read_oneshot sanitize_token redcap_event_read
-#' redcap_dag_read
+#' redcap_dag_read redcap_instrument_repeating
 #' @importFrom rlang .data !!! abort as_closure caller_arg caller_env catch_cnd
 #' check_installed cnd_muffle current_call current_env enexpr enquo env_poke
 #' eval_tidy get_env global_env is_atomic is_bare_formula is_bare_list quo_name
