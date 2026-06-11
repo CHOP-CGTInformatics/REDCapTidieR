@@ -347,7 +347,7 @@ read_redcap <- function(
     )
 
     form_structure <- structure_from_repeating(
-      form = returned_forms,
+      forms = returned_forms,
       db_instrument_repeating = db_instrument_repeating
     )
   }
