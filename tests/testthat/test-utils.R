@@ -126,6 +126,15 @@ test_that("parse_labels works", {
 
   invalid_string_1 <- "raw, label | that has | pipes but no other | commas"
   invalid_string_2 <- "raw, la|bel with pipe"
+  repairable_string_1 <- "803, Apple | 804, Banana | 805, Cherry |806, Dragon Fruit| | 807, Elderberry"
+  repairable_output_1 <- tibble::tribble(
+    ~raw, ~label,
+    "803", "Apple",
+    "804", "Banana",
+    "805", "Cherry",
+    "806", "Dragon Fruit",
+    "807", "Elderberry"
+  )
 
   warning_string_1 <- NA_character_
 
@@ -141,6 +150,14 @@ test_that("parse_labels works", {
   expect_error(
     parse_labels(invalid_string_2),
     class = "label_parse_error"
+  )
+  expect_warning(
+    parse_labels(repairable_string_1),
+    class = "choice_string_repaired"
+  )
+  expect_equal(
+    suppressWarnings(parse_labels(repairable_string_1), classes = "choice_string_repaired"),
+    repairable_output_1
   )
   expect_warning(
     parse_labels(warning_string_1),
