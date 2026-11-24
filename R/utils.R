@@ -874,8 +874,7 @@ db_has_repeat_forms <- function(db_data) {
 #'
 #' @returns A dataframe.
 #'
-#' @param data A REDCap dataframe from a longitudinal database,
-#' pre-processed within a `distill_*` function.
+#' @param data A longitudinal instrument data frame with keys and output names.
 #' @param my_record_id The record ID defined in the project.
 #'
 #' @keywords internal

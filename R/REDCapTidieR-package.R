@@ -17,7 +17,7 @@
 #' @importFrom REDCapR redcap_arm_export redcap_event_instruments redcap_instruments
 #' redcap_metadata_read redcap_read_oneshot sanitize_token redcap_event_read
 #' redcap_dag_read redcap_instrument_repeating
-#' @importFrom rlang .data !!! abort as_closure caller_arg caller_env catch_cnd
+#' @importFrom rlang .data .env !!! abort as_closure caller_arg caller_env catch_cnd
 #' check_installed cnd_muffle current_call current_env enexpr enquo env_poke
 #' eval_tidy get_env global_env is_atomic is_bare_formula is_bare_list quo_name
 #' is_installed new_environment quo_get_expr try_fetch zap as_label sym syms expr

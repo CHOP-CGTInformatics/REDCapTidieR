@@ -352,6 +352,7 @@ read_redcap <- function(
     )
   }
 
+  linked_arms <- NULL
   if (is_longitudinal) {
     linked_arms <- link_arms(
       redcap_uri = redcap_uri,
@@ -366,21 +367,15 @@ read_redcap <- function(
       linked_arms <- linked_arms %>%
         add_form_event_structure(db_instrument_repeating)
     }
-
-    out <- clean_redcap_long(
-      db_data_long = db_data,
-      db_metadata_long = db_metadata,
-      linked_arms = linked_arms,
-      form_structure = form_structure,
-      allow_mixed_structure = allow_mixed_structure
-    )
-  } else {
-    out <- clean_redcap(
-      db_data = db_data,
-      db_metadata = db_metadata,
-      form_structure = form_structure
-    )
   }
+
+  out <- clean_redcap(
+    db_data = db_data,
+    db_metadata = db_metadata,
+    form_structure = form_structure,
+    linked_arms = linked_arms,
+    allow_mixed_structure = allow_mixed_structure
+  )
 
   # Augment with metadata ----
   out <- add_metadata(out, db_metadata, redcap_uri, token, suppress_redcapr_messages)
