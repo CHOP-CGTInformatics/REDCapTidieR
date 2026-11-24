@@ -7,8 +7,7 @@
 remove_empty_rows(data, my_record_id)
 }
 \arguments{
-\item{data}{A REDCap dataframe from a longitudinal database,
-pre-processed within a \verb{distill_*} function.}
+\item{data}{A longitudinal instrument data frame with keys and output names.}
 
 \item{my_record_id}{The record ID defined in the project.}
 }

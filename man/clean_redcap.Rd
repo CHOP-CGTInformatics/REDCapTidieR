@@ -2,28 +2,36 @@
 % Please edit documentation in R/clean_redcap.R
 \name{clean_redcap}
 \alias{clean_redcap}
-\title{Extract non-longitudinal REDCap databases into tidy tibbles}
+\title{Extract REDCap databases into tidy tibbles}
 \usage{
-clean_redcap(db_data, db_metadata, form_structure)
+clean_redcap(
+  db_data,
+  db_metadata,
+  form_structure,
+  linked_arms = NULL,
+  allow_mixed_structure = FALSE
+)
 }
 \arguments{
 \item{db_data}{The REDCap database output defined by
-\code{REDCapR::redcap_read_oneshot()$data}}
+\code{REDCapR::redcap_read_oneshot()$data}.}
 
 \item{db_metadata}{The REDCap metadata output defined by
-\code{REDCapR::redcap_metadata_read()$data}}
+\code{REDCapR::redcap_metadata_read()$data}, with updated field names.}
 
-\item{form_structure}{A tibble with cols \code{redcap_form_name} and
-\code{structure} with the structure of each form}
+\item{form_structure}{A tibble with \code{redcap_form_name} and \code{structure} columns.}
+
+\item{linked_arms}{A longitudinal instrument-to-event mapping from \code{\link[=link_arms]{link_arms()}}.
+Use \code{NULL} for classic projects.}
+
+\item{allow_mixed_structure}{Whether to treat the nonrepeating portions of
+mixed longitudinal instruments as repeating.}
 }
 \value{
-Returns a \code{tibble} with list elements containing tidy dataframes. Users
-can access dataframes under the \code{redcap_data} column with reference to
-\code{form_name} and \code{structure} column details.
+A tibble with one row per instrument and columns \code{redcap_form_name},
+\code{redcap_data}, and \code{structure}. Repeating and mixed instruments appear first.
 }
 \description{
-Helper function internal to \code{read_redcap} responsible for
-extraction and final processing of a tidy \code{tibble} to the user from
-a non-longitudinal REDCap database.
+Extract one data tibble per instrument from a classic or longitudinal export.
 }
 \keyword{internal}

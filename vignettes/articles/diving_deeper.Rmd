@@ -178,7 +178,7 @@ REDCapTidieR supports projects with multiple arms. If you have a project with mu
 By default, REDCapTidieR does not allow you to have the same instrument designated both as a repeating and as a nonrepeating instrument in different events (i.e. a "mixed structure instrument"), and will throw an error if this is detected: 
 
 ```
-Error in `clean_redcap_long()` at REDCapTidieR/R/read_redcap.R:272:5:                            
+Error in `clean_redcap()`:
 ✖ Instruments detected that have both repeating and nonrepeating instances defined in the project: mixed_structure_1 and mixed_structure_form_complete
 ℹ Set `allow_mixed_structure` to `TRUE` to override. See Mixed Structure Instruments for more information.
 ```
